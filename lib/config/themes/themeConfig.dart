@@ -76,7 +76,7 @@ class ThemeHandler extends StatelessWidget {
         //secondaryVariant: secondaryColor,
         onSecondary: onSecondary,
         surface: surface,
-        onSurface: onPrimary,
+        onSurface: onSecondary,
         background: background,
         onBackground: onPrimary,
         error: error,
@@ -87,7 +87,8 @@ class ThemeHandler extends StatelessWidget {
       visualDensity: VisualDensity.adaptivePlatformDensity,
 
       ///* AppBar
-      appBarTheme: const AppBarTheme(elevation: 0, centerTitle: true),
+      appBarTheme:
+          AppBarTheme(color: background, elevation: 0, centerTitle: true),
 
       ///* Switch
       switchTheme: SwitchThemeData(
@@ -102,10 +103,18 @@ class ThemeHandler extends StatelessWidget {
       ///* Icons
       iconTheme: IconThemeData(color: onPrimary),
 
-      ///* TextButton
-      textButtonTheme: TextButtonThemeData(
+      ///* ElevatedButton
+      elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(onPrimary),
+          foregroundColor: MaterialStateProperty.all<Color>(onSecondary),
+          backgroundColor: MaterialStateProperty.all<Color>(surface),
+          padding: MaterialStateProperty.all<EdgeInsets>(
+            const EdgeInsets.fromLTRB(18, 14, 18, 14),
+          ),
+          elevation: MaterialStateProperty.all<double>(0),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          ),
         ),
       ),
 
@@ -153,31 +162,33 @@ class ThemeHandler extends StatelessWidget {
         ),
         labelLarge: GoogleFonts.inter(
           color: onPrimary,
-          fontSize: 24,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
       ),
 
       ///* TextField-Themes etc.
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: secondary,
-        selectionColor: hint,
-        selectionHandleColor: secondary,
+        cursorColor: primary,
+        selectionColor: secondary,
+        selectionHandleColor: hint,
       ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(color: hint),
-        labelStyle: TextStyle(color: border),
+        labelStyle: TextStyle(color: primary),
         alignLabelWithHint: true,
-        fillColor: surface,
-        filled: true,
+        filled: false,
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: border),
+            borderSide: BorderSide(color: primary, width: 4),
+            borderRadius: BorderRadius.circular(16)),
+        disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: hint, width: 4),
             borderRadius: BorderRadius.circular(16)),
         border: OutlineInputBorder(
-            borderSide: BorderSide(color: border),
+            borderSide: BorderSide(color: primary, width: 4),
             borderRadius: BorderRadius.circular(16)),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: secondary),
+            borderSide: BorderSide(color: primary, width: 4),
             borderRadius: BorderRadius.circular(16)),
         errorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: error),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabualize/widgets/micButton.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -8,57 +9,64 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool micDisabled = false;
+  bool textDisabled = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text("Vocabualize"),
+        title: Text(
+          "Vocabualize",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(64, 0, 64, 0),
+        padding: const EdgeInsets.fromLTRB(48, 0, 48, 64),
         child: Column(
           // physics: const BouncingScrollPhysics(),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Spacer(flex: 3),
-            MaterialButton(
-              height: 256,
-              onPressed: () {},
-              shape: const CircleBorder(
-                side: BorderSide(
-                  width: 8,
-                  color: Colors.white,
-                ),
-              ),
-              child: const Icon(
-                Icons.mic_none_rounded,
-                color: Colors.white,
-                size: 128,
-              ),
-            ),
+            const MicButton(),
             const Spacer(flex: 1),
-            const TextField(
-              decoration: InputDecoration(hintText: "Type instead"),
+            TextFormField(
+              readOnly: textDisabled,
+              decoration: const InputDecoration(hintText: "Type instead"),
             ),
-            const Spacer(flex: 3),
-            TextButton(
-              onPressed: () {},
+            const Spacer(flex: 4),
+            ElevatedButton(
+              onPressed: () => print("hi"),
+              style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).colorScheme.primary,
+                  onPrimary: Theme.of(context).colorScheme.onPrimary),
               child: const Text("Practise"),
             ),
-            const Spacer(flex: 1),
+            const SizedBox(height: 16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
+                ElevatedButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.settings_outlined),
+                  style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).colorScheme.secondary,
+                      onPrimary: Theme.of(context).colorScheme.onSecondary),
+                  child: const Icon(Icons.settings_outlined),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text("Collection"),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).colorScheme.secondary,
+                        onPrimary: Theme.of(context).colorScheme.onSecondary),
+                    child: const Text("Collection"),
+                  ),
                 ),
               ],
             ),
-            const Spacer(flex: 3),
           ],
         ),
       ),
