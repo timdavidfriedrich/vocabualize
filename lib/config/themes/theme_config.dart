@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'package:vocabualize/main.dart';
-import 'package:vocabualize/config/themes/lightTheme.dart';
-import 'package:vocabualize/config/themes/darkTheme.dart';
+import 'package:vocabualize/config/themes/light_theme.dart';
+import 'package:vocabualize/config/themes/dark_theme.dart';
 //import 'package:vocabualize/utils/providers/color_provider.dart';
 
 class ThemeHandler extends StatelessWidget {
@@ -145,7 +145,7 @@ class ThemeHandler extends StatelessWidget {
           fontSize: 72,
           fontWeight: FontWeight.bold,
         ),
-        bodySmall: GoogleFonts.inter(color: hint, fontSize: 11),
+        bodySmall: GoogleFonts.inter(color: onPrimary, fontSize: 11),
         bodyMedium: GoogleFonts.inter(
           color: onPrimary,
           fontSize: 18,

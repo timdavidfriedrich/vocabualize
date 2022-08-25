@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vocabualize/config/themes/themeConfig.dart';
+import 'package:provider/provider.dart';
+import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/screens/home.dart';
+import 'package:vocabualize/utils/providers/visible_provider.dart';
+import 'package:vocabualize/utils/providers/voc_provider.dart';
+import 'package:vocabualize/utils/providers/lang_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +17,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    return const ThemeHandler(home: Home());
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => VocProv()),
+      ChangeNotifierProvider(create: (_) => LangProv()),
+      ChangeNotifierProvider(create: (_) => VisibleProv()),
+    ], child: const ThemeHandler(home: Home()));
   }
 }
