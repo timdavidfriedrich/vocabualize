@@ -29,6 +29,26 @@ class VocProv extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> removeFromVocabularyList(Vocabulary vocabulary) async {
+    _prefs = await SharedPreferences.getInstance();
+    _vocabularyList.remove(vocabulary);
+    if (!await _prefs.setString(
+        "vocabularyList", json.encode(_vocabularyList))) {
+      printError("removeFromVocabularyList");
+    }
+    notifyListeners();
+  }
+
+  Future<void> clearVocabularyList() async {
+    _prefs = await SharedPreferences.getInstance();
+    _vocabularyList.clear();
+    if (!await _prefs.setString(
+        "vocabularyList", json.encode(_vocabularyList))) {
+      printError("clearVocabularyList");
+    }
+    notifyListeners();
+  }
+
   List<Vocabulary> getVocabularyList() => _vocabularyList;
 }
 

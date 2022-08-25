@@ -174,21 +174,21 @@ class ThemeHandler extends StatelessWidget {
         selectionHandleColor: hint,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: TextStyle(color: hint),
+        hintStyle: TextStyle(color: primary),
         labelStyle: TextStyle(color: primary),
         alignLabelWithHint: true,
         filled: false,
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: primary, width: 4),
+            borderSide: BorderSide(color: secondary, width: 4),
             borderRadius: BorderRadius.circular(16)),
         disabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: hint, width: 4),
             borderRadius: BorderRadius.circular(16)),
         border: OutlineInputBorder(
-            borderSide: BorderSide(color: primary, width: 4),
+            borderSide: BorderSide(color: secondary, width: 4),
             borderRadius: BorderRadius.circular(16)),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: primary, width: 4),
+            borderSide: BorderSide(color: secondary, width: 4),
             borderRadius: BorderRadius.circular(16)),
         errorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: error),
