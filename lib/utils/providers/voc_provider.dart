@@ -8,13 +8,17 @@ import 'package:vocabualize/utils/logging.dart';
 class VocProv extends ChangeNotifier {
   late SharedPreferences _prefs;
 
-  final List<Vocabulary> _vocabularyList = [];
+  List<Vocabulary> _vocabularyList = [];
 
   Future<void> initVocabularyList() async {
     _prefs = await SharedPreferences.getInstance();
-    String vocabularyListJSON = _prefs.getString("vocabularyList")!;
-    for (dynamic voc in json.decode(vocabularyListJSON)) {
-      _vocabularyList.add(Vocabulary.fromJson(voc));
+    String vocabularyListJSON = _prefs.getString("vocabularyList") ?? "";
+    if (vocabularyListJSON != "") {
+      for (dynamic voc in json.decode(vocabularyListJSON)) {
+        _vocabularyList.add(Vocabulary.fromJson(voc));
+      }
+    } else {
+      _vocabularyList = [Vocabulary(source: "source", target: "target")];
     }
     notifyListeners();
   }

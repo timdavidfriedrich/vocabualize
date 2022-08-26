@@ -1,23 +1,55 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+import 'package:vocabualize/utils/logging.dart';
 import 'package:vocabualize/utils/providers/visible_provider.dart';
+import 'package:vocabualize/utils/providers/voc_provider.dart';
+import 'package:vocabualize/utils/translator.dart';
 
-class MicButton extends StatelessWidget {
+class MicButton extends StatefulWidget {
   const MicButton({Key? key}) : super(key: key);
+
+  @override
+  State<MicButton> createState() => _MicButtonState();
+}
+
+class _MicButtonState extends State<MicButton> {
+  final SpeechToText _stt = SpeechToText();
+  String _text = "";
+
+  void _record() async {
+    if (!Provider.of<VisibleProv>(context, listen: false).getMicIsActive()) {
+      Provider.of<VisibleProv>(context, listen: false).setMicIsActive(true);
+      bool available = await _stt.initialize(
+        onStatus: (status) async {
+          printHint("[STT] $status");
+          if (_stt.isNotListening && status == "done") {
+            printHint("[STT] saved");
+            Provider.of<VisibleProv>(context, listen: false)
+                .setMicIsActive(false);
+            Provider.of<VocProv>(context, listen: false).addToVocabularyList(
+                Vocabulary(
+                    source: _text,
+                    target: await Translator.translate(context, _text)));
+            _stt.stop;
+          }
+        },
+        // TODO: onError => Abbruch, stop, nicht speichern, Message
+        onError: (error) => printError("[STT] ${error.errorMsg}"),
+      );
+      if (available) {
+        _stt.listen(
+          onResult: (text) => setState(() => _text = text.recognizedWords),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (e) {
-        Provider.of<VisibleProv>(context, listen: false).setMicIsActive(true);
-      },
-      onTapCancel: () {
-        Provider.of<VisibleProv>(context, listen: false).setMicIsActive(false);
-      },
-      onTapUp: (e) {
-        Provider.of<VisibleProv>(context, listen: false).setMicIsActive(false);
-      },
+      onTap: _record,
       child: Container(
         height: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(

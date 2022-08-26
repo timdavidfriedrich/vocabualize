@@ -1,5 +1,5 @@
 name: vocabualize
-description: A new Flutter project.
+description: Capture vocabularies around you.
 
 
 
@@ -17,10 +17,13 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
+  avatar_glow: ^2.0.2
+
   provider: ^6.0.3
   shared_preferences: ^2.0.15
+
   translator: ^0.1.7
-  avatar_glow: ^2.0.2
+  speech_to_text: ^5.6.1
 
 
 dev_dependencies:
