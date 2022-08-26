@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/screens/collection.dart';
+import 'package:vocabualize/screens/practise_done.dart';
 import 'package:vocabualize/screens/settings.dart';
 import 'package:vocabualize/utils/providers/visible_provider.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
@@ -34,19 +35,19 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(48, 0, 48, 64),
+        padding: const EdgeInsets.fromLTRB(48, 0, 48, 0),
         child: Column(
           // physics: const BouncingScrollPhysics(),
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Spacer(flex: 1),
-            Provider.of<VisibleProv>(context).getTypeIsActive()
-                ? Container()
-                : const MicButton(),
+            const MicButton(),
             const TypeInstead(),
             const Spacer(flex: 3),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: Provider.of<VisibleProv>(context).getMicIsActive()
+                  ? null
+                  : () => Navigator.push(context, Teleport(child: const PractiseDone(), type: "slide_bottom")),
               style: ElevatedButton.styleFrom(
                   primary: Provider.of<VisibleProv>(context).getMicIsActive()
                       ? Colors.transparent
@@ -60,42 +61,37 @@ class _HomeState extends State<Home> {
             Row(
               children: [
                 ElevatedButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    Teleport(child: const Settings(), type: "slide_left"),
-                  ),
+                  onPressed: Provider.of<VisibleProv>(context).getMicIsActive()
+                      ? null
+                      : () => Navigator.push(context, Teleport(child: const Settings(), type: "slide_left")),
                   style: ElevatedButton.styleFrom(
-                      primary:
-                          Provider.of<VisibleProv>(context).getMicIsActive()
-                              ? Colors.transparent
-                              : Theme.of(context).colorScheme.primary,
-                      onPrimary:
-                          Provider.of<VisibleProv>(context).getMicIsActive()
-                              ? Colors.transparent
-                              : Theme.of(context).colorScheme.onPrimary),
+                      primary: Provider.of<VisibleProv>(context).getMicIsActive()
+                          ? Colors.transparent
+                          : Theme.of(context).colorScheme.primary,
+                      onPrimary: Provider.of<VisibleProv>(context).getMicIsActive()
+                          ? Colors.transparent
+                          : Theme.of(context).colorScheme.onPrimary),
                   child: const Icon(Icons.settings_outlined),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => Navigator.push(
-                      context,
-                      Teleport(child: const Collection(), type: "slide_right"),
-                    ),
+                    onPressed: Provider.of<VisibleProv>(context).getMicIsActive()
+                        ? null
+                        : () => Navigator.push(context, Teleport(child: const Collection(), type: "slide_right")),
                     style: ElevatedButton.styleFrom(
-                        primary:
-                            Provider.of<VisibleProv>(context).getMicIsActive()
-                                ? Colors.transparent
-                                : Theme.of(context).colorScheme.primary,
-                        onPrimary:
-                            Provider.of<VisibleProv>(context).getMicIsActive()
-                                ? Colors.transparent
-                                : Theme.of(context).colorScheme.onPrimary),
+                        primary: Provider.of<VisibleProv>(context).getMicIsActive()
+                            ? Colors.transparent
+                            : Theme.of(context).colorScheme.primary,
+                        onPrimary: Provider.of<VisibleProv>(context).getMicIsActive()
+                            ? Colors.transparent
+                            : Theme.of(context).colorScheme.onPrimary),
                     child: const Text("Collection"),
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: 64),
           ],
         ),
       ),
