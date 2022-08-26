@@ -43,8 +43,7 @@ class ThemeHandler extends StatelessWidget {
     );
   }
 
-  theme(context, primary, onPrimary, secondary, onSecondary, background,
-      surface, hint, border, error) {
+  theme(context, primary, onPrimary, secondary, onSecondary, background, surface, hint, border, error) {
     //
     return ThemeData(
       //
@@ -76,7 +75,7 @@ class ThemeHandler extends StatelessWidget {
         //secondaryVariant: secondaryColor,
         onSecondary: onSecondary,
         surface: surface,
-        onSurface: onSecondary,
+        onSurface: onPrimary,
         background: background,
         onBackground: onPrimary,
         error: error,
@@ -87,17 +86,12 @@ class ThemeHandler extends StatelessWidget {
       visualDensity: VisualDensity.adaptivePlatformDensity,
 
       ///* AppBar
-      appBarTheme:
-          AppBarTheme(color: background, elevation: 0, centerTitle: true),
+      appBarTheme: AppBarTheme(color: background, elevation: 0, centerTitle: true),
 
       ///* Switch
       switchTheme: SwitchThemeData(
-        trackColor: MaterialStateProperty.resolveWith((states) =>
-            states.contains(MaterialState.selected)
-                ? secondary.withOpacity(0.5)
-                : border),
-        thumbColor: MaterialStateProperty.resolveWith((states) =>
-            states.contains(MaterialState.selected) ? secondary : onPrimary),
+        trackColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? secondary.withOpacity(0.5) : border),
+        thumbColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? secondary : onPrimary),
       ),
 
       ///* Icons
@@ -149,7 +143,7 @@ class ThemeHandler extends StatelessWidget {
         bodyMedium: GoogleFonts.inter(
           color: onPrimary,
           fontSize: 18,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
         ),
         bodyLarge: GoogleFonts.inter(color: Colors.amber[900]),
         labelSmall: GoogleFonts.inter(
@@ -178,21 +172,11 @@ class ThemeHandler extends StatelessWidget {
         labelStyle: TextStyle(color: primary),
         alignLabelWithHint: true,
         filled: false,
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: secondary, width: 4),
-            borderRadius: BorderRadius.circular(16)),
-        disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: hint, width: 4),
-            borderRadius: BorderRadius.circular(16)),
-        border: OutlineInputBorder(
-            borderSide: BorderSide(color: secondary, width: 4),
-            borderRadius: BorderRadius.circular(16)),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: secondary, width: 4),
-            borderRadius: BorderRadius.circular(16)),
-        errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: error),
-            borderRadius: BorderRadius.circular(16)),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: secondary, width: 4), borderRadius: BorderRadius.circular(16)),
+        disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: hint, width: 4), borderRadius: BorderRadius.circular(16)),
+        border: OutlineInputBorder(borderSide: BorderSide(color: secondary, width: 4), borderRadius: BorderRadius.circular(16)),
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: secondary, width: 4), borderRadius: BorderRadius.circular(16)),
+        errorBorder: OutlineInputBorder(borderSide: BorderSide(color: error), borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
