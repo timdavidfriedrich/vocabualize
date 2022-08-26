@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/utils/messenger.dart';
 import 'package:vocabualize/utils/providers/visible_provider.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 import 'package:vocabualize/utils/translator.dart';
@@ -38,16 +39,7 @@ class _TypeInsteadState extends State<TypeInstead> {
                     .setTypeIsActive(true),
             onChanged: (text) => setState(() => currentSource = text),
             onFieldSubmitted: (text) async {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return const Dialog(
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      child: Center(child: CircularProgressIndicator()));
-                },
-              );
+              Messenger.loadingAnimation(context);
               Provider.of<VocProv>(context, listen: false)
                   .addToVocabularyList(Vocabulary(
                       source: currentSource,
@@ -57,10 +49,7 @@ class _TypeInsteadState extends State<TypeInstead> {
                 controller.clear();
                 currentSource = "";
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("\"$text\" has been saved!"),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ));
+                Messenger.saveMessage(context, text);
                 Provider.of<VisibleProv>(context, listen: false)
                     .setTypeIsActive(false);
               });
