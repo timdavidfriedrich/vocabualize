@@ -100,7 +100,7 @@ class ThemeHandler extends StatelessWidget {
       ///* ElevatedButton
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(onSecondary),
+          foregroundColor: MaterialStateProperty.all<Color>(onPrimary),
           backgroundColor: MaterialStateProperty.all<Color>(surface),
           padding: MaterialStateProperty.all<EdgeInsets>(
             const EdgeInsets.fromLTRB(18, 14, 18, 14),

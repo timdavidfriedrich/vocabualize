@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => VocProv()),
-      ChangeNotifierProvider(create: (_) => LangProv()),
-      ChangeNotifierProvider(create: (_) => VisibleProv()),
+      ChangeNotifierProvider(create: (context) => VocProv()),
+      ChangeNotifierProvider(create: (context) => LangProv()),
+      ChangeNotifierProvider(create: (context) => VisibleProv()),
     ], child: const ThemeHandler(home: Home()));
   }
 }

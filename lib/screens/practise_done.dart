@@ -24,21 +24,19 @@ class PractiseDone extends StatelessWidget {
                         text: "Congratulations!\n",
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
-                      const TextSpan(
-                          text: "You finished all of your current words!"),
+                      const TextSpan(text: "You finished all of your current words!"),
                     ],
                   ),
                 ),
               ),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.pushReplacement(
+              // change pop to pushReplace (fix collection grow)
+              onPressed: () => Navigator.pop(
                 context,
-                Teleport(child: const Home(), type: "fade"),
+                //Teleport(child: const Home(), type: "fade"),
               ),
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).colorScheme.surface,
-                  onPrimary: Theme.of(context).colorScheme.onSurface),
+              style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.surface, onPrimary: Theme.of(context).colorScheme.onSurface),
               child: const Text("Main menu"),
             ),
             const SizedBox(height: 64),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/screens/collection.dart';
+import 'package:vocabualize/screens/practise.dart';
 import 'package:vocabualize/screens/practise_done.dart';
 import 'package:vocabualize/screens/settings.dart';
 import 'package:vocabualize/utils/providers/visible_provider.dart';
@@ -29,6 +30,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "Vocabualize",
           style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
@@ -49,7 +51,13 @@ class _HomeState extends State<Home> {
               visible: !Provider.of<VisibleProv>(context).getMicIsActive(),
               background: Theme.of(context).colorScheme.secondary,
               foreground: Theme.of(context).colorScheme.onSecondary,
-              onPressed: () => Navigator.push(context, Teleport(child: const PractiseDone(), type: "slide_bottom")),
+              onPressed: () => Navigator.push(
+                context,
+                Teleport(
+                  child: Provider.of<VocProv>(context, listen: false).getAllToPractise().isEmpty ? const PractiseDone() : const Practise(),
+                  type: "slide_bottom",
+                ),
+              ),
               child: const Text("Practise"),
             ),
             const SizedBox(height: 16),

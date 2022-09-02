@@ -26,57 +26,63 @@ class VocProv extends ChangeNotifier {
   Future<void> addToVocabularyList(Vocabulary vocabulary) async {
     _prefs = await SharedPreferences.getInstance();
     _vocabularyList.add(vocabulary);
-    if (!await _prefs.setString(
-        "vocabularyList", json.encode(_vocabularyList))) {
-      printError("addToVocabularyList");
-    }
+    await _prefs.setString("vocabularyList", json.encode(_vocabularyList));
     notifyListeners();
   }
 
   Future<void> removeFromVocabularyList(Vocabulary vocabulary) async {
     _prefs = await SharedPreferences.getInstance();
     _vocabularyList.remove(vocabulary);
-    if (!await _prefs.setString(
-        "vocabularyList", json.encode(_vocabularyList))) {
-      printError("removeFromVocabularyList");
-    }
+    await _prefs.setString("vocabularyList", json.encode(_vocabularyList));
     notifyListeners();
   }
 
   Future<void> clearVocabularyList() async {
     _prefs = await SharedPreferences.getInstance();
     _vocabularyList.clear();
-    if (!await _prefs.setString(
-        "vocabularyList", json.encode(_vocabularyList))) {
-      printError("clearVocabularyList");
-    }
+    await _prefs.setString("vocabularyList", json.encode(_vocabularyList));
     notifyListeners();
   }
 
   List<Vocabulary> getVocabularyList() => _vocabularyList;
+  List<Vocabulary> getAllToPractise() {
+    List<Vocabulary> result = [];
+    try {
+      result = _vocabularyList.where((voc) => voc.getNextDate().isBefore(DateTime.now())).toList();
+    } catch (e) {
+      printError(e);
+    }
+    return result;
+  }
+
+  Vocabulary getFirstToPractise() => getAllToPractise().first;
 }
 
 class Vocabulary {
   String source = "";
   String target = "";
   List<String> tags = [];
+  int level = 0;
+  DateTime nextDate = DateTime.now();
 
-  Vocabulary({required this.source, required this.target, tags})
-      : tags = tags ?? [];
+  Vocabulary({required this.source, required this.target, tags}) : tags = tags ?? [];
 
   Vocabulary.fromJson(Map<String, dynamic> json) {
     source = json['source'];
     target = json['target'];
     for (dynamic voc in json["tags"]) {
-      // TODO: tags aktivieren, irgendwie sind die doppelt?
       tags.add(voc.toString());
     }
+    level = json['level'];
+    nextDate = DateTime.fromMillisecondsSinceEpoch(json['nextDate']);
   }
 
   Map<String, dynamic> toJson() => {
         'source': source,
         'target': target,
         'tags': tags,
+        'level': level,
+        'nextDate': nextDate.millisecondsSinceEpoch,
       };
 
   @override
@@ -85,6 +91,8 @@ class Vocabulary {
   String getSource() => source;
   String getTarget() => target;
   List<String> getTags() => tags;
+  int getLevel() => level;
+  DateTime getNextDate() => nextDate;
 
   void setSource(String source) => this.source = source;
   void setTarget(String target) => this.target = target;
@@ -92,4 +100,18 @@ class Vocabulary {
   void addToTags(String tag) => tags.add(tag);
   void removeFromTags(String tag) => tags.remove(tag);
   void removeIndexFromTags(int index) => tags.removeAt(index);
+  void setLevel(int level) => this.level = level;
+  void setNextDate(DateTime nextDate) => this.nextDate = nextDate;
+
+  // Add algorithm to calculate nextDate
+  void addToNextDay(Duration duration) {
+    printWarning(nextDate);
+    DateTime newDate = nextDate.add(duration);
+    nextDate = newDate;
+    printHint(nextDate);
+  }
+
+  void answerEasy() => addToNextDay(Duration(minutes: 69));
+  void answerMedium() => addToNextDay(Duration(days: 2));
+  void answerHard() => addToNextDay(Duration(days: 1));
 }
