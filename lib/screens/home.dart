@@ -8,6 +8,7 @@ import 'package:vocabualize/utils/providers/voc_provider.dart';
 import 'package:vocabualize/utils/teleport.dart';
 import 'package:vocabualize/widgets/mic_button.dart';
 import 'package:vocabualize/widgets/type_instead.dart';
+import 'package:vocabualize/widgets/ui_core/buttons.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -44,48 +45,26 @@ class _HomeState extends State<Home> {
             const MicButton(),
             const TypeInstead(),
             const Spacer(flex: 3),
-            ElevatedButton(
-              onPressed: Provider.of<VisibleProv>(context).getMicIsActive()
-                  ? null
-                  : () => Navigator.push(context, Teleport(child: const PractiseDone(), type: "slide_bottom")),
-              style: ElevatedButton.styleFrom(
-                  primary: Provider.of<VisibleProv>(context).getMicIsActive()
-                      ? Colors.transparent
-                      : Theme.of(context).colorScheme.secondary,
-                  onPrimary: Provider.of<VisibleProv>(context).getMicIsActive()
-                      ? Colors.transparent
-                      : Theme.of(context).colorScheme.onSecondary),
+            VisibilityButton(
+              visible: !Provider.of<VisibleProv>(context).getMicIsActive(),
+              background: Theme.of(context).colorScheme.secondary,
+              foreground: Theme.of(context).colorScheme.onSecondary,
+              onPressed: () => Navigator.push(context, Teleport(child: const PractiseDone(), type: "slide_bottom")),
               child: const Text("Practise"),
             ),
             const SizedBox(height: 16),
             Row(
               children: [
-                ElevatedButton(
-                  onPressed: Provider.of<VisibleProv>(context).getMicIsActive()
-                      ? null
-                      : () => Navigator.push(context, Teleport(child: const Settings(), type: "slide_left")),
-                  style: ElevatedButton.styleFrom(
-                      primary: Provider.of<VisibleProv>(context).getMicIsActive()
-                          ? Colors.transparent
-                          : Theme.of(context).colorScheme.primary,
-                      onPrimary: Provider.of<VisibleProv>(context).getMicIsActive()
-                          ? Colors.transparent
-                          : Theme.of(context).colorScheme.onPrimary),
+                VisibilityButton(
+                  visible: !Provider.of<VisibleProv>(context).getMicIsActive(),
+                  onPressed: () => Navigator.push(context, Teleport(child: const Settings(), type: "slide_left")),
                   child: const Icon(Icons.settings_outlined),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: Provider.of<VisibleProv>(context).getMicIsActive()
-                        ? null
-                        : () => Navigator.push(context, Teleport(child: const Collection(), type: "slide_right")),
-                    style: ElevatedButton.styleFrom(
-                        primary: Provider.of<VisibleProv>(context).getMicIsActive()
-                            ? Colors.transparent
-                            : Theme.of(context).colorScheme.primary,
-                        onPrimary: Provider.of<VisibleProv>(context).getMicIsActive()
-                            ? Colors.transparent
-                            : Theme.of(context).colorScheme.onPrimary),
+                  child: VisibilityButton(
+                    visible: !Provider.of<VisibleProv>(context).getMicIsActive(),
+                    onPressed: () => Navigator.push(context, Teleport(child: const Collection(), type: "slide_right")),
                     child: const Text("Collection"),
                   ),
                 ),
