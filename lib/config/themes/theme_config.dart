@@ -90,7 +90,8 @@ class ThemeHandler extends StatelessWidget {
 
       ///* Switch
       switchTheme: SwitchThemeData(
-        trackColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? secondary.withOpacity(0.5) : border),
+        trackColor:
+            MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? secondary.withOpacity(0.5) : border),
         thumbColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? secondary : onPrimary),
       ),
 
@@ -115,9 +116,11 @@ class ThemeHandler extends StatelessWidget {
       ///* Text-Themes
       textTheme: TextTheme(
         titleSmall: GoogleFonts.poppins(color: Colors.blue[300]),
-        titleMedium: GoogleFonts.poppins(color: onPrimary),
+        titleMedium: GoogleFonts.poppins(
+          color: Colors.amber[900], // color: onPrimary,
+        ),
         titleLarge: GoogleFonts.poppins(
-          color: onPrimary,
+          color: Color.fromARGB(255, 0, 250, 125), // color: onPrimary,
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
@@ -139,7 +142,10 @@ class ThemeHandler extends StatelessWidget {
           fontSize: 72,
           fontWeight: FontWeight.bold,
         ),
-        bodySmall: GoogleFonts.inter(color: onPrimary, fontSize: 11),
+        bodySmall: GoogleFonts.inter(
+          color: onPrimary,
+          fontSize: 11,
+        ),
         bodyMedium: GoogleFonts.inter(
           color: onPrimary,
           fontSize: 18,
