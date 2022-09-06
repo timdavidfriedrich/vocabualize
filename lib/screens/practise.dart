@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/utils/logging.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 
 class Practise extends StatefulWidget {
@@ -15,16 +14,20 @@ class _PractiseState extends State<Practise> {
 
   late Vocabulary currentVoc;
 
+  void refreshVoc() {
+    setState(() => currentVoc = Provider.of<VocProv>(context).getFirstToPractise());
+  }
+
   @override
   void initState() {
     super.initState();
-    currentVoc = Provider.of<VocProv>(context).getFirstToPractise();
+    refreshVoc();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("13/${Provider.of<VocProv>(context).getAllToPractise().length}")),
+      appBar: AppBar(title: Text("${Provider.of<VocProv>(context).getAllToPractise().length} left")),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(48, 0, 48, 0),
         child: Column(
@@ -51,15 +54,24 @@ class _PractiseState extends State<Practise> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
-                        onPressed: () => Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerEasy(),
+                        onPressed: () {
+                          Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerEasy();
+                          refreshVoc();
+                        },
                         child: const Icon(Icons.sentiment_very_satisfied_rounded),
                       ),
                       ElevatedButton(
-                        onPressed: () => Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerMedium(),
+                        onPressed: () {
+                          Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerMedium();
+                          refreshVoc();
+                        },
                         child: const Icon(Icons.sentiment_satisfied_rounded),
                       ),
                       ElevatedButton(
-                        onPressed: () => Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerHard(),
+                        onPressed: () {
+                          Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerHard();
+                          refreshVoc();
+                        },
                         child: const Icon(Icons.sentiment_neutral_rounded),
                       ),
                     ],

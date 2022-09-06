@@ -72,11 +72,9 @@ class _MicButtonState extends State<MicButton> {
       child: Container(
         height: Provider.of<VisibleProv>(context).getTypeIsActive() ? 0 : MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            color: Provider.of<VisibleProv>(context).getMicIsActive()
-                ? Theme.of(context).colorScheme.secondary
-                : Theme.of(context).colorScheme.surface,
+            color: Provider.of<VisibleProv>(context).getMicIsActive() ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
             shape: BoxShape.circle,
-            border: Border.all(width: 8, color: Theme.of(context).colorScheme.secondary)),
+            border: Border.all(width: 8, color: Theme.of(context).colorScheme.onPrimary)),
         child: AvatarGlow(
           animate: Provider.of<VisibleProv>(context).getMicIsActive(),
           endRadius: MediaQuery.of(context).size.width / 2,
@@ -92,8 +90,8 @@ class _MicButtonState extends State<MicButton> {
             color: Provider.of<VisibleProv>(context).getTypeIsActive()
                 ? Colors.transparent
                 : Provider.of<VisibleProv>(context).getMicIsActive()
-                    ? Theme.of(context).colorScheme.onSecondary
-                    : Theme.of(context).colorScheme.secondary,
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onPrimary,
             size: 128,
           ),
         ),

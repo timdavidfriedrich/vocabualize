@@ -63,6 +63,7 @@ class Vocabulary {
   String target = "";
   List<String> tags = [];
   int level = 0;
+  DateTime creationDate = DateTime.now();
   DateTime nextDate = DateTime.now();
 
   Vocabulary({required this.source, required this.target, tags}) : tags = tags ?? [];
@@ -92,7 +93,23 @@ class Vocabulary {
   String getTarget() => target;
   List<String> getTags() => tags;
   int getLevel() => level;
+  Color getLevelColor() {
+    switch (level) {
+      case 0:
+        return Colors.blue;
+      case 1:
+        return Colors.red;
+      case 2:
+        return Colors.orange;
+      case 3:
+        return Colors.green;
+      default:
+        return Colors.blue;
+    }
+  }
+
   DateTime getNextDate() => nextDate;
+  DateTime getCreationDate() => nextDate;
 
   void setSource(String source) => this.source = source;
   void setTarget(String target) => this.target = target;

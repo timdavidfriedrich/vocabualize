@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vocabualize/screens/home.dart';
+import 'package:vocabualize/screens/record_sheet.dart';
 import 'package:vocabualize/utils/teleport.dart';
 
 class PractiseDone extends StatelessWidget {
@@ -36,7 +36,8 @@ class PractiseDone extends StatelessWidget {
                 context,
                 //Teleport(child: const Home(), type: "fade"),
               ),
-              style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.surface, onPrimary: Theme.of(context).colorScheme.onSurface),
+              style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).colorScheme.surface, onPrimary: Theme.of(context).colorScheme.onSurface),
               child: const Text("Main menu"),
             ),
             const SizedBox(height: 64),

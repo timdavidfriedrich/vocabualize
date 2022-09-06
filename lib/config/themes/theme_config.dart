@@ -14,6 +14,7 @@ class ThemeHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //showPerformanceOverlay: true,
       debugShowCheckedModeBanner: false,
       theme: theme(
         context,
@@ -22,7 +23,9 @@ class ThemeHandler extends StatelessWidget {
         lightSecondary, //Provider.of<ColorProvider>(context).secondaryColor,
         lightOnSecondary,
         lightBackground,
+        lightOnBackground,
         lightSurface,
+        lightOnSurface,
         lightHint,
         lightBorder,
         lightError,
@@ -34,16 +37,21 @@ class ThemeHandler extends StatelessWidget {
         darkSecondary, //Provider.of<ColorProvider>(context).secondaryColor,
         darkOnSecondary,
         darkBackground,
+        darkOnBackground,
         darkSurface,
+        darkOnSurface,
         darkHint,
         darkBorder,
         darkError,
       ),
-      home: home,
+      home: ClipRRect(
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        child: home,
+      ),
     );
   }
 
-  theme(context, primary, onPrimary, secondary, onSecondary, background, surface, hint, border, error) {
+  theme(context, primary, onPrimary, secondary, onSecondary, background, onBackground, surface, onSurface, hint, border, error) {
     //
     return ThemeData(
       //
@@ -75,15 +83,19 @@ class ThemeHandler extends StatelessWidget {
         //secondaryVariant: secondaryColor,
         onSecondary: onSecondary,
         surface: surface,
-        onSurface: onPrimary,
+        onSurface: onSurface,
         background: background,
-        onBackground: onPrimary,
+        onBackground: onBackground,
         error: error,
         onError: onPrimary,
         brightness: Brightness.light,
       ),
 
+      //splashColor: surface,
+
       visualDensity: VisualDensity.adaptivePlatformDensity,
+
+      useMaterial3: true,
 
       ///* AppBar
       appBarTheme: AppBarTheme(color: background, elevation: 0, centerTitle: true),
@@ -96,15 +108,25 @@ class ThemeHandler extends StatelessWidget {
       ),
 
       ///* Icons
-      iconTheme: IconThemeData(color: onPrimary),
+      iconTheme: IconThemeData(color: onBackground),
+
+      ///* ListTile
+      listTileTheme: ListTileThemeData(iconColor: onBackground, selectedTileColor: surface),
 
       ///* ElevatedButton
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(onPrimary),
-          backgroundColor: MaterialStateProperty.all<Color>(surface),
+          backgroundColor: MaterialStateProperty.all<Color>(primary),
           padding: MaterialStateProperty.all<EdgeInsets>(
-            const EdgeInsets.fromLTRB(18, 14, 18, 14),
+            const EdgeInsets.fromLTRB(32, 8, 32, 8),
+          ),
+          textStyle: MaterialStateProperty.all<TextStyle>(
+            GoogleFonts.poppins(
+              color: onSurface,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           elevation: MaterialStateProperty.all<double>(0),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -113,54 +135,77 @@ class ThemeHandler extends StatelessWidget {
         ),
       ),
 
+      // ///* Dialog
+      // dialogTheme: DialogTheme(
+      //   elevation: 8,
+      //   backgroundColor: background,
+      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+      // ),
+
       ///* Text-Themes
       textTheme: TextTheme(
         titleSmall: GoogleFonts.poppins(color: Colors.blue[300]),
         titleMedium: GoogleFonts.poppins(
-          color: Colors.amber[900], // color: onPrimary,
+          color: onBackground, // color: onPrimary,
         ),
         titleLarge: GoogleFonts.poppins(
-          color: Color.fromARGB(255, 0, 250, 125), // color: onPrimary,
+          color: onBackground, // color: onPrimary,
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
-        headlineSmall: GoogleFonts.poppins(color: Colors.pink[300]),
-        headlineMedium: GoogleFonts.poppins(color: Colors.pink[600]),
-        headlineLarge: GoogleFonts.poppins(color: Colors.pink[900]),
+        headlineSmall: GoogleFonts.poppins(
+          color: onBackground,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+        headlineMedium: GoogleFonts.poppins(
+          color: onBackground,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+        headlineLarge: GoogleFonts.poppins(
+          color: onBackground,
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+        ),
         displaySmall: GoogleFonts.poppins(
-          color: onPrimary,
+          color: onBackground,
           fontSize: 12,
           fontWeight: FontWeight.normal,
         ),
         displayMedium: GoogleFonts.poppins(
-          color: onPrimary,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
+          color: onBackground,
+          fontSize: 16,
         ),
         displayLarge: GoogleFonts.poppins(
-          color: onPrimary,
+          color: onBackground,
           fontSize: 72,
           fontWeight: FontWeight.bold,
         ),
-        bodySmall: GoogleFonts.inter(
-          color: onPrimary,
+        bodySmall: GoogleFonts.poppins(
+          color: onBackground,
           fontSize: 11,
         ),
-        bodyMedium: GoogleFonts.inter(
-          color: onPrimary,
+        bodyMedium: GoogleFonts.poppins(
+          color: onBackground,
           fontSize: 18,
           height: 1.5,
         ),
-        bodyLarge: GoogleFonts.inter(color: Colors.amber[900]),
-        labelSmall: GoogleFonts.inter(
-          color: onPrimary,
-          fontSize: 12,
+        bodyLarge: GoogleFonts.poppins(
+          color: onBackground,
+          fontSize: 24,
         ),
-        labelMedium: GoogleFonts.inter(
+        labelSmall: GoogleFonts.poppins(
           color: onPrimary,
-          fontSize: 16,
+          fontSize: 11,
+          fontWeight: FontWeight.bold,
         ),
-        labelLarge: GoogleFonts.inter(
+        labelMedium: GoogleFonts.poppins(
+          color: onPrimary,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+        labelLarge: GoogleFonts.poppins(
           color: onPrimary,
           fontSize: 18,
           fontWeight: FontWeight.bold,
@@ -174,14 +219,14 @@ class ThemeHandler extends StatelessWidget {
         selectionHandleColor: hint,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: TextStyle(color: primary),
+        hintStyle: TextStyle(color: onPrimary),
         labelStyle: TextStyle(color: primary),
         alignLabelWithHint: true,
         filled: false,
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: secondary, width: 4), borderRadius: BorderRadius.circular(16)),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
         disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: hint, width: 4), borderRadius: BorderRadius.circular(16)),
-        border: OutlineInputBorder(borderSide: BorderSide(color: secondary, width: 4), borderRadius: BorderRadius.circular(16)),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: secondary, width: 4), borderRadius: BorderRadius.circular(16)),
+        border: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
         errorBorder: OutlineInputBorder(borderSide: BorderSide(color: error), borderRadius: BorderRadius.circular(16)),
       ),
     );
