@@ -23,12 +23,11 @@ class _RecordSheetState extends State<RecordSheet> {
     return Container(
       padding: const EdgeInsets.fromLTRB(48, 0, 48, 0),
       color: Theme.of(context).colorScheme.primary,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         children: const [
           MicButton(),
           TypeInstead(),
-          Spacer(),
         ],
       ),
     );
