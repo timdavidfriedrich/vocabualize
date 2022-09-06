@@ -27,12 +27,12 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (context) => VocProv()),
       ChangeNotifierProvider(create: (context) => LangProv()),
       ChangeNotifierProvider(create: (context) => VisibleProv()),
-    ], child: const ThemeHandler(home: Main()));
+    ], child: const ThemeHandler(home: SnappingLayout()));
   }
 }
 
-class Main extends StatelessWidget {
-  const Main({Key? key}) : super(key: key);
+class SnappingLayout extends StatelessWidget {
+  const SnappingLayout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
