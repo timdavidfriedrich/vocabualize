@@ -35,8 +35,7 @@ class Teleport extends PageRouteBuilder {
     switch (type) {
       case "none":
         return SlideTransition(
-          position: Tween<Offset>(begin: Offset.zero, end: Offset.zero)
-              .animate(animation),
+          position: Tween<Offset>(begin: Offset.zero, end: Offset.zero).animate(animation),
           child: child,
         );
       case "fade":
@@ -46,26 +45,22 @@ class Teleport extends PageRouteBuilder {
         );
       case "slide_right":
         return SlideTransition(
-          position: Tween<Offset>(begin: Offset(1, 0), end: Offset.zero)
-              .animate(animation),
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(animation),
           child: child,
         );
       case "slide_left":
         return SlideTransition(
-          position: Tween<Offset>(begin: Offset(-1, 0), end: Offset.zero)
-              .animate(animation),
+          position: Tween<Offset>(begin: const Offset(-1, 0), end: Offset.zero).animate(animation),
           child: child,
         );
       case "slide_top":
         return SlideTransition(
-          position: Tween<Offset>(begin: Offset(0, -1), end: Offset.zero)
-              .animate(animation),
+          position: Tween<Offset>(begin: const Offset(0, -1), end: Offset.zero).animate(animation),
           child: child,
         );
       case "slide_bottom":
         return SlideTransition(
-          position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero)
-              .animate(animation),
+          position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(animation),
           child: child,
         );
       case "scale_topLeft":
@@ -116,7 +111,7 @@ class Teleport extends PageRouteBuilder {
           scale: animation,
           child: child,
         );
-      case "scale_bottomRight":
+      case "scale_bottomRight_2":
         return FadeTransition(
           opacity: animation,
           child: Container(
@@ -128,25 +123,23 @@ class Teleport extends PageRouteBuilder {
             ),
           ),
         );
-      case "scale_bottomRight_ORIGINAL":
+      case "scale_bottomRight":
         return ScaleTransition(
           alignment: Alignment.bottomRight,
           scale: animation,
           child: child,
         );
       default:
-        printError("Teleport()-type '$type' nicht gefunden.");
+        printError("Teleport()-type '$type' not found.");
         return SlideTransition(
-          position: Tween<Offset>(begin: Offset.zero, end: Offset.zero)
-              .animate(animation),
+          position: Tween<Offset>(begin: Offset.zero, end: Offset.zero).animate(animation),
           child: child,
         );
     }
   }
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     return animationHandler(animation, child);
   }
 }
