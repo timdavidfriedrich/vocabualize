@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/screens/practise.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
+import 'package:vocabualize/utils/teleport.dart';
 
 class StatusCard extends StatelessWidget {
   const StatusCard({Key? key}) : super(key: key);
@@ -57,7 +59,7 @@ class StatusCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-              ElevatedButton(onPressed: () {}, child: const Text("Practise")),
+              ElevatedButton(onPressed: () => Navigator.push(context, Teleport(child: const Practise())), child: const Text("Practise")),
             ],
           )
         ],

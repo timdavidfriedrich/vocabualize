@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-
-import 'package:vocabualize/main.dart';
 import 'package:vocabualize/config/themes/light_theme.dart';
 import 'package:vocabualize/config/themes/dark_theme.dart';
 //import 'package:vocabualize/utils/providers/color_provider.dart';
@@ -44,10 +41,7 @@ class ThemeHandler extends StatelessWidget {
         darkBorder,
         darkError,
       ),
-      home: ClipRRect(
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
-        child: home,
-      ),
+      home: home,
     );
   }
 
@@ -119,7 +113,7 @@ class ThemeHandler extends StatelessWidget {
           foregroundColor: MaterialStateProperty.all<Color>(onPrimary),
           backgroundColor: MaterialStateProperty.all<Color>(primary),
           padding: MaterialStateProperty.all<EdgeInsets>(
-            const EdgeInsets.fromLTRB(32, 8, 32, 8),
+            const EdgeInsets.fromLTRB(32, 12, 32, 12),
           ),
           textStyle: MaterialStateProperty.all<TextStyle>(
             GoogleFonts.poppins(

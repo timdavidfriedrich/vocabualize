@@ -53,7 +53,7 @@ class RecordGrab extends StatelessWidget {
           height: 6,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onPrimary,
-            borderRadius: BorderRadius.circular(99),
+            borderRadius: BorderRadius.circular(3),
           ),
         ),
       ),

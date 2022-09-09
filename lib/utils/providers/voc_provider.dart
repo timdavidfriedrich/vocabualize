@@ -128,7 +128,11 @@ class Vocabulary {
     printHint(nextDate);
   }
 
-  void answerEasy() => addToNextDay(Duration(minutes: 69));
+  void answerEasy() {
+    if (level < 3) setLevel(level + 1);
+    addToNextDay(const Duration(minutes: 69));
+  }
+
   void answerMedium() => addToNextDay(Duration(days: 2));
   void answerHard() => addToNextDay(Duration(days: 1));
 }

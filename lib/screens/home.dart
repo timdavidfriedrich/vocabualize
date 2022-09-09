@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/screens/settings.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
+import 'package:vocabualize/utils/teleport.dart';
 import 'package:vocabualize/widgets/status_card.dart';
 import 'package:vocabualize/widgets/voc_list_tile.dart';
 
@@ -17,7 +19,10 @@ class Home extends StatelessWidget {
         Row(
           children: [
             Expanded(child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.settings_rounded)),
+            IconButton(
+              onPressed: () => Navigator.push(context, Teleport(child: const Settings(), type: "slide_bottom")),
+              icon: const Icon(Icons.settings_rounded),
+            ),
           ],
         ),
         const SizedBox(height: 24),

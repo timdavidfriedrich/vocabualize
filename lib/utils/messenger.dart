@@ -16,28 +16,49 @@ class Messenger {
 
   static void editDialog(BuildContext context, Vocabulary vocabulary) {
     vocabulary = Provider.of<VocProv>(context, listen: false).getVocabularyList().firstWhere((voc) => voc == vocabulary);
-    showDialog(
+    bool popped = false;
+    showGeneralDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Edit"),
-        // TODO: add TextFields (source, target) and the tags as Chips
-        content: Text(vocabulary.getTarget()),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Provider.of<VocProv>(context, listen: false).removeFromVocabularyList(vocabulary);
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(
-              primary: Theme.of(context).colorScheme.surface,
-              onPrimary: Theme.of(context).colorScheme.primary,
-            ),
-            child: const Text("Delete"),
+      pageBuilder: (context, animation1, animation2) => Container(color: Colors.amberAccent),
+      transitionDuration: const Duration(milliseconds: 1000),
+      transitionBuilder: (context, animation1, animation2, widget) {
+        final curvedValue = Curves.elasticOut.transform(animation1.value) - 1.0;
+
+        return Transform(
+          transform: Matrix4.translationValues(0, curvedValue * 200, 0),
+          child: AlertDialog(
+            title: const Text("Edit"),
+            // TODO: add TextFields (source, target) and the tags as Chips
+            content: Text(vocabulary.getTarget()),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  if (!popped) {
+                    Provider.of<VocProv>(context, listen: false).removeFromVocabularyList(vocabulary);
+                    Navigator.pop(context);
+                    popped = true;
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).colorScheme.surface,
+                  onPrimary: Theme.of(context).colorScheme.primary,
+                ),
+                child: const Text("Delete"),
+              ),
+              // TODO: Save TextField and Chip data on clicked, pop()
+              ElevatedButton(
+                onPressed: () {
+                  if (!popped) {
+                    Navigator.pop(context);
+                    popped = true;
+                  }
+                },
+                child: const Text("Save"),
+              ),
+            ],
           ),
-          // TODO: Save TextField and Chip data on clicked, pop()
-          ElevatedButton(onPressed: () {}, child: const Text("Save")),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -50,6 +71,7 @@ class Messenger {
       flushbarPosition: FlushbarPosition.TOP,
       backgroundColor: Theme.of(context).colorScheme.primary,
       duration: const Duration(seconds: 5),
+      boxShadows: [BoxShadow(offset: const Offset(0, 4), blurRadius: 8, color: Colors.black.withOpacity(0.42))],
       messageText: RichText(
         text: TextSpan(
           style: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6)),
