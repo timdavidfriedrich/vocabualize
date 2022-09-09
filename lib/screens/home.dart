@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:vocabualize/screens/record_sheet.dart';
 import 'package:vocabualize/screens/settings.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 import 'package:vocabualize/utils/teleport.dart';
@@ -11,37 +13,63 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(32, 0, 32, 96),
-      physics: const BouncingScrollPhysics(),
-      children: [
-        const SizedBox(height: 48),
-        Row(
-          children: [
-            Expanded(child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge)),
-            IconButton(
-              onPressed: () => Navigator.push(context, Teleport(child: const Settings(), type: "slide_bottom")),
-              icon: const Icon(Icons.settings_rounded),
-            ),
-          ],
-        ),
-        const SizedBox(height: 24),
-        const StatusCard(),
-        const SizedBox(height: 32),
-        Text("New words", style: Theme.of(context).textTheme.headlineMedium),
-        const SizedBox(height: 12),
-        const Text("dies das"),
-        const SizedBox(height: 32),
-        Text("All words", style: Theme.of(context).textTheme.headlineMedium),
-        const SizedBox(height: 12),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: List.generate(
-            Provider.of<VocProv>(context).getVocabularyList().length,
-            (index) => VocListTile(vocabulary: Provider.of<VocProv>(context).getVocabularyList().elementAt(index)),
+    return SafeArea(
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        child: Scaffold(
+          body: SnappingSheet(
+            snappingPositions: const [
+              SnappingPosition.factor(
+                  positionFactor: 0.0,
+                  snappingCurve: Curves.elasticOut,
+                  snappingDuration: Duration(milliseconds: 1000),
+                  grabbingContentOffset: GrabbingContentOffset.top),
+              SnappingPosition.factor(
+                positionFactor: 0.75,
+                snappingCurve: Curves.elasticOut,
+                snappingDuration: Duration(milliseconds: 1000),
+              ),
+            ],
+            grabbing: const RecordGrab(),
+            grabbingHeight: 64,
+            sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
+            child: Provider.of<VocProv>(context).getVocabularyList().isEmpty
+                ? const HomeEmpty()
+                : ListView(
+                    padding: const EdgeInsets.fromLTRB(32, 0, 32, 96),
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      const SizedBox(height: 48),
+                      Row(
+                        children: [
+                          Expanded(child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge)),
+                          IconButton(
+                            onPressed: () => Navigator.push(context, Teleport(child: const Settings(), type: "slide_bottom")),
+                            icon: const Icon(Icons.settings_rounded),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      const StatusCard(),
+                      const SizedBox(height: 32),
+                      Text("New words", style: Theme.of(context).textTheme.headlineMedium),
+                      const SizedBox(height: 12),
+                      const Text("dies das"),
+                      const SizedBox(height: 32),
+                      Text("All words", style: Theme.of(context).textTheme.headlineMedium),
+                      const SizedBox(height: 12),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(
+                          Provider.of<VocProv>(context).getVocabularyList().length,
+                          (index) => VocListTile(vocabulary: Provider.of<VocProv>(context).getVocabularyList().elementAt(index)),
+                        ),
+                      ),
+                    ],
+                  ),
           ),
         ),
-      ],
+      ),
     );
   }
 }
