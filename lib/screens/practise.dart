@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/config/themes/level_colors.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 
 class Practise extends StatefulWidget {
@@ -48,8 +49,7 @@ class _PractiseState extends State<Practise> {
                     children: [
                       const SizedBox(height: 48),
                       Text("${Provider.of<VocProv>(context).getAllToPractise().length} left",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
+                          textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 12),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
@@ -84,8 +84,7 @@ class _PractiseState extends State<Practise> {
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
-                                    style:
-                                        ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: Colors.green),
+                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: easyColor),
                                     onPressed: () {
                                       Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerEasy();
                                       refreshVoc();
@@ -96,8 +95,7 @@ class _PractiseState extends State<Practise> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: ElevatedButton(
-                                    style:
-                                        ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: Colors.orange),
+                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: okayColor),
                                     onPressed: () {
                                       Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerMedium();
                                       refreshVoc();
@@ -108,7 +106,7 @@ class _PractiseState extends State<Practise> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: Colors.red),
+                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: hardColor),
                                     onPressed: () {
                                       Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerHard();
                                       refreshVoc();
@@ -169,8 +167,7 @@ class PractiseDone extends StatelessWidget {
                     context,
                     //Teleport(child: const Home(), type: "fade"),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).colorScheme.surface, onPrimary: Theme.of(context).colorScheme.onSurface),
+                  style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.surface, onPrimary: Theme.of(context).colorScheme.onSurface),
                   child: const Text("Main menu"),
                 ),
                 const SizedBox(height: 64),

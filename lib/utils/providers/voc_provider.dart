@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vocabualize/config/themes/level_colors.dart';
 import 'package:vocabualize/utils/logging.dart';
 
 class VocProv extends ChangeNotifier {
@@ -96,15 +97,15 @@ class Vocabulary {
   Color getLevelColor() {
     switch (level) {
       case 0:
-        return Colors.blue;
+        return newColor;
       case 1:
-        return Colors.red;
+        return hardColor;
       case 2:
-        return Colors.orange;
+        return okayColor;
       case 3:
-        return Colors.green;
+        return easyColor;
       default:
-        return Colors.blue;
+        return hardColor;
     }
   }
 
@@ -133,6 +134,6 @@ class Vocabulary {
     addToNextDay(const Duration(minutes: 69));
   }
 
-  void answerMedium() => addToNextDay(Duration(days: 2));
-  void answerHard() => addToNextDay(Duration(days: 1));
+  void answerMedium() => addToNextDay(const Duration(days: 2));
+  void answerHard() => addToNextDay(const Duration(days: 1));
 }

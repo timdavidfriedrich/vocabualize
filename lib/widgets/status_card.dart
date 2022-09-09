@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/config/themes/level_colors.dart';
 import 'package:vocabualize/screens/practise.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 import 'package:vocabualize/utils/teleport.dart';
@@ -38,21 +39,21 @@ class StatusCard extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      const Icon(Icons.circle, color: Colors.red),
+                      Icon(Icons.circle, color: hardColor),
                       Text("${Provider.of<VocProv>(context).getVocabularyList().where((voc) => voc.getLevel() == 1).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
-                      const Icon(Icons.circle, color: Colors.orange),
+                      Icon(Icons.circle, color: okayColor),
                       Text("${Provider.of<VocProv>(context).getVocabularyList().where((voc) => voc.getLevel() == 2).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
-                      const Icon(Icons.circle, color: Colors.green),
+                      Icon(Icons.circle, color: easyColor),
                       Text("${Provider.of<VocProv>(context).getVocabularyList().where((voc) => voc.getLevel() == 3).length}"),
                     ],
                   ),
