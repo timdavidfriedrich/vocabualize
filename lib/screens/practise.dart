@@ -86,7 +86,7 @@ class _PractiseState extends State<Practise> {
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: easyColor),
                                     onPressed: () {
-                                      Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerEasy();
+                                      Provider.of<VocProv>(context, listen: false).anserEasy(Provider.of<VocProv>(context, listen: false).getFirstToPractise());
                                       refreshVoc();
                                     },
                                     child: const Text("Easy"),

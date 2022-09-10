@@ -57,6 +57,13 @@ class VocProv extends ChangeNotifier {
   }
 
   Vocabulary getFirstToPractise() => getAllToPractise().first;
+
+  void anserEasy(Vocabulary vocabulary) {
+    if (getVocabularyList().firstWhere((voc) => voc == vocabulary).getLevel() < 3) {
+      getVocabularyList().firstWhere((voc) => voc == vocabulary).setLevel(getVocabularyList().firstWhere((voc) => voc == vocabulary).getLevel() + 1);
+    }
+    getVocabularyList().firstWhere((voc) => voc == vocabulary).addToNextDay(const Duration(minutes: 69));
+  }
 }
 
 class Vocabulary {
@@ -105,7 +112,7 @@ class Vocabulary {
       case 3:
         return easyColor;
       default:
-        return hardColor;
+        return newColor;
     }
   }
 
