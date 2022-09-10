@@ -8,9 +8,14 @@ import 'package:vocabualize/utils/teleport.dart';
 import 'package:vocabualize/widgets/status_card.dart';
 import 'package:vocabualize/widgets/voc_list_tile.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
