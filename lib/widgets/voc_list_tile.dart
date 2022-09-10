@@ -56,10 +56,7 @@ class VocListTile extends StatelessWidget {
           trailing: Icon(
             Icons.circle,
             size: 16,
-            color: Provider.of<VocProv>(context)
-                .getVocabularyList()
-                .firstWhere((voc) => voc.getSource() == vocabulary.getSource())
-                .getLevelColor(),
+            color: vocabulary.getLevelColor(),
           ),
         ),
       ),
