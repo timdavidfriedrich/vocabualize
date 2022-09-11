@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/screens/home.dart';
-import 'package:vocabualize/utils/providers/visible_provider.dart';
+import 'package:vocabualize/utils/providers/active_provider.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 import 'package:vocabualize/utils/providers/lang_provider.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => VocProv()),
       ChangeNotifierProvider(create: (context) => LangProv()),
-      ChangeNotifierProvider(create: (context) => VisibleProv()),
+      ChangeNotifierProvider(create: (context) => ActiveProv()),
     ], child: const ThemeHandler(home: Home()));
   }
 }
