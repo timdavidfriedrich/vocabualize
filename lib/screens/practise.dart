@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_colors.dart';
+import 'package:vocabualize/utils/logging.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 
 class Practise extends StatefulWidget {
@@ -19,8 +20,8 @@ class _PractiseState extends State<Practise> {
   void refreshVoc() {
     setState(() {
       isSolutionShown = false;
-      if (Provider.of<VocProv>(context, listen: false).getAllToPractise().isNotEmpty) {
-        currentVoc = Provider.of<VocProv>(context, listen: false).getFirstToPractise();
+      if (Provider.of<VocProv>(context, listen: false).allToPractise.isNotEmpty) {
+        currentVoc = Provider.of<VocProv>(context, listen: false).firstToPractise;
       } else {
         isDone = true;
       }
@@ -30,13 +31,13 @@ class _PractiseState extends State<Practise> {
   @override
   void initState() {
     super.initState();
-    initialVocCount = Provider.of<VocProv>(context, listen: false).getAllToPractise().length;
+    initialVocCount = Provider.of<VocProv>(context, listen: false).allToPractise.length;
     refreshVoc();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Provider.of<VocProv>(context).getAllToPractise().isEmpty
+    return Provider.of<VocProv>(context).allToPractise.isEmpty
         ? const PractiseDone()
         : SafeArea(
             child: ClipRRect(
@@ -48,22 +49,23 @@ class _PractiseState extends State<Practise> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 48),
-                      Text("${Provider.of<VocProv>(context).getAllToPractise().length} left",
-                          textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
+                      Text("${Provider.of<VocProv>(context).allToPractise.length} left",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 12),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: LinearProgressIndicator(
-                          value: Provider.of<VocProv>(context).getAllToPractise().isEmpty
+                          value: Provider.of<VocProv>(context).allToPractise.isEmpty
                               ? 1
-                              : 1 - (Provider.of<VocProv>(context).getAllToPractise().length / initialVocCount),
+                              : 1 - (Provider.of<VocProv>(context).allToPractise.length / initialVocCount),
                           minHeight: 12,
                           color: Theme.of(context).colorScheme.primary,
                           backgroundColor: Theme.of(context).colorScheme.surface,
                         ),
                       ),
                       const Spacer(),
-                      Center(child: Text(currentVoc.getSource())),
+                      Center(child: Text(currentVoc.getSource)),
                       const SizedBox(height: 16),
                       !isSolutionShown
                           ? Container()
@@ -73,7 +75,7 @@ class _PractiseState extends State<Practise> {
                                   color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(24),
                                 ),
-                                child: Center(child: Text(Provider.of<VocProv>(context).getFirstToPractise().getTarget())),
+                                child: Center(child: Text(Provider.of<VocProv>(context).firstToPractise.getTarget)),
                               ),
                             ),
                       const Spacer(),
@@ -86,7 +88,14 @@ class _PractiseState extends State<Practise> {
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: easyColor),
                                     onPressed: () {
-                                      Provider.of<VocProv>(context, listen: false).anserEasy(Provider.of<VocProv>(context, listen: false).getFirstToPractise());
+                                      //Provider.of<VocProv>(context, listen: false).anserEasy(Provider.of<VocProv>(context, listen: false).getFirstToPractise());
+                                      printHint(currentVoc);
+                                      Provider.of<VocProv>(context, listen: false).firstToPractise.answerEasy();
+                                      printWarning(currentVoc);
+                                      printError(Provider.of<VocProv>(context, listen: false)
+                                          .vocabularyList
+                                          .firstWhere((voc) => voc.creationDate == currentVoc.creationDate));
+
                                       refreshVoc();
                                     },
                                     child: const Text("Easy"),
@@ -97,7 +106,7 @@ class _PractiseState extends State<Practise> {
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: okayColor),
                                     onPressed: () {
-                                      Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerMedium();
+                                      Provider.of<VocProv>(context, listen: false).firstToPractise.answerOkay();
                                       refreshVoc();
                                     },
                                     child: const Text("Okay"),
@@ -108,7 +117,7 @@ class _PractiseState extends State<Practise> {
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: hardColor),
                                     onPressed: () {
-                                      Provider.of<VocProv>(context, listen: false).getFirstToPractise().answerHard();
+                                      Provider.of<VocProv>(context, listen: false).firstToPractise.answerHard();
                                       refreshVoc();
                                     },
                                     child: const Text("Hard"),
@@ -167,7 +176,8 @@ class PractiseDone extends StatelessWidget {
                     context,
                     //Teleport(child: const Home(), type: "fade"),
                   ),
-                  style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.surface, onPrimary: Theme.of(context).colorScheme.onSurface),
+                  style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).colorScheme.surface, onPrimary: Theme.of(context).colorScheme.onSurface),
                   child: const Text("Main menu"),
                 ),
                 const SizedBox(height: 64),

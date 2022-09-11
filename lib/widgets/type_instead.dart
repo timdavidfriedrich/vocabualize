@@ -29,7 +29,7 @@ class _TypeInsteadState extends State<TypeInstead> {
             maxLength: 20,
             maxLines: 1,
             decoration: InputDecoration(
-              enabled: !Provider.of<ActiveProv>(context).getMicIsActive(),
+              enabled: !Provider.of<ActiveProv>(context).micIsActive,
               hintText: "Type instead ...",
               counterText: "",
               enabledBorder: OutlineInputBorder(
@@ -42,9 +42,9 @@ class _TypeInsteadState extends State<TypeInstead> {
                   borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4),
                   borderRadius: BorderRadius.circular(16)),
             ),
-            onTap: Provider.of<ActiveProv>(context).getMicIsActive()
+            onTap: Provider.of<ActiveProv>(context).micIsActive
                 ? () {}
-                : () => Provider.of<ActiveProv>(context, listen: false).setTypeIsActive(true),
+                : () => Provider.of<ActiveProv>(context, listen: false).typeIsActive = true,
             onChanged: (text) => setState(() => currentSource = text),
             onFieldSubmitted: (text) async {
               Messenger.loadingAnimation(context);
@@ -55,19 +55,19 @@ class _TypeInsteadState extends State<TypeInstead> {
                 currentSource = "";
                 Navigator.pop(context);
                 Messenger.saveMessage(context, text);
-                Provider.of<ActiveProv>(context, listen: false).setTypeIsActive(false);
+                Provider.of<ActiveProv>(context, listen: false).typeIsActive = false;
               });
             },
           ),
         ),
-        currentSource.isEmpty && !Provider.of<ActiveProv>(context).getTypeIsActive()
+        currentSource.isEmpty && !Provider.of<ActiveProv>(context).typeIsActive
             ? Container()
             : IconButton(
                 onPressed: () {
                   FocusManager.instance.primaryFocus?.unfocus();
                   controller.clear();
                   currentSource = "";
-                  Provider.of<ActiveProv>(context, listen: false).setTypeIsActive(false);
+                  Provider.of<ActiveProv>(context, listen: false).typeIsActive = false;
                 },
                 icon: const Icon(Icons.clear_rounded),
               ),

@@ -11,6 +11,11 @@ class VocProv extends ChangeNotifier {
 
   List<Vocabulary> _vocabularyList = [];
 
+  Future<void> saveVocabularyList() async {
+    _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString("vocabularyList", json.encode(_vocabularyList));
+  }
+
   Future<void> initVocabularyList() async {
     _prefs = await SharedPreferences.getInstance();
     String vocabularyListJSON = _prefs.getString("vocabularyList") ?? "";
@@ -25,45 +30,43 @@ class VocProv extends ChangeNotifier {
   }
 
   Future<void> addToVocabularyList(Vocabulary vocabulary) async {
-    _prefs = await SharedPreferences.getInstance();
     _vocabularyList.add(vocabulary);
-    await _prefs.setString("vocabularyList", json.encode(_vocabularyList));
+    await saveVocabularyList();
     notifyListeners();
   }
 
   Future<void> removeFromVocabularyList(Vocabulary vocabulary) async {
-    _prefs = await SharedPreferences.getInstance();
     _vocabularyList.remove(vocabulary);
-    await _prefs.setString("vocabularyList", json.encode(_vocabularyList));
+    await saveVocabularyList();
     notifyListeners();
   }
 
   Future<void> clearVocabularyList() async {
-    _prefs = await SharedPreferences.getInstance();
     _vocabularyList.clear();
-    await _prefs.setString("vocabularyList", json.encode(_vocabularyList));
+    await saveVocabularyList();
     notifyListeners();
   }
 
-  List<Vocabulary> getVocabularyList() => _vocabularyList;
-  List<Vocabulary> getAllToPractise() {
+  List<Vocabulary> get vocabularyList => _vocabularyList;
+  List<Vocabulary> get allToPractise {
     List<Vocabulary> result = [];
     try {
-      result = _vocabularyList.where((voc) => voc.getNextDate().isBefore(DateTime.now())).toList();
+      result = _vocabularyList.where((voc) => voc.getNextDate.isBefore(DateTime.now())).toList();
     } catch (e) {
       printError(e);
     }
     return result;
   }
 
-  Vocabulary getFirstToPractise() => getAllToPractise().first;
+  Vocabulary get firstToPractise => allToPractise.first;
 
-  void anserEasy(Vocabulary vocabulary) {
-    if (getVocabularyList().firstWhere((voc) => voc == vocabulary).getLevel() < 3) {
-      getVocabularyList().firstWhere((voc) => voc == vocabulary).setLevel(getVocabularyList().firstWhere((voc) => voc == vocabulary).getLevel() + 1);
-    }
-    getVocabularyList().firstWhere((voc) => voc == vocabulary).addToNextDay(const Duration(minutes: 69));
-  }
+  // void anserEasy(Vocabulary vocabulary) {
+  //   if (getVocabularyList().firstWhere((voc) => voc == vocabulary).getLevel < 3) {
+  //     getVocabularyList().firstWhere((voc) => voc == vocabulary).setLevel =
+  //         getVocabularyList().firstWhere((voc) => voc == vocabulary).getLevel + 1;
+  //   }
+  //   getVocabularyList().firstWhere((voc) => voc == vocabulary).addToNextDay(const Duration(minutes: 69));
+  // }
 }
 
 class Vocabulary {
@@ -83,6 +86,7 @@ class Vocabulary {
       tags.add(voc.toString());
     }
     level = json['level'];
+    creationDate = DateTime.fromMillisecondsSinceEpoch(json['creationDate']);
     nextDate = DateTime.fromMillisecondsSinceEpoch(json['nextDate']);
   }
 
@@ -91,17 +95,22 @@ class Vocabulary {
         'target': target,
         'tags': tags,
         'level': level,
+        'creationDate': creationDate.millisecondsSinceEpoch,
         'nextDate': nextDate.millisecondsSinceEpoch,
       };
 
   @override
-  String toString() => "$source: \"$target\" $tags";
+  String toString() {
+    return "$source: \n\t'target': \n\t\t$target, \n\t'tags': \n\t\t$tags, \n\t'level': \n\t\t$level, \n\t'creationDate': \n\t\t$creationDate, \n\t'nextDate': \n\t\t$nextDate";
+  }
 
-  String getSource() => source;
-  String getTarget() => target;
-  List<String> getTags() => tags;
-  int getLevel() => level;
-  Color getLevelColor() {
+  String get getSource => source;
+  String get getTarget => target;
+  List<String> get getTags => tags;
+  int get getLevel => level;
+  DateTime get getCreationDate => nextDate;
+  DateTime get getNextDate => nextDate;
+  Color get getLevelColor {
     switch (level) {
       case 0:
         return newColor;
@@ -116,31 +125,26 @@ class Vocabulary {
     }
   }
 
-  DateTime getNextDate() => nextDate;
-  DateTime getCreationDate() => nextDate;
-
-  void setSource(String source) => this.source = source;
-  void setTarget(String target) => this.target = target;
-  void setTags(List<String> tags) => this.tags = tags;
-  void addToTags(String tag) => tags.add(tag);
-  void removeFromTags(String tag) => tags.remove(tag);
-  void removeIndexFromTags(int index) => tags.removeAt(index);
-  void setLevel(int level) => this.level = level;
-  void setNextDate(DateTime nextDate) => this.nextDate = nextDate;
+  set setSource(String source) => this.source = source;
+  set setTarget(String target) => this.target = target;
+  set setTags(List<String> tags) => this.tags = tags;
+  set addToTags(String tag) => tags.add(tag);
+  set removeFromTags(String tag) => tags.remove(tag);
+  set removeIndexFromTags(int index) => tags.removeAt(index);
+  set setLevel(int level) => this.level = level;
+  set setNextDate(DateTime nextDate) => this.nextDate = nextDate;
 
   // Add algorithm to calculate nextDate
   void addToNextDay(Duration duration) {
-    printWarning(nextDate);
     DateTime newDate = nextDate.add(duration);
     nextDate = newDate;
-    printHint(nextDate);
   }
 
   void answerEasy() {
-    if (level < 3) setLevel(level + 1);
+    if (level < 3) setLevel = level + 1;
     addToNextDay(const Duration(minutes: 69));
   }
 
-  void answerMedium() => addToNextDay(const Duration(days: 2));
+  void answerOkay() => addToNextDay(const Duration(days: 2));
   void answerHard() => addToNextDay(const Duration(days: 1));
 }

@@ -35,6 +35,6 @@ class LangProv extends ChangeNotifier {
     notifyListeners();
   }
 
-  String getSourceLang() => _sourceLang;
-  String getTargetLang() => _targetLang;
+  String get sourceLang => _sourceLang;
+  String get targetLang => _targetLang;
 }

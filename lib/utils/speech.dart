@@ -12,14 +12,14 @@ class Speech {
   static String _text = "";
 
   static void record(BuildContext context) async {
-    if (!Provider.of<ActiveProv>(context, listen: false).getMicIsActive()) {
-      Provider.of<ActiveProv>(context, listen: false).setMicIsActive(true);
+    if (!Provider.of<ActiveProv>(context, listen: false).micIsActive) {
+      Provider.of<ActiveProv>(context, listen: false).micIsActive = true;
 
       bool available = await _stt.initialize(
         options: [],
         onStatus: (status) async {
           if (_stt.isNotListening && status == "done") {
-            Provider.of<ActiveProv>(context, listen: false).setMicIsActive(false);
+            Provider.of<ActiveProv>(context, listen: false).micIsActive = false;
 
             if (_stt.lastRecognizedWords.isNotEmpty) {
               Messenger.loadingAnimation(context);
@@ -37,14 +37,14 @@ class Speech {
         },
         onError: (error) async {
           printError("[STT] ${error.errorMsg}");
-          Provider.of<ActiveProv>(context, listen: false).setMicIsActive(false);
+          Provider.of<ActiveProv>(context, listen: false).micIsActive = false;
 
           _stt.stop;
         },
       );
 
       List<LocaleName> locs = await _stt.locales();
-      for (LocaleName ln in locs) printHint("${ln.localeId} : ${ln.name}");
+      //for (LocaleName ln in locs) printHint("${ln.localeId} : ${ln.name}");
 
       if (available) {
         _stt.listen(

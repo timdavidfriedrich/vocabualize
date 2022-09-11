@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
             grabbing: const RecordGrab(),
             grabbingHeight: 64,
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
-            child: Provider.of<VocProv>(context).getVocabularyList().isEmpty
+            child: Provider.of<VocProv>(context).vocabularyList.isEmpty
                 ? const HomeEmpty()
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(32, 0, 32, 96),
@@ -66,8 +66,8 @@ class _HomeState extends State<Home> {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: List.generate(
-                          Provider.of<VocProv>(context).getVocabularyList().length,
-                          (index) => VocListTile(vocabulary: Provider.of<VocProv>(context).getVocabularyList().elementAt(index)),
+                          Provider.of<VocProv>(context).vocabularyList.length,
+                          (index) => VocListTile(vocabulary: Provider.of<VocProv>(context).vocabularyList.elementAt(index)),
                         ),
                       ),
                     ],

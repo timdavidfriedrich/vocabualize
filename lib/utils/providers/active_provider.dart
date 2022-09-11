@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 class ActiveProv extends ChangeNotifier {
   bool _micIsActive = false;
-  bool typeIsActive = false;
+  bool _typeIsActive = false;
 
-  void setMicIsActive(bool status) {
+  set micIsActive(bool status) {
     _micIsActive = status;
     notifyListeners();
   }
 
-  void setTypeIsActive(bool status) {
-    typeIsActive = status;
+  set typeIsActive(bool status) {
+    _typeIsActive = status;
     notifyListeners();
   }
 
-  bool getMicIsActive() => _micIsActive;
-  bool getTypeIsActive() => typeIsActive;
+  bool get micIsActive => _micIsActive;
+  bool get typeIsActive => _typeIsActive;
 }

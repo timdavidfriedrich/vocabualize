@@ -46,9 +46,9 @@ class VocListTile extends StatelessWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(vocabulary.getTarget()),
+              Text(vocabulary.getTarget),
               Text(
-                vocabulary.getSource(),
+                vocabulary.getSource,
                 style: TextStyle(color: Theme.of(context).hintColor),
               )
             ],
@@ -56,7 +56,7 @@ class VocListTile extends StatelessWidget {
           trailing: Icon(
             Icons.circle,
             size: 16,
-            color: vocabulary.getLevelColor(),
+            color: vocabulary.getLevelColor,
           ),
         ),
       ),
