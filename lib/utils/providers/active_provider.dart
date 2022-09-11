@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class VisibleProv extends ChangeNotifier {
+class ActiveProv extends ChangeNotifier {
   bool _micIsActive = false;
   bool typeIsActive = false;
 
