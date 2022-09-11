@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/utils/messenger.dart';
-import 'package:vocabualize/utils/providers/visible_provider.dart';
+import 'package:vocabualize/utils/providers/active_provider.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 import 'package:vocabualize/utils/translator.dart';
 
@@ -29,7 +29,7 @@ class _TypeInsteadState extends State<TypeInstead> {
             maxLength: 20,
             maxLines: 1,
             decoration: InputDecoration(
-              enabled: !Provider.of<VisibleProv>(context).getMicIsActive(),
+              enabled: !Provider.of<ActiveProv>(context).getMicIsActive(),
               hintText: "Type instead ...",
               counterText: "",
               enabledBorder: OutlineInputBorder(
@@ -42,9 +42,9 @@ class _TypeInsteadState extends State<TypeInstead> {
                   borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4),
                   borderRadius: BorderRadius.circular(16)),
             ),
-            onTap: Provider.of<VisibleProv>(context).getMicIsActive()
+            onTap: Provider.of<ActiveProv>(context).getMicIsActive()
                 ? () {}
-                : () => Provider.of<VisibleProv>(context, listen: false).setTypeIsActive(true),
+                : () => Provider.of<ActiveProv>(context, listen: false).setTypeIsActive(true),
             onChanged: (text) => setState(() => currentSource = text),
             onFieldSubmitted: (text) async {
               Messenger.loadingAnimation(context);
@@ -55,19 +55,19 @@ class _TypeInsteadState extends State<TypeInstead> {
                 currentSource = "";
                 Navigator.pop(context);
                 Messenger.saveMessage(context, text);
-                Provider.of<VisibleProv>(context, listen: false).setTypeIsActive(false);
+                Provider.of<ActiveProv>(context, listen: false).setTypeIsActive(false);
               });
             },
           ),
         ),
-        currentSource.isEmpty && !Provider.of<VisibleProv>(context).getTypeIsActive()
+        currentSource.isEmpty && !Provider.of<ActiveProv>(context).getTypeIsActive()
             ? Container()
             : IconButton(
                 onPressed: () {
                   FocusManager.instance.primaryFocus?.unfocus();
                   controller.clear();
                   currentSource = "";
-                  Provider.of<VisibleProv>(context, listen: false).setTypeIsActive(false);
+                  Provider.of<ActiveProv>(context, listen: false).setTypeIsActive(false);
                 },
                 icon: const Icon(Icons.clear_rounded),
               ),
