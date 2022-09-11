@@ -13,7 +13,7 @@ class VocListTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Dismissible(
         key: Key(vocabulary.toString()),
-        onDismissed: (direction) => Provider.of<VocProv>(context, listen: false).removeFromVocabularyList(vocabulary),
+        onDismissed: (direction) async => await Provider.of<VocProv>(context, listen: false).removeFromVocabularyList(vocabulary),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
             Messenger.editDialog(context, vocabulary);
