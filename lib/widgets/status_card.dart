@@ -40,21 +40,21 @@ class StatusCard extends StatelessWidget {
                   Column(
                     children: [
                       Icon(Icons.circle, color: hardColor),
-                      Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.getLevel == 1).length}"),
+                      Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level == 1).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
                       Icon(Icons.circle, color: okayColor),
-                      Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.getLevel == 2).length}"),
+                      Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level == 2).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
                       Icon(Icons.circle, color: easyColor),
-                      Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.getLevel == 3).length}"),
+                      Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level == 3).length}"),
                     ],
                   ),
                 ],

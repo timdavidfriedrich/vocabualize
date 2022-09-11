@@ -10,6 +10,13 @@ class LangProv extends ChangeNotifier {
   String _sourceLang = "de";
   String _targetLang = "es";
 
+  /// ! Maybe this is not working (async methods in setters)
+  set sourceLang(String sourceLang) => updateSourceLang(sourceLang);
+  set targetLang(String targetLang) => updateTargetLang(targetLang);
+
+  String get sourceLang => _sourceLang;
+  String get targetLang => _targetLang;
+
   Future<void> initLang() async {
     prefs = await SharedPreferences.getInstance();
     _sourceLang = prefs.getString("sourceLang")!;
@@ -17,7 +24,7 @@ class LangProv extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setSourceLang(String sourceLang) async {
+  Future<void> updateSourceLang(String sourceLang) async {
     prefs = await SharedPreferences.getInstance();
     _sourceLang = sourceLang;
     if (!await prefs.setString("sourceLang", sourceLang)) {
@@ -26,7 +33,7 @@ class LangProv extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setTargetLang(String targetLang) async {
+  Future<void> updateTargetLang(String targetLang) async {
     prefs = await SharedPreferences.getInstance();
     _targetLang = targetLang;
     if (!await prefs.setString("targetLang", targetLang)) {
@@ -34,7 +41,4 @@ class LangProv extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-  String get sourceLang => _sourceLang;
-  String get targetLang => _targetLang;
 }

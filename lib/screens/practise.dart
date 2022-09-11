@@ -65,7 +65,7 @@ class _PractiseState extends State<Practise> {
                         ),
                       ),
                       const Spacer(),
-                      Center(child: Text(currentVoc.getSource)),
+                      Center(child: Text(currentVoc.source)),
                       const SizedBox(height: 16),
                       !isSolutionShown
                           ? Container()
@@ -75,7 +75,7 @@ class _PractiseState extends State<Practise> {
                                   color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(24),
                                 ),
-                                child: Center(child: Text(Provider.of<VocProv>(context).firstToPractise.getTarget)),
+                                child: Center(child: Text(Provider.of<VocProv>(context).firstToPractise.target)),
                               ),
                             ),
                       const Spacer(),

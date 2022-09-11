@@ -29,7 +29,7 @@ class Messenger {
           child: AlertDialog(
             title: const Text("Edit"),
             // TODO: add TextFields (source, target) and the tags as Chips
-            content: Text(vocabulary.getTarget),
+            content: Text(vocabulary.target),
             actions: [
               ElevatedButton(
                 onPressed: () {
@@ -64,7 +64,7 @@ class Messenger {
 
   static void saveMessage(BuildContext context, String text) {
     Vocabulary vocabulary =
-        Provider.of<VocProv>(context, listen: false).vocabularyList.where((vocabulary) => vocabulary.getSource == text).last;
+        Provider.of<VocProv>(context, listen: false).vocabularyList.where((vocabulary) => vocabulary.source == text).last;
     Flushbar(
       margin: const EdgeInsets.all(32),
       borderRadius: BorderRadius.circular(16),
@@ -79,7 +79,7 @@ class Messenger {
             TextSpan(text: text.substring(0, 1).toUpperCase() + text.substring(1, text.length)),
             const TextSpan(text: " has been saved as "),
             TextSpan(
-                text: vocabulary.getTarget, style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimary)),
+                text: vocabulary.target, style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimary)),
             const TextSpan(text: "!"),
           ],
         ),
