@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/utils/messenger.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 
@@ -16,7 +17,7 @@ class VocListTile extends StatelessWidget {
         onDismissed: (direction) async => await Provider.of<VocProv>(context, listen: false).removeFromVocabularyList(vocabulary),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
-            Messenger.editDialog(context, vocabulary);
+            Messenger.editDialog(vocabulary);
             return false;
           } else {
             return true;
@@ -37,7 +38,7 @@ class VocListTile extends StatelessWidget {
         child: ListTile(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           // ?: onTap oder longPress?
-          onTap: () => Messenger.editDialog(context, vocabulary),
+          onTap: () => Messenger.editDialog(vocabulary),
           // leading: Icon(
           //   Icons.crop_square_rounded,
           //   size: 48,

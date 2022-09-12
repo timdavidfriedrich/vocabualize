@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/screens/record_sheet.dart';
 import 'package:vocabualize/screens/settings.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
@@ -16,6 +17,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    Provider.of<VocProv>(context, listen: false).initVocabularyList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

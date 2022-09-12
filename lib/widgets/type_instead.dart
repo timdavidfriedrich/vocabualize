@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/utils/messenger.dart';
 import 'package:vocabualize/utils/providers/active_provider.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
@@ -47,14 +48,14 @@ class _TypeInsteadState extends State<TypeInstead> {
                 : () => Provider.of<ActiveProv>(context, listen: false).typeIsActive = true,
             onChanged: (text) => setState(() => currentSource = text),
             onFieldSubmitted: (text) async {
-              Messenger.loadingAnimation(context);
+              Messenger.loadingAnimation();
               Provider.of<VocProv>(context, listen: false)
-                  .addToVocabularyList(Vocabulary(source: currentSource, target: await Translator.translate(context, currentSource)))
+                  .addToVocabularyList(Vocabulary(source: currentSource, target: await Translator.translate(currentSource)))
                   .whenComplete(() {
                 controller.clear();
                 currentSource = "";
                 Navigator.pop(context);
-                Messenger.saveMessage(context, text);
+                Messenger.saveMessage(text);
                 Provider.of<ActiveProv>(context, listen: false).typeIsActive = false;
               });
             },

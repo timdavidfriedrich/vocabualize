@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/keys.dart';
 
 class Settings extends StatelessWidget {
   const Settings({Key? key}) : super(key: key);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vocabualize/config/themes/light_theme.dart';
 import 'package:vocabualize/config/themes/dark_theme.dart';
+import 'package:vocabualize/constants/keys.dart';
 //import 'package:vocabualize/utils/providers/color_provider.dart';
 
 class ThemeHandler extends StatelessWidget {
@@ -13,11 +14,12 @@ class ThemeHandler extends StatelessWidget {
     return MaterialApp(
       //showPerformanceOverlay: true,
       debugShowCheckedModeBanner: false,
+      navigatorKey: Keys.navigatorState,
       theme: theme(
         context,
         lightPrimary,
         lightOnPrimary,
-        lightSecondary, //Provider.of<ColorProvider>(context).secondaryColor,
+        lightSecondary,
         lightOnSecondary,
         lightBackground,
         lightOnBackground,
@@ -31,7 +33,7 @@ class ThemeHandler extends StatelessWidget {
         context,
         darkPrimary,
         darkOnPrimary,
-        darkSecondary, //Provider.of<ColorProvider>(context).secondaryColor,
+        darkSecondary,
         darkOnSecondary,
         darkBackground,
         darkOnBackground,

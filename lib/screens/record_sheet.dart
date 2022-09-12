@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 import 'package:vocabualize/widgets/mic_button.dart';
 import 'package:vocabualize/widgets/type_instead.dart';
@@ -12,12 +13,6 @@ class RecordSheet extends StatefulWidget {
 }
 
 class _RecordSheetState extends State<RecordSheet> {
-  @override
-  void initState() {
-    Provider.of<VocProv>(context, listen: false).initVocabularyList();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
