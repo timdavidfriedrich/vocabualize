@@ -21,12 +21,10 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return Container(
-      child: MultiProvider(providers: [
-        ChangeNotifierProvider(create: (context) => VocProv()),
-        ChangeNotifierProvider(create: (context) => LangProv()),
-        ChangeNotifierProvider(create: (context) => ActiveProv()),
-      ], child: const ThemeHandler(home: Home())),
-    );
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => VocProv()),
+      ChangeNotifierProvider(create: (context) => LangProv()),
+      ChangeNotifierProvider(create: (context) => ActiveProv()),
+    ], child: const ThemeHandler(home: Home()));
   }
 }
