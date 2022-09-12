@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vocabualize/config/themes/light_theme.dart';
 import 'package:vocabualize/config/themes/dark_theme.dart';
 import 'package:vocabualize/constants/keys.dart';
-//import 'package:vocabualize/utils/providers/color_provider.dart';
 
 class ThemeHandler extends StatelessWidget {
   final Widget home;

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:translator/translator.dart';
 import 'package:vocabualize/constants/keys.dart';

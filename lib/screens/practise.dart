@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_colors.dart';
-import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/utils/logging.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 
