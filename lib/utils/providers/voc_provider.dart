@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/config/themes/level_colors.dart';
+import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/utils/logging.dart';
+import 'package:vocabualize/utils/providers/settings_provider.dart';
 
 class VocProv extends ChangeNotifier {
   late SharedPreferences _prefs;
@@ -35,8 +38,6 @@ class VocProv extends ChangeNotifier {
       for (dynamic voc in json.decode(vocabularyListJSON)) {
         vocabularyList.add(Vocabulary.fromJson(voc));
       }
-    } else {
-      vocabularyList = [Vocabulary(source: "source", target: "target")];
     }
     notifyListeners();
   }
@@ -58,21 +59,13 @@ class VocProv extends ChangeNotifier {
     await saveVocabularyList();
     notifyListeners();
   }
-
-  // void anserEasy(Vocabulary vocabulary) {
-  //   if (getVocabularyList().firstWhere((voc) => voc == vocabulary).getLevel < 3) {
-  //     getVocabularyList().firstWhere((voc) => voc == vocabulary).setLevel =
-  //         getVocabularyList().firstWhere((voc) => voc == vocabulary).getLevel + 1;
-  //   }
-  //   getVocabularyList().firstWhere((voc) => voc == vocabulary).addToNextDay(const Duration(minutes: 69));
-  // }
 }
 
 class Vocabulary {
   String source = "";
   String target = "";
   List<String> tags = [];
-  int level = 0;
+  double level = 0;
   DateTime creationDate = DateTime.now();
   DateTime nextDate = DateTime.now();
 
@@ -99,39 +92,50 @@ class Vocabulary {
       };
 
   Color get levelColor {
-    switch (level) {
-      case 0:
-        return newColor;
-      case 1:
-        return hardColor;
-      case 2:
-        return okayColor;
-      case 3:
-        return easyColor;
-      default:
-        return newColor;
+    if (level >= 2) {
+      return easyColor;
+    } else if (level >= 1) {
+      return okayColor;
+    } else if (level > 0) {
+      return hardColor;
+    } else {
+      return newColor;
     }
   }
 
   void addTag(String tag) => tags.add(tag);
   void removeTag(String tag) => tags.remove(tag);
 
-  // Add algorithm to calculate nextDate
   void addToNextDay(Duration duration) {
-    DateTime newDate = nextDate.add(duration);
+    DateTime newDate = DateTime.now().add(duration);
     nextDate = newDate;
   }
 
-  void answerEasy() {
-    if (level < 3) level++;
-    addToNextDay(const Duration(minutes: 69));
+  /// TODO: Add algorithm to calculate nextDate
+  Future<void> answer(Difficulty difficulty) async {
+    switch (difficulty) {
+      case Difficulty.easy:
+        if (level < 3) level += Provider.of<SettingsProv>(Keys.context).easyFactor;
+        addToNextDay(const Duration(minutes: 15));
+        break;
+      case Difficulty.okay:
+        if (level < 3) level += Provider.of<SettingsProv>(Keys.context).okayFactor;
+        addToNextDay(const Duration(minutes: 10));
+        break;
+      case Difficulty.hard:
+        if (level < 3) level += Provider.of<SettingsProv>(Keys.context).hardFactor;
+        addToNextDay(const Duration(minutes: 5));
+        break;
+      default:
+        printError("answer(...) switch default.");
+    }
+    await Provider.of<VocProv>(Keys.context, listen: false).saveVocabularyList();
   }
-
-  void answerOkay() => addToNextDay(const Duration(days: 2));
-  void answerHard() => addToNextDay(const Duration(days: 1));
 
   @override
   String toString() {
     return "$source: \n\t'target': \n\t\t$target, \n\t'tags': \n\t\t$tags, \n\t'level': \n\t\t$level, \n\t'creationDate': \n\t\t$creationDate, \n\t'nextDate': \n\t\t$nextDate";
   }
 }
+
+enum Difficulty { easy, okay, hard }

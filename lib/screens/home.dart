@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
                         children: List.generate(
                           Provider.of<VocProv>(context).vocabularyList.length,
                           (index) => VocListTile(vocabulary: Provider.of<VocProv>(context).vocabularyList.elementAt(index)),
-                        ),
+                        ).reversed.toList(),
                       ),
                     ],
                   ),

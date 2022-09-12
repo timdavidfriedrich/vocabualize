@@ -63,9 +63,7 @@ class Messenger {
     );
   }
 
-  static void saveMessage(String text) {
-    Vocabulary vocabulary =
-        Provider.of<VocProv>(Keys.context, listen: false).vocabularyList.where((vocabulary) => vocabulary.source == text).last;
+  static void saveMessage(Vocabulary vocabulary) {
     Flushbar(
       margin: const EdgeInsets.all(32),
       borderRadius: BorderRadius.circular(16),
@@ -77,7 +75,7 @@ class Messenger {
         text: TextSpan(
           style: TextStyle(color: Theme.of(Keys.context).colorScheme.onPrimary.withOpacity(0.6)),
           children: [
-            TextSpan(text: text.substring(0, 1).toUpperCase() + text.substring(1, text.length)),
+            TextSpan(text: vocabulary.source.substring(0, 1).toUpperCase() + vocabulary.source.substring(1, vocabulary.source.length)),
             const TextSpan(text: " has been saved as "),
             TextSpan(
               text: vocabulary.target,

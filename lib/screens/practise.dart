@@ -18,14 +18,12 @@ class _PractiseState extends State<Practise> {
   late Vocabulary currentVoc;
 
   void refreshVoc() {
-    setState(() {
-      isSolutionShown = false;
-      if (Provider.of<VocProv>(context, listen: false).allToPractise.isNotEmpty) {
-        currentVoc = Provider.of<VocProv>(context, listen: false).firstToPractise;
-      } else {
-        isDone = true;
-      }
-    });
+    setState(() => isSolutionShown = false);
+    if (Provider.of<VocProv>(context, listen: false).allToPractise.isNotEmpty) {
+      setState(() => currentVoc = Provider.of<VocProv>(context, listen: false).firstToPractise);
+    } else {
+      setState(() => isDone = true);
+    }
   }
 
   @override
@@ -87,15 +85,10 @@ class _PractiseState extends State<Practise> {
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: easyColor),
-                                    onPressed: () {
-                                      //Provider.of<VocProv>(context, listen: false).anserEasy(Provider.of<VocProv>(context, listen: false).getFirstToPractise());
-                                      printHint(currentVoc);
-                                      Provider.of<VocProv>(context, listen: false).firstToPractise.answerEasy();
-                                      printWarning(currentVoc);
-                                      printError(Provider.of<VocProv>(context, listen: false)
-                                          .vocabularyList
-                                          .firstWhere((voc) => voc.creationDate == currentVoc.creationDate));
-
+                                    onPressed: () async {
+                                      printHint("BEFORE: $currentVoc");
+                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Difficulty.easy);
+                                      printHint("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Easy"),
@@ -105,8 +98,10 @@ class _PractiseState extends State<Practise> {
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: okayColor),
-                                    onPressed: () {
-                                      Provider.of<VocProv>(context, listen: false).firstToPractise.answerOkay();
+                                    onPressed: () async {
+                                      printWarning("BEFORE: $currentVoc");
+                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Difficulty.okay);
+                                      printWarning("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Okay"),
@@ -116,8 +111,10 @@ class _PractiseState extends State<Practise> {
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: hardColor),
-                                    onPressed: () {
-                                      Provider.of<VocProv>(context, listen: false).firstToPractise.answerHard();
+                                    onPressed: () async {
+                                      printError("BEFORE: $currentVoc");
+                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Difficulty.hard);
+                                      printError("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Hard"),

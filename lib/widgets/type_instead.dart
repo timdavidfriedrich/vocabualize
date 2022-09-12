@@ -47,16 +47,16 @@ class _TypeInsteadState extends State<TypeInstead> {
                 : () => Provider.of<ActiveProv>(context, listen: false).typeIsActive = true,
             onChanged: (text) => setState(() => currentSource = text),
             onFieldSubmitted: (text) async {
-              Messenger.loadingAnimation();
-              Provider.of<VocProv>(context, listen: false)
-                  .addToVocabularyList(Vocabulary(source: currentSource, target: await Translator.translate(currentSource)))
-                  .whenComplete(() {
-                controller.clear();
-                currentSource = "";
-                Navigator.pop(context);
-                Messenger.saveMessage(text);
-                Provider.of<ActiveProv>(context, listen: false).typeIsActive = false;
+              //Messenger.loadingAnimation();
+              Vocabulary newVocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
+              if (!mounted) return;
+              Provider.of<VocProv>(context, listen: false).addToVocabularyList(newVocabulary).whenComplete(() {
+                //Navigator.pop(context);
+                Messenger.saveMessage(newVocabulary);
               });
+              currentSource = "";
+              controller.clear();
+              Provider.of<ActiveProv>(context, listen: false).typeIsActive = false;
             },
           ),
         ),

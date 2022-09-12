@@ -12,7 +12,7 @@ class MicButton extends StatelessWidget {
     return GestureDetector(
       onTap: () => Speech.record(),
       child: Container(
-        height: Provider.of<ActiveProv>(context).typeIsActive ? 0 : MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             color: Provider.of<ActiveProv>(context).micIsActive ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
             shape: BoxShape.circle,
@@ -29,11 +29,9 @@ class MicButton extends StatelessWidget {
           glowColor: Theme.of(context).colorScheme.primary,
           child: Icon(
             Provider.of<ActiveProv>(context).micIsActive ? Icons.mic_rounded : Icons.mic_none_rounded,
-            color: Provider.of<ActiveProv>(context).typeIsActive
-                ? Colors.transparent
-                : Provider.of<ActiveProv>(context).micIsActive
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.onPrimary,
+            color: Provider.of<ActiveProv>(context).micIsActive
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onPrimary,
             size: 128,
           ),
         ),

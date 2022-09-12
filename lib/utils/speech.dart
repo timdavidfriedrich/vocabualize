@@ -23,15 +23,12 @@ class Speech {
             Provider.of<ActiveProv>(Keys.context, listen: false).micIsActive = false;
 
             if (_stt.lastRecognizedWords.isNotEmpty) {
-              Messenger.loadingAnimation();
-              Provider.of<VocProv>(Keys.context, listen: false)
-                  .addToVocabularyList(Vocabulary(source: _text, target: await Translator.translate(_text)))
-                  .whenComplete(
-                () {
-                  Navigator.pop(Keys.context);
-                  Messenger.saveMessage(_text);
-                },
-              );
+              //Messenger.loadingAnimation();
+              Vocabulary newVocabulary = Vocabulary(source: _text, target: await Translator.translate(_text));
+              await Provider.of<VocProv>(Keys.context, listen: false).addToVocabularyList(newVocabulary).whenComplete(() {
+                //Navigator.pop(Keys.context);
+                Messenger.saveMessage(newVocabulary);
+              });
             }
             _stt.stop;
           }
