@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/config/themes/level_colors.dart';
+import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/utils/logging.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 
@@ -84,8 +84,10 @@ class _PractiseState extends State<Practise> {
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
-                                    style:
-                                        ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: beginnerColor),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                                      primary: LevelPalette.beginner,
+                                    ),
                                     onPressed: () async {
                                       printError("BEFORE: $currentVoc");
                                       await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.hard);
@@ -98,8 +100,10 @@ class _PractiseState extends State<Practise> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: ElevatedButton(
-                                    style:
-                                        ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: advancedColor),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                                      primary: LevelPalette.advanced,
+                                    ),
                                     onPressed: () async {
                                       printWarning("BEFORE: $currentVoc");
                                       await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.good);
@@ -112,7 +116,10 @@ class _PractiseState extends State<Practise> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: expertColor),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                                      primary: LevelPalette.expert,
+                                    ),
                                     onPressed: () async {
                                       printHint("BEFORE: $currentVoc");
                                       await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.easy);

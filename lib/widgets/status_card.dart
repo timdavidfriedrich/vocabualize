@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/config/themes/level_colors.dart';
+import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/screens/practise.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 import 'package:vocabualize/utils/teleport.dart';
@@ -44,21 +44,21 @@ class _StatusCardState extends State<StatusCard> {
                 children: [
                   Column(
                     children: [
-                      Icon(Icons.circle, color: beginnerColor),
+                      const Icon(Icons.circle, color: LevelPalette.beginner),
                       Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level > 0 && voc.level < 1).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
-                      Icon(Icons.circle, color: advancedColor),
+                      const Icon(Icons.circle, color: LevelPalette.advanced),
                       Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level >= 1 && voc.level < 2).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
-                      Icon(Icons.circle, color: expertColor),
+                      const Icon(Icons.circle, color: LevelPalette.expert),
                       Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level >= 2).length}"),
                     ],
                   ),

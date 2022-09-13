@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocabualize/config/themes/level_colors.dart';
+import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/utils/logging.dart';
 import 'package:vocabualize/utils/providers/settings_provider.dart';
@@ -106,13 +106,13 @@ class Vocabulary {
 
   Color get levelColor {
     if (level >= 2) {
-      return expertColor;
+      return LevelPalette.expert;
     } else if (level >= 1) {
-      return advancedColor;
+      return LevelPalette.advanced;
     } else if (level > 0) {
-      return beginnerColor;
+      return LevelPalette.beginner;
     } else {
-      return noviceColor;
+      return LevelPalette.novice;
     }
   }
 

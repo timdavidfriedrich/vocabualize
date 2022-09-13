@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vocabualize/config/themes/light_theme.dart';
-import 'package:vocabualize/config/themes/dark_theme.dart';
+import 'package:vocabualize/config/themes/dark_palette.dart';
+import 'package:vocabualize/config/themes/light_palette.dart';
 import 'package:vocabualize/constants/keys.dart';
 
 class ThemeHandler extends StatelessWidget {
@@ -16,31 +16,31 @@ class ThemeHandler extends StatelessWidget {
       navigatorKey: Keys.navigatorState,
       theme: theme(
         context,
-        lightPrimary,
-        lightOnPrimary,
-        lightSecondary,
-        lightOnSecondary,
-        lightBackground,
-        lightOnBackground,
-        lightSurface,
-        lightOnSurface,
-        lightHint,
-        lightBorder,
-        lightError,
+        LightPalette.primary,
+        LightPalette.onPrimay,
+        LightPalette.secondary,
+        LightPalette.onSecondary,
+        LightPalette.background,
+        LightPalette.onBackground,
+        LightPalette.surface,
+        LightPalette.onSurface,
+        LightPalette.hint,
+        LightPalette.border,
+        LightPalette.error,
       ),
       darkTheme: theme(
         context,
-        darkPrimary,
-        darkOnPrimary,
-        darkSecondary,
-        darkOnSecondary,
-        darkBackground,
-        darkOnBackground,
-        darkSurface,
-        darkOnSurface,
-        darkHint,
-        darkBorder,
-        darkError,
+        DarkPalette.primary,
+        DarkPalette.onPrimary,
+        DarkPalette.secondary,
+        DarkPalette.onSecondary,
+        DarkPalette.background,
+        DarkPalette.onBackground,
+        DarkPalette.surface,
+        DarkPalette.onSurface,
+        DarkPalette.hint,
+        DarkPalette.border,
+        DarkPalette.error,
       ),
       home: home,
     );
