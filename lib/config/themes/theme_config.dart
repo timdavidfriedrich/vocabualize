@@ -130,6 +130,22 @@ class ThemeHandler extends StatelessWidget {
         ),
       ),
 
+      ///* OutlinedButton
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(onPrimary),
+          padding: MaterialStateProperty.all<EdgeInsets>(
+            const EdgeInsets.fromLTRB(32, 12, 32, 12),
+          ),
+          elevation: MaterialStateProperty.all<double>(0),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+        ).copyWith(side: MaterialStateProperty.all<BorderSide>(BorderSide(width: 2, color: primary))),
+      ),
+
       // ///* Dialog
       // dialogTheme: DialogTheme(
       //   elevation: 8,

@@ -84,49 +84,59 @@ class _PractiseState extends State<Practise> {
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: easyColor),
-                                    onPressed: () async {
-                                      printHint("BEFORE: $currentVoc");
-                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Difficulty.easy);
-                                      printHint("AFTER: $currentVoc");
-                                      refreshVoc();
-                                    },
-                                    child: const Text("Easy"),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: okayColor),
-                                    onPressed: () async {
-                                      printWarning("BEFORE: $currentVoc");
-                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Difficulty.okay);
-                                      printWarning("AFTER: $currentVoc");
-                                      refreshVoc();
-                                    },
-                                    child: const Text("Okay"),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: hardColor),
+                                    style:
+                                        ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: beginnerColor),
                                     onPressed: () async {
                                       printError("BEFORE: $currentVoc");
-                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Difficulty.hard);
+                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.hard);
                                       printError("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Hard"),
                                   ),
                                 ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style:
+                                        ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: advancedColor),
+                                    onPressed: () async {
+                                      printWarning("BEFORE: $currentVoc");
+                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.good);
+                                      printWarning("AFTER: $currentVoc");
+                                      refreshVoc();
+                                    },
+                                    child: const Text("Good"),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.fromLTRB(0, 12, 0, 12), primary: expertColor),
+                                    onPressed: () async {
+                                      printHint("BEFORE: $currentVoc");
+                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.easy);
+                                      printHint("AFTER: $currentVoc");
+                                      refreshVoc();
+                                    },
+                                    child: const Text("Easy"),
+                                  ),
+                                ),
                               ],
                             ),
-                      const SizedBox(height: 24),
-                      ElevatedButton(
-                        onPressed: () => setState(() => isSolutionShown = !isSolutionShown),
-                        child: !isSolutionShown ? const Text("Solution") : const Text("Back to question"),
-                      ),
+                      const SizedBox(height: 16),
+                      !isSolutionShown
+                          ? ElevatedButton(
+                              onPressed: () => setState(() => isSolutionShown = true),
+                              child: const Text("Solution"),
+                            )
+                          : OutlinedButton(
+                              onPressed: () async {
+                                await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.forgot);
+                                refreshVoc();
+                              },
+                              child: const Text("I forgot the word"),
+                            ),
                       const SizedBox(height: 64),
                     ],
                   ),

@@ -5,9 +5,14 @@ import 'package:vocabualize/screens/practise.dart';
 import 'package:vocabualize/utils/providers/voc_provider.dart';
 import 'package:vocabualize/utils/teleport.dart';
 
-class StatusCard extends StatelessWidget {
+class StatusCard extends StatefulWidget {
   const StatusCard({Key? key}) : super(key: key);
 
+  @override
+  State<StatusCard> createState() => _StatusCardState();
+}
+
+class _StatusCardState extends State<StatusCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,10 +28,10 @@ class StatusCard extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 style: Theme.of(context).textTheme.displayMedium,
-                children: const [
-                  TextSpan(text: "Wow, you already added 16 words today."),
-                  TextSpan(text: "\n\n"),
-                  TextSpan(text: "Let's practise!", style: TextStyle(fontWeight: FontWeight.w800)),
+                children: [
+                  TextSpan(text: "Wow, you already added ${Provider.of<VocProv>(context).createdToday.length} words today."),
+                  const TextSpan(text: "\n\n"),
+                  const TextSpan(text: "Let's practise!", style: TextStyle(fontWeight: FontWeight.w800)),
                 ],
               ),
             ),
@@ -39,28 +44,30 @@ class StatusCard extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Icon(Icons.circle, color: hardColor),
+                      Icon(Icons.circle, color: beginnerColor),
                       Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level > 0 && voc.level < 1).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
-                      Icon(Icons.circle, color: okayColor),
+                      Icon(Icons.circle, color: advancedColor),
                       Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level >= 1 && voc.level < 2).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
-                      Icon(Icons.circle, color: easyColor),
+                      Icon(Icons.circle, color: expertColor),
                       Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level >= 2).length}"),
                     ],
                   ),
                 ],
               ),
               const SizedBox(height: 24),
-              ElevatedButton(onPressed: () => Navigator.push(context, Teleport(child: const Practise())), child: const Text("Practise")),
+              ElevatedButton(
+                  onPressed: () => Navigator.push(context, Teleport(child: const Practise())).then((value) => setState(() => {})),
+                  child: const Text("Practise")),
             ],
           )
         ],

@@ -8,9 +8,11 @@ class SettingsProv extends ChangeNotifier {
 
   String _sourceLang = "de";
   String _targetLang = "es";
-  double _easyFactor = 0.75;
-  double _okayFactor = 0.50;
-  double _hardFactor = 0.25;
+  int _initialInterval = 1440 * 1;
+  int _initialNoviceInterval = 1;
+  double _easyLevelFactor = 0.6;
+  double _goodLevelFactor = 0.3;
+  double _hardLevelFactor = -0.3;
 
   set sourceLang(String sourceLang) {
     this.sourceLang = sourceLang;
@@ -22,26 +24,38 @@ class SettingsProv extends ChangeNotifier {
     save();
   }
 
-  set easyFactor(double easyFactor) {
-    this.easyFactor = easyFactor;
+  set initialInterval(int initialInterval) {
+    this.initialInterval = initialInterval;
     save();
   }
 
-  set okayFactor(double okayFactor) {
-    this.okayFactor = okayFactor;
+  set initialNoviceInterval(int initialNoviceInterval) {
+    this.initialNoviceInterval = initialNoviceInterval;
     save();
   }
 
-  set hardFactor(double hardFactor) {
-    this.hardFactor = hardFactor;
+  set easyLevelFactor(double easyLevelFactor) {
+    this.easyLevelFactor = easyLevelFactor;
+    save();
+  }
+
+  set goodLevelFactor(double goodLevelFactor) {
+    this.goodLevelFactor = goodLevelFactor;
+    save();
+  }
+
+  set hardLevelFactor(double hardLevelFactor) {
+    this.hardLevelFactor = hardLevelFactor;
     save();
   }
 
   String get sourceLang => _sourceLang;
   String get targetLang => _targetLang;
-  double get easyFactor => _easyFactor;
-  double get okayFactor => _okayFactor;
-  double get hardFactor => _hardFactor;
+  int get initialInterval => _initialInterval;
+  int get initialNoviceInterval => _initialNoviceInterval;
+  double get easyLevelFactor => _easyLevelFactor;
+  double get goodLevelFactor => _goodLevelFactor;
+  double get hardLevelFactor => _hardLevelFactor;
 
   Future<void> save() async {
     prefs = await SharedPreferences.getInstance();
@@ -49,9 +63,11 @@ class SettingsProv extends ChangeNotifier {
     /// TODO: Save as JSON
     await prefs.setString("sourceLang", _sourceLang);
     await prefs.setString("targetLang", _targetLang);
-    await prefs.setDouble("easyFactor", _easyFactor);
-    await prefs.setDouble("okayFactor", _okayFactor);
-    await prefs.setDouble("hardFactor", _hardFactor);
+    await prefs.setInt("initialInterval", _initialInterval);
+    await prefs.setInt("initialNoviceInterval", _initialNoviceInterval);
+    await prefs.setDouble("easyLevelFactor", _easyLevelFactor);
+    await prefs.setDouble("goodLevelFactor", _goodLevelFactor);
+    await prefs.setDouble("hardLevelFactor", _hardLevelFactor);
   }
 
   Future<void> initSettings() async {
@@ -60,9 +76,11 @@ class SettingsProv extends ChangeNotifier {
     /// TODO: Get from JSON
     _sourceLang = prefs.getString("sourceLang")!;
     _targetLang = prefs.getString("targetLang")!;
-    _easyFactor = prefs.getDouble("easyFactor")!;
-    _okayFactor = prefs.getDouble("okayFactor")!;
-    _hardFactor = prefs.getDouble("hardFactor")!;
+    _initialInterval = prefs.getInt("initialInterval")!;
+    _initialNoviceInterval = prefs.getInt("initialNoviceInterval")!;
+    _easyLevelFactor = prefs.getDouble("easyLevelFactor")!;
+    _goodLevelFactor = prefs.getDouble("goodLevelFactor")!;
+    _hardLevelFactor = prefs.getDouble("hardLevelFactor")!;
     notifyListeners();
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Color newColor = Colors.blue;
-Color easyColor = Colors.green;
-Color okayColor = Colors.orange;
-Color hardColor = Colors.red;
+Color noviceColor = Colors.blue;
+Color expertColor = Colors.green;
+Color advancedColor = Colors.orange;
+Color beginnerColor = Colors.red;

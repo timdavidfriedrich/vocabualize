@@ -26,6 +26,16 @@ class VocProv extends ChangeNotifier {
     return result;
   }
 
+  List<Vocabulary> get createdToday {
+    return vocabularyList.where(
+      (voc) {
+        DateTime now = DateTime.now();
+        DateTime creationDate = voc.creationDate;
+        return DateTime(creationDate.year, creationDate.month, creationDate.day) == DateTime(now.year, now.month, now.day);
+      },
+    ).toList();
+  }
+
   Future<void> saveVocabularyList() async {
     _prefs = await SharedPreferences.getInstance();
     await _prefs.setString("vocabularyList", json.encode(vocabularyList));
@@ -66,6 +76,9 @@ class Vocabulary {
   String target = "";
   List<String> tags = [];
   double level = 0;
+  bool isNovice = true;
+  int noviceInterval = Provider.of<SettingsProv>(Keys.context).initialNoviceInterval; // minutes
+  int interval = Provider.of<SettingsProv>(Keys.context).initialInterval; // minutes
   DateTime creationDate = DateTime.now();
   DateTime nextDate = DateTime.now();
 
@@ -93,13 +106,13 @@ class Vocabulary {
 
   Color get levelColor {
     if (level >= 2) {
-      return easyColor;
+      return expertColor;
     } else if (level >= 1) {
-      return okayColor;
+      return advancedColor;
     } else if (level > 0) {
-      return hardColor;
+      return beginnerColor;
     } else {
-      return newColor;
+      return noviceColor;
     }
   }
 
@@ -112,22 +125,25 @@ class Vocabulary {
   }
 
   /// TODO: Add algorithm to calculate nextDate
-  Future<void> answer(Difficulty difficulty) async {
+  Future<void> answer(Answer difficulty) async {
     switch (difficulty) {
-      case Difficulty.easy:
-        if (level < 3) level += Provider.of<SettingsProv>(Keys.context).easyFactor;
+      case Answer.easy:
+        if (level < 3) level += Provider.of<SettingsProv>(Keys.context, listen: false).easyLevelFactor;
         addToNextDay(const Duration(minutes: 15));
         break;
-      case Difficulty.okay:
-        if (level < 3) level += Provider.of<SettingsProv>(Keys.context).okayFactor;
+      case Answer.good:
+        if (level < 3) level += Provider.of<SettingsProv>(Keys.context, listen: false).goodLevelFactor;
         addToNextDay(const Duration(minutes: 10));
         break;
-      case Difficulty.hard:
-        if (level < 3) level += Provider.of<SettingsProv>(Keys.context).hardFactor;
+      case Answer.hard:
+        if (level < 3) level += Provider.of<SettingsProv>(Keys.context, listen: false).hardLevelFactor;
         addToNextDay(const Duration(minutes: 5));
         break;
       default:
-        printError("answer(...) switch default.");
+
+        /// RESET
+        if (level < 3) level += Provider.of<SettingsProv>(Keys.context, listen: false).hardLevelFactor;
+        addToNextDay(const Duration(minutes: 5));
     }
     await Provider.of<VocProv>(Keys.context, listen: false).saveVocabularyList();
   }
@@ -138,4 +154,4 @@ class Vocabulary {
   }
 }
 
-enum Difficulty { easy, okay, hard }
+enum Answer { forgot, easy, good, hard }
