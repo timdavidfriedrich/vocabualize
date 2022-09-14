@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vocabualize/features/core/services/log.dart';
 
 ///* Transitions ("Teleport")
 class Teleport extends PageRouteBuilder {
@@ -111,18 +110,6 @@ class Teleport extends PageRouteBuilder {
           scale: animation,
           child: child,
         );
-      case "scale_bottomRight_2":
-        return FadeTransition(
-          opacity: animation,
-          child: Container(
-            color: Colors.white,
-            child: ScaleTransition(
-              alignment: Alignment.bottomRight,
-              scale: animation,
-              child: child,
-            ),
-          ),
-        );
       case "scale_bottomRight":
         return ScaleTransition(
           alignment: Alignment.bottomRight,
@@ -130,7 +117,7 @@ class Teleport extends PageRouteBuilder {
           child: child,
         );
       default:
-        Log.error("Teleport()-type '$type' not found.");
+        Exception("Teleport()-type '$type' not found.");
         return SlideTransition(
           position: Tween<Offset>(begin: Offset.zero, end: Offset.zero).animate(animation),
           child: child,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:teleport/teleport.dart';
+import 'package:vocabualize/features/home/screens/home_empty.dart';
+import 'package:vocabualize/features/home/widgets/record_grab.dart';
 import 'package:vocabualize/features/home/widgets/record_sheet.dart';
 import 'package:vocabualize/features/settings/screens/settings.dart';
 import 'package:vocabualize/features/core/providers/voc_provider.dart';
-import 'package:vocabualize/features/core/services/teleport.dart';
 import 'package:vocabualize/features/home/widgets/status_card.dart';
 import 'package:vocabualize/features/home/widgets/voc_list_tile.dart';
 
@@ -80,20 +82,6 @@ class _HomeState extends State<Home> {
                   ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class HomeEmpty extends StatelessWidget {
-  const HomeEmpty({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        "Swipe up to add your first word.",
-        textAlign: TextAlign.center,
       ),
     );
   }

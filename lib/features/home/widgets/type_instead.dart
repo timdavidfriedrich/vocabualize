@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/home/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/voc_provider.dart';
 import 'package:vocabualize/features/core/services/translator.dart';

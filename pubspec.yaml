@@ -27,6 +27,12 @@ dependencies:
   translator: ^0.1.7
   speech_to_text: ^5.6.1
 
+  # own packages
+  log:
+    path: ./packages/log
+  teleport:
+    path: ./packages/teleport
+
 
 dev_dependencies:
   flutter_test:
