@@ -14,11 +14,11 @@ class MicButton extends StatelessWidget {
       child: Container(
         height: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            color: Provider.of<ActiveProv>(context).micIsActive ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
+            color: Provider.of<ActiveProvider>(context).micIsActive ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
             shape: BoxShape.circle,
             border: Border.all(width: 8, color: Theme.of(context).colorScheme.onPrimary)),
         child: AvatarGlow(
-          animate: Provider.of<ActiveProv>(context).micIsActive,
+          animate: Provider.of<ActiveProvider>(context).micIsActive,
           endRadius: MediaQuery.of(context).size.width / 2,
           repeat: true,
           repeatPauseDuration: Duration.zero,
@@ -28,8 +28,8 @@ class MicButton extends StatelessWidget {
           curve: Curves.fastOutSlowIn,
           glowColor: Theme.of(context).colorScheme.primary,
           child: Icon(
-            Provider.of<ActiveProv>(context).micIsActive ? Icons.mic_rounded : Icons.mic_none_rounded,
-            color: Provider.of<ActiveProv>(context).micIsActive
+            Provider.of<ActiveProvider>(context).micIsActive ? Icons.mic_rounded : Icons.mic_none_rounded,
+            color: Provider.of<ActiveProvider>(context).micIsActive
                 ? Theme.of(context).colorScheme.primary
                 : Theme.of(context).colorScheme.onPrimary,
             size: 128,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vocabualize/features/home/widgets/mic_button.dart';
-import 'package:vocabualize/features/home/widgets/type_instead.dart';
+import 'package:vocabualize/features/home/widgets/type_button.dart';
 
 class RecordSheet extends StatefulWidget {
   const RecordSheet({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class _RecordSheetState extends State<RecordSheet> {
         physics: const NeverScrollableScrollPhysics(),
         children: const [
           MicButton(),
-          TypeInstead(),
+          TypeButton(),
         ],
       ),
     );

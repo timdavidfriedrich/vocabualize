@@ -9,8 +9,8 @@ class Translator {
   static Future<String> translate(String source) async {
     Translation translation = await _translator.translate(
       source,
-      from: Provider.of<SettingsProv>(Keys.context, listen: false).sourceLang,
-      to: Provider.of<SettingsProv>(Keys.context, listen: false).targetLang,
+      from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLang,
+      to: Provider.of<SettingsProvider>(Keys.context, listen: false).targetLang,
     );
     return translation.toString();
   }

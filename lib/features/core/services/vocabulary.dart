@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/constants/keys.dart';
-import 'package:vocabualize/features/core/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Vocabulary {
@@ -11,8 +11,8 @@ class Vocabulary {
   List<String> tags = [];
   double level = 0;
   bool isNovice = true;
-  int noviceInterval = Provider.of<SettingsProv>(Keys.context).initialNoviceInterval; // minutes
-  int interval = Provider.of<SettingsProv>(Keys.context).initialInterval; // minutes
+  int noviceInterval = Provider.of<SettingsProvider>(Keys.context).initialNoviceInterval; // minutes
+  int interval = Provider.of<SettingsProvider>(Keys.context).initialInterval; // minutes
   DateTime creationDate = DateTime.now();
   DateTime nextDate = DateTime.now();
 
@@ -62,24 +62,24 @@ class Vocabulary {
   Future<void> answer(Answer difficulty) async {
     switch (difficulty) {
       case Answer.easy:
-        if (level < 3) level += Provider.of<SettingsProv>(Keys.context, listen: false).easyLevelFactor;
+        if (level < 3) level += Provider.of<SettingsProvider>(Keys.context, listen: false).easyLevelFactor;
         addToNextDay(const Duration(minutes: 15));
         break;
       case Answer.good:
-        if (level < 3) level += Provider.of<SettingsProv>(Keys.context, listen: false).goodLevelFactor;
+        if (level < 3) level += Provider.of<SettingsProvider>(Keys.context, listen: false).goodLevelFactor;
         addToNextDay(const Duration(minutes: 10));
         break;
       case Answer.hard:
-        if (level < 3) level += Provider.of<SettingsProv>(Keys.context, listen: false).hardLevelFactor;
+        if (level < 3) level += Provider.of<SettingsProvider>(Keys.context, listen: false).hardLevelFactor;
         addToNextDay(const Duration(minutes: 5));
         break;
       default:
 
         /// RESET
-        if (level < 3) level += Provider.of<SettingsProv>(Keys.context, listen: false).hardLevelFactor;
+        if (level < 3) level += Provider.of<SettingsProvider>(Keys.context, listen: false).hardLevelFactor;
         addToNextDay(const Duration(minutes: 5));
     }
-    await Provider.of<VocProv>(Keys.context, listen: false).saveVocabularyList();
+    await Provider.of<VocabularyProvider>(Keys.context, listen: false).saveVocabularyList();
   }
 
   @override

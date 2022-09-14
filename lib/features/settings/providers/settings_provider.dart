@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsProv extends ChangeNotifier {
+class SettingsProvider extends ChangeNotifier {
   late SharedPreferences prefs;
 
   String _sourceLang = "de";

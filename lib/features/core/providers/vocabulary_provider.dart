@@ -6,7 +6,7 @@ import 'package:log/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
-class VocProv extends ChangeNotifier {
+class VocabularyProvider extends ChangeNotifier {
   late SharedPreferences _prefs;
 
   List<Vocabulary> vocabularyList = [];

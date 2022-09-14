@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:teleport/teleport.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/practise/screens/practise.dart';
-import 'package:vocabualize/features/core/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 
 class StatusCard extends StatefulWidget {
   const StatusCard({Key? key}) : super(key: key);
@@ -29,7 +29,7 @@ class _StatusCardState extends State<StatusCard> {
               text: TextSpan(
                 style: Theme.of(context).textTheme.displayMedium,
                 children: [
-                  TextSpan(text: "Wow, you already added ${Provider.of<VocProv>(context).createdToday.length} words today."),
+                  TextSpan(text: "Wow, you already added ${Provider.of<VocabularyProvider>(context).createdToday.length} words today."),
                   const TextSpan(text: "\n\n"),
                   const TextSpan(text: "Let's practise!", style: TextStyle(fontWeight: FontWeight.w800)),
                 ],
@@ -45,21 +45,23 @@ class _StatusCardState extends State<StatusCard> {
                   Column(
                     children: [
                       const Icon(Icons.circle, color: LevelPalette.beginner),
-                      Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level > 0 && voc.level < 1).length}"),
+                      Text(
+                          "${Provider.of<VocabularyProvider>(context).vocabularyList.where((voc) => voc.level > 0 && voc.level < 1).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
                       const Icon(Icons.circle, color: LevelPalette.advanced),
-                      Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level >= 1 && voc.level < 2).length}"),
+                      Text(
+                          "${Provider.of<VocabularyProvider>(context).vocabularyList.where((voc) => voc.level >= 1 && voc.level < 2).length}"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
                       const Icon(Icons.circle, color: LevelPalette.expert),
-                      Text("${Provider.of<VocProv>(context).vocabularyList.where((voc) => voc.level >= 2).length}"),
+                      Text("${Provider.of<VocabularyProvider>(context).vocabularyList.where((voc) => voc.level >= 2).length}"),
                     ],
                   ),
                 ],

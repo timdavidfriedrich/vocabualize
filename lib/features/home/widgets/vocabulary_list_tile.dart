@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
-import 'package:vocabualize/features/core/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
-class VocListTile extends StatelessWidget {
+class VocabularyListTile extends StatelessWidget {
   final Vocabulary vocabulary;
-  const VocListTile({required this.vocabulary, Key? key}) : super(key: key);
+  const VocabularyListTile({required this.vocabulary, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,8 @@ class VocListTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Dismissible(
         key: Key(vocabulary.toString()),
-        onDismissed: (direction) async => await Provider.of<VocProv>(context, listen: false).removeFromVocabularyList(vocabulary),
+        onDismissed: (direction) async =>
+            await Provider.of<VocabularyProvider>(context, listen: false).removeFromVocabularyList(vocabulary),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
             Messenger.editDialog(vocabulary);

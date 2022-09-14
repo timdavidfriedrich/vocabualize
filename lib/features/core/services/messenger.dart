@@ -2,7 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
-import 'package:vocabualize/features/core/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
 class Messenger {
@@ -17,7 +17,7 @@ class Messenger {
   }
 
   static void editDialog(Vocabulary vocabulary) {
-    vocabulary = Provider.of<VocProv>(Keys.context, listen: false).vocabularyList.firstWhere((voc) => voc == vocabulary);
+    vocabulary = Provider.of<VocabularyProvider>(Keys.context, listen: false).vocabularyList.firstWhere((voc) => voc == vocabulary);
     bool popped = false;
     showGeneralDialog(
       context: Keys.context,
@@ -36,7 +36,7 @@ class Messenger {
               ElevatedButton(
                 onPressed: () {
                   if (!popped) {
-                    Provider.of<VocProv>(context, listen: false).removeFromVocabularyList(vocabulary);
+                    Provider.of<VocabularyProvider>(context, listen: false).removeFromVocabularyList(vocabulary);
                     Navigator.pop(context);
                     popped = true;
                   }
@@ -87,7 +87,7 @@ class Messenger {
         ),
       ),
       mainButton: TextButton(
-        onPressed: () => Provider.of<VocProv>(Keys.context, listen: false).removeFromVocabularyList(vocabulary),
+        onPressed: () => Provider.of<VocabularyProvider>(Keys.context, listen: false).removeFromVocabularyList(vocabulary),
         child: Text("Delete", style: Theme.of(Keys.context).textTheme.labelMedium),
       ),
     ).show(Keys.context);

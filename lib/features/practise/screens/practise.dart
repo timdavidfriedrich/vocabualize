@@ -3,7 +3,7 @@ import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/core/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/practise/screens/practise_done.dart';
 
 class Practise extends StatefulWidget {
@@ -21,8 +21,8 @@ class _PractiseState extends State<Practise> {
 
   void refreshVoc() {
     setState(() => isSolutionShown = false);
-    if (Provider.of<VocProv>(context, listen: false).allToPractise.isNotEmpty) {
-      setState(() => currentVoc = Provider.of<VocProv>(context, listen: false).firstToPractise);
+    if (Provider.of<VocabularyProvider>(context, listen: false).allToPractise.isNotEmpty) {
+      setState(() => currentVoc = Provider.of<VocabularyProvider>(context, listen: false).firstToPractise);
     } else {
       setState(() => isDone = true);
     }
@@ -31,13 +31,13 @@ class _PractiseState extends State<Practise> {
   @override
   void initState() {
     super.initState();
-    initialVocCount = Provider.of<VocProv>(context, listen: false).allToPractise.length;
+    initialVocCount = Provider.of<VocabularyProvider>(context, listen: false).allToPractise.length;
     refreshVoc();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Provider.of<VocProv>(context).allToPractise.isEmpty
+    return Provider.of<VocabularyProvider>(context).allToPractise.isEmpty
         ? const PractiseDone()
         : SafeArea(
             child: ClipRRect(
@@ -49,16 +49,16 @@ class _PractiseState extends State<Practise> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 48),
-                      Text("${Provider.of<VocProv>(context).allToPractise.length} left",
+                      Text("${Provider.of<VocabularyProvider>(context).allToPractise.length} left",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 12),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: LinearProgressIndicator(
-                          value: Provider.of<VocProv>(context).allToPractise.isEmpty
+                          value: Provider.of<VocabularyProvider>(context).allToPractise.isEmpty
                               ? 1
-                              : 1 - (Provider.of<VocProv>(context).allToPractise.length / initialVocCount),
+                              : 1 - (Provider.of<VocabularyProvider>(context).allToPractise.length / initialVocCount),
                           minHeight: 12,
                           color: Theme.of(context).colorScheme.primary,
                           backgroundColor: Theme.of(context).colorScheme.surface,
@@ -75,7 +75,7 @@ class _PractiseState extends State<Practise> {
                                   color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(24),
                                 ),
-                                child: Center(child: Text(Provider.of<VocProv>(context).firstToPractise.target)),
+                                child: Center(child: Text(Provider.of<VocabularyProvider>(context).firstToPractise.target)),
                               ),
                             ),
                       const Spacer(),
@@ -92,7 +92,7 @@ class _PractiseState extends State<Practise> {
                                     ),
                                     onPressed: () async {
                                       Log.error("BEFORE: $currentVoc");
-                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.hard);
+                                      await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.hard);
                                       Log.error("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
@@ -108,7 +108,7 @@ class _PractiseState extends State<Practise> {
                                     ),
                                     onPressed: () async {
                                       Log.warning("BEFORE: $currentVoc");
-                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.good);
+                                      await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.good);
                                       Log.warning("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
@@ -124,7 +124,7 @@ class _PractiseState extends State<Practise> {
                                     ),
                                     onPressed: () async {
                                       Log.hint("BEFORE: $currentVoc");
-                                      await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.easy);
+                                      await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.easy);
                                       Log.hint("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
@@ -141,7 +141,7 @@ class _PractiseState extends State<Practise> {
                             )
                           : OutlinedButton(
                               onPressed: () async {
-                                await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.forgot);
+                                await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.forgot);
                                 refreshVoc();
                               },
                               child: const Text("I forgot the word"),

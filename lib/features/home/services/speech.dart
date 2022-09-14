@@ -6,7 +6,7 @@ import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/home/providers/active_provider.dart';
-import 'package:vocabualize/features/core/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/translator.dart';
 
 class Speech {
@@ -14,19 +14,19 @@ class Speech {
   static String _text = "";
 
   static void record() async {
-    if (!Provider.of<ActiveProv>(Keys.context, listen: false).micIsActive) {
-      Provider.of<ActiveProv>(Keys.context, listen: false).micIsActive = true;
+    if (!Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive) {
+      Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = true;
 
       bool available = await _stt.initialize(
         options: [],
         onStatus: (status) async {
           if (_stt.isNotListening && status == "done") {
-            Provider.of<ActiveProv>(Keys.context, listen: false).micIsActive = false;
+            Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = false;
 
             if (_stt.lastRecognizedWords.isNotEmpty) {
               //Messenger.loadingAnimation();
               Vocabulary newVocabulary = Vocabulary(source: _text, target: await Translator.translate(_text));
-              await Provider.of<VocProv>(Keys.context, listen: false).addToVocabularyList(newVocabulary).whenComplete(() {
+              await Provider.of<VocabularyProvider>(Keys.context, listen: false).addToVocabularyList(newVocabulary).whenComplete(() {
                 //Navigator.pop(Keys.context);
                 Messenger.saveMessage(newVocabulary);
               });
@@ -36,7 +36,7 @@ class Speech {
         },
         onError: (error) async {
           Log.error("[STT] ${error.errorMsg}");
-          Provider.of<ActiveProv>(Keys.context, listen: false).micIsActive = false;
+          Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = false;
 
           _stt.stop;
         },
