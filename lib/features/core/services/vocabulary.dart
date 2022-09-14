@@ -11,7 +11,7 @@ class Vocabulary {
   List<String> tags = [];
   double level = 0;
   bool isNovice = true;
-  int noviceInterval = Provider.of<SettingsProv>(Keys.context.context).initialNoviceInterval; // minutes
+  int noviceInterval = Provider.of<SettingsProv>(Keys.context).initialNoviceInterval; // minutes
   int interval = Provider.of<SettingsProv>(Keys.context).initialInterval; // minutes
   DateTime creationDate = DateTime.now();
   DateTime nextDate = DateTime.now();
