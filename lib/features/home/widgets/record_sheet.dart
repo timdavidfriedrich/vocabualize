@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vocabualize/widgets/mic_button.dart';
-import 'package:vocabualize/widgets/type_instead.dart';
+import 'package:vocabualize/features/home/widgets/mic_button.dart';
+import 'package:vocabualize/features/home/widgets/type_instead.dart';
 
 class RecordSheet extends StatefulWidget {
   const RecordSheet({Key? key}) : super(key: key);

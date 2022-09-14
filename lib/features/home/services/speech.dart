@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:vocabualize/constants/keys.dart';
-import 'package:vocabualize/utils/logging.dart';
-import 'package:vocabualize/utils/messenger.dart';
-import 'package:vocabualize/utils/providers/active_provider.dart';
-import 'package:vocabualize/utils/providers/voc_provider.dart';
-import 'package:vocabualize/utils/translator.dart';
+import 'package:vocabualize/features/core/services/log.dart';
+import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/home/providers/active_provider.dart';
+import 'package:vocabualize/features/core/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/services/translator.dart';
 
 class Speech {
   static final SpeechToText _stt = SpeechToText();
@@ -34,7 +34,7 @@ class Speech {
           }
         },
         onError: (error) async {
-          printError("[STT] ${error.errorMsg}");
+          Log.error("[STT] ${error.errorMsg}");
           Provider.of<ActiveProv>(Keys.context, listen: false).micIsActive = false;
 
           _stt.stop;

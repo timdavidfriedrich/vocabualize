@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:translator/translator.dart';
 import 'package:vocabualize/constants/keys.dart';
-import 'package:vocabualize/utils/providers/settings_provider.dart';
+import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Translator {
   static final _translator = GoogleTranslator();

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
-import 'package:vocabualize/screens/record_sheet.dart';
-import 'package:vocabualize/screens/settings.dart';
-import 'package:vocabualize/utils/providers/voc_provider.dart';
-import 'package:vocabualize/utils/teleport.dart';
-import 'package:vocabualize/widgets/status_card.dart';
-import 'package:vocabualize/widgets/voc_list_tile.dart';
+import 'package:vocabualize/features/home/widgets/record_sheet.dart';
+import 'package:vocabualize/features/settings/screens/settings.dart';
+import 'package:vocabualize/features/core/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/services/teleport.dart';
+import 'package:vocabualize/features/home/widgets/status_card.dart';
+import 'package:vocabualize/features/home/widgets/voc_list_tile.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

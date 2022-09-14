@@ -2,7 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
-import 'package:vocabualize/utils/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/providers/voc_provider.dart';
 
 class Messenger {
   static void loadingAnimation() {

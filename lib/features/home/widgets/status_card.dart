@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
-import 'package:vocabualize/screens/practise.dart';
-import 'package:vocabualize/utils/providers/voc_provider.dart';
-import 'package:vocabualize/utils/teleport.dart';
+import 'package:vocabualize/features/practise/screens/practise.dart';
+import 'package:vocabualize/features/core/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/services/teleport.dart';
 
 class StatusCard extends StatefulWidget {
   const StatusCard({Key? key}) : super(key: key);

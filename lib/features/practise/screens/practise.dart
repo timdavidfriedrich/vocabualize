@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
-import 'package:vocabualize/utils/logging.dart';
-import 'package:vocabualize/utils/providers/voc_provider.dart';
+import 'package:vocabualize/features/core/services/log.dart';
+import 'package:vocabualize/features/core/providers/voc_provider.dart';
 
 class Practise extends StatefulWidget {
   const Practise({Key? key}) : super(key: key);
@@ -89,9 +89,9 @@ class _PractiseState extends State<Practise> {
                                       primary: LevelPalette.beginner,
                                     ),
                                     onPressed: () async {
-                                      printError("BEFORE: $currentVoc");
+                                      Log.error("BEFORE: $currentVoc");
                                       await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.hard);
-                                      printError("AFTER: $currentVoc");
+                                      Log.error("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Hard"),
@@ -105,9 +105,9 @@ class _PractiseState extends State<Practise> {
                                       primary: LevelPalette.advanced,
                                     ),
                                     onPressed: () async {
-                                      printWarning("BEFORE: $currentVoc");
+                                      Log.warning("BEFORE: $currentVoc");
                                       await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.good);
-                                      printWarning("AFTER: $currentVoc");
+                                      Log.warning("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Good"),
@@ -121,9 +121,9 @@ class _PractiseState extends State<Practise> {
                                       primary: LevelPalette.expert,
                                     ),
                                     onPressed: () async {
-                                      printHint("BEFORE: $currentVoc");
+                                      Log.hint("BEFORE: $currentVoc");
                                       await Provider.of<VocProv>(context, listen: false).firstToPractise.answer(Answer.easy);
-                                      printHint("AFTER: $currentVoc");
+                                      Log.hint("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Easy"),

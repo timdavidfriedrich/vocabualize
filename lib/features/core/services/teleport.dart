@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vocabualize/utils/logging.dart';
+import 'package:vocabualize/features/core/services/log.dart';
 
 ///* Transitions ("Teleport")
 class Teleport extends PageRouteBuilder {
@@ -130,7 +130,7 @@ class Teleport extends PageRouteBuilder {
           child: child,
         );
       default:
-        printError("Teleport()-type '$type' not found.");
+        Log.error("Teleport()-type '$type' not found.");
         return SlideTransition(
           position: Tween<Offset>(begin: Offset.zero, end: Offset.zero).animate(animation),
           child: child,

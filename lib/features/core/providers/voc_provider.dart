@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/constants/keys.dart';
-import 'package:vocabualize/utils/logging.dart';
-import 'package:vocabualize/utils/providers/settings_provider.dart';
+import 'package:vocabualize/features/core/services/log.dart';
+import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class VocProv extends ChangeNotifier {
   late SharedPreferences _prefs;
@@ -21,7 +21,7 @@ class VocProv extends ChangeNotifier {
     try {
       result = vocabularyList.where((voc) => voc.nextDate.isBefore(DateTime.now())).toList();
     } catch (e) {
-      printError(e);
+      Log.error(e);
     }
     return result;
   }
