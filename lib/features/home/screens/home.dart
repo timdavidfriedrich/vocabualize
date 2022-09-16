@@ -37,12 +37,12 @@ class _HomeState extends State<Home> {
             snappingPositions: const [
               SnappingPosition.factor(
                   positionFactor: 0.0,
-                  snappingCurve: Curves.elasticOut,
-                  snappingDuration: Duration(milliseconds: 1000),
+                  snappingCurve: ElasticOutCurve(0.8),
+                  snappingDuration: Duration(milliseconds: 750),
                   grabbingContentOffset: GrabbingContentOffset.top),
               SnappingPosition.factor(
                 positionFactor: 0.75,
-                snappingCurve: Curves.elasticOut,
+                snappingCurve: ElasticOutCurve(0.5),
                 snappingDuration: Duration(milliseconds: 1000),
               ),
             ],
@@ -51,7 +51,13 @@ class _HomeState extends State<Home> {
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
             child: SnappingSheet(
               controller: settingsSheetController,
-              snappingPositions: const [SnappingPosition.factor(positionFactor: 1.25, snappingDuration: Duration(milliseconds: 500))],
+              snappingPositions: const [
+                SnappingPosition.factor(
+                  positionFactor: 1.0,
+                  snappingDuration: Duration(milliseconds: 500),
+                  grabbingContentOffset: GrabbingContentOffset.top,
+                )
+              ],
               grabbing: const SettingsGrab(),
               grabbingHeight: 64,
               sheetAbove: SnappingSheetContent(draggable: true, child: const SettingsSheet()),
