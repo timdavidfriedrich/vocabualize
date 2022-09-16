@@ -11,8 +11,20 @@ class SettingsSheet extends StatelessWidget {
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          const SizedBox(height: 64),
+          const SizedBox(height: 48),
           Text("Settings", style: Theme.of(context).textTheme.headlineMedium),
+          const SizedBox(height: 48),
+          ListTile(
+            title: Text("My language"),
+            trailing: PopupMenuButton(
+              child: Text("Hui"),
+              onSelected: (value) => {},
+              itemBuilder: (context) => [
+                PopupMenuItem(child: Text("Hihihi")),
+                PopupMenuItem(child: Text("Hihihi")),
+              ],
+            ),
+          ),
         ],
       ),
     );
