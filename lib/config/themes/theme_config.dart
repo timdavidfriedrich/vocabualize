@@ -186,6 +186,7 @@ class ThemeHandler extends StatelessWidget {
         ),
         displayMedium: GoogleFonts.poppins(
           color: onBackground,
+          height: 1.5,
           fontSize: 16,
         ),
         displayLarge: GoogleFonts.poppins(
