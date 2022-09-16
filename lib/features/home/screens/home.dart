@@ -20,7 +20,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   void initState() {
-    Provider.of<VocabularyProvider>(context, listen: false).initVocabularyList();
+    Provider.of<VocabularyProvider>(context, listen: false).init();
     super.initState();
   }
 

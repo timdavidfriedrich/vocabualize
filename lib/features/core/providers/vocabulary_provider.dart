@@ -18,7 +18,7 @@ class VocabularyProvider extends ChangeNotifier {
     try {
       result = vocabularyList.where((voc) => voc.nextDate.isBefore(DateTime.now())).toList();
     } catch (e) {
-      Log.error(e);
+      Log.error(e.toString());
     }
     return result;
   }
@@ -33,12 +33,12 @@ class VocabularyProvider extends ChangeNotifier {
     ).toList();
   }
 
-  Future<void> saveVocabularyList() async {
+  Future<void> save() async {
     _prefs = await SharedPreferences.getInstance();
     await _prefs.setString("vocabularyList", json.encode(vocabularyList));
   }
 
-  Future<void> initVocabularyList() async {
+  Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
     String vocabularyListJSON = _prefs.getString("vocabularyList") ?? "";
     if (vocabularyListJSON != "") {
@@ -49,21 +49,21 @@ class VocabularyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addToVocabularyList(Vocabulary vocabulary) async {
+  Future<void> add(Vocabulary vocabulary) async {
     vocabularyList.add(vocabulary);
-    await saveVocabularyList();
+    await save();
     notifyListeners();
   }
 
-  Future<void> removeFromVocabularyList(Vocabulary vocabulary) async {
+  Future<void> remove(Vocabulary vocabulary) async {
     vocabularyList.remove(vocabulary);
-    await saveVocabularyList();
+    await save();
     notifyListeners();
   }
 
-  Future<void> clearVocabularyList() async {
+  Future<void> clear() async {
     vocabularyList.clear();
-    await saveVocabularyList();
+    await save();
     notifyListeners();
   }
 }

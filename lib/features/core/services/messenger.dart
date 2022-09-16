@@ -36,7 +36,7 @@ class Messenger {
               ElevatedButton(
                 onPressed: () {
                   if (!popped) {
-                    Provider.of<VocabularyProvider>(context, listen: false).removeFromVocabularyList(vocabulary);
+                    Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
                     Navigator.pop(context);
                     popped = true;
                   }
@@ -87,7 +87,7 @@ class Messenger {
         ),
       ),
       mainButton: TextButton(
-        onPressed: () => Provider.of<VocabularyProvider>(Keys.context, listen: false).removeFromVocabularyList(vocabulary),
+        onPressed: () => Provider.of<VocabularyProvider>(Keys.context, listen: false).remove(vocabulary),
         child: Text("Delete", style: Theme.of(Keys.context).textTheme.labelMedium),
       ),
     ).show(Keys.context);

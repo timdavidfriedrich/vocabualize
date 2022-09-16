@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
+import 'package:vocabualize/features/practise/services/answer.dart';
+import 'package:vocabualize/features/practise/services/date_calculator.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Vocabulary {
@@ -10,9 +12,10 @@ class Vocabulary {
   String target = "";
   List<String> tags = [];
   double level = 0;
-  bool isNovice = true;
-  int noviceInterval = Provider.of<SettingsProvider>(Keys.context).initialNoviceInterval; // minutes
-  int interval = Provider.of<SettingsProvider>(Keys.context).initialInterval; // minutes
+  bool isNovice = false; // TODO: add method to exit novice => reenable isNovice
+  int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
+  int interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialInterval; // minutes
+  double ease = Provider.of<SettingsProvider>(Keys.context, listen: false).initialEase;
   DateTime creationDate = DateTime.now();
   DateTime nextDate = DateTime.now();
 
@@ -25,6 +28,10 @@ class Vocabulary {
       tags.add(voc.toString());
     }
     level = json['level'];
+    isNovice = json['isNovice'];
+    noviceInterval = json['noviceInterval'];
+    interval = json['interval'];
+    ease = json['ease'];
     creationDate = DateTime.fromMillisecondsSinceEpoch(json['creationDate']);
     nextDate = DateTime.fromMillisecondsSinceEpoch(json['nextDate']);
   }
@@ -34,10 +41,15 @@ class Vocabulary {
         'target': target,
         'tags': tags,
         'level': level,
+        'isNovice': isNovice,
+        'noviceInterval': noviceInterval,
+        'interval': interval,
+        'ease': ease,
         'creationDate': creationDate.millisecondsSinceEpoch,
         'nextDate': nextDate.millisecondsSinceEpoch,
       };
 
+  bool get isNotNovice => !isNovice;
   Color get levelColor {
     if (level >= 2) {
       return LevelPalette.expert;
@@ -53,39 +65,22 @@ class Vocabulary {
   void addTag(String tag) => tags.add(tag);
   void removeTag(String tag) => tags.remove(tag);
 
-  void addToNextDay(Duration duration) {
-    DateTime newDate = DateTime.now().add(duration);
-    nextDate = newDate;
+  Future<void> answer(Answer answer) async {
+    nextDate = DateCalculator.nextDate(this, answer);
+    await Provider.of<VocabularyProvider>(Keys.context, listen: false).save();
   }
 
-  /// TODO: Add algorithm to calculate nextDate
-  Future<void> answer(Answer difficulty) async {
-    switch (difficulty) {
-      case Answer.easy:
-        if (level < 3) level += Provider.of<SettingsProvider>(Keys.context, listen: false).easyLevelFactor;
-        addToNextDay(const Duration(minutes: 15));
-        break;
-      case Answer.good:
-        if (level < 3) level += Provider.of<SettingsProvider>(Keys.context, listen: false).goodLevelFactor;
-        addToNextDay(const Duration(minutes: 10));
-        break;
-      case Answer.hard:
-        if (level < 3) level += Provider.of<SettingsProvider>(Keys.context, listen: false).hardLevelFactor;
-        addToNextDay(const Duration(minutes: 5));
-        break;
-      default:
-
-        /// RESET
-        if (level < 3) level += Provider.of<SettingsProvider>(Keys.context, listen: false).hardLevelFactor;
-        addToNextDay(const Duration(minutes: 5));
-    }
-    await Provider.of<VocabularyProvider>(Keys.context, listen: false).saveVocabularyList();
+  Future<void> reset() async {
+    //level = 0;
+    isNovice = false; // TODO: add method to exit novice => reenable isNovice
+    noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
+    interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialInterval; // minutes
+    nextDate = DateTime.now();
+    await Provider.of<VocabularyProvider>(Keys.context, listen: false).save();
   }
 
   @override
   String toString() {
-    return "$source: \n\t'target': \n\t\t$target, \n\t'tags': \n\t\t$tags, \n\t'level': \n\t\t$level, \n\t'creationDate': \n\t\t$creationDate, \n\t'nextDate': \n\t\t$nextDate";
+    return "$source: \n\t'target': $target, \n\t'tags': $tags, \n\t'level': $level, \n\t'isNovice': $isNovice, \n\t'noviceInterval': $noviceInterval, \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $creationDate, \n\t'nextDate': $nextDate";
   }
 }
-
-enum Answer { forgot, easy, good, hard }
