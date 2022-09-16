@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
-import 'package:teleport/teleport.dart';
 import 'package:vocabualize/features/home/screens/home_empty.dart';
-import 'package:vocabualize/features/home/widgets/record_grab.dart';
-import 'package:vocabualize/features/home/widgets/record_sheet.dart';
-import 'package:vocabualize/features/settings/screens/settings.dart';
+import 'package:vocabualize/features/record/widgets/record_grab.dart';
+import 'package:vocabualize/features/record/widgets/record_sheet.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card.dart';
 import 'package:vocabualize/features/home/widgets/vocabulary_list_tile.dart';
+import 'package:vocabualize/features/settings/services/settings_sheet_controller.dart';
+import 'package:vocabualize/features/settings/widgets/settings_grab.dart';
+import 'package:vocabualize/features/settings/widgets/settings_sheet.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -18,6 +19,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  SettingsSheetController settingsSheetController = SettingsSheetController();
+
   @override
   void initState() {
     Provider.of<VocabularyProvider>(context, listen: false).init();
@@ -46,41 +49,48 @@ class _HomeState extends State<Home> {
             grabbing: const RecordGrab(),
             grabbingHeight: 64,
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
-            child: Provider.of<VocabularyProvider>(context).vocabularyList.isEmpty
-                ? const HomeEmpty()
-                : ListView(
-                    padding: const EdgeInsets.fromLTRB(32, 0, 32, 96),
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      const SizedBox(height: 48),
-                      Row(
-                        children: [
-                          Expanded(child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge)),
-                          IconButton(
-                            onPressed: () => Navigator.push(context, Teleport(child: const Settings(), type: "slide_bottom")),
-                            icon: const Icon(Icons.settings_rounded),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      const StatusCard(),
-                      const SizedBox(height: 32),
-                      Text("New words", style: Theme.of(context).textTheme.headlineMedium),
-                      const SizedBox(height: 12),
-                      const Text("dies das"),
-                      const SizedBox(height: 32),
-                      Text("All words", style: Theme.of(context).textTheme.headlineMedium),
-                      const SizedBox(height: 12),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: List.generate(
-                          Provider.of<VocabularyProvider>(context).vocabularyList.length,
-                          (index) =>
-                              VocabularyListTile(vocabulary: Provider.of<VocabularyProvider>(context).vocabularyList.elementAt(index)),
-                        ).reversed.toList(),
-                      ),
-                    ],
-                  ),
+            child: SnappingSheet(
+              controller: settingsSheetController,
+              snappingPositions: const [SnappingPosition.factor(positionFactor: 1.25, snappingDuration: Duration(milliseconds: 500))],
+              grabbing: const SettingsGrab(),
+              grabbingHeight: 64,
+              sheetAbove: SnappingSheetContent(draggable: true, child: const SettingsSheet()),
+              child: Provider.of<VocabularyProvider>(context).vocabularyList.isEmpty
+                  ? const HomeEmpty()
+                  : ListView(
+                      padding: const EdgeInsets.fromLTRB(32, 0, 32, 96),
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        const SizedBox(height: 48),
+                        Row(
+                          children: [
+                            Expanded(child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge)),
+                            IconButton(
+                              onPressed: () => settingsSheetController.show(),
+                              icon: const Icon(Icons.settings_rounded),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        const StatusCard(),
+                        const SizedBox(height: 32),
+                        Text("New words", style: Theme.of(context).textTheme.headlineMedium),
+                        const SizedBox(height: 12),
+                        const Text("dies das"),
+                        const SizedBox(height: 32),
+                        Text("All words", style: Theme.of(context).textTheme.headlineMedium),
+                        const SizedBox(height: 12),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List.generate(
+                            Provider.of<VocabularyProvider>(context).vocabularyList.length,
+                            (index) =>
+                                VocabularyListTile(vocabulary: Provider.of<VocabularyProvider>(context).vocabularyList.elementAt(index)),
+                          ).reversed.toList(),
+                        ),
+                      ],
+                    ),
+            ),
           ),
         ),
       ),

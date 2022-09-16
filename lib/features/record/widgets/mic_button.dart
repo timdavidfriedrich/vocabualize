@@ -1,8 +1,8 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/features/home/providers/active_provider.dart';
-import 'package:vocabualize/features/home/services/speech.dart';
+import 'package:vocabualize/features/record/providers/active_provider.dart';
+import 'package:vocabualize/features/record/services/speech.dart';
 
 class MicButton extends StatelessWidget {
   const MicButton({Key? key}) : super(key: key);
