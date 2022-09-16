@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:teleport/teleport.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
+import 'package:vocabualize/features/home/services/card_generator.dart';
 import 'package:vocabualize/features/practise/screens/practise.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 
@@ -29,9 +30,9 @@ class _StatusCardState extends State<StatusCard> {
               text: TextSpan(
                 style: Theme.of(context).textTheme.displayMedium,
                 children: [
-                  TextSpan(text: "Wow, you already added ${Provider.of<VocabularyProvider>(context).createdToday.length} words today."),
+                  TextSpan(text: CardGenerator.info),
                   const TextSpan(text: "\n\n"),
-                  const TextSpan(text: "Let's practise!", style: TextStyle(fontWeight: FontWeight.w800)),
+                  TextSpan(text: CardGenerator.prompt, style: const TextStyle(fontWeight: FontWeight.w800)),
                 ],
               ),
             ),
