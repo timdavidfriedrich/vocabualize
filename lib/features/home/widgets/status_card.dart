@@ -67,9 +67,7 @@ class _StatusCardState extends State<StatusCard> {
                 ],
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                  onPressed: () => Navigator.push(context, Teleport(child: const Practise())).then((value) => setState(() => {})),
-                  child: const Text("Practise")),
+              ElevatedButton(onPressed: () => Navigator.push(context, Teleport(child: const Practise())), child: const Text("Practise")),
             ],
           )
         ],

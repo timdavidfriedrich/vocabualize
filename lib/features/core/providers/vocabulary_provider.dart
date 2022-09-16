@@ -36,6 +36,7 @@ class VocabularyProvider extends ChangeNotifier {
   Future<void> save() async {
     _prefs = await SharedPreferences.getInstance();
     await _prefs.setString("vocabularyList", json.encode(vocabularyList));
+    notifyListeners();
   }
 
   Future<void> init() async {

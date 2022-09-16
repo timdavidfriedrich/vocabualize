@@ -12,9 +12,9 @@ class Vocabulary {
   String target = "";
   List<String> tags = [];
   double level = 0;
-  bool isNovice = false; // TODO: add method to exit novice => reenable isNovice
-  int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-  int interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialInterval; // minutes
+  bool isNovice = true;
+  //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
+  int interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
   double ease = Provider.of<SettingsProvider>(Keys.context, listen: false).initialEase;
   DateTime creationDate = DateTime.now();
   DateTime nextDate = DateTime.now();
@@ -29,7 +29,7 @@ class Vocabulary {
     }
     level = json['level'];
     isNovice = json['isNovice'];
-    noviceInterval = json['noviceInterval'];
+    //noviceInterval = json['noviceInterval'];
     interval = json['interval'];
     ease = json['ease'];
     creationDate = DateTime.fromMillisecondsSinceEpoch(json['creationDate']);
@@ -42,7 +42,7 @@ class Vocabulary {
         'tags': tags,
         'level': level,
         'isNovice': isNovice,
-        'noviceInterval': noviceInterval,
+        //'noviceInterval': noviceInterval,
         'interval': interval,
         'ease': ease,
         'creationDate': creationDate.millisecondsSinceEpoch,
@@ -71,9 +71,9 @@ class Vocabulary {
   }
 
   Future<void> reset() async {
-    //level = 0;
-    isNovice = false; // TODO: add method to exit novice => reenable isNovice
-    noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
+    level = 0;
+    isNovice = true;
+    //noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
     interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialInterval; // minutes
     nextDate = DateTime.now();
     await Provider.of<VocabularyProvider>(Keys.context, listen: false).save();
@@ -81,6 +81,6 @@ class Vocabulary {
 
   @override
   String toString() {
-    return "$source: \n\t'target': $target, \n\t'tags': $tags, \n\t'level': $level, \n\t'isNovice': $isNovice, \n\t'noviceInterval': $noviceInterval, \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $creationDate, \n\t'nextDate': $nextDate";
+    return "$source: \n\t'target': $target, \n\t'tags': $tags, \n\t'level': $level, \n\t'isNovice': $isNovice, " /*\n\t'noviceInterval': $noviceInterval*/ ", \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $creationDate, \n\t'nextDate': $nextDate";
   }
 }

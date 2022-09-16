@@ -7,45 +7,51 @@ import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class DateCalculator {
   static DateTime nextDate(Vocabulary vocabulary, Answer answer) {
-    int currentInterval;
-    if (vocabulary.isNovice) {
-      currentInterval = vocabulary.noviceInterval;
-    } else {
-      currentInterval = vocabulary.interval;
-    }
-
-    /// OR: (aber das muss man noch ausklügeln)
-    // int currentInterval = vocabulary.isNovice ? Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval : vocabulary.interval;
+    // Vocabulary is shown for the first time => initial novice interval
+    int currentInterval = vocabulary.isNovice && vocabulary.level == 0
+        ? Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval
+        : vocabulary.interval;
 
     DateTime nextDate = DateTime.now();
     double easyBonus = Provider.of<SettingsProvider>(Keys.context, listen: false).easyBonus;
+    double hardLevelFactor = (vocabulary.isNovice ? 0.5 : 1) * Provider.of<SettingsProvider>(Keys.context, listen: false).hardLevelFactor;
+    double goodLevelFactor = (vocabulary.isNovice ? 2 : 1) * Provider.of<SettingsProvider>(Keys.context, listen: false).goodLevelFactor;
+    double easyLevelFactor = (vocabulary.isNovice ? 2 : 1) * Provider.of<SettingsProvider>(Keys.context, listen: false).easyLevelFactor;
 
     switch (answer) {
       case Answer.forgot:
         vocabulary.reset();
+        vocabulary.level = 0;
         break;
       case Answer.hard:
-        int newInterval = (currentInterval * vocabulary.ease).toInt();
-        DateTime tempDate = DateTime.now().add(Duration(minutes: newInterval));
+        DateTime tempDate = DateTime.now().add(Duration(minutes: currentInterval));
         nextDate = tempDate;
-        vocabulary.interval = newInterval;
+        vocabulary.interval = (currentInterval * vocabulary.ease).toInt();
         vocabulary.ease -= 0.15;
+        if (vocabulary.level > hardLevelFactor.abs()) {
+          vocabulary.level += hardLevelFactor;
+        }
         break;
       case Answer.good:
-        int newInterval = (currentInterval * vocabulary.ease).toInt();
-        DateTime tempDate = DateTime.now().add(Duration(minutes: newInterval));
+        DateTime tempDate = DateTime.now().add(Duration(minutes: currentInterval));
         nextDate = tempDate;
-        vocabulary.interval = newInterval;
+        vocabulary.interval = (currentInterval * vocabulary.ease).toInt();
+        if (vocabulary.level <= 3) vocabulary.level += goodLevelFactor;
         break;
       case Answer.easy:
-        int newInterval = (currentInterval * vocabulary.ease * easyBonus).toInt();
-        DateTime tempDate = DateTime.now().add(Duration(minutes: newInterval));
+        DateTime tempDate = DateTime.now().add(Duration(minutes: currentInterval));
         nextDate = tempDate;
-        vocabulary.interval = newInterval;
+        vocabulary.interval = (currentInterval * vocabulary.ease * easyBonus).toInt();
         vocabulary.ease += 0.15;
+        if (vocabulary.level <= 3) vocabulary.level += easyLevelFactor;
         break;
       default:
         Log.error("Answer error. Wrong difficulty.");
+    }
+
+    if (vocabulary.isNovice && vocabulary.level >= (1 - Provider.of<SettingsProvider>(Keys.context, listen: false).goodLevelFactor)) {
+      vocabulary.isNovice = false;
+      vocabulary.interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialInterval;
     }
 
     return nextDate;
