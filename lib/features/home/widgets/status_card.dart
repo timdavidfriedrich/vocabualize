@@ -22,22 +22,13 @@ class _StatusCardState extends State<StatusCard> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(32),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flexible(
-            child: RichText(
-              text: TextSpan(
-                style: Theme.of(context).textTheme.displayMedium,
-                children: [
-                  TextSpan(text: CardGenerator.info),
-                  const TextSpan(text: "\n\n"),
-                  TextSpan(text: CardGenerator.prompt, style: const TextStyle(fontWeight: FontWeight.w800)),
-                ],
-              ),
-            ),
-          ),
-          Column(
+          Text(CardGenerator.info, style: Theme.of(context).textTheme.displayMedium),
+          const SizedBox(height: 24),
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
@@ -67,7 +58,6 @@ class _StatusCardState extends State<StatusCard> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
               ElevatedButton(onPressed: () => Navigator.push(context, Teleport(child: const Practise())), child: const Text("Practise")),
             ],
           )
