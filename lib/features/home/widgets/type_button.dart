@@ -48,11 +48,11 @@ class _TypeButtonState extends State<TypeButton> {
                 : () => Provider.of<ActiveProvider>(context, listen: false).typeIsActive = true,
             onChanged: (text) => setState(() => currentSource = text),
             onFieldSubmitted: (text) async {
-              //Messenger.loadingAnimation();
+              Messenger.loadingAnimation();
               Vocabulary newVocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
               if (!mounted) return;
-              Provider.of<VocabularyProvider>(context, listen: false).addToVocabularyList(newVocabulary).whenComplete(() {
-                //Navigator.pop(context);
+              Provider.of<VocabularyProvider>(context, listen: false).add(newVocabulary).whenComplete(() {
+                Navigator.pop(context);
                 Messenger.saveMessage(newVocabulary);
               });
               currentSource = "";

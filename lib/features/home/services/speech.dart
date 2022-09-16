@@ -24,10 +24,10 @@ class Speech {
             Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = false;
 
             if (_stt.lastRecognizedWords.isNotEmpty) {
-              //Messenger.loadingAnimation();
+              Messenger.loadingAnimation();
               Vocabulary newVocabulary = Vocabulary(source: _text, target: await Translator.translate(_text));
-              await Provider.of<VocabularyProvider>(Keys.context, listen: false).addToVocabularyList(newVocabulary).whenComplete(() {
-                //Navigator.pop(Keys.context);
+              await Provider.of<VocabularyProvider>(Keys.context, listen: false).add(newVocabulary).whenComplete(() {
+                Navigator.pop(Keys.context);
                 Messenger.saveMessage(newVocabulary);
               });
             }
