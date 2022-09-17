@@ -11,6 +11,13 @@ class VocabularyProvider extends ChangeNotifier {
 
   List<Vocabulary> vocabularyList = [];
 
+  bool contains(Vocabulary vocabulary) {
+    if (vocabularyList.any((voc) => voc.creationDate.microsecondsSinceEpoch == vocabulary.creationDate.microsecondsSinceEpoch)) {
+      return true;
+    }
+    return false;
+  }
+
   List<Vocabulary> get allToPractise {
     List<Vocabulary> result = [];
     try {
@@ -27,7 +34,12 @@ class VocabularyProvider extends ChangeNotifier {
 
   List<Vocabulary> get lastest {
     /// TODO: replace constants (7, 10)
-    return vocabularyList.where((voc) => voc.creationDate.isAfter(DateTime.now().subtract(const Duration(days: 7)))).take(10).toList();
+    return vocabularyList
+        .where((voc) => voc.creationDate.isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .toList()
+        .reversed
+        .take(10)
+        .toList();
   }
 
   List<Vocabulary> get createdToday {
