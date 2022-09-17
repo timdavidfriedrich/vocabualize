@@ -12,10 +12,7 @@ class VocabularyProvider extends ChangeNotifier {
   List<Vocabulary> vocabularyList = [];
 
   bool contains(Vocabulary vocabulary) {
-    if (vocabularyList.any((voc) => voc.creationDate.microsecondsSinceEpoch == vocabulary.creationDate.microsecondsSinceEpoch)) {
-      return true;
-    }
-    return false;
+    return vocabularyList.any((voc) => voc.creationDate.microsecondsSinceEpoch == vocabulary.creationDate.microsecondsSinceEpoch);
   }
 
   List<Vocabulary> get allToPractise {
