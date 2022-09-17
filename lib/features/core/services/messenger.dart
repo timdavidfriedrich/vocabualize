@@ -1,9 +1,9 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/widgets/save_message_route.dart';
 
 class Messenger {
   static void loadingAnimation() {
@@ -16,15 +16,19 @@ class Messenger {
     );
   }
 
+  static void showSaveMessage(Vocabulary vocabulary) async {
+    Navigator.push(Keys.context, SaveMessageRoute(vocabulary: vocabulary));
+  }
+
   static void editDialog(Vocabulary vocabulary) {
     vocabulary = Provider.of<VocabularyProvider>(Keys.context, listen: false).vocabularyList.firstWhere((voc) => voc == vocabulary);
     bool popped = false;
     showGeneralDialog(
       context: Keys.context,
       pageBuilder: (context, animation1, animation2) => Container(),
-      transitionDuration: const Duration(milliseconds: 1000),
+      transitionDuration: const Duration(milliseconds: 500),
       transitionBuilder: (context, animation1, animation2, widget) {
-        final curvedValue = Curves.elasticOut.transform(animation1.value) - 1.0;
+        final curvedValue = const ElasticOutCurve(0.9).transform(animation1.value) - 1.0;
 
         return Transform(
           transform: Matrix4.translationValues(0, curvedValue * 200, 0),
@@ -42,8 +46,8 @@ class Messenger {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).colorScheme.surface,
-                  onPrimary: Theme.of(context).colorScheme.primary,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 child: const Text("Delete"),
               ),
@@ -62,34 +66,5 @@ class Messenger {
         );
       },
     );
-  }
-
-  static void saveMessage(Vocabulary vocabulary) {
-    Flushbar(
-      margin: const EdgeInsets.all(32),
-      borderRadius: BorderRadius.circular(16),
-      flushbarPosition: FlushbarPosition.TOP,
-      backgroundColor: Theme.of(Keys.context).colorScheme.primary,
-      duration: const Duration(seconds: 5),
-      boxShadows: [BoxShadow(offset: const Offset(0, 4), blurRadius: 8, color: Colors.black.withOpacity(0.42))],
-      messageText: RichText(
-        text: TextSpan(
-          style: TextStyle(color: Theme.of(Keys.context).colorScheme.onPrimary.withOpacity(0.6)),
-          children: [
-            TextSpan(text: vocabulary.source.substring(0, 1).toUpperCase() + vocabulary.source.substring(1, vocabulary.source.length)),
-            const TextSpan(text: " has been saved as "),
-            TextSpan(
-              text: vocabulary.target,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(Keys.context).colorScheme.onPrimary),
-            ),
-            const TextSpan(text: "!"),
-          ],
-        ),
-      ),
-      mainButton: TextButton(
-        onPressed: () => Provider.of<VocabularyProvider>(Keys.context, listen: false).remove(vocabulary),
-        child: Text("Delete", style: Theme.of(Keys.context).textTheme.labelMedium),
-      ),
-    ).show(Keys.context);
   }
 }

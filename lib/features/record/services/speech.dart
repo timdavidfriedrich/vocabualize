@@ -28,7 +28,7 @@ class Speech {
               Vocabulary newVocabulary = Vocabulary(source: _text, target: await Translator.translate(_text));
               await Provider.of<VocabularyProvider>(Keys.context, listen: false).add(newVocabulary).whenComplete(() {
                 Navigator.pop(Keys.context);
-                Messenger.saveMessage(newVocabulary);
+                Messenger.showSaveMessage(newVocabulary);
               });
             }
             _stt.stop;
