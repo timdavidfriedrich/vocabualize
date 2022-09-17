@@ -12,6 +12,7 @@ class PractiseDone extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.fromLTRB(48, 0, 48, 0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
                   child: Center(
@@ -31,13 +32,7 @@ class PractiseDone extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  // change pop to pushReplace (fix collection grow)
-                  onPressed: () => Navigator.pop(
-                    context,
-                    //Teleport(child: const Home(), type: "fade"),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).colorScheme.surface, onPrimary: Theme.of(context).colorScheme.onSurface),
+                  onPressed: () => Navigator.pop(context),
                   child: const Text("Main menu"),
                 ),
                 const SizedBox(height: 64),

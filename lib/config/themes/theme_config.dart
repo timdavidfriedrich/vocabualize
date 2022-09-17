@@ -86,7 +86,7 @@ class ThemeHandler extends StatelessWidget {
         brightness: Brightness.light,
       ),
 
-      //splashColor: surface,
+      splashColor: Colors.brown,
 
       visualDensity: VisualDensity.adaptivePlatformDensity,
 
@@ -133,7 +133,7 @@ class ThemeHandler extends StatelessWidget {
       ///* OutlinedButton
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(onPrimary),
+          foregroundColor: MaterialStateProperty.all<Color>(onBackground),
           padding: MaterialStateProperty.all<EdgeInsets>(
             const EdgeInsets.fromLTRB(32, 12, 32, 12),
           ),
@@ -196,7 +196,7 @@ class ThemeHandler extends StatelessWidget {
         ),
         bodySmall: GoogleFonts.poppins(
           color: onBackground,
-          fontSize: 11,
+          fontSize: 16,
         ),
         bodyMedium: GoogleFonts.poppins(
           color: onBackground,

@@ -13,7 +13,7 @@ class SettingsSheet extends StatelessWidget {
         children: [
           const SizedBox(height: 48),
           Text("Settings", style: Theme.of(context).textTheme.headlineMedium),
-          const SizedBox(height: 48),
+          const SizedBox(height: 12),
           ListTile(
             title: Text("My language"),
             trailing: PopupMenuButton(

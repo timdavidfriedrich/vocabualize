@@ -11,8 +11,6 @@ class VocabularyProvider extends ChangeNotifier {
 
   List<Vocabulary> vocabularyList = [];
 
-  Vocabulary get firstToPractise => allToPractise.first;
-
   List<Vocabulary> get allToPractise {
     List<Vocabulary> result = [];
     try {
@@ -21,6 +19,15 @@ class VocabularyProvider extends ChangeNotifier {
       Log.error(e.toString());
     }
     return result;
+  }
+
+  Vocabulary get firstToPractise {
+    return allToPractise.first;
+  }
+
+  List<Vocabulary> get lastest {
+    /// TODO: replace constants (7, 10)
+    return vocabularyList.where((voc) => voc.creationDate.isAfter(DateTime.now().subtract(const Duration(days: 7)))).take(10).toList();
   }
 
   List<Vocabulary> get createdToday {

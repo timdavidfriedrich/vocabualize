@@ -75,7 +75,6 @@ class Vocabulary {
     isNovice = true;
     //noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
     interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialInterval; // minutes
-    nextDate = DateTime.now();
     await Provider.of<VocabularyProvider>(Keys.context, listen: false).save();
   }
 

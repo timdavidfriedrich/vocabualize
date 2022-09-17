@@ -142,10 +142,12 @@ class _PractiseState extends State<Practise> {
                             )
                           : OutlinedButton(
                               onPressed: () async {
+                                Log.hint("BEFORE: $currentVoc");
                                 await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.forgot);
+                                Log.hint("BEFORE: $currentVoc");
                                 refreshVoc();
                               },
-                              child: const Text("I forgot the word"),
+                              child: const Text("I forgot the word", style: TextStyle(color: LevelPalette.novice)),
                             ),
                       const SizedBox(height: 64),
                     ],

@@ -20,6 +20,10 @@ class DateCalculator {
 
     switch (answer) {
       case Answer.forgot:
+        DateTime tempDate = DateTime.now().add(
+          Duration(minutes: Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval),
+        );
+        nextDate = tempDate;
         vocabulary.reset();
         vocabulary.level = 0;
         break;
