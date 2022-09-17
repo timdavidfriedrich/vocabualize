@@ -198,6 +198,7 @@ class ThemeHandler extends StatelessWidget {
         bodySmall: GoogleFonts.poppins(
           color: onBackground,
           fontSize: 16,
+          height: 1.5,
         ),
         bodyMedium: GoogleFonts.poppins(
           color: onBackground,
@@ -207,6 +208,7 @@ class ThemeHandler extends StatelessWidget {
         bodyLarge: GoogleFonts.poppins(
           color: onBackground,
           fontSize: 24,
+          height: 1.5,
         ),
         labelSmall: GoogleFonts.poppins(
           color: onPrimary,
