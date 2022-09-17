@@ -32,7 +32,7 @@ class VocabularyProvider extends ChangeNotifier {
   List<Vocabulary> get lastest {
     /// TODO: replace constants (7, 10)
     return vocabularyList
-        .where((voc) => voc.creationDate.isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .where((voc) => voc.creationDate.isAfter(DateTime.now().subtract(const Duration(days: 0))))
         .toList()
         .reversed
         .take(10)

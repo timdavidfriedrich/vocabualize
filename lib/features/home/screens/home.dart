@@ -87,6 +87,12 @@ class _HomeState extends State<Home> {
                               const SizedBox(height: 32),
                               Text("New words", style: Theme.of(context).textTheme.headlineMedium),
                               const SizedBox(height: 12),
+                              Provider.of<VocabularyProvider>(context).lastest.isNotEmpty
+                                  ? Container()
+                                  : Text(
+                                      "Oh, it seems like you have not added any words for a while now.  :(",
+                                      style: Theme.of(context).textTheme.bodySmall,
+                                    ),
                             ],
                           ),
                         ),
