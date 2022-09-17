@@ -104,8 +104,7 @@ class _HomeState extends State<Home> {
                                   : Padding(
                                       padding: const EdgeInsets.only(left: 8),
                                       child: NewWordCard(
-                                        vocabulary:
-                                            Provider.of<VocabularyProvider>(context, listen: false).vocabularyList.elementAt(index - 1),
+                                        vocabulary: Provider.of<VocabularyProvider>(context, listen: false).lastest.elementAt(index - 1),
                                       ),
                                     ),
                             ),
