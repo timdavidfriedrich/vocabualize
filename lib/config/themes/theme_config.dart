@@ -46,7 +46,8 @@ class ThemeHandler extends StatelessWidget {
     );
   }
 
-  theme(context, primary, onPrimary, secondary, onSecondary, background, onBackground, surface, onSurface, hint, border, error) {
+  theme(BuildContext context, Color primary, Color onPrimary, Color secondary, Color onSecondary, Color background, Color onBackground,
+      Color surface, Color onSurface, Color hint, Color border, Color error) {
     //
     return ThemeData(
       //
@@ -58,15 +59,15 @@ class ThemeHandler extends StatelessWidget {
       cardColor: surface,
       canvasColor: surface,
       disabledColor: secondary.withOpacity(0.2),
-      backgroundColor: background,
+      //backgroundColor: background,
       scaffoldBackgroundColor: background,
-      errorColor: error,
+      //errorColor: error,
       hintColor: hint,
       dividerColor: hint,
       //buttonColor: secondaryColor,
       hoverColor: primary,
       indicatorColor: secondary,
-      bottomAppBarColor: primary,
+      //bottomAppBarColor: primary,
       dialogBackgroundColor: surface,
 
       ///* ColorScheme
@@ -86,7 +87,7 @@ class ThemeHandler extends StatelessWidget {
         brightness: Brightness.light,
       ),
 
-      splashColor: Colors.brown,
+      splashColor: surface.withOpacity(0.5),
 
       visualDensity: VisualDensity.adaptivePlatformDensity,
 
@@ -235,6 +236,7 @@ class ThemeHandler extends StatelessWidget {
         labelStyle: TextStyle(color: primary),
         alignLabelWithHint: true,
         filled: false,
+        contentPadding: const EdgeInsets.fromLTRB(24, 0, 12, 0),
         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
         disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: hint, width: 4), borderRadius: BorderRadius.circular(16)),
         border: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
