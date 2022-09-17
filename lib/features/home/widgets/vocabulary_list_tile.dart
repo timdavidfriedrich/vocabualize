@@ -36,14 +36,18 @@ class VocabularyListTile extends StatelessWidget {
           child: Icon(Icons.edit_rounded, color: Theme.of(context).colorScheme.onPrimary),
         ),
         child: ListTile(
+          contentPadding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           // ?: onTap oder longPress?
           onTap: () => Messenger.editDialog(vocabulary),
-          // leading: Icon(
-          //   Icons.crop_square_rounded,
-          //   size: 48,
-          //   color: Theme.of(context).colorScheme.onSecondary,
-          // ),
+          leading: SizedBox(
+            width: 48,
+            height: 48,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Container(color: Theme.of(context).colorScheme.surface),
+            ),
+          ),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
