@@ -89,7 +89,7 @@ class _PractiseState extends State<Practise> {
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-                                      primary: LevelPalette.beginner,
+                                      backgroundColor: LevelPalette.beginner,
                                     ),
                                     onPressed: () async {
                                       Log.error("BEFORE: $currentVoc");
@@ -105,7 +105,7 @@ class _PractiseState extends State<Practise> {
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-                                      primary: LevelPalette.advanced,
+                                      backgroundColor: LevelPalette.advanced,
                                     ),
                                     onPressed: () async {
                                       Log.warning("BEFORE: $currentVoc");
@@ -121,7 +121,7 @@ class _PractiseState extends State<Practise> {
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-                                      primary: LevelPalette.expert,
+                                      backgroundColor: LevelPalette.expert,
                                     ),
                                     onPressed: () async {
                                       Log.hint("BEFORE: $currentVoc");
