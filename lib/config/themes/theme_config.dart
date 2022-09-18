@@ -232,7 +232,7 @@ class ThemeConfig {
         labelStyle: TextStyle(color: onPrimary),
         alignLabelWithHint: true,
         filled: false,
-        contentPadding: const EdgeInsets.fromLTRB(18, 4, 18, 4),
+        contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
         disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: hint, width: 4), borderRadius: BorderRadius.circular(16)),
         border: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),

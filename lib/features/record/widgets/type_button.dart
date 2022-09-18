@@ -26,7 +26,7 @@ class _TypeButtonState extends State<TypeButton> {
         Expanded(
           child: TextFormField(
             style: Theme.of(context).textTheme.bodyMedium,
-            toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: true, selectAll: false),
+            toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
             autofocus: false,
             controller: controller,
             textInputAction: TextInputAction.done,
