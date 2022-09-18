@@ -1,19 +1,6 @@
 import 'package:flutter/material.dart';
 
-///* Transitions ("Teleport")
 class Teleport extends PageRouteBuilder {
-  /*
-? ANWENDUNG: ('child' notwendig, der Rest optional)
-      Navigator.push(context,
-        Teleport(
-          child: Settings(),
-          type: "scale_bottomRight",
-          duration: Duration(milliseconds: 300),
-          reverseDuration: Duration(milliseconds: 150),
-      ));
-* Für 'type'-Optionen, siehe 'animationHandler(..)'
-  */
-
   Teleport({
     required this.child,
     this.type = "none",
