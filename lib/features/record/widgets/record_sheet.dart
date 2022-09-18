@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/record/widgets/mic_button.dart';
 import 'package:vocabualize/features/record/widgets/type_button.dart';
 
@@ -17,9 +19,9 @@ class _RecordSheetState extends State<RecordSheet> {
       color: Theme.of(context).colorScheme.primary,
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          MicButton(),
-          TypeButton(),
+        children: [
+          Provider.of<ActiveProvider>(context).typeIsActive ? Container() : const MicButton(),
+          const TypeButton(),
         ],
       ),
     );

@@ -6,6 +6,7 @@ import 'package:vocabualize/features/home/widgets/sheet_construction.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card.dart';
 import 'package:vocabualize/features/home/widgets/vocabulary_list_tile.dart';
+import 'package:vocabualize/features/record/services/record_sheet_controller.dart';
 import 'package:vocabualize/features/settings/services/settings_sheet_controller.dart';
 
 class Home extends StatefulWidget {
@@ -17,6 +18,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   SettingsSheetController settingsSheetController = SettingsSheetController();
+  RecordSheetController recordSheetController = RecordSheetController();
 
   @override
   void initState() {
@@ -30,8 +32,10 @@ class _HomeState extends State<Home> {
       child: ClipRRect(
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: SheetConstruction(
             settingsSheetController: settingsSheetController,
+            recordSheetController: recordSheetController,
             child: Provider.of<VocabularyProvider>(context).vocabularyList.isEmpty
                 ? const HomeEmpty()
                 : ListView(

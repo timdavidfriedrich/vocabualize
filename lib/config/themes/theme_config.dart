@@ -223,16 +223,16 @@ class ThemeConfig {
 
       ///* TextField-Themes etc.
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: primary,
-        selectionColor: secondary,
-        selectionHandleColor: hint,
+        cursorColor: surface,
+        selectionColor: hint,
+        selectionHandleColor: surface,
       ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(color: onPrimary),
-        labelStyle: TextStyle(color: primary),
+        labelStyle: TextStyle(color: onPrimary),
         alignLabelWithHint: true,
         filled: false,
-        contentPadding: const EdgeInsets.fromLTRB(24, 0, 12, 0),
+        contentPadding: const EdgeInsets.fromLTRB(18, 4, 18, 4),
         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
         disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: hint, width: 4), borderRadius: BorderRadius.circular(16)),
         border: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
@@ -24,11 +25,14 @@ class _TypeButtonState extends State<TypeButton> {
       children: [
         Expanded(
           child: TextFormField(
+            style: Theme.of(context).textTheme.bodyMedium,
+            toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: true, selectAll: false),
             autofocus: false,
             controller: controller,
             textInputAction: TextInputAction.done,
             maxLength: 20,
             maxLines: 1,
+            //onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
             decoration: InputDecoration(
               enabled: !Provider.of<ActiveProvider>(context).micIsActive,
               hintText: "Type instead ...",
