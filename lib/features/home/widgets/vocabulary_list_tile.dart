@@ -6,8 +6,9 @@ import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class VocabularyListTile extends StatelessWidget {
+  const VocabularyListTile({super.key, required this.vocabulary});
+
   final Vocabulary vocabulary;
-  const VocabularyListTile({required this.vocabulary, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class VocabularyListTile extends StatelessWidget {
         onDismissed: (direction) async => await Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
-            Messenger.editDialog(vocabulary);
+            Messenger.infoDialog(vocabulary);
             return false;
           } else {
             return true;
@@ -39,7 +40,7 @@ class VocabularyListTile extends StatelessWidget {
         child: ListTile(
           contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          onTap: () => Messenger.editDialog(vocabulary),
+          onTap: () => Messenger.infoDialog(vocabulary),
 
           /// TODO: add image
           leading: Provider.of<SettingsProvider>(context).areImagesDisabled

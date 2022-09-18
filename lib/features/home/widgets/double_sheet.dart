@@ -8,10 +8,11 @@ import 'package:vocabualize/features/settings/widgets/settings_grab.dart';
 import 'package:vocabualize/features/settings/widgets/settings_sheet.dart';
 
 class DoubleSheet extends StatefulWidget {
+  const DoubleSheet({super.key, required this.child, required this.settingsSheetController, required this.recordSheetController});
+
   final Widget child;
   final SettingsSheetController settingsSheetController;
   final RecordSheetController recordSheetController;
-  const DoubleSheet({super.key, required this.child, required this.settingsSheetController, required this.recordSheetController});
 
   @override
   State<DoubleSheet> createState() => _DoubleSheetState();

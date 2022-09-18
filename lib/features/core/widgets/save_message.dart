@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
 class SaveMessage extends StatefulWidget {
-  final Vocabulary vocabulary;
-  final Duration animationDuration;
-  final Duration stayDuration;
   const SaveMessage({super.key, required this.vocabulary, animationDuration, stayDuration})
       : animationDuration = animationDuration ?? const Duration(milliseconds: 2000),
         stayDuration = stayDuration ?? const Duration(milliseconds: 3000);
+
+  final Vocabulary vocabulary;
+  final Duration animationDuration;
+  final Duration stayDuration;
 
   @override
   State<SaveMessage> createState() => _SaveMessageState();

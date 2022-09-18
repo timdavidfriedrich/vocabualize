@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 
 class Level {
+  Level();
+  Level.withValue({required this.value});
+
   final double _valueLimit = 3.0;
   double value = 0;
-
-  Level();
-
-  Level.withValue({required this.value});
 
   Color get color {
     if (value >= _valueLimit) {
