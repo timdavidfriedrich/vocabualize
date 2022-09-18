@@ -30,14 +30,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ActiveProvider()),
       ],
       child: MaterialApp(
+        theme: ThemeConfig.light(context),
+        darkTheme: ThemeConfig.dark(context),
         //showPerformanceOverlay: true,
         debugShowCheckedModeBanner: false,
         navigatorKey: Keys.navigatorState,
-        theme: ThemeConfig.light(context),
-        darkTheme: ThemeConfig.dark(context),
         initialRoute: "/",
         routes: {
-          "/":(context) => const Home(),
+          "/": (context) => const Home(),
           "/practise": (context) => const Practise(),
         },
       ),
