@@ -159,7 +159,7 @@ class ThemeConfig {
         ),
         headlineSmall: GoogleFonts.poppins(
           color: onBackground,
-          fontSize: 16,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
         headlineMedium: GoogleFonts.poppins(
