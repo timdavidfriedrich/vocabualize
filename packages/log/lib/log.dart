@@ -7,20 +7,20 @@ class Log {
   static String _whiteCode = "\x1B[37m";
   static String _defaultCode = "\x1B[0m";
 
-  static String _process(String text) {
-    String processedtext = text.replaceAll("\n", "\n$_whiteCode");
+  static String _process(text) {
+    String processedtext = text.toString().replaceAll("\n", "\n$_whiteCode");
     return "$_whiteCode$processedtext$_defaultCode";
   }
 
-  static void hint(String text) {
+  static void hint(text) {
     if (kDebugMode) print("$_hintCode HINT: ${_process(text)}");
   }
 
-  static void warning(String text) {
+  static void warning(text) {
     if (kDebugMode) print("$_warningCode WARN: ${_process(text)}");
   }
 
-  static void error(String text) {
+  static void error(text) {
     if (kDebugMode) print("$_errorCode ERROR: ${_process(text)}");
   }
 }
