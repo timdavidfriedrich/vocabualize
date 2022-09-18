@@ -12,7 +12,9 @@ class SaveMessageRoute extends OverlayRoute {
 
     overlays.add(
       OverlayEntry(
-        builder: (BuildContext context) => SaveMessage(vocabulary: vocabulary),
+        builder: (BuildContext context) {
+          return SaveMessage(vocabulary: vocabulary);
+        },
         maintainState: false,
         opaque: false,
       ),

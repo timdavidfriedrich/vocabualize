@@ -17,6 +17,7 @@ class Messenger {
   }
 
   static void showSaveMessage(Vocabulary vocabulary) async {
+    Navigator.popUntil(Keys.context, ModalRoute.withName("/")); // required, pops all messages
     Navigator.push(Keys.context, SaveMessageRoute(vocabulary: vocabulary));
   }
 
