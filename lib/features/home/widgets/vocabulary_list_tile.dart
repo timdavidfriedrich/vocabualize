@@ -58,7 +58,7 @@ class VocabularyListTile extends StatelessWidget {
           trailing: Icon(
             Icons.circle,
             size: 16,
-            color: vocabulary.levelColor,
+            color: vocabulary.level.color,
           ),
         ),
       ),

@@ -38,7 +38,8 @@ class _StatusCardState extends State<StatusCard> {
                     children: [
                       const Icon(Icons.circle, color: LevelPalette.beginner),
                       Text(
-                          "${Provider.of<VocabularyProvider>(context).vocabularyList.where((voc) => voc.level > 0 && voc.level < 1).length}"),
+                        "${Provider.of<VocabularyProvider>(context).vocabularyList.where((voc) => voc.level.color == LevelPalette.beginner).length}",
+                      ),
                     ],
                   ),
                   const SizedBox(width: 12),
@@ -46,14 +47,17 @@ class _StatusCardState extends State<StatusCard> {
                     children: [
                       const Icon(Icons.circle, color: LevelPalette.advanced),
                       Text(
-                          "${Provider.of<VocabularyProvider>(context).vocabularyList.where((voc) => voc.level >= 1 && voc.level < 2).length}"),
+                        "${Provider.of<VocabularyProvider>(context).vocabularyList.where((voc) => voc.level.color == LevelPalette.advanced).length}",
+                      ),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
                       const Icon(Icons.circle, color: LevelPalette.expert),
-                      Text("${Provider.of<VocabularyProvider>(context).vocabularyList.where((voc) => voc.level >= 2).length}"),
+                      Text(
+                        "${Provider.of<VocabularyProvider>(context).vocabularyList.where((voc) => voc.level.color == LevelPalette.expert).length}",
+                      ),
                     ],
                   ),
                 ],
