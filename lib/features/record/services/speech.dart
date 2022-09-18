@@ -55,6 +55,9 @@ class Speech {
           onResult: (result) => _text = result.recognizedWords,
         );
       }
+    } else {
+      if (_stt.isListening) _stt.cancel();
+      Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = false;
     }
   }
 }
