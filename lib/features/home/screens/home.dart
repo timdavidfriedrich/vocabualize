@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/home/screens/home_empty.dart';
+import 'package:vocabualize/features/home/widgets/double_sheet.dart';
 import 'package:vocabualize/features/home/widgets/new_word_card.dart';
-import 'package:vocabualize/features/home/widgets/sheet_construction.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card.dart';
 import 'package:vocabualize/features/home/widgets/vocabulary_list_tile.dart';
@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: SheetConstruction(
+          body: DoubleSheet(
             settingsSheetController: settingsSheetController,
             recordSheetController: recordSheetController,
             child: Provider.of<VocabularyProvider>(context).vocabularyList.isEmpty

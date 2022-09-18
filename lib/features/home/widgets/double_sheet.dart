@@ -7,11 +7,11 @@ import 'package:vocabualize/features/settings/services/settings_sheet_controller
 import 'package:vocabualize/features/settings/widgets/settings_grab.dart';
 import 'package:vocabualize/features/settings/widgets/settings_sheet.dart';
 
-class SheetConstruction extends StatelessWidget {
+class DoubleSheet extends StatelessWidget {
   final Widget child;
   final SettingsSheetController settingsSheetController;
   final RecordSheetController recordSheetController;
-  const SheetConstruction({super.key, required this.child, required this.settingsSheetController, required this.recordSheetController});
+  const DoubleSheet({super.key, required this.child, required this.settingsSheetController, required this.recordSheetController});
 
   @override
   Widget build(BuildContext context) {
