@@ -10,11 +10,11 @@ import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Vocabualize());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Vocabualize extends StatelessWidget {
+  const Vocabualize({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
