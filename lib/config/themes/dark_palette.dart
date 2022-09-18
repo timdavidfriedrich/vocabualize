@@ -9,7 +9,7 @@ class DarkPalette {
   static const Color onBackground = Colors.white;
   static const Color surface = Color(0xFF002844); // 0xff001C30
   static const Color onSurface = Colors.white;
-  static Color hint = Colors.white.withOpacity(0.4);
+  static final Color hint = Colors.white.withOpacity(0.4);
   static const Color border = Colors.white;
   static const Color error = Colors.red;
 }

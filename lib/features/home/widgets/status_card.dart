@@ -26,7 +26,7 @@ class _StatusCardState extends State<StatusCard> {
         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(CardGenerator.info, style: Theme.of(context).textTheme.displayMedium),
+          Text(CardGenerator.info, style: Theme.of(context).textTheme.displaySmall),
           const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,7 +62,7 @@ class _StatusCardState extends State<StatusCard> {
                   ),
                 ],
               ),
-              ElevatedButton(onPressed: () => Navigator.push(context, Teleport(child: const Practise())), child: const Text("Practise")),
+              ElevatedButton(onPressed: () => Navigator.pushNamed(context, "/practise"), child: const Text("Practise")),
             ],
           )
         ],

@@ -129,7 +129,8 @@ class _HomeState extends State<Home> {
                                 children: List.generate(
                                   Provider.of<VocabularyProvider>(context).vocabularyList.length,
                                   (index) => VocabularyListTile(
-                                      vocabulary: Provider.of<VocabularyProvider>(context).vocabularyList.elementAt(index)),
+                                    vocabulary: Provider.of<VocabularyProvider>(context).vocabularyList.elementAt(index),
+                                  ),
                                 ).reversed.toList(),
                               ),
                               const SizedBox(height: 96),

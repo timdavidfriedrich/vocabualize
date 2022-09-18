@@ -52,7 +52,10 @@ class _PractiseState extends State<Practise> {
                       const SizedBox(height: 48),
                       Text("${Provider.of<VocabularyProvider>(context).allToPractise.length} left",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 12),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
@@ -66,8 +69,13 @@ class _PractiseState extends State<Practise> {
                         ),
                       ),
                       const Spacer(),
-                      Center(child: Text(currentVoc.source)),
-                      const SizedBox(height: 16),
+                      Center(
+                        child: Text(
+                          currentVoc.source,
+                          style: !isSolutionShown ? Theme.of(context).textTheme.displayMedium : Theme.of(context).textTheme.displaySmall,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
                       !isSolutionShown
                           ? Container()
                           : Expanded(
@@ -76,7 +84,10 @@ class _PractiseState extends State<Practise> {
                                   color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(24),
                                 ),
-                                child: Center(child: Text(Provider.of<VocabularyProvider>(context).firstToPractise.target)),
+                                child: Center(
+                                  child: Text(Provider.of<VocabularyProvider>(context).firstToPractise.target,
+                                      style: Theme.of(context).textTheme.displayMedium),
+                                ),
                               ),
                             ),
                       const Spacer(),

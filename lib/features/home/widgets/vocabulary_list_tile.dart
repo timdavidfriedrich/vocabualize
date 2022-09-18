@@ -36,9 +36,8 @@ class VocabularyListTile extends StatelessWidget {
           child: Icon(Icons.edit_rounded, color: Theme.of(context).colorScheme.onPrimary),
         ),
         child: ListTile(
-          contentPadding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+          contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          // ?: onTap oder longPress?
           onTap: () => Messenger.editDialog(vocabulary),
           leading: SizedBox(
             width: 48,
@@ -48,13 +47,8 @@ class VocabularyListTile extends StatelessWidget {
               child: Container(color: Theme.of(context).colorScheme.surface),
             ),
           ),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(vocabulary.target),
-              Text(vocabulary.source, style: TextStyle(color: Theme.of(context).hintColor)),
-            ],
-          ),
+          title: Text(vocabulary.target),
+          subtitle: Text(vocabulary.source, style: TextStyle(color: Theme.of(context).hintColor)),
           trailing: Icon(
             Icons.circle,
             size: 16,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabualize/features/settings/widgets/settings_list_tile.dart';
 
 class SettingsSheet extends StatelessWidget {
   const SettingsSheet({Key? key}) : super(key: key);
@@ -25,6 +26,25 @@ class SettingsSheet extends StatelessWidget {
               ],
             ),
           ),
+          SettingsListTile(
+            title: const Text("Words have images"),
+            subtitle: Text(
+              /* "If disabled, all images will be hidden."*/ "Enable for better learning.",
+              style: TextStyle(color: Theme.of(context).hintColor),
+            ),
+            trailing: Switch(
+              value: true,
+              onChanged: (value) => {},
+            ),
+          ),
+          SettingsListTile(
+            title: Text("Hi"),
+            //subtitle: Text("Buenos días!"),
+            trailing: Switch(
+              value: false,
+              onChanged: (value) => {},
+            ),
+          )
         ],
       ),
     );

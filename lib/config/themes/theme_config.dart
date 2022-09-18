@@ -4,50 +4,43 @@ import 'package:vocabualize/config/themes/dark_palette.dart';
 import 'package:vocabualize/config/themes/light_palette.dart';
 import 'package:vocabualize/constants/keys.dart';
 
-class ThemeHandler extends StatelessWidget {
-  final Widget home;
-  const ThemeHandler({Key? key, required this.home}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      //showPerformanceOverlay: true,
-      debugShowCheckedModeBanner: false,
-      navigatorKey: Keys.navigatorState,
-      theme: theme(
-        context,
-        LightPalette.primary,
-        LightPalette.onPrimay,
-        LightPalette.secondary,
-        LightPalette.onSecondary,
-        LightPalette.background,
-        LightPalette.onBackground,
-        LightPalette.surface,
-        LightPalette.onSurface,
-        LightPalette.hint,
-        LightPalette.border,
-        LightPalette.error,
-      ),
-      darkTheme: theme(
-        context,
-        DarkPalette.primary,
-        DarkPalette.onPrimary,
-        DarkPalette.secondary,
-        DarkPalette.onSecondary,
-        DarkPalette.background,
-        DarkPalette.onBackground,
-        DarkPalette.surface,
-        DarkPalette.onSurface,
-        DarkPalette.hint,
-        DarkPalette.border,
-        DarkPalette.error,
-      ),
-      home: home,
+class ThemeConfig {
+  static ThemeData light(BuildContext context) {
+    return _theme(
+      context,
+      LightPalette.primary,
+      LightPalette.onPrimay,
+      LightPalette.secondary,
+      LightPalette.onSecondary,
+      LightPalette.background,
+      LightPalette.onBackground,
+      LightPalette.surface,
+      LightPalette.onSurface,
+      LightPalette.hint,
+      LightPalette.border,
+      LightPalette.error,
     );
   }
 
-  theme(BuildContext context, Color primary, Color onPrimary, Color secondary, Color onSecondary, Color background, Color onBackground,
-      Color surface, Color onSurface, Color hint, Color border, Color error) {
+  static ThemeData dark(BuildContext context) {
+    return _theme(
+      context,
+      DarkPalette.primary,
+      DarkPalette.onPrimary,
+      DarkPalette.secondary,
+      DarkPalette.onSecondary,
+      DarkPalette.background,
+      DarkPalette.onBackground,
+      DarkPalette.surface,
+      DarkPalette.onSurface,
+      DarkPalette.hint,
+      DarkPalette.border,
+      DarkPalette.error,
+    );
+  }
+
+  static ThemeData _theme(BuildContext context, Color primary, Color onPrimary, Color secondary, Color onSecondary, Color background,
+      Color onBackground, Color surface, Color onSurface, Color hint, Color border, Color error) {
     //
     return ThemeData(
       //
@@ -107,7 +100,7 @@ class ThemeHandler extends StatelessWidget {
       iconTheme: IconThemeData(color: onBackground),
 
       ///* ListTile
-      listTileTheme: ListTileThemeData(iconColor: onBackground, selectedTileColor: surface),
+      //listTileTheme: ListTileThemeData(iconColor: onBackground, selectedTileColor: surface, textColor: hint),
 
       ///* ElevatedButton
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -180,19 +173,20 @@ class ThemeHandler extends StatelessWidget {
           fontSize: 32,
           fontWeight: FontWeight.bold,
         ),
+        // e.g. Card info, practise progress
         displaySmall: GoogleFonts.poppins(
           color: onBackground,
-          fontSize: 12,
-          fontWeight: FontWeight.normal,
+          fontSize: 16,
         ),
+        // e.g. practise source and target
         displayMedium: GoogleFonts.poppins(
           color: onBackground,
+          fontSize: 24,
           height: 1.5,
-          fontSize: 16,
         ),
         displayLarge: GoogleFonts.poppins(
           color: onBackground,
-          fontSize: 72,
+          fontSize: 32,
           fontWeight: FontWeight.bold,
         ),
         bodySmall: GoogleFonts.poppins(
@@ -200,9 +194,10 @@ class ThemeHandler extends StatelessWidget {
           fontSize: 16,
           height: 1.5,
         ),
+        // e.g. ListTile subtitle
         bodyMedium: GoogleFonts.poppins(
-          color: onBackground,
-          fontSize: 18,
+          color: Colors.green,
+          fontSize: 14,
           height: 1.5,
         ),
         bodyLarge: GoogleFonts.poppins(

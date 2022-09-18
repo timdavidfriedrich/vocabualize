@@ -9,7 +9,7 @@ class LightPalette {
   static const Color onBackground = Colors.black;
   static const Color surface = Color(0xffD5EEFF);
   static const Color onSurface = Colors.black;
-  static Color hint = Colors.black.withOpacity(0.4);
+  static final Color hint = Colors.black.withOpacity(0.4);
   static const Color border = Colors.white;
   static const Color error = Colors.red;
 }
