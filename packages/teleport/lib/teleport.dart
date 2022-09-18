@@ -14,21 +14,21 @@ class Teleport extends PageRouteBuilder {
 * Für 'type'-Optionen, siehe 'animationHandler(..)'
   */
 
-  final Widget child;
-  final String type;
-  final Duration duration;
-  final Duration reverseDuration;
-
   Teleport({
     required this.child,
     this.type = "none",
-    this.duration = const Duration(milliseconds: 300),
-    this.reverseDuration = const Duration(milliseconds: 200),
+    this.duration = const Duration(milliseconds: 200),
+    this.reverseDuration = const Duration(milliseconds: 100),
   }) : super(
           transitionDuration: duration,
           reverseTransitionDuration: reverseDuration,
           pageBuilder: (context, animation, secondaryAnimation) => child,
         );
+
+  final Widget child;
+  final String type;
+  final Duration duration;
+  final Duration reverseDuration;
 
   animationHandler(animation, child) {
     switch (type) {
