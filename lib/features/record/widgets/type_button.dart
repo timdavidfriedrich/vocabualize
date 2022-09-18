@@ -50,7 +50,10 @@ class _TypeButtonState extends State<TypeButton> {
             onTap: Provider.of<ActiveProvider>(context).micIsActive
                 ? () {}
                 : () => Provider.of<ActiveProvider>(context, listen: false).typeIsActive = true,
-            onChanged: (text) => setState(() => currentSource = text),
+            onChanged: (text) => setState(() {
+              currentSource = text;
+              Provider.of<ActiveProvider>(context, listen: false).typeIsActive = true;
+            }),
             onFieldSubmitted: (text) async {
               Messenger.loadingAnimation();
               Vocabulary newVocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
