@@ -91,9 +91,8 @@ class ThemeConfig {
 
       ///* Switch
       switchTheme: SwitchThemeData(
-        trackColor:
-            MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? secondary.withOpacity(0.5) : border),
-        thumbColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? secondary : onPrimary),
+        trackColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? primary : surface),
+        thumbColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? onPrimary : onPrimary),
       ),
 
       ///* Icons
@@ -176,28 +175,28 @@ class ThemeConfig {
         // e.g. Card info, practise progress
         displaySmall: GoogleFonts.poppins(
           color: onBackground,
-          fontSize: 16,
+          fontSize: 12,
         ),
         // e.g. practise source and target
         displayMedium: GoogleFonts.poppins(
           color: onBackground,
-          fontSize: 24,
+          fontSize: 16,
           height: 1.5,
         ),
         displayLarge: GoogleFonts.poppins(
           color: onBackground,
-          fontSize: 32,
+          fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
         bodySmall: GoogleFonts.poppins(
           color: onBackground,
-          fontSize: 16,
+          fontSize: 12,
           height: 1.5,
         ),
         // e.g. ListTile subtitle
         bodyMedium: GoogleFonts.poppins(
-          color: Colors.green,
-          fontSize: 14,
+          color: onBackground,
+          fontSize: 16,
           height: 1.5,
         ),
         bodyLarge: GoogleFonts.poppins(

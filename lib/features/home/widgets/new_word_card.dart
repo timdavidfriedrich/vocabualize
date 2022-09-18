@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
 class NewWordCard extends StatelessWidget {
@@ -9,7 +10,7 @@ class NewWordCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      onTap: () => {},
+      onTap: () => Messenger.editDialog(vocabulary),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -28,11 +29,11 @@ class NewWordCard extends StatelessWidget {
             const SizedBox(height: 8),
             SizedBox(
               width: 128,
-              child: Text(vocabulary.target, style: Theme.of(context).textTheme.bodySmall),
+              child: Text(vocabulary.target, style: Theme.of(context).textTheme.bodyMedium),
             ),
             SizedBox(
               width: 128,
-              child: Text(vocabulary.source, style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor)),
+              child: Text(vocabulary.source, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).hintColor)),
             ),
           ],
         ),

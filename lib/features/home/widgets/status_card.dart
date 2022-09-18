@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:teleport/teleport.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/home/services/card_generator.dart';
-import 'package:vocabualize/features/practise/screens/practise.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 
 class StatusCard extends StatefulWidget {
@@ -26,7 +24,7 @@ class _StatusCardState extends State<StatusCard> {
         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(CardGenerator.info, style: Theme.of(context).textTheme.displaySmall),
+          Text(CardGenerator.info, style: Theme.of(context).textTheme.displayMedium),
           const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,7 +62,7 @@ class _StatusCardState extends State<StatusCard> {
               ),
               ElevatedButton(onPressed: () => Navigator.pushNamed(context, "/practise"), child: const Text("Practise")),
             ],
-          )
+          ),
         ],
       ),
     );
