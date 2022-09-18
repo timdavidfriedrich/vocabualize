@@ -7,6 +7,7 @@ import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card.dart';
 import 'package:vocabualize/features/home/widgets/vocabulary_list_tile.dart';
 import 'package:vocabualize/features/record/services/record_sheet_controller.dart';
+import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/services/settings_sheet_controller.dart';
 
 class Home extends StatefulWidget {
@@ -23,6 +24,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     Provider.of<VocabularyProvider>(context, listen: false).init();
+    Provider.of<SettingsProvider>(context, listen: false).init();
     super.initState();
   }
 

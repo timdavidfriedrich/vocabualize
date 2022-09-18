@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class VocabularyListTile extends StatelessWidget {
   final Vocabulary vocabulary;
@@ -39,14 +40,18 @@ class VocabularyListTile extends StatelessWidget {
           contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           onTap: () => Messenger.editDialog(vocabulary),
-          leading: SizedBox(
-            width: 48,
-            height: 48,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Container(color: Theme.of(context).colorScheme.surface),
-            ),
-          ),
+
+          /// TODO: add image
+          leading: Provider.of<SettingsProvider>(context).areImagesDisabled
+              ? null
+              : SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(color: Theme.of(context).colorScheme.surface),
+                  ),
+                ),
           title: Text(vocabulary.target),
           subtitle: Text(vocabulary.source, style: TextStyle(color: Theme.of(context).hintColor)),
           trailing: Icon(

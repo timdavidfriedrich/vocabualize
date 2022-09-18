@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:log/log.dart';
+import 'package:provider/provider.dart';
+import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/widgets/settings_list_tile.dart';
 
 class SettingsSheet extends StatelessWidget {
@@ -57,8 +60,10 @@ class SettingsSheet extends StatelessWidget {
               style: TextStyle(color: Theme.of(context).hintColor),
             ),
             trailing: Switch(
-              value: true,
-              onChanged: (value) => {},
+              value: Provider.of<SettingsProvider>(context).areImagesEnabled,
+              onChanged: (value) {
+                Provider.of<SettingsProvider>(context, listen: false).areImagesEnabled = value;
+              },
             ),
           ),
         ],
