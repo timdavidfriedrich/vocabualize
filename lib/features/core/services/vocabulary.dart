@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/services/Level.dart';
+import 'package:vocabualize/features/core/services/level.dart';
 import 'package:vocabualize/features/practise/services/answer.dart';
 import 'package:vocabualize/features/practise/services/date_calculator.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
@@ -69,7 +68,7 @@ class Vocabulary {
 
   @override
   String toString() {
-    return "$source: \n\t'target': $target, \n\t'tags': $tags, \n\t'level': ${level.value}, \n\t'isNovice': $isNovice, " /*\n\t'noviceInterval': $noviceInterval*/
+    return "$source: \n\t'target': $target, \n\t'tags': $tags, \n\t'level': $level, \n\t'isNovice': $isNovice, " /*\n\t'noviceInterval': $noviceInterval*/
         ", \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $creationDate, \n\t'nextDate': $nextDate";
   }
 }

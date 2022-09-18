@@ -28,4 +28,9 @@ class Level {
       if (value <= _valueLimit) value += difference;
     }
   }
+
+  @override
+  String toString() {
+    return value.toString();
+  }
 }
