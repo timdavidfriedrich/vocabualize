@@ -8,6 +8,7 @@ class SettingsProvider extends ChangeNotifier {
 
   String _sourceLang = "de";
   String _targetLang = "es";
+  bool _enableImages = true;
   int _initialInterval = 1440 * 1;
   int _initialNoviceInterval = 1;
   double _initialEase = 2.5;
@@ -24,6 +25,11 @@ class SettingsProvider extends ChangeNotifier {
 
   set targetLang(String targetLang) {
     _targetLang = targetLang;
+    save();
+  }
+
+  set enableImages(bool enableImages) {
+    _enableImages = enableImages;
     save();
   }
 
@@ -69,6 +75,7 @@ class SettingsProvider extends ChangeNotifier {
 
   String get sourceLang => _sourceLang;
   String get targetLang => _targetLang;
+  bool get enableImages => _enableImages;
   int get initialInterval => _initialInterval;
   int get initialNoviceInterval => _initialNoviceInterval;
   double get initialEase => _initialEase;
@@ -84,6 +91,7 @@ class SettingsProvider extends ChangeNotifier {
     /// TODO: Save as JSON
     await prefs.setString("sourceLang", _sourceLang);
     await prefs.setString("targetLang", _targetLang);
+    await prefs.setBool("enableImages", _enableImages);
     await prefs.setInt("initialInterval", _initialInterval);
     await prefs.setInt("initialNoviceInterval", _initialNoviceInterval);
     await prefs.setDouble("initialEase", _initialEase);
@@ -100,6 +108,7 @@ class SettingsProvider extends ChangeNotifier {
     /// TODO: Get from JSON
     _sourceLang = prefs.getString("sourceLang")!;
     _targetLang = prefs.getString("targetLang")!;
+    _enableImages = prefs.getBool("enableImages")!;
     _initialInterval = prefs.getInt("initialInterval")!;
     _initialNoviceInterval = prefs.getInt("initialNoviceInterval")!;
     _initialEase = prefs.getDouble("initialEase")!;

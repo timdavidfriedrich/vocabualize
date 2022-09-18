@@ -15,14 +15,38 @@ class SettingsSheet extends StatelessWidget {
           const SizedBox(height: 48),
           Text("Settings", style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: 12),
+          /*
+            String _sourceLang = "de";
+            String _targetLang = "es";
+            bool _enableImages = true;
+            int _initialInterval = 1440 * 1;
+            int _initialNoviceInterval = 1;
+            double _initialEase = 2.5;
+            double _easeDowngrade = 0.2;
+            double _easyBonus = 1.3;
+            double _easyLevelFactor = 0.6;
+            double _goodLevelFactor = 0.3;
+            double _hardLevelFactor = -0.3;
+          */
           SettingsListTile(
-            title: Text("My language"),
+            title: const Text("Source language"),
+            subtitle: const Text("Your mother tongue."),
             trailing: PopupMenuButton(
-              child: Text("Hui"),
+              child: const Text("Deutsch"),
               onSelected: (value) => {},
               itemBuilder: (context) => [
-                PopupMenuItem(child: Text("Hihihi")),
-                PopupMenuItem(child: Text("Hihihi")),
+                const PopupMenuItem(child: Text("Deutsch")),
+              ],
+            ),
+          ),
+          SettingsListTile(
+            title: const Text("Target language"),
+            subtitle: const Text("The language you learn."),
+            trailing: PopupMenuButton(
+              child: const Text("Español"),
+              onSelected: (value) => {},
+              itemBuilder: (context) => [
+                const PopupMenuItem(child: Text("Español")),
               ],
             ),
           ),
@@ -37,14 +61,6 @@ class SettingsSheet extends StatelessWidget {
               onChanged: (value) => {},
             ),
           ),
-          SettingsListTile(
-            title: Text("Hi"),
-            //subtitle: Text("Buenos días!"),
-            trailing: Switch(
-              value: false,
-              onChanged: (value) => {},
-            ),
-          )
         ],
       ),
     );
