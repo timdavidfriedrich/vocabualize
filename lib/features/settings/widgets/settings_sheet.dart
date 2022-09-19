@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/widgets/settings_list_tile.dart';
