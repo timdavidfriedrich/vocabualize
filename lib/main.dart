@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/constants/keys.dart';
-import 'package:vocabualize/features/home/screens/home.dart';
+ import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/practise/screens/practise.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
@@ -34,10 +34,10 @@ class Vocabualize extends StatelessWidget {
         //showPerformanceOverlay: true,
         debugShowCheckedModeBanner: false,
         navigatorKey: Keys.navigatorState,
-        initialRoute: "/",
+        initialRoute: Home.routeName,
         routes: {
-          "/": (context) => const Home(),
-          "/practise": (context) => const Practise(),
+          Home.routeName: (context) => const Home(),
+          Practise.routeName: (context) => const Practise(),
         },
       ),
     );

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/home/services/card_generator.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
+import 'package:vocabualize/features/practise/screens/practise.dart';
 
 class StatusCard extends StatefulWidget {
   const StatusCard({Key? key}) : super(key: key);
@@ -60,7 +61,7 @@ class _StatusCardState extends State<StatusCard> {
                   ),
                 ],
               ),
-              ElevatedButton(onPressed: () => Navigator.pushNamed(context, "/practise"), child: const Text("Practise")),
+              ElevatedButton(onPressed: () => Navigator.pushNamed(context, Practise.routeName), child: const Text("Practise")),
             ],
           ),
         ],

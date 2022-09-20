@@ -7,8 +7,8 @@ import 'package:vocabualize/features/practise/services/date_calculator.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Vocabulary {
-  String source = "";
-  String target = "";
+  String _source = "";
+  String _target = "";
   List<String> tags = [];
   Level level = Level();
   bool isNovice = true;
@@ -18,11 +18,14 @@ class Vocabulary {
   DateTime creationDate = DateTime.now();
   DateTime nextDate = DateTime.now();
 
-  Vocabulary({required this.source, required this.target, tags}) : tags = tags ?? [];
+  Vocabulary({required String source, required String target, tags})
+      : _target = target,
+        _source = source,
+        tags = tags ?? ["Food", "Environment", "Places", "Transportation"];
 
   Vocabulary.fromJson(Map<String, dynamic> json) {
-    source = json['source'];
-    target = json['target'];
+    _source = json['source'];
+    _target = json['target'];
     for (dynamic voc in json["tags"]) {
       tags.add(voc.toString());
     }
@@ -36,8 +39,8 @@ class Vocabulary {
   }
 
   Map<String, dynamic> toJson() => {
-        'source': source,
-        'target': target,
+        'source': _source,
+        'target': _target,
         'tags': tags,
         'level': level.value,
         'isNovice': isNovice,
@@ -48,13 +51,36 @@ class Vocabulary {
         'nextDate': nextDate.millisecondsSinceEpoch,
       };
 
+  String get source => _source;
+  String get target => _target;
   bool get isNotNovice => !isNovice;
 
-  void addTag(String tag) => tags.add(tag);
-  void removeTag(String tag) => tags.remove(tag);
+  set source(String source) {
+    _source = source;
+    save();
+  }
+
+  set target(String target) {
+    _target = target;
+    save();
+  }
+
+  void addTag(String tag) {
+    tags.add(tag);
+    save();
+  }
+
+  void deleteTag(String tag) {
+    tags.remove(tag);
+    save();
+  }
 
   Future<void> answer(Answer answer) async {
     nextDate = DateCalculator.nextDate(this, answer);
+    await Provider.of<VocabularyProvider>(Keys.context, listen: false).save();
+  }
+
+  Future<void> save() async {
     await Provider.of<VocabularyProvider>(Keys.context, listen: false).save();
   }
 
@@ -68,7 +94,7 @@ class Vocabulary {
 
   @override
   String toString() {
-    return "$source: \n\t'target': $target, \n\t'tags': $tags, \n\t'level': $level, \n\t'isNovice': $isNovice, " /*\n\t'noviceInterval': $noviceInterval*/
+    return "$_source: \n\t'target': $_target, \n\t'tags': $tags, \n\t'level': $level, \n\t'isNovice': $isNovice, " /*\n\t'noviceInterval': $noviceInterval*/
         ", \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $creationDate, \n\t'nextDate': $nextDate";
   }
 }

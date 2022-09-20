@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/home/screens/home.dart';
 
 class SaveMessage extends StatefulWidget {
   const SaveMessage({super.key, required this.vocabulary, animationDuration, stayDuration})
@@ -44,7 +45,7 @@ class _SaveMessageState extends State<SaveMessage> {
             onEnd: () {
               if (dismissedEnd.isNegative && currentValue >= dismissedEnd) return;
               if (!dismissedEnd.isNegative && currentValue <= dismissedEnd) return;
-              Navigator.popUntil(Keys.context, ModalRoute.withName("/")); // pops all messages
+              Navigator.popUntil(Keys.context, ModalRoute.withName(Home.routeName)); // pops all messages
             },
             builder: (context, double value, child) {
               currentValue = value;

@@ -105,9 +105,7 @@ class ThemeConfig {
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(onPrimary),
           backgroundColor: MaterialStateProperty.all<Color>(primary),
-          padding: MaterialStateProperty.all<EdgeInsets>(
-            const EdgeInsets.fromLTRB(32, 12, 32, 12),
-          ),
+          padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.fromLTRB(32, 12, 32, 12)),
           textStyle: MaterialStateProperty.all<TextStyle>(
             GoogleFonts.poppins(
               color: onSurface,
@@ -126,24 +124,20 @@ class ThemeConfig {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(onBackground),
-          padding: MaterialStateProperty.all<EdgeInsets>(
-            const EdgeInsets.fromLTRB(32, 12, 32, 12),
-          ),
+          padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.fromLTRB(32, 12, 32, 12)),
           elevation: MaterialStateProperty.all<double>(0),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
         ).copyWith(side: MaterialStateProperty.all<BorderSide>(BorderSide(width: 2, color: primary))),
       ),
 
-      // ///* Dialog
-      // dialogTheme: DialogTheme(
-      //   elevation: 8,
-      //   backgroundColor: background,
-      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-      // ),
+      ///* Dialog
+      dialogTheme: DialogTheme(
+        elevation: 8,
+        backgroundColor: background,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      ),
+
+      chipTheme: ChipThemeData(backgroundColor: primary.withOpacity(0.1), labelStyle: GoogleFonts.poppins(color: onSurface, fontSize: 12)),
 
       ///* Text-Themes
       textTheme: TextTheme(
@@ -198,10 +192,10 @@ class ThemeConfig {
           fontSize: 16,
           height: 1.5,
         ),
+        // e.g. TextField
         bodyLarge: GoogleFonts.poppins(
           color: onBackground,
-          fontSize: 24,
-          height: 1.5,
+          fontSize: 16,
         ),
         labelSmall: GoogleFonts.poppins(
           color: onPrimary,
@@ -222,21 +216,22 @@ class ThemeConfig {
 
       ///* TextField-Themes etc.
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: surface,
+        cursorColor: primary,
         selectionColor: hint,
-        selectionHandleColor: surface,
+        selectionHandleColor: primary.withOpacity(0.5),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: TextStyle(color: onPrimary),
-        labelStyle: TextStyle(color: onPrimary),
+        hintStyle: TextStyle(color: hint),
+        labelStyle: TextStyle(color: onBackground),
         alignLabelWithHint: true,
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: false,
-        contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
-        disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: hint, width: 4), borderRadius: BorderRadius.circular(16)),
-        border: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
-        errorBorder: OutlineInputBorder(borderSide: BorderSide(color: error), borderRadius: BorderRadius.circular(16)),
+        contentPadding: const EdgeInsets.fromLTRB(18, 8, 18, 8),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 2), borderRadius: BorderRadius.circular(16)),
+        disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: hint, width: 2), borderRadius: BorderRadius.circular(16)),
+        border: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 2), borderRadius: BorderRadius.circular(16)),
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: primary, width: 2), borderRadius: BorderRadius.circular(16)),
+        errorBorder: OutlineInputBorder(borderSide: BorderSide(color: error, width: 2), borderRadius: BorderRadius.circular(16)),
       ),
     );
   }

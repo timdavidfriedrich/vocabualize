@@ -10,6 +10,8 @@ import 'package:vocabualize/features/practise/services/answer.dart';
 class Practise extends StatefulWidget {
   const Practise({Key? key}) : super(key: key);
 
+  static const routeName = "/practise";
+
   @override
   State<Practise> createState() => _PractiseState();
 }

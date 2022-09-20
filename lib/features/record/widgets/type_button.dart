@@ -47,7 +47,7 @@ class _TypeButtonState extends State<TypeButton> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         TextFormField(
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
           toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
           autofocus: false,
           controller: controller,
@@ -55,40 +55,23 @@ class _TypeButtonState extends State<TypeButton> {
           maxLength: 20,
           maxLines: 1,
           onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-          /*
-            textSelectionTheme: TextSelectionThemeData(
-              cursorColor: surface,
-              selectionColor: hint,
-              selectionHandleColor: surface,
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              hintStyle: TextStyle(color: onPrimary),
-              labelStyle: TextStyle(color: onPrimary),
-              alignLabelWithHint: true,
-              filled: false,
-              contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
-              disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: hint, width: 4), borderRadius: BorderRadius.circular(16)),
-              border: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
-              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 4), borderRadius: BorderRadius.circular(16)),
-              errorBorder: OutlineInputBorder(borderSide: BorderSide(color: error), borderRadius: BorderRadius.circular(16)),
-            ),
-          */
           decoration: InputDecoration(
             enabled: !Provider.of<ActiveProvider>(context).micIsActive,
             hintText: "Type instead ...",
             counterText: "",
             contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
-            hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            hintStyle: TextStyle(color: Theme.of(context).hintColor),
             labelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+            disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).hintColor, width: 4), borderRadius: BorderRadius.circular(16)),
             border: OutlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
           ),
-          onTap: Provider.of<ActiveProvider>(context).micIsActive ? () {} : _focus,
+          onTap: Provider.of<ActiveProvider>(context).micIsActive ? () {} : () => _focus(),
           onChanged: (text) {
             setState(() => currentSource = text);
             _focus(); // long pressing on field ignores onTap, that's why this workaround
@@ -102,8 +85,11 @@ class _TypeButtonState extends State<TypeButton> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   OutlinedButton(
-                    style: OutlinedButton.styleFrom(side: BorderSide(width: 3, color: Theme.of(context).colorScheme.onPrimary)),
-                    onPressed: _cancel,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      side: BorderSide(width: 3, color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                    onPressed: () => _cancel(),
                     child: const Text("Close"),
                   ),
                   const SizedBox(width: 16),
@@ -113,7 +99,7 @@ class _TypeButtonState extends State<TypeButton> {
                         foregroundColor: Theme.of(context).colorScheme.primary,
                         backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      onPressed: _submit,
+                      onPressed: () => _submit(),
                       child: const Text("Add"),
                     ),
                   ),

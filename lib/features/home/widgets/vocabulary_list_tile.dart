@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:teleport/teleport.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/edit/screens/edit.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class VocabularyListTile extends StatelessWidget {
@@ -21,8 +19,7 @@ class VocabularyListTile extends StatelessWidget {
         onDismissed: (direction) async => await Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
-            //Messenger.infoDialog(vocabulary);
-            Navigator.push(context, Teleport(child: Edit(vocabulary: vocabulary), type: "scale_center"));
+            Messenger.infoDialog(vocabulary);
             return false;
           } else {
             return true;

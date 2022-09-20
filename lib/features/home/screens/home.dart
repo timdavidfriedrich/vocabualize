@@ -13,6 +13,8 @@ import 'package:vocabualize/features/settings/services/settings_sheet_controller
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
+  static const routeName = "/";
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -52,10 +54,7 @@ class _HomeState extends State<Home> {
                             Row(
                               children: [
                                 Expanded(child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge)),
-                                IconButton(
-                                  onPressed: () => settingsSheetController.show(),
-                                  icon: const Icon(Icons.settings_rounded),
-                                ),
+                                IconButton(onPressed: () => settingsSheetController.show(), icon: const Icon(Icons.settings_rounded)),
                               ],
                             ),
                             const SizedBox(height: 24),
