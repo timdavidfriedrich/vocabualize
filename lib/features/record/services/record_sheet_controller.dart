@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 class RecordSheetController extends SnappingSheetController {
+  static final RecordSheetController _recordSheetController = RecordSheetController();
+  static get instance => _recordSheetController;
+
   SnappingPosition retractedPosition = const SnappingPosition.factor(
     positionFactor: 0.0,
     snappingCurve: ElasticOutCurve(0.8),

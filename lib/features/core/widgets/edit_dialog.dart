@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/widgets/add_tag_dialog.dart';
+import 'package:vocabualize/features/core/widgets/tag_wrap.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
-class InfoDialog extends StatefulWidget {
-  const InfoDialog({super.key, required this.vocabulary});
+class EditDialog extends StatefulWidget {
+  const EditDialog({super.key, required this.vocabulary});
 
   final Vocabulary vocabulary;
 
   @override
-  State<InfoDialog> createState() => _InfoDialogState();
+  State<EditDialog> createState() => _EditDialogState();
 }
 
-class _InfoDialogState extends State<InfoDialog> {
+class _EditDialogState extends State<EditDialog> {
   TextEditingController sourceController = TextEditingController();
   TextEditingController targetController = TextEditingController();
   String sourceText = "";
@@ -50,16 +50,6 @@ class _InfoDialogState extends State<InfoDialog> {
   _delete() {
     Provider.of<VocabularyProvider>(context, listen: false).remove(widget.vocabulary);
     Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
-  }
-
-  _addTag() {
-    showDialog(context: context, builder: (context) => AddTagDialog(vocabulary: widget.vocabulary));
-  }
-
-  _deleteTag(String tag) {
-    widget.vocabulary.deleteTag(tag);
-    setState(() {});
-    //Log.error("DELETED: $tag");
   }
 
   @override
@@ -108,22 +98,7 @@ class _InfoDialogState extends State<InfoDialog> {
                 ),
               ),
               const SizedBox(height: 16),
-              widget.vocabulary.tags.isEmpty
-                  ? Row(children: [const Text("Tags:"), IconButton(onPressed: () => _addTag(), icon: const Icon(Icons.add_rounded))])
-                  : Wrap(
-                      spacing: 8,
-                      runSpacing: -8,
-                      children: List.generate(
-                        widget.vocabulary.tags.length + 1,
-                        (index) => index == widget.vocabulary.tags.length
-                            ? IconButton(onPressed: () => _addTag(), icon: const Icon(Icons.add_rounded))
-                            : Chip(
-                                label: Text(widget.vocabulary.tags.elementAt(index)),
-                                deleteIconColor: Theme.of(context).colorScheme.onSurface,
-                                onDeleted: () => _deleteTag(widget.vocabulary.tags.elementAt(index)),
-                              ),
-                      ),
-                    ),
+              TagWrap(vocabulary: widget.vocabulary),
               const SizedBox(height: 16),
               RichText(
                 text: TextSpan(

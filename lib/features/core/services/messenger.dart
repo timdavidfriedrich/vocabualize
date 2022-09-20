@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/core/widgets/info_dialog.dart';
+import 'package:vocabualize/features/core/widgets/edit_dialog.dart';
 import 'package:vocabualize/features/core/widgets/save_message_route.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
+import 'package:vocabualize/features/record/widgets/add_details_dialog.dart';
 
 class Messenger {
   static void loadingAnimation() {
@@ -21,7 +22,7 @@ class Messenger {
     Navigator.push(Keys.context, SaveMessageRoute(vocabulary: vocabulary));
   }
 
-  static void infoDialog(Vocabulary vocabulary) {
+  static void showInfoDialog(Vocabulary vocabulary) {
     showGeneralDialog(
       context: Keys.context,
       pageBuilder: (context, animation1, animation2) => Container(),
@@ -30,7 +31,22 @@ class Messenger {
         final curvedValue = const ElasticOutCurve(0.9).transform(animation1.value) - 1.0;
         return Transform(
           transform: Matrix4.translationValues(0, curvedValue * 200, 0),
-          child: InfoDialog(vocabulary: vocabulary),
+          child: EditDialog(vocabulary: vocabulary),
+        );
+      },
+    );
+  }
+
+  static void showAddDetailsDialog(Vocabulary vocabulary) async {
+    showGeneralDialog(
+      context: Keys.context,
+      pageBuilder: (context, animation1, animation2) => Container(),
+      transitionDuration: const Duration(milliseconds: 500),
+      transitionBuilder: (context, animation1, animation2, widget) {
+        final curvedValue = const ElasticOutCurve(0.9).transform(animation1.value) - 1.0;
+        return Transform(
+          transform: Matrix4.translationValues(0, curvedValue * 200, 0),
+          child: AddDetailsDialog(vocabulary: vocabulary),
         );
       },
     );

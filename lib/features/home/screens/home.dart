@@ -20,11 +20,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  SettingsSheetController settingsSheetController = SettingsSheetController();
-  RecordSheetController recordSheetController = RecordSheetController();
+  late SettingsSheetController settingsSheetController;
+  late RecordSheetController recordSheetController;
 
   @override
   void initState() {
+    settingsSheetController = SettingsSheetController.instance;
+    recordSheetController = RecordSheetController.instance;
+
     Provider.of<VocabularyProvider>(context, listen: false).init();
     Provider.of<SettingsProvider>(context, listen: false).init();
     super.initState();

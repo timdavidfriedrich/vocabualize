@@ -45,6 +45,7 @@ class _DoubleSheetState extends State<DoubleSheet> {
       //     : null,
       sheetAbove: SnappingSheetContent(draggable: true, child: const SettingsSheet()),
       child: SnappingSheet(
+        controller: widget.recordSheetController,
         initialSnappingPosition: widget.recordSheetController.retractedPosition,
         snappingPositions: [widget.recordSheetController.retractedPosition, widget.recordSheetController.extendedPosition],
         grabbing: const RecordGrab(),

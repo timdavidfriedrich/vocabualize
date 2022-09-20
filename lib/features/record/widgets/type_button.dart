@@ -35,7 +35,8 @@ class _TypeButtonState extends State<TypeButton> {
     if (!mounted) return;
     Provider.of<VocabularyProvider>(context, listen: false).add(newVocabulary).whenComplete(() {
       Navigator.pop(context);
-      Messenger.showSaveMessage(newVocabulary);
+      //Messenger.showSaveMessage(newVocabulary);
+      Messenger.showAddDetailsDialog(newVocabulary);
     });
     currentSource = "";
     controller.clear();

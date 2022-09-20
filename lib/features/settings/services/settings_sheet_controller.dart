@@ -2,6 +2,9 @@ import 'package:flutter/animation.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 class SettingsSheetController extends SnappingSheetController {
+  static final SettingsSheetController _settingsSheetController = SettingsSheetController();
+  static get instance => _settingsSheetController;
+
   SnappingPosition retractedPosition = const SnappingPosition.factor(
     positionFactor: 1.0,
     snappingDuration: Duration(milliseconds: 500),

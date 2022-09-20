@@ -14,7 +14,7 @@ class NewWordCard extends StatelessWidget {
     return MaterialButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       color: Provider.of<SettingsProvider>(context).areImagesDisabled ? Theme.of(context).colorScheme.surface : null,
-      onPressed: () => Messenger.infoDialog(vocabulary),
+      onPressed: () => Messenger.showInfoDialog(vocabulary),
       padding: Provider.of<SettingsProvider>(context).areImagesDisabled ? const EdgeInsets.all(16.0) : const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

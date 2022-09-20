@@ -19,7 +19,7 @@ class VocabularyListTile extends StatelessWidget {
         onDismissed: (direction) async => await Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
-            Messenger.infoDialog(vocabulary);
+            Messenger.showInfoDialog(vocabulary);
             return false;
           } else {
             return true;
@@ -40,7 +40,7 @@ class VocabularyListTile extends StatelessWidget {
         child: ListTile(
           contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          onTap: () => Messenger.infoDialog(vocabulary),
+          onTap: () => Messenger.showInfoDialog(vocabulary),
 
           /// TODO: add image
           leading: Provider.of<SettingsProvider>(context).areImagesDisabled
