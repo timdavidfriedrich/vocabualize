@@ -15,6 +15,7 @@ class TypeButton extends StatefulWidget {
 
 class _TypeButtonState extends State<TypeButton> {
   TextEditingController controller = TextEditingController();
+  FocusNode focusNode = FocusNode();
   String currentSource = "";
 
   _focus() {
@@ -38,7 +39,8 @@ class _TypeButtonState extends State<TypeButton> {
     });
     currentSource = "";
     controller.clear();
-    Provider.of<ActiveProvider>(context, listen: false).typeIsActive = false;
+    focusNode.requestFocus();
+    //Provider.of<ActiveProvider>(context, listen: false).typeIsActive = false;
   }
 
   @override
@@ -50,6 +52,7 @@ class _TypeButtonState extends State<TypeButton> {
           style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
           toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
           autofocus: false,
+          focusNode: focusNode,
           controller: controller,
           textInputAction: TextInputAction.done,
           maxLength: 20,
