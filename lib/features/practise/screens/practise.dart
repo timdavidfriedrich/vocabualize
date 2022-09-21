@@ -85,12 +85,7 @@ class _PractiseState extends State<Practise> {
                                       ? null
                                       : DecorationImage(
                                           fit: BoxFit.cover,
-                                          image: CachedNetworkImageProvider(
-                                            Provider.of<VocabularyProvider>(context, listen: false)
-                                                .firstToPractise
-                                                .imageModel
-                                                .src["medium"],
-                                          ),
+                                          image: CachedNetworkImageProvider(currentVoc.imageModel.src["medium"]),
                                         ),
                                 ),
                                 child: !isSolutionShown
@@ -100,10 +95,7 @@ class _PractiseState extends State<Practise> {
                                           color: Theme.of(context).colorScheme.surface.withOpacity(0.75),
                                           borderRadius: BorderRadius.circular(24),
                                         ),
-                                        child: Center(
-                                          child: Text(Provider.of<VocabularyProvider>(context).firstToPractise.target,
-                                              style: Theme.of(context).textTheme.headlineMedium),
-                                        ),
+                                        child: Center(child: Text(currentVoc.target, style: Theme.of(context).textTheme.headlineMedium)),
                                       ),
                               ),
                             ),
@@ -122,7 +114,7 @@ class _PractiseState extends State<Practise> {
                                       backgroundColor: LevelPalette.beginner,
                                     ),
                                     onPressed: () async {
-                                      await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.hard);
+                                      await currentVoc.answer(Answer.hard);
                                       refreshVoc();
                                     },
                                     child: const Text("Hard"),
@@ -136,7 +128,7 @@ class _PractiseState extends State<Practise> {
                                       backgroundColor: LevelPalette.advanced,
                                     ),
                                     onPressed: () async {
-                                      await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.good);
+                                      await currentVoc.answer(Answer.good);
                                       refreshVoc();
                                     },
                                     child: const Text("Good"),
@@ -150,7 +142,7 @@ class _PractiseState extends State<Practise> {
                                       backgroundColor: LevelPalette.expert,
                                     ),
                                     onPressed: () async {
-                                      await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.easy);
+                                      await currentVoc.answer(Answer.easy);
                                       refreshVoc();
                                     },
                                     child: const Text("Easy"),
@@ -167,11 +159,11 @@ class _PractiseState extends State<Practise> {
                           : OutlinedButton(
                               onPressed: () async {
                                 Log.hint("BEFORE: $currentVoc");
-                                await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.forgot);
+                                await currentVoc.answer(Answer.forgot);
                                 Log.hint("BEFORE: $currentVoc");
                                 refreshVoc();
                               },
-                              child: const Text("I forgot the word", style: TextStyle(color: LevelPalette.novice)),
+                              child: const Text("I didn't know", style: TextStyle(color: LevelPalette.novice)),
                             ),
                       const SizedBox(height: 64),
                     ],
