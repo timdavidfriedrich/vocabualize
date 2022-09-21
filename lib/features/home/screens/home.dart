@@ -31,6 +31,9 @@ class _HomeState extends State<Home> {
     settingsSheetController = SettingsSheetController.instance;
     recordSheetController = RecordSheetController.instance;
 
+    settingsSheetController.hide();
+    recordSheetController.hide();
+
     Provider.of<VocabularyProvider>(context, listen: false).init();
     Provider.of<SettingsProvider>(context, listen: false).init();
     super.initState();
