@@ -7,8 +7,14 @@ class Translator {
   static final _translator = GoogleTranslator();
 
   static Future<String> inEnglish(String source) async {
+    // TODO: Imlement a better, more independent way to filter
+    List<String> articles = ["the", "a", "an", "der", "die", "das", "des", "ein", "eine"];
+    String sourceFiltered = source;
+    for (String article in articles) {
+      if (source.startsWith("$article ")) sourceFiltered = source.replaceFirst(article, "");
+    }
     Translation translation = await _translator.translate(
-      source,
+      sourceFiltered,
       from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLang,
       to: "en",
     );
