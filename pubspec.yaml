@@ -32,6 +32,8 @@ dependencies:
   teleport:
     path: ./packages/teleport
   intl: ^0.17.0
+  http: ^0.13.5
+  cached_network_image: ^3.2.2
 
 
 dev_dependencies:

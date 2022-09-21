@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:log/log.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/practise/screens/practise_done.dart';
 import 'package:vocabualize/features/practise/services/answer.dart';
+import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Practise extends StatefulWidget {
   const Practise({Key? key}) : super(key: key);
@@ -71,27 +73,42 @@ class _PractiseState extends State<Practise> {
                         ),
                       ),
                       const Spacer(),
-                      Center(
-                        child: Text(
-                          currentVoc.source,
-                          style: !isSolutionShown ? Theme.of(context).textTheme.displayMedium : Theme.of(context).textTheme.displaySmall,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      !isSolutionShown
+                      Provider.of<SettingsProvider>(context).areImagesDisabled && !isSolutionShown
                           ? Container()
                           : Expanded(
+                              flex: 2,
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(24),
+                                  image: Provider.of<SettingsProvider>(context).areImagesDisabled
+                                      ? null
+                                      : DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: CachedNetworkImageProvider(
+                                            Provider.of<VocabularyProvider>(context, listen: false)
+                                                .firstToPractise
+                                                .imageModel
+                                                .src["medium"],
+                                          ),
+                                        ),
                                 ),
-                                child: Center(
-                                  child: Text(Provider.of<VocabularyProvider>(context).firstToPractise.target,
-                                      style: Theme.of(context).textTheme.displayMedium),
-                                ),
+                                child: !isSolutionShown
+                                    ? null
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.surface.withOpacity(0.75),
+                                          borderRadius: BorderRadius.circular(24),
+                                        ),
+                                        child: Center(
+                                          child: Text(Provider.of<VocabularyProvider>(context).firstToPractise.target,
+                                              style: Theme.of(context).textTheme.headlineMedium),
+                                        ),
+                                      ),
                               ),
                             ),
+                      const SizedBox(height: 32),
+                      Center(child: Text(currentVoc.source, style: Theme.of(context).textTheme.bodyMedium)),
                       const Spacer(),
                       !isSolutionShown
                           ? Container()
@@ -105,9 +122,7 @@ class _PractiseState extends State<Practise> {
                                       backgroundColor: LevelPalette.beginner,
                                     ),
                                     onPressed: () async {
-                                      Log.error("BEFORE: $currentVoc");
                                       await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.hard);
-                                      Log.error("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Hard"),
@@ -121,9 +136,7 @@ class _PractiseState extends State<Practise> {
                                       backgroundColor: LevelPalette.advanced,
                                     ),
                                     onPressed: () async {
-                                      Log.warning("BEFORE: $currentVoc");
                                       await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.good);
-                                      Log.warning("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Good"),
@@ -137,9 +150,7 @@ class _PractiseState extends State<Practise> {
                                       backgroundColor: LevelPalette.expert,
                                     ),
                                     onPressed: () async {
-                                      Log.hint("BEFORE: $currentVoc");
                                       await Provider.of<VocabularyProvider>(context, listen: false).firstToPractise.answer(Answer.easy);
-                                      Log.hint("AFTER: $currentVoc");
                                       refreshVoc();
                                     },
                                     child: const Text("Easy"),

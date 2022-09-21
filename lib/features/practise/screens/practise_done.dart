@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabualize/features/home/screens/home.dart';
 
 class PractiseDone extends StatelessWidget {
   const PractiseDone({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class PractiseDone extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => Navigator.popUntil(context, ModalRoute.withName(Home.routeName)),
                   child: const Text("Main menu"),
                 ),
                 const SizedBox(height: 64),

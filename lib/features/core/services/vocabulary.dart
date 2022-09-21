@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/level.dart';
+import 'package:vocabualize/features/core/services/pexels_api/image_model.dart';
 import 'package:vocabualize/features/practise/services/answer.dart';
 import 'package:vocabualize/features/practise/services/date_calculator.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
@@ -10,6 +12,7 @@ class Vocabulary {
   String _source = "";
   String _target = "";
   List<String> tags = [];
+  ImageModel? _imageModel;
   Level level = Level();
   bool isNovice = true;
   //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
@@ -21,7 +24,7 @@ class Vocabulary {
   Vocabulary({required String source, required String target, tags})
       : _target = target,
         _source = source,
-        tags = tags ?? ["Food", "Environment", "Places", "Transportation"];
+        tags = tags ?? [];
 
   Vocabulary.fromJson(Map<String, dynamic> json) {
     _source = json['source'];
@@ -29,6 +32,7 @@ class Vocabulary {
     for (dynamic voc in json["tags"]) {
       tags.add(voc.toString());
     }
+    _imageModel = ImageModel.fromJson(json["imageModel"]);
     level.value = json['level'];
     isNovice = json['isNovice'];
     //noviceInterval = json['noviceInterval'];
@@ -42,6 +46,7 @@ class Vocabulary {
         'source': _source,
         'target': _target,
         'tags': tags,
+        'imageModel': _imageModel?.toJson() ?? ImageModel.fallback().toJson(),
         'level': level.value,
         'isNovice': isNovice,
         //'noviceInterval': noviceInterval,
@@ -53,6 +58,11 @@ class Vocabulary {
 
   String get source => _source;
   String get target => _target;
+  ImageModel get imageModel {
+    if (_imageModel == null) return ImageModel.fallback();
+    return _imageModel!;
+  }
+
   bool get isNotNovice => !isNovice;
 
   set source(String source) {
@@ -72,6 +82,11 @@ class Vocabulary {
 
   void deleteTag(String tag) {
     tags.remove(tag);
+    save();
+  }
+
+  set imageModel(ImageModel imageModel) {
+    _imageModel = imageModel;
     save();
   }
 

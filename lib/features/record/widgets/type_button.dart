@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/translator.dart';
@@ -34,7 +35,7 @@ class _TypeButtonState extends State<TypeButton> {
     Vocabulary newVocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
     if (!mounted) return;
     Provider.of<VocabularyProvider>(context, listen: false).add(newVocabulary).whenComplete(() {
-      Navigator.pop(context);
+      Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
       //Messenger.showSaveMessage(newVocabulary);
       Messenger.showAddDetailsDialog(newVocabulary);
     });

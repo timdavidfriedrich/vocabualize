@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:log/log.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/features/core/services/pexels_api/image_model.dart';
+import 'package:vocabualize/features/core/services/pexels_api/image_service.dart';
 import 'package:vocabualize/features/home/screens/home_empty.dart';
 import 'package:vocabualize/features/home/widgets/double_sheet.dart';
 import 'package:vocabualize/features/home/widgets/new_word_card.dart';

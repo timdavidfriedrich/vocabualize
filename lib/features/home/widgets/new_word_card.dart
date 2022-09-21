@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
@@ -29,7 +30,15 @@ class NewWordCard extends StatelessWidget {
                   height: 128,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Container(color: Theme.of(context).colorScheme.surface),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(vocabulary.imageModel.src["medium"]),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
           Provider.of<SettingsProvider>(context).areImagesDisabled ? Container() : const SizedBox(height: 8),

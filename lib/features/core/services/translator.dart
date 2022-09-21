@@ -6,6 +6,15 @@ import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 class Translator {
   static final _translator = GoogleTranslator();
 
+  static Future<String> inEnglish(String source) async {
+    Translation translation = await _translator.translate(
+      source,
+      from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLang,
+      to: "en",
+    );
+    return translation.toString();
+  }
+
   static Future<String> translate(String source) async {
     Translation translation = await _translator.translate(
       source,
