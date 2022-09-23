@@ -118,17 +118,17 @@ class SettingsProvider extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
 
     /// TODO: Get from JSON
-    _sourceLang = prefs.getString("sourceLang")!;
-    _targetLang = prefs.getString("targetLang")!;
-    _areImagesEnabled = prefs.getBool("areImagesEnabled")!;
-    _initialInterval = prefs.getInt("initialInterval")!;
-    _initialNoviceInterval = prefs.getInt("initialNoviceInterval")!;
-    _initialEase = prefs.getDouble("initialEase")!;
-    _easeDowngrade = prefs.getDouble("easeDowngrade")!;
-    _easyBonus = prefs.getDouble("easyBonus")!;
-    _easyLevelFactor = prefs.getDouble("easyLevelFactor")!;
-    _goodLevelFactor = prefs.getDouble("goodLevelFactor")!;
-    _hardLevelFactor = prefs.getDouble("hardLevelFactor")!;
+    _sourceLang = prefs.getString("sourceLang") ?? _sourceLang;
+    _targetLang = prefs.getString("targetLang") ?? _targetLang;
+    _areImagesEnabled = prefs.getBool("areImagesEnabled") ?? _areImagesEnabled;
+    _initialInterval = prefs.getInt("initialInterval") ?? _initialInterval;
+    _initialNoviceInterval = prefs.getInt("initialNoviceInterval") ?? _initialNoviceInterval;
+    _initialEase = prefs.getDouble("initialEase") ?? _initialEase;
+    _easeDowngrade = prefs.getDouble("easeDowngrade") ?? _easeDowngrade;
+    _easyBonus = prefs.getDouble("easyBonus") ?? _easyBonus;
+    _easyLevelFactor = prefs.getDouble("easyLevelFactor") ?? _easyLevelFactor;
+    _goodLevelFactor = prefs.getDouble("goodLevelFactor") ?? _goodLevelFactor;
+    _hardLevelFactor = prefs.getDouble("hardLevelFactor") ?? _hardLevelFactor;
     notifyListeners();
   }
 }
