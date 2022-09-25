@@ -32,21 +32,19 @@ class _TypeButtonState extends State<TypeButton> {
   }
 
   _submit() async {
-    if (await Messenger.isOnline()) {
-      Messenger.loadingAnimation();
-      Vocabulary newVocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
-      if (!mounted) return;
-      Provider.of<VocabularyProvider>(context, listen: false).add(newVocabulary).whenComplete(() {
-        Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
-        //Messenger.showSaveMessage(newVocabulary);
-        Messenger.showAddDetailsDialog(newVocabulary);
-      });
-      currentSource = "";
-      controller.clear();
-      focusNode.requestFocus();
-    } else {
-      _cancel();
-    }
+    if (!await Messenger.isOnline()) return _cancel();
+
+    Messenger.loadingAnimation();
+    Vocabulary newVocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
+    if (!mounted) return;
+    Provider.of<VocabularyProvider>(context, listen: false).add(newVocabulary).whenComplete(() {
+      Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
+      //Messenger.showSaveMessage(newVocabulary);
+      Messenger.showAddDetailsDialog(newVocabulary);
+    });
+    currentSource = "";
+    controller.clear();
+    focusNode.requestFocus();
   }
 
   @override
