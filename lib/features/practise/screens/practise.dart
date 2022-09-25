@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
+import 'package:vocabualize/features/core/services/text_to_speech.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/practise/screens/practise_done.dart';
@@ -24,7 +25,11 @@ class _PractiseState extends State<Practise> {
   bool isDone = false;
   late Vocabulary currentVoc;
 
-  void refreshVoc() {
+  _speak() {
+    TTS.speak(currentVoc.target);
+  }
+
+  void _refreshVoc() {
     setState(() => isSolutionShown = false);
     if (Provider.of<VocabularyProvider>(context, listen: false).allToPractise.isNotEmpty) {
       setState(() => currentVoc = Provider.of<VocabularyProvider>(context, listen: false).firstToPractise);
@@ -37,7 +42,7 @@ class _PractiseState extends State<Practise> {
   void initState() {
     super.initState();
     initialVocCount = Provider.of<VocabularyProvider>(context, listen: false).allToPractise.length;
-    refreshVoc();
+    _refreshVoc();
   }
 
   @override
@@ -56,10 +61,7 @@ class _PractiseState extends State<Practise> {
                       const SizedBox(height: 48),
                       Text("${Provider.of<VocabularyProvider>(context).allToPractise.length} left",
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall!
-                              .copyWith(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
+                          style: Theme.of(context).textTheme.displaySmall!.copyWith(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 12),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
@@ -95,7 +97,15 @@ class _PractiseState extends State<Practise> {
                                           color: Theme.of(context).colorScheme.surface.withOpacity(0.75),
                                           borderRadius: BorderRadius.circular(24),
                                         ),
-                                        child: Center(child: Text(currentVoc.target, style: Theme.of(context).textTheme.headlineMedium)),
+                                        child: Center(
+                                            child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(currentVoc.target, style: Theme.of(context).textTheme.headlineMedium),
+                                            const SizedBox(width: 8),
+                                            IconButton(onPressed: () => _speak(), icon: const Icon(Icons.volume_up_rounded, size: 32)),
+                                          ],
+                                        )),
                                       ),
                               ),
                             ),
@@ -115,7 +125,7 @@ class _PractiseState extends State<Practise> {
                                     ),
                                     onPressed: () async {
                                       await currentVoc.answer(Answer.hard);
-                                      refreshVoc();
+                                      _refreshVoc();
                                     },
                                     child: const Text("Hard"),
                                   ),
@@ -129,7 +139,7 @@ class _PractiseState extends State<Practise> {
                                     ),
                                     onPressed: () async {
                                       await currentVoc.answer(Answer.good);
-                                      refreshVoc();
+                                      _refreshVoc();
                                     },
                                     child: const Text("Good"),
                                   ),
@@ -143,7 +153,7 @@ class _PractiseState extends State<Practise> {
                                     ),
                                     onPressed: () async {
                                       await currentVoc.answer(Answer.easy);
-                                      refreshVoc();
+                                      _refreshVoc();
                                     },
                                     child: const Text("Easy"),
                                   ),
@@ -161,7 +171,7 @@ class _PractiseState extends State<Practise> {
                                 Log.hint("BEFORE: $currentVoc");
                                 await currentVoc.answer(Answer.forgot);
                                 Log.hint("BEFORE: $currentVoc");
-                                refreshVoc();
+                                _refreshVoc();
                               },
                               child: const Text("I didn't know", style: TextStyle(color: LevelPalette.novice)),
                             ),
