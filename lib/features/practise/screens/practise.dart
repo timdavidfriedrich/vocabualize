@@ -101,7 +101,13 @@ class _PractiseState extends State<Practise> {
                                             child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Text(currentVoc.target, style: Theme.of(context).textTheme.headlineMedium),
+                                            Flexible(
+                                              child: Text(
+                                                currentVoc.target,
+                                                style: Theme.of(context).textTheme.headlineMedium,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
                                             const SizedBox(width: 8),
                                             IconButton(onPressed: () => _speak(), icon: const Icon(Icons.volume_up_rounded, size: 32)),
                                           ],
