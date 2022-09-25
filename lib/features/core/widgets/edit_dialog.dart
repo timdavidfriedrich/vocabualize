@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/core/widgets/add_tag_dialog.dart';
 import 'package:vocabualize/features/core/widgets/tag_wrap.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
@@ -53,6 +52,16 @@ class _EditDialogState extends State<EditDialog> {
     Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
   }
 
+  String reappearsIn() {
+    DateTime now = DateTime.now();
+    Duration difference = widget.vocabulary.nextDate.difference(now);
+    if (difference.isNegative) return "Now";
+    if (difference.inHours < 1) return "In ${difference.inMinutes} minutes";
+    if (difference.inDays < 1) return "In ${difference.inHours} hours";
+    if (difference.inDays <= 7) return "In ${difference.inDays} days";
+    return DateFormat("dd.MM.yyyy - HH:mm").format(widget.vocabulary.nextDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -70,9 +79,8 @@ class _EditDialogState extends State<EditDialog> {
             children: [
               Provider.of<SettingsProvider>(context).areImagesDisabled
                   ? Container()
-                  : SizedBox(
-                      width: double.infinity,
-                      height: 128,
+                  : AspectRatio(
+                      aspectRatio: 4 / 3,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Container(
@@ -113,9 +121,9 @@ class _EditDialogState extends State<EditDialog> {
                 text: TextSpan(
                   children: [
                     const TextSpan(text: "Created: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(text: "${DateFormat("dd.MM.yyyy - HH:mm").format(widget.vocabulary.creationDate)}\n"),
-                    const TextSpan(text: "Due: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(text: "${DateFormat("dd.MM.yyyy - HH:mm").format(widget.vocabulary.nextDate)} "),
+                    TextSpan(text: "${DateFormat("dd.MM.yyyy").format(widget.vocabulary.creationDate)}\n"),
+                    const TextSpan(text: "Reappears: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: reappearsIn()),
                   ],
                 ),
               ),

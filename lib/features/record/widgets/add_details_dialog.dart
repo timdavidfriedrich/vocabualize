@@ -24,7 +24,7 @@ class AddDetailsDialog extends StatefulWidget {
 
 class _AddDetailsDialogState extends State<AddDetailsDialog> {
   List<ImageModel> _imageModelList = [];
-  ImageModel seletectedImageModel = ImageModel.fallback();
+  ImageModel? seletectedImageModel;
 
   _getImages() async {
     Log.hint(await Translator.inEnglish(widget.vocabulary.source));
@@ -40,7 +40,7 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
   _openCam() {}
 
   _save() {
-    widget.vocabulary.imageModel = seletectedImageModel;
+    widget.vocabulary.imageModel = seletectedImageModel ?? ImageModel.fallback();
     Navigator.popUntil(Keys.context, ModalRoute.withName(Home.routeName));
     Messenger.showSaveMessage(widget.vocabulary);
   }
@@ -110,9 +110,7 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
                                         image: NetworkImage(_imageModelList.elementAt(index - 1).src["small"]),
                                       ),
                                     ),
-                                    child: _imageModelList.elementAt(index - 1) != seletectedImageModel
-                                        ? null
-                                        : const Center(child: Icon(Icons.done_rounded)),
+                                    child: _imageModelList.elementAt(index - 1) != seletectedImageModel ? null : const Center(child: Icon(Icons.done_rounded)),
                                   ),
                           ),
                   ),
@@ -126,7 +124,7 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ElevatedButton(onPressed: () => _save(), child: const Text("Save")),
+            ElevatedButton(onPressed: () => _save(), child: Text(seletectedImageModel == null ? "Save without image" : "Save")),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () => _goToSettings(),

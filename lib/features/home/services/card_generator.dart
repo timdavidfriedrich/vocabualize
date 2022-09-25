@@ -4,6 +4,12 @@ import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
 class CardGenerator {
+  static bool get isIndicatorVisible {
+    List<Vocabulary> allToPractise = Provider.of<VocabularyProvider>(Keys.context, listen: false).allToPractise;
+    if (allToPractise.isEmpty) return false;
+    return true;
+  }
+
   static String get info {
     List<Vocabulary> vocabularyList = Provider.of<VocabularyProvider>(Keys.context, listen: false).vocabularyList;
     List<Vocabulary> createdToday = Provider.of<VocabularyProvider>(Keys.context, listen: false).createdToday;

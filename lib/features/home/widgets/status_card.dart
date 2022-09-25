@@ -61,7 +61,21 @@ class _StatusCardState extends State<StatusCard> {
                   ),
                 ],
               ),
-              ElevatedButton(onPressed: () => Navigator.pushNamed(context, Practise.routeName), child: const Text("Practise")),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  ElevatedButton(onPressed: () => Navigator.pushNamed(context, Practise.routeName), child: const Text("Practise")),
+                  Positioned(
+                    top: -4,
+                    right: -4,
+                    child: Icon(
+                      Icons.circle_rounded,
+                      size: 16,
+                      color: CardGenerator.isIndicatorVisible ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ],
