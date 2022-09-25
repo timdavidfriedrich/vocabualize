@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/widgets/disconnected_dialog.dart';
 import 'package:vocabualize/features/core/widgets/edit_dialog.dart';
 import 'package:vocabualize/features/core/widgets/save_message_route.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
@@ -17,7 +20,34 @@ class Messenger {
     );
   }
 
-  static void showSaveMessage(Vocabulary vocabulary) async {
+  static Future<bool> isOnline() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) return true;
+      showDisconnectedDialog();
+      return false;
+    } on SocketException catch (_) {
+      showDisconnectedDialog();
+      return false;
+    }
+  }
+
+  static Future<void> showDisconnectedDialog() async {
+    showGeneralDialog(
+      context: Keys.context,
+      pageBuilder: (context, animation1, animation2) => Container(),
+      transitionDuration: const Duration(milliseconds: 500),
+      transitionBuilder: (context, animation1, animation2, widget) {
+        final curvedValue = const ElasticOutCurve(0.9).transform(animation1.value) - 1.0;
+        return Transform(
+          transform: Matrix4.translationValues(0, curvedValue * 200, 0),
+          child: const DisconnectedDialog(),
+        );
+      },
+    );
+  }
+
+  static Future<void> showSaveMessage(Vocabulary vocabulary) async {
     Navigator.popUntil(Keys.context, ModalRoute.withName(Home.routeName)); // required, pops all messages
     Navigator.push(Keys.context, SaveMessageRoute(vocabulary: vocabulary));
   }
@@ -37,7 +67,7 @@ class Messenger {
     );
   }
 
-  static void showAddDetailsDialog(Vocabulary vocabulary) async {
+  static Future<void> showAddDetailsDialog(Vocabulary vocabulary) async {
     showGeneralDialog(
       context: Keys.context,
       pageBuilder: (context, animation1, animation2) => Container(),

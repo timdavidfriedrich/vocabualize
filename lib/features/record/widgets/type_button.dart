@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
@@ -31,18 +32,21 @@ class _TypeButtonState extends State<TypeButton> {
   }
 
   _submit() async {
-    Messenger.loadingAnimation();
-    Vocabulary newVocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
-    if (!mounted) return;
-    Provider.of<VocabularyProvider>(context, listen: false).add(newVocabulary).whenComplete(() {
-      Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
-      //Messenger.showSaveMessage(newVocabulary);
-      Messenger.showAddDetailsDialog(newVocabulary);
-    });
-    currentSource = "";
-    controller.clear();
-    focusNode.requestFocus();
-    //Provider.of<ActiveProvider>(context, listen: false).typeIsActive = false;
+    if (await Messenger.isOnline()) {
+      Messenger.loadingAnimation();
+      Vocabulary newVocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
+      if (!mounted) return;
+      Provider.of<VocabularyProvider>(context, listen: false).add(newVocabulary).whenComplete(() {
+        Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
+        //Messenger.showSaveMessage(newVocabulary);
+        Messenger.showAddDetailsDialog(newVocabulary);
+      });
+      currentSource = "";
+      controller.clear();
+      focusNode.requestFocus();
+    } else {
+      _cancel();
+    }
   }
 
   @override
@@ -67,14 +71,13 @@ class _TypeButtonState extends State<TypeButton> {
             contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
             hintStyle: TextStyle(color: Theme.of(context).hintColor),
             labelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
-            disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).hintColor, width: 4), borderRadius: BorderRadius.circular(16)),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+            enabledBorder:
+                OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+            disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 4), borderRadius: BorderRadius.circular(16)),
+            border:
+                OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+            focusedBorder:
+                OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
           ),
           onTap: Provider.of<ActiveProvider>(context).micIsActive ? () {} : () => _focus(),
           onChanged: (text) {
