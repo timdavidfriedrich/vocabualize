@@ -56,6 +56,7 @@ class _EditDialogState extends State<EditDialog> {
     DateTime now = DateTime.now();
     Duration difference = widget.vocabulary.nextDate.difference(now);
     if (difference.isNegative) return "Now";
+    if (difference.inMinutes < 1) return "In less than a minutes";
     if (difference.inHours < 1) return "In ${difference.inMinutes} minutes";
     if (difference.inDays < 1) return "In ${difference.inHours} hours";
     if (difference.inDays <= 7) return "In ${difference.inDays} days";
