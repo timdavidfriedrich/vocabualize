@@ -52,8 +52,6 @@ class _StatusCardState extends State<StatusCard> {
         borderRadius: BorderRadius.circular(32),
       ),
       child: Column(
-        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(CardGenerator.info, style: Theme.of(context).textTheme.displayMedium),
           const SizedBox(height: 24),
@@ -100,11 +98,6 @@ class _StatusCardState extends State<StatusCard> {
                       : Positioned(
                           top: -4,
                           right: -4,
-                          // child: Icon(
-                          //   Icons.circle_rounded,
-                          //   size: 16,
-                          //   color: CardGenerator.isIndicatorVisible ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
-                          // ),
                           child: Container(
                             padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
                             decoration: BoxDecoration(
