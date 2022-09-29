@@ -27,7 +27,7 @@ class _StatusCardState extends State<StatusCard> {
   }
 
   _cancelReloadTimer() {
-    timer.cancel();
+    if (timer.isActive) timer.cancel();
     Log.hint("Canceled status card timer.");
   }
 
