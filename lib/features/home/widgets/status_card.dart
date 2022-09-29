@@ -95,15 +95,28 @@ class _StatusCardState extends State<StatusCard> {
                 clipBehavior: Clip.none,
                 children: [
                   ElevatedButton(onPressed: () => Navigator.pushNamed(context, Practise.routeName), child: const Text("Practise")),
-                  Positioned(
-                    top: -4,
-                    right: -4,
-                    child: Icon(
-                      Icons.circle_rounded,
-                      size: 16,
-                      color: CardGenerator.isIndicatorVisible ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
-                    ),
-                  ),
+                  !CardGenerator.isIndicatorVisible
+                      ? Container()
+                      : Positioned(
+                          top: -4,
+                          right: -4,
+                          // child: Icon(
+                          //   Icons.circle_rounded,
+                          //   size: 16,
+                          //   color: CardGenerator.isIndicatorVisible ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
+                          // ),
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              "${Provider.of<VocabularyProvider>(context).allToPractise.length}",
+                              style: TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 10),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ],
