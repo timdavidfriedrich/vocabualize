@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/home/services/card_generator.dart';
@@ -13,6 +16,33 @@ class StatusCard extends StatefulWidget {
 }
 
 class _StatusCardState extends State<StatusCard> {
+  late Timer timer;
+
+  _startReloadTimer() async {
+    timer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      setState(() {});
+      Log.hint("Reloaded status card.");
+    });
+    Log.hint("Started status card timer.");
+  }
+
+  _cancelReloadTimer() {
+    timer.cancel();
+    Log.hint("Canceled status card timer.");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startReloadTimer();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelReloadTimer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
