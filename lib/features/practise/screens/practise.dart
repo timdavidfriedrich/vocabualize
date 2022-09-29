@@ -61,7 +61,10 @@ class _PractiseState extends State<Practise> {
                       const SizedBox(height: 48),
                       Text("${Provider.of<VocabularyProvider>(context).allToPractise.length} left",
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.displaySmall!.copyWith(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 12),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
@@ -87,7 +90,7 @@ class _PractiseState extends State<Practise> {
                                       ? null
                                       : DecorationImage(
                                           fit: BoxFit.cover,
-                                          image: CachedNetworkImageProvider(currentVoc.imageModel.src["medium"]),
+                                          image: currentVoc.imageProvider,
                                         ),
                                 ),
                                 child: !isSolutionShown
@@ -174,9 +177,7 @@ class _PractiseState extends State<Practise> {
                             )
                           : OutlinedButton(
                               onPressed: () async {
-                                Log.hint("BEFORE: $currentVoc");
                                 await currentVoc.answer(Answer.forgot);
-                                Log.hint("BEFORE: $currentVoc");
                                 _refreshVoc();
                               },
                               child: const Text("I didn't know", style: TextStyle(color: LevelPalette.novice)),

@@ -89,7 +89,7 @@ class _EditDialogState extends State<EditDialog> {
                             color: Theme.of(context).colorScheme.surface,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: CachedNetworkImageProvider(widget.vocabulary.imageModel.src["medium"]),
+                              image: widget.vocabulary.imageProvider,
                             ),
                           ),
                         ),

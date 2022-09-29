@@ -35,7 +35,7 @@ class NewWordCard extends StatelessWidget {
                         color: Theme.of(context).colorScheme.surface,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(vocabulary.imageModel.src["medium"]),
+                          image: vocabulary.imageProvider,
                         ),
                       ),
                     ),

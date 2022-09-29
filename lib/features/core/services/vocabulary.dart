@@ -1,3 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
@@ -13,6 +19,7 @@ class Vocabulary {
   String _target = "";
   List<String> tags = [];
   ImageModel? _imageModel;
+  File? cameraImageFile;
   Level level = Level();
   bool isNovice = true;
   //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
@@ -33,6 +40,9 @@ class Vocabulary {
       tags.add(voc.toString());
     }
     _imageModel = ImageModel.fromJson(json["imageModel"]);
+    if (json['cameraImageFile'] != "" && json['cameraImageFile'] != null) {
+      cameraImageFile = File.fromRawPath(base64Decode(json['cameraImageFile']));
+    }
     level.value = json['level'];
     isNovice = json['isNovice'];
     //noviceInterval = json['noviceInterval'];
@@ -47,6 +57,7 @@ class Vocabulary {
         'target': _target,
         'tags': tags,
         'imageModel': _imageModel?.toJson() ?? ImageModel.fallback().toJson(),
+        'cameraImageFile': cameraImageFile == null ? "" : base64Encode(cameraImageFile!.readAsBytesSync()),
         'level': level.value,
         'isNovice': isNovice,
         //'noviceInterval': noviceInterval,
@@ -58,9 +69,15 @@ class Vocabulary {
 
   String get source => _source;
   String get target => _target;
+
   ImageModel get imageModel {
-    if (_imageModel == null) return ImageModel.fallback();
-    return _imageModel!;
+    return _imageModel ?? ImageModel.fallback();
+  }
+
+  ImageProvider get imageProvider {
+    if (_imageModel != null) return CachedNetworkImageProvider(_imageModel!.src["large"]);
+    if (cameraImageFile != null) return FileImage(cameraImageFile!);
+    return NetworkImage(ImageModel.fallback().url);
   }
 
   bool get isNotNovice => !isNovice;

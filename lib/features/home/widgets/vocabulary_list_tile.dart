@@ -56,7 +56,7 @@ class VocabularyListTile extends StatelessWidget {
                         color: Theme.of(context).colorScheme.surface,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(vocabulary.imageModel.src["small"]),
+                          image: vocabulary.imageProvider,
                         ),
                       ),
                     ),

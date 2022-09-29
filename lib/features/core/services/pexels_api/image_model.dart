@@ -21,26 +21,27 @@ class ImageModel {
   String? avgColor;
   Map<String, dynamic> src;
 
-  static String fallbackUrl = "https://raw.githubusercontent.com/koehlersimon/fallback/master/Resources/Public/Images/placeholder.jpg";
+  static const String _fallbackUrl =
+      "https://raw.githubusercontent.com/koehlersimon/fallback/master/Resources/Public/Images/placeholder.jpg";
 
   factory ImageModel.fallback() => ImageModel(
         id: 0,
         width: 0,
         height: 0,
-        url: fallbackUrl,
+        url: _fallbackUrl,
         photographer: "fallback",
         photographerUrl: "",
         photographerID: 0,
         avgColor: "#000000",
         src: {
-          "original": fallbackUrl,
-          "large2x": fallbackUrl,
-          "large": fallbackUrl,
-          "medium": fallbackUrl,
-          "small": fallbackUrl,
-          "portrait": fallbackUrl,
-          "landscape": fallbackUrl,
-          "tiny": fallbackUrl,
+          "original": _fallbackUrl,
+          "large2x": _fallbackUrl,
+          "large": _fallbackUrl,
+          "medium": _fallbackUrl,
+          "small": _fallbackUrl,
+          "portrait": _fallbackUrl,
+          "landscape": _fallbackUrl,
+          "tiny": _fallbackUrl,
         },
       );
 

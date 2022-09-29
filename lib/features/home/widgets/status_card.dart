@@ -95,7 +95,7 @@ class _StatusCardState extends State<StatusCard> {
                 clipBehavior: Clip.none,
                 children: [
                   ElevatedButton(onPressed: () => Navigator.pushNamed(context, Practise.routeName), child: const Text("Practise")),
-                  !CardGenerator.isIndicatorVisible
+                  Provider.of<VocabularyProvider>(context).allToPractise.isEmpty
                       ? Container()
                       : Positioned(
                           top: -4,
