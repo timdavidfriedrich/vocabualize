@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/practise/screens/practise.dart';
 
 class StatusCardIndicator extends StatefulWidget {
   const StatusCardIndicator({super.key, required this.parent});

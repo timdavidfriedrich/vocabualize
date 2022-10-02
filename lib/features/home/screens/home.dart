@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:log/log.dart';
 import 'package:permission_handler/permission_handler.dart';
