@@ -7,6 +7,7 @@ import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/translator.dart';
+import 'package:vocabualize/features/record/widgets/add_details_dialog.dart';
 
 class TypeButton extends StatefulWidget {
   const TypeButton({Key? key}) : super(key: key);
@@ -35,12 +36,12 @@ class _TypeButtonState extends State<TypeButton> {
     if (!await Messenger.isOnline()) return _cancel();
 
     Messenger.loadingAnimation();
-    Vocabulary newVocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
+    Vocabulary vocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
     if (!mounted) return;
-    Provider.of<VocabularyProvider>(context, listen: false).add(newVocabulary).whenComplete(() {
+    Provider.of<VocabularyProvider>(context, listen: false).add(vocabulary).whenComplete(() {
       Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
       //Messenger.showSaveMessage(newVocabulary);
-      Messenger.showAddDetailsDialog(newVocabulary);
+      Messenger.showAnimatedDialog(AddDetailsDialog(vocabulary: vocabulary));
     });
     currentSource = "";
     controller.clear();
@@ -69,13 +70,14 @@ class _TypeButtonState extends State<TypeButton> {
             contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
             hintStyle: TextStyle(color: Theme.of(context).hintColor),
             labelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            enabledBorder:
-                OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
-            disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 4), borderRadius: BorderRadius.circular(16)),
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
-            focusedBorder:
-                OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+            disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).hintColor, width: 4), borderRadius: BorderRadius.circular(16)),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
           ),
           onTap: Provider.of<ActiveProvider>(context).micIsActive ? () {} : () => _focus(),
           onChanged: (text) {

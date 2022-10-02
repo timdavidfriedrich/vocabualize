@@ -9,6 +9,7 @@ import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/translator.dart';
+import 'package:vocabualize/features/record/widgets/add_details_dialog.dart';
 
 class Speech {
   static final SpeechToText _stt = SpeechToText();
@@ -26,11 +27,11 @@ class Speech {
 
             if (_stt.lastRecognizedWords.isNotEmpty) {
               Messenger.loadingAnimation();
-              Vocabulary newVocabulary = Vocabulary(source: _text, target: await Translator.translate(_text));
-              await Provider.of<VocabularyProvider>(Keys.context, listen: false).add(newVocabulary).whenComplete(() {
+              Vocabulary vocabulary = Vocabulary(source: _text, target: await Translator.translate(_text));
+              await Provider.of<VocabularyProvider>(Keys.context, listen: false).add(vocabulary).whenComplete(() {
                 Navigator.popUntil(Keys.context, ModalRoute.withName(Home.routeName));
                 //Messenger.showSaveMessage(newVocabulary);
-                Messenger.showAddDetailsDialog(newVocabulary);
+                Messenger.showAnimatedDialog(AddDetailsDialog(vocabulary: vocabulary));
               });
             }
             _stt.stop;
