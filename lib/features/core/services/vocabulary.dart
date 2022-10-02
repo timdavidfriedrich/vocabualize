@@ -12,19 +12,6 @@ import 'package:vocabualize/features/practise/services/date_calculator.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Vocabulary {
-  String _source = "";
-  String _target = "";
-  List<String> tags = [];
-  PexelsModel? _imageModel;
-  File? _cameraImageFile;
-  Level level = Level();
-  bool isNovice = true;
-  //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-  int interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-  double ease = Provider.of<SettingsProvider>(Keys.context, listen: false).initialEase;
-  DateTime creationDate = DateTime.now();
-  DateTime nextDate = DateTime.now();
-
   Vocabulary({required String source, required String target, tags})
       : _target = target,
         _source = source,
@@ -46,6 +33,19 @@ class Vocabulary {
     creationDate = DateTime.fromMillisecondsSinceEpoch(json['creationDate']);
     nextDate = DateTime.fromMillisecondsSinceEpoch(json['nextDate']);
   }
+
+  String _source = "";
+  String _target = "";
+  List<String> tags = [];
+  PexelsModel? _imageModel;
+  File? _cameraImageFile;
+  Level level = Level();
+  bool isNovice = true;
+  //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
+  int interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
+  double ease = Provider.of<SettingsProvider>(Keys.context, listen: false).initialEase;
+  DateTime creationDate = DateTime.now();
+  DateTime nextDate = DateTime.now();
 
   Map<String, dynamic> toJson() => {
         'source': _source,
