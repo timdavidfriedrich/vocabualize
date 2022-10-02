@@ -1,47 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/home/services/card_generator.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
+import 'package:vocabualize/features/home/widgets/status_card_indicator.dart';
 import 'package:vocabualize/features/practise/screens/practise.dart';
 
-class StatusCard extends StatefulWidget {
+class StatusCard extends StatelessWidget {
   const StatusCard({Key? key}) : super(key: key);
-
-  @override
-  State<StatusCard> createState() => _StatusCardState();
-}
-
-class _StatusCardState extends State<StatusCard> {
-  late Timer timer;
-
-  _startReloadTimer() async {
-    timer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      setState(() {});
-      Log.hint("Reloaded status card.");
-    });
-    Log.hint("Started status card timer.");
-  }
-
-  _cancelReloadTimer() {
-    if (timer.isActive) timer.cancel();
-    Log.hint("Canceled status card timer.");
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _startReloadTimer();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _cancelReloadTimer();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,28 +57,8 @@ class _StatusCardState extends State<StatusCard> {
                   ),
                 ],
               ),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  ElevatedButton(onPressed: () => Navigator.pushNamed(context, Practise.routeName), child: const Text("Practise")),
-                  Provider.of<VocabularyProvider>(context).allToPractise.isEmpty
-                      ? Container()
-                      : Positioned(
-                          top: -4,
-                          right: -4,
-                          child: Container(
-                            padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              "${Provider.of<VocabularyProvider>(context).allToPractise.length}",
-                              style: TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 10),
-                            ),
-                          ),
-                        ),
-                ],
+              StatusCardIndicator(
+                parent: ElevatedButton(onPressed: () => Navigator.pushNamed(context, Practise.routeName), child: const Text("Practise")),
               ),
             ],
           ),
