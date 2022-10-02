@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
@@ -32,6 +33,8 @@ class _EditDialogState extends State<EditDialog> {
     });
     sourceController.text = widget.vocabulary.source;
     targetController.text = widget.vocabulary.target;
+
+    if (widget.vocabulary.cameraImageFile != null) Log.error(widget.vocabulary.cameraImageFile!.path);
   }
 
   @override

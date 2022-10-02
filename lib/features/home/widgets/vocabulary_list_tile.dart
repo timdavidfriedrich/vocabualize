@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/widgets/edit_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class VocabularyListTile extends StatelessWidget {
@@ -20,7 +21,7 @@ class VocabularyListTile extends StatelessWidget {
         onDismissed: (direction) async => await Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
-            Messenger.showInfoDialog(vocabulary);
+            Messenger.showAnimatedDialog(EditDialog(vocabulary: vocabulary));
             return false;
           } else {
             return true;
@@ -41,7 +42,7 @@ class VocabularyListTile extends StatelessWidget {
         child: ListTile(
           contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          onTap: () => Messenger.showInfoDialog(vocabulary),
+          onTap: () => Messenger.showAnimatedDialog(EditDialog(vocabulary: vocabulary)),
 
           /// TODO: add image
           leading: Provider.of<SettingsProvider>(context).areImagesDisabled

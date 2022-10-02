@@ -88,10 +88,7 @@ class _PractiseState extends State<Practise> {
                                   borderRadius: BorderRadius.circular(24),
                                   image: Provider.of<SettingsProvider>(context).areImagesDisabled
                                       ? null
-                                      : DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: currentVoc.imageProvider,
-                                        ),
+                                      : DecorationImage(fit: BoxFit.cover, image: currentVoc.imageProvider),
                                 ),
                                 child: !isSolutionShown
                                     ? null

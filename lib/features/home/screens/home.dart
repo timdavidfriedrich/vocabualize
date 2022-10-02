@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:log/log.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/home/screens/home_empty.dart';
 import 'package:vocabualize/features/home/widgets/double_sheet.dart';
@@ -23,17 +27,46 @@ class _HomeState extends State<Home> {
   late SettingsSheetController settingsSheetController;
   late RecordSheetController recordSheetController;
 
+  _printPermissions() async {
+    Log.hint("camera: ${await Permission.camera.status}");
+    Log.hint("storage: ${await Permission.storage.status}");
+    Log.hint("manageExternalStorage: ${await Permission.manageExternalStorage.status}");
+    Log.hint("bluetooth: ${await Permission.bluetooth.status}");
+    Log.hint("microphone: ${await Permission.microphone.status}");
+    Log.hint("speech: ${await Permission.speech.status}");
+    Log.hint("contacts: ${await Permission.contacts.status}");
+  }
+
+  _requestPermissions() async {
+    Log.warning("camera: ${await Permission.camera.request()}");
+    Log.warning("storage: ${await Permission.storage.request()}");
+    Log.warning("manageExternalStorage: ${await Permission.manageExternalStorage.request()}");
+    Log.warning("bluetooth: ${await Permission.bluetooth.request()}");
+    Log.warning("microphone: ${await Permission.microphone.request()}");
+    Log.warning("speech: ${await Permission.speech.request()}");
+    Log.warning("contacts: ${await Permission.contacts.request()}");
+  }
+
   @override
   void initState() {
+    super.initState();
+
     settingsSheetController = SettingsSheetController.instance;
     recordSheetController = RecordSheetController.instance;
 
     //settingsSheetController.hide();
     //recordSheetController.hide();
 
+    _printPermissions();
+    _requestPermissions();
+
     Provider.of<VocabularyProvider>(context, listen: false).init();
     Provider.of<SettingsProvider>(context, listen: false).init();
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

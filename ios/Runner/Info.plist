@@ -45,5 +45,15 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need microphone access to record.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Need speech recognition interpret your words.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Need permission to use camera.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need library access to pick images.</string>
+
 </dict>
 </plist>

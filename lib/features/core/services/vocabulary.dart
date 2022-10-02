@@ -1,15 +1,13 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/level.dart';
-import 'package:vocabualize/features/core/services/pexels_api/image_model.dart';
+import 'package:vocabualize/features/core/services/pexels_api/pexels_model.dart';
 import 'package:vocabualize/features/practise/services/answer.dart';
 import 'package:vocabualize/features/practise/services/date_calculator.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
@@ -18,8 +16,8 @@ class Vocabulary {
   String _source = "";
   String _target = "";
   List<String> tags = [];
-  ImageModel? _imageModel;
-  File? cameraImageFile;
+  PexelsModel? _imageModel;
+  File? _cameraImageFile;
   Level level = Level();
   bool isNovice = true;
   //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
@@ -39,10 +37,8 @@ class Vocabulary {
     for (dynamic voc in json["tags"]) {
       tags.add(voc.toString());
     }
-    _imageModel = ImageModel.fromJson(json["imageModel"]);
-    if (json['cameraImageFile'] != "" && json['cameraImageFile'] != null) {
-      cameraImageFile = File.fromRawPath(base64Decode(json['cameraImageFile']));
-    }
+    _imageModel = PexelsModel.fromJson(json["imageModel"]);
+    _cameraImageFile = json['cameraImageFile'] == null ? null : File(json['cameraImageFile']);
     level.value = json['level'];
     isNovice = json['isNovice'];
     //noviceInterval = json['noviceInterval'];
@@ -56,8 +52,8 @@ class Vocabulary {
         'source': _source,
         'target': _target,
         'tags': tags,
-        'imageModel': _imageModel?.toJson() ?? ImageModel.fallback().toJson(),
-        'cameraImageFile': cameraImageFile == null ? "" : base64Encode(cameraImageFile!.readAsBytesSync()),
+        'imageModel': _imageModel?.toJson() ?? PexelsModel.fallback().toJson(),
+        'cameraImageFile': _cameraImageFile?.path,
         'level': level.value,
         'isNovice': isNovice,
         //'noviceInterval': noviceInterval,
@@ -70,14 +66,16 @@ class Vocabulary {
   String get source => _source;
   String get target => _target;
 
-  ImageModel get imageModel {
-    return _imageModel ?? ImageModel.fallback();
+  PexelsModel get imageModel {
+    return _imageModel ?? PexelsModel.fallback();
   }
 
+  File? get cameraImageFile => _cameraImageFile;
+
   ImageProvider get imageProvider {
+    if (_cameraImageFile != null) return FileImage(_cameraImageFile!);
     if (_imageModel != null) return CachedNetworkImageProvider(_imageModel!.src["large"]);
-    if (cameraImageFile != null) return FileImage(cameraImageFile!);
-    return NetworkImage(ImageModel.fallback().url);
+    return NetworkImage(PexelsModel.fallback().url);
   }
 
   bool get isNotNovice => !isNovice;
@@ -92,6 +90,11 @@ class Vocabulary {
     save();
   }
 
+  set cameraImageFile(File? file) {
+    _cameraImageFile = file;
+    save();
+  }
+
   void addTag(String tag) {
     tags.add(tag);
     save();
@@ -102,7 +105,7 @@ class Vocabulary {
     save();
   }
 
-  set imageModel(ImageModel imageModel) {
+  set imageModel(PexelsModel imageModel) {
     _imageModel = imageModel;
     save();
   }

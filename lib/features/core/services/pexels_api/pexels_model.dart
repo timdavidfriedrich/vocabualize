@@ -1,5 +1,5 @@
-class ImageModel {
-  ImageModel({
+class PexelsModel {
+  PexelsModel({
     required this.id,
     required this.width,
     required this.height,
@@ -24,7 +24,7 @@ class ImageModel {
   static const String _fallbackUrl =
       "https://raw.githubusercontent.com/koehlersimon/fallback/master/Resources/Public/Images/placeholder.jpg";
 
-  factory ImageModel.fallback() => ImageModel(
+  factory PexelsModel.fallback() => PexelsModel(
         id: 0,
         width: 0,
         height: 0,
@@ -45,7 +45,7 @@ class ImageModel {
         },
       );
 
-  factory ImageModel.fromJson(Map<String, dynamic> json) => ImageModel(
+  factory PexelsModel.fromJson(Map<String, dynamic> json) => PexelsModel(
         id: json["id"],
         width: json["width"],
         height: json["height"],
