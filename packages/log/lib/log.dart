@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/foundation.dart';
 
 class Log {
@@ -13,14 +14,14 @@ class Log {
   }
 
   static void hint(text) {
-    if (kDebugMode) print("$_hintCode HINT: ${_process(text)}");
+    if (kDebugMode) log("$_hintCode HINT: ${_process(text)}");
   }
 
   static void warning(text) {
-    if (kDebugMode) print("$_warningCode WARN: ${_process(text)}");
+    if (kDebugMode) log("$_warningCode WARN: ${_process(text)}");
   }
 
   static void error(text) {
-    if (kDebugMode) print("$_errorCode ERROR: ${_process(text)}");
+    if (kDebugMode) log("$_errorCode ERROR: ${_process(text)}");
   }
 }
