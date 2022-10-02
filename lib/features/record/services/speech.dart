@@ -10,6 +10,7 @@ import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/translator.dart';
 import 'package:vocabualize/features/record/widgets/add_details_dialog.dart';
+import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Speech {
   static final SpeechToText _stt = SpeechToText();
@@ -45,16 +46,9 @@ class Speech {
         },
       );
 
-      List<LocaleName> locs = await _stt.locales();
-      //for (LocaleName ln in locs) printHint("${ln.localeId} : ${ln.name}");
-
       if (available) {
         _stt.listen(
-          /// TODO: Make it choosable
-          /// - Compare STT langs with Translator langs => if both available, show as option
-          /// - Maybe custom list? e.g. es : es_AR, es_BO, es_CL, ...
-          /// - If not in the list, compare STT letters before underscore with Translator langs
-          localeId: locs.firstWhere((element) => element.localeId.startsWith("de")).localeId,
+          localeId: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLanguage.speechToTextId,
           onResult: (result) => _text = result.recognizedWords,
         );
       }
