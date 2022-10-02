@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:log/log.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
@@ -34,8 +33,9 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
   File? _cameraImageFile;
 
   _getPexels() async {
-    Log.hint(await Translator.inEnglish(widget.vocabulary.source));
-    List<PexelsModel> pexelsModelList = await PexelsService().getImages(await Translator.inEnglish(widget.vocabulary.source));
+    List<PexelsModel> pexelsModelList = await PexelsService().getImages(
+      await Translator.inEnglish(widget.vocabulary.source, filtered: true),
+    );
     setState(() => _pexelsModelList = pexelsModelList);
   }
 
