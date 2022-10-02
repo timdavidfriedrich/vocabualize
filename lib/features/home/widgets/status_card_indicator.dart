@@ -20,7 +20,7 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
   _startReloadTimer() async {
     timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       setState(() {});
-      Log.hint("Reloaded status card.");
+      // Log.hint("Reloaded status card.");
     });
     Log.hint("Started status card timer.");
   }
