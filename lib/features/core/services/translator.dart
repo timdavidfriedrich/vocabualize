@@ -6,19 +6,22 @@ import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 class Translator {
   static final _translator = GoogleTranslator();
 
-  static Future<String> inEnglish(String source) async {
-    // TODO: Imlement a better, more independent way to filter
-    List<String> articles = ["the", "a", "an", "der", "die", "das", "des", "ein", "eine"];
-    String sourceFiltered = source;
-    for (String article in articles) {
-      if (source.startsWith("$article ")) sourceFiltered = source.replaceFirst(article, "");
-    }
+  static Future<String> inEnglish(String source, {bool filtered = false}) async {
+    List<String> articles = ["the", "a", "an"];
     Translation translation = await _translator.translate(
-      sourceFiltered,
+      source,
       from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLang,
       to: "en",
     );
-    return translation.toString();
+    String result = translation.toString();
+    if (filtered) {
+      for (String article in articles) {
+        if (translation.toString().startsWith("$article ")) {
+          result = translation.toString().replaceFirst("$article ", "");
+        }
+      }
+    }
+    return result;
   }
 
   static Future<String> translate(String source) async {
