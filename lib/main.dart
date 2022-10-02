@@ -24,9 +24,9 @@ class Vocabualize extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => VocabularyProvider()),
-        ChangeNotifierProvider(create: (context) => SettingsProvider()),
         ChangeNotifierProvider(create: (context) => ActiveProvider()),
+        ChangeNotifierProvider(create: (context) => SettingsProvider()),
+        ChangeNotifierProvider(create: (context) => VocabularyProvider()),
       ],
       child: MaterialApp(
         theme: ThemeConfig.light(context),

@@ -10,7 +10,7 @@ class Translator {
     List<String> articles = ["the", "a", "an"];
     Translation translation = await _translator.translate(
       source,
-      from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLang,
+      from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLanguage.translatorId,
       to: "en",
     );
     String result = translation.toString();
@@ -27,8 +27,8 @@ class Translator {
   static Future<String> translate(String source) async {
     Translation translation = await _translator.translate(
       source,
-      from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLang,
-      to: Provider.of<SettingsProvider>(Keys.context, listen: false).targetLang,
+      from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLanguage.translatorId,
+      to: Provider.of<SettingsProvider>(Keys.context, listen: false).targetLanguage.translatorId,
     );
     return translation.toString();
   }

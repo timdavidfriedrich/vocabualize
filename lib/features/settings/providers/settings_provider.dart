@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vocabualize/features/record/services/language.dart';
+import 'package:vocabualize/features/record/services/languages.dart';
 
 class SettingsProvider extends ChangeNotifier {
   late SharedPreferences prefs;
 
-  String _sourceLang = "de";
-  String _targetLang = "es";
+  Language _sourceLanguage = Language.defaultSource();
+  Language _targetLanguage = Language.defaultTarget();
   bool _areImagesEnabled = true;
   int _initialInterval = 1440 * 1;
   int _initialNoviceInterval = 1;
@@ -18,14 +20,14 @@ class SettingsProvider extends ChangeNotifier {
   double _goodLevelFactor = 0.3;
   double _hardLevelFactor = -0.3;
 
-  set sourceLang(String sourceLang) {
-    _sourceLang = sourceLang;
+  set sourceLanguage(Language sourceLang) {
+    _sourceLanguage = sourceLang;
     save();
     notifyListeners();
   }
 
-  set targetLang(String targetLang) {
-    _targetLang = targetLang;
+  set targetLanguage(Language targetLang) {
+    _targetLanguage = targetLang;
     save();
     notifyListeners();
   }
@@ -84,8 +86,8 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get sourceLang => _sourceLang;
-  String get targetLang => _targetLang;
+  Language get sourceLanguage => _sourceLanguage;
+  Language get targetLanguage => _targetLanguage;
   bool get areImagesEnabled => _areImagesEnabled;
   bool get areImagesDisabled => !_areImagesEnabled;
   int get initialInterval => _initialInterval;
@@ -101,8 +103,8 @@ class SettingsProvider extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
 
     /// TODO: Save as JSON
-    await prefs.setString("sourceLang", _sourceLang);
-    await prefs.setString("targetLang", _targetLang);
+    await prefs.setString("sourceLanguage", _sourceLanguage.translatorId);
+    await prefs.setString("targetLanguage", _targetLanguage.translatorId);
     await prefs.setBool("areImagesEnabled", _areImagesEnabled);
     await prefs.setInt("initialInterval", _initialInterval);
     await prefs.setInt("initialNoviceInterval", _initialNoviceInterval);
@@ -111,15 +113,20 @@ class SettingsProvider extends ChangeNotifier {
     await prefs.setDouble("easyLevelFactor", _easyLevelFactor);
     await prefs.setDouble("easyBonus", _easyLevelFactor);
     await prefs.setDouble("goodLevelFactor", _goodLevelFactor);
-    await prefs.setDouble("hardLevelFactor", _hardLevelFactor);
   }
 
   Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
+    Language defaultSource = Language.defaultSource();
+    Language defaultTarget = Language.defaultTarget();
 
     /// TODO: Get from JSON
-    _sourceLang = prefs.getString("sourceLang") ?? _sourceLang;
-    _targetLang = prefs.getString("targetLang") ?? _targetLang;
+    if (prefs.getString("sourceLanguage") != null) {
+      _sourceLanguage = await Languages.findLanguage(translatorId: prefs.getString("sourceLanguage")) ?? defaultSource;
+    }
+    if (prefs.getString("targetLanguage") != null) {
+      _targetLanguage = await Languages.findLanguage(translatorId: prefs.getString("targetLanguage")) ?? defaultTarget;
+    }
     _areImagesEnabled = prefs.getBool("areImagesEnabled") ?? _areImagesEnabled;
     _initialInterval = prefs.getInt("initialInterval") ?? _initialInterval;
     _initialNoviceInterval = prefs.getInt("initialNoviceInterval") ?? _initialNoviceInterval;
