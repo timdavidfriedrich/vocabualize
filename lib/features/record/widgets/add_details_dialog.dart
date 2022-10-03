@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:log/log.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
@@ -31,6 +32,26 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
   List<PexelsModel> _pexelsModelList = [];
   dynamic _selected;
   File? _cameraImageFile;
+
+  final int itemCount = 7;
+  final int maxItems = 70;
+
+  int firstIndex = 0;
+  int lastIndex = 6;
+
+  _browseNext() {
+    if (lastIndex + itemCount < maxItems) {
+      setState(() {
+        firstIndex += itemCount;
+        lastIndex += itemCount;
+      });
+    } else {
+      setState(() {
+        firstIndex = 0;
+        lastIndex = 6;
+      });
+    }
+  }
 
   _getPexels() async {
     List<PexelsModel> pexelsModelList = await PexelsService().getImages(
@@ -95,11 +116,19 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Provider.of<SettingsProvider>(context).areImagesEnabled ? const Text("Pick an image") : const Text("Add some tags"),
       insetPadding: const EdgeInsets.all(12),
-      titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-      contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+      titlePadding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+      contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
       actionsPadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+      title: Provider.of<SettingsProvider>(context).areImagesDisabled
+          ? const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Text("Add some tags"))
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text("Add details"),
+                IconButton(padding: EdgeInsets.zero, onPressed: () => _browseNext(), icon: const Icon(Icons.find_replace_rounded)),
+              ],
+            ),
       content: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Provider.of<SettingsProvider>(context).areImagesDisabled
@@ -117,7 +146,7 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
                       mainAxisSpacing: 4,
                       crossAxisSpacing: 4,
                     ),
-                    itemCount: 8,
+                    itemCount: itemCount + 1,
                     itemBuilder: (context, index) => index == 0
                         ? MaterialButton(
                             padding: EdgeInsets.zero,
@@ -155,22 +184,22 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
                                   ),
                           )
                         : InkWell(
-                            onTap: () => _pexelsModelList.isEmpty ? null : _selectImage(_pexelsModelList.elementAt(index - 1)),
+                            onTap: () => _pexelsModelList.isEmpty ? null : _selectImage(_pexelsModelList.elementAt(index + firstIndex - 1)),
                             borderRadius: BorderRadius.circular(16),
-                            child: index >= _pexelsModelList.length + 1
+                            child: firstIndex + index >= _pexelsModelList.length + 1
                                 ? const Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator(strokeWidth: 2))
                                 : Ink(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(16),
-                                      border: _pexelsModelList.elementAt(index - 1) != _selected
+                                      border: _pexelsModelList.elementAt(index + firstIndex - 1) != _selected
                                           ? null
                                           : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
-                                        image: NetworkImage(_pexelsModelList.elementAt(index - 1).src["small"]),
+                                        image: NetworkImage(_pexelsModelList.elementAt(index + firstIndex - 1).src["small"]),
                                       ),
                                     ),
-                                    child: _pexelsModelList.elementAt(index - 1) != _selected
+                                    child: _pexelsModelList.elementAt(index + firstIndex - 1) != _selected
                                         ? null
                                         : Center(child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onBackground)),
                                   ),
