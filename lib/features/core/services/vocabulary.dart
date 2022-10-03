@@ -7,7 +7,7 @@ import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/level.dart';
 import 'package:vocabualize/features/core/services/pexels_api/pexels_model.dart';
-import 'package:vocabualize/features/practise/services/answer.dart';
+import 'package:vocabualize/features/core/services/answer.dart';
 import 'package:vocabualize/features/practise/services/date_calculator.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 

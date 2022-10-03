@@ -10,7 +10,7 @@ class PexelsService {
     List<PexelsModel> imageModelList = [];
     Client client = Client();
     Response response = await client.get(
-      Uri.parse("https://api.pexels.com/v1/search?query=$search&per_page=7"),
+      Uri.parse("https://api.pexels.com/v1/search?query=$search&per_page=70"),
       headers: {HttpHeaders.authorizationHeader: pexelsKey},
     );
     if (response.statusCode == 200) {
