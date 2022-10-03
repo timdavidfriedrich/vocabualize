@@ -61,7 +61,7 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
                   ),
                   child: Text(
                     "${Provider.of<VocabularyProvider>(context).allToPractise.length}",
-                    style: TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 10),
+                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10),
                   ),
                 ),
               ),

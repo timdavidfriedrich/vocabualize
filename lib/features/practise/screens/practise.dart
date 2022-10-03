@@ -84,7 +84,7 @@ class _PractiseState extends State<Practise> {
                       const Spacer(),
                       !isMultilingual
                           ? Container()
-                          : Text("${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}", textAlign: TextAlign.center),
+                          : Text("${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}", style: TextStyle(color: Theme.of(context).hintColor), textAlign: TextAlign.center),
                       !isMultilingual ? Container() : const SizedBox(height: 12),
                       Provider.of<SettingsProvider>(context).areImagesDisabled && !isSolutionShown
                           ? Container()

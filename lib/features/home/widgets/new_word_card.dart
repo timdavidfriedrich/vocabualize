@@ -17,6 +17,11 @@ class NewWordCard extends StatelessWidget {
       color: Provider.of<SettingsProvider>(context).areImagesDisabled ? Theme.of(context).colorScheme.surface : null,
       onPressed: () => Messenger.showAnimatedDialog(EditDialog(vocabulary: vocabulary)),
       padding: Provider.of<SettingsProvider>(context).areImagesDisabled ? const EdgeInsets.all(16.0) : const EdgeInsets.all(8.0),
+      elevation: 0,
+      disabledElevation: 0,
+      focusElevation: 0,
+      hoverElevation: 0,
+      highlightElevation: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

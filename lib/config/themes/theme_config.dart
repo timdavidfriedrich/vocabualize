@@ -91,7 +91,7 @@ class ThemeConfig {
       ///* Switch
       switchTheme: SwitchThemeData(
         trackColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? primary : surface),
-        thumbColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? onPrimary : onPrimary),
+        thumbColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? onPrimary : onSurface),
       ),
 
       ///* Icons
