@@ -7,14 +7,18 @@ import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/practise/screens/practise.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
+import 'package:vocabualize/features/record/services/speech.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  var speech = Speech.instance;
+  await speech.init();
+
   runApp(const Vocabualize());
 }
 

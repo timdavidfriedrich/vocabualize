@@ -13,40 +13,51 @@ import 'package:vocabualize/features/record/widgets/add_details_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Speech {
-  static final SpeechToText _stt = SpeechToText();
-  static String _text = "";
+  Speech._privateConstructor() : _stt = SpeechToText();
 
-  static void record() async {
+  static final Speech _instance = Speech._privateConstructor();
+
+  static Speech get instance => _instance;
+
+  final SpeechToText _stt;
+  String _text = "";
+  bool _available = false;
+
+  Future<List<LocaleName>> getLocales() async => _available ? await _stt.locales() : [];
+
+  Future<void> init() async {
+    _available = await _stt.initialize(
+      options: [],
+      onStatus: (status) async {
+        if (_stt.isNotListening && status == "done") {
+          Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = false;
+
+          if (_stt.lastRecognizedWords.isNotEmpty) {
+            Messenger.loadingAnimation();
+            Vocabulary vocabulary = Vocabulary(source: _text, target: await Translator.translate(_text));
+            await Provider.of<VocabularyProvider>(Keys.context, listen: false).add(vocabulary).whenComplete(() {
+              Navigator.popUntil(Keys.context, ModalRoute.withName(Home.routeName));
+              //Messenger.showSaveMessage(newVocabulary);
+              Messenger.showAnimatedDialog(AddDetailsDialog(vocabulary: vocabulary));
+            });
+          }
+          _stt.stop;
+        }
+      },
+      onError: (error) async {
+        Log.error("[STT] ${error.errorMsg}");
+        Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = false;
+
+        _stt.stop;
+      },
+    );
+  }
+
+  Future<void> record() async {
     if (!Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive) {
       Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = true;
 
-      bool available = await _stt.initialize(
-        options: [],
-        onStatus: (status) async {
-          if (_stt.isNotListening && status == "done") {
-            Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = false;
-
-            if (_stt.lastRecognizedWords.isNotEmpty) {
-              Messenger.loadingAnimation();
-              Vocabulary vocabulary = Vocabulary(source: _text, target: await Translator.translate(_text));
-              await Provider.of<VocabularyProvider>(Keys.context, listen: false).add(vocabulary).whenComplete(() {
-                Navigator.popUntil(Keys.context, ModalRoute.withName(Home.routeName));
-                //Messenger.showSaveMessage(newVocabulary);
-                Messenger.showAnimatedDialog(AddDetailsDialog(vocabulary: vocabulary));
-              });
-            }
-            _stt.stop;
-          }
-        },
-        onError: (error) async {
-          Log.error("[STT] ${error.errorMsg}");
-          Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = false;
-
-          _stt.stop;
-        },
-      );
-
-      if (available) {
+      if (_available) {
         _stt.listen(
           localeId: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLanguage.speechToTextId,
           onResult: (result) => _text = result.recognizedWords,

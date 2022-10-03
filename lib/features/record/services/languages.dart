@@ -2,6 +2,7 @@ import 'package:log/log.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:text_to_speech/text_to_speech.dart';
 import 'package:vocabualize/features/record/services/language.dart';
+import 'package:vocabualize/features/record/services/speech.dart';
 
 class Languages {
   static Future<Language?> findLanguage({String? translatorId, String? speechToTextId, String? textToSpeechId}) async {
@@ -38,10 +39,8 @@ class Languages {
   }
 
   static Future<List<String>> getSpeechToTextIds() async {
-    final SpeechToText stt = SpeechToText();
-    await stt.initialize();
-    List<LocaleName> locales = await stt.locales();
-    stt.cancel();
+    final Speech speech = Speech.instance;
+    List<LocaleName> locales = await speech.getLocales();
 
     List<String> result = [];
     for (LocaleName locale in locales) {

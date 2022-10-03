@@ -102,7 +102,6 @@ class SettingsProvider extends ChangeNotifier {
   Future<void> save() async {
     prefs = await SharedPreferences.getInstance();
 
-    /// TODO: Save as JSON
     await prefs.setString("sourceLanguage", _sourceLanguage.translatorId);
     await prefs.setString("targetLanguage", _targetLanguage.translatorId);
     await prefs.setBool("areImagesEnabled", _areImagesEnabled);
@@ -120,7 +119,6 @@ class SettingsProvider extends ChangeNotifier {
     Language defaultSource = Language.defaultSource();
     Language defaultTarget = Language.defaultTarget();
 
-    /// TODO: Get from JSON
     if (prefs.getString("sourceLanguage") != null) {
       _sourceLanguage = await Languages.findLanguage(translatorId: prefs.getString("sourceLanguage")) ?? defaultSource;
     }
