@@ -23,8 +23,11 @@ class _PractiseState extends State<Practise> {
   bool isDone = false;
   late Vocabulary currentVoc;
 
+  TTS tts = TTS.instance;
+
   _speak() {
-    TTS.speak(currentVoc.target);
+    tts.stop;
+    tts.speak(currentVoc.target);
   }
 
   void _refreshVoc() {

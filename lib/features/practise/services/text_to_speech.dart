@@ -4,10 +4,23 @@ import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class TTS {
-  static final TextToSpeech _tts = TextToSpeech();
+  TTS._privateConstructor() : _tts = TextToSpeech();
 
-  static speak(String text) async {
+  static final TTS _instance = TTS._privateConstructor();
+
+  static TTS get instance => _instance;
+
+  final TextToSpeech _tts;
+  bool isSpeaking = false;
+
+  speak(String text) async {
     _tts.setLanguage(Provider.of<SettingsProvider>(Keys.context, listen: false).targetLanguage.textToSpeechId);
-    _tts.speak(text);
+    isSpeaking = true;
+    isSpeaking = await _tts.speak(text) ?? false;
+  }
+
+  stop() {
+    //_tts.pause();
+    _tts.stop();
   }
 }
