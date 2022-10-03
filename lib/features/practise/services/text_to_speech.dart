@@ -1,4 +1,3 @@
-import 'package:provider/provider.dart';
 import 'package:text_to_speech/text_to_speech.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 

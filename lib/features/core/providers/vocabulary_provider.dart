@@ -31,12 +31,13 @@ class VocabularyProvider extends ChangeNotifier {
   }
 
   List<Vocabulary> get lastest {
-    /// TODO: replace constants (7, 10)
+    const int daysIncluded = 7;
+    const int maxItems = 10;
     return vocabularyList
-        .where((voc) => voc.creationDate.isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .where((voc) => voc.creationDate.isAfter(DateTime.now().subtract(const Duration(days: daysIncluded))))
         .toList()
         .reversed
-        .take(10)
+        .take(maxItems)
         .toList();
   }
 

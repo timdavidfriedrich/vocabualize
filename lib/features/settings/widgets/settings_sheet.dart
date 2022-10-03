@@ -5,20 +5,6 @@ import 'package:vocabualize/features/core/services/languages.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/widgets/settings_list_tile.dart';
 
-/*
-  String _sourceLang = "de";
-  String _targetLang = "es";
-  bool _enableImages = true;
-  int _initialInterval = 1440 * 1;
-  int _initialNoviceInterval = 1;
-  double _initialEase = 2.5;
-  double _easeDowngrade = 0.2;
-  double _easyBonus = 1.3;
-  double _easyLevelFactor = 0.6;
-  double _goodLevelFactor = 0.3;
-  double _hardLevelFactor = -0.3;
-*/
-
 class SettingsSheet extends StatefulWidget {
   const SettingsSheet({Key? key}) : super(key: key);
 

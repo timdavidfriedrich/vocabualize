@@ -22,7 +22,6 @@ class NewWordCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          /// TODO: add image
           Provider.of<SettingsProvider>(context).areImagesDisabled
               ? Container()
               : SizedBox(

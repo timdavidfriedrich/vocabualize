@@ -42,8 +42,6 @@ class VocabularyListTile extends StatelessWidget {
           contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           onTap: () => Messenger.showAnimatedDialog(EditDialog(vocabulary: vocabulary)),
-
-          /// TODO: add image
           leading: Provider.of<SettingsProvider>(context).areImagesDisabled
               ? null
               : SizedBox(
