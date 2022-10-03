@@ -19,30 +19,31 @@ class Languages {
   static Future<List<Language>> getLangauges() async {
     List<Language> result = [];
     List<String> translatorIds = await getTranslatorIds();
-    List<String> speechToTextIds = await getSpeechToTextIds();
+    Map<String, String> speechToTextMap = await getSpeechToTextMap();
     List<String> textToSpeechIds = await getTextToSpeechIds();
     for (String translatorId in translatorIds) {
-      String speechToTextId = speechToTextIds.firstWhere((id) => id.toLowerCase().startsWith(translatorId), orElse: () => "");
+      String speechToTextId = speechToTextMap.keys.toList().firstWhere((id) => id.toLowerCase().startsWith(translatorId), orElse: () => "");
       String textToSpeechId = textToSpeechIds.firstWhere((id) => id.toLowerCase().startsWith(translatorId), orElse: () => "");
       if (speechToTextId == "" || textToSpeechId == "") continue;
       result.add(
         Language(
-            name: _translatorLanguages[translatorId] ?? "Unknown",
+            name: (speechToTextMap[speechToTextId] ?? "Unknown").split(" (").first,
             translatorId: translatorId,
             speechToTextId: speechToTextId,
             textToSpeechId: textToSpeechId),
       );
     }
+    result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     return result;
   }
 
-  static Future<List<String>> getSpeechToTextIds() async {
+  static Future<Map<String, String>> getSpeechToTextMap() async {
     final Speech speech = Speech.instance;
     List<LocaleName> locales = await speech.getLocales();
 
-    List<String> result = [];
+    Map<String, String> result = {};
     for (LocaleName locale in locales) {
-      result.add(locale.localeId);
+      result[locale.localeId] = locale.name;
     }
     return result;
   }
