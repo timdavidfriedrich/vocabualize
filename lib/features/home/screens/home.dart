@@ -26,26 +26,6 @@ class _HomeState extends State<Home> {
   late SettingsSheetController settingsSheetController;
   late RecordSheetController recordSheetController;
 
-  _printPermissions() async {
-    Log.hint("camera: ${await Permission.camera.status}");
-    Log.hint("storage: ${await Permission.storage.status}");
-    Log.hint("manageExternalStorage: ${await Permission.manageExternalStorage.status}");
-    Log.hint("bluetooth: ${await Permission.bluetooth.status}");
-    Log.hint("microphone: ${await Permission.microphone.status}");
-    Log.hint("speech: ${await Permission.speech.status}");
-    Log.hint("contacts: ${await Permission.contacts.status}");
-  }
-
-  _requestPermissions() async {
-    Log.warning("camera: ${await Permission.camera.request()}");
-    Log.warning("storage: ${await Permission.storage.request()}");
-    Log.warning("manageExternalStorage: ${await Permission.manageExternalStorage.request()}");
-    Log.warning("bluetooth: ${await Permission.bluetooth.request()}");
-    Log.warning("microphone: ${await Permission.microphone.request()}");
-    Log.warning("speech: ${await Permission.speech.request()}");
-    Log.warning("contacts: ${await Permission.contacts.request()}");
-  }
-
   @override
   void initState() {
     super.initState();
@@ -55,9 +35,6 @@ class _HomeState extends State<Home> {
 
     //settingsSheetController.hide();
     //recordSheetController.hide();
-
-    _printPermissions();
-    _requestPermissions();
 
     Provider.of<VocabularyProvider>(context, listen: false).init();
     Provider.of<SettingsProvider>(context, listen: false).init();

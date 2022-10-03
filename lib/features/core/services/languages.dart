@@ -1,7 +1,6 @@
-import 'package:log/log.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:text_to_speech/text_to_speech.dart';
-import 'package:vocabualize/features/record/services/language.dart';
+import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/record/services/speech.dart';
 
 class Languages {
@@ -34,7 +33,6 @@ class Languages {
             textToSpeechId: textToSpeechId),
       );
     }
-    Log.hint("languageList: $result");
     return result;
   }
 

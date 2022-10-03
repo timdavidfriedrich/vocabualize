@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocabualize/features/record/services/language.dart';
-import 'package:vocabualize/features/record/services/languages.dart';
+import 'package:vocabualize/features/core/services/language.dart';
+import 'package:vocabualize/features/core/services/languages.dart';
 
 class SettingsProvider extends ChangeNotifier {
   late SharedPreferences prefs;

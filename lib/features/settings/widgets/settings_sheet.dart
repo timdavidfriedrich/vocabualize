@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/features/record/services/language.dart';
-import 'package:vocabualize/features/record/services/languages.dart';
+import 'package:vocabualize/features/core/services/language.dart';
+import 'package:vocabualize/features/core/services/languages.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/widgets/settings_list_tile.dart';
 
