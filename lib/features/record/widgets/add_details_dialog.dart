@@ -91,7 +91,7 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
     if (_cameraImageFile != null && _cameraImageFile == _selected) {
       widget.vocabulary.cameraImageFile = _cameraImageFile;
     } else {
-      widget.vocabulary.imageModel = _selected ?? PexelsModel.fallback();
+      widget.vocabulary.pexelsModel = _selected ?? PexelsModel.fallback();
     }
     Navigator.popUntil(Keys.context, ModalRoute.withName(Home.routeName));
     Messenger.showSaveMessage(widget.vocabulary);
