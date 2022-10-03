@@ -1,7 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:text_to_speech/text_to_speech.dart';
-import 'package:vocabualize/constants/keys.dart';
-import 'package:vocabualize/features/settings/providers/settings_provider.dart';
+import 'package:vocabualize/features/core/services/vocabulary.dart';
 
 class TTS {
   TTS._privateConstructor() : _tts = TextToSpeech();
@@ -13,10 +12,10 @@ class TTS {
   final TextToSpeech _tts;
   bool isSpeaking = false;
 
-  speak(String text) async {
-    _tts.setLanguage(Provider.of<SettingsProvider>(Keys.context, listen: false).targetLanguage.textToSpeechId);
+  speak(Vocabulary vocabulary) async {
+    _tts.setLanguage(vocabulary.targetLanguage.textToSpeechId);
     isSpeaking = true;
-    isSpeaking = await _tts.speak(text) ?? false;
+    isSpeaking = await _tts.speak(vocabulary.target) ?? false;
   }
 
   stop() {

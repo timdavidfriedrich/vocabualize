@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
+import 'package:vocabualize/features/core/services/language.dart';
+import 'package:vocabualize/features/core/services/languages.dart';
 import 'package:vocabualize/features/core/services/level.dart';
 import 'package:vocabualize/features/core/services/pexels_api/pexels_model.dart';
 import 'package:vocabualize/features/core/services/answer.dart';
@@ -12,14 +14,31 @@ import 'package:vocabualize/features/practise/services/date_calculator.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Vocabulary {
+  String _source = "";
+  String _target = "";
+  Language _sourceLanguage = Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLanguage;
+  Language _targetLanguage = Provider.of<SettingsProvider>(Keys.context, listen: false).targetLanguage;
+  List<String> tags = [];
+  PexelsModel? _imageModel;
+  File? _cameraImageFile;
+  Level level = Level();
+  bool isNovice = true;
+  //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
+  int interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
+  double ease = Provider.of<SettingsProvider>(Keys.context, listen: false).initialEase;
+  DateTime creationDate = DateTime.now();
+  DateTime nextDate = DateTime.now();
+
   Vocabulary({required String source, required String target, tags})
-      : _target = target,
-        _source = source,
+      : _source = source,
+        _target = target,
         tags = tags ?? [];
 
   Vocabulary.fromJson(Map<String, dynamic> json) {
     _source = json['source'];
     _target = json['target'];
+    initSourceLanguage(json['sourceLanguage']);
+    initTargetLanguage(json['targetLanguage']);
     for (dynamic voc in json["tags"]) {
       tags.add(voc.toString());
     }
@@ -34,22 +53,19 @@ class Vocabulary {
     nextDate = DateTime.fromMillisecondsSinceEpoch(json['nextDate']);
   }
 
-  String _source = "";
-  String _target = "";
-  List<String> tags = [];
-  PexelsModel? _imageModel;
-  File? _cameraImageFile;
-  Level level = Level();
-  bool isNovice = true;
-  //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-  int interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-  double ease = Provider.of<SettingsProvider>(Keys.context, listen: false).initialEase;
-  DateTime creationDate = DateTime.now();
-  DateTime nextDate = DateTime.now();
+  initSourceLanguage(String translatorId) async {
+    _sourceLanguage = await Languages.findLanguage(translatorId: translatorId) ?? Language.defaultSource();
+  }
+
+  initTargetLanguage(String translatorId) async {
+    _targetLanguage = await Languages.findLanguage(translatorId: translatorId) ?? Language.defaultTarget();
+  }
 
   Map<String, dynamic> toJson() => {
         'source': _source,
         'target': _target,
+        'sourceLanguage': _sourceLanguage.translatorId,
+        'targetLanguage': _targetLanguage.translatorId,
         'tags': tags,
         'imageModel': _imageModel?.toJson() ?? PexelsModel.fallback().toJson(),
         'cameraImageFile': _cameraImageFile?.path,
@@ -64,6 +80,8 @@ class Vocabulary {
 
   String get source => _source;
   String get target => _target;
+  Language get sourceLanguage => _sourceLanguage;
+  Language get targetLanguage => _targetLanguage;
 
   PexelsModel get imageModel {
     return _imageModel ?? PexelsModel.fallback();
@@ -86,6 +104,16 @@ class Vocabulary {
 
   set target(String target) {
     _target = target;
+    save();
+  }
+
+  set sourceLanguage(Language sourceLanguage) {
+    _sourceLanguage = sourceLanguage;
+    save();
+  }
+
+  set targetLanguage(Language targetLanguage) {
+    _targetLanguage = targetLanguage;
     save();
   }
 

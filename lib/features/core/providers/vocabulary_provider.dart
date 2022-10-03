@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:log/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
 class VocabularyProvider extends ChangeNotifier {
@@ -47,6 +48,18 @@ class VocabularyProvider extends ChangeNotifier {
         return DateTime(creationDate.year, creationDate.month, creationDate.day) == DateTime(now.year, now.month, now.day);
       },
     ).toList();
+  }
+
+  bool get isMultilingual {
+    bool result = false;
+    if (vocabularyList.isEmpty) return result;
+    Language firstVocabularySourceLanguage = vocabularyList.first.sourceLanguage;
+    Language firstVocabularyTargetLanguage = vocabularyList.first.targetLanguage;
+    for (Vocabulary vocabulary in vocabularyList) {
+      if (vocabulary.sourceLanguage != firstVocabularySourceLanguage) return true;
+      if (vocabulary.targetLanguage != firstVocabularyTargetLanguage) return true;
+    }
+    return result;
   }
 
   Future<void> save() async {

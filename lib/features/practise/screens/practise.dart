@@ -23,11 +23,13 @@ class _PractiseState extends State<Practise> {
   bool isDone = false;
   late Vocabulary currentVoc;
 
+  bool isMultilingual = false;
+
   TTS tts = TTS.instance;
 
   _speak() {
     tts.stop;
-    tts.speak(currentVoc.target);
+    tts.speak(currentVoc);
   }
 
   void _refreshVoc() {
@@ -44,6 +46,7 @@ class _PractiseState extends State<Practise> {
     super.initState();
     initialVocCount = Provider.of<VocabularyProvider>(context, listen: false).allToPractise.length;
     _refreshVoc();
+    isMultilingual = Provider.of<VocabularyProvider>(context, listen: false).isMultilingual;
   }
 
   @override
@@ -64,7 +67,7 @@ class _PractiseState extends State<Practise> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
-                              .displaySmall!
+                              .displayMedium!
                               .copyWith(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 12),
                       ClipRRect(
@@ -79,6 +82,10 @@ class _PractiseState extends State<Practise> {
                         ),
                       ),
                       const Spacer(),
+                      !isMultilingual
+                          ? Container()
+                          : Text("${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}", textAlign: TextAlign.center),
+                      !isMultilingual ? Container() : const SizedBox(height: 12),
                       Provider.of<SettingsProvider>(context).areImagesDisabled && !isSolutionShown
                           ? Container()
                           : Expanded(
