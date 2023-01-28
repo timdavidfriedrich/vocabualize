@@ -19,7 +19,7 @@ class Vocabulary {
   Language _sourceLanguage = Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLanguage;
   Language _targetLanguage = Provider.of<SettingsProvider>(Keys.context, listen: false).targetLanguage;
   List<String> tags = [];
-  PexelsModel? _imageModel;
+  PexelsModel? _pexelsModel;
   File? _cameraImageFile;
   Level level = Level();
   bool isNovice = true;
@@ -42,7 +42,7 @@ class Vocabulary {
     for (dynamic voc in json["tags"]) {
       tags.add(voc.toString());
     }
-    _imageModel = PexelsModel.fromJson(json["imageModel"]);
+    _pexelsModel = PexelsModel.fromJson(json["pexelsModel"]);
     _cameraImageFile = json['cameraImageFile'] == null ? null : File(json['cameraImageFile']);
     level.value = json['level'];
     isNovice = json['isNovice'];
@@ -67,7 +67,7 @@ class Vocabulary {
         'sourceLanguage': _sourceLanguage.translatorId,
         'targetLanguage': _targetLanguage.translatorId,
         'tags': tags,
-        'imageModel': _imageModel?.toJson() ?? PexelsModel.fallback().toJson(),
+        'pexelsModel': _pexelsModel?.toJson() ?? PexelsModel.fallback().toJson(),
         'cameraImageFile': _cameraImageFile?.path,
         'level': level.value,
         'isNovice': isNovice,
@@ -83,15 +83,15 @@ class Vocabulary {
   Language get sourceLanguage => _sourceLanguage;
   Language get targetLanguage => _targetLanguage;
 
-  PexelsModel get imageModel {
-    return _imageModel ?? PexelsModel.fallback();
+  PexelsModel get pexelsModel {
+    return _pexelsModel ?? PexelsModel.fallback();
   }
 
   File? get cameraImageFile => _cameraImageFile;
 
   ImageProvider get imageProvider {
     if (_cameraImageFile != null) return FileImage(_cameraImageFile!);
-    if (_imageModel != null) return CachedNetworkImageProvider(_imageModel!.src["large"]);
+    if (_pexelsModel != null) return CachedNetworkImageProvider(_pexelsModel!.src["large"]);
     return NetworkImage(PexelsModel.fallback().url);
   }
 
@@ -132,8 +132,8 @@ class Vocabulary {
     save();
   }
 
-  set imageModel(PexelsModel imageModel) {
-    _imageModel = imageModel;
+  set pexelsModel(PexelsModel pexelsModel) {
+    _pexelsModel = pexelsModel;
     save();
   }
 

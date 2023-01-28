@@ -41,6 +41,7 @@ dependencies:
   teleport:
     path: ./packages/teleport
   permission_handler: ^10.0.2
+  url_launcher: ^6.1.6
 
 
 

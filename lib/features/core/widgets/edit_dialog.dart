@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/widgets/pexels_button.dart';
+import 'package:vocabualize/features/core/widgets/pexels_logo.dart';
 import 'package:vocabualize/features/core/widgets/tag_wrap.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
@@ -94,9 +97,14 @@ class _EditDialogState extends State<EditDialog> {
                               image: widget.vocabulary.imageProvider,
                             ),
                           ),
+
+                          /// TODO: child: const PexelsLogo(),
                         ),
                       ),
                     ),
+
+              /// TODO: PexelsButton(vocabulary: widget.vocabulary),
+              /// TODO: Provider.of<SettingsProvider>(context).areImagesDisabled ? Container() : const SizedBox(height: 8),
               Provider.of<SettingsProvider>(context).areImagesDisabled ? Container() : const SizedBox(height: 16),
               TextField(
                 controller: sourceController,
@@ -122,6 +130,7 @@ class _EditDialogState extends State<EditDialog> {
               const SizedBox(height: 16),
               RichText(
                 text: TextSpan(
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                   children: [
                     const TextSpan(text: "Created: ", style: TextStyle(fontWeight: FontWeight.bold)),
                     TextSpan(text: "${DateFormat("dd.MM.yyyy").format(widget.vocabulary.creationDate)}\n"),

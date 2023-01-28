@@ -1,5 +1,7 @@
 class Language {
   Language({required this.name, required this.translatorId, required this.speechToTextId, required this.textToSpeechId});
+
+  /// TODO: apply device language for name (to have the correct language on init)
   factory Language.defaultSource() => Language(name: "English", translatorId: "en", speechToTextId: "en_AU", textToSpeechId: "en-US");
   factory Language.defaultTarget() => Language(name: "Spanish", translatorId: "es", speechToTextId: "es_AR", textToSpeechId: "es-ES");
 
