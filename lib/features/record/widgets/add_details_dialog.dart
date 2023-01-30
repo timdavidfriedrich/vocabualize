@@ -124,7 +124,7 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Add details"),
+                Flexible(child: Text(widget.vocabulary.source)),
                 IconButton(padding: EdgeInsets.zero, onPressed: () => _browseNext(), icon: const Icon(Icons.find_replace_rounded)),
               ],
             ),
@@ -169,9 +169,7 @@ class _AddDetailsDialogState extends State<AddDetailsDialog> {
                                     padding: EdgeInsets.zero,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(16),
-                                      border: _selected != _cameraImageFile
-                                          ? null
-                                          : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
+                                      border: _selected != _cameraImageFile ? null : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image: FileImage(_cameraImageFile!),
