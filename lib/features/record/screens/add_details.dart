@@ -118,108 +118,184 @@ class _AddDetailsState extends State<AddDetails> {
   Widget build(BuildContext context) {
     vocabulary = (ModalRoute.of(context)!.settings.arguments as AddDetailsArguments).vocabulary;
     _getPexels();
-    return Scaffold(
-      body: Column(
-        children: [
-          Provider.of<SettingsProvider>(context).areImagesDisabled
-              ? const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Text("Add some tags"))
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SafeArea(
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(48, 0, 48, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ListView(
+                  shrinkWrap: true,
                   children: [
-                    Flexible(child: Text(vocabulary.source)),
-                    IconButton(padding: EdgeInsets.zero, onPressed: () => _browseNext(), icon: const Icon(Icons.find_replace_rounded)),
+                    const SizedBox(height: 24),
+                    // Text(vocabulary.source, textAlign: TextAlign.center),
+                    // const SizedBox(height: 4),
+                    // Icon(Icons.arrow_downward_rounded, color: Theme.of(context).colorScheme.primary),
+                    // Text(vocabulary.target, textAlign: TextAlign.center),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: TextButton(
+                            onPressed: () => {},
+                            child: Text(vocabulary.source, textAlign: TextAlign.right, style: Theme.of(context).textTheme.displayMedium),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Icon(Icons.arrow_forward_rounded, color: Theme.of(context).colorScheme.primary),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: TextButton(
+                            onPressed: () => {},
+                            child: Text(vocabulary.target, textAlign: TextAlign.left, style: Theme.of(context).textTheme.displayMedium),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    AspectRatio(
+                      aspectRatio: 4 / 3,
+                      child: Container(
+                        padding: EdgeInsets.zero,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
+                          color: Theme.of(context).colorScheme.surface,
+                          image: _selected == null
+                              ? null
+                              : _selected == _cameraImageFile
+                                  ? DecorationImage(fit: BoxFit.cover, image: FileImage(_cameraImageFile!))
+                                  : DecorationImage(fit: BoxFit.cover, image: NetworkImage(_selected.src["small"])),
+                        ),
+                        child: _selected == null
+                            ? const Center(child: Text("Choose an image\nor save without one", textAlign: TextAlign.center))
+                            : _selected == _cameraImageFile
+                                ? Container()
+                                : Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Text("Photo by ${_selected.photographer}", style: Theme.of(context).textTheme.bodySmall),
+                                  ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Images provides by Pexels.", style: Theme.of(context).textTheme.bodySmall),
+                        IconButton(onPressed: () => _browseNext(), icon: const Icon(Icons.find_replace_rounded)),
+                      ],
+                    ),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        mainAxisSpacing: 4,
+                        crossAxisSpacing: 4,
+                      ),
+                      itemCount: itemCount + 1,
+                      itemBuilder: (context, index) => index == 0
+                          ? MaterialButton(
+                              padding: EdgeInsets.zero,
+                              elevation: 0,
+                              onPressed: _cameraImageFile != null && _cameraImageFile != _selected
+                                  ? () => setState(() => _selected = _cameraImageFile)
+                                  : () async {
+                                      final result = await _openCam();
+                                      if (result != null) {
+                                        setState(() {
+                                          _cameraImageFile = result;
+                                          _selected = result;
+                                        });
+                                      }
+                                    },
+                              color: Theme.of(context).colorScheme.surface,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                              child: _cameraImageFile == null
+                                  ? Icon(Icons.camera_alt_rounded, color: Theme.of(context).colorScheme.primary, size: 28)
+                                  : Ink(
+                                      padding: EdgeInsets.zero,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: _selected != _cameraImageFile
+                                            ? null
+                                            : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: FileImage(_cameraImageFile!),
+                                        ),
+                                      ),
+                                      child: _selected != _cameraImageFile
+                                          ? Container()
+                                          : Center(child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onBackground)),
+                                    ),
+                            )
+                          : InkWell(
+                              onTap: () =>
+                                  _pexelsModelList.isEmpty ? null : _selectImage(_pexelsModelList.elementAt(index + firstIndex - 1)),
+                              borderRadius: BorderRadius.circular(16),
+                              child: firstIndex + index >= _pexelsModelList.length + 1
+                                  ? const Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator(strokeWidth: 2))
+                                  : Ink(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: _pexelsModelList.elementAt(index + firstIndex - 1) != _selected
+                                            ? null
+                                            : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(_pexelsModelList.elementAt(index + firstIndex - 1).src["small"]),
+                                        ),
+                                      ),
+                                      child: _pexelsModelList.elementAt(index + firstIndex - 1) != _selected
+                                          ? null
+                                          : Center(child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onBackground)),
+                                    ),
+                            ),
+                    ),
+                    const SizedBox(height: 16),
+                    TagWrap(vocabulary: vocabulary),
                   ],
                 ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Provider.of<SettingsProvider>(context).areImagesDisabled
-                ? TagWrap(vocabulary: vocabulary)
-                : Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      GridView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          mainAxisSpacing: 4,
-                          crossAxisSpacing: 4,
-                        ),
-                        itemCount: itemCount + 1,
-                        itemBuilder: (context, index) => index == 0
-                            ? MaterialButton(
-                                padding: EdgeInsets.zero,
-                                elevation: 0,
-                                onPressed: _cameraImageFile != null && _cameraImageFile != _selected
-                                    ? () => setState(() => _selected = _cameraImageFile)
-                                    : () async {
-                                        final result = await _openCam();
-                                        if (result != null) {
-                                          setState(() {
-                                            _cameraImageFile = result;
-                                            _selected = result;
-                                          });
-                                        }
-                                      },
-                                color: Theme.of(context).colorScheme.surface,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                child: _cameraImageFile == null
-                                    ? Icon(Icons.camera_alt_rounded, color: Theme.of(context).colorScheme.primary, size: 28)
-                                    : Ink(
-                                        padding: EdgeInsets.zero,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(16),
-                                          border: _selected != _cameraImageFile ? null : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: FileImage(_cameraImageFile!),
-                                          ),
-                                        ),
-                                        child: _selected != _cameraImageFile
-                                            ? Container()
-                                            : Center(child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onBackground)),
-                                      ),
-                              )
-                            : InkWell(
-                                onTap: () => _pexelsModelList.isEmpty ? null : _selectImage(_pexelsModelList.elementAt(index + firstIndex - 1)),
-                                borderRadius: BorderRadius.circular(16),
-                                child: firstIndex + index >= _pexelsModelList.length + 1
-                                    ? const Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator(strokeWidth: 2))
-                                    : Ink(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(16),
-                                          border: _pexelsModelList.elementAt(index + firstIndex - 1) != _selected
-                                              ? null
-                                              : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(_pexelsModelList.elementAt(index + firstIndex - 1).src["small"]),
-                                          ),
-                                        ),
-                                        child: _pexelsModelList.elementAt(index + firstIndex - 1) != _selected
-                                            ? null
-                                            : Center(child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onBackground)),
-                                      ),
-                              ),
+                const Spacer(),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(12),
+                        backgroundColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                        foregroundColor: Theme.of(context).colorScheme.error,
                       ),
-                      const SizedBox(height: 16),
-                      TagWrap(vocabulary: vocabulary),
-                    ],
+                      onPressed: () => {},
+                      child: const Icon(Icons.delete_rounded),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => _save(),
+                        child: Text(_selected == null ? "Save without" : "Save"),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: () => _goToSettings(),
+                  child: Text(
+                    "Never ask for image? Go to settings.",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
                   ),
-          ),
-          ElevatedButton(onPressed: () => _save(), child: Text(_selected == null ? "Save without image" : "Save")),
-          const SizedBox(height: 8),
-          TextButton(
-            onPressed: () => _goToSettings(),
-            child: Text(
-              "Don't ask again? Go to settings.",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
+                )
+              ],
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
