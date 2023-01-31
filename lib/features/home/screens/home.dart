@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/home/screens/home_empty.dart';
 import 'package:vocabualize/features/home/widgets/double_sheet.dart';
@@ -72,14 +72,11 @@ class _HomeState extends State<Home> {
                             const SizedBox(height: 24),
                             const StatusCard(),
                             const SizedBox(height: 32),
-                            Text("New words", style: Theme.of(context).textTheme.headlineMedium),
+                            Text(AppLocalizations.of(context).home_newWords, style: Theme.of(context).textTheme.headlineMedium),
                             const SizedBox(height: 12),
                             Provider.of<VocabularyProvider>(context).lastest.isNotEmpty
                                 ? Container()
-                                : Text(
-                                    "Oh, it seems like you have not added any words for a while now.  :(",
-                                    style: Theme.of(context).textTheme.bodySmall,
-                                  ),
+                                : Text(AppLocalizations.of(context).home_noNewWords, style: Theme.of(context).textTheme.bodySmall),
                           ],
                         ),
                       ),
@@ -109,7 +106,7 @@ class _HomeState extends State<Home> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 32),
-                            Text("All words", style: Theme.of(context).textTheme.headlineMedium),
+                            Text(AppLocalizations.of(context).home_allWords, style: Theme.of(context).textTheme.headlineMedium),
                             const SizedBox(height: 12),
                             Column(
                               mainAxisSize: MainAxisSize.min,

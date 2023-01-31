@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/practise/services/text_to_speech.dart';
@@ -63,7 +63,7 @@ class _PractiseState extends State<Practise> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 48),
-                      Text("${Provider.of<VocabularyProvider>(context).allToPractise.length} left",
+                      Text(AppLocalizations.of(context).practise_left(Provider.of<VocabularyProvider>(context).allToPractise.length),
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
@@ -84,7 +84,8 @@ class _PractiseState extends State<Practise> {
                       const Spacer(),
                       !isMultilingual
                           ? Container()
-                          : Text("${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}", style: TextStyle(color: Theme.of(context).hintColor), textAlign: TextAlign.center),
+                          : Text("${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}",
+                              style: TextStyle(color: Theme.of(context).hintColor), textAlign: TextAlign.center),
                       !isMultilingual ? Container() : const SizedBox(height: 12),
                       Provider.of<SettingsProvider>(context).areImagesDisabled && !isSolutionShown
                           ? Container()
@@ -141,7 +142,7 @@ class _PractiseState extends State<Practise> {
                                       await currentVoc.answer(Answer.hard);
                                       _refreshVoc();
                                     },
-                                    child: const Text("Hard"),
+                                    child: Text(AppLocalizations.of(context).pracise_rating_hardButton),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -155,7 +156,7 @@ class _PractiseState extends State<Practise> {
                                       await currentVoc.answer(Answer.good);
                                       _refreshVoc();
                                     },
-                                    child: const Text("Good"),
+                                    child: Text(AppLocalizations.of(context).pracise_rating_goodButton),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -169,7 +170,7 @@ class _PractiseState extends State<Practise> {
                                       await currentVoc.answer(Answer.easy);
                                       _refreshVoc();
                                     },
-                                    child: const Text("Easy"),
+                                    child: Text(AppLocalizations.of(context).pracise_rating_easyButton),
                                   ),
                                 ),
                               ],
@@ -178,14 +179,17 @@ class _PractiseState extends State<Practise> {
                       !isSolutionShown
                           ? ElevatedButton(
                               onPressed: () => setState(() => isSolutionShown = true),
-                              child: const Text("Solution"),
+                              child: Text(AppLocalizations.of(context).pracise_solutionButton),
                             )
                           : OutlinedButton(
                               onPressed: () async {
                                 await currentVoc.answer(Answer.forgot);
                                 _refreshVoc();
                               },
-                              child: const Text("I didn't know", style: TextStyle(color: LevelPalette.novice)),
+                              child: Text(
+                                AppLocalizations.of(context).pracise_rating_didntKnowButton,
+                                style: const TextStyle(color: LevelPalette.novice),
+                              ),
                             ),
                       const SizedBox(height: 64),
                     ],

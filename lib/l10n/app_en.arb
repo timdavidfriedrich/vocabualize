@@ -1,0 +1,193 @@
+{
+  "@@locale": "en",
+  "core_disconnected": "You're offline",
+  "@core_disconnected": {
+    "description": "Offline pop up"
+  },
+  "core_disconnected_description": "You must be online, in order to add vocabularies. Please check your internet connection.",
+  "@core_disconnected_description": {
+    "description": "Offline pop up description"
+  },
+  "core_disconnected_okayButton": "Okay",
+  "@core_disconnected_okayButton": {
+    "description": "Offline pop up okay button text"
+  },
+  "home_allWords": "All words",
+  "@home_allWords": {
+    "description": "All words section title"
+  },
+  "home_newWords": "New words",
+  "@home_newWords": {
+    "description": "New words section title."
+  },
+  "home_noNewWords": "Oh, it seems like you have not added any words for a while now.  :(",
+  "@home_noNewWords": {
+    "description": "Gets displayed in the new words section if there are no new words."
+  },
+  "home_statusCard_addedManyInTotal": "Damn, you added {listLength} words in total. Not bad!",
+  "@home_statusCard_addedManyInTotal": {
+    "description": "Status card text if you added more than a specific amount in total.",
+    "placeholders": {
+      "listLength": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "home_statusCard_addedToday": "Wow, you already added {listLength} words today. Keep it up!",
+  "@home_statusCard_addedToday": {
+    "description": "Status card text if you created multiple words today.",
+    "placeholders": {
+      "listLength": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "home_statusCard_default": "Your collection contains {listLength} words.",
+  "@home_statusCard_default": {
+    "description": "Default status card text.",
+    "placeholders": {
+      "listLength": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "home_statusCard_isEmpty": "Why don't you add some new words? :)",
+  "@home_statusCard_isEmpty": {
+    "description": "Status card text if the vocabularyList is empty."
+  },
+  "home_statusCard_onlyOneWord": "Your collection contains {listLength} word. It's feeling lonely. Add some more! :)",
+  "@home_statusCard_onlyOneWord": {
+    "description": "Status card text if the vocabularyList contains only one word.",
+    "placeholders": {
+      "listLength": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "home_statusCard_practiseButton": "Practise",
+  "@home_statusCard_practiseButton": {
+    "description": "Status card's practise button text"
+  },
+  "practise_left": "{cardCount} left",
+  "@practise_left": {
+    "description": "Practise card count indicator text",
+    "placeholders": {
+      "cardCount": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "pracise_solutionButton": "Solution",
+  "@pracise_solutionButton": {
+    "description": "Practise show solution button text"
+  },
+  "pracise_rating_hardButton": "Hard",
+  "@pracise_rating_hardButton": {
+    "description": "Practise hard rating button text"
+  },
+  "pracise_rating_goodButton": "Good",
+  "@pracise_rating_goodButton": {
+    "description": "Practise good rating button text"
+  },
+  "pracise_rating_easyButton": "Easy",
+  "@pracise_rating_easyButton": {
+    "description": "Practise easy rating button text"
+  },
+  "pracise_rating_didntKnowButton": "I didn't know",
+  "@pracise_rating_didntKnowButton": {
+    "description": "Practise 'I didn't know' rating button text"
+  },
+  "settings_title": "Settings",
+  "@settings_title": {
+    "description": "Settings page title"
+  },
+  "settings_source": "Source language",
+  "@settings_source": {
+    "description": "Settings page source language label"
+  },
+  "settings_sourceHint": "A language you know well.",
+  "@settings_sourceHint": {
+    "description": "Explanation of the source language"
+  },
+  "settings_target": "Target language",
+  "@settings_target": {
+    "description": "Settings page target language label"
+  },
+  "settings_targetHint": "The language you learn.",
+  "@settings_targetHint": {
+    "description": "Explanation of the target language"
+  },
+  "settings_images": "Words have images",
+  "@settings_images": {
+    "description": "Settings page image activation label "
+  },
+  "settings_imagesHint": "Enable for better learning.",
+  "@settings_imagesHint": {
+    "description": "Hint, that images are good for learning"
+  },
+  "record_addTagHint": "Untitled",
+  "@record_addTagHint": {
+    "description": "Hint in the add tag dialog text field"
+  },
+  "record_addTagLabel": "Tag name",
+  "@record_addTagLabel": {
+    "description": "Label of the add tag dialog text field"
+  },
+  "record_type": "Type instead ...",
+  "@record_type": {
+    "description": "Record sheet type instead text field"
+  },
+  "record_closeButton": "Close",
+  "@record_closeButton": {
+    "description": "Record sheet close button text"
+  },
+  "record_addButton": "Add",
+  "@record_addButton": {
+    "description": "Record sheet add button text"
+  },
+  "record_addDetails_noImage": "Choose an image\nor save without one",
+  "@record_addDetails_noImage": {
+    "description": "Gets displayed if no image has been selected"
+  },
+  "record_addDetails_providedBy": "Images provided by Pexels.",
+  "@record_addDetails_providedBy": {
+    "description": "Note that the stockimages are provided by Pexels"
+  },
+  "record_addDetails_saveWithoutButton": "Save without",
+  "@record_addDetails_saveWithoutButton": {
+    "description": "Save without image button text"
+  },
+  "record_addDetails_saveButton": "Save",
+  "@record_addDetails_saveButton": {
+    "description": "Save AddDetails button text"
+  },
+  "record_addDetails_neverAskForImageButton": "Never ask for image? Go to settings.",
+  "@record_addDetails_neverAskForImageButton": {
+    "description": "Hint under the save button that you can disable images in the settings."
+  },
+  "record_addDetails_takePictureButton": "Take picture",
+  "@record_addDetails_takePictureButton": {
+    "description": "Take picture button"
+  },
+  "record_addDetails_openGalleryButton": "Open Gallery",
+  "@record_addDetails_openGalleryButton": {
+    "description": "Choose image from gallery button"
+  },
+  "record_addDetails_cancelCustomImageButton": "Cancel",
+  "@record_addDetails_cancelCustomImageButton": {
+    "description": "Cancel the action to choose a custom image"
+  },
+  "record_savedMessage": " has been saved as ",
+  "@record_savedMessage": {
+    "description": "Message shown in the snackbar after saving a vocabulary"
+  },
+  "record_savedMessage_deleteButton": "Delete",
+  "@record_savedMessage_deleteButton": {
+    "description": "Delete button in the saved message snackbar"
+  }
+}

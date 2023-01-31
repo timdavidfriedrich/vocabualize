@@ -1,0 +1,6 @@
+{
+    "save": "Save",
+    "@save": {
+        "description": "Save button"
+    }
+}

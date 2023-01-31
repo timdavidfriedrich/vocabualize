@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
@@ -74,7 +74,7 @@ class _SaveMessageState extends State<SaveMessage> {
                                 TextSpan(
                                     text: widget.vocabulary.source.substring(0, 1).toUpperCase() +
                                         widget.vocabulary.source.substring(1, widget.vocabulary.source.length)),
-                                const TextSpan(text: " has been saved as "),
+                                TextSpan(text: AppLocalizations.of(context).record_savedMessage),
                                 TextSpan(
                                   text: widget.vocabulary.target,
                                   style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(Keys.context).colorScheme.onPrimary),
@@ -93,7 +93,7 @@ class _SaveMessageState extends State<SaveMessage> {
                                   Provider.of<VocabularyProvider>(Keys.context, listen: false).remove(widget.vocabulary);
                                 },
                           child: Text(
-                            deleted ? "" : "Delete",
+                            deleted ? "" : AppLocalizations.of(context).record_savedMessage_deleteButton,
                             style: TextStyle(color: Theme.of(Keys.context).colorScheme.onPrimary),
                           ),
                         ),

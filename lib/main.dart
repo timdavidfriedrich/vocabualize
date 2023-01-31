@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/constants/keys.dart';
@@ -10,6 +11,7 @@ import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/record/screens/add_details.dart';
 import 'package:vocabualize/features/record/services/speech.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +36,17 @@ class Vocabualize extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => VocabularyProvider()),
       ],
       child: MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          AppLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('de', ''),
+          Locale('es', ''),
+        ],
         theme: ThemeConfig.light(context),
         darkTheme: ThemeConfig.dark(context),
         //showPerformanceOverlay: true,

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/languages.dart';
@@ -34,11 +34,11 @@ class _SettingsSheetState extends State<SettingsSheet> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           const SizedBox(height: 48),
-          Text("Settings", style: Theme.of(context).textTheme.headlineMedium),
+          Text(AppLocalizations.of(context).settings_title, style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: 12),
           SettingsListTile(
-            title: const Text("Source language"),
-            subtitle: const Text("Your mother tongue."),
+            title: Text(AppLocalizations.of(context).settings_source),
+            subtitle: Text(AppLocalizations.of(context).settings_sourceHint),
             trailing: PopupMenuButton(
               onSelected: (value) => {},
               itemBuilder: (context) => List.generate(
@@ -56,8 +56,8 @@ class _SettingsSheetState extends State<SettingsSheet> {
             ),
           ),
           SettingsListTile(
-            title: const Text("Target language"),
-            subtitle: const Text("The language you learn."),
+            title: Text(AppLocalizations.of(context).settings_target),
+            subtitle: Text(AppLocalizations.of(context).settings_targetHint),
             trailing: PopupMenuButton(
               padding: const EdgeInsets.all(128),
               itemBuilder: (context) => List.generate(
@@ -75,11 +75,8 @@ class _SettingsSheetState extends State<SettingsSheet> {
             ),
           ),
           SettingsListTile(
-            title: const Text("Words have images"),
-            subtitle: Text(
-              /* "If disabled, all images will be hidden."*/ "Enable for better learning.",
-              style: TextStyle(color: Theme.of(context).hintColor),
-            ),
+            title: Text(AppLocalizations.of(context).settings_images),
+            subtitle: Text(AppLocalizations.of(context).settings_imagesHint, style: TextStyle(color: Theme.of(context).hintColor)),
             trailing: Switch(
               value: Provider.of<SettingsProvider>(context).areImagesEnabled,
               onChanged: (value) {

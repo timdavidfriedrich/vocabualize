@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vocabualize/constants/keys.dart';
 
@@ -29,10 +29,10 @@ class CameraGalleryDialog extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.camera_alt_rounded),
-                  SizedBox(width: 12),
-                  Text("Take picture"),
+                children: [
+                  const Icon(Icons.camera_alt_rounded),
+                  const SizedBox(width: 12),
+                  Text(AppLocalizations.of(context).record_addDetails_takePictureButton),
                 ],
               ),
             ),
@@ -42,15 +42,15 @@ class CameraGalleryDialog extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.photo_library_rounded),
-                  SizedBox(width: 12),
-                  Text("Open gallery"),
+                children: [
+                  const Icon(Icons.photo_library_rounded),
+                  const SizedBox(width: 12),
+                  Text(AppLocalizations.of(context).record_addDetails_openGalleryButton),
                 ],
               ),
             ),
             const SizedBox(height: 12),
-            OutlinedButton(onPressed: () => _cancel(), child: const Text("Cancel")),
+            OutlinedButton(onPressed: () => _cancel(), child: Text(AppLocalizations.of(context).record_addDetails_cancelCustomImageButton)),
           ],
         ),
       ),

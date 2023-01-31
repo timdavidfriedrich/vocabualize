@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
 class AddTagDialog extends StatefulWidget {
@@ -32,7 +32,10 @@ class _AddTagDialogState extends State<AddTagDialog> {
             Expanded(
               child: TextField(
                 toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
-                decoration: const InputDecoration(hintText: "Untitled", label: Text("Tag name")),
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).record_addTagHint,
+                  label: Text(AppLocalizations.of(context).record_addTagLabel),
+                ),
                 onChanged: (text) => setState(() => input = text),
               ),
             ),

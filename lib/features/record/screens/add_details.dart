@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -132,10 +132,6 @@ class _AddDetailsState extends State<AddDetails> {
                   shrinkWrap: true,
                   children: [
                     const SizedBox(height: 24),
-                    // Text(vocabulary.source, textAlign: TextAlign.center),
-                    // const SizedBox(height: 4),
-                    // Icon(Icons.arrow_downward_rounded, color: Theme.of(context).colorScheme.primary),
-                    // Text(vocabulary.target, textAlign: TextAlign.center),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -172,7 +168,7 @@ class _AddDetailsState extends State<AddDetails> {
                                   : DecorationImage(fit: BoxFit.cover, image: NetworkImage(_selected.src["small"])),
                         ),
                         child: _selected == null
-                            ? const Center(child: Text("Choose an image\nor save without one", textAlign: TextAlign.center))
+                            ? Center(child: Text(AppLocalizations.of(context).record_addDetails_noImage, textAlign: TextAlign.center))
                             : _selected == _cameraImageFile
                                 ? Container()
                                 : Align(
@@ -185,7 +181,7 @@ class _AddDetailsState extends State<AddDetails> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Images provides by Pexels.", style: Theme.of(context).textTheme.bodySmall),
+                        Text(AppLocalizations.of(context).record_addDetails_providedBy, style: Theme.of(context).textTheme.bodySmall),
                         IconButton(onPressed: () => _browseNext(), icon: const Icon(Icons.find_replace_rounded)),
                       ],
                     ),
@@ -278,7 +274,11 @@ class _AddDetailsState extends State<AddDetails> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () => _save(),
-                        child: Text(_selected == null ? "Save without" : "Save"),
+                        child: Text(
+                          _selected == null
+                              ? AppLocalizations.of(context).record_addDetails_saveWithoutButton
+                              : AppLocalizations.of(context).record_addDetails_saveButton,
+                        ),
                       ),
                     ),
                   ],
@@ -287,7 +287,7 @@ class _AddDetailsState extends State<AddDetails> {
                 TextButton(
                   onPressed: () => _goToSettings(),
                   child: Text(
-                    "Never ask for image? Go to settings.",
+                    AppLocalizations.of(context).record_addDetails_neverAskForImageButton,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
                   ),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 
 class DisconnectedDialog extends StatelessWidget {
   const DisconnectedDialog({super.key});
@@ -10,12 +10,17 @@ class DisconnectedDialog extends StatelessWidget {
       contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
       actionsPadding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
       actionsAlignment: MainAxisAlignment.end,
-      title: const Text("You're offline"),
+      title: Text(AppLocalizations.of(context).core_disconnected),
       content: SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: const Text("You must be online, in order to add vocabularies. Please check your internet connection. "),
+        child: Text(AppLocalizations.of(context).core_disconnected_description),
       ),
-      actions: [ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text("Okay"))],
+      actions: [
+        ElevatedButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(AppLocalizations.of(context).core_disconnected_okayButton),
+        ),
+      ],
     );
   }
 }
