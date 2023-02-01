@@ -57,7 +57,7 @@ class _PractiseState extends State<Practise> {
         initialVocCount = vocabulariesToPractise.length;
         isMultilingual = Provider.of<VocabularyProvider>(context, listen: false).isMultilingual;
       });
-      _refreshVoc();
+      if (vocabulariesToPractise.isNotEmpty) _refreshVoc();
     });
   }
 
