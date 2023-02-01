@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/home/widgets/tag_card_button.dart';
+import 'package:vocabualize/features/home/widgets/collection_card_button.dart';
 
 class CollectionsView extends StatelessWidget {
   const CollectionsView({super.key});

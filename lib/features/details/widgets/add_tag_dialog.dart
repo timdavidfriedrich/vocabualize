@@ -15,7 +15,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
 
   _submit() {
     /// ?: add directly to vocabulary, or just to list first and confirm with save
-    if (input.isNotEmpty) widget.vocabulary.addTag(input);
+    if (input.isNotEmpty) widget.vocabulary.addTag(input.trim());
     Navigator.pop(context);
   }
 
