@@ -1,6 +1,5 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
@@ -45,7 +44,7 @@ class _SaveMessageState extends State<SaveMessage> {
             onEnd: () {
               if (dismissedEnd.isNegative && currentValue >= dismissedEnd) return;
               if (!dismissedEnd.isNegative && currentValue <= dismissedEnd) return;
-              Navigator.popUntil(Keys.context, ModalRoute.withName(Home.routeName)); // pops all messages
+              Navigator.popUntil(Global.context, ModalRoute.withName(Home.routeName)); // pops all messages
             },
             builder: (context, double value, child) {
               currentValue = value;
@@ -58,7 +57,7 @@ class _SaveMessageState extends State<SaveMessage> {
                 color: Colors.transparent,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: deleted ? Theme.of(Keys.context).colorScheme.error : Theme.of(Keys.context).colorScheme.primary,
+                    color: deleted ? Theme.of(Global.context).colorScheme.error : Theme.of(Global.context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Padding(
@@ -69,7 +68,7 @@ class _SaveMessageState extends State<SaveMessage> {
                         Flexible(
                           child: RichText(
                             text: TextSpan(
-                              style: TextStyle(color: Theme.of(Keys.context).colorScheme.onPrimary.withOpacity(0.6)),
+                              style: TextStyle(color: Theme.of(Global.context).colorScheme.onPrimary.withOpacity(0.6)),
                               children: [
                                 TextSpan(
                                     text: widget.vocabulary.source.substring(0, 1).toUpperCase() +
@@ -77,7 +76,7 @@ class _SaveMessageState extends State<SaveMessage> {
                                 TextSpan(text: AppLocalizations.of(context).record_savedMessage),
                                 TextSpan(
                                   text: widget.vocabulary.target,
-                                  style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(Keys.context).colorScheme.onPrimary),
+                                  style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(Global.context).colorScheme.onPrimary),
                                 ),
                                 const TextSpan(text: "!"),
                               ],
@@ -90,11 +89,11 @@ class _SaveMessageState extends State<SaveMessage> {
                               : () {
                                   disappear();
                                   delete();
-                                  Provider.of<VocabularyProvider>(Keys.context, listen: false).remove(widget.vocabulary);
+                                  Provider.of<VocabularyProvider>(Global.context, listen: false).remove(widget.vocabulary);
                                 },
                           child: Text(
                             deleted ? "" : AppLocalizations.of(context).record_savedMessage_deleteButton,
-                            style: TextStyle(color: Theme.of(Keys.context).colorScheme.onPrimary),
+                            style: TextStyle(color: Theme.of(Global.context).colorScheme.onPrimary),
                           ),
                         ),
                       ],

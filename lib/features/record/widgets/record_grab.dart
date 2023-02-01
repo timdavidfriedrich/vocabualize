@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 
 class RecordGrab extends StatelessWidget {
   const RecordGrab({Key? key}) : super(key: key);

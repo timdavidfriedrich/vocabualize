@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/record/widgets/save_message.dart';
+import 'package:vocabualize/features/core/widgets/save_message.dart';
 
 class SaveMessageRoute extends OverlayRoute {
   SaveMessageRoute({required this.vocabulary});

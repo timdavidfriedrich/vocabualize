@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({super.key, required this.title, this.subtitle, this.trailing});

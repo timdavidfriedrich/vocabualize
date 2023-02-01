@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/core/widgets/add_tag_dialog.dart';
+import 'package:vocabualize/features/details/widgets/add_tag_dialog.dart';
 
 class TagWrap extends StatefulWidget {
   const TagWrap({super.key, required this.vocabulary});
@@ -24,6 +24,7 @@ class _TagWrapState extends State<TagWrap> {
   @override
   Widget build(BuildContext context) {
     return widget.vocabulary.tags.isEmpty
+        // TODO: Replace with arb
         ? Row(children: [const Text("Tags:"), IconButton(onPressed: () => _add(), icon: const Icon(Icons.add_rounded))])
         : Wrap(
             spacing: 8,

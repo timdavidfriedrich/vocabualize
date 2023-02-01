@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 
 class SettingsGrab extends StatelessWidget {
   const SettingsGrab({Key? key}) : super(key: key);

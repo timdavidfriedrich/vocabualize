@@ -1,17 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
-import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/practise/screens/practise.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/details/screens/details.dart';
-import 'package:vocabualize/features/record/services/speech.dart';
+import 'package:vocabualize/features/core/services/speech.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +49,7 @@ class Vocabualize extends StatelessWidget {
         darkTheme: ThemeConfig.dark(context),
         //showPerformanceOverlay: true,
         debugShowCheckedModeBanner: false,
-        navigatorKey: Keys.navigatorState,
+        navigatorKey: Global.navigatorState,
         initialRoute: Home.routeName,
         routes: {
           Home.routeName: (context) => const Home(),

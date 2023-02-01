@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vocabualize/config/themes/dark_palette.dart';
 import 'package:vocabualize/config/themes/light_palette.dart';
@@ -125,6 +125,13 @@ class ThemeConfig {
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(onBackground),
           padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.fromLTRB(32, 12, 32, 12)),
+          textStyle: MaterialStateProperty.all<TextStyle>(
+            GoogleFonts.poppins(
+              color: onSurface,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           elevation: MaterialStateProperty.all<double>(0),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
         ).copyWith(side: MaterialStateProperty.all<BorderSide>(BorderSide(width: 2, color: primary))),

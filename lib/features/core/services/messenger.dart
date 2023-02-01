@@ -1,16 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:vocabualize/constants/keys.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/widgets/disconnected_dialog.dart';
-import 'package:vocabualize/features/record/widgets/save_message_route.dart';
+import 'package:vocabualize/features/core/widgets/save_message_route.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
 
 class Messenger {
   static void loadingAnimation() {
     showDialog(
-      context: Keys.context,
+      context: Global.context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return const Dialog(backgroundColor: Colors.transparent, elevation: 0, child: Center(child: CircularProgressIndicator()));
@@ -31,13 +30,13 @@ class Messenger {
   }
 
   static Future<void> showSaveMessage(Vocabulary vocabulary) async {
-    Navigator.popUntil(Keys.context, ModalRoute.withName(Home.routeName)); // required, pops all messages
-    Navigator.push(Keys.context, SaveMessageRoute(vocabulary: vocabulary));
+    Navigator.popUntil(Global.context, ModalRoute.withName(Home.routeName)); // required, pops all messages
+    Navigator.push(Global.context, SaveMessageRoute(vocabulary: vocabulary));
   }
 
   static Future<dynamic> showAnimatedDialog(Widget dialog) async {
     return await showGeneralDialog(
-      context: Keys.context,
+      context: Global.context,
       pageBuilder: (context, animation1, animation2) => Container(),
       transitionDuration: const Duration(milliseconds: 500),
       transitionBuilder: (context, animation1, animation2, widget) {

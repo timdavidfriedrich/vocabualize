@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
-import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 
 class RecordSheetController extends SnappingSheetController {
@@ -26,7 +25,7 @@ class RecordSheetController extends SnappingSheetController {
 
   hide() {
     if (isAttached) snapToPosition(retractedPosition);
-    Provider.of<ActiveProvider>(Keys.context, listen: false).typeIsActive = false;
-    Provider.of<ActiveProvider>(Keys.context, listen: false).micIsActive = false;
+    Provider.of<ActiveProvider>(Global.context, listen: false).typeIsActive = false;
+    Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
   }
 }

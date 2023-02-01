@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 
 class ActiveProvider extends ChangeNotifier {
   bool _micIsActive = false;

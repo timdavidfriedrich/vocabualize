@@ -1,7 +1,7 @@
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:text_to_speech/text_to_speech.dart';
 import 'package:vocabualize/features/core/services/language.dart';
-import 'package:vocabualize/features/record/services/speech.dart';
+import 'package:vocabualize/features/core/services/speech.dart';
 
 class Languages {
   static Future<Language?> findLanguage({String? translatorId, String? speechToTextId, String? textToSpeechId}) async {

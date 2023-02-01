@@ -1,31 +1,32 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/constants/keys.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/languages.dart';
 import 'package:vocabualize/features/core/services/level.dart';
+import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/pexels_api/pexels_model.dart';
 import 'package:vocabualize/features/core/services/answer.dart';
 import 'package:vocabualize/features/practise/services/date_calculator.dart';
+import 'package:vocabualize/features/record/widgets/duplicate_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Vocabulary {
   String _source = "";
   String _target = "";
-  Language _sourceLanguage = Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLanguage;
-  Language _targetLanguage = Provider.of<SettingsProvider>(Keys.context, listen: false).targetLanguage;
+  Language _sourceLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage;
+  Language _targetLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).targetLanguage;
   List<String> tags = [];
   PexelsModel? _pexelsModel;
   File? _cameraImageFile;
   Level level = Level();
   bool isNovice = true;
   //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-  int interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-  double ease = Provider.of<SettingsProvider>(Keys.context, listen: false).initialEase;
+  int interval = Provider.of<SettingsProvider>(Global.context, listen: false).initialNoviceInterval; // minutes
+  double ease = Provider.of<SettingsProvider>(Global.context, listen: false).initialEase;
   DateTime creationDate = DateTime.now();
   DateTime nextDate = DateTime.now();
 
@@ -87,6 +88,10 @@ class Vocabulary {
     return _pexelsModel ?? PexelsModel.fallback();
   }
 
+  bool get hasImage {
+    return _pexelsModel != null;
+  }
+
   File? get cameraImageFile => _cameraImageFile;
 
   ImageProvider get imageProvider {
@@ -132,6 +137,13 @@ class Vocabulary {
     save();
   }
 
+  bool isValid() {
+    bool sourceNotEmpty = source.isNotEmpty;
+    bool alreadyInList = Provider.of<VocabularyProvider>(Global.context, listen: false).searchListForSource(source) != null;
+    if (alreadyInList) Messenger.showAnimatedDialog(DuplicateDialog(vocabulary: this));
+    return sourceNotEmpty && !alreadyInList;
+  }
+
   set pexelsModel(PexelsModel pexelsModel) {
     _pexelsModel = pexelsModel;
     save();
@@ -139,19 +151,19 @@ class Vocabulary {
 
   Future<void> answer(Answer answer) async {
     nextDate = DateCalculator.nextDate(this, answer);
-    await Provider.of<VocabularyProvider>(Keys.context, listen: false).save();
+    await Provider.of<VocabularyProvider>(Global.context, listen: false).save();
   }
 
   Future<void> save() async {
-    await Provider.of<VocabularyProvider>(Keys.context, listen: false).save();
+    await Provider.of<VocabularyProvider>(Global.context, listen: false).save();
   }
 
   Future<void> reset() async {
     level.value = 0;
     isNovice = true;
     //noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-    interval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialInterval; // minutes
-    await Provider.of<VocabularyProvider>(Keys.context, listen: false).save();
+    interval = Provider.of<SettingsProvider>(Global.context, listen: false).initialInterval; // minutes
+    await Provider.of<VocabularyProvider>(Global.context, listen: false).save();
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
 
 class PractiseDone extends StatelessWidget {

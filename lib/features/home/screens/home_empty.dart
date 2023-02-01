@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 
 class HomeEmpty extends StatelessWidget {
   const HomeEmpty({Key? key}) : super(key: key);

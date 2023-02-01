@@ -1,14 +1,8 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
-import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
-import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/services/translator.dart';
-import 'package:vocabualize/features/details/screens/details.dart';
-import 'package:vocabualize/features/details/services/details_arguments.dart';
-import 'package:vocabualize/features/details/widgets/add_details_dialog.dart';
+import 'package:vocabualize/features/record/services/record_service.dart';
 
 class TypeButton extends StatefulWidget {
   const TypeButton({Key? key}) : super(key: key);
@@ -35,16 +29,8 @@ class _TypeButtonState extends State<TypeButton> {
 
   _submit() async {
     if (!await Messenger.isOnline()) return _cancel();
-
-    Messenger.loadingAnimation();
-    Vocabulary vocabulary = Vocabulary(source: currentSource, target: await Translator.translate(currentSource));
     if (!mounted) return;
-    Provider.of<VocabularyProvider>(context, listen: false).add(vocabulary).whenComplete(() {
-      Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
-      // ? Messenger.showSaveMessage(newVocabulary);
-      // Messenger.showAnimatedDialog(AddDetailsDialog(vocabulary: vocabulary));
-      Navigator.pushNamed(context, Details.routeName, arguments: DetailsArguments(vocabulary));
-    });
+    RecordService.validateAndSave(source: currentSource);
     currentSource = "";
     controller.clear();
     focusNode.requestFocus();

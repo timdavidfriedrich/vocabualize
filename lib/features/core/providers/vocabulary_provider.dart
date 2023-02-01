@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vocabualize/features/core/services/format.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
@@ -14,6 +15,15 @@ class VocabularyProvider extends ChangeNotifier {
 
   bool contains(Vocabulary vocabulary) {
     return vocabularyList.any((voc) => voc.creationDate.microsecondsSinceEpoch == vocabulary.creationDate.microsecondsSinceEpoch);
+  }
+
+  dynamic searchListForSource(String source) {
+    bool containsSource = vocabularyList.any((voc) => Format.normalize(voc.source) == Format.normalize(source));
+    if (containsSource) {
+      return vocabularyList.firstWhere((voc) => Format.normalize(voc.source) == Format.normalize(source));
+    } else {
+      return null;
+    }
   }
 
   List<Vocabulary> get allToPractise {

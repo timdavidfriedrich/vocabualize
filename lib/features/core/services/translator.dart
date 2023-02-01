@@ -1,6 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:translator/translator.dart';
-import 'package:vocabualize/constants/keys.dart';
+import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Translator {
@@ -10,7 +10,7 @@ class Translator {
     List<String> articles = ["the", "a", "an"];
     Translation translation = await _translator.translate(
       source,
-      from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLanguage.translatorId,
+      from: Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage.translatorId,
       to: "en",
     );
     String result = translation.toString();
@@ -27,8 +27,8 @@ class Translator {
   static Future<String> translate(String source) async {
     Translation translation = await _translator.translate(
       source,
-      from: Provider.of<SettingsProvider>(Keys.context, listen: false).sourceLanguage.translatorId,
-      to: Provider.of<SettingsProvider>(Keys.context, listen: false).targetLanguage.translatorId,
+      from: Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage.translatorId,
+      to: Provider.of<SettingsProvider>(Global.context, listen: false).targetLanguage.translatorId,
     );
     return translation.toString();
   }

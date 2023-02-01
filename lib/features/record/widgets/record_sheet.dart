@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/record/widgets/mic_button.dart';

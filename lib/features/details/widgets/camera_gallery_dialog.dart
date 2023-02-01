@@ -1,16 +1,15 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:vocabualize/constants/keys.dart';
 
 class CameraGalleryDialog extends StatelessWidget {
   const CameraGalleryDialog({super.key});
 
   _return(ImageSource imageSource) {
-    Navigator.pop(Keys.context, imageSource);
+    Navigator.pop(Global.context, imageSource);
   }
 
   _cancel() {
-    Navigator.pop(Keys.context);
+    Navigator.pop(Global.context);
   }
 
   @override
