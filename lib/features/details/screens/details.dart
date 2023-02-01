@@ -141,6 +141,7 @@ class _DetailsState extends State<Details> {
             child: ClipRRect(
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 body: vocabulary.source.isEmpty
                     ? const Center(child: CircularProgressIndicator())
                     : Padding(
