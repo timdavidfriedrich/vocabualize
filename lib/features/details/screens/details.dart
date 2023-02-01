@@ -172,8 +172,11 @@ class _DetailsState extends State<Details> {
                                       ),
                                       child: _selected == null
                                           ? Center(
-                                              child:
-                                                  Text(AppLocalizations.of(context).record_addDetails_noImage, textAlign: TextAlign.center))
+                                              child: Text(
+                                                AppLocalizations.of(context).record_addDetails_noImage,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            )
                                           : _selected == _cameraImageFile
                                               ? Container()
                                               : Container(
