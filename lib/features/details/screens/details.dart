@@ -104,7 +104,8 @@ class _DetailsState extends State<Details> {
     } else {
       vocabulary.pexelsModel = _selected ?? PexelsModel.fallback();
     }
-    Navigator.pushNamed(Global.context, Home.routeName);
+    // Navigator.pushNamed(Global.context, Home.routeName);
+    Navigator.pop(context);
     Messenger.showSaveMessage(vocabulary);
   }
 
@@ -112,14 +113,15 @@ class _DetailsState extends State<Details> {
     SettingsSheetController settingsSheetController = SettingsSheetController.instance;
     RecordSheetController recordSheetController = RecordSheetController.instance;
     recordSheetController.hide();
-    await Future.delayed(const Duration(milliseconds: 150), () => Navigator.popUntil(Global.context, ModalRoute.withName(Home.routeName)));
+    await Future.delayed(const Duration(milliseconds: 150), () => Navigator.pushNamed(context, Home.routeName));
     await Future.delayed(const Duration(milliseconds: 750), () => settingsSheetController.show());
     await Future.delayed(const Duration(milliseconds: 750), () => Messenger.showSaveMessage(vocabulary));
   }
 
   void _delete() {
     Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
-    Navigator.pushNamed(context, Home.routeName);
+    // Navigator.pushNamed(context, Home.routeName);
+    Navigator.pop(context);
   }
 
   @override

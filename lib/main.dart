@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
+import 'package:vocabualize/features/collections/screens/collection.dart';
 import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/practise/screens/practise.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
@@ -55,6 +56,7 @@ class Vocabualize extends StatelessWidget {
           Home.routeName: (context) => const Home(),
           Practise.routeName: (context) => const Practise(),
           Details.routeName: (context) => const Details(),
+          Collection.routeName: (context) => const Collection(),
         },
       ),
     );

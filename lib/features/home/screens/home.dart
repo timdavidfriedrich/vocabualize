@@ -1,10 +1,13 @@
+import 'package:log/log.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/home/screens/home_empty.dart';
+import 'package:vocabualize/features/home/widgets/collections_view.dart';
 import 'package:vocabualize/features/home/widgets/double_sheet.dart';
 import 'package:vocabualize/features/home/widgets/new_word_card.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card.dart';
+import 'package:vocabualize/features/home/widgets/tag_card_button.dart';
 import 'package:vocabualize/features/home/widgets/vocabulary_list_tile.dart';
 import 'package:vocabualize/features/record/services/record_sheet_controller.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
@@ -101,6 +104,14 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 32),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                        // TODO: Replace with arb
+                        child: Text("Collections", style: Theme.of(context).textTheme.headlineMedium),
+                      ),
+                      const SizedBox(height: 12),
+                      const CollectionsView(),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 32),
                         child: Column(
