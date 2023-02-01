@@ -102,13 +102,19 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32),
-                        // TODO: Replace with arb
-                        child: Text("Collections", style: Theme.of(context).textTheme.headlineMedium),
-                      ),
-                      const SizedBox(height: 12),
+                      Provider.of<VocabularyProvider>(context).allTags.isEmpty
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 32),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 32),
+                                  Text("Collections", style: Theme.of(context).textTheme.headlineMedium),
+                                  const SizedBox(height: 12),
+                                ],
+                              ),
+                            ),
                       const CollectionsView(),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 32),

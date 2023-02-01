@@ -8,9 +8,11 @@ class CollectionsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int threshhold = 8;
+
     List<List<String>> splitListInHalf(List<String> list) {
       List<List<String>> result = [];
-      if (list.length >= 8) {
+      if (list.length >= threshhold) {
         int breakpoint = (list.length / 2).ceil();
         result.add(list.sublist(0, breakpoint));
         result.add(list.sublist(breakpoint));
@@ -45,7 +47,7 @@ class CollectionsView extends StatelessWidget {
                     ),
             ),
           ),
-          const SizedBox(height: 8),
+          Provider.of<VocabularyProvider>(context).allTags.length < threshhold ? Container() : const SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
