@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/core/widgets/edit_dialog.dart';
+import 'package:vocabualize/features/details/screens/details.dart';
+import 'package:vocabualize/features/details/services/details_arguments.dart';
+import 'package:vocabualize/features/details/widgets/edit_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class VocabularyListTile extends StatelessWidget {
@@ -41,7 +43,8 @@ class VocabularyListTile extends StatelessWidget {
         child: ListTile(
           contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          onTap: () => Messenger.showAnimatedDialog(EditDialog(vocabulary: vocabulary)),
+          //Messenger.showAnimatedDialog(EditDialog(vocabulary: vocabulary)),
+          onTap: () => Navigator.pushNamed(context, Details.routeName, arguments: DetailsArguments(vocabulary)),
           leading: Provider.of<SettingsProvider>(context).areImagesDisabled
               ? null
               : SizedBox(

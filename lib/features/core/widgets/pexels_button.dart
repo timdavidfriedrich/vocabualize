@@ -17,6 +17,7 @@ class PexelsButton extends StatelessWidget {
       onPressed: () => _openInBrowser(),
       style: TextButton.styleFrom(padding: EdgeInsets.zero),
       child: Text(
+        // TODO: Replace with arb
         "Photo by ${vocabulary.pexelsModel.photographer} on Pexels",
         style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
       ),

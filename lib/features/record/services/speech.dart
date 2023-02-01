@@ -9,7 +9,7 @@ import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/translator.dart';
-import 'package:vocabualize/features/record/widgets/add_details_dialog.dart';
+import 'package:vocabualize/features/details/widgets/add_details_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Speech {

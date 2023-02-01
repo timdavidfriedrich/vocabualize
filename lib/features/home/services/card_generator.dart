@@ -15,12 +15,4 @@ class CardGenerator {
     if (vocabularyList.length == 1) return AppLocalizations.of(Keys.context).home_statusCard_onlyOneWord(vocabularyList.length);
     return AppLocalizations.of(Keys.context).home_statusCard_default(vocabularyList.length);
   }
-
-  // ? Remove this method ?
-  static String get prompt {
-    List<Vocabulary> vocabularyList = Provider.of<VocabularyProvider>(Keys.context, listen: false).vocabularyList;
-
-    if (vocabularyList.isEmpty) return "";
-    return "Let's practise!";
-  }
 }

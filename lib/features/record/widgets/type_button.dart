@@ -6,9 +6,9 @@ import 'package:vocabualize/features/home/screens/home.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/translator.dart';
-import 'package:vocabualize/features/record/screens/add_details.dart';
-import 'package:vocabualize/features/record/services/add_details_arguements.dart';
-import 'package:vocabualize/features/record/widgets/add_details_dialog.dart';
+import 'package:vocabualize/features/details/screens/details.dart';
+import 'package:vocabualize/features/details/services/details_arguments.dart';
+import 'package:vocabualize/features/details/widgets/add_details_dialog.dart';
 
 class TypeButton extends StatefulWidget {
   const TypeButton({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class _TypeButtonState extends State<TypeButton> {
       Navigator.popUntil(context, ModalRoute.withName(Home.routeName));
       // ? Messenger.showSaveMessage(newVocabulary);
       // Messenger.showAnimatedDialog(AddDetailsDialog(vocabulary: vocabulary));
-      Navigator.pushNamed(context, AddDetails.routeName, arguments: AddDetailsArguments(vocabulary));
+      Navigator.pushNamed(context, Details.routeName, arguments: DetailsArguments(vocabulary));
     });
     currentSource = "";
     controller.clear();

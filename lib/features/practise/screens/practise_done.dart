@@ -23,9 +23,11 @@ class PractiseDone extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                         children: [
                           TextSpan(
+                            // TODO: Replace with arb
                             text: "Congratulations!\n",
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
+                          // TODO: Replace with arb
                           const TextSpan(text: "You finished all of your current words!"),
                         ],
                       ),
@@ -34,6 +36,7 @@ class PractiseDone extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.popUntil(context, ModalRoute.withName(Home.routeName)),
+                  // TODO: Replace with arb
                   child: const Text("Main menu"),
                 ),
                 const SizedBox(height: 64),

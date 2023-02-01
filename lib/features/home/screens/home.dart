@@ -65,6 +65,7 @@ class _HomeState extends State<Home> {
                             const SizedBox(height: 48),
                             Row(
                               children: [
+                                // TODO: Replace with arb
                                 Expanded(child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge)),
                                 IconButton(onPressed: () => settingsSheetController.show(), icon: const Icon(Icons.settings_rounded)),
                               ],

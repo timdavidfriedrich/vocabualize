@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 
@@ -20,14 +19,11 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
   _startReloadTimer() async {
     timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       setState(() {});
-      // Log.hint("Reloaded status card.");
     });
-    Log.hint("Started status card timer.");
   }
 
   _cancelReloadTimer() {
     if (timer.isActive) timer.cancel();
-    Log.hint("Canceled status card timer.");
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/core/widgets/edit_dialog.dart';
+import 'package:vocabualize/features/details/widgets/edit_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class NewWordCard extends StatelessWidget {
