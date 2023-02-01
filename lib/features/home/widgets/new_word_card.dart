@@ -49,18 +49,24 @@ class NewWordCard extends StatelessWidget {
           Provider.of<SettingsProvider>(context).areImagesDisabled ? Container() : const SizedBox(height: 8),
           SizedBox(
             width: 128,
-            child: Text(
-              vocabulary.target,
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: Provider.of<SettingsProvider>(context).areImagesDisabled ? TextAlign.center : TextAlign.start,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                vocabulary.target,
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: Provider.of<SettingsProvider>(context).areImagesDisabled ? TextAlign.center : TextAlign.start,
+              ),
             ),
           ),
           SizedBox(
             width: 128,
-            child: Text(
-              vocabulary.source,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).hintColor),
-              textAlign: Provider.of<SettingsProvider>(context).areImagesDisabled ? TextAlign.center : TextAlign.start,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                vocabulary.source,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).hintColor),
+                textAlign: Provider.of<SettingsProvider>(context).areImagesDisabled ? TextAlign.center : TextAlign.start,
+              ),
             ),
           ),
         ],
