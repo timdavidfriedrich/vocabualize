@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';

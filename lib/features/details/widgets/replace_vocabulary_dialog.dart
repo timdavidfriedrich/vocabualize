@@ -1,6 +1,5 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/record/services/record_service.dart';
 
 class ReplaceVocabularyDialog extends StatelessWidget {
   const ReplaceVocabularyDialog({super.key, required this.vocabulary});
