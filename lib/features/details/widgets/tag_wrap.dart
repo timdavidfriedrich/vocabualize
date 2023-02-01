@@ -1,4 +1,5 @@
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/add_tag_dialog.dart';
 
@@ -12,8 +13,8 @@ class TagWrap extends StatefulWidget {
 }
 
 class _TagWrapState extends State<TagWrap> {
-  _add() {
-    showDialog(context: context, builder: (context) => AddTagDialog(vocabulary: widget.vocabulary));
+  _add() async {
+    await Messenger.showAnimatedDialog(AddTagDialog(vocabulary: widget.vocabulary)).whenComplete(() => setState(() {}));
   }
 
   _delete(String tag) {
