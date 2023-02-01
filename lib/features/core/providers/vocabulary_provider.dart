@@ -83,6 +83,16 @@ class VocabularyProvider extends ChangeNotifier {
     return result;
   }
 
+  List<Vocabulary> getAllToPractiseForTag(String tag) {
+    List<Vocabulary> result = [];
+    try {
+      result = getVocabulariesByTag(tag).where((voc) => voc.nextDate.isBefore(DateTime.now())).toList();
+    } catch (e) {
+      Log.error(e.toString());
+    }
+    return result;
+  }
+
   bool get isMultilingual {
     bool result = false;
     if (_vocabularyList.isEmpty) return result;

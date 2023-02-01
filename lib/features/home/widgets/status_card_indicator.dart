@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 
 class StatusCardIndicator extends StatefulWidget {
-  const StatusCardIndicator({super.key, required this.parent});
+  const StatusCardIndicator({super.key, required this.parent, this.tag = ""});
 
   final Widget parent;
+  final String tag;
 
   @override
   State<StatusCardIndicator> createState() => _StatusCardIndicatorState();
@@ -16,14 +17,22 @@ class StatusCardIndicator extends StatefulWidget {
 class _StatusCardIndicatorState extends State<StatusCardIndicator> {
   late Timer timer;
 
-  _startReloadTimer() async {
+  void _startReloadTimer() async {
     timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       setState(() {});
     });
   }
 
-  _cancelReloadTimer() {
+  void _cancelReloadTimer() {
     if (timer.isActive) timer.cancel();
+  }
+
+  List _getCurrentList() {
+    if (widget.tag.isNotEmpty) {
+      return Provider.of<VocabularyProvider>(context, listen: false).getAllToPractiseForTag(widget.tag);
+    } else {
+      return Provider.of<VocabularyProvider>(context, listen: false).allToPractise;
+    }
   }
 
   @override
@@ -44,7 +53,7 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
       clipBehavior: Clip.none,
       children: [
         widget.parent,
-        Provider.of<VocabularyProvider>(context).allToPractise.isEmpty
+        _getCurrentList().isEmpty
             ? Container()
             : Positioned(
                 top: -4,
@@ -56,7 +65,7 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(
-                    "${Provider.of<VocabularyProvider>(context).allToPractise.length}",
+                    "${_getCurrentList().length}",
                     style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10),
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
@@ -6,6 +7,7 @@ import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/practise/screens/practise_done.dart';
 import 'package:vocabualize/features/core/services/answer.dart';
+import 'package:vocabualize/features/practise/services/practise_arguments.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Practise extends StatefulWidget {
@@ -18,24 +20,28 @@ class Practise extends StatefulWidget {
 }
 
 class _PractiseState extends State<Practise> {
+  List<Vocabulary> vocabulariesToPractise = [];
   int initialVocCount = 0;
   bool isSolutionShown = false;
   bool isDone = false;
-  late Vocabulary currentVoc;
+  Vocabulary currentVoc = Vocabulary(source: "", target: "");
 
   bool isMultilingual = false;
 
   TTS tts = TTS.instance;
 
-  _speak() {
+  void _speak() {
     tts.stop;
     tts.speak(currentVoc);
   }
 
   void _refreshVoc() {
     setState(() => isSolutionShown = false);
-    if (Provider.of<VocabularyProvider>(context, listen: false).allToPractise.isNotEmpty) {
-      setState(() => currentVoc = Provider.of<VocabularyProvider>(context, listen: false).firstToPractise);
+    if (vocabulariesToPractise.isNotEmpty) {
+      setState(() {
+        if (currentVoc.source.isNotEmpty) vocabulariesToPractise.remove(currentVoc);
+        if (vocabulariesToPractise.isNotEmpty) currentVoc = vocabulariesToPractise.first;
+      });
     } else {
       setState(() => isDone = true);
     }
@@ -44,14 +50,20 @@ class _PractiseState extends State<Practise> {
   @override
   void initState() {
     super.initState();
-    initialVocCount = Provider.of<VocabularyProvider>(context, listen: false).allToPractise.length;
-    _refreshVoc();
-    isMultilingual = Provider.of<VocabularyProvider>(context, listen: false).isMultilingual;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      PractiseArguments arguments = ModalRoute.of(context)!.settings.arguments as PractiseArguments;
+      setState(() {
+        vocabulariesToPractise = arguments.vocabulariesToPractise;
+        initialVocCount = vocabulariesToPractise.length;
+        isMultilingual = Provider.of<VocabularyProvider>(context, listen: false).isMultilingual;
+      });
+      _refreshVoc();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Provider.of<VocabularyProvider>(context).allToPractise.isEmpty
+    return vocabulariesToPractise.isEmpty
         ? const PractiseDone()
         : SafeArea(
             child: ClipRRect(
@@ -63,7 +75,7 @@ class _PractiseState extends State<Practise> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 48),
-                      Text(AppLocalizations.of(context).practise_left(Provider.of<VocabularyProvider>(context).allToPractise.length),
+                      Text(AppLocalizations.of(context).practise_left(vocabulariesToPractise.length),
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
@@ -73,9 +85,7 @@ class _PractiseState extends State<Practise> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: LinearProgressIndicator(
-                          value: Provider.of<VocabularyProvider>(context).allToPractise.isEmpty
-                              ? 1
-                              : 1 - (Provider.of<VocabularyProvider>(context).allToPractise.length / initialVocCount),
+                          value: vocabulariesToPractise.isEmpty ? 1 : 1 - (vocabulariesToPractise.length / initialVocCount),
                           minHeight: 12,
                           color: Theme.of(context).colorScheme.primary,
                           backgroundColor: Theme.of(context).colorScheme.surface,

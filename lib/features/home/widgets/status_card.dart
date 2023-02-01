@@ -5,12 +5,21 @@ import 'package:vocabualize/features/home/services/card_generator.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card_indicator.dart';
 import 'package:vocabualize/features/practise/screens/practise.dart';
+import 'package:vocabualize/features/practise/services/practise_arguments.dart';
 
 class StatusCard extends StatelessWidget {
   const StatusCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    void startPractise() {
+      Navigator.pushNamed(
+        context,
+        Practise.routeName,
+        arguments: PractiseArguments(vocabulariesToPractise: Provider.of<VocabularyProvider>(context, listen: false).allToPractise),
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -57,8 +66,9 @@ class StatusCard extends StatelessWidget {
               ),
               StatusCardIndicator(
                 parent: ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(context, Practise.routeName),
-                    child: Text(AppLocalizations.of(context).home_statusCard_practiseButton)),
+                  onPressed: () => startPractise(),
+                  child: Text(AppLocalizations.of(context).home_statusCard_practiseButton),
+                ),
               ),
             ],
           ),
