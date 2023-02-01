@@ -12,7 +12,7 @@ class RecordService {
   static void save({required Vocabulary vocabulary}) async {
     Provider.of<VocabularyProvider>(Global.context, listen: false).add(vocabulary).whenComplete(() {
       Navigator.popUntil(Global.context, ModalRoute.withName(Home.routeName)); // Pop des LoadingDialogs
-      Navigator.pushNamed(Global.context, Details.routeName, arguments: DetailsArguments(vocabulary));
+      Navigator.pushNamed(Global.context, Details.routeName, arguments: DetailsArguments(vocabulary: vocabulary));
     });
   }
 

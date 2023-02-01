@@ -1,5 +1,4 @@
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/home/screens/home.dart';
 
 class PractiseDone extends StatelessWidget {
   const PractiseDone({Key? key}) : super(key: key);
@@ -35,7 +34,7 @@ class PractiseDone extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () => Navigator.popUntil(context, ModalRoute.withName(Home.routeName)),
+                  onPressed: () => Navigator.pop(context),
                   // TODO: Replace with arb
                   child: const Text("Main menu"),
                 ),

@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/scheduler.dart';
+import 'package:log/log.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vocabualize/features/collections/services/collection_arguments.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/format.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
@@ -83,12 +85,12 @@ class _DetailsState extends State<Details> {
     final XFile? image = await ImagePicker().pickImage(source: imageSource);
     if (image == null) return;
 
-    final file = await _saveFile(image.path);
+    final file = await _saveCameraFile(image.path);
 
     return file;
   }
 
-  Future<File> _saveFile(String imagePath) async {
+  Future<File> _saveCameraFile(String imagePath) async {
     final String path = (await getApplicationDocumentsDirectory()).path;
 
     final String formatedDate = DateFormat("yyyy-MM-dd_HH-mm-ss").format(vocabulary.creationDate);
@@ -104,18 +106,18 @@ class _DetailsState extends State<Details> {
     } else {
       vocabulary.pexelsModel = _selected ?? PexelsModel.fallback();
     }
-    // Navigator.pushNamed(Global.context, Home.routeName);
-    Navigator.pop(context);
-    Messenger.showSaveMessage(vocabulary);
+    Navigator.pop(Global.context);
+    // ? Show message ?
+    // Messenger.showSaveMessage(vocabulary);
   }
 
   void _goToSettings() async {
     SettingsSheetController settingsSheetController = SettingsSheetController.instance;
     RecordSheetController recordSheetController = RecordSheetController.instance;
     recordSheetController.hide();
-    await Future.delayed(const Duration(milliseconds: 150), () => Navigator.pushNamed(context, Home.routeName));
-    await Future.delayed(const Duration(milliseconds: 750), () => settingsSheetController.show());
-    await Future.delayed(const Duration(milliseconds: 750), () => Messenger.showSaveMessage(vocabulary));
+    await Future.delayed(const Duration(milliseconds: 150), () => Navigator.popUntil(context, ModalRoute.withName(Home.routeName)));
+    await Future.delayed(const Duration(milliseconds: 350), () => settingsSheetController.show());
+    // await Future.delayed(const Duration(milliseconds: 750), () => Messenger.showSaveMessage(vocabulary));
   }
 
   void _delete() {

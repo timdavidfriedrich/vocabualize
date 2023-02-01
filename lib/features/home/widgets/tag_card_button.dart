@@ -15,7 +15,7 @@ class TagCardButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void click() {
-      Navigator.pushNamed(context, Collection.routeName, arguments: CollectionArguments(tag));
+      Navigator.pushNamed(context, Collection.routeName, arguments: CollectionArguments(tag: tag));
     }
 
     return MaterialButton(

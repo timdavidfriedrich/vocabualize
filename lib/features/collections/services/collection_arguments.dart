@@ -1,4 +1,4 @@
 class CollectionArguments {
-  CollectionArguments(this.tag);
+  CollectionArguments({required this.tag});
   final String tag;
 }
