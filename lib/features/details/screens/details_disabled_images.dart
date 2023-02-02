@@ -20,8 +20,7 @@ class _DetailsDisabledImagesState extends State<DetailsDisabledImages> {
   Vocabulary vocabulary = Vocabulary(source: "", target: "");
 
   void _save() {
-    Navigator.pushNamed(Global.context, Home.routeName);
-    Messenger.showSaveMessage(vocabulary);
+    Navigator.pop(Global.context);
   }
 
   void _delete() {
