@@ -104,7 +104,13 @@ class ThemeConfig {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(onPrimary),
-          backgroundColor: MaterialStateProperty.all<Color>(primary),
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return hint;
+            } else {
+              return primary;
+            }
+          }),
           padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.fromLTRB(32, 12, 32, 12)),
           textStyle: MaterialStateProperty.all<TextStyle>(
             GoogleFonts.poppins(

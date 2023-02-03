@@ -5,10 +5,10 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 
 class StatusCardIndicator extends StatefulWidget {
-  const StatusCardIndicator({super.key, required this.parent, this.tag = ""});
-
   final Widget parent;
   final String tag;
+
+  const StatusCardIndicator({super.key, required this.parent, this.tag = ""});
 
   @override
   State<StatusCardIndicator> createState() => _StatusCardIndicatorState();

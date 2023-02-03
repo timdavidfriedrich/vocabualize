@@ -4,7 +4,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/widgets/disconnected_dialog.dart';
 import 'package:vocabualize/features/core/widgets/save_message_route.dart';
-import 'package:vocabualize/features/home/screens/home.dart';
+import 'package:vocabualize/features/home/screens/home_screen.dart';
 
 class Messenger {
   static void loadingAnimation() {
@@ -30,7 +30,7 @@ class Messenger {
   }
 
   static Future<void> showSaveMessage(Vocabulary vocabulary) async {
-    Navigator.popUntil(Global.context, ModalRoute.withName(Home.routeName)); // required, pops all messages
+    Navigator.popUntil(Global.context, ModalRoute.withName(HomeScreen.routeName)); // required, pops all messages
     Navigator.push(Global.context, SaveMessageRoute(vocabulary: vocabulary));
   }
 

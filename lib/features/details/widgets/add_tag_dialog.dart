@@ -2,9 +2,9 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
 class AddTagDialog extends StatefulWidget {
-  const AddTagDialog({super.key, required this.vocabulary});
-
   final Vocabulary vocabulary;
+
+  const AddTagDialog({super.key, required this.vocabulary});
 
   @override
   State<AddTagDialog> createState() => _AddTagDialogState();

@@ -2,16 +2,16 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/home/screens/home.dart';
+import 'package:vocabualize/features/home/screens/home_screen.dart';
 
 class SaveMessage extends StatefulWidget {
-  const SaveMessage({super.key, required this.vocabulary, animationDuration, stayDuration})
-      : animationDuration = animationDuration ?? const Duration(milliseconds: 2000),
-        stayDuration = stayDuration ?? const Duration(milliseconds: 3000);
-
   final Vocabulary vocabulary;
   final Duration animationDuration;
   final Duration stayDuration;
+
+  const SaveMessage({super.key, required this.vocabulary, animationDuration, stayDuration})
+      : animationDuration = animationDuration ?? const Duration(milliseconds: 2000),
+        stayDuration = stayDuration ?? const Duration(milliseconds: 3000);
 
   @override
   State<SaveMessage> createState() => _SaveMessageState();
@@ -44,7 +44,7 @@ class _SaveMessageState extends State<SaveMessage> {
             onEnd: () {
               if (dismissedEnd.isNegative && currentValue >= dismissedEnd) return;
               if (!dismissedEnd.isNegative && currentValue <= dismissedEnd) return;
-              Navigator.popUntil(Global.context, ModalRoute.withName(Home.routeName)); // pops all messages
+              Navigator.popUntil(Global.context, ModalRoute.withName(HomeScreen.routeName)); // pops all messages
             },
             builder: (context, double value, child) {
               currentValue = value;

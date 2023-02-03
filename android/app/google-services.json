@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "351179268452",
+    "project_id": "vocabualize",
+    "storage_bucket": "vocabualize.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351179268452:android:043979c2e45f1ed953da71",
+        "android_client_info": {
+          "package_name": "de.timdavidfriedrich.vocabualize"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351179268452-448i9uctajc6u6p6hkkkte6rmr0chrc2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6LvQq5kLoGyt4ZhmcKNuT-E9s4mz6JdM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351179268452-448i9uctajc6u6p6hkkkte6rmr0chrc2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

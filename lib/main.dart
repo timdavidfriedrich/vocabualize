@@ -1,19 +1,26 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
-import 'package:vocabualize/features/collections/screens/collection.dart';
-import 'package:vocabualize/features/home/screens/home.dart';
-import 'package:vocabualize/features/practise/screens/practise.dart';
+import 'package:vocabualize/features/collections/screens/collection_screen.dart';
+import 'package:vocabualize/features/home/screens/home_screen.dart';
+import 'package:vocabualize/features/practise/screens/practise_screen.dart';
+import 'package:vocabualize/features/profile/screens/profile_screen.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/details/screens/details.dart';
+import 'package:vocabualize/features/details/screens/details_screen.dart';
 import 'package:vocabualize/features/core/services/speech.dart';
+import 'package:vocabualize/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
+import 'package:vocabualize/firebase_options.dart';
 
-void main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -51,12 +58,14 @@ class Vocabualize extends StatelessWidget {
         //showPerformanceOverlay: true,
         debugShowCheckedModeBanner: false,
         navigatorKey: Global.navigatorState,
-        initialRoute: Home.routeName,
+        initialRoute: HomeScreen.routeName,
         routes: {
-          Home.routeName: (context) => const Home(),
-          Practise.routeName: (context) => const Practise(),
-          Details.routeName: (context) => const Details(),
-          Collection.routeName: (context) => const Collection(),
+          HomeScreen.routeName: (context) => const HomeScreen(),
+          PractiseScreen.routeName: (context) => const PractiseScreen(),
+          DetailsScreen.routeName: (context) => const DetailsScreen(),
+          CollectionScreen.routeName: (context) => const CollectionScreen(),
+          ProfileScreen.routeName: (context) => const ProfileScreen(),
+          ReportScreen.routeName: (context) => const ReportScreen(),
         },
       ),
     );

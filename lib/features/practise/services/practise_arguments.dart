@@ -1,6 +1,7 @@
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
-class PractiseArguments {
-  PractiseArguments({required this.vocabulariesToPractise});
+class PractiseScreenArguments {
   final List<Vocabulary> vocabulariesToPractise;
+
+  PractiseScreenArguments({required this.vocabulariesToPractise});
 }

@@ -5,21 +5,21 @@ import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/core/services/text_to_speech.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/practise/screens/practise_done.dart';
+import 'package:vocabualize/features/practise/screens/practise_done_screen.dart';
 import 'package:vocabualize/features/core/services/answer.dart';
 import 'package:vocabualize/features/practise/services/practise_arguments.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
-class Practise extends StatefulWidget {
-  const Practise({Key? key}) : super(key: key);
+class PractiseScreen extends StatefulWidget {
+  static const String routeName = "/practise";
 
-  static const routeName = "/practise";
+  const PractiseScreen({Key? key}) : super(key: key);
 
   @override
-  State<Practise> createState() => _PractiseState();
+  State<PractiseScreen> createState() => _PractiseScreenState();
 }
 
-class _PractiseState extends State<Practise> {
+class _PractiseScreenState extends State<PractiseScreen> {
   List<Vocabulary> vocabulariesToPractise = [];
   int initialVocCount = 0;
   bool isSolutionShown = false;
@@ -51,7 +51,7 @@ class _PractiseState extends State<Practise> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      PractiseArguments arguments = ModalRoute.of(context)!.settings.arguments as PractiseArguments;
+      PractiseScreenArguments arguments = ModalRoute.of(context)!.settings.arguments as PractiseScreenArguments;
       setState(() {
         vocabulariesToPractise = arguments.vocabulariesToPractise;
         initialVocCount = vocabulariesToPractise.length;
@@ -64,7 +64,7 @@ class _PractiseState extends State<Practise> {
   @override
   Widget build(BuildContext context) {
     return vocabulariesToPractise.isEmpty
-        ? const PractiseDone()
+        ? const PractiseDoneScreen()
         : SafeArea(
             child: ClipRRect(
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),

@@ -11,27 +11,25 @@ import 'package:vocabualize/features/core/services/vocabulary.dart';
 class VocabularyProvider extends ChangeNotifier {
   late SharedPreferences _prefs;
 
-  final List<Vocabulary> _vocabularyList = [];
+  List<Vocabulary> vocabularyList = [];
 
   bool contains(Vocabulary vocabulary) {
-    return _vocabularyList.any((voc) => voc.creationDate.microsecondsSinceEpoch == vocabulary.creationDate.microsecondsSinceEpoch);
+    return vocabularyList.any((voc) => voc.creationDate.microsecondsSinceEpoch == vocabulary.creationDate.microsecondsSinceEpoch);
   }
 
   dynamic searchListForSource(String source) {
-    bool containsSource = _vocabularyList.any((voc) => Format.normalize(voc.source) == Format.normalize(source));
+    bool containsSource = vocabularyList.any((voc) => Format.normalize(voc.source) == Format.normalize(source));
     if (containsSource) {
-      return _vocabularyList.firstWhere((voc) => Format.normalize(voc.source) == Format.normalize(source));
+      return vocabularyList.firstWhere((voc) => Format.normalize(voc.source) == Format.normalize(source));
     } else {
       return null;
     }
   }
 
-  List<Vocabulary> get vocabularyList => _vocabularyList;
-
   List<Vocabulary> get allToPractise {
     List<Vocabulary> result = [];
     try {
-      result = _vocabularyList.where((voc) => voc.nextDate.isBefore(DateTime.now())).toList();
+      result = vocabularyList.where((voc) => voc.nextDate.isBefore(DateTime.now())).toList();
     } catch (e) {
       Log.error(e.toString());
     }
@@ -45,7 +43,7 @@ class VocabularyProvider extends ChangeNotifier {
   List<Vocabulary> get lastest {
     const int daysIncluded = 7;
     const int maxItems = 10;
-    return _vocabularyList
+    return vocabularyList
         .where((voc) => voc.creationDate.isAfter(DateTime.now().subtract(const Duration(days: daysIncluded))))
         .toList()
         .reversed
@@ -54,7 +52,7 @@ class VocabularyProvider extends ChangeNotifier {
   }
 
   List<Vocabulary> get createdToday {
-    return _vocabularyList.where(
+    return vocabularyList.where(
       (voc) {
         DateTime now = DateTime.now();
         DateTime creationDate = voc.creationDate;
@@ -65,7 +63,7 @@ class VocabularyProvider extends ChangeNotifier {
 
   List<String> get allTags {
     List<String> result = [];
-    for (var vocabulary in _vocabularyList) {
+    for (var vocabulary in vocabularyList) {
       for (var tag in vocabulary.tags) {
         if (!result.contains(tag)) result.add(tag);
       }
@@ -76,7 +74,7 @@ class VocabularyProvider extends ChangeNotifier {
   List<Vocabulary> getVocabulariesByTag(String tag) {
     List<Vocabulary> result = [];
     try {
-      result = _vocabularyList.where((vocabulary) => vocabulary.tags.contains(tag)).toList();
+      result = vocabularyList.where((vocabulary) => vocabulary.tags.contains(tag)).toList();
     } catch (e) {
       Log.error(e.toString());
     }
@@ -95,10 +93,10 @@ class VocabularyProvider extends ChangeNotifier {
 
   bool get isMultilingual {
     bool result = false;
-    if (_vocabularyList.isEmpty) return result;
-    Language firstVocabularySourceLanguage = _vocabularyList.first.sourceLanguage;
-    Language firstVocabularyTargetLanguage = _vocabularyList.first.targetLanguage;
-    for (Vocabulary vocabulary in _vocabularyList) {
+    if (vocabularyList.isEmpty) return result;
+    Language firstVocabularySourceLanguage = vocabularyList.first.sourceLanguage;
+    Language firstVocabularyTargetLanguage = vocabularyList.first.targetLanguage;
+    for (Vocabulary vocabulary in vocabularyList) {
       if (vocabulary.sourceLanguage != firstVocabularySourceLanguage) return true;
       if (vocabulary.targetLanguage != firstVocabularyTargetLanguage) return true;
     }
@@ -107,36 +105,36 @@ class VocabularyProvider extends ChangeNotifier {
 
   Future<void> save() async {
     _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString("vocabularyList", json.encode(_vocabularyList));
+    await _prefs.setString("vocabularyList", json.encode(vocabularyList));
     notifyListeners();
   }
 
   Future<void> init() async {
-    _vocabularyList.clear();
+    vocabularyList.clear();
     _prefs = await SharedPreferences.getInstance();
     String vocabularyListJSON = _prefs.getString("vocabularyList") ?? "";
     if (vocabularyListJSON != "") {
       for (dynamic voc in json.decode(vocabularyListJSON)) {
-        _vocabularyList.add(Vocabulary.fromJson(voc));
+        vocabularyList.add(Vocabulary.fromJson(voc));
       }
     }
     notifyListeners();
   }
 
   Future<void> add(Vocabulary vocabulary) async {
-    _vocabularyList.add(vocabulary);
+    vocabularyList.add(vocabulary);
     await save();
     notifyListeners();
   }
 
   Future<void> remove(Vocabulary vocabulary) async {
-    _vocabularyList.remove(vocabulary);
+    vocabularyList.remove(vocabulary);
     await save();
     notifyListeners();
   }
 
   Future<void> clear() async {
-    _vocabularyList.clear();
+    vocabularyList.clear();
     await save();
     notifyListeners();
   }

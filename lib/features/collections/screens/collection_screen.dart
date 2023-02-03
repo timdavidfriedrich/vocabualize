@@ -5,19 +5,19 @@ import 'package:vocabualize/features/collections/services/collection_arguments.d
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card_indicator.dart';
 import 'package:vocabualize/features/home/widgets/vocabulary_list_tile.dart';
-import 'package:vocabualize/features/practise/screens/practise.dart';
+import 'package:vocabualize/features/practise/screens/practise_screen.dart';
 import 'package:vocabualize/features/practise/services/practise_arguments.dart';
 
-class Collection extends StatefulWidget {
-  const Collection({super.key});
+class CollectionScreen extends StatefulWidget {
+  static const String routeName = "/Collection";
 
-  static const routeName = "/Collection";
+  const CollectionScreen({super.key});
 
   @override
-  State<Collection> createState() => _CollectionState();
+  State<CollectionScreen> createState() => _CollectionScreenState();
 }
 
-class _CollectionState extends State<Collection> {
+class _CollectionScreenState extends State<CollectionScreen> {
   String tag = "";
 
   void _editTag() {
@@ -27,9 +27,9 @@ class _CollectionState extends State<Collection> {
   void _startPractise() {
     Navigator.pushNamed(
       context,
-      Practise.routeName,
-      arguments:
-          PractiseArguments(vocabulariesToPractise: Provider.of<VocabularyProvider>(context, listen: false).getAllToPractiseForTag(tag)),
+      PractiseScreen.routeName,
+      arguments: PractiseScreenArguments(
+          vocabulariesToPractise: Provider.of<VocabularyProvider>(context, listen: false).getAllToPractiseForTag(tag)),
     );
   }
 
@@ -37,7 +37,7 @@ class _CollectionState extends State<Collection> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      CollectionArguments arguments = ModalRoute.of(context)!.settings.arguments as CollectionArguments;
+      CollectionScreenArguments arguments = ModalRoute.of(context)!.settings.arguments as CollectionScreenArguments;
       setState(() => tag = arguments.tag);
     });
   }

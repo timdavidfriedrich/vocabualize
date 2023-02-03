@@ -1,7 +1,7 @@
 import 'package:vocabualize/constants/common_imports.dart';
 
-class HomeEmpty extends StatelessWidget {
-  const HomeEmpty({Key? key}) : super(key: key);
+class HomeEmptyScreen extends StatelessWidget {
+  const HomeEmptyScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

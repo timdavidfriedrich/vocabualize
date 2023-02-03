@@ -18,34 +18,35 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   
+  cached_network_image: ^3.2.2
+  image_picker: ^0.8.5+3
+  path_provider: ^2.0.11
+  shared_preferences: ^2.0.15
+  http: ^0.13.5
+  provider: ^6.0.3
   intl: ^0.17.0
+  permission_handler: ^10.0.2
+  url_launcher: ^6.1.6
 
   avatar_glow: ^2.0.2
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
   snapping_sheet: ^3.1.0
 
-  cached_network_image: ^3.2.2
-  #camera: ^0.10.0+1
-  http: ^0.13.5
-  provider: ^6.0.3
-  shared_preferences: ^2.0.15
-
   speech_to_text: ^5.6.1
   text_to_speech: ^0.2.3
   translator: ^0.1.7
 
-  image_picker: ^0.8.5+3
-  path_provider: ^2.0.11
-
+  firebase_core: ^2.4.1
+  firebase_auth: ^4.2.5
+  cloud_firestore: ^4.3.1
 
   # own packages
   log:
     path: ./packages/log
   teleport:
     path: ./packages/teleport
-  permission_handler: ^10.0.2
-  url_launcher: ^6.1.6
+  
 
 
 dev_dependencies:

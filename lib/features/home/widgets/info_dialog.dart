@@ -5,6 +5,7 @@ import 'package:vocabualize/features/core/services/text_to_speech.dart';
 
 class InfoDialog extends StatelessWidget {
   final Vocabulary vocabulary;
+
   const InfoDialog({super.key, required this.vocabulary});
 
   @override

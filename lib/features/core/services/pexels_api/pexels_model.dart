@@ -1,16 +1,4 @@
 class PexelsModel {
-  PexelsModel({
-    required this.id,
-    required this.width,
-    required this.height,
-    required this.url,
-    required this.photographer,
-    this.photographerUrl,
-    this.photographerID,
-    this.avgColor,
-    required this.src,
-  });
-
   int id;
   int width;
   int height;
@@ -23,6 +11,18 @@ class PexelsModel {
 
   static const String _fallbackUrl =
       "https://raw.githubusercontent.com/koehlersimon/fallback/master/Resources/Public/Images/placeholder.jpg";
+
+  PexelsModel({
+    required this.id,
+    required this.width,
+    required this.height,
+    required this.url,
+    required this.photographer,
+    this.photographerUrl,
+    this.photographerID,
+    this.avgColor,
+    required this.src,
+  });
 
   factory PexelsModel.fallback() => PexelsModel(
         id: 0,

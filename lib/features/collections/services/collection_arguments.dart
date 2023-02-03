@@ -1,4 +1,5 @@
-class CollectionArguments {
-  CollectionArguments({required this.tag});
+class CollectionScreenArguments {
   final String tag;
+
+  CollectionScreenArguments({required this.tag});
 }

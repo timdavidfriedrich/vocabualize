@@ -4,7 +4,7 @@ import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/home/services/card_generator.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card_indicator.dart';
-import 'package:vocabualize/features/practise/screens/practise.dart';
+import 'package:vocabualize/features/practise/screens/practise_screen.dart';
 import 'package:vocabualize/features/practise/services/practise_arguments.dart';
 
 class StatusCard extends StatelessWidget {
@@ -15,8 +15,8 @@ class StatusCard extends StatelessWidget {
     void startPractise() {
       Navigator.pushNamed(
         context,
-        Practise.routeName,
-        arguments: PractiseArguments(vocabulariesToPractise: Provider.of<VocabularyProvider>(context, listen: false).allToPractise),
+        PractiseScreen.routeName,
+        arguments: PractiseScreenArguments(vocabulariesToPractise: Provider.of<VocabularyProvider>(context, listen: false).allToPractise),
       );
     }
 
@@ -27,8 +27,9 @@ class StatusCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(32),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(CardGenerator.info, style: Theme.of(context).textTheme.displayMedium),
+          Text(CardGenerator.info, style: Theme.of(context).textTheme.displayMedium, textAlign: TextAlign.left),
           const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

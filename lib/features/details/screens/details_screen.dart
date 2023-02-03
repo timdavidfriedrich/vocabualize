@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/scheduler.dart';
+import 'package:log/log.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -14,26 +15,26 @@ import 'package:vocabualize/features/core/services/pexels_api/pexels_model.dart'
 import 'package:vocabualize/features/core/services/pexels_api/pexels_service.dart';
 import 'package:vocabualize/features/core/services/translator.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/details/screens/details_disabled_images.dart';
+import 'package:vocabualize/features/details/screens/details_disabled_images_screen.dart';
 import 'package:vocabualize/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/features/details/widgets/tag_wrap.dart';
-import 'package:vocabualize/features/home/screens/home.dart';
+import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/details/services/details_arguments.dart';
 import 'package:vocabualize/features/record/services/record_sheet_controller.dart';
 import 'package:vocabualize/features/details/widgets/camera_gallery_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/services/settings_sheet_controller.dart';
 
-class Details extends StatefulWidget {
-  const Details({super.key});
+class DetailsScreen extends StatefulWidget {
+  static const String routeName = "/AddDetails";
 
-  static const routeName = "/AddDetails";
+  const DetailsScreen({super.key});
 
   @override
-  State<Details> createState() => _DetailsState();
+  State<DetailsScreen> createState() => _DetailsScreenState();
 }
 
-class _DetailsState extends State<Details> {
+class _DetailsScreenState extends State<DetailsScreen> {
   Vocabulary vocabulary = Vocabulary(source: "", target: "");
 
   List<PexelsModel> _pexelsModelList = [];
@@ -80,11 +81,17 @@ class _DetailsState extends State<Details> {
     final imageSource = await Messenger.showAnimatedDialog(const CameraGalleryDialog());
     if (imageSource == null) return;
 
-    final XFile? image = await ImagePicker().pickImage(source: imageSource);
+    XFile? image;
+
+    try {
+      image = await ImagePicker().pickImage(source: imageSource);
+    } catch (e) {
+      Log.error(e);
+    }
+
     if (image == null) return;
 
     final file = await _saveCameraFile(image.path);
-
     return file;
   }
 
@@ -113,7 +120,7 @@ class _DetailsState extends State<Details> {
     SettingsSheetController settingsSheetController = SettingsSheetController.instance;
     RecordSheetController recordSheetController = RecordSheetController.instance;
     recordSheetController.hide();
-    await Future.delayed(const Duration(milliseconds: 150), () => Navigator.popUntil(context, ModalRoute.withName(Home.routeName)));
+    await Future.delayed(const Duration(milliseconds: 150), () => Navigator.popUntil(context, ModalRoute.withName(HomeScreen.routeName)));
     await Future.delayed(const Duration(milliseconds: 350), () => settingsSheetController.show());
     // await Future.delayed(const Duration(milliseconds: 750), () => Messenger.showSaveMessage(vocabulary));
   }
@@ -128,7 +135,7 @@ class _DetailsState extends State<Details> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      DetailsArguments arguments = ModalRoute.of(context)!.settings.arguments as DetailsArguments;
+      DetailsScreenArguments arguments = ModalRoute.of(context)!.settings.arguments as DetailsScreenArguments;
       setState(() => vocabulary = arguments.vocabulary);
       if (vocabulary.hasImage) _selected = vocabulary.pexelsModel;
       _getPexels();
@@ -138,7 +145,7 @@ class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
     return Provider.of<SettingsProvider>(context).areImagesDisabled
-        ? const DetailsDisabledImages()
+        ? const DetailsDisabledImagesScreen()
         : SafeArea(
             child: ClipRRect(
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
@@ -189,7 +196,7 @@ class _DetailsState extends State<Details> {
                                                       gradient: LinearGradient(
                                                           begin: Alignment.bottomCenter,
                                                           end: Alignment.topCenter / 12,
-                                                          colors: const [Colors.black, Colors.transparent])),
+                                                          colors: [Colors.black.withOpacity(0.5), Colors.transparent])),
                                                   child: Align(
                                                     alignment: Alignment.bottomCenter,
                                                     child: TextButton(
@@ -203,14 +210,17 @@ class _DetailsState extends State<Details> {
                                                             child: Text(
                                                               // TODO: Replace with arb
                                                               "Photo by ${_selected.photographer}",
-                                                              style: Theme.of(context).textTheme.bodySmall,
+                                                              style: Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodySmall!
+                                                                  .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                                                             ),
                                                           ),
                                                           const SizedBox(width: 8),
                                                           Icon(
                                                             Icons.launch_rounded,
                                                             size: 18,
-                                                            color: Theme.of(context).colorScheme.onBackground,
+                                                            color: Theme.of(context).colorScheme.onPrimary,
                                                           ),
                                                           const SizedBox(width: 8),
                                                         ],

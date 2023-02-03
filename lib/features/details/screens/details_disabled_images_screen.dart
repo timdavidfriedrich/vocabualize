@@ -2,21 +2,20 @@ import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/features/details/widgets/tag_wrap.dart';
-import 'package:vocabualize/features/home/screens/home.dart';
+import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/details/services/details_arguments.dart';
 
-class DetailsDisabledImages extends StatefulWidget {
-  const DetailsDisabledImages({super.key});
+class DetailsDisabledImagesScreen extends StatefulWidget {
+  const DetailsDisabledImagesScreen({super.key});
 
   @override
-  State<DetailsDisabledImages> createState() => _DetailsDisabledImagesState();
+  State<DetailsDisabledImagesScreen> createState() => _DetailsDisabledImagesScreenState();
 }
 
-class _DetailsDisabledImagesState extends State<DetailsDisabledImages> {
+class _DetailsDisabledImagesScreenState extends State<DetailsDisabledImagesScreen> {
   Vocabulary vocabulary = Vocabulary(source: "", target: "");
 
   void _save() {
@@ -25,14 +24,14 @@ class _DetailsDisabledImagesState extends State<DetailsDisabledImages> {
 
   void _delete() {
     Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
-    Navigator.pushNamed(context, Home.routeName);
+    Navigator.pushNamed(context, HomeScreen.routeName);
   }
 
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      DetailsArguments arguments = ModalRoute.of(context)!.settings.arguments as DetailsArguments;
+      DetailsScreenArguments arguments = ModalRoute.of(context)!.settings.arguments as DetailsScreenArguments;
       setState(() => vocabulary = arguments.vocabulary);
     });
   }

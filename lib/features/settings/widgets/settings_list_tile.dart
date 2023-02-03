@@ -1,11 +1,11 @@
 import 'package:vocabualize/constants/common_imports.dart';
 
 class SettingsListTile extends StatelessWidget {
-  const SettingsListTile({super.key, required this.title, this.subtitle, this.trailing});
-
   final Text title;
   final Text? subtitle;
   final Widget? trailing;
+
+  const SettingsListTile({super.key, required this.title, this.subtitle, this.trailing});
 
   @override
   Widget build(BuildContext context) {

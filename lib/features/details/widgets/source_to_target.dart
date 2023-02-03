@@ -4,10 +4,10 @@ import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/edit_source_target_dialog.dart';
 
 class SourceToTarget extends StatefulWidget {
-  const SourceToTarget({super.key, required this.vocabulary, this.isVertical = false});
-
   final Vocabulary vocabulary;
   final bool isVertical;
+
+  const SourceToTarget({super.key, required this.vocabulary, this.isVertical = false});
 
   @override
   State<SourceToTarget> createState() => _SourceToTargetState();

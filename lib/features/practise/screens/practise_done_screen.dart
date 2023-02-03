@@ -1,7 +1,7 @@
 import 'package:vocabualize/constants/common_imports.dart';
 
-class PractiseDone extends StatelessWidget {
-  const PractiseDone({Key? key}) : super(key: key);
+class PractiseDoneScreen extends StatelessWidget {
+  const PractiseDoneScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

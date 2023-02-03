@@ -2,20 +2,20 @@ import 'dart:math';
 
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/collections/screens/collection.dart';
+import 'package:vocabualize/features/collections/screens/collection_screen.dart';
 import 'package:vocabualize/features/collections/services/collection_arguments.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class TagCardButton extends StatelessWidget {
-  const TagCardButton({super.key, required this.tag});
-
   final String tag;
+
+  const TagCardButton({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
     void click() {
-      Navigator.pushNamed(context, Collection.routeName, arguments: CollectionArguments(tag: tag));
+      Navigator.pushNamed(context, CollectionScreen.routeName, arguments: CollectionScreenArguments(tag: tag));
     }
 
     return MaterialButton(
@@ -45,17 +45,18 @@ class TagCardButton extends StatelessWidget {
                         color: Theme.of(context).colorScheme.surface,
                       ),
                       child: GridView.builder(
-                        scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: min(Provider.of<VocabularyProvider>(context).getVocabulariesByTag(tag).length, 2),
                         ),
-                        itemCount: Provider.of<VocabularyProvider>(context).getVocabulariesByTag(tag).length,
+                        itemCount: min(Provider.of<VocabularyProvider>(context).getVocabulariesByTag(tag).length, 4),
                         itemBuilder: (context, index) => Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surface,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: Provider.of<VocabularyProvider>(context).getVocabulariesByTag(tag)[index].imageProvider,
+                              image:
+                                  Provider.of<VocabularyProvider>(context).getVocabulariesByTag(tag).reversed.toList()[index].imageProvider,
                             ),
                           ),
                         ),

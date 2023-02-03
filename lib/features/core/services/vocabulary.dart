@@ -35,6 +35,8 @@ class Vocabulary {
         _target = target,
         tags = tags ?? [];
 
+  Vocabulary.empty();
+
   Vocabulary.fromJson(Map<String, dynamic> json) {
     _source = json['source'];
     _target = json['target'];

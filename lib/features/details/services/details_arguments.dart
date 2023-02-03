@@ -1,6 +1,7 @@
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
-class DetailsArguments {
-  DetailsArguments({required this.vocabulary});
+class DetailsScreenArguments {
   final Vocabulary vocabulary;
+
+  DetailsScreenArguments({required this.vocabulary});
 }

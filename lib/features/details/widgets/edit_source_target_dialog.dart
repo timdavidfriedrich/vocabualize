@@ -5,12 +5,14 @@ import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/replace_vocabulary_dialog.dart';
 import 'package:vocabualize/features/record/services/record_service.dart';
+import 'package:vocabualize/features/reports/screens/report_screen.dart';
+import 'package:vocabualize/features/reports/services/report_screen_arguments.dart';
 
 class EditSourceTargetDialog extends StatefulWidget {
-  const EditSourceTargetDialog({super.key, required this.vocabulary, this.editTarget = false});
-
   final Vocabulary vocabulary;
   final bool editTarget;
+
+  const EditSourceTargetDialog({super.key, required this.vocabulary, this.editTarget = false});
 
   @override
   State<EditSourceTargetDialog> createState() => _EditSourceTargetDialogState();
@@ -21,7 +23,7 @@ class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
   String input = "";
 
   void _reportTranslation() {
-    // TODO: Implement report function (via Firestore).
+    Navigator.pushNamed(context, ReportScreen.routeName, arguments: ReportScreenArguments.translation(vocabulary: widget.vocabulary));
   }
 
   void _submit() async {
