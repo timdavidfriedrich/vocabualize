@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
@@ -15,12 +17,16 @@ class _RecordSheetState extends State<RecordSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(48, 0, 48, 0),
+      // ! TODO: Replace padding with relative screen size and/or min() for tablet support
+      padding: const EdgeInsets.symmetric(horizontal: 48),
       color: Theme.of(context).colorScheme.primary,
       child: ListView(
+        shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         children: [
+          const SizedBox(height: 48),
           Provider.of<ActiveProvider>(context).typeIsActive ? Container() : const MicButton(),
+          const SizedBox(height: 48),
           const TypeButton(),
         ],
       ),
