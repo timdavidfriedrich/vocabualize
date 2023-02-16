@@ -11,6 +11,7 @@
   "home_statusCard_default": "Su colección contiene {listLength} palabras.",
   "home_statusCard_isEmpty": "¿Por qué no añades nuevas palabras? :)",
   "home_statusCard_onlyOneWord": "Su colección contiene {listLength} palabra. Se siente solo. ¡Añade alguna más! :)",
+  "home_statusCard_firstWord": "¡Has añadido tu primera palabra! Y alguna más y ¡a practicar! :)",
   "home_statusCard_practiseButton": "Practicar",
   "practise_left": "{cardCount} quedan",
   "pracise_solutionButton": "Solución",

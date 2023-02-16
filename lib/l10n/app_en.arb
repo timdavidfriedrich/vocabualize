@@ -58,7 +58,7 @@
   "@home_statusCard_isEmpty": {
     "description": "Status card text if the vocabularyList is empty."
   },
-  "home_statusCard_onlyOneWord": "Your collection contains {listLength} word. It's feeling lonely. Add some more! :)",
+  "home_statusCard_onlyOneWord": "Your collection contains only {listLength} word. It's feeling lonely. Add some more! :)",
   "@home_statusCard_onlyOneWord": {
     "description": "Status card text if the vocabularyList contains only one word.",
     "placeholders": {
@@ -67,6 +67,10 @@
         "example": "42"
       }
     }
+  },
+  "home_statusCard_firstWord": "You added your first word! And some more and hit practise! :)",
+  "@home_statusCard_firstWord": {
+    "description": "Status card text if the first word has been added."
   },
   "home_statusCard_practiseButton": "Practise",
   "@home_statusCard_practiseButton": {

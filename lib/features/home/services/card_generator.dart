@@ -7,12 +7,24 @@ import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CardGenerator {
+  static bool _hasBeenCreatedToday(Vocabulary vocabulary) {
+    DateTime todayRaw = DateTime.now();
+    DateTime today = DateTime(todayRaw.year, todayRaw.month, todayRaw.day);
+    DateTime creationDayRaw = vocabulary.creationDate;
+    DateTime creationDay = DateTime(creationDayRaw.year, creationDayRaw.month, creationDayRaw.day);
+    if (creationDay.isAtSameMomentAs(today)) return true;
+    return false;
+  }
+
   static String get info {
     List<Vocabulary> vocabularyList = Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList;
     List<Vocabulary> createdToday = Provider.of<VocabularyProvider>(Global.context, listen: false).createdToday;
 
     List<String> possibleInfos = [];
 
+    if (vocabularyList.length == 1 && _hasBeenCreatedToday(vocabularyList.first)) {
+      return AppLocalizations.of(Global.context).home_statusCard_firstWord;
+    }
     if (vocabularyList.isEmpty) {
       possibleInfos.add(AppLocalizations.of(Global.context).home_statusCard_isEmpty);
     }

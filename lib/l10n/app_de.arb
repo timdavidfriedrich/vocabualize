@@ -11,6 +11,7 @@
   "home_statusCard_default": "Deine Sammlung enthält {listLength} Wörter.",
   "home_statusCard_isEmpty": "Warum fügst du nicht ein paar Wörter hinzu? :)",
   "home_statusCard_onlyOneWord": "Deine Sammlung enthält nur {listLength} Wort. Lass es nicht im Stich und füg weitere hinzu! :)",
+  "home_statusCard_firstWord": "Du hast dein erstes Wort hinzugefügt! Sammle weitere und drück dann auf 'Üben'! :)",
   "home_statusCard_practiseButton": "Üben",
   "practise_left": "{cardCount} übrig",
   "pracise_solutionButton": "Lösung",
