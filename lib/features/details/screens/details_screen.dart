@@ -66,6 +66,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _getPexels() async {
+    if (!mounted) return;
     List<PexelsModel> pexelsModelList = await PexelsService().getImages(
       await Translator.inEnglish(vocabulary.source, filtered: true),
     );
