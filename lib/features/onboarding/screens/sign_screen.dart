@@ -2,6 +2,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/firebase/firebase_service.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/features/onboarding/screens/welcome_screen.dart';
 import 'package:vocabualize/features/onboarding/services/email_validator.dart';
 import 'package:vocabualize/features/onboarding/services/sign_arguments.dart';
@@ -58,6 +59,10 @@ class _SignScreenState extends State<SignScreen> {
 
   void _changePasswordVisibility() {
     setState(() => _isPasswordObscured = !_isPasswordObscured);
+  }
+
+  void _navigateToForgotPasswordScreen() {
+    Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
   }
 
   @override
@@ -150,6 +155,18 @@ class _SignScreenState extends State<SignScreen> {
                             // TODO: Replace with arb
                             child: const Text("Sign up"),
                           ),
+                    const SizedBox(height: 8),
+                    signType == SignType.signIn
+                        ? TextButton(
+                            onPressed: () => _navigateToForgotPasswordScreen(),
+                            child: Text(
+                              // TODO: Replace with arb
+                              "Forgot password?",
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
+                            ),
+                          )
+                        : Container(),
                     const SizedBox(height: 48),
                     // IconButton(onPressed: () => {}, icon: Svg.asset("assets/icons/google.svg")),
                   ],

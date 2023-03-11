@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:log/log.dart';
 import 'package:vocabualize/features/core/services/firebase/app_user.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/onboarding/widgets/password_reset_failed_dialog.dart';
 import 'package:vocabualize/features/onboarding/widgets/sign_in_failed_dialog.dart';
 import 'package:vocabualize/features/onboarding/widgets/sign_up_failed_dialog.dart';
 import 'package:vocabualize/features/reports/services/report.dart';
@@ -28,8 +29,8 @@ class FirebaseService {
     Messenger.loadingAnimation();
     try {
       await FirebaseAuth.instance.signInAnonymously();
-    } catch (e) {
-      Log.error(e);
+    } catch (error) {
+      Log.error(error);
     }
     Navigator.pop(Global.context);
   }
@@ -49,8 +50,8 @@ class FirebaseService {
   static Future sendVerificationEmail() async {
     try {
       await FirebaseAuth.instance.currentUser!.sendEmailVerification();
-    } catch (e) {
-      Log.error(e);
+    } catch (error) {
+      Log.error(error);
     }
   }
 
@@ -69,10 +70,19 @@ class FirebaseService {
     Messenger.loadingAnimation();
     try {
       await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      Log.error(e);
+    } catch (error) {
+      Log.error(error);
     }
     Navigator.pop(Global.context);
+  }
+
+  static Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (error) {
+      Messenger.showAnimatedDialog(PasswordResetFailedDialog(error: error));
+      Log.error(error);
+    }
   }
 
   static Future createUser({required AppUser user}) async {
