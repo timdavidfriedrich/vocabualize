@@ -5,14 +5,14 @@ import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/core/services/text_to_speech.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
+import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/practise/screens/practise_done_screen.dart';
 import 'package:vocabualize/features/core/services/answer.dart';
 import 'package:vocabualize/features/practise/services/practise_arguments.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class PractiseScreen extends StatefulWidget {
-  static const String routeName = "/practise";
-
+  static const String routeName = "${HomeScreen.routeName}/Practise";
   const PractiseScreen({Key? key}) : super(key: key);
 
   @override

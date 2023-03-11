@@ -15,9 +15,12 @@ class NewWordCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: Provider.of<SettingsProvider>(context).areImagesDisabled
+              ? BorderSide(color: Theme.of(context).colorScheme.primary, width: 2)
+              : BorderSide.none),
       color: Provider.of<SettingsProvider>(context).areImagesDisabled ? Theme.of(context).colorScheme.surface : null,
-      // onPressed: () => Messenger.showAnimatedDialog(EditDialog(vocabulary: vocabulary)),
       onPressed: () => Navigator.pushNamed(context, DetailsScreen.routeName, arguments: DetailsScreenArguments(vocabulary: vocabulary)),
       onLongPress: () => Messenger.showAnimatedDialog(InfoDialog(vocabulary: vocabulary)),
       padding: Provider.of<SettingsProvider>(context).areImagesDisabled ? const EdgeInsets.all(16.0) : const EdgeInsets.all(8.0),

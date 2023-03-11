@@ -4,11 +4,11 @@ import 'package:image_picker/image_picker.dart';
 class CameraGalleryDialog extends StatelessWidget {
   const CameraGalleryDialog({super.key});
 
-  _return(ImageSource imageSource) {
+  void _return(ImageSource imageSource) {
     Navigator.pop(Global.context, imageSource);
   }
 
-  _cancel() {
+  void _cancel() {
     Navigator.pop(Global.context);
   }
 

@@ -3,14 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/firebase/firebase_service.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/reports/services/bug_report.dart';
 import 'package:vocabualize/features/reports/services/report.dart';
-import 'package:vocabualize/features/reports/services/report_screen_arguments.dart';
+import 'package:vocabualize/features/reports/services/report_arguments.dart';
 import 'package:vocabualize/features/reports/services/report_type.dart';
 import 'package:vocabualize/features/reports/services/translation_report.dart';
 
 class ReportScreen extends StatefulWidget {
-  static const String routeName = "/Report";
+  static const String routeName = "${HomeScreen.routeName}/Report";
 
   const ReportScreen({super.key});
 
@@ -19,7 +20,7 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
-  late ReportScreenArguments arguments;
+  late ReportArguments arguments;
   late ReportType reportType = ReportType.none;
   Vocabulary? vocabulary;
 
@@ -55,7 +56,7 @@ class _ReportScreenState extends State<ReportScreen> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        arguments = (ModalRoute.of(context)!.settings.arguments as ReportScreenArguments);
+        arguments = (ModalRoute.of(context)!.settings.arguments as ReportArguments);
         reportType = arguments.reportType;
         if (reportType == ReportType.translation) {
           vocabulary = arguments.vocabulary;

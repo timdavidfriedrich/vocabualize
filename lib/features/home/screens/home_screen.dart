@@ -1,20 +1,23 @@
+import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/home/screens/home_empty_screen.dart';
 import 'package:vocabualize/features/home/widgets/collections_view.dart';
-import 'package:vocabualize/features/home/widgets/double_sheet.dart';
 import 'package:vocabualize/features/home/widgets/new_word_card.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card.dart';
 import 'package:vocabualize/features/home/widgets/vocabulary_list_tile.dart';
 import 'package:vocabualize/features/record/services/record_sheet_controller.dart';
+import 'package:vocabualize/features/record/widgets/record_grab.dart';
+import 'package:vocabualize/features/record/widgets/record_sheet.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
-import 'package:vocabualize/features/reports/services/report_screen_arguments.dart';
+import 'package:vocabualize/features/reports/services/report_arguments.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
+import 'package:vocabualize/features/settings/screens/settings_screen.dart';
 import 'package:vocabualize/features/settings/services/settings_sheet_controller.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const String routeName = "/";
+  static const String routeName = "/Home";
 
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -27,22 +30,17 @@ class _HomeScreenState extends State<HomeScreen> {
   late RecordSheetController recordSheetController;
 
   void _openReportPage() {
-    Navigator.pushNamed(context, ReportScreen.routeName, arguments: ReportScreenArguments.bug());
+    Navigator.pushNamed(context, ReportScreen.routeName, arguments: ReportArguments.bug());
   }
 
   void _showSettings() {
-    settingsSheetController.show();
+    Navigator.pushNamed(context, SettingsScreen.routeName);
   }
 
   @override
   void initState() {
     super.initState();
-
-    settingsSheetController = SettingsSheetController.instance;
     recordSheetController = RecordSheetController.instance;
-
-    //settingsSheetController.hide();
-    //recordSheetController.hide();
 
     Provider.of<VocabularyProvider>(context, listen: false).init();
     Provider.of<SettingsProvider>(context, listen: false).init();
@@ -60,9 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: DoubleSheet(
-            settingsSheetController: settingsSheetController,
-            recordSheetController: recordSheetController,
+          body: SnappingSheet(
+            controller: recordSheetController,
+            initialSnappingPosition: recordSheetController.retractedPosition,
+            snappingPositions: [recordSheetController.retractedPosition, recordSheetController.extendedPosition],
+            grabbing: const RecordGrab(),
+            grabbingHeight: 64,
+            sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
             child: Provider.of<VocabularyProvider>(context).vocabularyList.isEmpty
                 ? const HomeEmptyScreen()
                 : ListView(

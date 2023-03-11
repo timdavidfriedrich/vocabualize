@@ -26,7 +26,7 @@ import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/services/settings_sheet_controller.dart';
 
 class DetailsScreen extends StatefulWidget {
-  static const String routeName = "/AddDetails";
+  static const String routeName = "${HomeScreen.routeName}/AddDetails";
 
   const DetailsScreen({super.key});
 
@@ -66,11 +66,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _getPexels() async {
-    if (!mounted) return;
     List<PexelsModel> pexelsModelList = await PexelsService().getImages(
       await Translator.inEnglish(vocabulary.source, filtered: true),
     );
-    setState(() => _pexelsModelList = pexelsModelList);
+    if (mounted) setState(() => _pexelsModelList = pexelsModelList);
   }
 
   void _selectImage(PexelsModel? imageModel) {

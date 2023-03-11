@@ -70,6 +70,7 @@ class InfoDialog extends StatelessWidget {
       ),
       actions: [
         ElevatedButton(
+          // TODO: Move onPressed to method
           onPressed: () => Navigator.of(context).pop(),
           // TODO: Replace with arb
           child: const Text('Close'),

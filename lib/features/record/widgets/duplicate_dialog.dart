@@ -1,6 +1,6 @@
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/features/core/services/firebase/root.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/record/services/record_service.dart';
 
 class DuplicateDialog extends StatelessWidget {
@@ -9,7 +9,7 @@ class DuplicateDialog extends StatelessWidget {
   const DuplicateDialog({super.key, required this.vocabulary});
 
   void _cancel() {
-    Navigator.popUntil(Global.context, ModalRoute.withName(HomeScreen.routeName));
+    Navigator.popUntil(Global.context, ModalRoute.withName(Root.routeName));
   }
 
   void _addAnyway() {

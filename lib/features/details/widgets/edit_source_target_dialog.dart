@@ -6,7 +6,7 @@ import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/replace_vocabulary_dialog.dart';
 import 'package:vocabualize/features/record/services/record_service.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
-import 'package:vocabualize/features/reports/services/report_screen_arguments.dart';
+import 'package:vocabualize/features/reports/services/report_arguments.dart';
 
 class EditSourceTargetDialog extends StatefulWidget {
   final Vocabulary vocabulary;
@@ -23,7 +23,7 @@ class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
   String input = "";
 
   void _reportTranslation() {
-    Navigator.pushNamed(context, ReportScreen.routeName, arguments: ReportScreenArguments.translation(vocabulary: widget.vocabulary));
+    Navigator.pushNamed(context, ReportScreen.routeName, arguments: ReportArguments.translation(vocabulary: widget.vocabulary));
   }
 
   void _submit() async {

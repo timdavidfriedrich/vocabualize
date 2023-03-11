@@ -5,6 +5,10 @@ class PractiseDoneScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void done() {
+      Navigator.pop(context);
+    }
+
     return SafeArea(
       child: ClipRRect(
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
@@ -34,7 +38,7 @@ class PractiseDoneScreen extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => done(),
                   // TODO: Replace with arb
                   child: const Text("Main menu"),
                 ),

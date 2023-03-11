@@ -17,6 +17,7 @@ class DisconnectedDialog extends StatelessWidget {
       ),
       actions: [
         ElevatedButton(
+          // TODO: move onPressed to method
           onPressed: () => Navigator.pop(context),
           child: Text(AppLocalizations.of(context).core_disconnected_okayButton),
         ),
