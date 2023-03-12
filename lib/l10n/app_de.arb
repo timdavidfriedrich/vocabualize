@@ -1,7 +1,7 @@
 {
   "@@locale": "de",
   "core_disconnected": "Du bist offline",
-  "core_disconnected_description": "Du musst online sein, um Vokabeln hinzuzufügen. Bitte überprüfe deine Internetverbindung.",
+  "core_disconnected_description": "Damit der Übersetzer funktioniert, ist eine Internetverbindung erforderlich. Bitte aktivieren Sie Wi-Fi oder mobile Daten, um Vokabeln hinzuzufügen.",
   "core_disconnected_okayButton": "Okay",
   "home_allWords": "Alle Wörter",
   "home_newWords": "Neue Wörter",

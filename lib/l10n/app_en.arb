@@ -4,7 +4,7 @@
   "@core_disconnected": {
     "description": "Offline pop up"
   },
-  "core_disconnected_description": "You must be online, in order to add vocabularies. Please check your internet connection.",
+  "core_disconnected_description": "An Internet connection is required for the translator to work. Please enable Wi-Fi or mobile data to add vocabularies.",
   "@core_disconnected_description": {
     "description": "Offline pop up description"
   },

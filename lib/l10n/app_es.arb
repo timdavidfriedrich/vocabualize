@@ -1,7 +1,7 @@
 {
   "@@locale": "es",
   "core_disconnected": "Estás desconectado",
-  "core_disconnected_description": "Debe estar conectado a Internet para poder añadir vocabularios. Compruebe su conexión a Internet.",
+  "core_disconnected_description": "Para que el traductor funcione es necesaria una conexión a Internet. Habilita la conexión Wi-Fi o los datos móviles para añadir vocabularios.",
   "core_disconnected_okayButton": "Vale",
   "home_allWords": "Todas las palabras",
   "home_newWords": "Nuevas palabras",
