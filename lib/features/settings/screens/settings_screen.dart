@@ -93,6 +93,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                   ),
                 ),
+                SettingsListTile(
+                  // TODO: Replace with arb
+                  title: const Text("Use DeepL translator"),
+                  // TODO: Replace with arb
+                  subtitle: Text("Likely to increase translation quality.", style: TextStyle(color: Theme.of(context).hintColor)),
+                  trailing: Switch(
+                    value: Provider.of<SettingsProvider>(context).useDeepL,
+                    onChanged: (value) {
+                      Provider.of<SettingsProvider>(context, listen: false).useDeepL = value;
+                    },
+                  ),
+                ),
               ],
             ),
           ),

@@ -11,6 +11,7 @@ class SettingsProvider extends ChangeNotifier {
   Language _sourceLanguage = Language.defaultSource();
   Language _targetLanguage = Language.defaultTarget();
   bool _areImagesEnabled = true;
+  bool _useDeepL = false;
   int _initialInterval = 1440 * 1;
   int _initialNoviceInterval = 1;
   double _initialEase = 2.5;
@@ -34,6 +35,12 @@ class SettingsProvider extends ChangeNotifier {
 
   set areImagesEnabled(bool areImagesEnabled) {
     _areImagesEnabled = areImagesEnabled;
+    save();
+    notifyListeners();
+  }
+
+  set useDeepL(bool useDeepL) {
+    _useDeepL = useDeepL;
     save();
     notifyListeners();
   }
@@ -90,6 +97,7 @@ class SettingsProvider extends ChangeNotifier {
   Language get targetLanguage => _targetLanguage;
   bool get areImagesEnabled => _areImagesEnabled;
   bool get areImagesDisabled => !_areImagesEnabled;
+  bool get useDeepL => _useDeepL;
   int get initialInterval => _initialInterval;
   int get initialNoviceInterval => _initialNoviceInterval;
   double get initialEase => _initialEase;
@@ -105,6 +113,7 @@ class SettingsProvider extends ChangeNotifier {
     await prefs.setString("sourceLanguage", _sourceLanguage.translatorId);
     await prefs.setString("targetLanguage", _targetLanguage.translatorId);
     await prefs.setBool("areImagesEnabled", _areImagesEnabled);
+    await prefs.setBool("useDeepL", _useDeepL);
     await prefs.setInt("initialInterval", _initialInterval);
     await prefs.setInt("initialNoviceInterval", _initialNoviceInterval);
     await prefs.setDouble("initialEase", _initialEase);
@@ -126,6 +135,7 @@ class SettingsProvider extends ChangeNotifier {
       _targetLanguage = await Languages.findLanguage(translatorId: prefs.getString("targetLanguage")) ?? defaultTarget;
     }
     _areImagesEnabled = prefs.getBool("areImagesEnabled") ?? _areImagesEnabled;
+    _useDeepL = prefs.getBool("useDeepL") ?? _useDeepL;
     _initialInterval = prefs.getInt("initialInterval") ?? _initialInterval;
     _initialNoviceInterval = prefs.getInt("initialNoviceInterval") ?? _initialNoviceInterval;
     _initialEase = prefs.getDouble("initialEase") ?? _initialEase;

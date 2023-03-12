@@ -1,7 +1,10 @@
+import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:text_to_speech/text_to_speech.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/speech.dart';
+import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Languages {
   static Future<Language?> findLanguage({String? translatorId, String? speechToTextId, String? textToSpeechId}) async {
@@ -18,12 +21,20 @@ class Languages {
 
   static Future<List<Language>> getLangauges() async {
     List<Language> result = [];
-    List<String> translatorIds = await getTranslatorIds();
+    List<String> translatorIds = Provider.of<SettingsProvider>(Global.context, listen: false).useDeepL
+        ? await getDeepLTranslatorIds()
+        : await getGoogleTranslatorIds();
     Map<String, String> speechToTextMap = await getSpeechToTextMap();
     List<String> textToSpeechIds = await getTextToSpeechIds();
     for (String translatorId in translatorIds) {
-      String speechToTextId = speechToTextMap.keys.toList().firstWhere((id) => id.toLowerCase().startsWith(translatorId), orElse: () => "");
-      String textToSpeechId = textToSpeechIds.firstWhere((id) => id.toLowerCase().startsWith(translatorId), orElse: () => "");
+      String speechToTextId = speechToTextMap.keys.toList().firstWhere(
+            (id) => id.toLowerCase().startsWith(translatorId.toLowerCase()),
+            orElse: () => "",
+          );
+      String textToSpeechId = textToSpeechIds.firstWhere(
+        (id) => id.toLowerCase().startsWith(translatorId.toLowerCase()),
+        orElse: () => "",
+      );
       if (speechToTextId == "" || textToSpeechId == "") continue;
       result.add(
         Language(
@@ -54,15 +65,23 @@ class Languages {
     return result;
   }
 
-  static Future<List<String>> getTranslatorIds() async {
+  static Future<List<String>> getGoogleTranslatorIds() async {
     List<String> result = [];
-    for (String id in _translatorLanguages.keys) {
+    for (String id in _googleTranslatorLanguages.keys) {
       result.add(id);
     }
     return result;
   }
 
-  static const Map<String, String> _translatorLanguages = {
+  static Future<List<String>> getDeepLTranslatorIds() async {
+    List<String> result = [];
+    for (String id in _deepLTranslatorLanguages.keys) {
+      result.add(id);
+    }
+    return result;
+  }
+
+  static const Map<String, String> _googleTranslatorLanguages = {
     'auto': 'Automatic',
     'af': 'Afrikaans',
     'sq': 'Albanian',
@@ -169,5 +188,41 @@ class Languages {
     'yi': 'Yiddish',
     'yo': 'Yoruba',
     'zu': 'Zulu'
+  };
+
+  static const Map<String, String> _deepLTranslatorLanguages = {
+    "BG": "Bulgarian",
+    "CS": "Czech",
+    "DA": "Danish",
+    "DE": "German",
+    "EL": "Greek",
+    "EN": "English (unspecified variant for backward compatibility; please select EN-GB or EN-US instead)",
+    "EN-GB": "English (British)",
+    "EN-US": "English (American)",
+    "ES": "Spanish",
+    "ET": "Estonian",
+    "FI": "Finnish",
+    "FR": "French",
+    "HU": "Hungarian",
+    "ID": "Indonesian",
+    "IT": "Italian",
+    "JA": "Japanese",
+    "KO": "Korean",
+    "LT": "Lithuanian",
+    "LV": "Latvian",
+    "NB": "Norwegian (Bokmål)",
+    "NL": "Dutch",
+    "PL": "Polish",
+    "PT": "Portuguese (unspecified variant for backward compatibility; please select PT-BR or PT-PT instead)",
+    "PT-BR": "Portuguese (Brazilian)",
+    "PT-PT": "Portuguese (all Portuguese varieties excluding Brazilian Portuguese)",
+    "RO": "Romanian",
+    "RU": "Russian",
+    "SK": "Slovak",
+    "SL": "Slovenian",
+    "SV": "Swedish",
+    "TR": "Turkish",
+    "UK": "Ukrainian",
+    "ZH": "Chinese (simplified)"
   };
 }
