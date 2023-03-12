@@ -1,14 +1,11 @@
 name: vocabualize
 description: Capture vocabularies around you.
 
-
-
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
   sdk: ">=2.18.0 <3.3.0"
-
 
 
 dependencies:
@@ -19,28 +16,28 @@ dependencies:
     sdk: flutter
   
   cached_network_image: ^3.2.2
-  image_picker: ^0.8.7
-  path_provider: ^2.0.13
-  shared_preferences: ^2.0.18
   http: ^0.13.5
-  provider: ^6.0.3
+  image_picker: ^0.8.7
   intl: ^0.17.0
+  path_provider: ^2.0.13
   permission_handler: ^10.0.2
+  provider: ^6.0.3
+  shared_preferences: ^2.0.18
   url_launcher: ^6.1.10
 
   avatar_glow: ^2.0.2
   cupertino_icons: ^1.0.2
+  flutter_native_splash: ^2.2.19
   flutter_svg: ^2.0.2
   google_fonts: ^4.0.3
   snapping_sheet: ^3.1.0
-
   speech_to_text: ^6.1.1
   text_to_speech: ^0.2.3
   translator: ^0.1.7
 
+  cloud_firestore: ^4.4.4
   firebase_core: ^2.7.1
   firebase_auth: ^4.2.10
-  cloud_firestore: ^4.4.4
 
   # own packages
   log:
@@ -68,3 +65,10 @@ flutter:
 flutter_intl:
   enabled: true
   class_name: AppLocalizations
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  color: "#22A2FF"
+  image: "assets/images/icon/icon_rounded_small.png"
