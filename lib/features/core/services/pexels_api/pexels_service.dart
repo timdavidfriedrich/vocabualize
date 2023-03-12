@@ -14,7 +14,7 @@ class PexelsService {
       headers: {HttpHeaders.authorizationHeader: PexelsSecret.pexels},
     );
     if (response.statusCode == 200) {
-      dynamic decoded = json.decode(response.body)["photos"];
+      dynamic decoded = jsonDecode(utf8.decode(response.bodyBytes))["photos"];
       for (dynamic imageModel in decoded) {
         imageModelList.add(PexelsModel.fromJson(imageModel));
       }
