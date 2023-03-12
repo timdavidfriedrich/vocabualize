@@ -41,6 +41,7 @@ class Speech {
   }
 
   Future<void> record() async {
+    if (!_available) await init();
     if (!Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive) {
       Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = true;
 

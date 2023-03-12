@@ -15,7 +15,6 @@ import 'package:vocabualize/features/practise/screens/practise_screen.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/details/screens/details_screen.dart';
-import 'package:vocabualize/features/core/services/speech.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/screens/settings_screen.dart';
@@ -31,9 +30,6 @@ Future main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
-  var speech = Speech.instance;
-  await speech.init();
 
   runApp(const Vocabualize());
 }
@@ -62,7 +58,6 @@ class Vocabualize extends StatelessWidget {
         ],
         theme: ThemeConfig.light(context),
         darkTheme: ThemeConfig.dark(context),
-        //showPerformanceOverlay: true,
         debugShowCheckedModeBanner: false,
         navigatorKey: Global.navigatorState,
         initialRoute: Root.routeName,
