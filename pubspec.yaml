@@ -27,6 +27,7 @@ dependencies:
 
   avatar_glow: ^2.0.2
   cupertino_icons: ^1.0.2
+  flutter_launcher_icons: ^0.12.0
   flutter_native_splash: ^2.2.19
   flutter_svg: ^2.0.2
   google_fonts: ^4.0.3
@@ -66,9 +67,33 @@ flutter_intl:
   enabled: true
   class_name: AppLocalizations
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icon/icon_transparent.png"
+  adaptive_icon_background: "#22A2FF"
+  adaptive_icon_foreground: "assets/images/icon/icon_transparent.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/images/icon/icon_transparent.png"
+    background_color: "#22A2FF"
+    theme_color: "#22A2FF"
+  windows:
+    generate: true
+    image_path: "assets/images/icon/icon_rounded_small.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/icon/icon_rounded_small.png"
+
 flutter_native_splash:
   android: true
   ios: true
   web: false
   color: "#22A2FF"
-  image: "assets/images/icon/icon_rounded_small.png"
+  image: "assets/images/icon/icon_transparent.png"
+  android_12:
+    #image: "assets/images/icon/icon_transparent.png"
+    color: "#22A2FF"
