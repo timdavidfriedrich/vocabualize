@@ -10,10 +10,6 @@ class CloudService {
   static final _bugReportsDocument = FirebaseFirestore.instance.collection('bug_reports');
   static final _translationReportsDocument = FirebaseFirestore.instance.collection('translation_reports');
 
-  get userDocument => _usersDocument;
-  get bugReportsDocument => _bugReportsDocument;
-  get translationReportsDocument => _translationReportsDocument;
-
   static Future createUser({required AppUser user}) async {
     await _usersDocument.doc().set(user.toJson());
   }
