@@ -12,25 +12,20 @@ class Translator {
 
   static Future<String> inEnglish(String source, {bool filtered = false}) async {
     List<String> articles = ["the", "a", "an"];
-    Translation translation = await _googleTranslator.translate(
-      source,
-      from: Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage.translatorId,
-      to: "en",
-    );
-    String result = translation.toString();
+    String result = await translate(source, targetLanguageId: "en");
     if (filtered) {
       for (String article in articles) {
-        if (translation.toString().startsWith("$article ")) {
-          result = translation.toString().replaceFirst("$article ", "");
+        if (result.toString().startsWith("$article ")) {
+          result = result.toString().replaceFirst("$article ", "");
         }
       }
     }
     return result;
   }
 
-  static Future<String> translate(String source) async {
-    String sourceLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage.translatorId;
-    String targetLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).targetLanguage.translatorId;
+  static Future<String> translate(String source, {String? sourceLanguageId, String? targetLanguageId}) async {
+    String sourceLanguage = sourceLanguageId ?? Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage.translatorId;
+    String targetLanguage = targetLanguageId ?? Provider.of<SettingsProvider>(Global.context, listen: false).targetLanguage.translatorId;
     if (Provider.of<SettingsProvider>(Global.context, listen: false).useDeepL) {
       DeepLResponse? deepLResponse = await _deeplTranslator.translate(DeepLRequest(
         text: source,
