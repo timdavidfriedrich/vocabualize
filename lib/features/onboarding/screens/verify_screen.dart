@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/firebase/firebase_service.dart';
+import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
 import 'package:vocabualize/features/onboarding/screens/select_language_screen.dart';
 
 class VerifyScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
   Timer? reloadTimer;
 
   void _reload() async {
-    await FirebaseService.reloadUser().whenComplete(() {
+    await AuthService.reloadUser().whenComplete(() {
       if (FirebaseAuth.instance.currentUser!.emailVerified) {
         reloadTimer?.cancel();
         Navigator.pushNamed(context, SelectLanguageScreen.routeName);
@@ -57,7 +57,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                   const Text("We sent you an email with a link. Please, click on it to verify your email address."),
                   const SizedBox(height: 32),
                   ElevatedButton(
-                    onPressed: () => FirebaseService.sendVerificationEmail(),
+                    onPressed: () => AuthService.sendVerificationEmail(),
                     // TODO: Replace with arb
                     child: const Text("Resend verification email"),
                   ),

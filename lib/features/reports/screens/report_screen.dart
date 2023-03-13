@@ -1,7 +1,7 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/firebase/firebase_service.dart';
+import 'package:vocabualize/features/core/services/firebase/cloud_service.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/reports/services/bug_report.dart';
@@ -39,7 +39,7 @@ class _ReportScreenState extends State<ReportScreen> {
     } else {
       report = BugReport(description: text);
     }
-    FirebaseService.sendReport(report);
+    CloudService.sendReport(report);
     Navigator.pop(context);
   }
 

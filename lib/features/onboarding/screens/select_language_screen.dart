@@ -1,6 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/firebase/firebase_service.dart';
+import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/languages.dart';
 import 'package:vocabualize/features/onboarding/screens/welcome_screen.dart';
@@ -23,7 +23,7 @@ class SelectLanguageScreenState extends State<SelectLanguageScreen> {
   }
 
   void _signInAnonymously(BuildContext context) {
-    FirebaseService.signInAnonymously();
+    AuthService.signInAnonymously();
     Navigator.pop(context);
   }
 

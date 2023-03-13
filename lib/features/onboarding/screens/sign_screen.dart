@@ -1,6 +1,6 @@
 import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/firebase/firebase_service.dart';
+import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/features/onboarding/screens/welcome_screen.dart';
@@ -28,7 +28,7 @@ class _SignScreenState extends State<SignScreen> {
   bool _isPasswordObscured = true;
 
   void _signIn() {
-    FirebaseService.signInWithEmailAndPassword(_email, _password);
+    AuthService.signInWithEmailAndPassword(_email, _password);
     Navigator.pop(context);
   }
 
@@ -37,7 +37,7 @@ class _SignScreenState extends State<SignScreen> {
       Messenger.showAnimatedDialog(const PasswordsDontMatchDialog());
       return;
     }
-    FirebaseService.createUserWithEmailAndPassword(_email, _password);
+    AuthService.createUserWithEmailAndPassword(_email, _password);
     Navigator.pop(context);
   }
 

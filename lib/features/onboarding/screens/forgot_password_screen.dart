@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/firebase/firebase_service.dart';
+import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
 import 'package:vocabualize/features/onboarding/screens/sign_screen.dart';
 import 'package:vocabualize/features/onboarding/screens/welcome_screen.dart';
 
@@ -22,7 +22,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   late int _secondsLeft;
 
   Future<void> _sendPasswordResetEmail(String email) async {
-    FirebaseService.sendPasswordResetEmail(email);
+    AuthService.sendPasswordResetEmail(email);
     setState(() => _sendButtonBlocked = true);
     _resetBlockTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _secondsLeft -= 1);
