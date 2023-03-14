@@ -14,7 +14,6 @@ import 'package:vocabualize/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/features/reports/services/report_arguments.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/screens/settings_screen.dart';
-import 'package:vocabualize/features/settings/services/settings_sheet_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/Home";
@@ -26,7 +25,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late SettingsSheetController settingsSheetController;
   late RecordSheetController recordSheetController;
 
   void _openReportPage() {

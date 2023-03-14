@@ -7,6 +7,7 @@ import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/features/details/widgets/tag_wrap.dart';
 import 'package:vocabualize/features/details/services/details_arguments.dart';
+import 'package:vocabualize/features/settings/screens/settings_screen.dart';
 
 class DetailsDisabledImagesScreen extends StatefulWidget {
   const DetailsDisabledImagesScreen({super.key});
@@ -25,6 +26,10 @@ class _DetailsDisabledImagesScreenState extends State<DetailsDisabledImagesScree
   void _delete() {
     Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
     Navigator.pushNamed(context, Root.routeName);
+  }
+
+  void _navigateToSettings() async {
+    Navigator.pushNamed(context, SettingsScreen.routeName);
   }
 
   @override
@@ -73,6 +78,16 @@ class _DetailsDisabledImagesScreenState extends State<DetailsDisabledImagesScree
                           ),
                         ],
                       ),
+                      const SizedBox(height: 8),
+                      TextButton(
+                        onPressed: () => _navigateToSettings(),
+                        child: Text(
+                          // TODO: Replace with arb
+                          "Want to add an image? Go to settings.",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
+                        ),
+                      )
                     ],
                   ),
                 ),

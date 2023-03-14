@@ -20,10 +20,9 @@ import 'package:vocabualize/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/features/details/widgets/tag_wrap.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/details/services/details_arguments.dart';
-import 'package:vocabualize/features/record/services/record_sheet_controller.dart';
 import 'package:vocabualize/features/details/widgets/camera_gallery_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
-import 'package:vocabualize/features/settings/services/settings_sheet_controller.dart';
+import 'package:vocabualize/features/settings/screens/settings_screen.dart';
 
 class DetailsScreen extends StatefulWidget {
   static const String routeName = "${HomeScreen.routeName}/AddDetails";
@@ -116,18 +115,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
     // Messenger.showSaveMessage(vocabulary);
   }
 
-  void _goToSettings() async {
-    SettingsSheetController settingsSheetController = SettingsSheetController.instance;
-    RecordSheetController recordSheetController = RecordSheetController.instance;
-    recordSheetController.hide();
-    await Future.delayed(const Duration(milliseconds: 150), () => Navigator.popUntil(context, ModalRoute.withName(HomeScreen.routeName)));
-    await Future.delayed(const Duration(milliseconds: 350), () => settingsSheetController.show());
-    // await Future.delayed(const Duration(milliseconds: 750), () => Messenger.showSaveMessage(vocabulary));
+  void _navigateToSettings() async {
+    Navigator.pushNamed(context, SettingsScreen.routeName);
   }
 
   void _delete() {
     Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
-    // Navigator.pushNamed(context, Home.routeName);
     Navigator.pop(context);
   }
 
@@ -347,7 +340,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             ),
                             const SizedBox(height: 8),
                             TextButton(
-                              onPressed: () => _goToSettings(),
+                              onPressed: () => _navigateToSettings(),
                               child: Text(
                                 AppLocalizations.of(context).record_addDetails_neverAskForImageButton,
                                 textAlign: TextAlign.center,
