@@ -14,6 +14,14 @@ class VerifyScreen extends StatefulWidget {
 
 class _VerifyScreenState extends State<VerifyScreen> {
   Timer? reloadTimer;
+  bool _sendButtonBlocked = false;
+  Timer? _blockTimer;
+  final int _seconds = 60;
+  late int _secondsLeft;
+
+  void _startReloadTimer() async {
+    setState(() => reloadTimer = Timer.periodic(const Duration(seconds: 3), (_) => _reload()));
+  }
 
   void _reload() async {
     await AuthService.reloadUser().whenComplete(() {
@@ -24,15 +32,34 @@ class _VerifyScreenState extends State<VerifyScreen> {
     });
   }
 
+  void _resetBlockTimer() {
+    _blockTimer?.cancel();
+    setState(() => _secondsLeft = _seconds);
+  }
+
+  Future<void> _sendVerificationEmail() async {
+    AuthService.sendVerificationEmail();
+    setState(() => _sendButtonBlocked = true);
+    _blockTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() => _secondsLeft -= 1);
+      if (_secondsLeft == 0) {
+        setState(() => _sendButtonBlocked = false);
+        _resetBlockTimer();
+      }
+    });
+  }
+
   @override
   void initState() {
+    _resetBlockTimer();
+    _startReloadTimer();
     super.initState();
-    reloadTimer = Timer.periodic(const Duration(seconds: 3), (_) => _reload());
   }
 
   @override
   void dispose() {
     reloadTimer?.cancel();
+    _blockTimer?.cancel();
     super.dispose();
   }
 
@@ -57,9 +84,9 @@ class _VerifyScreenState extends State<VerifyScreen> {
                   const Text("We sent you an email with a link. Please, click on it to verify your email address."),
                   const SizedBox(height: 32),
                   ElevatedButton(
-                    onPressed: () => AuthService.sendVerificationEmail(),
+                    onPressed: _sendButtonBlocked ? null : () => _sendVerificationEmail(),
                     // TODO: Replace with arb
-                    child: const Text("Resend verification email"),
+                    child: Text(_sendButtonBlocked ? "Wait $_secondsLeft seconds" : "Resend verification email"),
                   ),
                 ],
               ),

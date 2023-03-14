@@ -1,3 +1,4 @@
+import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
@@ -22,8 +23,8 @@ class SelectLanguageScreenState extends State<SelectLanguageScreen> {
     languages = await Languages.getLangauges();
   }
 
-  void _signInAnonymously(BuildContext context) {
-    AuthService.signInAnonymously();
+  void _submit(BuildContext context) {
+    if (AuthService.user == null) AuthService.signInAnonymously();
     Navigator.pop(context);
   }
 
@@ -84,7 +85,7 @@ class SelectLanguageScreenState extends State<SelectLanguageScreen> {
                 ),
                 const Spacer(),
                 ElevatedButton(
-                  onPressed: () => _signInAnonymously(context),
+                  onPressed: () => _submit(context),
                   child: const Text("Save"),
                 ),
                 const SizedBox(height: 48),
