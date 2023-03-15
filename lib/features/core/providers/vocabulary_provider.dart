@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vocabualize/features/core/services/firebase/cloud_service.dart';
 import 'package:vocabualize/features/core/services/format.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
@@ -106,6 +107,7 @@ class VocabularyProvider extends ChangeNotifier {
   Future<void> save() async {
     _prefs = await SharedPreferences.getInstance();
     await _prefs.setString("vocabularyList", json.encode(vocabularyList));
+    await CloudService.saveUserData();
     notifyListeners();
   }
 
@@ -136,6 +138,13 @@ class VocabularyProvider extends ChangeNotifier {
   Future<void> clear() async {
     vocabularyList.clear();
     await save();
+    notifyListeners();
+  }
+
+  Future<void> signOut() async {
+    vocabularyList.clear();
+    _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString("vocabularyList", json.encode(vocabularyList));
     notifyListeners();
   }
 }
