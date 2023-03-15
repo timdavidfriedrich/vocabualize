@@ -46,8 +46,22 @@ class _DetailsScreenState extends State<DetailsScreen> {
   int firstIndex = 0;
   int lastIndex = 6;
 
-  void _openPhotographerLink() async {
-    if (!await launchUrl(Uri.parse(_selected.url), mode: LaunchMode.externalApplication)) return;
+  void _initArguments() {
+    DetailsScreenArguments arguments = ModalRoute.of(context)!.settings.arguments as DetailsScreenArguments;
+    setState(() => vocabulary = arguments.vocabulary);
+  }
+
+  void _initImage() {
+    if (!vocabulary.hasImage) return;
+    _cameraImageFile = vocabulary.cameraImageFile;
+    _selected = _cameraImageFile ?? vocabulary.pexelsModel;
+  }
+
+  void _getPexels() async {
+    List<PexelsModel> pexelsModelList = await PexelsService().getImages(
+      await Translator.inEnglish(vocabulary.source, filtered: true),
+    );
+    if (mounted) setState(() => _pexelsModelList = pexelsModelList);
   }
 
   void _browseNext() {
@@ -64,11 +78,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
     }
   }
 
-  void _getPexels() async {
-    List<PexelsModel> pexelsModelList = await PexelsService().getImages(
-      await Translator.inEnglish(vocabulary.source, filtered: true),
-    );
-    if (mounted) setState(() => _pexelsModelList = pexelsModelList);
+  void _openPhotographerLink() async {
+    if (!await launchUrl(Uri.parse(_selected.url), mode: LaunchMode.externalApplication)) return;
   }
 
   void _selectImage(PexelsModel? imageModel) {
@@ -128,12 +139,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      DetailsScreenArguments arguments = ModalRoute.of(context)!.settings.arguments as DetailsScreenArguments;
-      setState(() => vocabulary = arguments.vocabulary);
-      if (vocabulary.hasImage) {
-        _cameraImageFile = vocabulary.cameraImageFile;
-        _selected = _cameraImageFile ?? vocabulary.pexelsModel;
-      }
+      _initArguments();
+      _initImage();
       _getPexels();
     });
   }
