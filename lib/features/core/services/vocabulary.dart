@@ -91,7 +91,7 @@ class Vocabulary {
   }
 
   bool get hasImage {
-    return _pexelsModel != null && _cameraImageFile != null;
+    return _pexelsModel != null || _cameraImageFile != null;
   }
 
   File? get cameraImageFile => _cameraImageFile;
