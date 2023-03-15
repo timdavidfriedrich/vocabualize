@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/core/services/text_to_speech.dart';
 
@@ -12,9 +14,18 @@ class InfoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     TTS tts = TTS.instance;
 
-    speak() {
+    void speak() {
       tts.stop;
       tts.speak(vocabulary);
+    }
+
+    void delete() {
+      Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
+      Navigator.pop(context);
+    }
+
+    void close() {
+      Navigator.of(context).pop();
     }
 
     String reappearsIn() {
@@ -69,12 +80,27 @@ class InfoDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        ElevatedButton(
-          // TODO: Move onPressed to method
-          onPressed: () => Navigator.of(context).pop(),
-          // TODO: Replace with arb
-          child: const Text('Close'),
-        ),
+        Row(
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(12),
+                backgroundColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                foregroundColor: Theme.of(context).colorScheme.error,
+              ),
+              onPressed: () => delete(),
+              child: const Icon(Icons.delete_rounded),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => close(),
+                // TODO: Replace with arb
+                child: const Text('Close'),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
