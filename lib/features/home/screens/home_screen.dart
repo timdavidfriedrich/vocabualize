@@ -121,7 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 32),
-                                  Text("Collections", style: Theme.of(context).textTheme.headlineMedium),
+                                  // TODO: Replace with arb
+                                  Text("Tags", style: Theme.of(context).textTheme.headlineMedium),
                                   const SizedBox(height: 12),
                                 ],
                               ),
