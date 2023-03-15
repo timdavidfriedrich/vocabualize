@@ -69,12 +69,14 @@ class _PractiseScreenState extends State<PractiseScreen> {
             child: ClipRRect(
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
               child: Scaffold(
+                // ? Show back button? (if not, remove AppBar)
+                appBar: AppBar(),
                 body: Padding(
                   padding: const EdgeInsets.fromLTRB(48, 0, 48, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 48),
+                      // const SizedBox(height: 48),
                       Text(AppLocalizations.of(context).practise_left(vocabulariesToPractise.length),
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
