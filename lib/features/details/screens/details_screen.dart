@@ -130,7 +130,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       DetailsScreenArguments arguments = ModalRoute.of(context)!.settings.arguments as DetailsScreenArguments;
       setState(() => vocabulary = arguments.vocabulary);
-      if (vocabulary.hasImage) _selected = vocabulary.pexelsModel;
+      if (vocabulary.hasImage) {
+        _cameraImageFile = vocabulary.cameraImageFile;
+        _selected = _cameraImageFile ?? vocabulary.pexelsModel;
+      }
       _getPexels();
     });
   }
