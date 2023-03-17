@@ -42,7 +42,7 @@ class TagCardButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
+                        color: Theme.of(context).hintColor,
                       ),
                       child: GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
