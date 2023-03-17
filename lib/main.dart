@@ -6,6 +6,7 @@ import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/collections/screens/collection_screen.dart';
 import 'package:vocabualize/features/core/services/firebase/root.dart';
+import 'package:vocabualize/features/core/services/notifications/notification_service.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/features/onboarding/screens/sign_screen.dart';
@@ -22,9 +23,8 @@ import 'package:vocabualize/firebase_options.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  NotificationService.instance.init();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

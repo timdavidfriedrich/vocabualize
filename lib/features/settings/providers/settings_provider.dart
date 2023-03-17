@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/languages.dart';
+import 'package:vocabualize/features/core/services/notifications/notification_service.dart';
 
 class SettingsProvider extends ChangeNotifier {
   late SharedPreferences prefs;
@@ -20,6 +22,8 @@ class SettingsProvider extends ChangeNotifier {
   double _easyLevelFactor = 0.6;
   double _goodLevelFactor = 0.3;
   double _hardLevelFactor = -0.3;
+  Time _gatherNotificationTime = const Time(13, 0);
+  Time _practiseNotificationTime = const Time(19, 0);
 
   set sourceLanguage(Language sourceLang) {
     _sourceLanguage = sourceLang;
@@ -93,6 +97,20 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  set gatherNotificationTime(Time gatherNotificationTime) {
+    _gatherNotificationTime = gatherNotificationTime;
+    NotificationService.instance.scheduleNotifications();
+    save();
+    notifyListeners();
+  }
+
+  set practiseNotificationTime(Time practiseNotificationTime) {
+    _practiseNotificationTime = practiseNotificationTime;
+    NotificationService.instance.scheduleNotifications();
+    save();
+    notifyListeners();
+  }
+
   Language get sourceLanguage => _sourceLanguage;
   Language get targetLanguage => _targetLanguage;
   bool get areImagesEnabled => _areImagesEnabled;
@@ -106,6 +124,8 @@ class SettingsProvider extends ChangeNotifier {
   double get easyLevelFactor => _easyLevelFactor;
   double get goodLevelFactor => _goodLevelFactor;
   double get hardLevelFactor => _hardLevelFactor;
+  Time get gatherNotificationTime => _gatherNotificationTime;
+  Time get practiseNotificationTime => _practiseNotificationTime;
 
   Future<void> save() async {
     prefs = await SharedPreferences.getInstance();
@@ -121,6 +141,10 @@ class SettingsProvider extends ChangeNotifier {
     await prefs.setDouble("easyLevelFactor", _easyLevelFactor);
     await prefs.setDouble("easyBonus", _easyLevelFactor);
     await prefs.setDouble("goodLevelFactor", _goodLevelFactor);
+    await prefs.setInt("gatherNotificationTimeHour", _gatherNotificationTime.hour);
+    await prefs.setInt("gatherNotificationTimeMinute", _gatherNotificationTime.minute);
+    await prefs.setInt("practiseNotificationTimeHour", _practiseNotificationTime.hour);
+    await prefs.setInt("practiseNotificationTimeMinute", _practiseNotificationTime.minute);
   }
 
   Future<void> init() async {
@@ -144,6 +168,14 @@ class SettingsProvider extends ChangeNotifier {
     _easyLevelFactor = prefs.getDouble("easyLevelFactor") ?? _easyLevelFactor;
     _goodLevelFactor = prefs.getDouble("goodLevelFactor") ?? _goodLevelFactor;
     _hardLevelFactor = prefs.getDouble("hardLevelFactor") ?? _hardLevelFactor;
+    _gatherNotificationTime = Time(
+      prefs.getInt("gatherNotificationTimeHour") ?? _gatherNotificationTime.hour,
+      prefs.getInt("gatherNotificationTimeMinute") ?? _gatherNotificationTime.minute,
+    );
+    _practiseNotificationTime = Time(
+      prefs.getInt("practiseNotificationTimeHour") ?? _practiseNotificationTime.hour,
+      prefs.getInt("practiseNotificationTimeMinute") ?? _practiseNotificationTime.minute,
+    );
     notifyListeners();
   }
 }

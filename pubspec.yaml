@@ -16,12 +16,15 @@ dependencies:
     sdk: flutter
   
   cached_network_image: ^3.2.2
+  device_info: ^2.0.3
+  flutter_local_notifications: ^13.0.0
   http: ^0.13.5
   image_picker: ^0.8.7
   intl: ^0.17.0
   path_provider: ^2.0.13
   permission_handler: ^10.0.2
   provider: ^6.0.3
+  rxdart: ^0.27.7
   shared_preferences: ^2.0.18
   url_launcher: ^6.1.10
 
@@ -37,14 +40,16 @@ dependencies:
   translator: ^0.1.7
 
   cloud_firestore: ^4.4.4
-  firebase_core: ^2.7.1
   firebase_auth: ^4.2.10
+  firebase_core: ^2.7.1
+  firebase_messaging: ^14.2.6
 
   # own packages
   log:
     path: ./packages/log
   teleport:
     path: ./packages/teleport
+  flutter_native_timezone: ^2.0.0
   
 
 

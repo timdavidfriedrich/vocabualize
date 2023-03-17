@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/language.dart';
@@ -19,8 +20,27 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   List<Language> languages = [];
 
-  _getLanguages() async {
+  void _getLanguages() async {
     languages = await Languages.getLangauges();
+  }
+
+  void _selectGatherNotificationTime() async {
+    Time? time = await _timeFromTimePicker();
+    if (time == null || !mounted) return;
+    Provider.of<SettingsProvider>(context, listen: false).gatherNotificationTime = time;
+  }
+
+  void _selectPractiseNotificationTime() async {
+    Time? time = await _timeFromTimePicker();
+    if (time == null || !mounted) return;
+    Provider.of<SettingsProvider>(context, listen: false).practiseNotificationTime = time;
+  }
+
+  Future<Time?> _timeFromTimePicker() async {
+    final TimeOfDay? timeOfDay = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (timeOfDay == null) return null;
+    final Time time = Time(timeOfDay.hour, timeOfDay.minute);
+    return time;
   }
 
   @override
@@ -104,6 +124,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Provider.of<SettingsProvider>(context, listen: false).useDeepL = value;
                     },
                   ),
+                ),
+                SettingsListTile(
+                  // TODO: Replace with arb
+                  title: const Text("Gather notification"),
+                  // TODO: Replace with arb
+                  subtitle: Text("Time to be reminded to gather words.", style: TextStyle(color: Theme.of(context).hintColor)),
+                  trailing: OutlinedButton(
+                      onPressed: () => _selectGatherNotificationTime(),
+                      child: Text("${Provider.of<SettingsProvider>(context).gatherNotificationTime.hour.toString().padLeft(2, '0')}:"
+                          "${Provider.of<SettingsProvider>(context).gatherNotificationTime.minute.toString().padLeft(2, '0')}")),
+                ),
+                SettingsListTile(
+                  // TODO: Replace with arb
+                  title: const Text("Practise notification"),
+                  // TODO: Replace with arb
+                  subtitle: Text("Time to be reminded to practise.", style: TextStyle(color: Theme.of(context).hintColor)),
+                  trailing: OutlinedButton(
+                      onPressed: () => _selectPractiseNotificationTime(),
+                      child: Text("${Provider.of<SettingsProvider>(context).practiseNotificationTime.hour.toString().padLeft(2, '0')}:"
+                          "${Provider.of<SettingsProvider>(context).practiseNotificationTime.minute.toString().padLeft(2, '0')}")),
                 ),
               ],
             ),
