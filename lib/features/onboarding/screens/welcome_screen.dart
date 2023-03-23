@@ -36,7 +36,7 @@ class WelcomeScreen extends StatelessWidget {
                 // TODO: Replace with arb
                 Text("Vocabualize", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineLarge),
                 const Spacer(),
-                Image.asset("assets/images/mascot/mascot_idle.png"),
+                Image.asset("assets/images/mascot/mascot_idle.png", height: MediaQuery.of(context).size.height / 2),
                 const Spacer(),
                 ElevatedButton(
                   onPressed: () => _navigateToSignIn(context),

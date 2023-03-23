@@ -1,3 +1,4 @@
+import 'dart:math';
 
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +17,7 @@ class _RecordSheetState extends State<RecordSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // ! TODO: Replace padding with relative screen size and/or min() for tablet support
-      padding: const EdgeInsets.symmetric(horizontal: 48),
+      padding: EdgeInsets.symmetric(horizontal: max(48, MediaQuery.of(context).size.height / 14)),
       color: Theme.of(context).colorScheme.primary,
       child: ListView(
         shrinkWrap: true,
