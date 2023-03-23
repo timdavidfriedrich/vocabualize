@@ -171,6 +171,6 @@ class Vocabulary {
   @override
   String toString() {
     return "$_source: \n\t'target': $_target, \n\t'tags': $tags, \n\t'level': $level, \n\t'isNovice': $isNovice, " /*\n\t'noviceInterval': $noviceInterval*/
-        ", \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $creationDate, \n\t'nextDate': $nextDate";
+        ", \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $creationDate, \n\t'nextDate': $nextDate, \n\t'sourceLanguage': $sourceLanguage, \n\t'targetLanguage': $targetLanguage";
   }
 }
