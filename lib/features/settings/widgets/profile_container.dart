@@ -28,7 +28,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.info_outline_rounded, size: 32, color: Theme.of(context).colorScheme.onPrimary),
+                    Icon(Icons.info_outline_rounded, size: 32, color: Theme.of(context).colorScheme.onBackground),
                     const SizedBox(width: 16),
                     // TODO: Replace with arb
                     const Flexible(child: Text("Sign in to sync your data across devices.")),
