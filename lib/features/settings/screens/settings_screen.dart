@@ -60,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               children: [
                 const SizedBox(height: 16),
                 const ProfileContainer(),
@@ -145,6 +145,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: Text("${Provider.of<SettingsProvider>(context).practiseNotificationTime.hour.toString().padLeft(2, '0')}:"
                           "${Provider.of<SettingsProvider>(context).practiseNotificationTime.minute.toString().padLeft(2, '0')}")),
                 ),
+                const SizedBox(height: 48),
               ],
             ),
           ),
