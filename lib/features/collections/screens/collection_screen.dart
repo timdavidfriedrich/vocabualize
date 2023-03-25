@@ -50,7 +50,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(tag, style: Theme.of(context).textTheme.headlineLarge),
+            title: Text(tag, style: Theme.of(context).textTheme.headlineMedium),
             actions: [IconButton(icon: const Icon(Icons.edit_rounded), onPressed: () => _editTag())],
           ),
           body: ListView(
