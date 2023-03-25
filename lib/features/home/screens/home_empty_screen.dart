@@ -1,3 +1,4 @@
+import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/features/reports/services/report_arguments.dart';
@@ -34,7 +35,7 @@ class HomeEmptyScreen extends StatelessWidget {
           // image from assets
           const Spacer(),
           Image.asset(
-            "assets/images/mascot/mascot_save.png",
+            AssetPath.mascotSave,
             width: MediaQuery.of(context).size.width * 0.5,
           ),
           const SizedBox(height: 16),

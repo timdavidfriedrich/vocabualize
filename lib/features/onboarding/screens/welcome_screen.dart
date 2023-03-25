@@ -1,3 +1,4 @@
+import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/onboarding/screens/sign_screen.dart';
 import 'package:vocabualize/features/onboarding/screens/select_language_screen.dart';
@@ -35,9 +36,9 @@ class WelcomeScreen extends StatelessWidget {
                 const SizedBox(height: 48),
                 // TODO: Replace with arb
                 Text("Vocabualize", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineLarge),
-                const Spacer(),
-                Image.asset("assets/images/mascot/mascot_idle.png", height: MediaQuery.of(context).size.height / 2),
-                const Spacer(),
+                const SizedBox(height: 24),
+                Flexible(child: Image.asset(AssetPath.mascotIdle)),
+                const SizedBox(height: 48),
                 ElevatedButton(
                   onPressed: () => _navigateToSignIn(context),
                   style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.onPrimary),
