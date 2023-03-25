@@ -35,7 +35,7 @@ class WelcomeScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 48),
                 // TODO: Replace with arb
-                Text("Vocabualize", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineLarge),
+                Text("Vocabualize", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
                 const SizedBox(height: 24),
                 Flexible(child: Image.asset(AssetPath.mascotIdle)),
                 const SizedBox(height: 48),
