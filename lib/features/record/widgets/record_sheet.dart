@@ -23,9 +23,14 @@ class _RecordSheetState extends State<RecordSheet> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          const SizedBox(height: 48),
-          Provider.of<ActiveProvider>(context).typeIsActive ? Container() : const MicButton(),
-          const SizedBox(height: 48),
+          Provider.of<ActiveProvider>(context).typeIsActive ? Container() :  Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              SizedBox(height: 48),
+              MicButton(),
+              SizedBox(height: 48),
+            ],
+          ),
           const TypeButton(),
         ],
       ),
