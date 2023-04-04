@@ -1,7 +1,5 @@
-import 'dart:math';
-
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/record/widgets/mic_button.dart';
 import 'package:vocabualize/features/record/widgets/type_button.dart';
@@ -14,23 +12,30 @@ class RecordSheet extends StatefulWidget {
 }
 
 class _RecordSheetState extends State<RecordSheet> {
+  final paddingFactor = 0.135;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: max(48, MediaQuery.of(context).size.height / 14)),
+      padding: EdgeInsets.symmetric(
+        // * Calculates the "perfect" padding value according to screen size
+        horizontal: MediaQuery.of(context).size.height * MediaQuery.of(context).size.aspectRatio * paddingFactor,
+      ),
       color: Theme.of(context).colorScheme.primary,
       child: ListView(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          Provider.of<ActiveProvider>(context).typeIsActive ? Container() :  Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              SizedBox(height: 48),
-              MicButton(),
-              SizedBox(height: 48),
-            ],
-          ),
+          Provider.of<ActiveProvider>(context).typeIsActive
+              ? Container()
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    SizedBox(height: 48),
+                    MicButton(),
+                    SizedBox(height: 48),
+                  ],
+                ),
           const TypeButton(),
         ],
       ),
