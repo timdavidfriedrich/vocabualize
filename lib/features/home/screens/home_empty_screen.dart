@@ -28,8 +28,10 @@ class HomeEmptyScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: FittedBox(
+                  alignment: Alignment.centerLeft,
+                  fit: BoxFit.scaleDown,
                   // TODO: Replace with arb
-                  child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineMedium),
+                  child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge),
                 ),
               ),
               const SizedBox(width: 16),
