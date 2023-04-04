@@ -11,13 +11,17 @@ class TTS {
   final TextToSpeech _tts;
   bool isSpeaking = false;
 
-  speak(Vocabulary vocabulary) async {
+  Future<List<String>> getLanguages() async {
+    return await _tts.getLanguages();
+  }
+
+  Future<void> speak(Vocabulary vocabulary) async {
     _tts.setLanguage(vocabulary.targetLanguage.textToSpeechId);
     isSpeaking = true;
     isSpeaking = await _tts.speak(vocabulary.target) ?? false;
   }
 
-  stop() {
+  void stop() {
     //_tts.pause();
     _tts.stop();
   }

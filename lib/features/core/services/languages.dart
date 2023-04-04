@@ -1,9 +1,9 @@
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:text_to_speech/text_to_speech.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/speech.dart';
+import 'package:vocabualize/features/core/services/text_to_speech.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class Languages {
@@ -11,9 +11,9 @@ class Languages {
     Language? result;
     List<Language> languages = await getLangauges();
     for (Language language in languages) {
-      if (translatorId != null && language.translatorId != translatorId) continue;
-      if (speechToTextId != null && language.translatorId != speechToTextId) continue;
-      if (textToSpeechId != null && language.translatorId != textToSpeechId) continue;
+      if (translatorId != null && language.translatorId.toLowerCase() != translatorId.toLowerCase()) continue;
+      if (speechToTextId != null && language.translatorId.toLowerCase() != speechToTextId) continue;
+      if (textToSpeechId != null && language.translatorId.toLowerCase() != textToSpeechId) continue;
       result = language;
     }
     return result;
@@ -60,7 +60,7 @@ class Languages {
   }
 
   static Future<List<String>> getTextToSpeechIds() async {
-    final TextToSpeech tts = TextToSpeech();
+    final TTS tts = TTS.instance;
     final result = await tts.getLanguages();
     return result;
   }
