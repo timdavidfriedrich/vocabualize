@@ -28,8 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late RecordSheetController recordSheetController;
 
   void _openReportPage() {
-    Navigator.pushNamed(context, ReportScreen.routeName,
-        arguments: ReportArguments.bug());
+    Navigator.pushNamed(context, ReportScreen.routeName, arguments: ReportArguments.bug());
   }
 
   void _showSettings() {
@@ -54,24 +53,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: SnappingSheet(
             controller: recordSheetController,
             initialSnappingPosition: recordSheetController.retractedPosition,
-            snappingPositions: [
-              recordSheetController.retractedPosition,
-              recordSheetController.extendedPosition
-            ],
+            snappingPositions: [recordSheetController.retractedPosition, recordSheetController.extendedPosition],
             grabbing: const RecordGrab(),
             grabbingHeight: 64,
-            sheetBelow: SnappingSheetContent(
-                draggable: true, child: const RecordSheet()),
-            child: Provider.of<VocabularyProvider>(context)
-                    .vocabularyList
-                    .isEmpty
+            sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
+            child: Provider.of<VocabularyProvider>(context).vocabularyList.isEmpty
                 ? const HomeEmptyScreen()
                 : ListView(
                     physics: const BouncingScrollPhysics(),
@@ -84,40 +76,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(height: 48),
                             Row(
                               children: [
-                                // TODO: Replace with arb
                                 Expanded(
                                   child: FittedBox(
-                                    child: Text("Vocabualize",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineMedium),
+                                    // TODO: Replace with arb
+                                    child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineMedium),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
-                                IconButton(
-                                    onPressed: () => _openReportPage(),
-                                    icon: const Icon(Icons.bug_report_rounded)),
-                                IconButton(
-                                    onPressed: () => _showSettings(),
-                                    icon: const Icon(Icons.settings_rounded)),
+                                IconButton(onPressed: () => _openReportPage(), icon: const Icon(Icons.bug_report_rounded)),
+                                IconButton(onPressed: () => _showSettings(), icon: const Icon(Icons.settings_rounded)),
                               ],
                             ),
                             const SizedBox(height: 24),
                             const StatusCard(),
                             const SizedBox(height: 32),
-                            Text(AppLocalizations.of(context).home_newWords,
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium),
+                            Text(AppLocalizations.of(context).home_newWords, style: Theme.of(context).textTheme.headlineMedium),
                             const SizedBox(height: 12),
-                            Provider.of<VocabularyProvider>(context)
-                                    .lastest
-                                    .isNotEmpty
+                            Provider.of<VocabularyProvider>(context).lastest.isNotEmpty
                                 ? Container()
-                                : Text(
-                                    AppLocalizations.of(context)
-                                        .home_noNewWords,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall),
+                                : Text(AppLocalizations.of(context).home_noNewWords, style: Theme.of(context).textTheme.bodySmall),
                           ],
                         ),
                       ),
@@ -127,28 +104,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: List.generate(
-                            Provider.of<VocabularyProvider>(context)
-                                    .lastest
-                                    .length +
-                                2,
-                            (index) => index == 0 ||
-                                    index ==
-                                        Provider.of<VocabularyProvider>(context)
-                                                .lastest
-                                                .length +
-                                            1
+                            Provider.of<VocabularyProvider>(context).lastest.length + 2,
+                            (index) => index == 0 || index == Provider.of<VocabularyProvider>(context).lastest.length + 1
                                 ? index == 0
                                     ? const SizedBox(width: 16)
                                     : const SizedBox(width: 24)
                                 : Padding(
                                     padding: const EdgeInsets.only(left: 8),
                                     child: NewWordCard(
-                                      vocabulary:
-                                          Provider.of<VocabularyProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .lastest
-                                              .elementAt(index - 1),
+                                      vocabulary: Provider.of<VocabularyProvider>(context, listen: false).lastest.elementAt(index - 1),
                                     ),
                                   ),
                           ),
@@ -157,17 +121,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       Provider.of<VocabularyProvider>(context).allTags.isEmpty
                           ? Container()
                           : Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 32),
+                              padding: const EdgeInsets.symmetric(horizontal: 32),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 32),
                                   // TODO: Replace with arb
-                                  Text("Tags",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium),
+                                  Text("Tags", style: Theme.of(context).textTheme.headlineMedium),
                                   const SizedBox(height: 12),
                                 ],
                               ),
@@ -179,21 +139,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 32),
-                            Text(AppLocalizations.of(context).home_allWords,
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium),
+                            Text(AppLocalizations.of(context).home_allWords, style: Theme.of(context).textTheme.headlineMedium),
                             const SizedBox(height: 12),
                             Column(
                               mainAxisSize: MainAxisSize.min,
                               children: List.generate(
-                                Provider.of<VocabularyProvider>(context)
-                                    .vocabularyList
-                                    .length,
+                                Provider.of<VocabularyProvider>(context).vocabularyList.length,
                                 (index) => VocabularyListTile(
-                                  vocabulary:
-                                      Provider.of<VocabularyProvider>(context)
-                                          .vocabularyList
-                                          .elementAt(index),
+                                  vocabulary: Provider.of<VocabularyProvider>(context).vocabularyList.elementAt(index),
                                 ),
                               ).reversed.toList(),
                             ),

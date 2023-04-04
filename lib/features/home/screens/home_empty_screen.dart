@@ -26,8 +26,13 @@ class HomeEmptyScreen extends StatelessWidget {
           const SizedBox(height: 32),
           Row(
             children: [
-              // TODO: Replace with arb
-              Expanded(child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge)),
+              Expanded(
+                child: FittedBox(
+                  // TODO: Replace with arb
+                  child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineMedium),
+                ),
+              ),
+              const SizedBox(width: 16),
               IconButton(onPressed: () => openReportPage(), icon: const Icon(Icons.bug_report_rounded)),
               IconButton(onPressed: () => showSettings(), icon: const Icon(Icons.settings_rounded)),
             ],
