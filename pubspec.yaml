@@ -43,15 +43,14 @@ dependencies:
   firebase_auth: ^4.2.10
   firebase_core: ^2.7.1
   firebase_messaging: ^14.2.6
+  flutter_native_timezone: ^2.0.0
 
   # own packages
   log:
     path: ./packages/log
   teleport:
     path: ./packages/teleport
-  flutter_native_timezone: ^2.0.0
-  
-
+    
 
 dev_dependencies:
   flutter_test:
