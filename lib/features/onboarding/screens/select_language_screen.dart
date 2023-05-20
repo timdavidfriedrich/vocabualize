@@ -1,4 +1,3 @@
-import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
