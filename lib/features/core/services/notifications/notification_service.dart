@@ -25,8 +25,6 @@ class NotificationService {
   void init() {
     initCloudNotifications();
     initLocalNotifications(initScheduled: true);
-
-    Log.warning(const Time(8).toString());
   }
 
   void initCloudNotifications() {
