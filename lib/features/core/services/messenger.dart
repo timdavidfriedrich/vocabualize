@@ -34,6 +34,7 @@ class Messenger {
     Navigator.push(Global.context, SaveMessageRoute(vocabulary: vocabulary));
   }
 
+  // TODO: Perhaps, remove this from Messenger
   static Future<dynamic> showStaticDialog(Widget dialog) async {
     return await showDialog(
       context: Global.context,
@@ -43,6 +44,7 @@ class Messenger {
     );
   }
 
+  // TODO: Remove animated dialog or decide something else
   static Future<dynamic> showAnimatedDialog(Widget dialog) async {
     return await showGeneralDialog(
       context: Global.context,
