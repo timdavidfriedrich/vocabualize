@@ -2,6 +2,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/core/services/text_to_speech.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/details/screens/details_screen.dart';
 import 'package:vocabualize/features/details/services/details_arguments.dart';
@@ -15,6 +16,21 @@ class VocabularyListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TTS tts = TTS.instance;
+
+    void speak() {
+      tts.stop;
+      tts.speak(vocabulary);
+    }
+
+    void showVocabularyInfo() {
+      Messenger.showStaticDialog(InfoDialog(vocabulary: vocabulary));
+    }
+
+    void editVocabualary() {
+      Navigator.pushNamed(context, DetailsScreen.routeName, arguments: DetailsScreenArguments(vocabulary: vocabulary));
+    }
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: Dismissible(
@@ -22,8 +38,7 @@ class VocabularyListTile extends StatelessWidget {
         onDismissed: (direction) async => await Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
-            // Messenger.showAnimatedDialog(EditDialog(vocabulary: vocabulary));
-            Navigator.pushNamed(context, DetailsScreen.routeName, arguments: DetailsScreenArguments(vocabulary: vocabulary));
+            editVocabualary();
             return false;
           } else {
             return true;
@@ -44,11 +59,18 @@ class VocabularyListTile extends StatelessWidget {
         child: ListTile(
           contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          onLongPress: () => Messenger.showAnimatedDialog(InfoDialog(vocabulary: vocabulary)),
-          onTap: () => Navigator.pushNamed(context, DetailsScreen.routeName, arguments: DetailsScreenArguments(vocabulary: vocabulary)),
-          leading: Provider.of<SettingsProvider>(context).areImagesDisabled
-              ? null
-              : SizedBox(
+          leading: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.zero,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                color: vocabulary.level.color,
+                width: 4,
+              ),
+              const SizedBox(width: 12),
+              if (Provider.of<SettingsProvider>(context).areImagesEnabled)
+                SizedBox(
                   width: 48,
                   height: 48,
                   child: ClipRRect(
@@ -64,12 +86,16 @@ class VocabularyListTile extends StatelessWidget {
                     ),
                   ),
                 ),
+            ],
+          ),
           title: Text(vocabulary.target),
           subtitle: Text(vocabulary.source, style: TextStyle(color: Theme.of(context).hintColor)),
-          trailing: Icon(
-            Icons.circle,
-            size: 16,
-            color: vocabulary.level.color,
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(onPressed: speak, icon: const Icon(Icons.volume_up)),
+              IconButton(onPressed: showVocabularyInfo, icon: const Icon(Icons.info_outline)),
+            ],
           ),
         ),
       ),

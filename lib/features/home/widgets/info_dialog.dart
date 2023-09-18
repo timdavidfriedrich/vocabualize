@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
-import 'package:vocabualize/features/core/services/text_to_speech.dart';
 
 class InfoDialog extends StatelessWidget {
   final Vocabulary vocabulary;
@@ -12,13 +11,6 @@ class InfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TTS tts = TTS.instance;
-
-    void speak() {
-      tts.stop;
-      tts.speak(vocabulary);
-    }
-
     void delete() {
       Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
       Navigator.pop(context);
@@ -41,14 +33,7 @@ class InfoDialog extends StatelessWidget {
     }
 
     return AlertDialog(
-      // TODO: Replace with arb
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(child: Text(vocabulary.target)),
-          IconButton(onPressed: () => speak(), icon: const Icon(Icons.volume_up_rounded, size: 32)),
-        ],
-      ),
+      title: Flexible(child: Text(vocabulary.target)),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
