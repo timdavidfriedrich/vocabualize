@@ -22,7 +22,7 @@ class NewWordCard extends StatelessWidget {
               : BorderSide.none),
       color: Provider.of<SettingsProvider>(context).areImagesDisabled ? Theme.of(context).colorScheme.surface : null,
       onPressed: () => Navigator.pushNamed(context, DetailsScreen.routeName, arguments: DetailsScreenArguments(vocabulary: vocabulary)),
-      onLongPress: () => Messenger.showAnimatedDialog(InfoDialog(vocabulary: vocabulary)),
+      onLongPress: () => Messenger.showStaticDialog(InfoDialog(vocabulary: vocabulary)),
       padding: Provider.of<SettingsProvider>(context).areImagesDisabled ? const EdgeInsets.all(16.0) : const EdgeInsets.all(8.0),
       elevation: 0,
       disabledElevation: 0,

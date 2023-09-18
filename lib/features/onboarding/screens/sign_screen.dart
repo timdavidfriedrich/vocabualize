@@ -35,7 +35,7 @@ class _SignScreenState extends State<SignScreen> {
 
   void _signUp() {
     if (_password != _repeatedPassword) {
-      Messenger.showAnimatedDialog(const PasswordsDontMatchDialog());
+      Messenger.showStaticDialog(const PasswordsDontMatchDialog());
       return;
     }
     AuthService.createUserWithEmailAndPassword(_email, _password);
@@ -71,8 +71,7 @@ class _SignScreenState extends State<SignScreen> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        arguments =
-            (ModalRoute.of(context)!.settings.arguments as SignArguments);
+        arguments = (ModalRoute.of(context)!.settings.arguments as SignArguments);
         signType = arguments.signType;
       });
     });
@@ -82,8 +81,7 @@ class _SignScreenState extends State<SignScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Scaffold(
           // resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).colorScheme.surface,
@@ -95,9 +93,7 @@ class _SignScreenState extends State<SignScreen> {
             children: [
               Expanded(
                 child: Image.asset(
-                  signType == SignType.signIn
-                      ? AssetPath.mascotWaving
-                      : AssetPath.mascotHanging,
+                  signType == SignType.signIn ? AssetPath.mascotWaving : AssetPath.mascotHanging,
                 ),
               ),
               Padding(
@@ -108,18 +104,14 @@ class _SignScreenState extends State<SignScreen> {
                   children: [
                     Text(
                       // TODO: Replace with arb
-                      signType == SignType.signIn
-                          ? "Great to see\nyou again!"
-                          : "Welcome!",
+                      signType == SignType.signIn ? "Great to see\nyou again!" : "Welcome!",
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
                     const SizedBox(height: 48),
                     TextField(
                       // TODO: Replace with arb
-                      decoration: const InputDecoration(
-                          label: Text("Email"),
-                          floatingLabelBehavior: FloatingLabelBehavior.auto),
+                      decoration: const InputDecoration(label: Text("Email"), floatingLabelBehavior: FloatingLabelBehavior.auto),
                       textInputAction: TextInputAction.next,
                       onChanged: (text) {
                         _updateEmail(text);
@@ -136,14 +128,10 @@ class _SignScreenState extends State<SignScreen> {
                             ? null
                             : IconButton(
                                 onPressed: () => _changePasswordVisibility(),
-                                icon: Icon(_isPasswordObscured
-                                    ? Icons.visibility_rounded
-                                    : Icons.visibility_off_rounded),
+                                icon: Icon(_isPasswordObscured ? Icons.visibility_rounded : Icons.visibility_off_rounded),
                               ),
                       ),
-                      textInputAction: signType == SignType.signIn
-                          ? TextInputAction.done
-                          : TextInputAction.next,
+                      textInputAction: signType == SignType.signIn ? TextInputAction.done : TextInputAction.next,
                       obscureText: _isPasswordObscured,
                       onChanged: (text) => _updatePassword(text),
                     ),
@@ -162,21 +150,13 @@ class _SignScreenState extends State<SignScreen> {
                     const SizedBox(height: 32),
                     signType == SignType.signIn
                         ? ElevatedButton(
-                            onPressed: !_isEmailValid ||
-                                    _email.isEmpty ||
-                                    _password.isEmpty
-                                ? null
-                                : () => _signIn(),
+                            onPressed: !_isEmailValid || _email.isEmpty || _password.isEmpty ? null : () => _signIn(),
                             // TODO: Replace with arb
                             child: const Text("Sign in"),
                           )
                         : ElevatedButton(
-                            onPressed: !_isEmailValid ||
-                                    _email.isEmpty ||
-                                    _password.isEmpty ||
-                                    _repeatedPassword.isEmpty
-                                ? null
-                                : () => _signUp(),
+                            onPressed:
+                                !_isEmailValid || _email.isEmpty || _password.isEmpty || _repeatedPassword.isEmpty ? null : () => _signUp(),
                             // TODO: Replace with arb
                             child: const Text("Sign up"),
                           ),
@@ -188,10 +168,7 @@ class _SignScreenState extends State<SignScreen> {
                               // TODO: Replace with arb
                               "Forgot password?",
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(color: Theme.of(context).hintColor),
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
                             ),
                           )
                         : Container(),

@@ -88,7 +88,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   Future<dynamic> _openCam() async {
-    final imageSource = await Messenger.showAnimatedDialog(const CameraGalleryDialog());
+    final imageSource = await Messenger.showStaticDialog(const CameraGalleryDialog());
     if (imageSource == null) return;
 
     XFile? image;

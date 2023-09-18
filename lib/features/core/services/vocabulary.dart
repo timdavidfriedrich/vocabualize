@@ -142,7 +142,7 @@ class Vocabulary {
   bool isValid() {
     bool sourceNotEmpty = source.isNotEmpty;
     bool alreadyInList = Provider.of<VocabularyProvider>(Global.context, listen: false).searchListForSource(source) != null;
-    if (alreadyInList) Messenger.showAnimatedDialog(DuplicateDialog(vocabulary: this));
+    if (alreadyInList) Messenger.showStaticDialog(DuplicateDialog(vocabulary: this));
     return sourceNotEmpty && !alreadyInList;
   }
 

@@ -32,7 +32,7 @@ class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
       widget.vocabulary.target = input;
       Navigator.pop(context);
     } else {
-      bool hasClickedReplace = await Messenger.showAnimatedDialog(ReplaceVocabularyDialog(vocabulary: widget.vocabulary));
+      bool hasClickedReplace = await Messenger.showStaticDialog(ReplaceVocabularyDialog(vocabulary: widget.vocabulary));
       if (hasClickedReplace) {
         if (mounted) Provider.of<VocabularyProvider>(context, listen: false).remove(widget.vocabulary);
         RecordService.validateAndSave(source: input);

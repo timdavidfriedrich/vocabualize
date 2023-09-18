@@ -40,8 +40,10 @@ class _PractiseScreenState extends State<PractiseScreen> {
     setState(() => isSolutionShown = false);
     if (vocabulariesToPractise.isNotEmpty) {
       setState(() {
-        if (currentVoc.source.isNotEmpty) vocabulariesToPractise.remove(currentVoc);
-        if (vocabulariesToPractise.isNotEmpty) currentVoc = vocabulariesToPractise.first;
+        if (currentVoc.source.isEmpty) return;
+        vocabulariesToPractise.remove(currentVoc);
+        if (vocabulariesToPractise.isEmpty) return;
+        currentVoc = vocabulariesToPractise.first;
       });
     } else {
       setState(() => isDone = true);
@@ -62,7 +64,8 @@ class _PractiseScreenState extends State<PractiseScreen> {
         initialVocCount = vocabulariesToPractise.length;
         isMultilingual = Provider.of<VocabularyProvider>(context, listen: false).isMultilingual;
       });
-      if (vocabulariesToPractise.isNotEmpty) _refreshVoc();
+      if (vocabulariesToPractise.isEmpty) return;
+      _refreshVoc();
     });
   }
 

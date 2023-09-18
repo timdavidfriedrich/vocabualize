@@ -14,7 +14,7 @@ class TagWrap extends StatefulWidget {
 
 class _TagWrapState extends State<TagWrap> {
   _add() async {
-    await Messenger.showAnimatedDialog(AddTagDialog(vocabulary: widget.vocabulary)).whenComplete(() => setState(() {}));
+    await Messenger.showStaticDialog(AddTagDialog(vocabulary: widget.vocabulary)).whenComplete(() => setState(() {}));
   }
 
   _delete(String tag) {

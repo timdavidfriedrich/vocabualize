@@ -15,7 +15,7 @@ class SourceToTarget extends StatefulWidget {
 
 class _SourceToTargetState extends State<SourceToTarget> {
   void _click({required bool editTarget}) {
-    Messenger.showAnimatedDialog(
+    Messenger.showStaticDialog(
       EditSourceTargetDialog(vocabulary: widget.vocabulary, editTarget: editTarget),
     ).whenComplete(() => setState(() {}));
   }

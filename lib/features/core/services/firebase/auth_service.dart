@@ -34,7 +34,7 @@ class AuthService {
       await sendVerificationEmail();
       Navigator.pop(Global.context);
     } on FirebaseAuthException catch (error) {
-      Messenger.showAnimatedDialog(SignUpFailedDialog(error: error));
+      Messenger.showStaticDialog(SignUpFailedDialog(error: error));
       Log.error(error);
     }
   }
@@ -54,7 +54,7 @@ class AuthService {
       await CloudService.loadUserData();
       Navigator.pop(Global.context);
     } on FirebaseAuthException catch (error) {
-      Messenger.showAnimatedDialog(SignInFailedDialog(error: error));
+      Messenger.showStaticDialog(SignInFailedDialog(error: error));
       Log.error(error);
     }
   }
@@ -74,7 +74,7 @@ class AuthService {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (error) {
-      Messenger.showAnimatedDialog(PasswordResetFailedDialog(error: error));
+      Messenger.showStaticDialog(PasswordResetFailedDialog(error: error));
       Log.error(error);
     }
   }

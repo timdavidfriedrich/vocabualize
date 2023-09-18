@@ -21,10 +21,10 @@ class Messenger {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) return true;
-      showAnimatedDialog(const DisconnectedDialog());
+      showStaticDialog(const DisconnectedDialog());
       return false;
     } on SocketException catch (_) {
-      showAnimatedDialog(const DisconnectedDialog());
+      showStaticDialog(const DisconnectedDialog());
       return false;
     }
   }
@@ -32,6 +32,15 @@ class Messenger {
   static Future<void> showSaveMessage(Vocabulary vocabulary) async {
     Navigator.popUntil(Global.context, ModalRoute.withName(Root.routeName)); // required, pops all messages
     Navigator.push(Global.context, SaveMessageRoute(vocabulary: vocabulary));
+  }
+
+  static Future<dynamic> showStaticDialog(Widget dialog) async {
+    return await showDialog(
+      context: Global.context,
+      builder: (context) {
+        return dialog;
+      },
+    );
   }
 
   static Future<dynamic> showAnimatedDialog(Widget dialog) async {
