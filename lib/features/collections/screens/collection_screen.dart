@@ -64,7 +64,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () => _startPractise(),
-                    child: Text(AppLocalizations.of(context).home_statusCard_practiseButton),
+                    child: Text(AppLocalizations.of(context)?.home_statusCard_practiseButton ?? ""),
                   ),
                 ),
               ),

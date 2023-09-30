@@ -186,7 +186,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       child: _selected == null
                                           ? Center(
                                               child: Text(
-                                                AppLocalizations.of(context).record_addDetails_noImage,
+                                                AppLocalizations.of(context)?.record_addDetails_noImage ?? "",
                                                 textAlign: TextAlign.center,
                                               ),
                                             )
@@ -237,7 +237,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(AppLocalizations.of(context).record_addDetails_providedBy,
+                                      Text(AppLocalizations.of(context)?.record_addDetails_providedBy ?? "",
                                           style: Theme.of(context).textTheme.bodySmall),
                                       IconButton(onPressed: () => _browseNext(), icon: const Icon(Icons.find_replace_rounded)),
                                     ],
@@ -341,8 +341,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     onPressed: () => _save(),
                                     child: Text(
                                       _selected == null
-                                          ? AppLocalizations.of(context).record_addDetails_saveWithoutButton
-                                          : AppLocalizations.of(context).record_addDetails_saveButton,
+                                          ? AppLocalizations.of(context)?.record_addDetails_saveWithoutButton ?? ""
+                                          : AppLocalizations.of(context)?.record_addDetails_saveButton ?? "",
                                     ),
                                   ),
                                 ),
@@ -352,7 +352,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             TextButton(
                               onPressed: () => _navigateToSettings(),
                               child: Text(
-                                AppLocalizations.of(context).record_addDetails_neverAskForImageButton,
+                                AppLocalizations.of(context)?.record_addDetails_neverAskForImageButton ?? "",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
                               ),

@@ -23,21 +23,21 @@ class CardGenerator {
     List<String> possibleInfos = [];
 
     if (vocabularyList.length == 1 && _hasBeenCreatedToday(vocabularyList.first)) {
-      return AppLocalizations.of(Global.context).home_statusCard_firstWord;
+      return AppLocalizations.of(Global.context)?.home_statusCard_firstWord ?? "";
     }
     if (vocabularyList.isEmpty) {
-      possibleInfos.add(AppLocalizations.of(Global.context).home_statusCard_isEmpty);
+      possibleInfos.add(AppLocalizations.of(Global.context)?.home_statusCard_isEmpty ?? "");
     }
     if (createdToday.length >= 3) {
-      possibleInfos.add(AppLocalizations.of(Global.context).home_statusCard_addedToday(createdToday.length));
+      possibleInfos.add(AppLocalizations.of(Global.context)?.home_statusCard_addedToday(createdToday.length) ?? "");
     }
     if (vocabularyList.length >= 10) {
-      possibleInfos.add(AppLocalizations.of(Global.context).home_statusCard_addedManyInTotal(vocabularyList.length));
+      possibleInfos.add(AppLocalizations.of(Global.context)?.home_statusCard_addedManyInTotal(vocabularyList.length) ?? "");
     }
     if (vocabularyList.length == 1) {
-      possibleInfos.add(AppLocalizations.of(Global.context).home_statusCard_onlyOneWord(vocabularyList.length));
+      possibleInfos.add(AppLocalizations.of(Global.context)?.home_statusCard_onlyOneWord(vocabularyList.length) ?? "");
     }
-    possibleInfos.add(AppLocalizations.of(Global.context).home_statusCard_default(vocabularyList.length));
+    possibleInfos.add(AppLocalizations.of(Global.context)?.home_statusCard_default(vocabularyList.length) ?? "");
 
     return possibleInfos.elementAt(Random().nextInt(possibleInfos.length));
   }

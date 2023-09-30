@@ -68,7 +68,7 @@ class StatusCard extends StatelessWidget {
               StatusCardIndicator(
                 parent: ElevatedButton(
                   onPressed: () => startPractise(),
-                  child: Text(AppLocalizations.of(context).home_statusCard_practiseButton),
+                  child: Text(AppLocalizations.of(context)?.home_statusCard_practiseButton ?? ""),
                 ),
               ),
             ],

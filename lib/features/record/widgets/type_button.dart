@@ -53,7 +53,7 @@ class _TypeButtonState extends State<TypeButton> {
           onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
           decoration: InputDecoration(
             enabled: !Provider.of<ActiveProvider>(context).micIsActive,
-            hintText: AppLocalizations.of(context).record_type,
+            hintText: AppLocalizations.of(context)?.record_type,
             counterText: "",
             contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
             hintStyle: TextStyle(color: Theme.of(context).hintColor),
@@ -86,7 +86,7 @@ class _TypeButtonState extends State<TypeButton> {
                       side: BorderSide(width: 3, color: Theme.of(context).colorScheme.onPrimary),
                     ),
                     onPressed: () => _cancel(),
-                    child: Text(AppLocalizations.of(context).record_closeButton),
+                    child: Text(AppLocalizations.of(context)?.record_closeButton ?? ""),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -96,7 +96,7 @@ class _TypeButtonState extends State<TypeButton> {
                         backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       ),
                       onPressed: () => _submit(),
-                      child: Text(AppLocalizations.of(context).record_addButton),
+                      child: Text(AppLocalizations.of(context)?.record_addButton ?? ""),
                     ),
                   ),
                 ],

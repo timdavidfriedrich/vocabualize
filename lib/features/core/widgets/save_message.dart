@@ -73,7 +73,7 @@ class _SaveMessageState extends State<SaveMessage> {
                                 TextSpan(
                                     text: widget.vocabulary.source.substring(0, 1).toUpperCase() +
                                         widget.vocabulary.source.substring(1, widget.vocabulary.source.length)),
-                                TextSpan(text: AppLocalizations.of(context).record_savedMessage),
+                                TextSpan(text: AppLocalizations.of(context)?.record_savedMessage),
                                 TextSpan(
                                   text: widget.vocabulary.target,
                                   style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(Global.context).colorScheme.onPrimary),
@@ -92,7 +92,7 @@ class _SaveMessageState extends State<SaveMessage> {
                                   Provider.of<VocabularyProvider>(Global.context, listen: false).remove(widget.vocabulary);
                                 },
                           child: Text(
-                            deleted ? "" : AppLocalizations.of(context).record_savedMessage_deleteButton,
+                            deleted ? "" : AppLocalizations.of(context)?.record_savedMessage_deleteButton ?? "",
                             style: TextStyle(color: Theme.of(Global.context).colorScheme.onPrimary),
                           ),
                         ),

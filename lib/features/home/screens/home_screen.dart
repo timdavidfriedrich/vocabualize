@@ -92,11 +92,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(height: 24),
                             const StatusCard(),
                             const SizedBox(height: 32),
-                            Text(AppLocalizations.of(context).home_newWords, style: Theme.of(context).textTheme.headlineMedium),
+                            Text(AppLocalizations.of(context)?.home_newWords ?? "", style: Theme.of(context).textTheme.headlineMedium),
                             const SizedBox(height: 12),
                             Provider.of<VocabularyProvider>(context).lastest.isNotEmpty
                                 ? Container()
-                                : Text(AppLocalizations.of(context).home_noNewWords, style: Theme.of(context).textTheme.bodySmall),
+                                : Text(AppLocalizations.of(context)?.home_noNewWords ?? "", style: Theme.of(context).textTheme.bodySmall),
                           ],
                         ),
                       ),
@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 32),
-                            Text(AppLocalizations.of(context).home_allWords, style: Theme.of(context).textTheme.headlineMedium),
+                            Text(AppLocalizations.of(context)?.home_allWords ?? "", style: Theme.of(context).textTheme.headlineMedium),
                             const SizedBox(height: 12),
                             Column(
                               mainAxisSize: MainAxisSize.min,

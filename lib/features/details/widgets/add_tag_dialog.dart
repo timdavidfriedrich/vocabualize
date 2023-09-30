@@ -33,8 +33,8 @@ class _AddTagDialogState extends State<AddTagDialog> {
               child: TextField(
                 toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
                 decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context).record_addTagHint,
-                  label: Text(AppLocalizations.of(context).record_addTagLabel),
+                  hintText: AppLocalizations.of(context)?.record_addTagHint,
+                  label: Text(AppLocalizations.of(context)?.record_addTagLabel ?? ""),
                 ),
                 onChanged: (text) => setState(() => input = text),
               ),

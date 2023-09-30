@@ -31,7 +31,7 @@ class CameraGalleryDialog extends StatelessWidget {
                 children: [
                   const Icon(Icons.camera_alt_rounded),
                   const SizedBox(width: 12),
-                  Text(AppLocalizations.of(context).record_addDetails_takePictureButton),
+                  Text(AppLocalizations.of(context)?.record_addDetails_takePictureButton ?? ""),
                 ],
               ),
             ),
@@ -44,12 +44,13 @@ class CameraGalleryDialog extends StatelessWidget {
                 children: [
                   const Icon(Icons.photo_library_rounded),
                   const SizedBox(width: 12),
-                  Text(AppLocalizations.of(context).record_addDetails_openGalleryButton),
+                  Text(AppLocalizations.of(context)?.record_addDetails_openGalleryButton ?? ""),
                 ],
               ),
             ),
             const SizedBox(height: 12),
-            OutlinedButton(onPressed: () => _cancel(), child: Text(AppLocalizations.of(context).record_addDetails_cancelCustomImageButton)),
+            OutlinedButton(
+                onPressed: () => _cancel(), child: Text(AppLocalizations.of(context)?.record_addDetails_cancelCustomImageButton ?? "")),
           ],
         ),
       ),

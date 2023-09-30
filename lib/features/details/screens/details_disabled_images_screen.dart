@@ -73,7 +73,7 @@ class _DetailsDisabledImagesScreenState extends State<DetailsDisabledImagesScree
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () => _save(),
-                              child: Text(AppLocalizations.of(context).record_addDetails_saveButton),
+                              child: Text(AppLocalizations.of(context)?.record_addDetails_saveButton ?? ""),
                             ),
                           ),
                         ],
