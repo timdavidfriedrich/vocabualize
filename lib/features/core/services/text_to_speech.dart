@@ -1,4 +1,5 @@
 import 'package:text_to_speech/text_to_speech.dart';
+import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/vocabulary.dart';
 
 class TTS {
@@ -15,8 +16,11 @@ class TTS {
     return await _tts.getLanguages();
   }
 
+  Future<void> setLanguage(Language language) async {
+    _tts.setLanguage(language.textToSpeechId);
+  }
+
   Future<void> speak(Vocabulary vocabulary) async {
-    _tts.setLanguage(vocabulary.targetLanguage.textToSpeechId);
     isSpeaking = true;
     isSpeaking = await _tts.speak(vocabulary.target) ?? false;
   }

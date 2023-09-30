@@ -3,6 +3,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/languages.dart';
+import 'package:vocabualize/features/core/services/text_to_speech.dart';
 import 'package:vocabualize/features/onboarding/screens/welcome_screen.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
@@ -24,6 +25,7 @@ class SelectLanguageScreenState extends State<SelectLanguageScreen> {
 
   void _submit(BuildContext context) {
     if (AuthService.user == null) AuthService.signInAnonymously();
+    TTS.instance.setLanguage(Provider.of<SettingsProvider>(context, listen: false).targetLanguage);
     Navigator.pop(context);
   }
 
