@@ -153,11 +153,11 @@ class Vocabulary {
 
   Future<void> answer(Answer answer) async {
     nextDate = DateCalculator.nextDate(this, answer);
-    await Provider.of<VocabularyProvider>(Global.context, listen: false).save();
+    Provider.of<VocabularyProvider>(Global.context, listen: false).save();
   }
 
   Future<void> save() async {
-    await Provider.of<VocabularyProvider>(Global.context, listen: false).save();
+    Provider.of<VocabularyProvider>(Global.context, listen: false).save();
   }
 
   Future<void> reset() async {
@@ -165,7 +165,7 @@ class Vocabulary {
     isNovice = true;
     //noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
     interval = Provider.of<SettingsProvider>(Global.context, listen: false).initialInterval; // minutes
-    await Provider.of<VocabularyProvider>(Global.context, listen: false).save();
+    Provider.of<VocabularyProvider>(Global.context, listen: false).save();
   }
 
   @override

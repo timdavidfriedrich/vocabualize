@@ -2,6 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/languages.dart';
+import 'package:vocabualize/features/core/services/text_to_speech.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/widgets/profile_container.dart';
@@ -92,7 +93,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       (index) {
                         Language selectedLanguage = languages.elementAt(index);
                         return PopupMenuItem(
-                          onTap: () => Provider.of<SettingsProvider>(context, listen: false).targetLanguage = selectedLanguage,
+                          onTap: () {
+                            Provider.of<SettingsProvider>(context, listen: false).targetLanguage = selectedLanguage;
+                            TTS.instance.setLanguage(Provider.of<SettingsProvider>(context, listen: false).targetLanguage);
+                          },
                           enabled: selectedLanguage != Provider.of<SettingsProvider>(context, listen: false).targetLanguage,
                           child: Text(selectedLanguage.name),
                         );

@@ -38,15 +38,15 @@ class _PractiseScreenState extends State<PractiseScreen> {
   void _refreshVoc() {
     if (!mounted) return;
     setState(() => isSolutionShown = false);
-    if (vocabulariesToPractise.isNotEmpty) {
+    if (vocabulariesToPractise.isEmpty) {
+      setState(() => isDone = true);
+    } else {
       setState(() {
-        if (currentVoc.source.isEmpty) return;
+        if (currentVoc.source.isEmpty && vocabulariesToPractise.isEmpty) return;
         vocabulariesToPractise.remove(currentVoc);
         if (vocabulariesToPractise.isEmpty) return;
         currentVoc = vocabulariesToPractise.first;
       });
-    } else {
-      setState(() => isDone = true);
     }
   }
 
@@ -166,7 +166,7 @@ class _PractiseScreenState extends State<PractiseScreen> {
                                   await currentVoc.answer(Answer.hard);
                                   _refreshVoc();
                                 },
-                                child: Text(AppLocalizations.of(context).pracise_rating_hardButton),
+                                child: Text(AppLocalizations.of(context)?.pracise_rating_hardButton ?? ""),
                               ),
                             ),
                             const SizedBox(width: 16),
@@ -180,7 +180,7 @@ class _PractiseScreenState extends State<PractiseScreen> {
                                   await currentVoc.answer(Answer.good);
                                   _refreshVoc();
                                 },
-                                child: Text(AppLocalizations.of(context).pracise_rating_goodButton),
+                                child: Text(AppLocalizations.of(context)?.pracise_rating_goodButton ?? ""),
                               ),
                             ),
                             const SizedBox(width: 16),
@@ -194,7 +194,7 @@ class _PractiseScreenState extends State<PractiseScreen> {
                                   await currentVoc.answer(Answer.easy);
                                   _refreshVoc();
                                 },
-                                child: Text(AppLocalizations.of(context).pracise_rating_easyButton),
+                                child: Text(AppLocalizations.of(context)?.pracise_rating_easyButton ?? ""),
                               ),
                             ),
                           ],
@@ -203,7 +203,7 @@ class _PractiseScreenState extends State<PractiseScreen> {
                       !isSolutionShown
                           ? ElevatedButton(
                               onPressed: () => setState(() => isSolutionShown = true),
-                              child: Text(AppLocalizations.of(context).pracise_solutionButton),
+                              child: Text(AppLocalizations.of(context)?.pracise_solutionButton ?? ""),
                             )
                           : OutlinedButton(
                               onPressed: () async {
@@ -211,7 +211,7 @@ class _PractiseScreenState extends State<PractiseScreen> {
                                 _refreshVoc();
                               },
                               child: Text(
-                                AppLocalizations.of(context).pracise_rating_didntKnowButton,
+                                AppLocalizations.of(context)?.pracise_rating_didntKnowButton ?? "",
                                 style: const TextStyle(color: LevelPalette.novice),
                               ),
                             ),
