@@ -93,21 +93,20 @@ class VocabularyProvider extends ChangeNotifier {
   }
 
   bool get isMultilingual {
-    bool result = false;
-    if (vocabularyList.isEmpty) return result;
+    if (vocabularyList.isEmpty) return false;
     Language firstVocabularySourceLanguage = vocabularyList.first.sourceLanguage;
     Language firstVocabularyTargetLanguage = vocabularyList.first.targetLanguage;
     for (Vocabulary vocabulary in vocabularyList) {
       if (vocabulary.sourceLanguage != firstVocabularySourceLanguage) return true;
       if (vocabulary.targetLanguage != firstVocabularyTargetLanguage) return true;
     }
-    return result;
+    return false;
   }
 
   Future<void> save() async {
     _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString("vocabularyList", json.encode(vocabularyList));
-    await CloudService.saveUserData();
+    _prefs.setString("vocabularyList", json.encode(vocabularyList));
+    CloudService.saveUserData();
     notifyListeners();
   }
 
@@ -144,7 +143,7 @@ class VocabularyProvider extends ChangeNotifier {
   Future<void> signOut() async {
     vocabularyList.clear();
     _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString("vocabularyList", json.encode(vocabularyList));
+    _prefs.setString("vocabularyList", json.encode(vocabularyList));
     notifyListeners();
   }
 }
