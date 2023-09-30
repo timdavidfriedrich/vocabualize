@@ -33,7 +33,7 @@ class InfoDialog extends StatelessWidget {
     }
 
     return AlertDialog(
-      title: Flexible(child: Text(vocabulary.target)),
+      title: Text(vocabulary.target),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
