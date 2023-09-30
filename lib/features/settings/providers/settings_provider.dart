@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/features/core/services/language.dart';
@@ -22,8 +21,8 @@ class SettingsProvider extends ChangeNotifier {
   double _easyLevelFactor = 0.6;
   double _goodLevelFactor = 0.3;
   double _hardLevelFactor = -0.3;
-  Time _gatherNotificationTime = const Time(13, 0);
-  Time _practiseNotificationTime = const Time(19, 0);
+  TimeOfDay _gatherNotificationTime = const TimeOfDay(hour: 13, minute: 0);
+  TimeOfDay _practiseNotificationTime = const TimeOfDay(hour: 19, minute: 0);
 
   set sourceLanguage(Language sourceLang) {
     _sourceLanguage = sourceLang;
@@ -97,14 +96,14 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set gatherNotificationTime(Time gatherNotificationTime) {
+  set gatherNotificationTime(TimeOfDay gatherNotificationTime) {
     _gatherNotificationTime = gatherNotificationTime;
     NotificationService.instance.scheduleNotifications();
     save();
     notifyListeners();
   }
 
-  set practiseNotificationTime(Time practiseNotificationTime) {
+  set practiseNotificationTime(TimeOfDay practiseNotificationTime) {
     _practiseNotificationTime = practiseNotificationTime;
     NotificationService.instance.scheduleNotifications();
     save();
@@ -124,8 +123,8 @@ class SettingsProvider extends ChangeNotifier {
   double get easyLevelFactor => _easyLevelFactor;
   double get goodLevelFactor => _goodLevelFactor;
   double get hardLevelFactor => _hardLevelFactor;
-  Time get gatherNotificationTime => _gatherNotificationTime;
-  Time get practiseNotificationTime => _practiseNotificationTime;
+  TimeOfDay get gatherNotificationTime => _gatherNotificationTime;
+  TimeOfDay get practiseNotificationTime => _practiseNotificationTime;
 
   Future<void> save() async {
     prefs = await SharedPreferences.getInstance();
@@ -168,13 +167,13 @@ class SettingsProvider extends ChangeNotifier {
     _easyLevelFactor = prefs.getDouble("easyLevelFactor") ?? _easyLevelFactor;
     _goodLevelFactor = prefs.getDouble("goodLevelFactor") ?? _goodLevelFactor;
     _hardLevelFactor = prefs.getDouble("hardLevelFactor") ?? _hardLevelFactor;
-    _gatherNotificationTime = Time(
-      prefs.getInt("gatherNotificationTimeHour") ?? _gatherNotificationTime.hour,
-      prefs.getInt("gatherNotificationTimeMinute") ?? _gatherNotificationTime.minute,
+    _gatherNotificationTime = TimeOfDay(
+      hour: prefs.getInt("gatherNotificationTimeHour") ?? _gatherNotificationTime.hour,
+      minute: prefs.getInt("gatherNotificationTimeMinute") ?? _gatherNotificationTime.minute,
     );
-    _practiseNotificationTime = Time(
-      prefs.getInt("practiseNotificationTimeHour") ?? _practiseNotificationTime.hour,
-      prefs.getInt("practiseNotificationTimeMinute") ?? _practiseNotificationTime.minute,
+    _practiseNotificationTime = TimeOfDay(
+      hour: prefs.getInt("practiseNotificationTimeHour") ?? _practiseNotificationTime.hour,
+      minute: prefs.getInt("practiseNotificationTimeMinute") ?? _practiseNotificationTime.minute,
     );
     notifyListeners();
   }

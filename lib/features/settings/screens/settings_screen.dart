@@ -25,22 +25,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _selectGatherNotificationTime() async {
-    Time? time = await _timeFromTimePicker();
+    TimeOfDay? time = await _timeFromTimePicker();
     if (time == null || !mounted) return;
     Provider.of<SettingsProvider>(context, listen: false).gatherNotificationTime = time;
   }
 
   void _selectPractiseNotificationTime() async {
-    Time? time = await _timeFromTimePicker();
+    TimeOfDay? time = await _timeFromTimePicker();
     if (time == null || !mounted) return;
     Provider.of<SettingsProvider>(context, listen: false).practiseNotificationTime = time;
   }
 
-  Future<Time?> _timeFromTimePicker() async {
+  Future<TimeOfDay?> _timeFromTimePicker() async {
     final TimeOfDay? timeOfDay = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-    if (timeOfDay == null) return null;
-    final Time time = Time(timeOfDay.hour, timeOfDay.minute);
-    return time;
+    return timeOfDay;
   }
 
   @override
@@ -56,7 +54,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(title: Text(AppLocalizations.of(context).settings_title, style: Theme.of(context).textTheme.headlineMedium)),
+          appBar:
+              AppBar(title: Text(AppLocalizations.of(context)?.settings_title ?? "", style: Theme.of(context).textTheme.headlineMedium)),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: ListView(
@@ -66,8 +65,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const ProfileContainer(),
                 const SizedBox(height: 16),
                 SettingsListTile(
-                  title: Text(AppLocalizations.of(context).settings_source),
-                  subtitle: Text(AppLocalizations.of(context).settings_sourceHint),
+                  title: Text(AppLocalizations.of(context)?.settings_source ?? ""),
+                  subtitle: Text(AppLocalizations.of(context)?.settings_sourceHint ?? ""),
                   trailing: PopupMenuButton(
                     onSelected: (value) => {},
                     itemBuilder: (context) => List.generate(
@@ -85,8 +84,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 SettingsListTile(
-                  title: Text(AppLocalizations.of(context).settings_target),
-                  subtitle: Text(AppLocalizations.of(context).settings_targetHint),
+                  title: Text(AppLocalizations.of(context)?.settings_target ?? ""),
+                  subtitle: Text(AppLocalizations.of(context)?.settings_targetHint ?? ""),
                   trailing: PopupMenuButton(
                     padding: const EdgeInsets.all(128),
                     itemBuilder: (context) => List.generate(
@@ -104,8 +103,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 SettingsListTile(
-                  title: Text(AppLocalizations.of(context).settings_images),
-                  subtitle: Text(AppLocalizations.of(context).settings_imagesHint, style: TextStyle(color: Theme.of(context).hintColor)),
+                  title: Text(AppLocalizations.of(context)?.settings_images ?? ""),
+                  subtitle:
+                      Text(AppLocalizations.of(context)?.settings_imagesHint ?? "", style: TextStyle(color: Theme.of(context).hintColor)),
                   trailing: Switch(
                     value: Provider.of<SettingsProvider>(context).areImagesEnabled,
                     onChanged: (value) {

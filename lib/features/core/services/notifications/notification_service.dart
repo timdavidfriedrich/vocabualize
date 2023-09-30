@@ -19,7 +19,7 @@ class NotificationService {
   static final NotificationService _instance = NotificationService();
   static NotificationService get instance => _instance;
 
-  static const Time _defaultScheduleTime = Time(13); // TODO: Move to SharedPreferences / Cloud
+  static const TimeOfDay _defaultScheduleTime = TimeOfDay(hour: 13, minute: 0);
   final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
 
   void init() {
@@ -105,10 +105,10 @@ class NotificationService {
     String? title = "Vocabualize",
     String? body,
     String? payload,
-    Time time = _defaultScheduleTime,
+    TimeOfDay time = _defaultScheduleTime,
   }) async {
     final now = tz.TZDateTime.now(tz.local);
-    final scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, time.hour, time.minute, time.second);
+    final scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, time.hour, time.minute);
     return await _localNotifications.zonedSchedule(
       id,
       title,
@@ -116,7 +116,7 @@ class NotificationService {
       scheduledDate.isBefore(now) ? scheduledDate.add(const Duration(days: 1)) : scheduledDate,
       await _getLocalNotificationDetails(),
       payload: payload,
-      androidAllowWhileIdle: true,
+      androidScheduleMode: AndroidScheduleMode.exact,
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
     );
