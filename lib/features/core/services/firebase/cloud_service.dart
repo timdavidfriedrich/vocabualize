@@ -16,9 +16,8 @@ class CloudService {
     final User? user = FirebaseAuth.instance.currentUser;
     final AppUser appUser = AppUser.instance;
 
-    Log.warning("User data saved (UID: ${user!.uid}).");
-
-    await _userCollection.doc(user.uid).set(appUser.toJson(), SetOptions(merge: true));
+    await _userCollection.doc(user!.uid).set(appUser.toJson(), SetOptions(merge: true));
+    Log.warning("User data saved (UID: ${user.uid}).");
   }
 
   static Future loadUserData() async {
@@ -33,10 +32,9 @@ class CloudService {
       return;
     }
 
-    Log.warning("User data loaded (UID: ${user.uid}).");
-
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
     appUser.loadFromJson(data);
+    Log.warning("User data loaded (UID: ${user.uid}).");
   }
 
   static Future sendReport(Report report) async {
