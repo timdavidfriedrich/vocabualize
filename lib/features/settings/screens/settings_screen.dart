@@ -2,9 +2,9 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/language.dart';
 import 'package:vocabualize/features/core/services/languages.dart';
-import 'package:vocabualize/features/core/services/text_to_speech.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
+import 'package:vocabualize/features/settings/screens/choose_language_screen.dart';
 import 'package:vocabualize/features/settings/widgets/profile_container.dart';
 import 'package:vocabualize/features/settings/widgets/settings_list_tile.dart';
 
@@ -41,6 +41,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return timeOfDay;
   }
 
+  Future<Language?> _selectLanguage() async {
+    return await Navigator.pushNamed(context, ChooseLanguageScreen.routeName) as Language?;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -49,6 +53,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settings = Provider.of<SettingsProvider>(context, listen: false);
     return SafeArea(
       child: ClipRRect(
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
@@ -67,42 +72,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 SettingsListTile(
                   title: Text(AppLocalizations.of(context)?.settings_source ?? ""),
                   subtitle: Text(AppLocalizations.of(context)?.settings_sourceHint ?? ""),
-                  trailing: PopupMenuButton(
-                    onSelected: (value) => {},
-                    itemBuilder: (context) => List.generate(
-                      languages.length,
-                      (index) {
-                        Language selectedLanguage = languages.elementAt(index);
-                        return PopupMenuItem(
-                          onTap: () => Provider.of<SettingsProvider>(context, listen: false).sourceLanguage = selectedLanguage,
-                          enabled: selectedLanguage != Provider.of<SettingsProvider>(context, listen: false).sourceLanguage,
-                          child: Text(selectedLanguage.name),
-                        );
-                      },
-                    ),
-                    child: Text(Provider.of<SettingsProvider>(context).sourceLanguage.name),
+                  trailing: OutlinedButton(
+                    onPressed: () async {
+                      settings.sourceLanguage = await _selectLanguage() ?? settings.sourceLanguage;
+                    },
+                    child: Text(settings.sourceLanguage.name),
                   ),
                 ),
                 SettingsListTile(
                   title: Text(AppLocalizations.of(context)?.settings_target ?? ""),
                   subtitle: Text(AppLocalizations.of(context)?.settings_targetHint ?? ""),
-                  trailing: PopupMenuButton(
-                    padding: const EdgeInsets.all(128),
-                    itemBuilder: (context) => List.generate(
-                      languages.length,
-                      (index) {
-                        Language selectedLanguage = languages.elementAt(index);
-                        return PopupMenuItem(
-                          onTap: () {
-                            Provider.of<SettingsProvider>(context, listen: false).targetLanguage = selectedLanguage;
-                            TTS.instance.setLanguage(Provider.of<SettingsProvider>(context, listen: false).targetLanguage);
-                          },
-                          enabled: selectedLanguage != Provider.of<SettingsProvider>(context, listen: false).targetLanguage,
-                          child: Text(selectedLanguage.name),
-                        );
-                      },
-                    ),
-                    child: Text(Provider.of<SettingsProvider>(context).targetLanguage.name),
+                  trailing: OutlinedButton(
+                    onPressed: () async {
+                      settings.targetLanguage = await _selectLanguage() ?? settings.targetLanguage;
+                    },
+                    child: Text(settings.targetLanguage.name),
                   ),
                 ),
                 SettingsListTile(

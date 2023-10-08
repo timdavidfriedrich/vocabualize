@@ -20,6 +20,7 @@ import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/details/screens/details_screen.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
+import 'package:vocabualize/features/settings/screens/choose_language_screen.dart';
 import 'package:vocabualize/features/settings/screens/settings_screen.dart';
 import 'package:vocabualize/firebase_options.dart';
 
@@ -70,6 +71,7 @@ class Vocabualize extends StatelessWidget {
           SignScreen.routeName: (context) => const SignScreen(),
           ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
           SelectLanguageScreen.routeName: (context) => const SelectLanguageScreen(),
+          ChooseLanguageScreen.routeName: (context) => const ChooseLanguageScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
           PractiseScreen.routeName: (context) => const PractiseScreen(),
           DetailsScreen.routeName: (context) => const DetailsScreen(),

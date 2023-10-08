@@ -63,7 +63,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                       // TODO: Replace with arb
                       Align(
                         alignment: Alignment.topRight,
-                        child: OutlinedButton(onPressed: () => _signOut(), child: const Text("Sign out")),
+                        child: ElevatedButton(onPressed: () => _signOut(), child: const Text("Sign out")),
                       ),
                     ],
                   ),
