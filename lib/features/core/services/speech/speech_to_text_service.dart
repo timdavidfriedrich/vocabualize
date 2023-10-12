@@ -6,12 +6,12 @@ import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/record/services/record_service.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
-class Speech {
-  Speech._privateConstructor() : _stt = SpeechToText();
+class SpeechToTextService {
+  SpeechToTextService._privateConstructor() : _stt = SpeechToText();
 
-  static final Speech _instance = Speech._privateConstructor();
+  static final SpeechToTextService _instance = SpeechToTextService._privateConstructor();
 
-  static Speech get instance => _instance;
+  static SpeechToTextService get instance => _instance;
 
   final SpeechToText _stt;
   String _text = "";

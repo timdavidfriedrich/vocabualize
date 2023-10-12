@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:log/log.dart';
-import 'package:vocabualize/features/core/services/firebase/app_user.dart';
+import 'package:vocabualize/features/core/models/app_user.dart';
 import 'package:vocabualize/features/reports/models/report.dart';
 import 'package:vocabualize/features/reports/models/translation_report.dart';
 

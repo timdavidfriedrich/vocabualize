@@ -1,7 +1,7 @@
 import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
-import 'package:vocabualize/features/reports/services/report_arguments.dart';
+import 'package:vocabualize/features/reports/utils/report_arguments.dart';
 import 'package:vocabualize/features/settings/screens/settings_screen.dart';
 
 // TODO: Refactor to minimize code redundancy

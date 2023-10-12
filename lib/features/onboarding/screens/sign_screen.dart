@@ -1,13 +1,13 @@
 import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
-import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/core/services/auth_service.dart';
+import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/features/onboarding/screens/welcome_screen.dart';
-import 'package:vocabualize/features/onboarding/services/email_validator.dart';
-import 'package:vocabualize/features/onboarding/services/sign_arguments.dart';
-import 'package:vocabualize/features/onboarding/services/sign_type.dart';
+import 'package:vocabualize/features/onboarding/utils/email_validator.dart';
+import 'package:vocabualize/features/onboarding/utils/sign_arguments.dart';
+import 'package:vocabualize/features/onboarding/utils/sign_type.dart';
 import 'package:vocabualize/features/onboarding/widgets/passwords_dont_match_dialog.dart';
 
 class SignScreen extends StatefulWidget {
@@ -35,7 +35,7 @@ class _SignScreenState extends State<SignScreen> {
 
   void _signUp() {
     if (_password != _repeatedPassword) {
-      Messenger.showStaticDialog(const PasswordsDontMatchDialog());
+      MessangingService.showStaticDialog(const PasswordsDontMatchDialog());
       return;
     }
     AuthService.createUserWithEmailAndPassword(_email, _password);

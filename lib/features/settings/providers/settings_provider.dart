@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/features/core/models/language.dart';
-import 'package:vocabualize/features/core/services/languages.dart';
-import 'package:vocabualize/features/core/services/notifications/notification_service.dart';
+import 'package:vocabualize/features/core/services/text/language_service.dart';
+import 'package:vocabualize/features/core/services/notification_service.dart';
 
 class SettingsProvider extends ChangeNotifier {
   late SharedPreferences prefs;
@@ -152,10 +152,10 @@ class SettingsProvider extends ChangeNotifier {
     Language defaultTarget = Language.defaultTarget();
 
     if (prefs.getString("sourceLanguage") != null) {
-      _sourceLanguage = await Languages.findLanguage(translatorId: prefs.getString("sourceLanguage")) ?? defaultSource;
+      _sourceLanguage = await LanguageService.findLanguage(translatorId: prefs.getString("sourceLanguage")) ?? defaultSource;
     }
     if (prefs.getString("targetLanguage") != null) {
-      _targetLanguage = await Languages.findLanguage(translatorId: prefs.getString("targetLanguage")) ?? defaultTarget;
+      _targetLanguage = await LanguageService.findLanguage(translatorId: prefs.getString("targetLanguage")) ?? defaultTarget;
     }
     _areImagesEnabled = prefs.getBool("areImagesEnabled") ?? _areImagesEnabled;
     _useDeepL = prefs.getBool("useDeepL") ?? _useDeepL;

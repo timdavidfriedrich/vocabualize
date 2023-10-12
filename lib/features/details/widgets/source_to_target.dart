@@ -1,5 +1,5 @@
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/edit_source_target_dialog.dart';
 
@@ -15,7 +15,7 @@ class SourceToTarget extends StatefulWidget {
 
 class _SourceToTargetState extends State<SourceToTarget> {
   void _click({required bool editTarget}) {
-    Messenger.showStaticDialog(
+    MessangingService.showStaticDialog(
       EditSourceTargetDialog(vocabulary: widget.vocabulary, editTarget: editTarget),
     ).whenComplete(() => setState(() {}));
   }

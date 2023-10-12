@@ -1,4 +1,4 @@
-import 'package:vocabualize/features/onboarding/services/sign_type.dart';
+import 'package:vocabualize/features/onboarding/utils/sign_type.dart';
 
 class SignArguments {
   final SignType signType;

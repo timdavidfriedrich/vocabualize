@@ -1,9 +1,9 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
+import 'package:vocabualize/features/core/services/auth_service.dart';
 import 'package:vocabualize/features/core/models/language.dart';
-import 'package:vocabualize/features/core/services/languages.dart';
-import 'package:vocabualize/features/core/services/text_to_speech.dart';
+import 'package:vocabualize/features/core/services/text/language_service.dart';
+import 'package:vocabualize/features/core/services/text/text_to_speech_service.dart';
 import 'package:vocabualize/features/onboarding/screens/welcome_screen.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
@@ -20,12 +20,12 @@ class SelectLanguageScreenState extends State<SelectLanguageScreen> {
   List<Language> languages = [];
 
   void _getLanguages() async {
-    languages = await Languages.getLangauges();
+    languages = await LanguageService.getLangauges();
   }
 
   void _submit(BuildContext context) {
     if (AuthService.user == null) AuthService.signInAnonymously();
-    TTS.instance.setLanguage(Provider.of<SettingsProvider>(context, listen: false).targetLanguage);
+    TextToSpeechService.instance.setLanguage(Provider.of<SettingsProvider>(context, listen: false).targetLanguage);
     Navigator.pop(context);
   }
 

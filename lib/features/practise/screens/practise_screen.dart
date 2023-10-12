@@ -2,13 +2,13 @@ import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
-import 'package:vocabualize/features/core/services/text_to_speech.dart';
+import 'package:vocabualize/features/core/services/text/text_to_speech_service.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/practise/screens/practise_done_screen.dart';
-import 'package:vocabualize/features/core/services/answer.dart';
-import 'package:vocabualize/features/practise/services/practise_arguments.dart';
+import 'package:vocabualize/features/core/utils/answer.dart';
+import 'package:vocabualize/features/practise/utils/practise_arguments.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class PractiseScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _PractiseScreenState extends State<PractiseScreen> {
 
   bool isMultilingual = false;
 
-  TTS tts = TTS.instance;
+  TextToSpeechService tts = TextToSpeechService.instance;
 
   void _speak() {
     tts.stop;

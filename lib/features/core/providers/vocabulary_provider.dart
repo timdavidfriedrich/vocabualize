@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocabualize/features/core/services/firebase/cloud_service.dart';
-import 'package:vocabualize/features/core/services/format.dart';
+import 'package:vocabualize/features/core/services/data/cloud_service.dart';
+import 'package:vocabualize/features/core/utils/format.dart';
 import 'package:vocabualize/features/core/models/language.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 

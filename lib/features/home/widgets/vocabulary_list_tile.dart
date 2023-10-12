@@ -1,10 +1,10 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/services/text_to_speech.dart';
+import 'package:vocabualize/features/core/services/text/text_to_speech_service.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/details/screens/details_screen.dart';
-import 'package:vocabualize/features/details/services/details_arguments.dart';
+import 'package:vocabualize/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/features/home/widgets/info_snackbar.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
@@ -15,7 +15,7 @@ class VocabularyListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TTS tts = TTS.instance;
+    TextToSpeechService tts = TextToSpeechService.instance;
 
     void speak() {
       tts.stop;

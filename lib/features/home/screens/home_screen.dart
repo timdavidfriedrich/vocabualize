@@ -8,11 +8,11 @@ import 'package:vocabualize/features/home/widgets/new_word_card.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/status_card.dart';
 import 'package:vocabualize/features/home/widgets/vocabulary_list_tile.dart';
-import 'package:vocabualize/features/record/services/record_sheet_controller.dart';
+import 'package:vocabualize/features/record/utils/record_sheet_controller.dart';
 import 'package:vocabualize/features/record/widgets/record_grab.dart';
 import 'package:vocabualize/features/record/widgets/record_sheet.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
-import 'package:vocabualize/features/reports/services/report_arguments.dart';
+import 'package:vocabualize/features/reports/utils/report_arguments.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/screens/settings_screen.dart';
 

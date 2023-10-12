@@ -2,11 +2,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/services/firebase/root.dart';
+import 'package:vocabualize/features/core/widgets/root.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/features/details/widgets/tag_wrap.dart';
-import 'package:vocabualize/features/details/services/details_arguments.dart';
+import 'package:vocabualize/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/features/settings/screens/settings_screen.dart';
 
 class DetailsDisabledImagesScreen extends StatefulWidget {

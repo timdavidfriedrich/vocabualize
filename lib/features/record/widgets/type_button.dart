@@ -1,6 +1,6 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
 import 'package:vocabualize/features/record/services/record_service.dart';
 
@@ -28,7 +28,7 @@ class _TypeButtonState extends State<TypeButton> {
   }
 
   _submit() async {
-    if (!await Messenger.isOnline()) return _cancel();
+    if (!await MessangingService.isOnline()) return _cancel();
     if (!mounted) return;
     RecordService.validateAndSave(source: currentSource);
     currentSource = "";

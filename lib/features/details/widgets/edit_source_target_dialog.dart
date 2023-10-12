@@ -1,12 +1,12 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/replace_vocabulary_dialog.dart';
 import 'package:vocabualize/features/record/services/record_service.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
-import 'package:vocabualize/features/reports/services/report_arguments.dart';
+import 'package:vocabualize/features/reports/utils/report_arguments.dart';
 
 class EditSourceTargetDialog extends StatefulWidget {
   final Vocabulary vocabulary;
@@ -32,7 +32,7 @@ class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
       widget.vocabulary.target = input;
       Navigator.pop(context);
     } else {
-      bool hasClickedReplace = await Messenger.showStaticDialog(ReplaceVocabularyDialog(vocabulary: widget.vocabulary));
+      bool hasClickedReplace = await MessangingService.showStaticDialog(ReplaceVocabularyDialog(vocabulary: widget.vocabulary));
       if (hasClickedReplace) {
         if (mounted) Provider.of<VocabularyProvider>(context, listen: false).remove(widget.vocabulary);
         RecordService.validateAndSave(source: input);

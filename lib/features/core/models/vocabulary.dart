@@ -8,12 +8,12 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/models/language.dart';
-import 'package:vocabualize/features/core/services/languages.dart';
+import 'package:vocabualize/features/core/services/text/language_service.dart';
 import 'package:vocabualize/features/core/models/level.dart';
-import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/core/models/pexels_model.dart';
-import 'package:vocabualize/features/core/services/answer.dart';
-import 'package:vocabualize/features/practise/services/date_calculator.dart';
+import 'package:vocabualize/features/core/utils/answer.dart';
+import 'package:vocabualize/features/practise/utils/date_calculator.dart';
 import 'package:vocabualize/features/record/widgets/duplicate_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
@@ -64,11 +64,11 @@ class Vocabulary {
   }
 
   initSourceLanguage(String translatorId) async {
-    _sourceLanguage = await Languages.findLanguage(translatorId: translatorId) ?? Language.defaultSource();
+    _sourceLanguage = await LanguageService.findLanguage(translatorId: translatorId) ?? Language.defaultSource();
   }
 
   initTargetLanguage(String translatorId) async {
-    _targetLanguage = await Languages.findLanguage(translatorId: translatorId) ?? Language.defaultTarget();
+    _targetLanguage = await LanguageService.findLanguage(translatorId: translatorId) ?? Language.defaultTarget();
   }
 
   Map<String, dynamic> toJson() => {
@@ -212,7 +212,7 @@ class Vocabulary {
   bool isValid() {
     bool sourceNotEmpty = source.isNotEmpty;
     bool alreadyInList = Provider.of<VocabularyProvider>(Global.context, listen: false).searchListForSource(source) != null;
-    if (alreadyInList) Messenger.showStaticDialog(DuplicateDialog(vocabulary: this));
+    if (alreadyInList) MessangingService.showStaticDialog(DuplicateDialog(vocabulary: this));
     return sourceNotEmpty && !alreadyInList;
   }
 

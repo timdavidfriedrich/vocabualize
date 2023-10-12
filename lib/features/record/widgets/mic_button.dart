@@ -1,15 +1,15 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/record/providers/active_provider.dart';
-import 'package:vocabualize/features/core/services/speech.dart';
+import 'package:vocabualize/features/core/services/text/speech_to_text_service.dart';
 
 class MicButton extends StatelessWidget {
   const MicButton({Key? key}) : super(key: key);
 
   _clicked() async {
-    if (await Messenger.isOnline()) Speech.instance.record();
+    if (await MessangingService.isOnline()) SpeechToTextService.instance.record();
   }
 
   @override

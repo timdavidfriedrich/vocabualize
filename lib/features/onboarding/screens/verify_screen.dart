@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/firebase/auth_service.dart';
+import 'package:vocabualize/features/core/services/auth_service.dart';
 import 'package:vocabualize/features/onboarding/screens/select_language_screen.dart';
 
 class VerifyScreen extends StatefulWidget {

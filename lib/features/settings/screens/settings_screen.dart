@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/models/language.dart';
-import 'package:vocabualize/features/core/services/languages.dart';
+import 'package:vocabualize/features/core/services/text/language_service.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/screens/choose_language_screen.dart';
@@ -21,7 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<Language> languages = [];
 
   void _getLanguages() async {
-    languages = await Languages.getLangauges();
+    languages = await LanguageService.getLangauges();
   }
 
   void _selectGatherNotificationTime() async {

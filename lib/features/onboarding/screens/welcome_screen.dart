@@ -2,8 +2,8 @@ import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/onboarding/screens/sign_screen.dart';
 import 'package:vocabualize/features/onboarding/screens/select_language_screen.dart';
-import 'package:vocabualize/features/onboarding/services/sign_arguments.dart';
-import 'package:vocabualize/features/onboarding/services/sign_type.dart';
+import 'package:vocabualize/features/onboarding/utils/sign_arguments.dart';
+import 'package:vocabualize/features/onboarding/utils/sign_type.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const routeName = "/Onboarding";

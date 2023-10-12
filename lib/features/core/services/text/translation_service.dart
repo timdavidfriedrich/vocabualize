@@ -6,7 +6,7 @@ import 'package:vocabualize/features/core/models/deepl_api/deepl_response.dart';
 import 'package:vocabualize/features/core/models/deepl_api/deepl_service.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
-class Translator {
+class TranslationService {
   static final _googleTranslator = GoogleTranslator();
   static final _deeplTranslator = DeepLService();
 

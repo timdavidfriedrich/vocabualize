@@ -11,18 +11,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/services/firebase/storage_service.dart';
-import 'package:vocabualize/features/core/services/format.dart';
-import 'package:vocabualize/features/core/services/messenger.dart';
+import 'package:vocabualize/features/core/services/data/storage_service.dart';
+import 'package:vocabualize/features/core/utils/format.dart';
+import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/core/models/pexels_model.dart';
-import 'package:vocabualize/features/core/services/pexels_api/pexels_service.dart';
-import 'package:vocabualize/features/core/services/translator.dart';
+import 'package:vocabualize/features/core/services/data/pexels_service.dart';
+import 'package:vocabualize/features/core/services/text/translation_service.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/details/screens/details_disabled_images_screen.dart';
 import 'package:vocabualize/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/features/details/widgets/tag_wrap.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
-import 'package:vocabualize/features/details/services/details_arguments.dart';
+import 'package:vocabualize/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/features/details/widgets/camera_gallery_dialog.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/screens/settings_screen.dart';
@@ -62,7 +62,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   void _getPexels() async {
     List<PexelsModel> pexelsModelList = await PexelsService().getImages(
-      await Translator.inEnglish(vocabulary.source, filtered: true),
+      await TranslationService.inEnglish(vocabulary.source, filtered: true),
     );
     if (mounted) setState(() => _pexelsModelList = pexelsModelList);
   }
@@ -91,7 +91,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   Future<dynamic> _openCam() async {
-    final imageSource = await Messenger.showStaticDialog(const CameraGalleryDialog());
+    final imageSource = await MessangingService.showStaticDialog(const CameraGalleryDialog());
     if (imageSource == null) return;
 
     XFile? image;

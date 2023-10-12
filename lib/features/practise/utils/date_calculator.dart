@@ -2,7 +2,7 @@ import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
-import 'package:vocabualize/features/core/services/answer.dart';
+import 'package:vocabualize/features/core/utils/answer.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class DateCalculator {
