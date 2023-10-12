@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:log/log.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
+import 'package:vocabualize/features/core/services/firebase/storage_service.dart';
 import 'package:vocabualize/features/core/services/format.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/pexels_api/pexels_model.dart';
@@ -118,12 +121,27 @@ class _DetailsScreenState extends State<DetailsScreen> {
   void _save() {
     if (_cameraImageFile != null && _cameraImageFile == _selected) {
       vocabulary.cameraImageFile = _cameraImageFile;
+      _uploadImage();
     } else {
       vocabulary.pexelsModel = _selected ?? PexelsModel.fallback();
     }
     Navigator.pop(Global.context);
     // ? Show message ?
     // Messenger.showSaveMessage(vocabulary);
+  }
+
+  Future<void> _uploadImage() async {
+    if (_cameraImageFile == null) return;
+    vocabulary.firebaseImageUrl = StorageService.instance.getVocabularyImageDownloadUrl(vocabulary: vocabulary);
+    Uint8List imageData = await _cameraImageFile!.readAsBytes();
+    Uint8List compressImageData = await FlutterImageCompress.compressWithList(
+      imageData,
+      quality: 70,
+      minHeight: 800,
+      minWidth: 800,
+    );
+    await StorageService.instance.uploadVocabularyImage(vocabulary: vocabulary, imageData: compressImageData);
+    // item.firebaseImageUrl = await StorageService.instance.getItemImageDownloadUrl(item: item);
   }
 
   void _navigateToSettings() async {

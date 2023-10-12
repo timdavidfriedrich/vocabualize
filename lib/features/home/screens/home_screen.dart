@@ -1,6 +1,7 @@
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/home/screens/home_empty_screen.dart';
 import 'package:vocabualize/features/home/widgets/collections_view.dart';
 import 'package:vocabualize/features/home/widgets/new_word_card.dart';
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     recordSheetController = RecordSheetController.instance;
 
-    Provider.of<VocabularyProvider>(context, listen: false).init();
+    // Provider.of<VocabularyProvider>(context, listen: false).init();
     Provider.of<SettingsProvider>(context, listen: false).init();
   }
 
@@ -63,101 +64,111 @@ class _HomeScreenState extends State<HomeScreen> {
             grabbing: const RecordGrab(),
             grabbingHeight: 64,
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
-            child: Provider.of<VocabularyProvider>(context).vocabularyList.isEmpty
-                ? const HomeEmptyScreen()
-                : ListView(
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            child: FutureBuilder<List<Vocabulary>>(
+                future: Provider.of<VocabularyProvider>(context, listen: false).init(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) return const Center(child: CircularProgressIndicator.adaptive());
+                  List<Vocabulary> vocabularyList = snapshot.data!;
+                  return vocabularyList.isEmpty
+                      ? const HomeEmptyScreen()
+                      : ListView(
+                          physics: const BouncingScrollPhysics(),
                           children: [
-                            const SizedBox(height: 48),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    fit: BoxFit.scaleDown,
-                                    // TODO: Replace with arb
-                                    child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 32),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 48),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: FittedBox(
+                                          alignment: Alignment.centerLeft,
+                                          fit: BoxFit.scaleDown,
+                                          // TODO: Replace with arb
+                                          child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16),
+                                      IconButton(onPressed: () => _openReportPage(), icon: const Icon(Icons.bug_report_rounded)),
+                                      IconButton(onPressed: () => _showSettings(), icon: const Icon(Icons.settings_rounded)),
+                                    ],
                                   ),
-                                ),
-                                const SizedBox(width: 16),
-                                IconButton(onPressed: () => _openReportPage(), icon: const Icon(Icons.bug_report_rounded)),
-                                IconButton(onPressed: () => _showSettings(), icon: const Icon(Icons.settings_rounded)),
-                              ],
+                                  const SizedBox(height: 24),
+                                  const StatusCard(),
+                                  const SizedBox(height: 32),
+                                  Text(AppLocalizations.of(context)?.home_newWords ?? "",
+                                      style: Theme.of(context).textTheme.headlineMedium),
+                                  const SizedBox(height: 12),
+                                  Provider.of<VocabularyProvider>(context).lastest.isNotEmpty
+                                      ? Container()
+                                      : Text(AppLocalizations.of(context)?.home_noNewWords ?? "",
+                                          style: Theme.of(context).textTheme.bodySmall),
+                                ],
+                              ),
                             ),
-                            const SizedBox(height: 24),
-                            const StatusCard(),
-                            const SizedBox(height: 32),
-                            Text(AppLocalizations.of(context)?.home_newWords ?? "", style: Theme.of(context).textTheme.headlineMedium),
-                            const SizedBox(height: 12),
-                            Provider.of<VocabularyProvider>(context).lastest.isNotEmpty
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(
+                                  Provider.of<VocabularyProvider>(context).lastest.length + 2,
+                                  (index) => index == 0 || index == Provider.of<VocabularyProvider>(context).lastest.length + 1
+                                      ? index == 0
+                                          ? const SizedBox(width: 16)
+                                          : const SizedBox(width: 24)
+                                      : Padding(
+                                          padding: const EdgeInsets.only(left: 8),
+                                          child: NewWordCard(
+                                            vocabulary:
+                                                Provider.of<VocabularyProvider>(context, listen: false).lastest.elementAt(index - 1),
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ),
+                            Provider.of<VocabularyProvider>(context).allTags.isEmpty
                                 ? Container()
-                                : Text(AppLocalizations.of(context)?.home_noNewWords ?? "", style: Theme.of(context).textTheme.bodySmall),
-                          ],
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List.generate(
-                            Provider.of<VocabularyProvider>(context).lastest.length + 2,
-                            (index) => index == 0 || index == Provider.of<VocabularyProvider>(context).lastest.length + 1
-                                ? index == 0
-                                    ? const SizedBox(width: 16)
-                                    : const SizedBox(width: 24)
                                 : Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: NewWordCard(
-                                      vocabulary: Provider.of<VocabularyProvider>(context, listen: false).lastest.elementAt(index - 1),
+                                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 32),
+                                        // TODO: Replace with arb
+                                        Text("Tags", style: Theme.of(context).textTheme.headlineMedium),
+                                        const SizedBox(height: 12),
+                                      ],
                                     ),
                                   ),
-                          ),
-                        ),
-                      ),
-                      Provider.of<VocabularyProvider>(context).allTags.isEmpty
-                          ? Container()
-                          : Padding(
+                            const CollectionsView(),
+                            Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 32),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 32),
-                                  // TODO: Replace with arb
-                                  Text("Tags", style: Theme.of(context).textTheme.headlineMedium),
+                                  Text(AppLocalizations.of(context)?.home_allWords ?? "",
+                                      style: Theme.of(context).textTheme.headlineMedium),
                                   const SizedBox(height: 12),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List.generate(
+                                      vocabularyList.length,
+                                      (index) => VocabularyListTile(
+                                        vocabulary: vocabularyList.elementAt(index),
+                                      ),
+                                    ).reversed.toList(),
+                                  ),
+                                  const SizedBox(height: 96),
                                 ],
                               ),
                             ),
-                      const CollectionsView(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 32),
-                            Text(AppLocalizations.of(context)?.home_allWords ?? "", style: Theme.of(context).textTheme.headlineMedium),
-                            const SizedBox(height: 12),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: List.generate(
-                                Provider.of<VocabularyProvider>(context).vocabularyList.length,
-                                (index) => VocabularyListTile(
-                                  vocabulary: Provider.of<VocabularyProvider>(context).vocabularyList.elementAt(index),
-                                ),
-                              ).reversed.toList(),
-                            ),
-                            const SizedBox(height: 96),
                           ],
-                        ),
-                      ),
-                    ],
-                  ),
+                        );
+                }),
           ),
         ),
       ),

@@ -41,15 +41,7 @@ class NewWordCard extends StatelessWidget {
                   height: 128,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: vocabulary.imageProvider,
-                        ),
-                      ),
-                    ),
+                    child: vocabulary.image,
                   ),
                 ),
           Provider.of<SettingsProvider>(context).areImagesDisabled ? Container() : const SizedBox(height: 8),

@@ -50,16 +50,8 @@ class TagCardButton extends StatelessWidget {
                           crossAxisCount: min(Provider.of<VocabularyProvider>(context).getVocabulariesByTag(tag).length, 2),
                         ),
                         itemCount: min(Provider.of<VocabularyProvider>(context).getVocabulariesByTag(tag).length, 4),
-                        itemBuilder: (context, index) => Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image:
-                                  Provider.of<VocabularyProvider>(context).getVocabulariesByTag(tag).reversed.toList()[index].imageProvider,
-                            ),
-                          ),
-                        ),
+                        itemBuilder: (context, index) =>
+                            Provider.of<VocabularyProvider>(context).getVocabulariesByTag(tag).elementAt(index).image,
                       ),
                     ),
                   ),

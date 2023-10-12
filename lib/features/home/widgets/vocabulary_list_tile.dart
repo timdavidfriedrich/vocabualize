@@ -7,6 +7,7 @@ import 'package:vocabualize/features/core/services/vocabulary.dart';
 import 'package:vocabualize/features/details/screens/details_screen.dart';
 import 'package:vocabualize/features/details/services/details_arguments.dart';
 import 'package:vocabualize/features/home/widgets/info_dialog.dart';
+import 'package:vocabualize/features/home/widgets/info_snackbar.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class VocabularyListTile extends StatelessWidget {
@@ -24,7 +25,12 @@ class VocabularyListTile extends StatelessWidget {
     }
 
     void showVocabularyInfo() {
-      Messenger.showStaticDialog(InfoDialog(vocabulary: vocabulary));
+      // Messenger.showStaticDialog(InfoDialog(vocabulary: vocabulary));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        content: InfoSnackBarContent(vocabulary: vocabulary),
+        duration: const Duration(seconds: 2),
+      ));
     }
 
     void editVocabualary() {
@@ -75,26 +81,19 @@ class VocabularyListTile extends StatelessWidget {
                   height: 48,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: vocabulary.imageProvider,
-                        ),
-                      ),
-                    ),
+                    child: vocabulary.image,
                   ),
                 ),
             ],
           ),
           title: Text(vocabulary.target),
           subtitle: Text(vocabulary.source, style: TextStyle(color: Theme.of(context).hintColor)),
+          onLongPress: showVocabularyInfo,
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(onPressed: speak, icon: const Icon(Icons.volume_up)),
-              IconButton(onPressed: showVocabularyInfo, icon: const Icon(Icons.info_outline)),
+              // IconButton(onPressed: showVocabularyInfo, icon: const Icon(Icons.info_outline)),
             ],
           ),
         ),
