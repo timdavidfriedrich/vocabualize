@@ -110,7 +110,7 @@ class VocabularyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> init() async {
+  Future<List<Vocabulary>> init() async {
     vocabularyList.clear();
     _prefs = await SharedPreferences.getInstance();
     String vocabularyListJSON = _prefs.getString("vocabularyList") ?? "";
@@ -120,6 +120,7 @@ class VocabularyProvider extends ChangeNotifier {
       }
     }
     notifyListeners();
+    return vocabularyList;
   }
 
   Future<void> add(Vocabulary vocabulary) async {
