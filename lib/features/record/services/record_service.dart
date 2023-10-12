@@ -4,7 +4,7 @@ import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/firebase/root.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
 import 'package:vocabualize/features/core/services/translator.dart';
-import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/details/screens/details_screen.dart';
 import 'package:vocabualize/features/details/services/details_arguments.dart';
 import 'package:vocabualize/features/record/services/record_sheet_controller.dart';

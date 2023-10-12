@@ -1,4 +1,4 @@
-import 'package:vocabualize/features/reports/services/report.dart';
+import 'package:vocabualize/features/reports/models/report.dart';
 
 class BugReport extends Report {
   final String description;

@@ -1,6 +1,6 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/messenger.dart';
-import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/edit_source_target_dialog.dart';
 
 class SourceToTarget extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/firebase/root.dart';
-import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/models/vocabulary.dart';
 
 class SaveMessage extends StatefulWidget {
   final Vocabulary vocabulary;

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocabualize/features/core/services/language.dart';
+import 'package:vocabualize/features/core/models/language.dart';
 import 'package:vocabualize/features/core/services/languages.dart';
 import 'package:vocabualize/features/core/services/notifications/notification_service.dart';
 

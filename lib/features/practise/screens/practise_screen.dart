@@ -3,7 +3,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/features/core/services/text_to_speech.dart';
-import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/practise/screens/practise_done_screen.dart';

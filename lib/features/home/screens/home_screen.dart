@@ -1,7 +1,7 @@
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/home/screens/home_empty_screen.dart';
 import 'package:vocabualize/features/home/widgets/collections_view.dart';
 import 'package:vocabualize/features/home/widgets/new_word_card.dart';

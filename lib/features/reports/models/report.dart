@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vocabualize/features/reports/services/bug_report.dart';
+import 'package:vocabualize/features/reports/models/bug_report.dart';
 import 'package:vocabualize/features/reports/services/report_type.dart';
-import 'package:vocabualize/features/reports/services/translation_report.dart';
+import 'package:vocabualize/features/reports/models/translation_report.dart';
 
 class Report {
   final Timestamp date = Timestamp.now();

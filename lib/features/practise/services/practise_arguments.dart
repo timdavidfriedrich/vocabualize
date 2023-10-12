@@ -1,4 +1,4 @@
-import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/models/vocabulary.dart';
 
 class PractiseScreenArguments {
   final List<Vocabulary> vocabulariesToPractise;

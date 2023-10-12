@@ -1,4 +1,4 @@
-import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/reports/services/report_type.dart';
 
 class ReportArguments {

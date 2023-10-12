@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:vocabualize/features/core/services/pexels_api/pexels_model.dart';
+import 'package:vocabualize/features/core/models/pexels_model.dart';
 import 'package:vocabualize/constants/secrets/pexels_secret.dart';
 
 class PexelsService {

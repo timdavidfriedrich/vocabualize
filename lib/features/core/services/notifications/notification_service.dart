@@ -12,7 +12,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/services/language.dart';
+import 'package:vocabualize/features/core/models/language.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class NotificationService {

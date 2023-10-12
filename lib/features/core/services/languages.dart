@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/services/language.dart';
+import 'package:vocabualize/features/core/models/language.dart';
 import 'package:vocabualize/features/core/services/speech.dart';
 import 'package:vocabualize/features/core/services/text_to_speech.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';

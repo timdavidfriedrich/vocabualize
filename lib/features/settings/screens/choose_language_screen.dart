@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vocabualize/features/core/services/language.dart';
+import 'package:vocabualize/features/core/models/language.dart';
 import 'package:vocabualize/features/core/services/languages.dart';
 
 class ChooseLanguageScreen extends StatelessWidget {

@@ -2,13 +2,13 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/firebase/cloud_service.dart';
-import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
-import 'package:vocabualize/features/reports/services/bug_report.dart';
-import 'package:vocabualize/features/reports/services/report.dart';
+import 'package:vocabualize/features/reports/models/bug_report.dart';
+import 'package:vocabualize/features/reports/models/report.dart';
 import 'package:vocabualize/features/reports/services/report_arguments.dart';
 import 'package:vocabualize/features/reports/services/report_type.dart';
-import 'package:vocabualize/features/reports/services/translation_report.dart';
+import 'package:vocabualize/features/reports/models/translation_report.dart';
 
 class ReportScreen extends StatefulWidget {
   static const String routeName = "${HomeScreen.routeName}/Report";

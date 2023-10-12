@@ -1,6 +1,6 @@
 import 'package:text_to_speech/text_to_speech.dart';
-import 'package:vocabualize/features/core/services/language.dart';
-import 'package:vocabualize/features/core/services/vocabulary.dart';
+import 'package:vocabualize/features/core/models/language.dart';
+import 'package:vocabualize/features/core/models/vocabulary.dart';
 
 class TTS {
   TTS._privateConstructor() : _tts = TextToSpeech();
