@@ -39,7 +39,7 @@ class _ReportScreenState extends State<ReportScreen> {
     } else {
       report = BugReport(description: text);
     }
-    CloudService.sendReport(report);
+    CloudService.instance.sendReport(report);
     Navigator.pop(context);
   }
 

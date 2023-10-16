@@ -51,7 +51,7 @@ class AuthService {
     MessangingService.loadingAnimation();
     try {
       await _firebaseAuth.signInWithEmailAndPassword(email: email.trim(), password: password);
-      await CloudService.loadUserData();
+      await CloudService.instance.loadUserData();
       Navigator.pop(Global.context);
     } on FirebaseAuthException catch (error) {
       MessangingService.showStaticDialog(SignInFailedDialog(error: error));

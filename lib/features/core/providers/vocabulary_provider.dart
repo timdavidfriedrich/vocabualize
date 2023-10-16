@@ -106,7 +106,7 @@ class VocabularyProvider extends ChangeNotifier {
   Future<void> save() async {
     _prefs = await SharedPreferences.getInstance();
     _prefs.setString("vocabularyList", json.encode(vocabularyList));
-    CloudService.saveUserData();
+    CloudService.instance.saveUserData();
     notifyListeners();
   }
 
