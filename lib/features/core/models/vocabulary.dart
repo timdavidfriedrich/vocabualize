@@ -53,14 +53,15 @@ class Vocabulary {
     }
     _pexelsModel = PexelsModel.fromJson(json["pexelsModel"]);
     _cameraImageFile = json['cameraImageFile'] == null ? null : File(json['cameraImageFile']);
-    firebaseImageUrl = json['firebaseImageUrl'];
-    level.value = json['level'];
-    isNovice = json['isNovice'];
-    //noviceInterval = json['noviceInterval'];
-    interval = json['interval'];
-    ease = json['ease'];
-    creationDate = DateTime.fromMillisecondsSinceEpoch(json['creationDate']);
-    nextDate = DateTime.fromMillisecondsSinceEpoch(json['nextDate']);
+    // ! NEW LINES START
+    // firebaseImageUrl = json['firebaseImageUrl'] ?? "";
+    level.value = json['levelValue'] ?? 0;
+    isNovice = json['isNovice'] ?? false;
+    interval = json['interval'] ?? 0;
+    ease = json['ease'] ?? 0;
+    // creationDate = DateTime.parse(json['created'] ?? "2022-01-01 01:00:00.123Z"); // ! TODO: Placeholder
+    // nextDate = DateTime.parse(json['nextDate']);
+    // ! NEW LINES END
   }
 
   initSourceLanguage(String translatorId) async {
