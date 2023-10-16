@@ -45,17 +45,20 @@ class PexelsModel {
         },
       );
 
-  factory PexelsModel.fromJson(Map<String, dynamic> json) => PexelsModel(
-        id: json["id"],
-        width: json["width"],
-        height: json["height"],
-        url: json["url"],
-        photographer: json["photographer"],
-        photographerUrl: json["photographerUrl"],
-        photographerID: json["photographerID"],
-        avgColor: json["avg_color"],
-        src: json["src"],
-      );
+  factory PexelsModel.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return PexelsModel.fallback();
+    return PexelsModel(
+      id: json["id"],
+      width: json["width"],
+      height: json["height"],
+      url: json["url"],
+      photographer: json["photographer"],
+      photographerUrl: json["photographerUrl"],
+      photographerID: json["photographerID"],
+      avgColor: json["avg_color"],
+      src: json["src"],
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
