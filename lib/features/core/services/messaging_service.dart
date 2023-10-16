@@ -19,6 +19,7 @@ class MessangingService {
 
   static Future<bool> isOnline() async {
     try {
+      // TODO: Not only check for google, since this method's not working
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) return true;
       showStaticDialog(const DisconnectedDialog());
