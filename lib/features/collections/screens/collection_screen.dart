@@ -2,6 +2,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/collections/utils/collection_arguments.dart';
+import 'package:vocabualize/features/core/models/tag.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
 import 'package:vocabualize/features/home/widgets/status_card_indicator.dart';
@@ -19,7 +20,7 @@ class CollectionScreen extends StatefulWidget {
 }
 
 class _CollectionScreenState extends State<CollectionScreen> {
-  String tag = "";
+  Tag tag = Tag.empty();
 
   void _editTag() {
     // TODO: implement edit tag / collection
@@ -50,7 +51,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(tag, style: Theme.of(context).textTheme.headlineMedium),
+            title: Text(tag.name, style: Theme.of(context).textTheme.headlineMedium),
             actions: [IconButton(icon: const Icon(Icons.edit_rounded), onPressed: () => _editTag())],
           ),
           body: ListView(

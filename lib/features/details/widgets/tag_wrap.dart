@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/features/core/models/tag.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
@@ -19,7 +20,7 @@ class _TagWrapState extends State<TagWrap> {
     await MessangingService.showStaticDialog(AddTagDialog(vocabulary: widget.vocabulary)).whenComplete(() => setState(() {}));
   }
 
-  _toggleTag(String tag) {
+  _toggleTag(Tag tag) {
     if (widget.vocabulary.tags.contains(tag)) {
       widget.vocabulary.deleteTag(tag);
     } else {
@@ -30,7 +31,7 @@ class _TagWrapState extends State<TagWrap> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> allTags = Provider.of<VocabularyProvider>(context).allTags;
+    final List<Tag> allTags = Provider.of<VocabularyProvider>(context).allTags;
     return Wrap(
       spacing: 8,
       runSpacing: -8,
@@ -39,7 +40,7 @@ class _TagWrapState extends State<TagWrap> {
         (index) => index == allTags.length
             ? IconButton(onPressed: () => _add(), icon: const Icon(Icons.add_rounded))
             : FilterChip(
-                label: Text(allTags.elementAt(index)),
+                label: Text(allTags.elementAt(index).name),
                 backgroundColor: widget.vocabulary.tags.contains(allTags.elementAt(index)) ? Theme.of(context).primaryColor : null,
                 onSelected: (enabled) => _toggleTag(allTags.elementAt(index)),
               ),

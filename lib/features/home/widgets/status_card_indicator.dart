@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/features/core/models/tag.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 
 class StatusCardIndicator extends StatefulWidget {
   final Widget parent;
-  final String tag;
+  final Tag? tag;
 
-  const StatusCardIndicator({super.key, required this.parent, this.tag = ""});
+  const StatusCardIndicator({super.key, required this.parent, this.tag});
 
   @override
   State<StatusCardIndicator> createState() => _StatusCardIndicatorState();
@@ -28,8 +29,8 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
   }
 
   List _getCurrentList() {
-    if (widget.tag.isNotEmpty) {
-      return Provider.of<VocabularyProvider>(context, listen: false).getAllToPractiseForTag(widget.tag);
+    if (widget.tag != null) {
+      return Provider.of<VocabularyProvider>(context, listen: false).getAllToPractiseForTag(widget.tag!);
     } else {
       return Provider.of<VocabularyProvider>(context, listen: false).allToPractise;
     }

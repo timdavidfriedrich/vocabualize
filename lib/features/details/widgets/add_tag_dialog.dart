@@ -1,4 +1,5 @@
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/features/core/models/tag.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 
 class AddTagDialog extends StatefulWidget {
@@ -15,7 +16,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
 
   void _submit() {
     /// ?: add directly to vocabulary, or just to list first and confirm with save
-    if (input.isNotEmpty) widget.vocabulary.addTag(input.trim());
+    if (input.isNotEmpty) widget.vocabulary.addTag(Tag(name: input.trim()));
     Navigator.pop(context);
   }
 

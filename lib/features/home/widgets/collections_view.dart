@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/features/core/models/tag.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/home/widgets/collection_card_button.dart';
 
@@ -10,8 +11,8 @@ class CollectionsView extends StatelessWidget {
   Widget build(BuildContext context) {
     int threshhold = 8;
 
-    List<List<String>> splitListInHalf(List<String> list) {
-      List<List<String>> result = [];
+    List<List<Tag>> splitListInHalf(List<Tag> list) {
+      List<List<Tag>> result = [];
       if (list.length >= threshhold) {
         int breakpoint = (list.length / 2).ceil();
         result.add(list.sublist(0, breakpoint));

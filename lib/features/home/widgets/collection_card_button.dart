@@ -4,11 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/collections/screens/collection_screen.dart';
 import 'package:vocabualize/features/collections/utils/collection_arguments.dart';
+import 'package:vocabualize/features/core/models/tag.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 
 class TagCardButton extends StatelessWidget {
-  final String tag;
+  final Tag tag;
 
   const TagCardButton({super.key, required this.tag});
 
@@ -62,7 +63,7 @@ class TagCardButton extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Text(
-                tag,
+                tag.name,
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: Provider.of<SettingsProvider>(context).areImagesDisabled ? TextAlign.center : TextAlign.start,
               ),
