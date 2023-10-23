@@ -111,7 +111,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   Future<File> _saveCameraFile(String imagePath) async {
     final String path = (await getApplicationDocumentsDirectory()).path;
 
-    final String formatedDate = DateFormat("yyyy-MM-dd_HH-mm-ss").format(vocabulary.creationDate);
+    final String formatedDate = DateFormat("yyyy-MM-dd_HH-mm-ss").format(vocabulary.created);
     final String vocabularyName = vocabulary.source.toLowerCase().replaceAll(Format.specialCharacters, "-");
     final String name = "${formatedDate}_$vocabularyName";
 

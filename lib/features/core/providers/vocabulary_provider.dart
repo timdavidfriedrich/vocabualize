@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vocabualize/features/core/models/tag.dart';
 import 'package:vocabualize/features/core/services/data/cloud_service.dart';
 import 'package:vocabualize/features/core/utils/format.dart';
 import 'package:vocabualize/features/core/models/language.dart';
@@ -15,7 +16,7 @@ class VocabularyProvider extends ChangeNotifier {
   List<Vocabulary> vocabularyList = [];
 
   bool contains(Vocabulary vocabulary) {
-    return vocabularyList.any((voc) => voc.creationDate.microsecondsSinceEpoch == vocabulary.creationDate.microsecondsSinceEpoch);
+    return vocabularyList.any((voc) => voc.created.microsecondsSinceEpoch == vocabulary.created.microsecondsSinceEpoch);
   }
 
   dynamic searchListForSource(String source) {
@@ -45,7 +46,7 @@ class VocabularyProvider extends ChangeNotifier {
     const int daysIncluded = 7;
     const int maxItems = 10;
     return vocabularyList
-        .where((voc) => voc.creationDate.isAfter(DateTime.now().subtract(const Duration(days: daysIncluded))))
+        .where((voc) => voc.created.isAfter(DateTime.now().subtract(const Duration(days: daysIncluded))))
         .toList()
         .reversed
         .take(maxItems)
@@ -56,23 +57,23 @@ class VocabularyProvider extends ChangeNotifier {
     return vocabularyList.where(
       (voc) {
         DateTime now = DateTime.now();
-        DateTime creationDate = voc.creationDate;
+        DateTime creationDate = voc.created;
         return DateTime(creationDate.year, creationDate.month, creationDate.day) == DateTime(now.year, now.month, now.day);
       },
     ).toList();
   }
 
-  List<String> get allTags {
-    List<String> result = [];
+  List<Tag> get allTags {
+    List<Tag> result = [];
     for (var vocabulary in vocabularyList) {
-      for (var tag in vocabulary.tags) {
+      for (Tag tag in vocabulary.tags) {
         if (!result.contains(tag)) result.add(tag);
       }
     }
     return result;
   }
 
-  List<Vocabulary> getVocabulariesByTag(String tag) {
+  List<Vocabulary> getVocabulariesByTag(Tag tag) {
     List<Vocabulary> result = [];
     try {
       result = vocabularyList.where((vocabulary) => vocabulary.tags.contains(tag)).toList();
@@ -82,7 +83,7 @@ class VocabularyProvider extends ChangeNotifier {
     return result;
   }
 
-  List<Vocabulary> getAllToPractiseForTag(String tag) {
+  List<Vocabulary> getAllToPractiseForTag(Tag tag) {
     List<Vocabulary> result = [];
     try {
       result = getVocabulariesByTag(tag).where((voc) => voc.nextDate.isBefore(DateTime.now())).toList();

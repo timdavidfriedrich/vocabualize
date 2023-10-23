@@ -10,7 +10,7 @@ class CardGenerator {
   static bool _hasBeenCreatedToday(Vocabulary vocabulary) {
     DateTime todayRaw = DateTime.now();
     DateTime today = DateTime(todayRaw.year, todayRaw.month, todayRaw.day);
-    DateTime creationDayRaw = vocabulary.creationDate;
+    DateTime creationDayRaw = vocabulary.created;
     DateTime creationDay = DateTime(creationDayRaw.year, creationDayRaw.month, creationDayRaw.day);
     if (creationDay.isAtSameMomentAs(today)) return true;
     return false;

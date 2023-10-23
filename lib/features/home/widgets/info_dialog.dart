@@ -44,7 +44,7 @@ class InfoDialog extends StatelessWidget {
                 children: [
                   // TODO: Replace with arb
                   const TextSpan(text: "Created:\n", style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: DateFormat("dd.MM.yyyy").format(vocabulary.creationDate)),
+                  TextSpan(text: DateFormat("dd.MM.yyyy").format(vocabulary.created)),
                 ],
               ),
             ),
