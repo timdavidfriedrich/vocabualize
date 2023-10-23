@@ -87,12 +87,12 @@ class VocabularyListTile extends StatelessWidget {
           title: Text(vocabulary.target),
           subtitle: Text(vocabulary.source, style: TextStyle(color: Theme.of(context).hintColor)),
           onLongPress: showVocabularyInfo,
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(onPressed: speak, icon: const Icon(Icons.volume_up)),
-              // IconButton(onPressed: showVocabularyInfo, icon: const Icon(Icons.info_outline)),
-            ],
+          trailing: IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+            onPressed: speak,
+            icon: const Icon(Icons.volume_up),
           ),
         ),
       ),
