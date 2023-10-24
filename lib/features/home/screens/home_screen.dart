@@ -2,6 +2,7 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
+import 'package:vocabualize/features/core/services/data/cloud_service.dart';
 import 'package:vocabualize/features/home/screens/home_empty_screen.dart';
 import 'package:vocabualize/features/home/widgets/collections_view.dart';
 import 'package:vocabualize/features/home/widgets/new_word_card.dart';
@@ -13,7 +14,6 @@ import 'package:vocabualize/features/record/widgets/record_grab.dart';
 import 'package:vocabualize/features/record/widgets/record_sheet.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/features/reports/utils/report_arguments.dart';
-import 'package:vocabualize/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/features/settings/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,15 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    super.initState();
     recordSheetController = RecordSheetController.instance;
-
-    // Provider.of<VocabularyProvider>(context, listen: false).init();
-    Provider.of<SettingsProvider>(context, listen: false).init();
+    CloudService.instance.init();
+    super.initState();
   }
 
   @override
   void dispose() {
+    CloudService.instance.cancelVocabularyStream();
     super.dispose();
   }
 
@@ -64,10 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
             grabbing: const RecordGrab(),
             grabbingHeight: 64,
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
-            child: FutureBuilder<List<Vocabulary>>(
-                future: Provider.of<VocabularyProvider>(context, listen: false).init(),
+            child: StreamBuilder<List<Vocabulary>>(
+                initialData: const [],
+                stream: CloudService.instance.vocabularyBroadcastStream,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) return const Center(child: CircularProgressIndicator.adaptive());
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator.adaptive());
+                  }
                   List<Vocabulary> vocabularyList = snapshot.data!;
                   return vocabularyList.isEmpty
                       ? const HomeEmptyScreen()

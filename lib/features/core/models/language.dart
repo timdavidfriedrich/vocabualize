@@ -1,10 +1,25 @@
+import 'package:uuid/uuid.dart';
+
 class Language {
+  final String id;
   String name;
   String translatorId;
   String speechToTextId;
   String textToSpeechId;
+  DateTime? created;
+  DateTime? updated;
 
-  Language({required this.name, required this.translatorId, required this.speechToTextId, required this.textToSpeechId});
+  Language({id, required this.name, required this.translatorId, required this.speechToTextId, required this.textToSpeechId})
+      : id = id ?? "language--${const Uuid().v4()}";
+
+  Language.fromJson(Map<String, dynamic> json)
+      : id = json['id'] ?? "empty_id",
+        name = json['name'],
+        translatorId = json['translatorId'],
+        speechToTextId = json['speechToTextId'],
+        textToSpeechId = json['textToSpeechId'],
+        created = json['created'] != null ? DateTime.parse(json['created']) : null,
+        updated = json['updated'] != null ? DateTime.parse(json['updated']) : null;
 
   /// TODO: apply device language for name (to have the correct language on init)
   /// => Maybe setting this at onboarding will be enough
@@ -22,5 +37,8 @@ class Language {
   }
 
   @override
-  String toString() => "name: $name, translatorId: $translatorId, speechToTextId: $speechToTextId, textToSpeechId: $textToSpeechId";
+  String toString() {
+    return "{id: $id, name: $name, translatorId: $translatorId, speechToTextId: $speechToTextId, "
+        "textToSpeechId: $textToSpeechId, created: $created, updated: $updated}";
+  }
 }

@@ -6,6 +6,7 @@ import 'package:log/log.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/features/core/models/tag.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/models/language.dart';
 import 'package:vocabualize/features/core/services/text/language_service.dart';
@@ -23,7 +24,7 @@ class Vocabulary {
   String _target = "";
   Language _sourceLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage;
   Language _targetLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).targetLanguage;
-  List<String> tags = [];
+  List<Tag> tags = [];
   PexelsModel? _pexelsModel;
   File? _cameraImageFile;
   String? firebaseImageUrl;
@@ -32,10 +33,11 @@ class Vocabulary {
   //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
   int interval = Provider.of<SettingsProvider>(Global.context, listen: false).initialNoviceInterval; // minutes
   double ease = Provider.of<SettingsProvider>(Global.context, listen: false).initialEase;
-  DateTime creationDate = DateTime.now();
+  DateTime created = DateTime.now();
+  DateTime? updated = DateTime.now();
   DateTime nextDate = DateTime.now();
 
-  Vocabulary({required String source, required String target, tags})
+  Vocabulary({required String source, required String target, List<Tag>? tags})
       : id = "vocabulary--${const Uuid().v4()}",
         _source = source,
         _target = target,
@@ -43,25 +45,29 @@ class Vocabulary {
 
   Vocabulary.empty() : id = "vocabulary--${const Uuid().v4()}";
 
-  Vocabulary.fromJson(Map<String, dynamic> json) : id = json['id'] ?? "" {
+  Vocabulary.fromJson(
+    Map<String, dynamic> json, {
+    List<Tag>? tags,
+    List<Language>? languages,
+  })  : id = json['id'] ?? "empty_id",
+        tags = tags ?? [],
+        _sourceLanguage = languages?.where((element) => element.id == json['sourceLanguage']).first ?? Language.defaultSource(),
+        _targetLanguage = languages?.where((element) => element.id == json['targetLanguage']).first ?? Language.defaultTarget() {
     _source = json['source'];
     _target = json['target'];
-    initSourceLanguage(json['sourceLanguage']);
-    initTargetLanguage(json['targetLanguage']);
-    for (dynamic voc in json["tags"]) {
-      tags.add(voc.toString());
-    }
+    // initSourceLanguage(json['sourceLanguage']);
+    // initTargetLanguage(json['targetLanguage']);
     _pexelsModel = PexelsModel.fromJson(json["pexelsModel"]);
     _cameraImageFile = json['cameraImageFile'] == null ? null : File(json['cameraImageFile']);
-    // ! NEW LINES START
+
     // firebaseImageUrl = json['firebaseImageUrl'] ?? "";
-    level.value = json['levelValue'] ?? 0;
+    level.value = json['levelValue'] ?? 0.0;
     isNovice = json['isNovice'] ?? false;
     interval = json['interval'] ?? 0;
     ease = json['ease'] ?? 0;
-    // creationDate = DateTime.parse(json['created'] ?? "2022-01-01 01:00:00.123Z"); // ! TODO: Placeholder
-    // nextDate = DateTime.parse(json['nextDate']);
-    // ! NEW LINES END
+    nextDate = json['nextDate'] != null && json['nextDate'] is String ? DateTime.parse(json['nextDate']) : DateTime.now();
+    created = json['created'] != null ? DateTime.parse(json['created']) : DateTime.now();
+    updated = json['updated'] != null ? DateTime.parse(json['updated']) : null;
   }
 
   initSourceLanguage(String translatorId) async {
@@ -78,7 +84,7 @@ class Vocabulary {
         'target': _target,
         'sourceLanguage': _sourceLanguage.translatorId,
         'targetLanguage': _targetLanguage.translatorId,
-        'tags': tags,
+        'tags': tags.map((e) => e.name).toList(),
         'pexelsModel': _pexelsModel?.toJson() ?? PexelsModel.fallback().toJson(),
         'cameraImageFile': _cameraImageFile?.path,
         'firebaseImageUrl': firebaseImageUrl,
@@ -87,7 +93,7 @@ class Vocabulary {
         //'noviceInterval': noviceInterval,
         'interval': interval,
         'ease': ease,
-        'creationDate': creationDate.millisecondsSinceEpoch,
+        'creationDate': created.millisecondsSinceEpoch,
         'nextDate': nextDate.millisecondsSinceEpoch,
       };
 
@@ -200,12 +206,12 @@ class Vocabulary {
     save();
   }
 
-  void addTag(String tag) {
+  void addTag(Tag tag) {
     tags.add(tag);
     save();
   }
 
-  void deleteTag(String tag) {
+  void deleteTag(Tag tag) {
     tags.remove(tag);
     save();
   }
@@ -242,6 +248,6 @@ class Vocabulary {
   @override
   String toString() {
     return "$id: \n\t'source': $_source, \n\t'target': $_target, \n\t'tags': $tags, \n\t'level': $level, \n\t'isNovice': $isNovice, " /*\n\t'noviceInterval': $noviceInterval*/
-        ", \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $creationDate, \n\t'nextDate': $nextDate, \n\t'sourceLanguage': $sourceLanguage, \n\t'targetLanguage': $targetLanguage";
+        ", \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $created, \n\t'nextDate': $nextDate, \n\t'sourceLanguage': $sourceLanguage, \n\t'targetLanguage': $targetLanguage";
   }
 }
