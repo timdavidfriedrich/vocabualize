@@ -28,9 +28,9 @@ class _RecordSheetState extends State<RecordSheet> {
         children: [
           Provider.of<ActiveProvider>(context).typeIsActive
               ? Container()
-              : Column(
+              : const Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     SizedBox(height: 48),
                     MicButton(),
                     SizedBox(height: 48),
