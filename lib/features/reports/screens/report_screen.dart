@@ -35,7 +35,13 @@ class _ReportScreenState extends State<ReportScreen> {
   void _submit() {
     Report report;
     if (reportType == ReportType.translation) {
-      report = TranslationReport(source: vocabulary!.source, target: vocabulary!.target, description: text);
+      report = TranslationReport(
+        source: vocabulary!.source,
+        target: vocabulary!.target,
+        sourceLanguage: vocabulary!.sourceLanguage,
+        targetLanguage: vocabulary!.targetLanguage,
+        description: text,
+      );
     } else {
       report = BugReport(description: text);
     }

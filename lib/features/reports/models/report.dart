@@ -4,6 +4,7 @@ import 'package:vocabualize/features/reports/utils/report_type.dart';
 import 'package:vocabualize/features/reports/models/translation_report.dart';
 
 class Report {
+  final bool done = false;
   final Timestamp date = Timestamp.now();
 
   Report();
