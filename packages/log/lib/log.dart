@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 
 class Log {
+  static String _debugCode = "\x1B[36m";
   static String _hintCode = "\x1B[32m";
   static String _warningCode = "\x1B[33m";
   static String _errorCode = "\x1B[31m";
@@ -11,6 +12,10 @@ class Log {
   static String _process(text) {
     String processedtext = text.toString().replaceAll("\n", "\n$_whiteCode");
     return "$_whiteCode$processedtext$_defaultCode";
+  }
+
+  static void debug(text) {
+    if (kDebugMode) log("$_debugCode DEBUG: ${_process(text)}");
   }
 
   static void hint(text) {
