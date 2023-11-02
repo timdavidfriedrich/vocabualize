@@ -15,9 +15,13 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   
+  # functionality
+  async: ^2.11.0
   cached_network_image: ^3.2.3
   device_info: ^2.0.3
+  flutter_image_compress: ^2.0.4
   flutter_local_notifications: ^15.1.1
+  flutter_native_timezone: ^2.0.0
   http: ^0.13.5
   image_picker: ^1.0.4
   intl: ^0.18.0
@@ -27,8 +31,13 @@ dependencies:
   provider: ^6.0.3
   rxdart: ^0.27.7
   shared_preferences: ^2.0.18
+  speech_to_text: ^6.1.1
+  text_to_speech: ^0.2.3
+  translator: ^0.1.7
   url_launcher: ^6.1.10
+  uuid: ^3.0.7
 
+  # styling
   avatar_glow: ^2.0.2
   cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.13.1
@@ -36,25 +45,20 @@ dependencies:
   flutter_svg: ^2.0.2
   google_fonts: ^4.0.3
   snapping_sheet: ^3.1.0
-  speech_to_text: ^6.1.1
-  text_to_speech: ^0.2.3
-  translator: ^0.1.7
 
+  # firebase
   cloud_firestore: ^4.9.2
   firebase_auth: ^4.10.0
+  firebase_cached_image: ^0.4.4
   firebase_core: ^2.16.0
   firebase_messaging: ^14.6.8
   firebase_storage: ^11.2.7
-  flutter_native_timezone: ^2.0.0
 
   # own packages
   log:
     path: ./packages/log
   teleport:
     path: ./packages/teleport
-  firebase_cached_image: ^0.4.4
-  uuid: ^3.0.7
-  flutter_image_compress: ^2.0.4
     
 
 dev_dependencies:
