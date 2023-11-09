@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/services/auth_service.dart';
-import 'package:vocabualize/features/onboarding/screens/select_language_screen.dart';
 
 class VerifyScreen extends StatefulWidget {
   const VerifyScreen({super.key});
@@ -24,12 +22,12 @@ class _VerifyScreenState extends State<VerifyScreen> {
   }
 
   void _reload() async {
-    await AuthService.reloadUser().whenComplete(() {
-      if (FirebaseAuth.instance.currentUser!.emailVerified) {
-        reloadTimer?.cancel();
-        Navigator.pushNamed(context, SelectLanguageScreen.routeName);
-      }
-    });
+    // await AuthService.instance.reloadUser().whenComplete(() {
+    //   if (FirebaseAuth.instance.currentUser!.emailVerified) {
+    //     reloadTimer?.cancel();
+    //     Navigator.pushNamed(context, SelectLanguageScreen.routeName);
+    //   }
+    // });
   }
 
   void _resetBlockTimer() {
@@ -38,7 +36,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
   }
 
   Future<void> _sendVerificationEmail() async {
-    AuthService.sendVerificationEmail();
+    AuthService.instance.sendVerificationEmail();
     setState(() => _sendButtonBlocked = true);
     _blockTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _secondsLeft -= 1);
