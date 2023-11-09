@@ -1,3 +1,4 @@
+import 'package:pocketbase/pocketbase.dart';
 import 'package:uuid/uuid.dart';
 
 class Tag {
@@ -8,11 +9,17 @@ class Tag {
 
   Tag({required this.name, String? id}) : id = id ?? "tag--${const Uuid().v4()}";
 
-  Tag.fromJson(Map<String, dynamic> json, {String? id, String? created, String? updated})
-      : id = id ?? json['id'] ?? "empty_id",
+  Tag.fromJson(Map<String, dynamic> json)
+      : id = json['id'] ?? "empty_id",
         name = json['name'],
-        created = created != null ? DateTime.parse(created) : null,
-        updated = updated != null ? DateTime.parse(updated) : null;
+        created = DateTime.tryParse(json['created']),
+        updated = DateTime.tryParse(json['updated']);
+
+  Tag.fromRecord(RecordModel recordModel)
+      : id = recordModel.id,
+        name = recordModel.data['name'],
+        created = DateTime.tryParse(recordModel.created),
+        updated = DateTime.tryParse(recordModel.updated);
 
   Tag.empty()
       : id = "tag--${const Uuid().v4()}",
@@ -20,6 +27,6 @@ class Tag {
 
   @override
   String toString() {
-    return "{id: $id, name: $name, created: $created, updated: $updated}";
+    return "Tag(id: $id, name: $name, created: $created, updated: $updated)";
   }
 }
