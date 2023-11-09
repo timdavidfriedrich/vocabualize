@@ -22,7 +22,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   late int _secondsLeft;
 
   Future<void> _sendPasswordResetEmail(String email) async {
-    AuthService.sendPasswordResetEmail(email);
+    AuthService.instance.sendPasswordResetEmail(email);
     setState(() => _sendButtonBlocked = true);
     _resetBlockTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _secondsLeft -= 1);

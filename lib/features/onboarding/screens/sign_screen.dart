@@ -29,7 +29,7 @@ class _SignScreenState extends State<SignScreen> {
   bool _isPasswordObscured = true;
 
   void _signIn() {
-    AuthService.signInWithEmailAndPassword(_email, _password);
+    AuthService.instance.signInWithEmailAndPassword(_email, _password);
     Navigator.pop(context);
   }
 
@@ -38,7 +38,7 @@ class _SignScreenState extends State<SignScreen> {
       MessangingService.showStaticDialog(const PasswordsDontMatchDialog());
       return;
     }
-    AuthService.createUserWithEmailAndPassword(_email, _password);
+    AuthService.instance.createUserWithEmailAndPassword(_email, _password);
     Navigator.pop(context);
   }
 
