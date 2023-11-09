@@ -1,3 +1,4 @@
+import 'package:pocketbase/pocketbase.dart';
 import 'package:uuid/uuid.dart';
 
 class Language {
@@ -21,6 +22,15 @@ class Language {
         created = json['created'] != null ? DateTime.parse(json['created']) : null,
         updated = json['updated'] != null ? DateTime.parse(json['updated']) : null;
 
+  Language.fromRecord(RecordModel recordModel)
+      : id = recordModel.id,
+        name = recordModel.data['name'] ?? "",
+        translatorId = recordModel.data['translatorId'] ?? "",
+        speechToTextId = recordModel.data['speechToTextId'] ?? "",
+        textToSpeechId = recordModel.data['textToSpeechId'] ?? "",
+        created = DateTime.tryParse(recordModel.created),
+        updated = DateTime.tryParse(recordModel.updated);
+
   /// TODO: apply device language for name (to have the correct language on init)
   /// => Maybe setting this at onboarding will be enough
   factory Language.defaultSource() => Language(name: "English", translatorId: "en", speechToTextId: "en_AU", textToSpeechId: "en-US");
@@ -38,7 +48,7 @@ class Language {
 
   @override
   String toString() {
-    return "{id: $id, name: $name, translatorId: $translatorId, speechToTextId: $speechToTextId, "
-        "textToSpeechId: $textToSpeechId, created: $created, updated: $updated}";
+    return "Language(id: $id, name: $name, translatorId: $translatorId, speechToTextId: $speechToTextId, "
+        "textToSpeechId: $textToSpeechId, created: $created, updated: $updated)";
   }
 }
