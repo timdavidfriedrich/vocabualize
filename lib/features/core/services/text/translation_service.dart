@@ -1,5 +1,5 @@
 import 'package:provider/provider.dart';
-import 'package:translator/translator.dart';
+import 'package:translator_plus/translator_plus.dart';
 import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/features/core/models/deepl_api/deepl_request.dart';
 import 'package:vocabualize/features/core/models/deepl_api/deepl_response.dart';
