@@ -28,18 +28,22 @@ class _SignScreenState extends State<SignScreen> {
   bool _isEmailValid = false;
   bool _isPasswordObscured = true;
 
-  void _signIn() {
-    AuthService.instance.signInWithEmailAndPassword(_email, _password);
-    Navigator.pop(context);
+  void _signIn() async {
+    bool wasSuccessful = await AuthService.instance.signInWithEmailAndPassword(_email, _password);
+    if (mounted && wasSuccessful) {
+      Navigator.pop(context);
+    }
   }
 
-  void _signUp() {
+  void _signUp() async {
     if (_password != _repeatedPassword) {
       MessangingService.showStaticDialog(const PasswordsDontMatchDialog());
       return;
     }
-    AuthService.instance.createUserWithEmailAndPassword(_email, _password);
-    Navigator.pop(context);
+    bool wasSuccessful = await AuthService.instance.createUserWithEmailAndPassword(_email, _password);
+    if (mounted && wasSuccessful) {
+      Navigator.pop(context);
+    }
   }
 
   void _updateEmail(String email) {
