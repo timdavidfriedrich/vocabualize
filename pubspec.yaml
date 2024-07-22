@@ -20,7 +20,7 @@ dependencies:
   cached_network_image: ^3.2.3
   device_info: ^2.0.3
   flutter_image_compress: ^2.0.4
-  flutter_local_notifications: ^15.1.1
+  flutter_local_notifications: ^17.2.1+2
   flutter_native_timezone: ^2.0.0
   http: ^1.1.0
   image_picker: ^1.0.4

@@ -1,3 +1,4 @@
+import 'package:log/log.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/models/app_user.dart';
 import 'package:vocabualize/features/core/services/data/cloud_service.dart';
@@ -15,6 +16,7 @@ class Root extends StatelessWidget {
     return StreamBuilder<AppUser?>(
       stream: UserStream.instance.stream,
       builder: (context, snapshot) {
+        Log.debug("userStream is ${snapshot.connectionState.name} with data: ${snapshot.data}");
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }

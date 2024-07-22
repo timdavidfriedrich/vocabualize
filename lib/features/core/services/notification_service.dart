@@ -42,11 +42,28 @@ class NotificationService {
       linux: linuxInitializationSettings,
     );
 
-    // * Request permission on Android 13+
+    // * Request permission on Android
     if (Platform.isAndroid) {
       var androidInfo = await DeviceInfoPlugin().androidInfo;
+      bool allowedExactAlarms = true;
+      bool allowedNotifications = true;
+
+      if (androidInfo.version.sdkInt >= 34) {
+        allowedExactAlarms = await _localNotifications
+                .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+                ?.requestExactAlarmsPermission() ??
+            false;
+      }
       if (androidInfo.version.sdkInt >= 33) {
-        _localNotifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
+        allowedNotifications = await _localNotifications
+                .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+                ?.requestNotificationsPermission() ??
+            false;
+      }
+      
+      if (!allowedExactAlarms || !allowedNotifications) {
+        Log.error("Notifications are not allowed.");
+        return;
       }
     }
 

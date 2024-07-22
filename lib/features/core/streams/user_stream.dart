@@ -1,15 +1,19 @@
 import 'package:async/async.dart';
 import 'package:log/log.dart';
+import 'package:pocketbase/pocketbase.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/features/core/models/app_user.dart';
 import 'package:vocabualize/features/core/services/auth_service.dart';
+import 'package:vocabualize/features/core/services/pocketbase_connection.dart';
 
 class UserStream {
   static final UserStream instance = UserStream();
 
   final AuthService _authService = AuthService.instance;
+
+  final PocketBase _pocketbase = PocketbaseConnection.instance.pocketbase;
 
   final StreamController<AppUser?> _localStreamController = StreamController<AppUser?>.broadcast();
   final StreamController<AppUser?> _cloudStreamController = StreamController<AppUser?>.broadcast();
@@ -30,31 +34,42 @@ class UserStream {
   }
 
   void _listen() {
-    _authService.authStream.map((event) {
+    var test = _pocketbase.authStore.onChange.map((event) {
       if (event.model == null) return null;
       return AppUser.fromRecord(event.model);
-    }).listen((user) {
-      _saveUserToLocalStorage(user);
-      _sinkCloudUserToStream(user);
-      Log.hint("UserStream: Cloud user changed to $user");
     });
+
+    test.forEach(testing);
+  }
+
+  Future<void> testing(AppUser? user) async {
+    Log.debug("HURENSOHN");
+    final previousAuthUser = await stream.firstOrNull;
+    // Log.error("previousAuthUser: $previousAuthUser");
+    Log.error("user: $user");
+    await _saveUserToLocalStorage(user);
+    // if (previousAuthUser != null && user != null) return;
+    _sinkCloudUserToStream(user);
+    Log.hint("UserStream: Cloud user changed to $user");
   }
 
   Stream<AppUser?> _getCombinedLocalAndCloudUserStream() {
-    return StreamGroup.merge([_localStreamController.stream, _cloudStreamController.stream]);
+    return StreamGroup.merge([_localStreamController.stream, _cloudStreamController.stream]).asBroadcastStream();
   }
 
-  Future<void> _saveUserToLocalStorage(user) async {
+  Future<void> _saveUserToLocalStorage(AppUser? user) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString('user', user?.toRawJson() ?? "");
+    await sharedPreferences.setString('user', user?.toRawJson() ?? "");
+    Log.debug("\"userStream\" (eigentlich nicht): $user saved to local storage.");
   }
 
-  void _sinkCloudUserToStream(user) {
+  void _sinkCloudUserToStream(AppUser? user) {
     _cloudStreamController.sink.add(user);
   }
 
-  void _sinkLocalUserToStream(user) {
+  void _sinkLocalUserToStream(AppUser? user) {
     _localStreamController.sink.add(user);
+    Log.debug("\"userStream\" (eigentlich nicht): $user loaded from local storage and sinked to user stream.");
   }
 
   Future<AppUser?> _getLocalUser() async {

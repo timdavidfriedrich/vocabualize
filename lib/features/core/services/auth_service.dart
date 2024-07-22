@@ -19,7 +19,6 @@ class AuthService {
   SecureSharedPref? _secureSharedPreferences;
 
   AuthStore get authStore => _pocketbase.authStore;
-  Stream<AuthStoreEvent> get authStream => _pocketbase.authStore.onChange;
 
   AuthService() {
     _loadLocalAuthStore();
@@ -31,8 +30,10 @@ class AuthService {
       save: (String data) async => _secureSharedPreferences?.putString('authStore', data, isEncrypted: true),
       initial: await _secureSharedPreferences?.getString('authStore', isEncrypted: true),
     );
-    Log.hint("Loadeded AuthStore from SecureSharedPreferences: $localAuthStore");
-    authStore.save(localAuthStore.token, localAuthStore.model);
+    Log.hint("Loadeded AuthStore from SecureSharedPreferences: ${localAuthStore.model}");
+    if (localAuthStore.model != null) {
+      authStore.save(localAuthStore.token, localAuthStore.model);
+    }
   }
 
   Future signInAnonymously() async {

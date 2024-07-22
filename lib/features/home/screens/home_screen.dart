@@ -39,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     recordSheetController = RecordSheetController.instance;
-    CloudService.instance.init();
     super.initState();
   }
 
@@ -64,12 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
             grabbingHeight: 64,
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
             child: StreamBuilder<List<Vocabulary>>(
-                initialData: const [],
                 stream: CloudService.instance.vocabularyBroadcastStream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator.adaptive());
                   }
+                  if (!snapshot.hasData) return const HomeEmptyScreen();
                   List<Vocabulary> vocabularyList = snapshot.data!;
                   return vocabularyList.isEmpty
                       ? const HomeEmptyScreen()
