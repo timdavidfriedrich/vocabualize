@@ -1,4 +1,5 @@
 import 'package:vocabualize/constants/asset_path.dart';
+import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/features/reports/utils/report_arguments.dart';
@@ -30,8 +31,7 @@ class HomeEmptyScreen extends StatelessWidget {
                 child: FittedBox(
                   alignment: Alignment.centerLeft,
                   fit: BoxFit.scaleDown,
-                  // TODO: Replace with arb
-                  child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge),
+                  child: Text(CommonConstants.appName, style: Theme.of(context).textTheme.headlineLarge),
                 ),
               ),
               const SizedBox(width: 16),

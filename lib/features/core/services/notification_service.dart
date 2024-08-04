@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
+import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/models/language.dart';
@@ -113,13 +114,13 @@ class NotificationService {
     );
   }
 
-  Future<void> showLocalNotification({int id = 0, String? title = "Vocabualize", String? body, String? payload}) async {
+  Future<void> showLocalNotification({int id = 0, String? title = CommonConstants.appName, String? body, String? payload}) async {
     return await _localNotifications.show(id, title, body, await _getLocalNotificationDetails(), payload: payload);
   }
 
   Future<void> scheduleLocalNotification({
     int id = 0,
-    String? title = "Vocabualize",
+    String? title = CommonConstants.appName,
     String? body,
     String? payload,
     TimeOfDay time = _defaultScheduleTime,
