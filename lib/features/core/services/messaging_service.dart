@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/features/core/widgets/root.dart';
+import 'package:vocabualize/features/core/widgets/start.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/core/widgets/disconnected_dialog.dart';
 import 'package:vocabualize/features/core/widgets/save_message_route.dart';
@@ -31,7 +31,7 @@ class MessangingService {
   }
 
   static Future<void> showSaveMessage(Vocabulary vocabulary) async {
-    Navigator.popUntil(Global.context, ModalRoute.withName(Root.routeName)); // required, pops all messages
+    Navigator.popUntil(Global.context, ModalRoute.withName(Start.routeName)); // required, pops all messages
     Navigator.push(Global.context, SaveMessageRoute(vocabulary: vocabulary));
   }
 

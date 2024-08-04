@@ -87,4 +87,13 @@ class AppUser {
   String toString() {
     return "AppUser(id: $id, name: $name, verified: $verified, created: $created, updated: $updated, lastLogin: $lastLogin)";
   }
+
+  @override
+  // ignore: hash_and_equals
+  operator ==(Object other) {
+    if (other is AppUser) {
+      return id == other.id;
+    }
+    return false;
+  }
 }

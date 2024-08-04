@@ -33,7 +33,7 @@ class CloudService {
   Future<bool> _init() async {
     try {
       await _subscribeToVocabularyChanges();
-      Log.debug("CloudService initialized");
+      Log.hint("CloudService initialized");
       return true;
     } catch (e) {
       Log.error("Could not initialize CloudService: $e");
@@ -56,7 +56,6 @@ class CloudService {
     // ! ERROR: StateError (Bad state: Cannot add new events after calling close) - only on first run
     // ! ERROR: => Maybe resolved, already? (because of new auth implementation)
     _vocabularyStreamController.sink.add(vocabularies);
-    Log.debug("Vocabulary data reloaded. (size: ${vocabularies.length})");
     Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList = vocabularies;
   }
 
@@ -69,12 +68,6 @@ class CloudService {
 
   Future<List<Language>> _fetchLanguages() async {
     final PocketBase pocketbase = await PocketbaseConnection.connect();
-    Log.debug(
-      "pb.authStore = "
-      "(isValid: ${pocketbase.authStore.isValid}, "
-      "model.id: ${pocketbase.authStore.model?.id}, "
-      "token: ${pocketbase.authStore.token.substring(0, 10)}...)",
-    );
     final languageRecords = await pocketbase.collection(_languagesCollectionName).getList();
     final test = languageRecords.items.map((e) => Language.fromRecord(e)).toList();
     return test;

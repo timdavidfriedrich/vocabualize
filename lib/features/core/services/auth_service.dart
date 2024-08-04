@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
 import 'package:vocabualize/features/core/services/messaging_service.dart';
@@ -12,8 +11,6 @@ class AuthService {
   static final AuthService instance = AuthService();
 
   final String _usersCollectionName = "users";
-
-  SharedPreferences? _sharedPreferences;
 
   Future signInAnonymously() async {
     // ? TODO: Implement signInAnonymously ?
@@ -59,7 +56,6 @@ class AuthService {
 
   Future<bool> signOut() async {
     try {
-      await _resetUserData();
       await _resetAuthStore();
       return true;
     } catch (e) {
@@ -73,10 +69,5 @@ class AuthService {
     final pocketbase = await PocketbaseConnection.connect();
     await secureStorage.write(key: 'authStore', value: "");
     pocketbase.authStore.clear();
-  }
-
-  Future<void> _resetUserData() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-    await _sharedPreferences?.setString('user', "");
   }
 }
