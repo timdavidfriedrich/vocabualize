@@ -1,5 +1,5 @@
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 
 class ReplaceVocabularyDialog extends StatelessWidget {
   final Vocabulary vocabulary;

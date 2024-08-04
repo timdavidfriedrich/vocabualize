@@ -1,8 +1,8 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
-import 'package:vocabualize/src/common/services/messaging_service.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/widgets/replace_vocabulary_dialog.dart';
 import 'package:vocabualize/src/features/record/services/record_service.dart';
 import 'package:vocabualize/src/features/reports/screens/report_screen.dart';
@@ -32,7 +32,7 @@ class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
       widget.vocabulary.target = input;
       Navigator.pop(context);
     } else {
-      bool hasClickedReplace = await MessangingService.showStaticDialog(ReplaceVocabularyDialog(vocabulary: widget.vocabulary));
+      bool hasClickedReplace = await HelperWidgets.showStaticDialog(ReplaceVocabularyDialog(vocabulary: widget.vocabulary));
       if (hasClickedReplace) {
         if (mounted) Provider.of<VocabularyProvider>(context, listen: false).remove(widget.vocabulary);
         RecordService.validateAndSave(source: input);

@@ -1,8 +1,8 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/services/data/cloud_service.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/reports/models/bug_report.dart';
 import 'package:vocabualize/src/features/reports/models/report.dart';
@@ -45,7 +45,7 @@ class _ReportScreenState extends State<ReportScreen> {
     } else {
       report = BugReport(description: text);
     }
-    CloudService.instance.sendReport(report);
+    RemoteDatabaseDataSource.instance.sendReport(report);
     Navigator.pop(context);
   }
 

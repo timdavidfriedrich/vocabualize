@@ -1,7 +1,7 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/src/common/services/messaging_service.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/src/features/home/widgets/info_dialog.dart';
@@ -22,7 +22,7 @@ class NewWordCard extends StatelessWidget {
               : BorderSide.none),
       color: Provider.of<SettingsProvider>(context).areImagesDisabled ? Theme.of(context).colorScheme.surface : null,
       onPressed: () => Navigator.pushNamed(context, DetailsScreen.routeName, arguments: DetailsScreenArguments(vocabulary: vocabulary)),
-      onLongPress: () => MessangingService.showStaticDialog(InfoDialog(vocabulary: vocabulary)),
+      onLongPress: () => HelperWidgets.showStaticDialog(InfoDialog(vocabulary: vocabulary)),
       padding: Provider.of<SettingsProvider>(context).areImagesDisabled ? const EdgeInsets.all(16.0) : const EdgeInsets.all(8.0),
       elevation: 0,
       disabledElevation: 0,

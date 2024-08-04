@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/features/collections/screens/collection_screen.dart';
-import 'package:vocabualize/src/common/widgets/start.dart';
-import 'package:vocabualize/src/common/services/notification_service.dart';
-import 'package:vocabualize/src/common/services/text/speech_to_text_service.dart';
+import 'package:vocabualize/src/common/presentation/widgets/start.dart';
+import 'package:vocabualize/src/common/data/data_sources/notification_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/speech_to_text_data_source.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/sign_screen.dart';
@@ -16,7 +16,7 @@ import 'package:vocabualize/src/features/onboarding/screens/select_language_scre
 import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_screen.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
@@ -27,8 +27,8 @@ import 'package:vocabualize/firebase_options.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  NotificationService.instance.init();
-  SpeechToTextService.instance.init();
+  NotificationDataSource.instance.init();
+  SpeechToTextDataSource.instance.init();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

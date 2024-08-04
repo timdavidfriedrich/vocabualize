@@ -12,13 +12,14 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
-import 'package:vocabualize/src/common/models/language.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
-class NotificationService {
-  static final NotificationService _instance = NotificationService();
-  static NotificationService get instance => _instance;
+// TODO ARCHITECTURE: Perhaps, split local and remote notifications into two classes and maybe even layers.
+class NotificationDataSource {
+  static final NotificationDataSource _instance = NotificationDataSource();
+  static NotificationDataSource get instance => _instance;
 
   static const TimeOfDay _defaultScheduleTime = TimeOfDay(hour: 13, minute: 0);
   final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();

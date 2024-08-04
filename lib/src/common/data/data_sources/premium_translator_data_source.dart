@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:log/log.dart';
 import 'package:vocabualize/constants/secrets/deepl_secrets.dart';
-import 'package:vocabualize/src/common/models/deepl_api/deepl_request.dart';
-import 'package:vocabualize/src/common/models/deepl_api/deepl_response.dart';
+import 'package:vocabualize/src/common/data/models/deepl_request.dart';
+import 'package:vocabualize/src/common/data/models/deepl_response.dart';
 
-class DeepLService {
+class PremiumTranslatorDataSource {
   Future<DeepLResponse?> translate(DeepLRequest deepLRequest) async {
     DeepLResponse? deepLResponse;
 

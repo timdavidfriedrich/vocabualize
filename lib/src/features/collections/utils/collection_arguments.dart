@@ -1,4 +1,4 @@
-import 'package:vocabualize/src/common/models/tag.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
 
 class CollectionScreenArguments {
   final Tag tag;

@@ -2,10 +2,10 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/src/features/collections/utils/collection_arguments.dart';
-import 'package:vocabualize/src/common/models/tag.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
-import 'package:vocabualize/src/common/services/data/cloud_service.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/home/widgets/status_card_indicator.dart';
 import 'package:vocabualize/src/features/home/widgets/vocabulary_list_tile.dart';
@@ -57,7 +57,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
             actions: [IconButton(icon: const Icon(Icons.edit_rounded), onPressed: () => _editTag())],
           ),
           body: StreamBuilder<List<Vocabulary>>(
-              stream: CloudService.instance.stream,
+              stream: RemoteDatabaseDataSource.instance.stream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator.adaptive());

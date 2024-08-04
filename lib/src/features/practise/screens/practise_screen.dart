@@ -2,12 +2,12 @@ import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
-import 'package:vocabualize/src/common/services/text/text_to_speech_service.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_source.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_done_screen.dart';
-import 'package:vocabualize/src/common/utils/answer.dart';
+import 'package:vocabualize/src/common/domain/entities/answer.dart';
 import 'package:vocabualize/src/features/practise/utils/practise_arguments.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
@@ -28,7 +28,7 @@ class _PractiseScreenState extends State<PractiseScreen> {
 
   bool isMultilingual = false;
 
-  TextToSpeechService tts = TextToSpeechService.instance;
+  TextToSpeechDataSource tts = TextToSpeechDataSource.instance;
 
   void _speak() {
     tts.stop;

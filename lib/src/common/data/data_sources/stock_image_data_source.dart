@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:vocabualize/src/common/models/pexels_model.dart';
+import 'package:vocabualize/src/common/data/models/pexels_model.dart';
 import 'package:vocabualize/constants/secrets/pexels_secrets.dart';
 
-class PexelsService {
+class StockImageDataSource {
   Future<List<PexelsModel>> getImages(String search) async {
     List<PexelsModel> imageModelList = [];
     Client client = Client();

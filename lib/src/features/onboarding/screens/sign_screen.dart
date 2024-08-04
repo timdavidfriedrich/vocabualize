@@ -1,8 +1,8 @@
 import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/services/auth_service.dart';
-import 'package:vocabualize/src/common/services/messaging_service.dart';
+import 'package:vocabualize/src/common/data/data_sources/authentication_data_source.dart';
+import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
 import 'package:vocabualize/src/features/onboarding/utils/email_validator.dart';
@@ -29,7 +29,7 @@ class _SignScreenState extends State<SignScreen> {
   bool _isPasswordObscured = true;
 
   void _signIn() async {
-    bool wasSuccessful = await AuthService.instance.signInWithEmailAndPassword(_email, _password);
+    bool wasSuccessful = await AuthenticationDataSource.instance.signInWithEmailAndPassword(_email, _password);
     if (mounted && wasSuccessful) {
       Navigator.pop(context);
     }
@@ -37,10 +37,10 @@ class _SignScreenState extends State<SignScreen> {
 
   void _signUp() async {
     if (_password != _repeatedPassword) {
-      MessangingService.showStaticDialog(const PasswordsDontMatchDialog());
+      HelperWidgets.showStaticDialog(const PasswordsDontMatchDialog());
       return;
     }
-    bool wasSuccessful = await AuthService.instance.createUserWithEmailAndPassword(_email, _password);
+    bool wasSuccessful = await AuthenticationDataSource.instance.createUserWithEmailAndPassword(_email, _password);
     if (mounted && wasSuccessful) {
       Navigator.pop(context);
     }

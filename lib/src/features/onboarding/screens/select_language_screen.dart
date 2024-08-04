@@ -1,8 +1,8 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/models/language.dart';
-import 'package:vocabualize/src/common/services/text/language_service.dart';
-import 'package:vocabualize/src/common/services/text/text_to_speech_service.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/data/repositories/language_repository.dart';
+import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_source.dart';
 import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
@@ -19,13 +19,13 @@ class SelectLanguageScreenState extends State<SelectLanguageScreen> {
   List<Language> languages = [];
 
   void _getLanguages() async {
-    languages = await LanguageService.getLangauges();
+    languages = await LanguageRepository.getLangauges();
   }
 
   void _submit(BuildContext context) {
     // TODO: Implement usage of signInAnonymously from AuthService
     // if (AuthService.instance.user == null) AuthService.instance.signInAnonymously();
-    TextToSpeechService.instance.setLanguage(Provider.of<SettingsProvider>(context, listen: false).targetLanguage);
+    TextToSpeechDataSource.instance.setLanguage(Provider.of<SettingsProvider>(context, listen: false).targetLanguage);
     Navigator.pop(context);
   }
 

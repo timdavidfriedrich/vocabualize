@@ -1,4 +1,4 @@
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 
 class DetailsScreenArguments {
   final Vocabulary vocabulary;

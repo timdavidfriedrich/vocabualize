@@ -7,14 +7,14 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/src/common/models/tag.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
-import 'package:vocabualize/src/common/models/language.dart';
-import 'package:vocabualize/src/common/services/text/language_service.dart';
-import 'package:vocabualize/src/common/models/level.dart';
-import 'package:vocabualize/src/common/services/messaging_service.dart';
-import 'package:vocabualize/src/common/models/pexels_model.dart';
-import 'package:vocabualize/src/common/utils/answer.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/data/repositories/language_repository.dart';
+import 'package:vocabualize/src/common/domain/entities/level.dart';
+import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/data/models/pexels_model.dart';
+import 'package:vocabualize/src/common/domain/entities/answer.dart';
 import 'package:vocabualize/src/features/practise/utils/date_calculator.dart';
 import 'package:vocabualize/src/features/record/widgets/duplicate_dialog.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
@@ -93,11 +93,11 @@ class Vocabulary {
         updated = DateTime.tryParse(recordModel.data['updated'] ?? "");
 
   initSourceLanguage(String translatorId) async {
-    _sourceLanguage = await LanguageService.findLanguage(translatorId: translatorId) ?? Language.defaultSource();
+    _sourceLanguage = await LanguageRepository.findLanguage(translatorId: translatorId) ?? Language.defaultSource();
   }
 
   initTargetLanguage(String translatorId) async {
-    _targetLanguage = await LanguageService.findLanguage(translatorId: translatorId) ?? Language.defaultTarget();
+    _targetLanguage = await LanguageRepository.findLanguage(translatorId: translatorId) ?? Language.defaultTarget();
   }
 
   Map<String, dynamic> toJson() => {
@@ -240,7 +240,7 @@ class Vocabulary {
   bool isValid() {
     bool sourceNotEmpty = source.isNotEmpty;
     bool alreadyInList = Provider.of<VocabularyProvider>(Global.context, listen: false).searchListForSource(source) != null;
-    if (alreadyInList) MessangingService.showStaticDialog(DuplicateDialog(vocabulary: this));
+    if (alreadyInList) HelperWidgets.showStaticDialog(DuplicateDialog(vocabulary: this));
     return sourceNotEmpty && !alreadyInList;
   }
 

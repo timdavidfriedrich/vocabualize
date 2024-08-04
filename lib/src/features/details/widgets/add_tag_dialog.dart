@@ -1,6 +1,6 @@
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/models/tag.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 
 class AddTagDialog extends StatefulWidget {
   final Vocabulary vocabulary;

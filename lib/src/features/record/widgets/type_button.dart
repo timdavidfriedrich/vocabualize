@@ -1,6 +1,6 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/src/common/services/messaging_service.dart';
+import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
 import 'package:vocabualize/src/features/record/services/record_service.dart';
 
@@ -28,7 +28,7 @@ class _TypeButtonState extends State<TypeButton> {
   }
 
   _submit() async {
-    if (!await MessangingService.isOnline()) return _cancel();
+    if (!await HelperWidgets.showDisconnectedDialogIfNecessary()) return _cancel();
     if (!mounted) return;
     RecordService.validateAndSave(source: currentSource);
     currentSource = "";

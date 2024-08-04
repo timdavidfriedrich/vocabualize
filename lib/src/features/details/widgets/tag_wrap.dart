@@ -1,9 +1,9 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/models/tag.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
-import 'package:vocabualize/src/common/services/messaging_service.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/widgets/add_tag_dialog.dart';
 
 class TagWrap extends StatefulWidget {
@@ -17,7 +17,7 @@ class TagWrap extends StatefulWidget {
 
 class _TagWrapState extends State<TagWrap> {
   _add() async {
-    await MessangingService.showStaticDialog(AddTagDialog(vocabulary: widget.vocabulary)).whenComplete(() => setState(() {}));
+    await HelperWidgets.showStaticDialog(AddTagDialog(vocabulary: widget.vocabulary)).whenComplete(() => setState(() {}));
   }
 
   _toggleTag(Tag tag) {

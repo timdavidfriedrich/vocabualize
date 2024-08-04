@@ -1,12 +1,13 @@
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/models/language.dart';
-import 'package:vocabualize/src/common/services/text/speech_to_text_service.dart';
-import 'package:vocabualize/src/common/services/text/text_to_speech_service.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/data/data_sources/speech_to_text_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_source.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
-class LanguageService {
+// TODO ARCHITECURAL: It's a repo, but some things should be moved to their data sources
+class LanguageRepository {
   static Future<Language?> findLanguage({String? translatorId, String? speechToTextId, String? textToSpeechId}) async {
     Language? result;
     List<Language> languages = await getLangauges();
@@ -49,7 +50,7 @@ class LanguageService {
   }
 
   static Future<Map<String, String>> getSpeechToTextMap() async {
-    final SpeechToTextService speech = SpeechToTextService.instance;
+    final SpeechToTextDataSource speech = SpeechToTextDataSource.instance;
     List<LocaleName> locales = await speech.getLocales();
 
     Map<String, String> result = {};
@@ -60,7 +61,7 @@ class LanguageService {
   }
 
   static Future<List<String>> getTextToSpeechIds() async {
-    final TextToSpeechService tts = TextToSpeechService.instance;
+    final TextToSpeechDataSource tts = TextToSpeechDataSource.instance;
     final result = await tts.getLanguages();
     return result;
   }

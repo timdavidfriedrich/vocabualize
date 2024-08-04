@@ -1,6 +1,6 @@
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/widgets/start.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/widgets/start.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/record/services/record_service.dart';
 
 class DuplicateDialog extends StatelessWidget {

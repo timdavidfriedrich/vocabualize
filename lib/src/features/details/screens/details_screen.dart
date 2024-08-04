@@ -10,14 +10,14 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
-import 'package:vocabualize/src/common/services/data/storage_service.dart';
-import 'package:vocabualize/src/common/utils/format.dart';
-import 'package:vocabualize/src/common/services/messaging_service.dart';
-import 'package:vocabualize/src/common/models/pexels_model.dart';
-import 'package:vocabualize/src/common/services/data/pexels_service.dart';
-import 'package:vocabualize/src/common/services/text/translation_service.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_image_storage_data_source.dart';
+import 'package:vocabualize/src/common/domain/utils/formatter.dart';
+import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/data/models/pexels_model.dart';
+import 'package:vocabualize/src/common/data/data_sources/stock_image_data_source.dart';
+import 'package:vocabualize/src/common/data/repositories/translator_repository.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/screens/details_disabled_images_screen.dart';
 import 'package:vocabualize/src/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/src/features/details/widgets/tag_wrap.dart';
@@ -61,8 +61,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _getPexels() async {
-    List<PexelsModel> pexelsModelList = await PexelsService().getImages(
-      await TranslationService.inEnglish(vocabulary.source, filtered: true),
+    List<PexelsModel> pexelsModelList = await StockImageDataSource().getImages(
+      await TranslatorRepository.translateToEnglish(vocabulary.source, filtered: true),
     );
     if (mounted) setState(() => _pexelsModelList = pexelsModelList);
   }
@@ -91,7 +91,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   Future<dynamic> _openCam() async {
-    final imageSource = await MessangingService.showStaticDialog(const CameraGalleryDialog());
+    final imageSource = await HelperWidgets.showStaticDialog(const CameraGalleryDialog());
     if (imageSource == null) return;
 
     XFile? image;
@@ -112,7 +112,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     final String path = (await getApplicationDocumentsDirectory()).path;
 
     final String formatedDate = DateFormat("yyyy-MM-dd_HH-mm-ss").format(vocabulary.created);
-    final String vocabularyName = vocabulary.source.toLowerCase().replaceAll(Format.specialCharacters, "-");
+    final String vocabularyName = vocabulary.source.toLowerCase().replaceAll(Formatter.specialCharacters, "-");
     final String name = "${formatedDate}_$vocabularyName";
 
     return await File(imagePath).copy("$path/$name");
@@ -132,7 +132,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   Future<void> _uploadImage() async {
     if (_cameraImageFile == null) return;
-    vocabulary.firebaseImageUrl = StorageService.instance.getVocabularyImageDownloadUrl(vocabulary: vocabulary);
+    vocabulary.firebaseImageUrl = RemoteImageStorageDataSource.instance.getVocabularyImageDownloadUrl(vocabulary: vocabulary);
     Uint8List imageData = await _cameraImageFile!.readAsBytes();
     Uint8List compressImageData = await FlutterImageCompress.compressWithList(
       imageData,
@@ -140,7 +140,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       minHeight: 800,
       minWidth: 800,
     );
-    await StorageService.instance.uploadVocabularyImage(vocabulary: vocabulary, imageData: compressImageData);
+    await RemoteImageStorageDataSource.instance.uploadVocabularyImage(vocabulary: vocabulary, imageData: compressImageData);
     // item.firebaseImageUrl = await StorageService.instance.getItemImageDownloadUrl(item: item);
   }
 

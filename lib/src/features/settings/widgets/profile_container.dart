@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/services/auth_service.dart';
+import 'package:vocabualize/src/common/data/data_sources/authentication_data_source.dart';
 
 class ProfileContainer extends StatefulWidget {
   const ProfileContainer({super.key});
@@ -11,7 +11,7 @@ class ProfileContainer extends StatefulWidget {
 
 class _ProfileContainerState extends State<ProfileContainer> {
   void _signOut() async {
-    await AuthService.instance.signOut();
+    await AuthenticationDataSource.instance.signOut();
     if (mounted) Navigator.pop(context);
   }
 

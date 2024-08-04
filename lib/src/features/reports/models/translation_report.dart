@@ -1,4 +1,4 @@
-import 'package:vocabualize/src/common/models/language.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/features/reports/models/report.dart';
 
 class TranslationReport extends Report {

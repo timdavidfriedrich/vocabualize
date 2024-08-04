@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocabualize/src/common/models/tag.dart';
-import 'package:vocabualize/src/common/services/data/cloud_service.dart';
-import 'package:vocabualize/src/common/utils/format.dart';
-import 'package:vocabualize/src/common/models/language.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
+import 'package:vocabualize/src/common/domain/utils/formatter.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 
 class VocabularyProvider extends ChangeNotifier {
   late SharedPreferences _prefs;
@@ -20,9 +20,9 @@ class VocabularyProvider extends ChangeNotifier {
   }
 
   dynamic searchListForSource(String source) {
-    bool containsSource = vocabularyList.any((voc) => Format.normalize(voc.source) == Format.normalize(source));
+    bool containsSource = vocabularyList.any((voc) => Formatter.normalize(voc.source) == Formatter.normalize(source));
     if (containsSource) {
-      return vocabularyList.firstWhere((voc) => Format.normalize(voc.source) == Format.normalize(source));
+      return vocabularyList.firstWhere((voc) => Formatter.normalize(voc.source) == Formatter.normalize(source));
     } else {
       return null;
     }
@@ -107,7 +107,7 @@ class VocabularyProvider extends ChangeNotifier {
   Future<void> save() async {
     _prefs = await SharedPreferences.getInstance();
     _prefs.setString("vocabularyList", json.encode(vocabularyList));
-    CloudService.instance.saveUserData();
+    RemoteDatabaseDataSource.instance.saveUserData();
     notifyListeners();
   }
 

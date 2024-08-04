@@ -1,13 +1,13 @@
 import 'package:galli_text_to_speech/text_to_speech.dart';
-import 'package:vocabualize/src/common/models/language.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 
-class TextToSpeechService {
-  TextToSpeechService._privateConstructor() : _tts = TextToSpeech();
+class TextToSpeechDataSource {
+  TextToSpeechDataSource._privateConstructor() : _tts = TextToSpeech();
 
-  static final TextToSpeechService _instance = TextToSpeechService._privateConstructor();
+  static final TextToSpeechDataSource _instance = TextToSpeechDataSource._privateConstructor();
 
-  static TextToSpeechService get instance => _instance;
+  static TextToSpeechDataSource get instance => _instance;
 
   final TextToSpeech _tts;
   bool isSpeaking = false;
@@ -32,7 +32,6 @@ class TextToSpeechService {
   }
 
   void stop() {
-    //_tts.pause();
     _tts.stop();
   }
 }

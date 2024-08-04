@@ -2,12 +2,12 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
-import 'package:vocabualize/src/common/services/data/cloud_service.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
 import 'package:vocabualize/src/features/home/screens/home_empty_screen.dart';
 import 'package:vocabualize/src/features/home/widgets/collections_view.dart';
 import 'package:vocabualize/src/features/home/widgets/new_word_card.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/features/home/widgets/status_card.dart';
 import 'package:vocabualize/src/features/home/widgets/vocabulary_list_tile.dart';
 import 'package:vocabualize/src/features/record/utils/record_sheet_controller.dart';
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    CloudService.instance.dispose();
+    RemoteDatabaseDataSource.instance.dispose();
     super.dispose();
   }
 
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             grabbingHeight: 64,
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
             child: StreamBuilder<List<Vocabulary>>(
-                stream: CloudService.instance.stream,
+                stream: RemoteDatabaseDataSource.instance.stream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator.adaptive());

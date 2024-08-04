@@ -1,20 +1,21 @@
 import 'dart:async';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/global.dart';
-import 'package:vocabualize/src/common/models/app_user.dart';
-import 'package:vocabualize/src/common/models/language.dart';
-import 'package:vocabualize/src/common/models/tag.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
-import 'package:vocabualize/src/common/services/pocketbase_connection.dart';
+import 'package:vocabualize/constants/secrets/pocketbase_secrets.dart';
+import 'package:vocabualize/src/common/domain/entities/app_user.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/features/reports/models/report.dart';
 import 'package:vocabualize/src/features/reports/models/translation_report.dart';
 
-class CloudService {
-  static CloudService instance = CloudService();
+class RemoteDatabaseDataSource {
+  static RemoteDatabaseDataSource instance = RemoteDatabaseDataSource();
 
   final String _vocabulariesCollectionName = "vocabularies";
   final String _languagesCollectionName = "languages";
@@ -29,7 +30,7 @@ class CloudService {
     _streamController.close();
   }
 
-  CloudService() {
+  RemoteDatabaseDataSource() {
     _init();
   }
 
@@ -45,13 +46,29 @@ class CloudService {
   }
 
   Future<void> _subscribeToVocabularyChanges() async {
-    final PocketBase pocketbase = await PocketbaseConnection.connect();
+    final PocketBase pocketbase = await RemoteDatabaseDataSource.getConnection();
     pocketbase.collection(_vocabulariesCollectionName).subscribe("*", (event) async {
       if (event.record?.data["user"] != AppUser.instance.id) return;
       await loadData();
       // TODO: Only fetch the changed vocabulary
       Log.hint("Vocabulary cloud data changed (id: ${event.record?.id ?? "unknown"}).");
     });
+  }
+
+  static PocketBase? _pocketBase;
+  static Future<PocketBase> getConnection() async {
+    FlutterSecureStorage? secureStorage = const FlutterSecureStorage();
+    if (_pocketBase == null) {
+      return _pocketBase = PocketBase(
+        PocketbaseSecrets.databaseUrl,
+        authStore: AsyncAuthStore(
+          save: (String data) async => secureStorage.write(key: 'authStore', value: data),
+          initial: await secureStorage.read(key: 'authStore'),
+        ),
+      );
+    } else {
+      return _pocketBase!;
+    }
   }
 
   Future<void> loadData() async {
@@ -72,14 +89,14 @@ class CloudService {
   }
 
   Future<List<Language>> _fetchLanguages() async {
-    final PocketBase pocketbase = await PocketbaseConnection.connect();
+    final PocketBase pocketbase = await RemoteDatabaseDataSource.getConnection();
     final languageRecords = await pocketbase.collection(_languagesCollectionName).getList();
     final test = languageRecords.items.map((e) => Language.fromRecord(e)).toList();
     return test;
   }
 
   Future<List<Tag>> _fetchTags() async {
-    final PocketBase pocketbase = await PocketbaseConnection.connect();
+    final PocketBase pocketbase = await RemoteDatabaseDataSource.getConnection();
     final String userFilter = "user=\"${AppUser.instance.id}\"";
     final tagsRecords = await pocketbase.collection(_tagsCollectionName).getList(filter: userFilter);
     final test = tagsRecords.items.map((e) => Tag.fromRecord(e)).toList();
@@ -87,7 +104,7 @@ class CloudService {
   }
 
   Future<List<Vocabulary>> _fetchVocabularies({List<Tag>? tags, List<Language>? languages}) async {
-    final PocketBase pocketbase = await PocketbaseConnection.connect();
+    final PocketBase pocketbase = await RemoteDatabaseDataSource.getConnection();
     final String userFilter = "user=\"${AppUser.instance.id}\"";
     final vocabularyRecords = await pocketbase.collection(_vocabulariesCollectionName).getList(filter: userFilter);
     final test = vocabularyRecords.items
@@ -109,7 +126,7 @@ class CloudService {
   }
 
   Future sendReport(Report report) async {
-    final PocketBase pocketbase = await PocketbaseConnection.connect();
+    final PocketBase pocketbase = await RemoteDatabaseDataSource.getConnection();
     final collectionName = report is TranslationReport ? _translationReportCollectionName : _bugReportCollectionName;
     await pocketbase.collection(collectionName).create(body: report.toJson());
   }

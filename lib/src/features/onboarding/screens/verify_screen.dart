@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/services/auth_service.dart';
+import 'package:vocabualize/src/common/data/data_sources/authentication_data_source.dart';
 
 class VerifyScreen extends StatefulWidget {
   const VerifyScreen({super.key});
@@ -36,7 +36,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
   }
 
   Future<void> _sendVerificationEmail() async {
-    AuthService.instance.sendVerificationEmail();
+    AuthenticationDataSource.instance.sendVerificationEmail();
     setState(() => _sendButtonBlocked = true);
     _blockTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _secondsLeft -= 1);

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocabualize/src/common/models/language.dart';
-import 'package:vocabualize/src/common/services/text/language_service.dart';
-import 'package:vocabualize/src/common/services/notification_service.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/data/repositories/language_repository.dart';
+import 'package:vocabualize/src/common/data/data_sources/notification_data_source.dart';
 
 class SettingsProvider extends ChangeNotifier {
   late SharedPreferences prefs;
@@ -98,14 +98,14 @@ class SettingsProvider extends ChangeNotifier {
 
   set gatherNotificationTime(TimeOfDay gatherNotificationTime) {
     _gatherNotificationTime = gatherNotificationTime;
-    NotificationService.instance.scheduleNotifications();
+    NotificationDataSource.instance.scheduleNotifications();
     save();
     notifyListeners();
   }
 
   set practiseNotificationTime(TimeOfDay practiseNotificationTime) {
     _practiseNotificationTime = practiseNotificationTime;
-    NotificationService.instance.scheduleNotifications();
+    NotificationDataSource.instance.scheduleNotifications();
     save();
     notifyListeners();
   }
@@ -152,10 +152,10 @@ class SettingsProvider extends ChangeNotifier {
     Language defaultTarget = Language.defaultTarget();
 
     if (prefs.getString("sourceLanguage") != null) {
-      _sourceLanguage = await LanguageService.findLanguage(translatorId: prefs.getString("sourceLanguage")) ?? defaultSource;
+      _sourceLanguage = await LanguageRepository.findLanguage(translatorId: prefs.getString("sourceLanguage")) ?? defaultSource;
     }
     if (prefs.getString("targetLanguage") != null) {
-      _targetLanguage = await LanguageService.findLanguage(translatorId: prefs.getString("targetLanguage")) ?? defaultTarget;
+      _targetLanguage = await LanguageRepository.findLanguage(translatorId: prefs.getString("targetLanguage")) ?? defaultTarget;
     }
     _areImagesEnabled = prefs.getBool("areImagesEnabled") ?? _areImagesEnabled;
     _useDeepL = prefs.getBool("useDeepL") ?? _useDeepL;

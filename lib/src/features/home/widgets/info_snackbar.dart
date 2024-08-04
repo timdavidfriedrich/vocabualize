@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 
 class InfoSnackBarContent extends StatelessWidget {
   final Vocabulary vocabulary;

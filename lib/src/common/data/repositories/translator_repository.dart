@@ -1,16 +1,17 @@
 import 'package:provider/provider.dart';
 import 'package:translator_plus/translator_plus.dart';
 import 'package:vocabualize/constants/global.dart';
-import 'package:vocabualize/src/common/models/deepl_api/deepl_request.dart';
-import 'package:vocabualize/src/common/models/deepl_api/deepl_response.dart';
-import 'package:vocabualize/src/common/models/deepl_api/deepl_service.dart';
+import 'package:vocabualize/src/common/data/models/deepl_request.dart';
+import 'package:vocabualize/src/common/data/models/deepl_response.dart';
+import 'package:vocabualize/src/common/data/data_sources/premium_translator_data_source.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
-class TranslationService {
+// TODO ARCHITECTURE: It's a repo, but some deeper things should be moved other files like mappers and data sources (e.g. google translator)
+class TranslatorRepository {
   static final _googleTranslator = GoogleTranslator();
-  static final _deeplTranslator = DeepLService();
+  static final _deeplTranslator = PremiumTranslatorDataSource();
 
-  static Future<String> inEnglish(String source, {bool filtered = false}) async {
+  static Future<String> translateToEnglish(String source, {bool filtered = false}) async {
     List<String> articles = ["the", "a", "an"];
     String result = await translate(source, targetLanguageId: "en");
     if (filtered) {

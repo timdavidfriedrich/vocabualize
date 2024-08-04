@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 
 class AppUser {
   static AppUser instance = AppUser();

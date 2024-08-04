@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/models/tag.dart';
-import 'package:vocabualize/src/common/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 
 class StatusCardIndicator extends StatefulWidget {
   final Widget parent;

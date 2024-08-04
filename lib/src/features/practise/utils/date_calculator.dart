@@ -1,8 +1,8 @@
 import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/global.dart';
-import 'package:vocabualize/src/common/models/vocabulary.dart';
-import 'package:vocabualize/src/common/utils/answer.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/answer.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
 class DateCalculator {
