@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:log/log.dart';
-import 'package:vocabualize/constants/secrets/deepl_secret.dart';
+import 'package:vocabualize/constants/secrets/deepl_secrets.dart';
 import 'package:vocabualize/features/core/models/deepl_api/deepl_request.dart';
 import 'package:vocabualize/features/core/models/deepl_api/deepl_response.dart';
 
@@ -14,7 +14,7 @@ class DeepLService {
     String url = "https://api-free.deepl.com/v2/translate";
 
     Map<String, String>? headers = {
-      HttpHeaders.authorizationHeader: "DeepL-Auth-Key ${DeepLSecret.deepl}",
+      HttpHeaders.authorizationHeader: "DeepL-Auth-Key ${DeepLSecrets.apiKey}",
       HttpHeaders.acceptCharsetHeader: "UTF-8",
     };
 
