@@ -25,7 +25,7 @@ class AuthService {
       return true;
     } catch (e) {
       MessangingService.showStaticDialog(AlertDialog.adaptive(content: Text(e.toString())));
-      Log.error("Could not sign in with passwort: $e");
+      Log.error("Failed to sign in with passwort.", exception: e);
       return false;
     }
   }
@@ -41,7 +41,7 @@ class AuthService {
       return true;
     } catch (e) {
       MessangingService.showStaticDialog(AlertDialog.adaptive(content: Text(e.toString())));
-      Log.error("Could not create user with email and password: $e");
+      Log.error("Failed to create user with email and password.", exception: e);
       return false;
     }
   }
@@ -59,7 +59,7 @@ class AuthService {
       await _resetAuthStore();
       return true;
     } catch (e) {
-      Log.error("Could not sign out: $e");
+      Log.error("Failed to sign out.", exception: e);
       return false;
     }
   }

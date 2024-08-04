@@ -99,7 +99,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     try {
       image = await ImagePicker().pickImage(source: imageSource);
     } catch (e) {
-      Log.error(e);
+      Log.error("Failed to open camera or gallery.", exception: e);
     }
 
     if (image == null) return;

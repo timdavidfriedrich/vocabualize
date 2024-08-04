@@ -63,7 +63,7 @@ class NotificationService {
       }
 
       if (!allowedExactAlarms || !allowedNotifications) {
-        Log.error("Notifications are not allowed.");
+        Log.warning("Notification permissions got rejected.");
         return;
       }
     }

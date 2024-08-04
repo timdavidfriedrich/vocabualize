@@ -154,7 +154,7 @@ class Vocabulary {
       );
       return provider;
     } catch (e) {
-      Log.error(e);
+      Log.error("Failed to provide an image for vocabualary.", exception: e);
       return NetworkImage(PexelsModel.fallback().url);
     }
   }

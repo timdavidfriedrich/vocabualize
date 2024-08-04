@@ -31,8 +31,8 @@ class SpeechToTextService {
           _stt.stop;
         }
       },
-      onError: (error) async {
-        Log.error("[STT] ${error.errorMsg}");
+      onError: (e) async {
+        Log.error("Failed to initialize speech to text service.", exception: e);
         Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
 
         _stt.stop;

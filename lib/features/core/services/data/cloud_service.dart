@@ -39,7 +39,7 @@ class CloudService {
       Log.hint("CloudService initialized");
       return true;
     } catch (e) {
-      Log.error("Could not initialize CloudService: $e");
+      Log.error("Failed to initialize CloudService.", exception: e);
       return false;
     }
   }

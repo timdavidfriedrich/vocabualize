@@ -17,18 +17,11 @@ class StorageService {
     try {
       await _getImageRefOfVocabulary(vocabulary).putData(imageData);
     } catch (e) {
-      Log.error(e);
+      Log.error("Failed to upload image for vocabulary ${vocabulary.source} (${vocabulary.id}).", exception: e);
     }
   }
 
   String getVocabularyImageDownloadUrl({required Vocabulary vocabulary}) {
-    // try {
-    //   final String downloadUrl = await getImageRefOfItem(item).getDownloadURL();
-    //   return downloadUrl;
-    // } catch (e) {
-    //   Log.error(e);
-    //   return null;
-    // }
     return "gs://$_bucketName/${_getImageRefOfVocabulary(vocabulary).fullPath}";
   }
 
@@ -37,7 +30,7 @@ class StorageService {
       final Uint8List? imageData = await _getImageRefOfVocabulary(vocabulary).getData();
       return imageData;
     } catch (e) {
-      Log.error(e);
+      Log.error("Failed to download image for vocabulary ${vocabulary.source} (${vocabulary.id}).", exception: e);
       return null;
     }
   }
