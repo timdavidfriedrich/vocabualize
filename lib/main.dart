@@ -39,7 +39,7 @@ Future main() async {
 }
 
 class Vocabualize extends StatelessWidget {
-  const Vocabualize({Key? key}) : super(key: key);
+  const Vocabualize({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:secure_shared_preferences/secure_shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 
@@ -16,23 +16,21 @@ class AuthService {
   final String _usersCollectionName = "users";
 
   SharedPreferences? _sharedPreferences;
-  SecureSharedPref? _secureSharedPreferences;
-
-  AuthStore get authStore => _pocketbase.authStore;
+  FlutterSecureStorage? _secureStorage;
 
   AuthService() {
     _loadLocalAuthStore();
   }
 
   Future<void> _loadLocalAuthStore() async {
-    _secureSharedPreferences = await SecureSharedPref.getInstance();
+    _secureStorage = const FlutterSecureStorage();
     AuthStore localAuthStore = AsyncAuthStore(
-      save: (String data) async => _secureSharedPreferences?.putString('authStore', data, isEncrypted: true),
-      initial: await _secureSharedPreferences?.getString('authStore', isEncrypted: true),
+      save: (String data) async => _secureStorage?.write(key: 'authStore', value: data),
+      initial: await _secureStorage?.read(key: 'authStore'),
     );
     Log.hint("Loadeded AuthStore from SecureSharedPreferences: ${localAuthStore.model}");
     if (localAuthStore.model != null) {
-      authStore.save(localAuthStore.token, localAuthStore.model);
+      _pocketbase.authStore.save(localAuthStore.token, localAuthStore.model);
     }
   }
 
@@ -43,7 +41,7 @@ class AuthService {
   Future<bool> signInWithEmailAndPassword(String email, String password) async {
     try {
       final RecordAuth authData = await _pocketbase.collection(_usersCollectionName).authWithPassword(email, password);
-      authStore.save(authData.token, authData.record);
+      _pocketbase.authStore.save(authData.token, authData.record);
       Log.hint("Signed in with email and password (AuthData: $authData)");
       return true;
     } catch (e) {
@@ -88,9 +86,9 @@ class AuthService {
   }
 
   Future<void> _resetAuthStore() async {
-    _secureSharedPreferences = await SecureSharedPref.getInstance();
-    await _secureSharedPreferences?.putString('authStore', "", isEncrypted: true);
-    authStore.clear();
+    _secureStorage = const FlutterSecureStorage();
+    await _secureStorage?.write(key: 'authStore', value: "");
+    _pocketbase.authStore.clear();
   }
 
   Future<void> _resetUserData() async {

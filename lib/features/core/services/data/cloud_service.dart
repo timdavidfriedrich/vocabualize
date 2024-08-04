@@ -67,6 +67,9 @@ class CloudService {
   }
 
   Future<List<Language>> _fetchLanguages() async {
+    Log.debug("pb.authStore.isValid = ${_pocketbase.authStore.isValid}");
+    Log.debug("pb.authStore.token = ${_pocketbase.authStore.token}");
+    Log.debug("pb.authStore.model.id = ${_pocketbase.authStore.model?.id}");
     final languageRecords = await _pocketbase.collection(_languagesCollectionName).getList();
     final test = languageRecords.items.map((e) => Language.fromRecord(e)).toList();
     Log.debug("test languageRecords: $test");

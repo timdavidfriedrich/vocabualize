@@ -149,8 +149,7 @@ class Vocabulary {
       ImageProvider? provider = FirebaseImageProvider(
         FirebaseUrl(firebaseImageUrl!),
         options: const CacheOptions(
-          checkForMetadataChange: false,
-          metadataRefreshInBackground: false,
+          checkIfFileUpdatedOnServer: false,
         ),
       );
       return provider;

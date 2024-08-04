@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/models/language.dart';
@@ -60,7 +60,7 @@ class NotificationService {
                 ?.requestNotificationsPermission() ??
             false;
       }
-      
+
       if (!allowedExactAlarms || !allowedNotifications) {
         Log.error("Notifications are not allowed.");
         return;
@@ -82,7 +82,7 @@ class NotificationService {
 
   Future<void> _initTimeZone() async {
     tz.initializeTimeZones();
-    final locationName = await FlutterNativeTimezone.getLocalTimezone();
+    final locationName = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(locationName));
   }
 

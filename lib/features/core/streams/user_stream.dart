@@ -44,7 +44,7 @@ class UserStream {
 
   Future<void> testing(AppUser? user) async {
     Log.debug("HURENSOHN");
-    final previousAuthUser = await stream.firstOrNull;
+    final previousAuthUser = stream.firstOrNull;
     // Log.error("previousAuthUser: $previousAuthUser");
     Log.error("user: $user");
     await _saveUserToLocalStorage(user);
