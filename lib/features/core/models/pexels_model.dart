@@ -9,8 +9,7 @@ class PexelsModel {
   String? avgColor;
   Map<String, dynamic> src;
 
-  static const String _fallbackUrl =
-      "https://raw.githubusercontent.com/koehlersimon/fallback/master/Resources/Public/Images/placeholder.jpg";
+  static const String _fallbackUrl = "https://fakeimg.pl/600x400/dbdbdb/dbdbdb";
 
   PexelsModel({
     required this.id,

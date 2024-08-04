@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_cached_image/firebase_cached_image.dart';
 import 'package:log/log.dart';
+import 'package:pocketbase/pocketbase.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
@@ -70,6 +71,27 @@ class Vocabulary {
     updated = json['updated'] != null ? DateTime.parse(json['updated']) : null;
   }
 
+  Vocabulary.fromRecord(
+    RecordModel recordModel, {
+    List<Tag>? tags,
+    List<Language>? languages,
+  })  : id = recordModel.id,
+        _source = recordModel.data['source'],
+        _target = recordModel.data['target'],
+        _sourceLanguage = languages?.where((element) => element.id == recordModel.data['sourceLanguage']).first ?? Language.defaultSource(),
+        _targetLanguage = languages?.where((element) => element.id == recordModel.data['targetLanguage']).first ?? Language.defaultTarget(),
+        tags = tags ?? [],
+        _pexelsModel = PexelsModel.fromJson(recordModel.data['pexelsModel']),
+        _cameraImageFile = recordModel.data['cameraImageFile'] == null ? null : File(recordModel.data['cameraImageFile']),
+        // firebaseImageUrl = recordModel.data['firebaseImageUrl'],
+        // level.value = recordModel.data['levelValue'] ?? 0.0,
+        isNovice = recordModel.data['isNovice'] ?? false,
+        interval = recordModel.data['interval'] ?? 0,
+        ease = recordModel.data['ease'] ?? 0,
+        nextDate = DateTime.tryParse(recordModel.data['nextDate'] ?? "") ?? DateTime.now(),
+        created = DateTime.tryParse(recordModel.data['created'] ?? "") ?? DateTime.now(),
+        updated = DateTime.tryParse(recordModel.data['updated'] ?? "");
+
   initSourceLanguage(String translatorId) async {
     _sourceLanguage = await LanguageService.findLanguage(translatorId: translatorId) ?? Language.defaultSource();
   }
@@ -127,13 +149,12 @@ class Vocabulary {
       ImageProvider? provider = FirebaseImageProvider(
         FirebaseUrl(firebaseImageUrl!),
         options: const CacheOptions(
-          checkForMetadataChange: false,
-          metadataRefreshInBackground: false,
+          checkIfFileUpdatedOnServer: false,
         ),
       );
       return provider;
     } catch (e) {
-      Log.error(e);
+      Log.error("Failed to provide an image for vocabualary.", exception: e);
       return NetworkImage(PexelsModel.fallback().url);
     }
   }

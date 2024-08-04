@@ -2,7 +2,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/widgets/root.dart';
+import 'package:vocabualize/features/core/widgets/start.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
 import 'package:vocabualize/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/features/details/widgets/tag_wrap.dart';
@@ -25,7 +25,7 @@ class _DetailsDisabledImagesScreenState extends State<DetailsDisabledImagesScree
 
   void _delete() {
     Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
-    Navigator.pushNamed(context, Root.routeName);
+    Navigator.pushNamed(context, Start.routeName);
   }
 
   void _navigateToSettings() async {

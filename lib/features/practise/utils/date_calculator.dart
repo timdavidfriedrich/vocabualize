@@ -47,7 +47,7 @@ class DateCalculator {
         vocabulary.level.add(easyLevelFactor);
         break;
       default:
-        Log.error("Answer error. Wrong difficulty.");
+        Log.error("Unknown answer type: $answer");
     }
 
     if (vocabulary.isNovice &&

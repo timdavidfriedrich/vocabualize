@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
-import 'package:vocabualize/features/core/widgets/root.dart';
+import 'package:vocabualize/features/core/widgets/start.dart';
 import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/core/services/text/translation_service.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
@@ -14,7 +14,7 @@ class RecordService {
     RecordSheetController recordSheetController = RecordSheetController.instance;
     recordSheetController.hide();
     Provider.of<VocabularyProvider>(Global.context, listen: false).add(vocabulary).whenComplete(() {
-      Navigator.popUntil(Global.context, ModalRoute.withName(Root.routeName)); // Pop des LoadingDialogs
+      Navigator.popUntil(Global.context, ModalRoute.withName(Start.routeName)); // Pop des LoadingDialogs
       Navigator.pushNamed(Global.context, DetailsScreen.routeName, arguments: DetailsScreenArguments(vocabulary: vocabulary));
     });
   }

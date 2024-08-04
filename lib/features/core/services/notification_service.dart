@@ -1,15 +1,16 @@
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/core/providers/vocabulary_provider.dart';
 import 'package:vocabualize/features/core/models/language.dart';
@@ -42,11 +43,28 @@ class NotificationService {
       linux: linuxInitializationSettings,
     );
 
-    // * Request permission on Android 13+
+    // * Request permission on Android
     if (Platform.isAndroid) {
       var androidInfo = await DeviceInfoPlugin().androidInfo;
+      bool allowedExactAlarms = true;
+      bool allowedNotifications = true;
+
+      if (androidInfo.version.sdkInt >= 34) {
+        allowedExactAlarms = await _localNotifications
+                .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+                ?.requestExactAlarmsPermission() ??
+            false;
+      }
       if (androidInfo.version.sdkInt >= 33) {
-        _localNotifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
+        allowedNotifications = await _localNotifications
+                .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+                ?.requestNotificationsPermission() ??
+            false;
+      }
+
+      if (!allowedExactAlarms || !allowedNotifications) {
+        Log.warning("Notification permissions got rejected.");
+        return;
       }
     }
 
@@ -65,7 +83,7 @@ class NotificationService {
 
   Future<void> _initTimeZone() async {
     tz.initializeTimeZones();
-    final locationName = await FlutterNativeTimezone.getLocalTimezone();
+    final locationName = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(locationName));
   }
 
@@ -96,13 +114,13 @@ class NotificationService {
     );
   }
 
-  Future<void> showLocalNotification({int id = 0, String? title = "Vocabualize", String? body, String? payload}) async {
+  Future<void> showLocalNotification({int id = 0, String? title = CommonConstants.appName, String? body, String? payload}) async {
     return await _localNotifications.show(id, title, body, await _getLocalNotificationDetails(), payload: payload);
   }
 
   Future<void> scheduleLocalNotification({
     int id = 0,
-    String? title = "Vocabualize",
+    String? title = CommonConstants.appName,
     String? body,
     String? payload,
     TimeOfDay time = _defaultScheduleTime,

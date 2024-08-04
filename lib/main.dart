@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/collections/screens/collection_screen.dart';
-import 'package:vocabualize/features/core/widgets/root.dart';
+import 'package:vocabualize/features/core/widgets/start.dart';
 import 'package:vocabualize/features/core/services/notification_service.dart';
 import 'package:vocabualize/features/core/services/text/speech_to_text_service.dart';
 import 'package:vocabualize/features/home/screens/home_screen.dart';
@@ -39,7 +39,7 @@ Future main() async {
 }
 
 class Vocabualize extends StatelessWidget {
-  const Vocabualize({Key? key}) : super(key: key);
+  const Vocabualize({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -64,9 +64,9 @@ class Vocabualize extends StatelessWidget {
         darkTheme: ThemeConfig.dark(context),
         debugShowCheckedModeBanner: false,
         navigatorKey: Global.navigatorState,
-        initialRoute: Root.routeName,
+        initialRoute: Start.routeName,
         routes: {
-          Root.routeName: (context) => const Root(),
+          Start.routeName: (context) => const Start(),
           WelcomeScreen.routeName: (context) => const WelcomeScreen(),
           SignScreen.routeName: (context) => const SignScreen(),
           ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),

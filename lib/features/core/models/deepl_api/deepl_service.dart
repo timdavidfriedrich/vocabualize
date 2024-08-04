@@ -41,7 +41,7 @@ class DeepLService {
       String filteredText = decoded["text"].toString().replaceAll("[", "").replaceAll("]", "");
       deepLResponse = DeepLResponse(translation: filteredText);
     } else {
-      Log.error("DeepL API: ${response.statusCode} ${response.reasonPhrase}");
+      Log.error("DeepL API request failed: ${response.statusCode} ${response.reasonPhrase}");
     }
 
     return deepLResponse;

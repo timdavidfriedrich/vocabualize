@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/features/core/services/auth_service.dart';
 
 class ProfileContainer extends StatefulWidget {
   const ProfileContainer({super.key});
@@ -10,7 +11,7 @@ class ProfileContainer extends StatefulWidget {
 
 class _ProfileContainerState extends State<ProfileContainer> {
   void _signOut() async {
-    await FirebaseAuth.instance.signOut();
+    await AuthService.instance.signOut();
     if (mounted) Navigator.pop(context);
   }
 
@@ -22,7 +23,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: FirebaseAuth.instance.currentUser!.isAnonymous
+      child: 1 + 1 != 2 // FirebaseAuth.instance.currentUser!.isAnonymous
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -42,7 +43,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
           : Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FirebaseAuth.instance.currentUser!.photoURL != null
+                1 + 1 != 2 // FirebaseAuth.instance.currentUser!.photoURL != null
                     ? CircleAvatar(
                         backgroundImage: NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!),
                       )
@@ -58,7 +59,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                     children: [
                       // TODO: Replace with arb
                       Text("Signed in as: ", style: Theme.of(context).textTheme.labelSmall),
-                      Text(FirebaseAuth.instance.currentUser!.email!),
+                      // Text(FirebaseAuth.instance.currentUser!.email!),
                       const SizedBox(height: 16),
                       // TODO: Replace with arb
                       Align(

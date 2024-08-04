@@ -33,7 +33,7 @@ class VocabularyProvider extends ChangeNotifier {
     try {
       result = vocabularyList.where((voc) => voc.nextDate.isBefore(DateTime.now())).toList();
     } catch (e) {
-      Log.error(e.toString());
+      Log.error("Failed to get vocabularies to practise.", exception: e);
     }
     return result;
   }
@@ -78,7 +78,7 @@ class VocabularyProvider extends ChangeNotifier {
     try {
       result = vocabularyList.where((vocabulary) => vocabulary.tags.contains(tag)).toList();
     } catch (e) {
-      Log.error(e.toString());
+      Log.error("Failed to get vocabularies by tag $tag.", exception: e);
     }
     return result;
   }
@@ -88,7 +88,7 @@ class VocabularyProvider extends ChangeNotifier {
     try {
       result = getVocabulariesByTag(tag).where((voc) => voc.nextDate.isBefore(DateTime.now())).toList();
     } catch (e) {
-      Log.error(e.toString());
+      Log.error("Failed to get vocabularies to practise by tag $tag.", exception: e);
     }
     return result;
   }

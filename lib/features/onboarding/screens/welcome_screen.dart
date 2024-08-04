@@ -1,4 +1,5 @@
 import 'package:vocabualize/constants/asset_path.dart';
+import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/features/onboarding/screens/sign_screen.dart';
 import 'package:vocabualize/features/onboarding/screens/select_language_screen.dart';
@@ -34,20 +35,23 @@ class WelcomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 48),
-                // TODO: Replace with arb
-                Text("Vocabualize", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
+                Text(CommonConstants.appName,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
                 const SizedBox(height: 24),
                 Flexible(child: Image.asset(AssetPath.mascotIdle)),
                 const SizedBox(height: 48),
                 ElevatedButton(
                   onPressed: () => _navigateToSignIn(context),
                   style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.onPrimary),
+                  // TODO: Replace with arb
                   child: Text("Login", style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () => _navigateToSignUp(context),
                   style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.onPrimary),
+                  // TODO: Replace with arb
                   child: Text("Register", style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                 ),
                 const SizedBox(height: 16),
@@ -58,6 +62,7 @@ class WelcomeScreen extends StatelessWidget {
                       BorderSide(width: 2, color: Theme.of(context).colorScheme.onPrimary),
                     ),
                   ),
+                  // TODO: Replace with arb
                   child: Text("Continue as guest", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                 ),
                 const SizedBox(height: 48),

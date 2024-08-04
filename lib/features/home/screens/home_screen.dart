@@ -1,4 +1,5 @@
 import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/features/core/models/vocabulary.dart';
@@ -39,13 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     recordSheetController = RecordSheetController.instance;
-    CloudService.instance.init();
     super.initState();
   }
 
   @override
   void dispose() {
-    CloudService.instance.cancelVocabularyStream();
+    CloudService.instance.dispose();
     super.dispose();
   }
 
@@ -64,12 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
             grabbingHeight: 64,
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
             child: StreamBuilder<List<Vocabulary>>(
-                initialData: const [],
-                stream: CloudService.instance.vocabularyBroadcastStream,
+                stream: CloudService.instance.stream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator.adaptive());
                   }
+                  if (!snapshot.hasData) return const HomeEmptyScreen();
                   List<Vocabulary> vocabularyList = snapshot.data!;
                   return vocabularyList.isEmpty
                       ? const HomeEmptyScreen()
@@ -88,8 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: FittedBox(
                                           alignment: Alignment.centerLeft,
                                           fit: BoxFit.scaleDown,
-                                          // TODO: Replace with arb
-                                          child: Text("Vocabualize", style: Theme.of(context).textTheme.headlineLarge),
+                                          child: Text(CommonConstants.appName, style: Theme.of(context).textTheme.headlineLarge),
                                         ),
                                       ),
                                       const SizedBox(width: 16),

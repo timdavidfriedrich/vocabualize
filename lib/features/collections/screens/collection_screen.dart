@@ -57,7 +57,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
             actions: [IconButton(icon: const Icon(Icons.edit_rounded), onPressed: () => _editTag())],
           ),
           body: StreamBuilder<List<Vocabulary>>(
-              stream: CloudService.instance.vocabularyBroadcastStream,
+              stream: CloudService.instance.stream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator.adaptive());

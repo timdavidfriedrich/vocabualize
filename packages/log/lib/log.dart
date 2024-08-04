@@ -26,7 +26,11 @@ class Log {
     if (kDebugMode) log("$_warningCode WARN: ${_process(text)}");
   }
 
-  static void error(text) {
-    if (kDebugMode) log("$_errorCode ERROR: ${_process(text)}");
+  static void error(dynamic text, {dynamic exception}) {
+    if (kDebugMode)
+      log(
+        "$_errorCode ERROR: ${_process(text)}"
+        "${exception != null ? ' >> ${_process(exception)}' : ""}",
+      );
   }
 }
