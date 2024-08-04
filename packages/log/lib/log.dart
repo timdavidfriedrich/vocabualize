@@ -30,7 +30,7 @@ class Log {
     if (kDebugMode)
       log(
         "$_errorCode ERROR: ${_process(text)}"
-        "${exception != null ? ' >> ${_process(exception)}' : ""}}",
+        "${exception != null ? ' >> ${_process(exception)}' : ""}",
       );
   }
 }
