@@ -4,7 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-
 import 'package:log/log.dart';
 import 'package:vocabualize/features/core/services/messaging_service.dart';
 import 'package:vocabualize/features/core/services/pocketbase_connection.dart';
@@ -12,27 +11,9 @@ import 'package:vocabualize/features/core/services/pocketbase_connection.dart';
 class AuthService {
   static final AuthService instance = AuthService();
 
-  final PocketBase _pocketbase = PocketbaseConnection.instance.pocketbase;
   final String _usersCollectionName = "users";
 
   SharedPreferences? _sharedPreferences;
-  FlutterSecureStorage? _secureStorage;
-
-  AuthService() {
-    _loadLocalAuthStore();
-  }
-
-  Future<void> _loadLocalAuthStore() async {
-    _secureStorage = const FlutterSecureStorage();
-    AuthStore localAuthStore = AsyncAuthStore(
-      save: (String data) async => _secureStorage?.write(key: 'authStore', value: data),
-      initial: await _secureStorage?.read(key: 'authStore'),
-    );
-    Log.hint("Loadeded AuthStore from SecureSharedPreferences: ${localAuthStore.model}");
-    if (localAuthStore.model != null) {
-      _pocketbase.authStore.save(localAuthStore.token, localAuthStore.model);
-    }
-  }
 
   Future signInAnonymously() async {
     // ? TODO: Implement signInAnonymously ?
@@ -40,8 +21,9 @@ class AuthService {
 
   Future<bool> signInWithEmailAndPassword(String email, String password) async {
     try {
-      final RecordAuth authData = await _pocketbase.collection(_usersCollectionName).authWithPassword(email, password);
-      _pocketbase.authStore.save(authData.token, authData.record);
+      final pocketbase = await PocketbaseConnection.connect();
+      final RecordAuth authData = await pocketbase.collection(_usersCollectionName).authWithPassword(email, password);
+      pocketbase.authStore.save(authData.token, authData.record);
       Log.hint("Signed in with email and password (AuthData: $authData)");
       return true;
     } catch (e) {
@@ -53,7 +35,8 @@ class AuthService {
 
   Future<bool> createUserWithEmailAndPassword(String email, String password) async {
     try {
-      final RecordModel authData = await _pocketbase.collection(_usersCollectionName).create(body: {
+      final pocketbase = await PocketbaseConnection.connect();
+      final RecordModel authData = await pocketbase.collection(_usersCollectionName).create(body: {
         "email": email,
         "password": password,
       });
@@ -86,9 +69,10 @@ class AuthService {
   }
 
   Future<void> _resetAuthStore() async {
-    _secureStorage = const FlutterSecureStorage();
-    await _secureStorage?.write(key: 'authStore', value: "");
-    _pocketbase.authStore.clear();
+    const FlutterSecureStorage secureStorage = FlutterSecureStorage();
+    final pocketbase = await PocketbaseConnection.connect();
+    await secureStorage.write(key: 'authStore', value: "");
+    pocketbase.authStore.clear();
   }
 
   Future<void> _resetUserData() async {

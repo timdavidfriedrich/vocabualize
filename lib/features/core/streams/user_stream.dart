@@ -1,19 +1,15 @@
 import 'package:async/async.dart';
 import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:rxdart/rxdart.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/features/core/models/app_user.dart';
-import 'package:vocabualize/features/core/services/auth_service.dart';
 import 'package:vocabualize/features/core/services/pocketbase_connection.dart';
 
 class UserStream {
   static final UserStream instance = UserStream();
-
-  final AuthService _authService = AuthService.instance;
-
-  final PocketBase _pocketbase = PocketbaseConnection.instance.pocketbase;
 
   final StreamController<AppUser?> _localStreamController = StreamController<AppUser?>.broadcast();
   final StreamController<AppUser?> _cloudStreamController = StreamController<AppUser?>.broadcast();
@@ -33,24 +29,16 @@ class UserStream {
     Log.hint("UserStream initialized");
   }
 
-  void _listen() {
-    var test = _pocketbase.authStore.onChange.map((event) {
+  void _listen() async {
+    final PocketBase pocketbase = await PocketbaseConnection.connect();
+    pocketbase.authStore.onChange.mapNotNull((event) {
       if (event.model == null) return null;
       return AppUser.fromRecord(event.model);
+    }).forEach((AppUser user) async {
+      await _saveUserToLocalStorage(user);
+      _sinkCloudUserToStream(user);
+      Log.hint("UserStream: Cloud user changed to $user");
     });
-
-    test.forEach(testing);
-  }
-
-  Future<void> testing(AppUser? user) async {
-    Log.debug("HURENSOHN");
-    final previousAuthUser = stream.firstOrNull;
-    // Log.error("previousAuthUser: $previousAuthUser");
-    Log.error("user: $user");
-    await _saveUserToLocalStorage(user);
-    // if (previousAuthUser != null && user != null) return;
-    _sinkCloudUserToStream(user);
-    Log.hint("UserStream: Cloud user changed to $user");
   }
 
   Stream<AppUser?> _getCombinedLocalAndCloudUserStream() {

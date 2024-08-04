@@ -16,7 +16,6 @@ import 'package:vocabualize/features/reports/models/translation_report.dart';
 class CloudService {
   static CloudService instance = CloudService();
 
-  final PocketBase _pocketbase = PocketbaseConnection.instance.pocketbase;
   final String _vocabulariesCollectionName = "vocabularies";
   final String _languagesCollectionName = "languages";
   final String _tagsCollectionName = "tags_by_user";
@@ -43,7 +42,8 @@ class CloudService {
   }
 
   Future<void> _subscribeToVocabularyChanges() async {
-    _pocketbase.collection(_vocabulariesCollectionName).subscribe("*", (event) async {
+    final PocketBase pocketbase = await PocketbaseConnection.connect();
+    pocketbase.collection(_vocabulariesCollectionName).subscribe("*", (event) async {
       if (event.record?.data["user"] != AppUser.instance.id) return;
       await loadData();
       // TODO: Only fetch the changed vocabulary
@@ -54,8 +54,9 @@ class CloudService {
   Future<void> loadData() async {
     List<Vocabulary> vocabularies = await _fetchData();
     // ! ERROR: StateError (Bad state: Cannot add new events after calling close) - only on first run
+    // ! ERROR: => Maybe resolved, already? (because of new auth implementation)
     _vocabularyStreamController.sink.add(vocabularies);
-    Log.debug("Vocabulary data reloaded. ($vocabularies)");
+    Log.debug("Vocabulary data reloaded. (size: ${vocabularies.length})");
     Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList = vocabularies;
   }
 
@@ -67,28 +68,30 @@ class CloudService {
   }
 
   Future<List<Language>> _fetchLanguages() async {
-    Log.debug("pb.authStore.isValid = ${_pocketbase.authStore.isValid}");
-    Log.debug("pb.authStore.token = ${_pocketbase.authStore.token}");
-    Log.debug("pb.authStore.model.id = ${_pocketbase.authStore.model?.id}");
-    final languageRecords = await _pocketbase.collection(_languagesCollectionName).getList();
+    final PocketBase pocketbase = await PocketbaseConnection.connect();
+    Log.debug(
+      "pb.authStore = "
+      "(isValid: ${pocketbase.authStore.isValid}, "
+      "model.id: ${pocketbase.authStore.model?.id}, "
+      "token: ${pocketbase.authStore.token.substring(0, 10)}...)",
+    );
+    final languageRecords = await pocketbase.collection(_languagesCollectionName).getList();
     final test = languageRecords.items.map((e) => Language.fromRecord(e)).toList();
-    Log.debug("test languageRecords: $test");
     return test;
   }
 
   Future<List<Tag>> _fetchTags() async {
+    final PocketBase pocketbase = await PocketbaseConnection.connect();
     final String userFilter = "user=\"${AppUser.instance.id}\"";
-    Log.debug("Fetching tags with filter: $userFilter");
-    final tagsRecords = await _pocketbase.collection(_tagsCollectionName).getList(filter: userFilter);
+    final tagsRecords = await pocketbase.collection(_tagsCollectionName).getList(filter: userFilter);
     final test = tagsRecords.items.map((e) => Tag.fromRecord(e)).toList();
-    Log.debug("test tagsRecords: $test");
     return test;
   }
 
   Future<List<Vocabulary>> _fetchVocabularies({List<Tag>? tags, List<Language>? languages}) async {
+    final PocketBase pocketbase = await PocketbaseConnection.connect();
     final String userFilter = "user=\"${AppUser.instance.id}\"";
-    Log.debug("Fetching vocabularies with filter: $userFilter");
-    final vocabularyRecords = await _pocketbase.collection(_vocabulariesCollectionName).getList(filter: userFilter);
+    final vocabularyRecords = await pocketbase.collection(_vocabulariesCollectionName).getList(filter: userFilter);
     final test = vocabularyRecords.items
         .map((e) => Vocabulary.fromRecord(
               e,
@@ -96,7 +99,6 @@ class CloudService {
               languages: languages,
             ))
         .toList();
-    Log.debug("test vocabularyRecords: $test");
     return test;
   }
 
@@ -109,7 +111,8 @@ class CloudService {
   }
 
   Future sendReport(Report report) async {
+    final PocketBase pocketbase = await PocketbaseConnection.connect();
     final collectionName = report is TranslationReport ? _translationReportCollectionName : _bugReportCollectionName;
-    await _pocketbase.collection(collectionName).create(body: report.toJson());
+    await pocketbase.collection(collectionName).create(body: report.toJson());
   }
 }
