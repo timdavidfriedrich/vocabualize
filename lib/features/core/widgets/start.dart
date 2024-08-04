@@ -24,7 +24,6 @@ class Start extends StatelessWidget {
           return const WelcomeScreen();
         }
         AppUser.instance = snapshot.data!;
-        Log.debug("User is ${AppUser.instance}");
         if (AppUser.instance == AppUser.empty()) {
           return const WelcomeScreen();
         }

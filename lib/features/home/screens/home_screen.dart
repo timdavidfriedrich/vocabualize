@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    CloudService.instance.cancelVocabularyStream();
+    CloudService.instance.dispose();
     super.dispose();
   }
 
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             grabbingHeight: 64,
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
             child: StreamBuilder<List<Vocabulary>>(
-                stream: CloudService.instance.vocabularyBroadcastStream,
+                stream: CloudService.instance.stream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator.adaptive());

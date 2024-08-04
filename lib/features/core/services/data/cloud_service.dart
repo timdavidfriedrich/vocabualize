@@ -22,9 +22,12 @@ class CloudService {
   final String _translationReportCollectionName = "translation_reports";
   final String _bugReportCollectionName = "bug_reports";
 
-  final StreamController<List<Vocabulary>> _vocabularyStreamController = StreamController<List<Vocabulary>>.broadcast();
-  Stream<List<Vocabulary>> get vocabularyBroadcastStream => _vocabularyStreamController.stream.asBroadcastStream();
-  void cancelVocabularyStream() => _vocabularyStreamController.close();
+  StreamController<List<Vocabulary>> _streamController = StreamController<List<Vocabulary>>.broadcast();
+  Stream<List<Vocabulary>> get stream => _streamController.stream.asBroadcastStream();
+
+  void dispose() {
+    _streamController.close();
+  }
 
   CloudService() {
     _init();
@@ -53,9 +56,11 @@ class CloudService {
 
   Future<void> loadData() async {
     List<Vocabulary> vocabularies = await _fetchData();
-    // ! ERROR: StateError (Bad state: Cannot add new events after calling close) - only on first run
-    // ! ERROR: => Maybe resolved, already? (because of new auth implementation)
-    _vocabularyStreamController.sink.add(vocabularies);
+    if (_streamController.isClosed) {
+      _streamController = StreamController<List<Vocabulary>>.broadcast();
+      Log.error("Attempted to add data to a closed StreamController. Controller reinitialized.");
+    }
+    _streamController.add(vocabularies);
     Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList = vocabularies;
   }
 
