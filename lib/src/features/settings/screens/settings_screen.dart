@@ -1,7 +1,8 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
-import 'package:vocabualize/src/common/data/repositories/language_repository.dart';
+import 'package:vocabualize/src/common/domain/usecases/language/get_available_languages_use_case.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/src/features/settings/screens/choose_language_screen.dart';
@@ -18,10 +19,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  final getAvailableLanguages = sl.get<GetAvailableLanguagesUseCase>();
+
   List<Language> languages = [];
 
   void _getLanguages() async {
-    languages = await LanguageRepository.getLangauges();
+    languages = await getAvailableLanguages();
   }
 
   void _selectGatherNotificationTime() async {
@@ -106,9 +109,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // TODO: Replace with arb
                   subtitle: Text("Likely to increase translation quality.", style: TextStyle(color: Theme.of(context).hintColor)),
                   trailing: Switch(
-                    value: Provider.of<SettingsProvider>(context).useDeepL,
+                    value: Provider.of<SettingsProvider>(context).usePremiumTranslator,
                     onChanged: (value) {
-                      Provider.of<SettingsProvider>(context, listen: false).useDeepL = value;
+                      Provider.of<SettingsProvider>(context, listen: false).usePremiumTranslator = value;
                     },
                   ),
                 ),

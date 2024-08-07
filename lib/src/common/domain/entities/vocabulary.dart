@@ -7,10 +7,11 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/usecases/language/find_language_use_case.dart';
 import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
-import 'package:vocabualize/src/common/data/repositories/language_repository.dart';
 import 'package:vocabualize/src/common/domain/entities/level.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/common/data/models/pexels_model.dart';
@@ -92,12 +93,15 @@ class Vocabulary {
         created = DateTime.tryParse(recordModel.data['created'] ?? "") ?? DateTime.now(),
         updated = DateTime.tryParse(recordModel.data['updated'] ?? "");
 
+  // TODO ARCHITECTURE: This is a bad practice. This shouldn't be done here.
   initSourceLanguage(String translatorId) async {
-    _sourceLanguage = await LanguageRepository.findLanguage(translatorId: translatorId) ?? Language.defaultSource();
+    final findLanguage = sl.get<FindLanguageUseCase>();
+    _sourceLanguage = await findLanguage(translatorId: translatorId) ?? Language.defaultSource();
   }
 
   initTargetLanguage(String translatorId) async {
-    _targetLanguage = await LanguageRepository.findLanguage(translatorId: translatorId) ?? Language.defaultTarget();
+    final findLanguage = sl.get<FindLanguageUseCase>();
+    _targetLanguage = await findLanguage(translatorId: translatorId) ?? Language.defaultTarget();
   }
 
   Map<String, dynamic> toJson() => {

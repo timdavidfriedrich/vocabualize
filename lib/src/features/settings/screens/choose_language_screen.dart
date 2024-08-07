@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
-import 'package:vocabualize/src/common/data/repositories/language_repository.dart';
+import 'package:vocabualize/src/common/domain/usecases/language/get_available_languages_use_case.dart';
 
 class ChooseLanguageScreen extends StatelessWidget {
   static const String routeName = "ChooseLanguageScreen";
@@ -9,8 +10,10 @@ class ChooseLanguageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final getAvailableLanguages = sl.get<GetAvailableLanguagesUseCase>();
+
     Future<List<Language>> getLanguages() async {
-      return await LanguageRepository.getLangauges();
+      return await getAvailableLanguages();
     }
 
     void returnLanguage(Language language) {

@@ -5,7 +5,7 @@ import 'package:vocabualize/src/features/record/providers/active_provider.dart';
 import 'package:vocabualize/src/features/record/services/record_service.dart';
 
 class TypeButton extends StatefulWidget {
-  const TypeButton({Key? key}) : super(key: key);
+  const TypeButton({super.key});
 
   @override
   State<TypeButton> createState() => _TypeButtonState();
@@ -28,9 +28,9 @@ class _TypeButtonState extends State<TypeButton> {
   }
 
   _submit() async {
-    if (!await HelperWidgets.showDisconnectedDialogIfNecessary()) return _cancel();
+    if (!await HelperWidgets.isOnline()) return _cancel();
     if (!mounted) return;
-    RecordService.validateAndSave(source: currentSource);
+    RecordService().validateAndSave(source: currentSource);
     currentSource = "";
     controller.clear();
     focusNode.requestFocus();

@@ -35,7 +35,7 @@ class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
       bool hasClickedReplace = await HelperWidgets.showStaticDialog(ReplaceVocabularyDialog(vocabulary: widget.vocabulary));
       if (hasClickedReplace) {
         if (mounted) Provider.of<VocabularyProvider>(context, listen: false).remove(widget.vocabulary);
-        RecordService.validateAndSave(source: input);
+        RecordService().validateAndSave(source: input);
       } else {
         widget.vocabulary.source = input;
         if (mounted) Navigator.pop(context);

@@ -7,26 +7,24 @@ import 'package:vocabualize/src/features/record/services/record_service.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
 class SpeechToTextDataSource {
-  SpeechToTextDataSource._privateConstructor() : _stt = SpeechToText();
+  SpeechToTextDataSource() {
+    _init();
+  }
 
-  static final SpeechToTextDataSource _instance = SpeechToTextDataSource._privateConstructor();
-
-  static SpeechToTextDataSource get instance => _instance;
-
-  final SpeechToText _stt;
+  final SpeechToText _stt = SpeechToText();
   String _text = "";
   bool _available = false;
 
   Future<List<LocaleName>> getLocales() async => _available ? await _stt.locales() : [];
 
-  Future<void> init() async {
+  Future<void> _init() async {
     _available = await _stt.initialize(
       options: [],
       onStatus: (status) async {
         if (_stt.isNotListening && status == "done") {
           Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
           if (_stt.lastRecognizedWords.isNotEmpty) {
-            RecordService.validateAndSave(source: _text);
+            RecordService().validateAndSave(source: _text);
           }
           _stt.stop;
         }

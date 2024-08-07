@@ -5,10 +5,10 @@ import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/features/collections/screens/collection_screen.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/common/data/data_sources/notification_data_source.dart';
-import 'package:vocabualize/src/common/data/data_sources/speech_to_text_data_source.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/sign_screen.dart';
@@ -26,9 +26,9 @@ import 'package:vocabualize/firebase_options.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDependencies();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   NotificationDataSource.instance.init();
-  SpeechToTextDataSource.instance.init();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

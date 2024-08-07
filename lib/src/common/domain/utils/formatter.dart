@@ -5,4 +5,16 @@ class Formatter {
   static String normalize(String text) {
     return text.toLowerCase().trim().replaceAll(" ", "").replaceAll(specialCharacters, "");
   }
+
+  static String filterOutArticles(
+    String source, {
+    List<String> articles = const ["the", "a", "an"],
+  }) {
+    for (String article in articles) {
+      if (source.toString().startsWith("$article ")) {
+        source = source.toString().replaceFirst("$article ", "");
+      }
+    }
+    return source;
+  }
 }

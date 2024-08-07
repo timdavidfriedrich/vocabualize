@@ -1,15 +1,18 @@
 import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/translator/translate_use_case.dart';
 import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
-import 'package:vocabualize/src/common/data/repositories/translator_repository.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/src/features/record/utils/record_sheet_controller.dart';
 
 class RecordService {
+  final translate = sl.get<TranslateUseCase>();
+
   static void save({required Vocabulary vocabulary}) async {
     RecordSheetController recordSheetController = RecordSheetController.instance;
     recordSheetController.hide();
@@ -19,9 +22,9 @@ class RecordService {
     });
   }
 
-  static void validateAndSave({required String source}) async {
+  void validateAndSave({required String source}) async {
     HelperWidgets.loadingAnimation();
-    Vocabulary vocabulary = Vocabulary(source: source, target: await TranslatorRepository.translate(source));
+    Vocabulary vocabulary = Vocabulary(source: source, target: await translate(source));
     if (vocabulary.isValid()) save(vocabulary: vocabulary);
   }
 }

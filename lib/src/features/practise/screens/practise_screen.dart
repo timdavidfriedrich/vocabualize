@@ -2,8 +2,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
-import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_source.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
 import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_done_screen.dart';
@@ -13,13 +14,15 @@ import 'package:vocabualize/src/features/settings/providers/settings_provider.da
 
 class PractiseScreen extends StatefulWidget {
   static const String routeName = "${HomeScreen.routeName}/Practise";
-  const PractiseScreen({Key? key}) : super(key: key);
+  const PractiseScreen({super.key});
 
   @override
   State<PractiseScreen> createState() => _PractiseScreenState();
 }
 
 class _PractiseScreenState extends State<PractiseScreen> {
+  final speak = sl.get<ReadOutUseCase>();
+
   List<Vocabulary> vocabulariesToPractise = [];
   int initialVocCount = 0;
   bool isSolutionShown = false;
@@ -27,13 +30,6 @@ class _PractiseScreenState extends State<PractiseScreen> {
   Vocabulary currentVoc = Vocabulary(source: "", target: "");
 
   bool isMultilingual = false;
-
-  TextToSpeechDataSource tts = TextToSpeechDataSource.instance;
-
-  void _speak() {
-    tts.stop;
-    tts.speak(currentVoc);
-  }
 
   void _refreshVoc() {
     if (!mounted) return;
@@ -143,7 +139,10 @@ class _PractiseScreenState extends State<PractiseScreen> {
                                               ),
                                             ),
                                             const SizedBox(width: 8),
-                                            IconButton(onPressed: () => _speak(), icon: const Icon(Icons.volume_up_rounded, size: 32)),
+                                            IconButton(
+                                              onPressed: () => speak(currentVoc),
+                                              icon: const Icon(Icons.volume_up_rounded, size: 32),
+                                            ),
                                           ],
                                         )),
                                       ),

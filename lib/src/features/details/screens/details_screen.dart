@@ -10,13 +10,14 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/translator/translate_to_english_use_case.dart';
 import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_image_storage_data_source.dart';
 import 'package:vocabualize/src/common/domain/utils/formatter.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/common/data/models/pexels_model.dart';
 import 'package:vocabualize/src/common/data/data_sources/stock_image_data_source.dart';
-import 'package:vocabualize/src/common/data/repositories/translator_repository.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/screens/details_disabled_images_screen.dart';
 import 'package:vocabualize/src/features/details/widgets/source_to_target.dart';
@@ -37,6 +38,8 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+  final translateToEnglish = sl.get<TranslateToEnglishUseCase>();
+
   Vocabulary vocabulary = Vocabulary(source: "", target: "");
 
   List<PexelsModel> _pexelsModelList = [];
@@ -61,8 +64,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _getPexels() async {
+    final searchTerm = Formatter.filterOutArticles(
+      await translateToEnglish(vocabulary.source),
+    );
     List<PexelsModel> pexelsModelList = await StockImageDataSource().getImages(
-      await TranslatorRepository.translateToEnglish(vocabulary.source, filtered: true),
+      searchTerm,
     );
     if (mounted) setState(() => _pexelsModelList = pexelsModelList);
   }

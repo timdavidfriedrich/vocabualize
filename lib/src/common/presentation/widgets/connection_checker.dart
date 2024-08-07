@@ -16,7 +16,7 @@ class HelperWidgets {
   }
 
   // TODO ARCHITECTURE: Move connection checking to a util file and move ui elements to presentation layer
-  static Future<bool> showDisconnectedDialogIfNecessary() async {
+  static Future<bool> isOnline() async {
     try {
       // TODO: Not only check for google, since this method's not working
       final result = await InternetAddress.lookup('google.com');

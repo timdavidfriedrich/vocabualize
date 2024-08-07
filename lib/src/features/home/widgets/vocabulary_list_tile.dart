@@ -1,7 +1,8 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
 import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
-import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_source.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
@@ -15,12 +16,7 @@ class VocabularyListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextToSpeechDataSource tts = TextToSpeechDataSource.instance;
-
-    void speak() {
-      tts.stop;
-      tts.speak(vocabulary);
-    }
+    final speak = sl.get<ReadOutUseCase>();
 
     void showVocabularyInfo() {
       // Messenger.showStaticDialog(InfoDialog(vocabulary: vocabulary));
@@ -91,7 +87,7 @@ class VocabularyListTile extends StatelessWidget {
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             style: const ButtonStyle(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-            onPressed: speak,
+            onPressed: () => speak(vocabulary),
             icon: const Icon(Icons.volume_up),
           ),
         ),

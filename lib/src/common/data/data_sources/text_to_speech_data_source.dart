@@ -3,13 +3,7 @@ import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 
 class TextToSpeechDataSource {
-  TextToSpeechDataSource._privateConstructor() : _tts = TextToSpeech();
-
-  static final TextToSpeechDataSource _instance = TextToSpeechDataSource._privateConstructor();
-
-  static TextToSpeechDataSource get instance => _instance;
-
-  final TextToSpeech _tts;
+  final TextToSpeech _tts = TextToSpeech();
   bool isSpeaking = false;
 
   String? _currentLanguage;
