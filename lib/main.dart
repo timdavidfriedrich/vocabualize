@@ -1,14 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/notification/init_cloud_notifications_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/notification/init_local_notifications_use_case.dart';
 import 'package:vocabualize/src/features/collections/screens/collection_screen.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
-import 'package:vocabualize/src/common/data/data_sources/notification_data_source.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/sign_screen.dart';
@@ -28,7 +30,8 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  NotificationDataSource.instance.init();
+  GetIt.instance<InitCloudNotificationsUseCase>();
+  GetIt.instance<InitLocalNotificationsUseCase>();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

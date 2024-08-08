@@ -4,11 +4,14 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
-import 'package:vocabualize/src/common/data/data_sources/notification_data_source.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/find_language_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/notification/schedule_gather_notification_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/notification/schedule_practise_notification_use_case.dart';
 
 class SettingsProvider extends ChangeNotifier {
-  final findLanguage = sl.get<FindLanguageUseCase>();
+  final _findLanguage = sl.get<FindLanguageUseCase>();
+  final _scheduleGatherNotification = sl.get<ScheduleGatherNotificationUseCase>();
+  final _schedulePracticeNotification = sl.get<SchedulePractiseNotificationUseCase>();
   late SharedPreferences prefs;
 
   Language _sourceLanguage = Language.defaultSource();
@@ -100,14 +103,14 @@ class SettingsProvider extends ChangeNotifier {
 
   set gatherNotificationTime(TimeOfDay gatherNotificationTime) {
     _gatherNotificationTime = gatherNotificationTime;
-    NotificationDataSource.instance.scheduleNotifications();
+    _scheduleGatherNotification();
     save();
     notifyListeners();
   }
 
   set practiseNotificationTime(TimeOfDay practiseNotificationTime) {
     _practiseNotificationTime = practiseNotificationTime;
-    NotificationDataSource.instance.scheduleNotifications();
+    _schedulePracticeNotification();
     save();
     notifyListeners();
   }
@@ -154,10 +157,10 @@ class SettingsProvider extends ChangeNotifier {
     Language defaultTarget = Language.defaultTarget();
 
     if (prefs.getString("sourceLanguage") != null) {
-      _sourceLanguage = await findLanguage(translatorId: prefs.getString("sourceLanguage")) ?? defaultSource;
+      _sourceLanguage = await _findLanguage(translatorId: prefs.getString("sourceLanguage")) ?? defaultSource;
     }
     if (prefs.getString("targetLanguage") != null) {
-      _targetLanguage = await findLanguage(translatorId: prefs.getString("targetLanguage")) ?? defaultTarget;
+      _targetLanguage = await _findLanguage(translatorId: prefs.getString("targetLanguage")) ?? defaultTarget;
     }
     _areImagesEnabled = prefs.getBool("areImagesEnabled") ?? _areImagesEnabled;
     _usePremiumTranslator = prefs.getBool("usePremiumTranslator") ?? _usePremiumTranslator;

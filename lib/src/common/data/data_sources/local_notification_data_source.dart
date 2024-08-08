@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:log/log.dart';
@@ -16,24 +15,11 @@ import 'package:vocabualize/src/common/presentation/providers/vocabulary_provide
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
-// TODO ARCHITECTURE: Perhaps, split local and remote notifications into two classes and maybe even layers.
-class NotificationDataSource {
-  static final NotificationDataSource _instance = NotificationDataSource();
-  static NotificationDataSource get instance => _instance;
-
+class LocalNotificationDataSource {
   static const TimeOfDay _defaultScheduleTime = TimeOfDay(hour: 13, minute: 0);
   final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
 
-  void init() {
-    initCloudNotifications();
-    initLocalNotifications(initScheduled: true);
-  }
-
-  void initCloudNotifications() {
-    FirebaseMessaging.onBackgroundMessage(cloudNotificationBackgroundHandler);
-  }
-
-  void initLocalNotifications({bool initScheduled = false}) async {
+  void init({bool initScheduled = true}) async {
     const AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings("@mipmap/ic_launcher");
     const DarwinInitializationSettings darwinInitializationSettings = DarwinInitializationSettings();
     const LinuxInitializationSettings linuxInitializationSettings = LinuxInitializationSettings(defaultActionName: 'Open notification');
@@ -44,42 +30,41 @@ class NotificationDataSource {
       linux: linuxInitializationSettings,
     );
 
-    // * Request permission on Android
     if (Platform.isAndroid) {
-      var androidInfo = await DeviceInfoPlugin().androidInfo;
-      bool allowedExactAlarms = true;
-      bool allowedNotifications = true;
-
-      if (androidInfo.version.sdkInt >= 34) {
-        allowedExactAlarms = await _localNotifications
-                .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-                ?.requestExactAlarmsPermission() ??
-            false;
-      }
-      if (androidInfo.version.sdkInt >= 33) {
-        allowedNotifications = await _localNotifications
-                .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-                ?.requestNotificationsPermission() ??
-            false;
-      }
-
-      if (!allowedExactAlarms || !allowedNotifications) {
-        Log.warning("Notification permissions got rejected.");
-        return;
-      }
+      _requestAndroidPermissions();
     }
 
     await _localNotifications.initialize(initializationSettings);
 
     if (initScheduled) {
       await _initTimeZone();
-      scheduleNotifications();
+      scheduleGatherNotification();
+      schedulePractiseNotification();
     }
   }
 
-  void scheduleNotifications() {
-    _schedulePractiseNotification();
-    _scheduleGatherNotification();
+  void _requestAndroidPermissions() async {
+    var androidInfo = await DeviceInfoPlugin().androidInfo;
+    bool allowedExactAlarms = true;
+    bool allowedNotifications = true;
+
+    if (androidInfo.version.sdkInt >= 34) {
+      allowedExactAlarms = await _localNotifications
+              .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+              ?.requestExactAlarmsPermission() ??
+          false;
+    }
+    if (androidInfo.version.sdkInt >= 33) {
+      allowedNotifications = await _localNotifications
+              .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+              ?.requestNotificationsPermission() ??
+          false;
+    }
+
+    if (!allowedExactAlarms || !allowedNotifications) {
+      Log.warning("Notification permissions got rejected.");
+      return;
+    }
   }
 
   Future<void> _initTimeZone() async {
@@ -88,11 +73,11 @@ class NotificationDataSource {
     tz.setLocalLocation(tz.getLocation(locationName));
   }
 
-  void _schedulePractiseNotification() async {
+  void schedulePractiseNotification() async {
     await _localNotifications.cancel(1);
     final int vocabulariesToPractise = Provider.of<VocabularyProvider>(Global.context, listen: false).allToPractise.length;
     if (vocabulariesToPractise <= 1) return;
-    scheduleLocalNotification(
+    _scheduleLocalNotification(
       id: 1,
       // TODO: Replace with arb
       title: "Let's practise 🎯",
@@ -102,10 +87,10 @@ class NotificationDataSource {
     );
   }
 
-  void _scheduleGatherNotification() async {
+  void scheduleGatherNotification() async {
     await _localNotifications.cancel(2);
     final Language targetLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).targetLanguage;
-    scheduleLocalNotification(
+    _scheduleLocalNotification(
       id: 2,
       // TODO: Replace with arb
       title: "Look around you 👀",
@@ -115,11 +100,12 @@ class NotificationDataSource {
     );
   }
 
+  // TODO: Is this in use?
   Future<void> showLocalNotification({int id = 0, String? title = CommonConstants.appName, String? body, String? payload}) async {
     return await _localNotifications.show(id, title, body, await _getLocalNotificationDetails(), payload: payload);
   }
 
-  Future<void> scheduleLocalNotification({
+  Future<void> _scheduleLocalNotification({
     int id = 0,
     String? title = CommonConstants.appName,
     String? body,
@@ -152,13 +138,4 @@ class NotificationDataSource {
       iOS: DarwinNotificationDetails(),
     );
   }
-}
-
-// * Must be top-level (outside of any class)
-Future<void> cloudNotificationBackgroundHandler(RemoteMessage message) async {
-  Log.hint(
-    "Received a background message with id=${message.messageId}."
-    "\n\tdata: ${message.data}"
-    "\n\tnotification: ${message.notification ?? "-"}",
-  );
 }
