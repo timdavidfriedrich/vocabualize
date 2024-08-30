@@ -5,7 +5,8 @@ import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/answer_vocabulary_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/is_collection_multilingual_use_case.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_done_screen.dart';
 import 'package:vocabualize/src/common/domain/entities/answer.dart';
@@ -21,6 +22,8 @@ class PractiseScreen extends StatefulWidget {
 }
 
 class _PractiseScreenState extends State<PractiseScreen> {
+  final answerVocabulary = sl.get<AnswerVocabularyUseCase>();
+  final isCollectionMultilingual = sl.get<IsCollectionMultilingualUseCase>();
   final speak = sl.get<ReadOutUseCase>();
 
   List<Vocabulary> vocabulariesToPractise = [];
@@ -58,7 +61,6 @@ class _PractiseScreenState extends State<PractiseScreen> {
       setState(() {
         vocabulariesToPractise = arguments.vocabulariesToPractise;
         initialVocCount = vocabulariesToPractise.length;
-        isMultilingual = Provider.of<VocabularyProvider>(context, listen: false).isMultilingual;
       });
       if (vocabulariesToPractise.isEmpty) return;
       _refreshVoc();
@@ -104,10 +106,29 @@ class _PractiseScreenState extends State<PractiseScreen> {
                         ],
                       ),
                       const Spacer(),
-                      if (isMultilingual)
-                        Text("${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}",
-                            style: TextStyle(color: Theme.of(context).hintColor), textAlign: TextAlign.center),
-                      if (isMultilingual) const SizedBox(height: 12),
+                      FutureBuilder(
+                        future: isCollectionMultilingual(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const SizedBox();
+                          }
+                          isMultilingual = snapshot.data as bool;
+                          if (!isMultilingual) {
+                            return const SizedBox();
+                          }
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}",
+                                style: TextStyle(color: Theme.of(context).hintColor),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 12),
+                            ],
+                          );
+                        },
+                      ),
                       Provider.of<SettingsProvider>(context).areImagesDisabled && !isSolutionShown
                           ? Container()
                           : Expanded(
@@ -118,7 +139,12 @@ class _PractiseScreenState extends State<PractiseScreen> {
                                   borderRadius: BorderRadius.circular(24),
                                   image: Provider.of<SettingsProvider>(context).areImagesDisabled
                                       ? null
-                                      : DecorationImage(fit: BoxFit.cover, image: currentVoc.imageProvider),
+                                      : DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            currentVoc.image.url,
+                                          ),
+                                        ),
                                 ),
                                 child: !isSolutionShown
                                     ? null
@@ -162,7 +188,10 @@ class _PractiseScreenState extends State<PractiseScreen> {
                                   backgroundColor: LevelPalette.beginner,
                                 ),
                                 onPressed: () async {
-                                  await currentVoc.answer(Answer.hard);
+                                  await answerVocabulary(
+                                    vocabulary: currentVoc,
+                                    answer: Answer.hard,
+                                  );
                                   _refreshVoc();
                                 },
                                 child: Text(AppLocalizations.of(context)?.pracise_rating_hardButton ?? ""),
@@ -176,7 +205,10 @@ class _PractiseScreenState extends State<PractiseScreen> {
                                   backgroundColor: LevelPalette.advanced,
                                 ),
                                 onPressed: () async {
-                                  await currentVoc.answer(Answer.good);
+                                  await answerVocabulary(
+                                    vocabulary: currentVoc,
+                                    answer: Answer.good,
+                                  );
                                   _refreshVoc();
                                 },
                                 child: Text(AppLocalizations.of(context)?.pracise_rating_goodButton ?? ""),
@@ -190,7 +222,10 @@ class _PractiseScreenState extends State<PractiseScreen> {
                                   backgroundColor: LevelPalette.expert,
                                 ),
                                 onPressed: () async {
-                                  await currentVoc.answer(Answer.easy);
+                                  await answerVocabulary(
+                                    vocabulary: currentVoc,
+                                    answer: Answer.easy,
+                                  );
                                   _refreshVoc();
                                 },
                                 child: Text(AppLocalizations.of(context)?.pracise_rating_easyButton ?? ""),
@@ -206,7 +241,10 @@ class _PractiseScreenState extends State<PractiseScreen> {
                             )
                           : OutlinedButton(
                               onPressed: () async {
-                                await currentVoc.answer(Answer.forgot);
+                                await answerVocabulary(
+                                  vocabulary: currentVoc,
+                                  answer: Answer.forgot,
+                                );
                                 _refreshVoc();
                               },
                               child: Text(

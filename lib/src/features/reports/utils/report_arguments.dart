@@ -3,7 +3,7 @@ import 'package:vocabualize/src/features/reports/utils/report_type.dart';
 
 class ReportArguments {
   final ReportType reportType;
-  Vocabulary vocabulary = Vocabulary.empty();
+  Vocabulary vocabulary = Vocabulary();
 
   ReportArguments({required this.reportType});
   ReportArguments.bug() : reportType = ReportType.bug;

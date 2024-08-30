@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
 
 class InfoDialog extends StatelessWidget {
   final Vocabulary vocabulary;
@@ -11,8 +11,10 @@ class InfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deleteVocabulary = sl.get<DeleteVocabularyUseCase>();
+
     void delete() {
-      Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
+      deleteVocabulary(vocabulary);
       Navigator.pop(context);
     }
 

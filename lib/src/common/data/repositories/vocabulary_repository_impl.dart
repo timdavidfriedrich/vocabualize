@@ -1,23 +1,68 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:vocabualize/constants/common_imports.dart';
-import 'package:log/log.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
-import 'package:vocabualize/src/common/domain/utils/formatter.dart';
-import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-class VocabularyProvider extends ChangeNotifier {
-  late SharedPreferences _prefs;
+class VocabularyRepositoryImpl implements VocabularyRepository {
+  final _remoteDatabaseDataSource = sl.get<RemoteDatabaseDataSource>();
 
-  List<Vocabulary> vocabularyList = [];
-
-  bool contains(Vocabulary vocabulary) {
-    return vocabularyList.any((voc) => voc.created.microsecondsSinceEpoch == vocabulary.created.microsecondsSinceEpoch);
+  @override
+  Future<void> addVocabulary(Vocabulary vocabulary) {
+    // TODO: implement addVocabulary
+    throw UnimplementedError();
   }
+
+  @override
+  Future<void> deleteAllLocalVocabularies() {
+    // TODO: implement deleteAllLocalVocabularies
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteAllVocabularies() {
+    // TODO: implement deleteAllVocabularies
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteVocabulary(Vocabulary vocabulary) {
+    // TODO: implement deleteVocabulary
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<Vocabulary>> getNewVocabularies() {
+    // TODO: implement getNewVocabularies
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<Vocabulary>> getVocabularies({String? searchTerm, Tag? tag}) {
+    // TODO: implement getVocabularies
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Vocabulary>> getVocabulariesToPractise({Tag? tag}) {
+    // TODO: implement getVocabulariesToPractise
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> isCollectionMultilingual({Tag? tag}) {
+    // TODO: implement isCollectionMultilingual
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateVocabulary(Vocabulary vocabulary) {
+    // TODO: implement updateVocabulary
+    throw UnimplementedError();
+  }
+}
+
+/*
 
   dynamic searchListForSource(String source) {
     bool containsSource = vocabularyList.any((voc) => Formatter.normalize(voc.source) == Formatter.normalize(source));
@@ -63,16 +108,6 @@ class VocabularyProvider extends ChangeNotifier {
     ).toList();
   }
 
-  List<Tag> get allTags {
-    List<Tag> result = [];
-    for (var vocabulary in vocabularyList) {
-      for (Tag tag in vocabulary.tags) {
-        if (!result.contains(tag)) result.add(tag);
-      }
-    }
-    return result;
-  }
-
   List<Vocabulary> getVocabulariesByTag(Tag tag) {
     List<Vocabulary> result = [];
     try {
@@ -93,7 +128,7 @@ class VocabularyProvider extends ChangeNotifier {
     return result;
   }
 
-  bool get isMultilingual {
+    bool get isMultilingual {
     if (vocabularyList.isEmpty) return false;
     Language firstVocabularySourceLanguage = vocabularyList.first.sourceLanguage;
     Language firstVocabularyTargetLanguage = vocabularyList.first.targetLanguage;
@@ -103,49 +138,4 @@ class VocabularyProvider extends ChangeNotifier {
     }
     return false;
   }
-
-  Future<void> save() async {
-    _prefs = await SharedPreferences.getInstance();
-    _prefs.setString("vocabularyList", json.encode(vocabularyList));
-    RemoteDatabaseDataSource.instance.saveUserData();
-    notifyListeners();
-  }
-
-  Future<List<Vocabulary>> init() async {
-    vocabularyList.clear();
-    _prefs = await SharedPreferences.getInstance();
-    String vocabularyListJSON = _prefs.getString("vocabularyList") ?? "";
-    if (vocabularyListJSON != "") {
-      for (dynamic voc in json.decode(vocabularyListJSON)) {
-        vocabularyList.add(Vocabulary.fromJson(voc));
-      }
-    }
-    notifyListeners();
-    return vocabularyList;
-  }
-
-  Future<void> add(Vocabulary vocabulary) async {
-    vocabularyList.add(vocabulary);
-    await save();
-    notifyListeners();
-  }
-
-  Future<void> remove(Vocabulary vocabulary) async {
-    vocabularyList.remove(vocabulary);
-    await save();
-    notifyListeners();
-  }
-
-  Future<void> clear() async {
-    vocabularyList.clear();
-    await save();
-    notifyListeners();
-  }
-
-  Future<void> signOut() async {
-    vocabularyList.clear();
-    _prefs = await SharedPreferences.getInstance();
-    _prefs.setString("vocabularyList", json.encode(vocabularyList));
-    notifyListeners();
-  }
-}
+*/

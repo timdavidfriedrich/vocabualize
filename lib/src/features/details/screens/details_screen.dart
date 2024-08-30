@@ -1,30 +1,24 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:log/log.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vocabualize/constants/image_constants.dart';
 import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+import 'package:vocabualize/src/common/domain/usecases/image/get_draft_image_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/image/get_stock_images_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/image/upload_image_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/translator/translate_to_english_use_case.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
-import 'package:vocabualize/src/common/data/data_sources/remote_image_storage_data_source.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/domain/utils/formatter.dart';
-import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
-import 'package:vocabualize/src/common/data/models/pexels_model.dart';
-import 'package:vocabualize/src/common/data/data_sources/stock_image_data_source.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extentions.dart';
 import 'package:vocabualize/src/features/details/screens/details_disabled_images_screen.dart';
 import 'package:vocabualize/src/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/src/features/details/widgets/tag_wrap.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
-import 'package:vocabualize/src/features/details/widgets/camera_gallery_dialog.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/src/features/settings/screens/settings_screen.dart';
 
@@ -38,13 +32,17 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+  final getDraftImage = sl.get<GetDraftImageUseCase>();
+  final updateVocabulary = sl.get<UpdateVocabularyUseCase>();
+  final deleteVocabulary = sl.get<DeleteVocabularyUseCase>();
+  final getStockImages = sl.get<GetStockImagesUseCase>();
+  final uploadImage = sl.get<UploadImageUseCase>();
   final translateToEnglish = sl.get<TranslateToEnglishUseCase>();
 
-  Vocabulary vocabulary = Vocabulary(source: "", target: "");
+  Vocabulary vocabulary = Vocabulary();
 
-  List<PexelsModel> _pexelsModelList = [];
-  dynamic _selected;
-  File? _cameraImageFile;
+  List<StockImage> _stockImages = [];
+  VocabularyImage? _selected;
 
   final int itemCount = 7;
   final int maxItems = 70;
@@ -58,19 +56,26 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _initImage() {
-    if (!vocabulary.hasImage) return;
-    _cameraImageFile = vocabulary.cameraImageFile;
-    _selected = _cameraImageFile ?? vocabulary.pexelsModel;
+    final image = vocabulary.image;
+    if (image is FallbackImage) {
+      return;
+    }
+    _selected = vocabulary.image;
   }
 
-  void _getPexels() async {
+  void _getDraftImage() async {
+    final image = await getDraftImage();
+    if (image != null) {
+      setState(() => _selected = image);
+    }
+  }
+
+  void _loadStockImages() async {
     final searchTerm = Formatter.filterOutArticles(
       await translateToEnglish(vocabulary.source),
     );
-    List<PexelsModel> pexelsModelList = await StockImageDataSource().getImages(
-      searchTerm,
-    );
-    if (mounted) setState(() => _pexelsModelList = pexelsModelList);
+    List<StockImage> stockImages = await getStockImages(searchTerm);
+    if (mounted) setState(() => _stockImages = stockImages);
   }
 
   void _browseNext() {
@@ -88,66 +93,24 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _openPhotographerLink() async {
-    if (!await launchUrl(Uri.parse(_selected.url), mode: LaunchMode.externalApplication)) return;
+    final imageUrl = _selected?.url;
+    if (imageUrl == null) return;
+    await launchUrl(Uri.parse(imageUrl), mode: LaunchMode.externalApplication);
   }
 
-  void _selectImage(PexelsModel? imageModel) {
-    if (imageModel == null) return;
-    setState(() => _selected = imageModel);
-  }
-
-  Future<dynamic> _openCam() async {
-    final imageSource = await HelperWidgets.showStaticDialog(const CameraGalleryDialog());
-    if (imageSource == null) return;
-
-    XFile? image;
-
-    try {
-      image = await ImagePicker().pickImage(source: imageSource);
-    } catch (e) {
-      Log.error("Failed to open camera or gallery.", exception: e);
-    }
-
+  void _selectImage(VocabularyImage? image) {
     if (image == null) return;
-
-    final file = await _saveCameraFile(image.path);
-    return file;
+    setState(() => _selected = image);
   }
 
-  Future<File> _saveCameraFile(String imagePath) async {
-    final String path = (await getApplicationDocumentsDirectory()).path;
-
-    final String formatedDate = DateFormat("yyyy-MM-dd_HH-mm-ss").format(vocabulary.created);
-    final String vocabularyName = vocabulary.source.toLowerCase().replaceAll(Formatter.specialCharacters, "-");
-    final String name = "${formatedDate}_$vocabularyName";
-
-    return await File(imagePath).copy("$path/$name");
-  }
-
-  void _save() {
-    if (_cameraImageFile != null && _cameraImageFile == _selected) {
-      vocabulary.cameraImageFile = _cameraImageFile;
-      _uploadImage();
-    } else {
-      vocabulary.pexelsModel = _selected ?? PexelsModel.fallback();
+  void _save() async {
+    final image = _selected;
+    if (image != null) {
+      uploadImage(image);
     }
+    final updatedVocabulary = vocabulary.copyWith(image: _selected);
+    updateVocabulary(updatedVocabulary);
     Navigator.pop(Global.context);
-    // ? Show message ?
-    // Messenger.showSaveMessage(vocabulary);
-  }
-
-  Future<void> _uploadImage() async {
-    if (_cameraImageFile == null) return;
-    vocabulary.firebaseImageUrl = RemoteImageStorageDataSource.instance.getVocabularyImageDownloadUrl(vocabulary: vocabulary);
-    Uint8List imageData = await _cameraImageFile!.readAsBytes();
-    Uint8List compressImageData = await FlutterImageCompress.compressWithList(
-      imageData,
-      quality: 70,
-      minHeight: 800,
-      minWidth: 800,
-    );
-    await RemoteImageStorageDataSource.instance.uploadVocabularyImage(vocabulary: vocabulary, imageData: compressImageData);
-    // item.firebaseImageUrl = await StorageService.instance.getItemImageDownloadUrl(item: item);
   }
 
   void _navigateToSettings() async {
@@ -155,7 +118,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _delete() {
-    Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
+    deleteVocabulary(vocabulary);
     Navigator.pop(context);
   }
 
@@ -165,7 +128,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       _initArguments();
       _initImage();
-      _getPexels();
+      _loadStockImages();
     });
   }
 
@@ -203,9 +166,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                         color: Theme.of(context).colorScheme.surface,
                                         image: _selected == null
                                             ? null
-                                            : _selected == _cameraImageFile
-                                                ? DecorationImage(fit: BoxFit.cover, image: FileImage(_cameraImageFile!))
-                                                : DecorationImage(fit: BoxFit.cover, image: NetworkImage(_selected.src["large"])),
+                                            : DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: _selected!.getImageProvider(),
+                                              ),
                                       ),
                                       child: _selected == null
                                           ? Center(
@@ -214,9 +178,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                 textAlign: TextAlign.center,
                                               ),
                                             )
-                                          : _selected == _cameraImageFile
-                                              ? Container()
-                                              : Container(
+                                          : _selected is StockImage
+                                              ? Container(
                                                   decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(14),
                                                       backgroundBlendMode: BlendMode.darken,
@@ -236,7 +199,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                           Flexible(
                                                             child: Text(
                                                               // TODO: Replace with arb
-                                                              "Photo by ${_selected.photographer}",
+                                                              "Photo by ${(_selected as StockImage).photographer}",
                                                               style: Theme.of(context)
                                                                   .textTheme
                                                                   .bodySmall!
@@ -254,7 +217,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                ),
+                                                )
+                                              : const SizedBox(),
                                     ),
                                   ),
                                   const SizedBox(height: 16),
@@ -280,65 +244,62 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                         ? MaterialButton(
                                             padding: EdgeInsets.zero,
                                             elevation: 0,
-                                            onPressed: _cameraImageFile != null && _cameraImageFile != _selected
-                                                ? () => setState(() => _selected = _cameraImageFile)
-                                                : () async {
-                                                    final result = await _openCam();
-                                                    if (result != null) {
-                                                      setState(() {
-                                                        _cameraImageFile = result;
-                                                        _selected = result;
-                                                      });
-                                                    }
-                                                  },
+                                            onPressed: _getDraftImage,
                                             color: Theme.of(context).colorScheme.surface,
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                            child: _cameraImageFile == null
-                                                ? Icon(Icons.camera_alt_rounded, color: Theme.of(context).colorScheme.primary, size: 28)
-                                                : Ink(
+                                            child: _selected is DraftImage
+                                                ? Ink(
                                                     padding: EdgeInsets.zero,
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(16),
-                                                      border: _selected != _cameraImageFile
-                                                          ? null
-                                                          : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color: Theme.of(context).colorScheme.primary,
+                                                      ),
                                                       image: DecorationImage(
                                                         fit: BoxFit.cover,
-                                                        image: FileImage(_cameraImageFile!),
+                                                        image: _selected!.getImageProvider(),
                                                       ),
                                                     ),
-                                                    child: _selected != _cameraImageFile
-                                                        ? Container()
-                                                        : Center(
-                                                            child: Icon(Icons.done_rounded,
-                                                                color: Theme.of(context).colorScheme.onBackground)),
+                                                    child: Center(
+                                                      child: Icon(
+                                                        Icons.done_rounded,
+                                                        color: Theme.of(context).colorScheme.onSurface,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Icon(
+                                                    Icons.camera_alt_rounded,
+                                                    color: Theme.of(context).colorScheme.primary,
+                                                    size: 28,
                                                   ),
                                           )
                                         : InkWell(
-                                            onTap: () => _pexelsModelList.isEmpty
-                                                ? null
-                                                : _selectImage(_pexelsModelList.elementAt(index + firstIndex - 1)),
+                                            onTap: () =>
+                                                _stockImages.isEmpty ? null : _selectImage(_stockImages.elementAt(index + firstIndex - 1)),
                                             borderRadius: BorderRadius.circular(16),
-                                            child: firstIndex + index >= _pexelsModelList.length + 1
+                                            child: firstIndex + index >= _stockImages.length + 1
                                                 ? const Padding(
                                                     padding: EdgeInsets.all(24), child: CircularProgressIndicator(strokeWidth: 2))
                                                 : Ink(
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(16),
-                                                      border: _pexelsModelList.elementAt(index + firstIndex - 1) != _selected
+                                                      border: _stockImages.elementAt(index + firstIndex - 1) != _selected
                                                           ? null
                                                           : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
                                                       image: DecorationImage(
                                                         fit: BoxFit.cover,
-                                                        image:
-                                                            NetworkImage(_pexelsModelList.elementAt(index + firstIndex - 1).src["small"]),
+                                                        image: NetworkImage(
+                                                          _stockImages.elementAt(index + firstIndex - 1).sizeVariants?["small"] ??
+                                                              ImageConstants.fallbackImageUrl,
+                                                        ),
                                                       ),
                                                     ),
-                                                    child: _pexelsModelList.elementAt(index + firstIndex - 1) != _selected
+                                                    child: _stockImages.elementAt(index + firstIndex - 1) != _selected
                                                         ? null
                                                         : Center(
-                                                            child: Icon(Icons.done_rounded,
-                                                                color: Theme.of(context).colorScheme.onBackground)),
+                                                            child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onSurface),
+                                                          ),
                                                   ),
                                           ),
                                   ),

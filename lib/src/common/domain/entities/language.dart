@@ -3,15 +3,22 @@ import 'package:uuid/uuid.dart';
 
 class Language {
   final String id;
-  String name;
-  String translatorId;
-  String speechToTextId;
-  String textToSpeechId;
-  DateTime? created;
-  DateTime? updated;
+  final String name;
+  final String translatorId;
+  final String speechToTextId;
+  final String textToSpeechId;
+  final DateTime? created;
+  final DateTime? updated;
 
-  Language({id, required this.name, required this.translatorId, required this.speechToTextId, required this.textToSpeechId})
-      : id = id ?? "language--${const Uuid().v4()}";
+  Language({
+    String? id,
+    required this.name,
+    required this.translatorId,
+    required this.speechToTextId,
+    required this.textToSpeechId,
+    this.created,
+    this.updated,
+  }) : id = id ?? "language--${const Uuid().v4()}";
 
   Language.fromJson(Map<String, dynamic> json)
       : id = json['id'] ?? "empty_id",

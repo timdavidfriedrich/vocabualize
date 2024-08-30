@@ -1,9 +1,4 @@
-import 'dart:convert';
-
 import 'package:pocketbase/pocketbase.dart';
-import 'package:provider/provider.dart';
-import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 
 class AppUser {
   static AppUser instance = AppUser();
@@ -17,7 +12,7 @@ class AppUser {
 
   Future<void> signOut() async {
     instance = AppUser();
-    Provider.of<VocabularyProvider>(Global.context, listen: false).signOut();
+    //Provider.of<VocabularyProvider>(Global.context, listen: false).signOut();
   }
 
   void _reset() {
@@ -65,22 +60,8 @@ class AppUser {
       'created': created?.toIso8601String(),
       'updated': updated?.toIso8601String(),
       'lastLogin': lastLogin?.toIso8601String(),
-      'vocabularyList': json.encode(Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList),
+      //'vocabularyList': json.encode(Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList),
     };
-  }
-
-  String toRawJson() {
-    return """
-    {
-      "id": "$id",
-      "name": "$name",
-      "verified": $verified,
-      "created": "${created?.toIso8601String()}",
-      "updated": "${updated?.toIso8601String()}",
-      "lastLogin": "${lastLogin?.toIso8601String()}",
-      "vocabularyList": "${json.encode(Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList)}"
-    }
-    """;
   }
 
   @override

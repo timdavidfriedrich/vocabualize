@@ -18,7 +18,6 @@ import 'package:vocabualize/src/features/onboarding/screens/select_language_scre
 import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_screen.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
@@ -49,7 +48,6 @@ class Vocabualize extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ActiveProvider()),
         ChangeNotifierProvider(create: (context) => SettingsProvider()),
-        ChangeNotifierProvider(create: (context) => VocabularyProvider()),
       ],
       child: MaterialApp(
         localizationsDelegates: const [

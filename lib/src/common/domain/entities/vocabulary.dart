@@ -1,278 +1,129 @@
-import 'dart:io';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_cached_image/firebase_cached_image.dart';
-import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:uuid/uuid.dart';
-import 'package:vocabualize/constants/common_imports.dart';
-import 'package:provider/provider.dart';
-import 'package:vocabualize/service_locator.dart';
-import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/domain/usecases/language/find_language_use_case.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+
+import 'package:vocabualize/constants/due_algorithm_constants.dart';
+import 'package:vocabualize/src/common/data/utils/date_parser.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/entities/level.dart';
-import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
-import 'package:vocabualize/src/common/data/models/pexels_model.dart';
-import 'package:vocabualize/src/common/domain/entities/answer.dart';
-import 'package:vocabualize/src/features/practise/utils/date_calculator.dart';
-import 'package:vocabualize/src/features/record/widgets/duplicate_dialog.dart';
-import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 
 class Vocabulary {
   final String id;
-  String _source = "";
-  String _target = "";
-  Language _sourceLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage;
-  Language _targetLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).targetLanguage;
-  List<Tag> tags = [];
-  PexelsModel? _pexelsModel;
-  File? _cameraImageFile;
-  String? firebaseImageUrl;
-  Level level = Level();
-  bool isNovice = true;
-  //int noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-  int interval = Provider.of<SettingsProvider>(Global.context, listen: false).initialNoviceInterval; // minutes
-  double ease = Provider.of<SettingsProvider>(Global.context, listen: false).initialEase;
-  DateTime created = DateTime.now();
-  DateTime? updated = DateTime.now();
-  DateTime nextDate = DateTime.now();
+  final String source;
+  final String target;
+  final Language sourceLanguage;
+  final Language targetLanguage;
+  final List<Tag> tags;
+  final VocabularyImage image;
+  final Level level;
+  final bool isNovice;
+  final int noviceInterval;
+  final int interval;
+  final double ease;
+  final DateTime created;
+  final DateTime updated;
+  final DateTime nextDate;
 
-  Vocabulary({required String source, required String target, List<Tag>? tags})
-      : id = "vocabulary--${const Uuid().v4()}",
-        _source = source,
-        _target = target,
-        tags = tags ?? [];
-
-  Vocabulary.empty() : id = "vocabulary--${const Uuid().v4()}";
-
-  Vocabulary.fromJson(
-    Map<String, dynamic> json, {
-    List<Tag>? tags,
-    List<Language>? languages,
-  })  : id = json['id'] ?? "empty_id",
-        tags = tags ?? [],
-        _sourceLanguage = languages?.where((element) => element.id == json['sourceLanguage']).first ?? Language.defaultSource(),
-        _targetLanguage = languages?.where((element) => element.id == json['targetLanguage']).first ?? Language.defaultTarget() {
-    _source = json['source'];
-    _target = json['target'];
-    // initSourceLanguage(json['sourceLanguage']);
-    // initTargetLanguage(json['targetLanguage']);
-    _pexelsModel = PexelsModel.fromJson(json["pexelsModel"]);
-    _cameraImageFile = json['cameraImageFile'] == null ? null : File(json['cameraImageFile']);
-
-    // firebaseImageUrl = json['firebaseImageUrl'] ?? "";
-    level.value = json['levelValue'] ?? 0.0;
-    isNovice = json['isNovice'] ?? false;
-    interval = json['interval'] ?? 0;
-    ease = json['ease'] ?? 0;
-    nextDate = json['nextDate'] != null && json['nextDate'] is String ? DateTime.parse(json['nextDate']) : DateTime.now();
-    created = json['created'] != null ? DateTime.parse(json['created']) : DateTime.now();
-    updated = json['updated'] != null ? DateTime.parse(json['updated']) : null;
-  }
+  Vocabulary({
+    id,
+    this.source = "",
+    this.target = "",
+    sourceLanguage,
+    targetLanguage,
+    this.tags = const [],
+    this.image = const FallbackImage(),
+    this.level = const Level(),
+    this.isNovice = true,
+    this.noviceInterval = DueAlgorithmConstants.initialNoviceInterval,
+    this.interval = DueAlgorithmConstants.initialInterval,
+    this.ease = DueAlgorithmConstants.initialEase,
+    created,
+    updated,
+    nextDate,
+  })  : id = id ?? "vocabulary--${const Uuid().v4()}",
+        sourceLanguage = sourceLanguage ?? Language.defaultSource(),
+        targetLanguage = targetLanguage ?? Language.defaultTarget(),
+        created = created ?? DateTime.now(),
+        updated = updated ?? DateTime.now(),
+        nextDate = nextDate ?? DateTime.now();
 
   Vocabulary.fromRecord(
     RecordModel recordModel, {
     List<Tag>? tags,
     List<Language>? languages,
   })  : id = recordModel.id,
-        _source = recordModel.data['source'],
-        _target = recordModel.data['target'],
-        _sourceLanguage = languages?.where((element) => element.id == recordModel.data['sourceLanguage']).first ?? Language.defaultSource(),
-        _targetLanguage = languages?.where((element) => element.id == recordModel.data['targetLanguage']).first ?? Language.defaultTarget(),
+        source = recordModel.data['source'],
+        target = recordModel.data['target'],
+        // TODO: Replace with usecase??? or maybe just do this when creating the vocabulary
+        sourceLanguage = languages?.where((element) => element.id == recordModel.data['sourceLanguage']).first ?? Language.defaultSource(),
+        targetLanguage = languages?.where((element) => element.id == recordModel.data['targetLanguage']).first ?? Language.defaultTarget(),
         tags = tags ?? [],
-        _pexelsModel = PexelsModel.fromJson(recordModel.data['pexelsModel']),
-        _cameraImageFile = recordModel.data['cameraImageFile'] == null ? null : File(recordModel.data['cameraImageFile']),
-        // firebaseImageUrl = recordModel.data['firebaseImageUrl'],
-        // level.value = recordModel.data['levelValue'] ?? 0.0,
+        // TODO: Implement image
+        image = const FallbackImage(), //VocabularyImage.fromJson(recordModel.data['image']),
+        level = Level.withValue(value: recordModel.data['levelValue'] ?? 0.0),
         isNovice = recordModel.data['isNovice'] ?? false,
-        interval = recordModel.data['interval'] ?? 0,
-        ease = recordModel.data['ease'] ?? 0,
-        nextDate = DateTime.tryParse(recordModel.data['nextDate'] ?? "") ?? DateTime.now(),
-        created = DateTime.tryParse(recordModel.data['created'] ?? "") ?? DateTime.now(),
-        updated = DateTime.tryParse(recordModel.data['updated'] ?? "");
-
-  // TODO ARCHITECTURE: This is a bad practice. This shouldn't be done here.
-  initSourceLanguage(String translatorId) async {
-    final findLanguage = sl.get<FindLanguageUseCase>();
-    _sourceLanguage = await findLanguage(translatorId: translatorId) ?? Language.defaultSource();
-  }
-
-  initTargetLanguage(String translatorId) async {
-    final findLanguage = sl.get<FindLanguageUseCase>();
-    _targetLanguage = await findLanguage(translatorId: translatorId) ?? Language.defaultTarget();
-  }
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'source': _source,
-        'target': _target,
-        'sourceLanguage': _sourceLanguage.translatorId,
-        'targetLanguage': _targetLanguage.translatorId,
-        'tags': tags.map((e) => e.name).toList(),
-        'pexelsModel': _pexelsModel?.toJson() ?? PexelsModel.fallback().toJson(),
-        'cameraImageFile': _cameraImageFile?.path,
-        'firebaseImageUrl': firebaseImageUrl,
-        'level': level.value,
-        'isNovice': isNovice,
-        //'noviceInterval': noviceInterval,
-        'interval': interval,
-        'ease': ease,
-        'creationDate': created.millisecondsSinceEpoch,
-        'nextDate': nextDate.millisecondsSinceEpoch,
-      };
-
-  String get source => _source;
-  String get target => _target;
-  Language get sourceLanguage => _sourceLanguage;
-  Language get targetLanguage => _targetLanguage;
-
-  PexelsModel get pexelsModel {
-    return _pexelsModel ?? PexelsModel.fallback();
-  }
-
-  bool get hasImage {
-    return _pexelsModel != null || _cameraImageFile != null;
-  }
-
-  File? get cameraImageFile => _cameraImageFile;
-
-  // ImageProvider get imageProvider {
-  //   if (_cameraImageFile != null) return FileImage(_cameraImageFile!);
-  //   if (_pexelsModel != null) return CachedNetworkImageProvider(_pexelsModel!.src["large"]);
-  //   return NetworkImage(PexelsModel.fallback().url);
-  // }
-
-  ImageProvider get imageProvider {
-    if (_cameraImageFile != null) return FileImage(_cameraImageFile!);
-    if (_pexelsModel != null && firebaseImageUrl == null) {
-      return CachedNetworkImageProvider(_pexelsModel!.src["large"]);
-    }
-    try {
-      ImageProvider? provider = FirebaseImageProvider(
-        FirebaseUrl(firebaseImageUrl!),
-        options: const CacheOptions(
-          checkIfFileUpdatedOnServer: false,
-        ),
-      );
-      return provider;
-    } catch (e) {
-      Log.error("Failed to provide an image for vocabualary.", exception: e);
-      return NetworkImage(PexelsModel.fallback().url);
-    }
-  }
-
-  Widget get image {
-    return Image(
-      fit: BoxFit.cover,
-      image: imageProvider,
-      frameBuilder: (_, child, frame, __) {
-        if (frame == null) {
-          return const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Center(
-              child: CircularProgressIndicator.adaptive(),
-            ),
-          );
-        }
-        return child;
-      },
-    );
-  }
-
-  // Widget? get image {
-  //   if (firebaseImageUrl == null) return null;
-  //   try {
-  //     if (imageProvider == null) {
-  //       return const ErrorInfo();
-  //     }
-  //     return Image(
-  //       fit: BoxFit.cover,
-  //       image: imageProvider!,
-  //       frameBuilder: (_, child, frame, __) {
-  //         if (frame == null) {
-  //           return const Center(
-  //             child: CircularProgressIndicator.adaptive(),
-  //           );
-  //         }
-  //         return child;
-  //       },
-  //     );
-  //   } catch (e) {
-  //     return ErrorInfo(message: e.toString());
-  //   }
-  // }
-
-  bool get isNotNovice => !isNovice;
-
-  set source(String source) {
-    _source = source;
-    save();
-  }
-
-  set target(String target) {
-    _target = target;
-    save();
-  }
-
-  set sourceLanguage(Language sourceLanguage) {
-    _sourceLanguage = sourceLanguage;
-    save();
-  }
-
-  set targetLanguage(Language targetLanguage) {
-    _targetLanguage = targetLanguage;
-    save();
-  }
-
-  set cameraImageFile(File? file) {
-    _cameraImageFile = file;
-    save();
-  }
-
-  void addTag(Tag tag) {
-    tags.add(tag);
-    save();
-  }
-
-  void deleteTag(Tag tag) {
-    tags.remove(tag);
-    save();
-  }
+        noviceInterval = recordModel.data['noviceInterval'] ?? DueAlgorithmConstants.initialNoviceInterval,
+        interval = recordModel.data['interval'] ?? DueAlgorithmConstants.initialInterval,
+        ease = recordModel.data['ease'] ?? DueAlgorithmConstants.initialEase,
+        nextDate = DateParser.parseOrNull(recordModel.data['nextDate']) ?? DateTime.now(),
+        created = DateParser.parseOrNull(recordModel.data['created']) ?? DateTime.now(),
+        updated = DateParser.parseOrNull(recordModel.data['updated']) ?? DateTime.now();
 
   bool isValid() {
     bool sourceNotEmpty = source.isNotEmpty;
-    bool alreadyInList = Provider.of<VocabularyProvider>(Global.context, listen: false).searchListForSource(source) != null;
-    if (alreadyInList) HelperWidgets.showStaticDialog(DuplicateDialog(vocabulary: this));
-    return sourceNotEmpty && !alreadyInList;
+    bool targetNotEmpty = target.isNotEmpty;
+    bool isLevelValid = level.value >= 0 && level.value <= DueAlgorithmConstants.levelLimit;
+    bool isIntervalValid = interval >= 0;
+    return sourceNotEmpty && targetNotEmpty && isLevelValid && isIntervalValid;
   }
 
-  set pexelsModel(PexelsModel pexelsModel) {
-    _pexelsModel = pexelsModel;
-    save();
+  Vocabulary copyWith({
+    String? id,
+    String? source,
+    String? target,
+    Language? sourceLanguage,
+    Language? targetLanguage,
+    List<Tag>? tags,
+    VocabularyImage? image,
+    Level? level,
+    bool? isNovice,
+    int? noviceInterval,
+    int? interval,
+    double? ease,
+    DateTime? created,
+    DateTime? updated,
+    DateTime? nextDate,
+  }) {
+    return Vocabulary(
+      id: id ?? this.id,
+      source: source ?? this.source,
+      target: target ?? this.target,
+      sourceLanguage: sourceLanguage ?? this.sourceLanguage,
+      targetLanguage: targetLanguage ?? this.targetLanguage,
+      tags: tags ?? this.tags,
+      image: image ?? this.image,
+      level: level ?? this.level,
+      isNovice: isNovice ?? this.isNovice,
+      noviceInterval: noviceInterval ?? this.noviceInterval,
+      interval: interval ?? this.interval,
+      ease: ease ?? this.ease,
+      created: created ?? this.created,
+      updated: updated ?? this.updated,
+      nextDate: nextDate ?? this.nextDate,
+    );
   }
 
-  Future<void> answer(Answer answer) async {
-    nextDate = DateCalculator.nextDate(this, answer);
-    Provider.of<VocabularyProvider>(Global.context, listen: false).save();
-  }
-
-  Future<void> save() async {
-    Provider.of<VocabularyProvider>(Global.context, listen: false).save();
-  }
-
-  Future<void> reset() async {
-    level.value = 0;
-    isNovice = true;
-    //noviceInterval = Provider.of<SettingsProvider>(Keys.context, listen: false).initialNoviceInterval; // minutes
-    interval = Provider.of<SettingsProvider>(Global.context, listen: false).initialInterval; // minutes
-    Provider.of<VocabularyProvider>(Global.context, listen: false).save();
-  }
-
-  @override
-  String toString() {
-    return "$id: \n\t'source': $_source, \n\t'target': $_target, \n\t'tags': $tags, \n\t'level': $level, \n\t'isNovice': $isNovice, " /*\n\t'noviceInterval': $noviceInterval*/
-        ", \n\t'interval': $interval, \n\t'ease': $ease, \n\t'creationDate': $created, \n\t'nextDate': $nextDate, \n\t'sourceLanguage': $sourceLanguage, \n\t'targetLanguage': $targetLanguage";
+  Vocabulary reset() {
+    return copyWith(
+      level: const Level(),
+      isNovice: true,
+      noviceInterval: DueAlgorithmConstants.initialNoviceInterval,
+      interval: DueAlgorithmConstants.initialInterval,
+      ease: DueAlgorithmConstants.initialEase,
+      nextDate: DateTime.now(),
+    );
   }
 }

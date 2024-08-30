@@ -3,14 +3,11 @@ import 'dart:async';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:provider/provider.dart';
-import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/constants/secrets/pocketbase_secrets.dart';
 import 'package:vocabualize/src/common/domain/entities/app_user.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/features/reports/models/report.dart';
 import 'package:vocabualize/src/features/reports/models/translation_report.dart';
 
@@ -78,7 +75,7 @@ class RemoteDatabaseDataSource {
       Log.error("Attempted to add data to a closed StreamController. Controller reinitialized.");
     }
     _streamController.add(vocabularies);
-    Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList = vocabularies;
+    //Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList = vocabularies;
   }
 
   Future<List<Vocabulary>> _fetchData() async {

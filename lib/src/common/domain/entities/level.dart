@@ -1,12 +1,16 @@
-import 'package:vocabualize/constants/common_imports.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:vocabualize/config/themes/level_palette.dart';
+import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/constants/due_algorithm_constants.dart';
+
+enum LevelType { novice, beginner, advanced, expert }
 
 class Level {
-  final double _valueLimit = 3.0;
-  double value = 0;
+  final double _valueLimit = DueAlgorithmConstants.levelLimit;
+  final double value;
 
-  Level();
-  Level.withValue({required this.value});
+  const Level({this.value = 0.0});
+  const Level.withValue({required this.value});
 
   Color get color {
     if (value >= _valueLimit) {
@@ -20,6 +24,7 @@ class Level {
     }
   }
 
+  /* // TODO: Move this vocabulary usecase, repo, etc.
   void add(double difference) {
     if (difference.isNegative) {
       if (value > difference.abs()) value -= difference.abs();
@@ -27,9 +32,16 @@ class Level {
       if (value <= _valueLimit) value += difference;
     }
   }
+  */
 
   @override
-  String toString() {
-    return value.toString();
+  String toString() => 'Level(value: $value)';
+
+  Level copyWith({
+    double? value,
+  }) {
+    return Level(
+      value: value ?? this.value,
+    );
   }
 }

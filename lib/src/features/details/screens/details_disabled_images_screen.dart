@@ -1,7 +1,7 @@
 import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:provider/provider.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/widgets/source_to_target.dart';
@@ -17,6 +17,7 @@ class DetailsDisabledImagesScreen extends StatefulWidget {
 }
 
 class _DetailsDisabledImagesScreenState extends State<DetailsDisabledImagesScreen> {
+  final deleteVocabulary = sl.get<DeleteVocabularyUseCase>();
   Vocabulary vocabulary = Vocabulary(source: "", target: "");
 
   void _save() {
@@ -24,7 +25,7 @@ class _DetailsDisabledImagesScreenState extends State<DetailsDisabledImagesScree
   }
 
   void _delete() {
-    Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary);
+    deleteVocabulary(vocabulary);
     Navigator.pushNamed(context, Start.routeName);
   }
 

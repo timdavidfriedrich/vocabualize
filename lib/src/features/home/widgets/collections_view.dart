@@ -1,7 +1,7 @@
-import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/domain/usecases/tag/get_all_tags_use_case.dart';
 import 'package:vocabualize/src/features/home/widgets/collection_card_button.dart';
 
 class CollectionsView extends StatelessWidget {
@@ -9,6 +9,7 @@ class CollectionsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final getAllTags = sl.get<GetAllTagsUseCase>();
     int threshhold = 8;
 
     List<List<Tag>> splitListInHalf(List<Tag> list) {
@@ -24,51 +25,66 @@ class CollectionsView extends StatelessWidget {
       return result;
     }
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return FutureBuilder<List<Tag>>(
+      future: getAllTags(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final allTags = snapshot.data;
+
+        if (allTags == null || allTags.isEmpty) {
+          return const Center(child: Text("No tags found"));
+        }
+
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              splitListInHalf(Provider.of<VocabularyProvider>(context).allTags)[0].length + 2,
-              (index) => index == 0 || index == splitListInHalf(Provider.of<VocabularyProvider>(context).allTags)[0].length + 1
-                  ? index == 0
-                      ? const SizedBox(width: 16)
-                      : const SizedBox(width: 24)
-                  : Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: TagCardButton(
-                        tag: splitListInHalf(Provider.of<VocabularyProvider>(context).allTags)[0].elementAt(index - 1),
-                      ),
-                    ),
-            ),
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: List.generate(
+                  splitListInHalf(allTags)[0].length + 2,
+                  (index) => index == 0 || index == splitListInHalf(allTags)[0].length + 1
+                      ? index == 0
+                          ? const SizedBox(width: 16)
+                          : const SizedBox(width: 24)
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: TagCardButton(
+                            tag: splitListInHalf(allTags)[0].elementAt(index - 1),
+                          ),
+                        ),
+                ),
+              ),
+              allTags.length < threshhold ? Container() : const SizedBox(height: 8),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: List.generate(
+                  splitListInHalf(allTags)[1].length + 2,
+                  (index) => index == 0 || index == splitListInHalf(allTags)[1].length + 1
+                      ? index == 0
+                          ? const SizedBox(width: 16)
+                          : const SizedBox(width: 24)
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: TagCardButton(
+                            tag: splitListInHalf(allTags)[1].elementAt(index - 1),
+                          ),
+                        ),
+                ),
+              ),
+            ],
           ),
-          Provider.of<VocabularyProvider>(context).allTags.length < threshhold ? Container() : const SizedBox(height: 8),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              splitListInHalf(Provider.of<VocabularyProvider>(context).allTags)[1].length + 2,
-              (index) => index == 0 || index == splitListInHalf(Provider.of<VocabularyProvider>(context).allTags)[1].length + 1
-                  ? index == 0
-                      ? const SizedBox(width: 16)
-                      : const SizedBox(width: 24)
-                  : Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: TagCardButton(
-                        tag: splitListInHalf(Provider.of<VocabularyProvider>(context).allTags)[1].elementAt(index - 1),
-                      ),
-                    ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/cloud_notification_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/local_notification_data_source.dart';
@@ -23,7 +24,10 @@ class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   @override
-  void schedulePractiseNotification() {
-    _localNotificaionDataSource.schedulePractiseNotification();
+  void schedulePractiseNotification({int? numberOfVocabularies, TimeOfDay? timeOfDay}) {
+    _localNotificaionDataSource.schedulePractiseNotification(
+      numberOfVocabularies: numberOfVocabularies,
+      timeOfDay: timeOfDay,
+    );
   }
 }

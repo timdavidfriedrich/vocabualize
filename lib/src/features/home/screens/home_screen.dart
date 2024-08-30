@@ -1,13 +1,15 @@
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:provider/provider.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
+import 'package:vocabualize/src/common/domain/usecases/tag/get_all_tags_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_new_vocabularies_use_case.dart';
 import 'package:vocabualize/src/features/home/screens/home_empty_screen.dart';
 import 'package:vocabualize/src/features/home/widgets/collections_view.dart';
 import 'package:vocabualize/src/features/home/widgets/new_word_card.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/features/home/widgets/status_card.dart';
 import 'package:vocabualize/src/features/home/widgets/vocabulary_list_tile.dart';
 import 'package:vocabualize/src/features/record/utils/record_sheet_controller.dart';
@@ -20,13 +22,15 @@ import 'package:vocabualize/src/features/settings/screens/settings_screen.dart';
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/Home";
 
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final getNewVocabularies = sl.get<GetNewVocabulariesUseCase>();
+  final getAllTags = sl.get<GetAllTagsUseCase>();
   late RecordSheetController recordSheetController;
 
   void _openReportPage() {
@@ -98,52 +102,76 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   const SizedBox(height: 24),
                                   const StatusCard(),
-                                  const SizedBox(height: 32),
-                                  Text(AppLocalizations.of(context)?.home_newWords ?? "",
-                                      style: Theme.of(context).textTheme.headlineMedium),
-                                  const SizedBox(height: 12),
-                                  Provider.of<VocabularyProvider>(context).lastest.isNotEmpty
-                                      ? Container()
-                                      : Text(AppLocalizations.of(context)?.home_noNewWords ?? "",
-                                          style: Theme.of(context).textTheme.bodySmall),
                                 ],
                               ),
                             ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                  Provider.of<VocabularyProvider>(context).lastest.length + 2,
-                                  (index) => index == 0 || index == Provider.of<VocabularyProvider>(context).lastest.length + 1
-                                      ? index == 0
-                                          ? const SizedBox(width: 16)
-                                          : const SizedBox(width: 24)
-                                      : Padding(
-                                          padding: const EdgeInsets.only(left: 8),
-                                          child: NewWordCard(
-                                            vocabulary:
-                                                Provider.of<VocabularyProvider>(context, listen: false).lastest.elementAt(index - 1),
-                                          ),
-                                        ),
-                                ),
-                              ),
-                            ),
-                            Provider.of<VocabularyProvider>(context).allTags.isEmpty
-                                ? Container()
-                                : Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(height: 32),
-                                        // TODO: Replace with arb
-                                        Text("Tags", style: Theme.of(context).textTheme.headlineMedium),
-                                        const SizedBox(height: 12),
-                                      ],
+                            StreamBuilder(
+                              stream: getNewVocabularies(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return const SizedBox();
+                                }
+                                final newVocabularies = snapshot.data;
+                                if (newVocabularies == null || newVocabularies.isEmpty) {
+                                  return const SizedBox();
+                                }
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(height: 32),
+                                    Text(
+                                      AppLocalizations.of(context)?.home_newWords ?? "",
+                                      style: Theme.of(context).textTheme.headlineMedium,
                                     ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      AppLocalizations.of(context)?.home_noNewWords ?? "",
+                                      style: Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      physics: const BouncingScrollPhysics(),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: List.generate(
+                                          newVocabularies.length + 2,
+                                          (index) => index == 0 || index == newVocabularies.length + 1
+                                              ? index == 0
+                                                  ? const SizedBox(width: 16)
+                                                  : const SizedBox(width: 24)
+                                              : Padding(
+                                                  padding: const EdgeInsets.only(left: 8),
+                                                  child: NewWordCard(
+                                                    vocabulary: newVocabularies.elementAt(index - 1),
+                                                  ),
+                                                ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                            FutureBuilder<List<Tag>>(
+                              future: getAllTags(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                  return const SizedBox();
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 32),
+                                      // TODO: Replace with arb
+                                      Text("Tags", style: Theme.of(context).textTheme.headlineMedium),
+                                      const SizedBox(height: 12),
+                                    ],
                                   ),
+                                );
+                              },
+                            ),
                             const CollectionsView(),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 32),

@@ -22,7 +22,7 @@ class SettingsProvider extends ChangeNotifier {
   int _initialNoviceInterval = 1;
   double _initialEase = 2.5;
   double _easeDowngrade = 0.2;
-  double _easyBonus = 1.3;
+  double _easyUpgrade = 1.3;
   double _easyLevelFactor = 0.6;
   double _goodLevelFactor = 0.3;
   double _hardLevelFactor = -0.3;
@@ -77,8 +77,8 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set easyBonus(double easyBonus) {
-    _easyBonus = easyBonus;
+  set easyUpgrade(double easeUpgrade) {
+    _easyUpgrade = easeUpgrade;
     save();
     notifyListeners();
   }
@@ -124,7 +124,7 @@ class SettingsProvider extends ChangeNotifier {
   int get initialNoviceInterval => _initialNoviceInterval;
   double get initialEase => _initialEase;
   double get easeDowngrade => _easeDowngrade;
-  double get easyBonus => _easyBonus;
+  double get easyUpgrade => _easyUpgrade;
   double get easyLevelFactor => _easyLevelFactor;
   double get goodLevelFactor => _goodLevelFactor;
   double get hardLevelFactor => _hardLevelFactor;
@@ -143,7 +143,7 @@ class SettingsProvider extends ChangeNotifier {
     await prefs.setDouble("initialEase", _initialEase);
     await prefs.setDouble("easeDowngrade", _easeDowngrade);
     await prefs.setDouble("easyLevelFactor", _easyLevelFactor);
-    await prefs.setDouble("easyBonus", _easyLevelFactor);
+    await prefs.setDouble("easeUpgrade", _easyLevelFactor);
     await prefs.setDouble("goodLevelFactor", _goodLevelFactor);
     await prefs.setInt("gatherNotificationTimeHour", _gatherNotificationTime.hour);
     await prefs.setInt("gatherNotificationTimeMinute", _gatherNotificationTime.minute);
@@ -168,7 +168,7 @@ class SettingsProvider extends ChangeNotifier {
     _initialNoviceInterval = prefs.getInt("initialNoviceInterval") ?? _initialNoviceInterval;
     _initialEase = prefs.getDouble("initialEase") ?? _initialEase;
     _easeDowngrade = prefs.getDouble("easeDowngrade") ?? _easeDowngrade;
-    _easyBonus = prefs.getDouble("easyBonus") ?? _easyBonus;
+    _easyUpgrade = prefs.getDouble("easeUpgrade") ?? _easyUpgrade;
     _easyLevelFactor = prefs.getDouble("easyLevelFactor") ?? _easyLevelFactor;
     _goodLevelFactor = prefs.getDouble("goodLevelFactor") ?? _goodLevelFactor;
     _hardLevelFactor = prefs.getDouble("hardLevelFactor") ?? _hardLevelFactor;

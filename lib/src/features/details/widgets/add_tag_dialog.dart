@@ -1,6 +1,8 @@
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
 
 class AddTagDialog extends StatefulWidget {
   final Vocabulary vocabulary;
@@ -12,11 +14,18 @@ class AddTagDialog extends StatefulWidget {
 }
 
 class _AddTagDialogState extends State<AddTagDialog> {
+  final updateVocabulary = sl.get<UpdateVocabularyUseCase>();
   String input = "";
 
   void _submit() {
     /// ?: add directly to vocabulary, or just to list first and confirm with save
-    if (input.isNotEmpty) widget.vocabulary.addTag(Tag(name: input.trim()));
+    if (input.isNotEmpty) {
+      final tag = Tag(name: input.trim());
+      final updatedVocabulary = widget.vocabulary.copyWith(
+        tags: [...widget.vocabulary.tags, tag],
+      );
+      updateVocabulary(updatedVocabulary);
+    }
     Navigator.pop(context);
   }
 

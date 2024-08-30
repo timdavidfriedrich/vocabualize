@@ -1,6 +1,7 @@
-import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/widgets/replace_vocabulary_dialog.dart';
@@ -19,6 +20,8 @@ class EditSourceTargetDialog extends StatefulWidget {
 }
 
 class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
+  final deleteVocabulary = sl.get<DeleteVocabularyUseCase>();
+  final updateVocabulary = sl.get<UpdateVocabularyUseCase>();
   TextEditingController controller = TextEditingController();
   String input = "";
 
@@ -29,15 +32,17 @@ class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
   void _submit() async {
     if (input.isEmpty || !_hasChanged()) return Navigator.pop(context);
     if (widget.editTarget) {
-      widget.vocabulary.target = input;
+      final updatedVocabulary = widget.vocabulary.copyWith(target: input);
+      updateVocabulary(updatedVocabulary);
       Navigator.pop(context);
     } else {
       bool hasClickedReplace = await HelperWidgets.showStaticDialog(ReplaceVocabularyDialog(vocabulary: widget.vocabulary));
       if (hasClickedReplace) {
-        if (mounted) Provider.of<VocabularyProvider>(context, listen: false).remove(widget.vocabulary);
+        if (mounted) deleteVocabulary(widget.vocabulary);
         RecordService().validateAndSave(source: input);
       } else {
-        widget.vocabulary.source = input;
+        final updatedVocabulary = widget.vocabulary.copyWith(source: input);
+        updateVocabulary(updatedVocabulary);
         if (mounted) Navigator.pop(context);
       }
     }

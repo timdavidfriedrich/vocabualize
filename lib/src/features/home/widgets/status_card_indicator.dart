@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
 
 class StatusCardIndicator extends StatefulWidget {
   final Widget parent;
@@ -16,6 +17,7 @@ class StatusCardIndicator extends StatefulWidget {
 }
 
 class _StatusCardIndicatorState extends State<StatusCardIndicator> {
+  final getVocabulariesToPractise = sl.get<GetVocabulariesToPractiseUseCase>();
   late Timer timer;
 
   void _startReloadTimer() async {
@@ -28,12 +30,8 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
     if (timer.isActive) timer.cancel();
   }
 
-  List _getCurrentList() {
-    if (widget.tag != null) {
-      return Provider.of<VocabularyProvider>(context, listen: false).getAllToPractiseForTag(widget.tag!);
-    } else {
-      return Provider.of<VocabularyProvider>(context, listen: false).allToPractise;
-    }
+  Future<List<Vocabulary>> _getCurrentList() async {
+    return getVocabulariesToPractise(tag: widget.tag);
   }
 
   @override
@@ -50,28 +48,36 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        widget.parent,
-        _getCurrentList().isEmpty
-            ? Container()
-            : Positioned(
-                top: -4,
-                right: -4,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Text(
-                    "${_getCurrentList().length}",
-                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10),
-                  ),
-                ),
-              ),
-      ],
-    );
+    return FutureBuilder(
+        future: _getCurrentList(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+          final vocabularies = snapshot.data;
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              widget.parent,
+              vocabularies == null || vocabularies.isEmpty
+                  ? Container()
+                  : Positioned(
+                      top: -4,
+                      right: -4,
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Text(
+                          "${vocabularies.length}",
+                          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10),
+                        ),
+                      ),
+                    ),
+            ],
+          );
+        });
   }
 }

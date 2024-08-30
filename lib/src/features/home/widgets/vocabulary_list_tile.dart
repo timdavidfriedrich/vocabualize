@@ -2,8 +2,8 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart';
 import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/src/features/home/widgets/info_snackbar.dart';
@@ -16,10 +16,10 @@ class VocabularyListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deleteVocabulary = sl.get<DeleteVocabularyUseCase>();
     final speak = sl.get<ReadOutUseCase>();
 
     void showVocabularyInfo() {
-      // Messenger.showStaticDialog(InfoDialog(vocabulary: vocabulary));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         content: InfoSnackBarContent(vocabulary: vocabulary),
@@ -35,7 +35,9 @@ class VocabularyListTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Dismissible(
         key: Key(vocabulary.toString()),
-        onDismissed: (direction) async => await Provider.of<VocabularyProvider>(context, listen: false).remove(vocabulary),
+        onDismissed: (direction) async {
+          return await deleteVocabulary(vocabulary);
+        },
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
             editVocabualary();
@@ -75,7 +77,12 @@ class VocabularyListTile extends StatelessWidget {
                   height: 48,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: vocabulary.image,
+                    child: Image(
+                      image: NetworkImage(
+                        vocabulary.image.url,
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
             ],

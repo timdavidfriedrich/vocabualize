@@ -1,10 +1,10 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:provider/provider.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
 import 'package:vocabualize/src/features/collections/utils/collection_arguments.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/home/widgets/status_card_indicator.dart';
@@ -22,18 +22,22 @@ class CollectionScreen extends StatefulWidget {
 }
 
 class _CollectionScreenState extends State<CollectionScreen> {
+  final getVocabulariesToPractise = sl.get<GetVocabulariesToPractiseUseCase>();
   Tag tag = Tag.empty();
 
   void _editTag() {
     // TODO: implement edit tag / collection
   }
 
-  void _startPractise() {
+  void _startPractise() async {
+    final vocabulariesToPractise = await getVocabulariesToPractise(tag: tag);
+    if (!mounted) return;
     Navigator.pushNamed(
       context,
       PractiseScreen.routeName,
       arguments: PractiseScreenArguments(
-          vocabulariesToPractise: Provider.of<VocabularyProvider>(context, listen: false).getAllToPractiseForTag(tag)),
+        vocabulariesToPractise: vocabulariesToPractise,
+      ),
     );
   }
 

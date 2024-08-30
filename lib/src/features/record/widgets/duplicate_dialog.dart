@@ -13,7 +13,7 @@ class DuplicateDialog extends StatelessWidget {
   }
 
   void _addAnyway() {
-    RecordService.save(vocabulary: vocabulary);
+    RecordService().save(vocabulary: vocabulary);
   }
 
   @override

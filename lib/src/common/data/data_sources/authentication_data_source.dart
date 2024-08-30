@@ -9,6 +9,7 @@ import 'package:vocabualize/src/common/domain/entities/app_user.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 
 class AuthenticationDataSource {
+  // TODO architecture: Remove instance and use si
   static final AuthenticationDataSource instance = AuthenticationDataSource();
 
   final String _usersCollectionName = "users";

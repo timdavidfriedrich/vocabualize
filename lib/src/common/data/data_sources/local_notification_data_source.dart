@@ -11,7 +11,6 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/presentation/providers/vocabulary_provider.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
@@ -19,7 +18,7 @@ class LocalNotificationDataSource {
   static const TimeOfDay _defaultScheduleTime = TimeOfDay(hour: 13, minute: 0);
   final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
 
-  void init({bool initScheduled = true}) async {
+  void init() async {
     const AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings("@mipmap/ic_launcher");
     const DarwinInitializationSettings darwinInitializationSettings = DarwinInitializationSettings();
     const LinuxInitializationSettings linuxInitializationSettings = LinuxInitializationSettings(defaultActionName: 'Open notification');
@@ -36,11 +35,7 @@ class LocalNotificationDataSource {
 
     await _localNotifications.initialize(initializationSettings);
 
-    if (initScheduled) {
-      await _initTimeZone();
-      scheduleGatherNotification();
-      schedulePractiseNotification();
-    }
+    await _initTimeZone();
   }
 
   void _requestAndroidPermissions() async {
@@ -73,17 +68,19 @@ class LocalNotificationDataSource {
     tz.setLocalLocation(tz.getLocation(locationName));
   }
 
-  void schedulePractiseNotification() async {
+  void schedulePractiseNotification({int? numberOfVocabularies, TimeOfDay? timeOfDay}) async {
     await _localNotifications.cancel(1);
-    final int vocabulariesToPractise = Provider.of<VocabularyProvider>(Global.context, listen: false).allToPractise.length;
-    if (vocabulariesToPractise <= 1) return;
+    if (numberOfVocabularies == null || numberOfVocabularies <= 1) {
+      Log.warning("Not scheduling practise notification because there are no vocabularies to practise.");
+      return;
+    }
     _scheduleLocalNotification(
       id: 1,
       // TODO: Replace with arb
       title: "Let's practise 🎯",
       // TODO: Replace with arb
-      body: "$vocabulariesToPractise words are due. You'll rock this! :D",
-      time: Provider.of<SettingsProvider>(Global.context, listen: false).practiseNotificationTime,
+      body: "$numberOfVocabularies words are due. You'll rock this! :D",
+      time: timeOfDay ?? Provider.of<SettingsProvider>(Global.context, listen: false).practiseNotificationTime,
     );
   }
 
