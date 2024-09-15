@@ -23,7 +23,7 @@ class TagRepositoryImpl implements TagRepository {
   @override
   Future<List<Tag>> getAllTags() {
     // TODO: implement getTags
-    throw UnimplementedError();
+    return Future.value([]);
   }
 
   @override

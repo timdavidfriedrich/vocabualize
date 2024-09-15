@@ -28,18 +28,4 @@ class ImageRepositoryImpl implements ImageRepository {
       return image?.toTemporaryImage();
     });
   }
-
-  /*
-  Future<void> _uploadImage() async {
-    if (_cameraImageFile == null) return;
-    Uint8List imageData = await _cameraImageFile!.readAsBytes();
-    Uint8List compressImageData = await FlutterImageCompress.compressWithList(
-      imageData,
-      quality: 70,
-      minHeight: 800,
-      minWidth: 800,
-    );
-    await RemoteImageStorageDataSource.instance.uploadVocabularyImage(vocabulary: vocabulary, imageData: compressImageData);
-  }
-  */
 }

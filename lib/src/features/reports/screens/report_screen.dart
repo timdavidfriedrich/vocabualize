@@ -1,14 +1,13 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
+import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/usecases/report/send_report_use_case.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
-import 'package:vocabualize/src/features/reports/models/bug_report.dart';
-import 'package:vocabualize/src/features/reports/models/report.dart';
+import 'package:vocabualize/src/common/domain/entities/report.dart';
 import 'package:vocabualize/src/features/reports/utils/report_arguments.dart';
 import 'package:vocabualize/src/features/reports/utils/report_type.dart';
-import 'package:vocabualize/src/features/reports/models/translation_report.dart';
 
 class ReportScreen extends StatefulWidget {
   static const String routeName = "${HomeScreen.routeName}/Report";
@@ -20,6 +19,8 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
+  final _sendReport = sl.get<SendReportUseCase>();
+
   late ReportArguments arguments;
   late ReportType reportType = ReportType.none;
   Vocabulary? vocabulary;
@@ -45,7 +46,7 @@ class _ReportScreenState extends State<ReportScreen> {
     } else {
       report = BugReport(description: text);
     }
-    RemoteDatabaseDataSource.instance.sendReport(report);
+    _sendReport(report);
     Navigator.pop(context);
   }
 

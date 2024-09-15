@@ -13,6 +13,7 @@ import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_sou
 import 'package:vocabualize/src/common/data/repositories/image_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/language_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/notification_repository_impl.dart';
+import 'package:vocabualize/src/common/data/repositories/report_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/speech_to_text_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/tag_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/text_to_speech_repository_impl.dart';
@@ -21,6 +22,7 @@ import 'package:vocabualize/src/common/data/repositories/vocabulary_repository_i
 import 'package:vocabualize/src/common/domain/repositories/image_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/language_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/notification_repository.dart';
+import 'package:vocabualize/src/common/domain/repositories/report_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/speech_to_text_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/tag_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/text_to_speech_repository.dart';
@@ -38,6 +40,7 @@ import 'package:vocabualize/src/common/domain/usecases/notification/init_cloud_n
 import 'package:vocabualize/src/common/domain/usecases/notification/init_local_notifications_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/notification/schedule_gather_notification_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/notification/schedule_practise_notification_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/report/send_report_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/tag/get_all_tags_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/translator/translate_to_english_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/translator/translate_use_case.dart';
@@ -70,6 +73,7 @@ Future<void> initializeCommonDependencies(GetIt sl) async {
   sl.registerSingleton<ImageRepository>(ImageRepositoryImpl());
   sl.registerSingleton<LanguageRepository>(LanguageRepositoryImpl());
   sl.registerSingleton<NotificationRepository>(NotificationRepositoryImpl());
+  sl.registerSingleton<ReportRepository>(ReportRepositoryImpl());
   sl.registerSingleton<SpeechToTextRepository>(SpeechToTextRepositoryImpl());
   sl.registerSingleton<TagRepository>(TagRepositoryImpl());
   sl.registerSingleton<TextToSpeechRepository>(TextToSpeechRepositoryImpl());
@@ -92,6 +96,8 @@ Future<void> initializeCommonDependencies(GetIt sl) async {
   sl.registerFactory<InitLocalNotificationsUseCase>(() => InitLocalNotificationsUseCase());
   sl.registerFactory<ScheduleGatherNotificationUseCase>(() => ScheduleGatherNotificationUseCase());
   sl.registerFactory<SchedulePractiseNotificationUseCase>(() => SchedulePractiseNotificationUseCase());
+  // report
+  sl.registerFactory<SendReportUseCase>(() => SendReportUseCase());
   // translator
   sl.registerFactory<TranslateToEnglishUseCase>(() => TranslateToEnglishUseCase());
   sl.registerFactory<TranslateUseCase>(() => TranslateUseCase());

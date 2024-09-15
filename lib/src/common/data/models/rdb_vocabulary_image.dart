@@ -49,10 +49,10 @@ class RdbVocabualaryImage {
   factory RdbVocabualaryImage.fromRecord(Map<String, dynamic> json, {required RdbVocabularyImageType type}) {
     return RdbVocabualaryImage(
       type: RdbVocabularyImageType.values.firstWhere(
-        (t) => t.name == json['type'] as String,
+        (t) => t.name == json['type'] as String?,
         orElse: () => type,
       ),
-      id: json['id'] as String,
+      id: (json['id'] as int?).toString(),
       width: json['width'] as int,
       height: json['height'] as int,
       url: json['url'] as String,

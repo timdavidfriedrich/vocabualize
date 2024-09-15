@@ -2,10 +2,10 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_use_case.dart';
 import 'package:vocabualize/src/features/collections/utils/collection_arguments.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/home/widgets/status_card_indicator.dart';
 import 'package:vocabualize/src/features/home/widgets/vocabulary_list_tile.dart';
@@ -22,6 +22,7 @@ class CollectionScreen extends StatefulWidget {
 }
 
 class _CollectionScreenState extends State<CollectionScreen> {
+  final getVocabularies = sl.get<GetVocabulariesUseCase>();
   final getVocabulariesToPractise = sl.get<GetVocabulariesToPractiseUseCase>();
   Tag tag = Tag.empty();
 
@@ -61,7 +62,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
             actions: [IconButton(icon: const Icon(Icons.edit_rounded), onPressed: () => _editTag())],
           ),
           body: StreamBuilder<List<Vocabulary>>(
-              stream: RemoteDatabaseDataSource.instance.stream,
+              stream: getVocabularies(tag: tag),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator.adaptive());

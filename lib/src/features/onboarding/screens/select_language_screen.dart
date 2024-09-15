@@ -28,7 +28,6 @@ class SelectLanguageScreenState extends State<SelectLanguageScreen> {
 
   void _submit(BuildContext context) {
     // TODO: Implement usage of signInAnonymously from AuthService
-    // if (AuthService.instance.user == null) AuthService.instance.signInAnonymously();
     setTargetLanguage(Provider.of<SettingsProvider>(context, listen: false).targetLanguage);
     Navigator.pop(context);
   }

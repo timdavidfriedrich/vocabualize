@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:log/log.dart';
 import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
+import 'package:vocabualize/src/common/data/mappers/vocabulary_mappers.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
@@ -7,10 +11,15 @@ import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository
 class VocabularyRepositoryImpl implements VocabularyRepository {
   final _remoteDatabaseDataSource = sl.get<RemoteDatabaseDataSource>();
 
+  StreamController<List<Vocabulary>> _streamController = StreamController<List<Vocabulary>>.broadcast();
+
+  void dispose() {
+    _streamController.close();
+  }
+
   @override
-  Future<void> addVocabulary(Vocabulary vocabulary) {
-    // TODO: implement addVocabulary
-    throw UnimplementedError();
+  Future<void> addVocabulary(Vocabulary vocabulary) async {
+    _remoteDatabaseDataSource.addVocabulary(vocabulary.toRdbVocabulary());
   }
 
   @override
@@ -21,46 +30,129 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
 
   @override
   Future<void> deleteAllVocabularies() {
-    // TODO: implement deleteAllVocabularies
-    throw UnimplementedError();
+    return _remoteDatabaseDataSource.deleteAllVocabularies();
   }
 
   @override
-  Future<void> deleteVocabulary(Vocabulary vocabulary) {
-    // TODO: implement deleteVocabulary
-    throw UnimplementedError();
+  Future<void> deleteVocabulary(Vocabulary vocabulary) async {
+    _remoteDatabaseDataSource.deleteVocabulary(vocabulary.toRdbVocabulary());
   }
 
   @override
   Stream<List<Vocabulary>> getNewVocabularies() {
-    // TODO: implement getNewVocabularies
-    throw UnimplementedError();
+    return _streamController.stream.map((vocabularies) {
+      return vocabularies.where((vocabulary) {
+        return vocabulary.created.isAfter(DateTime.now().subtract(const Duration(days: 7)));
+      }).toList();
+    });
   }
 
   @override
   Stream<List<Vocabulary>> getVocabularies({String? searchTerm, Tag? tag}) {
-    // TODO: implement getVocabularies
-    throw UnimplementedError();
+    final filteredStream = _getStreamAndLoadIfNecessary().map((vocabularies) {
+      return vocabularies.filterBySearchTerm(searchTerm).filterByTag(tag);
+    });
+    return filteredStream.asBroadcastStream();
+  }
+
+  Stream<List<Vocabulary>> _getStreamAndLoadIfNecessary() {
+    if (_streamController.isClosed) {
+      _streamController = StreamController<List<Vocabulary>>.broadcast();
+      Log.warning("Attempted to add data to a closed StreamController. Controller reinitialized.");
+    }
+    if (_streamController.hasListener) {
+      return _streamController.stream;
+    } else {
+      _loadVocabularies();
+      return _streamController.stream;
+    }
+  }
+
+  Future<void> _loadVocabularies() async {
+    _remoteDatabaseDataSource.getVocabularies().then((rdbVocabularies) {
+      final vocabularies = rdbVocabularies.map((rdbVocabulary) {
+        return rdbVocabulary.toVocabulary();
+      }).toList();
+      _streamController.add(vocabularies);
+    });
   }
 
   @override
-  Future<List<Vocabulary>> getVocabulariesToPractise({Tag? tag}) {
-    // TODO: implement getVocabulariesToPractise
-    throw UnimplementedError();
+  Future<List<Vocabulary>> getVocabulariesToPractise({Tag? tag}) async {
+    final latestVocabularies = await _getStreamAndLoadIfNecessary().first;
+    return latestVocabularies.where((vocabulary) {
+      final isDue = vocabulary.nextDate.isBefore(DateTime.now());
+      final containsTag = tag == null || vocabulary.tags.contains(tag);
+      return isDue && containsTag;
+    }).toList();
   }
 
   @override
-  Future<bool> isCollectionMultilingual({Tag? tag}) {
-    // TODO: implement isCollectionMultilingual
-    throw UnimplementedError();
+  Future<bool> isCollectionMultilingual({Tag? tag}) async {
+    final latestVocabularies = await _getStreamAndLoadIfNecessary().first;
+    if (latestVocabularies.isEmpty) return false;
+    final firstVocabulary = tag != null
+        ? latestVocabularies.firstWhere(
+            (vocabulary) => vocabulary.tags.contains(tag),
+            orElse: () => Vocabulary(),
+          )
+        : latestVocabularies.first;
+    return latestVocabularies.any((vocabulary) {
+      final containsTag = tag == null || vocabulary.tags.contains(tag);
+      final hasDifferentSourceLangauge = vocabulary.sourceLanguage != firstVocabulary.sourceLanguage;
+      final hasDifferentTargetLangauge = vocabulary.targetLanguage != firstVocabulary.targetLanguage;
+      return containsTag && (hasDifferentSourceLangauge || hasDifferentTargetLangauge);
+    });
   }
 
   @override
-  Future<void> updateVocabulary(Vocabulary vocabulary) {
-    // TODO: implement updateVocabulary
-    throw UnimplementedError();
+  Future<void> updateVocabulary(Vocabulary vocabulary) async {
+    _remoteDatabaseDataSource.updateVocabulary(vocabulary.toRdbVocabulary());
   }
 }
+
+extension on List<Vocabulary> {
+  List<Vocabulary> filterBySearchTerm(String? searchTerm) {
+    if (searchTerm == null || searchTerm.isEmpty) return this;
+    return where((vocabulary) {
+      return vocabulary.source.contains(searchTerm) || vocabulary.target.contains(searchTerm);
+    }).toList();
+  }
+
+  List<Vocabulary> filterByTag(Tag? tag) {
+    if (tag == null) return this;
+    return where((vocabulary) {
+      return vocabulary.tags.contains(tag);
+    }).toList();
+  }
+}
+
+/* // ! SUBSCRIBE
+  RemoteDatabaseDataSource() {
+    _init();
+  }
+
+  Future<bool> _init() async {
+    try {
+      await _subscribeToVocabularyChanges();
+      Log.hint("CloudService initialized");
+      return true;
+    } catch (e) {
+      Log.error("Failed to initialize CloudService.", exception: e);
+      return false;
+    }
+  }
+
+  Future<void> _subscribeToVocabularyChanges() async {
+    final PocketBase pocketbase = await RemoteDatabaseDataSource.getConnection();
+    pocketbase.collection(_vocabulariesCollectionName).subscribe("*", (event) async {
+      if (event.record?.data["user"] != AppUser.instance.id) return;
+      await loadData();
+      // TODO: Only fetch the changed vocabulary
+      Log.hint("Vocabulary cloud data changed (id: ${event.record?.id ?? "unknown"}).");
+    });
+  }
+*/
 
 /*
 

@@ -1,3 +1,5 @@
+import 'package:pocketbase/pocketbase.dart';
+import 'package:vocabualize/constants/due_algorithm_constants.dart';
 import 'package:vocabualize/src/common/data/mappers/language_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/tag_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_image_mappers.dart';
@@ -7,6 +9,31 @@ import 'package:vocabualize/src/common/data/utils/date_parser.dart';
 import 'package:vocabualize/src/common/domain/entities/level.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+
+extension RecordModelMappers on RecordModel {
+  RdbVocabulary toRdbVocabulary() {
+    return RdbVocabulary(
+      id: id,
+      //user: data["user"] ?? "",
+      source: data["source"] ?? "",
+      target: data["target"] ?? "",
+      // TODO: Add language convertion
+      //sourceLanguage: data["sourceLanguage"] ?? "",
+      //targetLanguage: data["targetLanguage"] ?? "",
+      // TODO: Add tag convertion
+      tags: [], //(data["tags"] as List<String>) ?? [],
+      // TODO: Add image convertion
+      image: null, // data["image"] != null ? RdbVocabualaryImage.fromRecord(data["image"]) : null,
+      levelValue: data["levelValue"] ?? 0.0,
+      isNovice: data["isNovice"] ?? true,
+      interval: data["interval"] ?? DueAlgorithmConstants.initialInterval,
+      ease: data["ease"] ?? DueAlgorithmConstants.initialEase,
+      nextDate: data["nextDate"] ?? "",
+      created: data["created"] ?? "",
+      updated: data["updated"] ?? "",
+    );
+  }
+}
 
 extension VocabularyModelMappers on RdbVocabulary {
   Vocabulary toVocabulary() {
@@ -25,6 +52,31 @@ extension VocabularyModelMappers on RdbVocabulary {
       nextDate: DateParser.parseOrNull(nextDate),
       created: DateParser.parseOrNull(created),
       updated: DateParser.parseOrNull(updated),
+    );
+  }
+
+  RecordModel toRecordModel() {
+    return RecordModel(
+      id: id,
+      data: {
+        "user": user.id,
+        "source": source,
+        "target": target,
+        // TODO: Add language convertion
+        "sourceLanguage": "", //sourceLanguage.toRecordModel(),
+        "targetLanguage": "", //targetLanguage.toRecordModel(),
+        // TODO: Add tag convertion
+        "tags": "", // tags.map((tag) => tag.toRecordModel()).toList(),
+        // TODO: Add image convertion
+        "image": "", // image?.toRecordModel(),
+        "levelValue": levelValue,
+        "isNovice": isNovice,
+        "interval": interval,
+        "ease": ease,
+        "nextDate": nextDate,
+        "created": created,
+        "updated": updated,
+      },
     );
   }
 }

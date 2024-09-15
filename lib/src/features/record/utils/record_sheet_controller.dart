@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
 
+// TODO ARCHITECTURE: Refactor RecordSheetController (e.g. remove singleton)
 class RecordSheetController extends SnappingSheetController {
   static final RecordSheetController _recordSheetController = RecordSheetController();
   static get instance => _recordSheetController;
