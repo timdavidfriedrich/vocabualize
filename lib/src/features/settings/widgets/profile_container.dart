@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/data/data_sources/authentication_data_source.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/sign_out_use_case.dart';
 
 class ProfileContainer extends StatefulWidget {
   const ProfileContainer({super.key});
@@ -10,8 +11,10 @@ class ProfileContainer extends StatefulWidget {
 }
 
 class _ProfileContainerState extends State<ProfileContainer> {
-  void _signOut() async {
-    await AuthenticationDataSource.instance.signOut();
+  final _signOut = sl.get<SignOutUseCase>();
+
+  void _onSignOutClick() async {
+    await _signOut();
     if (mounted) Navigator.pop(context);
   }
 
@@ -37,7 +40,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 ),
                 const SizedBox(height: 16),
                 // TODO: Replace with arb
-                ElevatedButton(onPressed: () => _signOut(), child: const Text("Sign in")),
+                ElevatedButton(onPressed: () => _onSignOutClick(), child: const Text("Sign in")),
               ],
             )
           : Row(
@@ -64,7 +67,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                       // TODO: Replace with arb
                       Align(
                         alignment: Alignment.topRight,
-                        child: ElevatedButton(onPressed: () => _signOut(), child: const Text("Sign out")),
+                        child: ElevatedButton(onPressed: () => _onSignOutClick(), child: const Text("Sign out")),
                       ),
                     ],
                   ),

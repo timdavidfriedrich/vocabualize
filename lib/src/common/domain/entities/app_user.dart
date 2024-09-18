@@ -1,68 +1,19 @@
-import 'package:pocketbase/pocketbase.dart';
-
 class AppUser {
-  static AppUser instance = AppUser();
+  final String id;
+  final String? name;
+  final bool verified;
+  final DateTime? created;
+  final DateTime? updated;
+  final DateTime? lastLogin;
 
-  String id = "empty_id";
-  String? name = "Unknown";
-  bool verified = true; // TODO: Change default verified value to false
-  DateTime? created;
-  DateTime? updated;
-  DateTime? lastLogin;
-
-  Future<void> signOut() async {
-    instance = AppUser();
-    //Provider.of<VocabularyProvider>(Global.context, listen: false).signOut();
-  }
-
-  void _reset() {
-    id = "empty_id";
-    name = "Unknown";
-    verified = false;
-    created = null;
-    updated = null;
-    lastLogin = null;
-  }
-
-  AppUser();
-
-  AppUser.empty();
-
-  AppUser.fromRecord(RecordModel? record) {
-    if (record == null) {
-      _reset();
-      return;
-    }
-    final data = record.data;
-    id = record.id;
-    name = data['name'] ?? name;
-    verified = data['verified'] ?? verified;
-    created = DateTime.tryParse(record.created);
-    updated = DateTime.tryParse(record.updated);
-    lastLogin = DateTime.tryParse(data['lastLogin'] ?? "");
-  }
-
-  AppUser.fromJson(Map<String, dynamic> json) {
-    if (json.isEmpty) return;
-    id = json['id'] ?? id;
-    name = json['name'] ?? name;
-    verified = json['verified'] ?? verified;
-    created = DateTime.tryParse(json['created']);
-    updated = DateTime.tryParse(json['updated']);
-    lastLogin = DateTime.tryParse(json['lastLogin']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'verified': verified,
-      'created': created?.toIso8601String(),
-      'updated': updated?.toIso8601String(),
-      'lastLogin': lastLogin?.toIso8601String(),
-      //'vocabularyList': json.encode(Provider.of<VocabularyProvider>(Global.context, listen: false).vocabularyList),
-    };
-  }
+  AppUser({
+    this.id = "",
+    this.name = "Unknown",
+    this.verified = true, // TODO: Change default verified value to false
+    this.created,
+    this.updated,
+    this.lastLogin,
+  });
 
   @override
   String toString() {

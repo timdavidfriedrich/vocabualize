@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/constants/secrets/pocketbase_secrets.dart';
 import 'package:vocabualize/src/common/data/mappers/report_mappers.dart';
@@ -8,10 +9,7 @@ import 'package:vocabualize/src/common/data/mappers/vocabulary_mappers.dart';
 import 'package:vocabualize/src/common/data/models/rdb_bug_report.dart';
 import 'package:vocabualize/src/common/data/models/rdb_translation_report.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary.dart';
-import 'package:vocabualize/src/common/domain/entities/app_user.dart';
-import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 
 class RemoteDatabaseDataSource {
   final String _vocabulariesCollectionName = "vocabularies";
@@ -19,28 +17,35 @@ class RemoteDatabaseDataSource {
   final String _tagsCollectionName = "tags_by_user";
   final String _translationReportCollectionName = "translation_reports";
   final String _bugReportCollectionName = "bug_reports";
+  static const String authStoreKey = "authStore";
 
   static PocketBase? _pocketBase;
 
   static Future<PocketBase> getConnection() async {
     FlutterSecureStorage? secureStorage = const FlutterSecureStorage();
     if (_pocketBase == null) {
+      Log.debug("Current authStore: ${await secureStorage.read(key: authStoreKey)}");
       return _pocketBase = PocketBase(
         PocketbaseSecrets.databaseUrl,
         authStore: AsyncAuthStore(
-          save: (String data) async => secureStorage.write(key: 'authStore', value: data),
-          initial: await secureStorage.read(key: 'authStore'),
+          save: (String data) async {
+            Log.debug("Saving authStore: $data");
+            return secureStorage.write(key: authStoreKey, value: data);
+          },
+          initial: await secureStorage.read(key: authStoreKey),
         ),
       );
     } else {
+      Log.debug("Pocketbase: ${_pocketBase?.authStore.model}");
       return _pocketBase!;
     }
   }
 
-  Future<List<Vocabulary>> _fetchData() async {
+  /*
+  Future<List<Vocabulary>> _fetchData({required String userId}) async {
     List<Language> languages = await _fetchLanguages();
-    List<Tag> tags = await _fetchTags();
-    List<Vocabulary> vocabularies = await _fetchVocabularies(languages: languages, tags: tags);
+    List<Tag> tags = await _fetchTags(userId: userId);
+    List<Vocabulary> vocabularies = await _fetchVocabularies(userId: userId, languages: languages, tags: tags);
     return vocabularies;
   }
 
@@ -51,17 +56,17 @@ class RemoteDatabaseDataSource {
     return test;
   }
 
-  Future<List<Tag>> _fetchTags() async {
+  Future<List<Tag>> _fetchTags({required String userId}) async {
     final PocketBase pocketbase = await getConnection();
-    final String userFilter = "user=\"${AppUser.instance.id}\"";
+    final String userFilter = "user=\"$userId\"";
     final tagsRecords = await pocketbase.collection(_tagsCollectionName).getList(filter: userFilter);
     final test = tagsRecords.items.map((e) => Tag.fromRecord(e)).toList();
     return test;
   }
 
-  Future<List<Vocabulary>> _fetchVocabularies({List<Tag>? tags, List<Language>? languages}) async {
+  Future<List<Vocabulary>> _fetchVocabularies({required String userId, List<Tag>? tags, List<Language>? languages}) async {
     final PocketBase pocketbase = await getConnection();
-    final String userFilter = "user=\"${AppUser.instance.id}\"";
+    final String userFilter = "user=\"$userId\"";
     final vocabularyRecords = await pocketbase.collection(_vocabulariesCollectionName).getList(filter: userFilter);
     final test = vocabularyRecords.items
         .map((e) => Vocabulary.fromRecord(
@@ -72,6 +77,7 @@ class RemoteDatabaseDataSource {
         .toList();
     return test;
   }
+  */
 
   Future<void> sendBugReport(RdbBugReport bugReport) async {
     final PocketBase pocketbase = await getConnection();
@@ -82,8 +88,6 @@ class RemoteDatabaseDataSource {
     final PocketBase pocketbase = await getConnection();
     await pocketbase.collection(_translationReportCollectionName).create(body: translationReport.toRecordModel().toJson());
   }
-
-  /// ! NEW ///
 
   Future<List<RdbVocabulary>> getVocabularies({
     String? searchTerm,

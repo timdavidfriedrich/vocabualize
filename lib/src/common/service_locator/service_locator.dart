@@ -10,6 +10,7 @@ import 'package:vocabualize/src/common/data/data_sources/remote_image_storage_da
 import 'package:vocabualize/src/common/data/data_sources/speech_to_text_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/stock_image_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_source.dart';
+import 'package:vocabualize/src/common/data/repositories/authentication_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/image_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/language_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/notification_repository_impl.dart';
@@ -19,6 +20,7 @@ import 'package:vocabualize/src/common/data/repositories/tag_repository_impl.dar
 import 'package:vocabualize/src/common/data/repositories/text_to_speech_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/translator_repository_impl.dart';
 import 'package:vocabualize/src/common/data/repositories/vocabulary_repository_impl.dart';
+import 'package:vocabualize/src/common/domain/repositories/authentication_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/image_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/language_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/notification_repository.dart';
@@ -28,6 +30,12 @@ import 'package:vocabualize/src/common/domain/repositories/tag_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/text_to_speech_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/translator_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/create_user_with_email_and_password_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/get_current_user_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/send_password_reset_email_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/send_verification_email_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/sign_in_with_email_and_password_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/sign_out_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/get_draft_image_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/get_stock_images_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/upload_image_use_case.dart';
@@ -70,6 +78,7 @@ Future<void> initializeCommonDependencies(GetIt sl) async {
   sl.registerSingleton<TextToSpeechDataSource>(TextToSpeechDataSource());
 
   // * Repositories
+  sl.registerSingleton<AuthenticationRepository>(AuthenticationRepositoryImpl());
   sl.registerSingleton<ImageRepository>(ImageRepositoryImpl());
   sl.registerSingleton<LanguageRepository>(LanguageRepositoryImpl());
   sl.registerSingleton<NotificationRepository>(NotificationRepositoryImpl());
@@ -81,6 +90,13 @@ Future<void> initializeCommonDependencies(GetIt sl) async {
   sl.registerSingleton<VocabularyRepository>(VocabularyRepositoryImpl());
 
   // * Use cases
+  // authentication
+  sl.registerFactory<GetCurrentUserUseCase>(() => GetCurrentUserUseCase());
+  sl.registerFactory<CreateUserWithEmailAndPasswordUseCase>(() => CreateUserWithEmailAndPasswordUseCase());
+  sl.registerFactory<SignInWithEmailAndPasswordUseCase>(() => SignInWithEmailAndPasswordUseCase());
+  sl.registerFactory<SignOutUseCase>(() => SignOutUseCase());
+  sl.registerFactory<SendPasswordResetEmailUseCase>(() => SendPasswordResetEmailUseCase());
+  sl.registerFactory<SendVerificationEmailUseCase>(() => SendVerificationEmailUseCase());
   // image
   sl.registerFactory<GetDraftImageUseCase>(() => GetDraftImageUseCase());
   sl.registerFactory<GetStockImagesUseCase>(() => GetStockImagesUseCase());

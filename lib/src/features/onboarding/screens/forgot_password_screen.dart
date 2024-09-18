@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/data/data_sources/authentication_data_source.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/send_password_reset_email_use_case.dart';
 import 'package:vocabualize/src/features/onboarding/screens/sign_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
 
@@ -15,14 +16,17 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final _sendPasswordResetEmail = sl.get<SendPasswordResetEmailUseCase>();
+
   final TextEditingController _emailController = TextEditingController();
   bool _sendButtonBlocked = false;
   Timer? _resetBlockTimer;
   final int _seconds = 60;
   late int _secondsLeft;
 
-  Future<void> _sendPasswordResetEmail(String email) async {
-    AuthenticationDataSource.instance.sendPasswordResetEmail(email);
+  Future<void> _onSendPasswordResetEmailClick(String email) async {
+    _sendPasswordResetEmail(email);
+
     setState(() => _sendButtonBlocked = true);
     _resetBlockTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _secondsLeft -= 1);
@@ -77,7 +81,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   const SizedBox(height: 32),
                   ElevatedButton(
-                    onPressed: _sendButtonBlocked ? null : () => _sendPasswordResetEmail(_emailController.text),
+                    onPressed: _sendButtonBlocked ? null : () => _onSendPasswordResetEmailClick(_emailController.text),
                     // TODO: Replace with arb
                     child: Text(_sendButtonBlocked ? "Wait $_secondsLeft seconds" : "Send link"),
                   ),

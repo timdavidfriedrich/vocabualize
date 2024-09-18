@@ -35,7 +35,7 @@ class CollectionsView extends StatelessWidget {
         final allTags = snapshot.data;
 
         if (allTags == null || allTags.isEmpty) {
-          return const Center(child: Text("No tags found"));
+          return const SizedBox();
         }
 
         return SingleChildScrollView(

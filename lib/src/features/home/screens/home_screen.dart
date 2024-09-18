@@ -110,11 +110,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Column(
                               mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(height: 32),
-                                Text(
-                                  AppLocalizations.of(context)?.home_newWords ?? "",
-                                  style: Theme.of(context).textTheme.headlineMedium,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                                  child: Text(
+                                    AppLocalizations.of(context)?.home_newWords ?? "",
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
                                 ),
                                 const SizedBox(height: 12),
                                 newVocabularies.isEmpty
@@ -157,7 +161,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       const SizedBox(height: 32),
                                       // TODO: Replace with arb
-                                      Text("Tags", style: Theme.of(context).textTheme.headlineMedium),
+                                      Text(
+                                        "Tags",
+                                        style: Theme.of(context).textTheme.headlineMedium,
+                                      ),
                                       const SizedBox(height: 12),
                                     ],
                                   ),

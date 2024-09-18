@@ -8,9 +8,8 @@ class DateParser {
     try {
       return DateTime.parse(date);
     } on FormatException catch (e) {
-      Log.error(
-        "Failed to parse date: '$date'.",
-        exception: e,
+      Log.warning(
+        "Failed to parse date: '$date'. Message: ${e.message}",
       );
       return null;
     }

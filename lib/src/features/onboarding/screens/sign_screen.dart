@@ -1,7 +1,9 @@
 import 'package:flutter/scheduler.dart';
 import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/data/data_sources/authentication_data_source.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/create_user_with_email_and_password_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/authentication/sign_in_with_email_and_password_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
@@ -19,6 +21,9 @@ class SignScreen extends StatefulWidget {
 }
 
 class _SignScreenState extends State<SignScreen> {
+  final _signInWithEmailAndPassword = sl.get<SignInWithEmailAndPasswordUseCase>();
+  final _createUserWithEmailAndPassword = sl.get<CreateUserWithEmailAndPasswordUseCase>();
+
   late SignArguments arguments;
   SignType signType = SignType.none;
 
@@ -29,7 +34,7 @@ class _SignScreenState extends State<SignScreen> {
   bool _isPasswordObscured = true;
 
   void _signIn() async {
-    bool wasSuccessful = await AuthenticationDataSource.instance.signInWithEmailAndPassword(_email, _password);
+    bool wasSuccessful = await _signInWithEmailAndPassword(_email, _password);
     if (mounted && wasSuccessful) {
       Navigator.pop(context);
     }
@@ -40,7 +45,7 @@ class _SignScreenState extends State<SignScreen> {
       HelperWidgets.showStaticDialog(const PasswordsDontMatchDialog());
       return;
     }
-    bool wasSuccessful = await AuthenticationDataSource.instance.createUserWithEmailAndPassword(_email, _password);
+    bool wasSuccessful = await _createUserWithEmailAndPassword(_email, _password);
     if (mounted && wasSuccessful) {
       Navigator.pop(context);
     }
