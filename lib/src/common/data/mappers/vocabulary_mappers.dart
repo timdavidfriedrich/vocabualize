@@ -28,7 +28,7 @@ extension RecordModelMappers on RecordModel {
       isNovice: data["isNovice"] ?? true,
       interval: data["interval"] ?? DueAlgorithmConstants.initialInterval,
       ease: data["ease"] ?? DueAlgorithmConstants.initialEase,
-      nextDate: data["nextDate"] ?? "",
+      nextDate: data["nextDate"] ?? DateTime.now().subtract(const Duration(days: 1)).toIso8601String(),
       created: data["created"] ?? "",
       updated: data["updated"] ?? "",
     );

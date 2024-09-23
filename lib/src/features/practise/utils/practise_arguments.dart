@@ -1,7 +1,7 @@
-import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
 
 class PractiseScreenArguments {
-  final List<Vocabulary> vocabulariesToPractise;
+  final Tag tag;
 
-  PractiseScreenArguments({required this.vocabulariesToPractise});
+  PractiseScreenArguments({required this.tag});
 }

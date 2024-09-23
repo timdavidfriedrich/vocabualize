@@ -12,6 +12,7 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
   final _remoteDatabaseDataSource = sl.get<RemoteDatabaseDataSource>();
 
   StreamController<List<Vocabulary>> _streamController = StreamController<List<Vocabulary>>.broadcast();
+  Stream<List<Vocabulary>> get _stream => _streamController.stream;
 
   void dispose() {
     _streamController.close();
@@ -40,7 +41,7 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
 
   @override
   Stream<List<Vocabulary>> getNewVocabularies() {
-    return _streamController.stream.map((vocabularies) {
+    return _stream.map((vocabularies) {
       return vocabularies.where((vocabulary) {
         return vocabulary.created.isAfter(DateTime.now().subtract(const Duration(days: 7)));
       }).toList();
@@ -52,20 +53,20 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
     final filteredStream = _getStreamAndLoadIfNecessary().map((vocabularies) {
       return vocabularies.filterBySearchTerm(searchTerm).filterByTag(tag);
     });
-    return filteredStream.asBroadcastStream();
+    return filteredStream;
   }
 
+  // !!! EINMAL REFACTORING BITTE, DANKE!
   Stream<List<Vocabulary>> _getStreamAndLoadIfNecessary() {
     if (_streamController.isClosed) {
       _streamController = StreamController<List<Vocabulary>>.broadcast();
       Log.warning("Attempted to add data to a closed StreamController. Controller reinitialized.");
     }
-    if (_streamController.hasListener) {
-      return _streamController.stream;
-    } else {
+    if (!_streamController.hasListener) {
+      Log.debug("No listener found. Loading vocabulary data.");
       _loadVocabularies();
-      return _streamController.stream;
     }
+    return _stream;
   }
 
   Future<void> _loadVocabularies() async {
@@ -73,13 +74,15 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
       final vocabularies = rdbVocabularies.map((rdbVocabulary) {
         return rdbVocabulary.toVocabulary();
       }).toList();
-      _streamController.add(vocabularies);
+      _streamController.sink.add(vocabularies);
     });
   }
 
   @override
   Future<List<Vocabulary>> getVocabulariesToPractise({Tag? tag}) async {
+    Log.debug("getVocabulariesToPractise(tag: $tag)");
     final latestVocabularies = await _getStreamAndLoadIfNecessary().first;
+    Log.debug("getVocabulariesToPractise() = ${latestVocabularies.length}");
     return latestVocabularies.where((vocabulary) {
       final isDue = vocabulary.nextDate.isBefore(DateTime.now());
       final containsTag = tag == null || vocabulary.tags.contains(tag);

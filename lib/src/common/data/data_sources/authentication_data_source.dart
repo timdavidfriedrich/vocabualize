@@ -4,10 +4,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
-import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
+import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 
 class AuthenticationDataSource {
+  final RemoteConnectionClient _connectionClient = sl.get<RemoteConnectionClient>();
   final String _usersCollectionName = "users";
 
   Future signInAnonymously() async {
@@ -16,7 +18,7 @@ class AuthenticationDataSource {
 
   Future<bool> signInWithEmailAndPassword(String email, String password) async {
     try {
-      final pocketbase = await RemoteDatabaseDataSource.getConnection();
+      final pocketbase = await _connectionClient.getConnection();
       final RecordAuth authData = await pocketbase.collection(_usersCollectionName).authWithPassword(email, password);
       pocketbase.authStore.save(authData.token, authData.record);
       Log.hint("Signed in with email and password (AuthData: $authData)");
@@ -30,7 +32,7 @@ class AuthenticationDataSource {
 
   Future<bool> createUserWithEmailAndPassword(String email, String password) async {
     try {
-      final pocketbase = await RemoteDatabaseDataSource.getConnection();
+      final pocketbase = await _connectionClient.getConnection();
       final RecordModel authData = await pocketbase.collection(_usersCollectionName).create(body: {
         "email": email,
         "password": password,
@@ -64,7 +66,7 @@ class AuthenticationDataSource {
 
   Future<void> _resetAuthStore() async {
     const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-    final pocketbase = await RemoteDatabaseDataSource.getConnection();
+    final pocketbase = await _connectionClient.getConnection();
     await secureStorage.write(key: 'authStore', value: "");
     pocketbase.authStore.clear();
   }

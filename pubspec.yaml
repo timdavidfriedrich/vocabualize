@@ -59,6 +59,7 @@ dependencies:
   # own packages
   log:
     path: ./packages/log
+  flutter_riverpod: ^2.5.1
 
 
 dev_dependencies:

@@ -8,13 +8,13 @@ extension VocabularyImageExtentions on VocabularyImage {
 
   Image getImage() {
     switch (runtimeType) {
-      case StockImage _:
+      case const (StockImage):
         return Image.network(url);
-      case CustomImage _:
+      case const (CustomImage):
         return Image.network(url);
-      case FallbackImage _:
+      case const (FallbackImage):
         return Image.network(url);
-      case DraftImage _:
+      case const (DraftImage):
         return Image.memory((this as DraftImage).content);
       default:
         return Image.network(url);

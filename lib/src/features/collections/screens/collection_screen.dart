@@ -30,14 +30,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
     // TODO: implement edit tag / collection
   }
 
-  void _startPractise() async {
-    final vocabulariesToPractise = await getVocabulariesToPractise(tag: tag);
-    if (!mounted) return;
+  void _startPractise() {
     Navigator.pushNamed(
       context,
       PractiseScreen.routeName,
       arguments: PractiseScreenArguments(
-        vocabulariesToPractise: vocabulariesToPractise,
+        tag: tag,
       ),
     );
   }

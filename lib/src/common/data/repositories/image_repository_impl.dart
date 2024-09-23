@@ -25,7 +25,7 @@ class ImageRepositoryImpl implements ImageRepository {
   @override
   Future<DraftImage?> getImageFromCameraOrFiles() {
     return _draftImageDataSource.getImageFromCameraOrFiles().then((image) {
-      return image?.toTemporaryImage();
+      return image?.toDraftImage();
     });
   }
 }

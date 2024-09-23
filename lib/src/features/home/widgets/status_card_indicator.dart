@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
 
 class StatusCardIndicator extends StatefulWidget {
@@ -30,10 +29,6 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
     if (timer.isActive) timer.cancel();
   }
 
-  Future<List<Vocabulary>> _getCurrentList() async {
-    return getVocabulariesToPractise(tag: widget.tag);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -49,10 +44,10 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _getCurrentList(),
+        future: getVocabulariesToPractise(tag: widget.tag),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+          if (!snapshot.hasData) {
+            return widget.parent;
           }
           final vocabularies = snapshot.data;
           return Stack(

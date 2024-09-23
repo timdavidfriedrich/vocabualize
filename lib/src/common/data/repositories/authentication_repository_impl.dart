@@ -4,12 +4,13 @@ import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/authentication_data_source.dart';
-import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
 import 'package:vocabualize/src/common/data/mappers/auth_mappers.dart';
 import 'package:vocabualize/src/common/domain/entities/app_user.dart';
 import 'package:vocabualize/src/common/domain/repositories/authentication_repository.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
+  final RemoteConnectionClient _connectionClient = sl.get<RemoteConnectionClient>();
   final AuthenticationDataSource _authenticationDataSource = sl.get<AuthenticationDataSource>();
 
   final StreamController<AppUser?> _userStreamController = StreamController<AppUser?>.broadcast();
@@ -20,14 +21,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   Future<void> _initUserStream() async {
-    final PocketBase pocketbase = await RemoteDatabaseDataSource.getConnection();
+    final PocketBase pocketbase = await _connectionClient.getConnection();
     _userStreamController.sink.add(pocketbase.authStore.toAppUser());
     _listenToUserChanges();
     Log.hint("User stream initialized");
   }
 
   void _listenToUserChanges() async {
-    final PocketBase pocketbase = await RemoteDatabaseDataSource.getConnection();
+    final PocketBase pocketbase = await _connectionClient.getConnection();
     pocketbase.authStore.onChange.map((event) {
       if (event.model == null) {
         return null;

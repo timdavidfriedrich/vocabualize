@@ -34,6 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final getAllTags = sl.get<GetAllTagsUseCase>();
   late RecordSheetController recordSheetController;
 
+  late final Stream<List<Vocabulary>> _stream = getVocabularies();
+
   void _openReportPage() {
     Navigator.pushNamed(context, ReportScreen.routeName, arguments: ReportArguments.bug());
   }
@@ -68,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
             grabbingHeight: 64,
             sheetBelow: SnappingSheetContent(draggable: true, child: const RecordSheet()),
             child: StreamBuilder<List<Vocabulary>>(
-                stream: getVocabularies(),
+                stream: _stream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator.adaptive());
@@ -104,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
                                   const SizedBox(height: 24),
-                                  const StatusCard(),
+                                  StatusCard(vocabularies: vocabularyList),
                                 ],
                               ),
                             ),

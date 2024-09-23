@@ -33,7 +33,7 @@ extension RdbVocabularyImageMappers on RdbVocabualaryImage {
 }
 
 extension XFileMappers on XFile {
-  Future<DraftImage> toTemporaryImage() async {
+  Future<DraftImage> toDraftImage() async {
     return DraftImage(
       content: await readAsBytes(),
     );
@@ -43,12 +43,14 @@ extension XFileMappers on XFile {
 extension VocabularyImageMappers on VocabularyImage {
   RdbVocabualaryImage toRdbVocabularyImage() {
     switch (runtimeType) {
-      case StockImage _:
+      case const (StockImage):
         return (this as StockImage).toRdbVocabularyImage();
-      case CustomImage _:
+      case const (CustomImage):
         return (this as CustomImage).toRdbVocabularyImage();
+      case const (FallbackImage):
+        return (this as FallbackImage).toRdbVocabularyImage();
       default:
-        throw UnimplementedError('Unknown VocabularyImage type');
+        throw UnimplementedError('Unknown VocabularyImage type: "$runtimeType"');
     }
   }
 }

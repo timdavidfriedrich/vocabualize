@@ -5,6 +5,7 @@ import 'package:vocabualize/src/common/data/data_sources/draft_image_data_source
 import 'package:vocabualize/src/common/data/data_sources/free_translator_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/local_notification_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/premium_translator_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_image_storage_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/speech_to_text_data_source.dart';
@@ -64,30 +65,48 @@ import 'package:vocabualize/src/common/domain/usecases/vocabulary/is_collection_
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
 
 Future<void> initializeCommonDependencies(GetIt sl) async {
+  // * Special shit
+  sl.registerSingletonAsync<RemoteConnectionClient>(() async => RemoteConnectionClient());
+
   // * Data sources
-  sl.registerSingleton<AuthenticationDataSource>(AuthenticationDataSource());
+  sl.registerSingletonWithDependencies<AuthenticationDataSource>(
+    () => AuthenticationDataSource(),
+    dependsOn: [RemoteConnectionClient],
+  );
   sl.registerSingleton<CloudNotificationDataSource>(CloudNotificationDataSource());
   sl.registerSingleton<DraftImageDataSource>(DraftImageDataSource());
   sl.registerSingleton<FreeTranslatorDataSource>(FreeTranslatorDataSource());
   sl.registerSingleton<LocalNotificationDataSource>(LocalNotificationDataSource());
   sl.registerSingleton<PremiumTranslatorDataSource>(PremiumTranslatorDataSource());
-  sl.registerSingleton<RemoteDatabaseDataSource>(RemoteDatabaseDataSource());
+  sl.registerSingletonWithDependencies<RemoteDatabaseDataSource>(
+    () => RemoteDatabaseDataSource(),
+    dependsOn: [RemoteConnectionClient],
+  );
   sl.registerSingleton<RemoteImageStorageDataSource>(RemoteImageStorageDataSource());
   sl.registerSingleton<SpeechToTextDataSource>(SpeechToTextDataSource());
   sl.registerSingleton<StockImageDataSource>(StockImageDataSource());
   sl.registerSingleton<TextToSpeechDataSource>(TextToSpeechDataSource());
 
   // * Repositories
-  sl.registerSingleton<AuthenticationRepository>(AuthenticationRepositoryImpl());
+  sl.registerSingletonWithDependencies<AuthenticationRepository>(
+    () => AuthenticationRepositoryImpl(),
+    dependsOn: [RemoteConnectionClient],
+  );
   sl.registerSingleton<ImageRepository>(ImageRepositoryImpl());
   sl.registerSingleton<LanguageRepository>(LanguageRepositoryImpl());
   sl.registerSingleton<NotificationRepository>(NotificationRepositoryImpl());
-  sl.registerSingleton<ReportRepository>(ReportRepositoryImpl());
+  sl.registerSingletonWithDependencies<ReportRepository>(
+    () => ReportRepositoryImpl(),
+    dependsOn: [RemoteDatabaseDataSource],
+  );
   sl.registerSingleton<SpeechToTextRepository>(SpeechToTextRepositoryImpl());
   sl.registerSingleton<TagRepository>(TagRepositoryImpl());
   sl.registerSingleton<TextToSpeechRepository>(TextToSpeechRepositoryImpl());
   sl.registerSingleton<TranslatorRepository>(TranslatorRepositoryImpl());
-  sl.registerSingleton<VocabularyRepository>(VocabularyRepositoryImpl());
+  sl.registerSingletonWithDependencies<VocabularyRepository>(
+    () => VocabularyRepositoryImpl(),
+    dependsOn: [RemoteDatabaseDataSource],
+  );
 
   // * Use cases
   // authentication
