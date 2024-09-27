@@ -1,15 +1,24 @@
-import 'package:vocabualize/service_locator.dart';
-import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabualize/src/common/data/repositories/vocabulary_repository_impl.dart';
+import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-class GetVocabulariesUseCase {
-  final _vocabularyRepository = sl.get<VocabularyRepository>();
+// TODO ARCHITECTURE: How to deal with searchTerm, tag, and other params?
+final getVocabulariesUseCaseProvider = StreamProvider.family((ref, FilterOptions? filterOptions) {
+  return GetVocabulariesUseCase(
+    vocabularyRepository: ref.watch(vocabularyRepositoryProvider),
+  ).call(filterOptions);
+});
 
-  Stream<List<Vocabulary>> call({String? searchTerm, Tag? tag}) {
-    return _vocabularyRepository.getVocabularies(
-      searchTerm: searchTerm,
-      tag: tag,
-    );
+class GetVocabulariesUseCase {
+  final VocabularyRepository _vocabularyRepository;
+
+  const GetVocabulariesUseCase({
+    required VocabularyRepository vocabularyRepository,
+  }) : _vocabularyRepository = vocabularyRepository;
+
+  Stream<List<Vocabulary>> call(FilterOptions? filterOptions) {
+    return _vocabularyRepository.getVocabularies(filterOptions);
   }
 }

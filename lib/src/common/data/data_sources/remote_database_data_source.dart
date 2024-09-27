@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
 import 'package:vocabualize/src/common/data/mappers/report_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_mappers.dart';
@@ -10,8 +10,18 @@ import 'package:vocabualize/src/common/data/models/rdb_translation_report.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 
+final remoteDatabaseDataSourceProvider = Provider((ref) {
+  return RemoteDatabaseDataSource(
+    connectionClient: ref.watch(remoteConnectionClientProvider),
+  );
+});
+
 class RemoteDatabaseDataSource {
-  final RemoteConnectionClient _connectionClient = sl.get<RemoteConnectionClient>();
+  final RemoteConnectionClient _connectionClient;
+
+  const RemoteDatabaseDataSource({
+    required RemoteConnectionClient connectionClient,
+  }) : _connectionClient = connectionClient;
 
   final String _vocabulariesCollectionName = "vocabularies";
   final String _languagesCollectionName = "languages";

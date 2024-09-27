@@ -1,11 +1,22 @@
-import 'package:vocabualize/service_locator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabualize/src/common/data/repositories/image_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/repositories/image_repository.dart';
 
-class GetStockImagesUseCase {
-  final _stockImageRepository = sl.get<ImageRepository>();
+final getStockImagesUseCaseProvider = Provider((ref) {
+  return GetStockImagesUseCase(
+    stockImageRepository: ref.watch(imageRepositoryProvider),
+  );
+});
 
-  Future<List<StockImage>> call(String search) {
-    return _stockImageRepository.getStockImages(search);
+class GetStockImagesUseCase {
+  final ImageRepository _imageRepository;
+
+  const GetStockImagesUseCase({
+    required ImageRepository stockImageRepository,
+  }) : _imageRepository = stockImageRepository;
+
+  Future<List<StockImage>> call(String searchTerm) {
+    return _imageRepository.getStockImages(searchTerm);
   }
 }

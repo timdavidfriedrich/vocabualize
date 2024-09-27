@@ -1,5 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
+
+final cloudNotificationDataSourceProvider = Provider((ref) => CloudNotificationDataSource());
 
 class CloudNotificationDataSource {
   void init() {

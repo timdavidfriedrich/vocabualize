@@ -1,23 +1,24 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/record/services/record_service.dart';
 
-class DuplicateDialog extends StatelessWidget {
+class DuplicateDialog extends ConsumerWidget {
   final Vocabulary vocabulary;
 
   const DuplicateDialog({super.key, required this.vocabulary});
 
-  void _cancel() {
-    Navigator.popUntil(Global.context, ModalRoute.withName(Start.routeName));
-  }
-
-  void _addAnyway() {
-    RecordService().save(vocabulary: vocabulary);
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    void cancel() {
+      Navigator.popUntil(Global.context, ModalRoute.withName(Start.routeName));
+    }
+
+    void addAnyway() {
+      RecordService().save(unwantedRef: ref, vocabulary: vocabulary,);
+    }
+
     return AlertDialog(
       // TODO: Replace with arb
       title: const Text('Duplicate'),
@@ -34,12 +35,12 @@ class DuplicateDialog extends StatelessWidget {
       ),
       actions: [
         OutlinedButton(
-          onPressed: () => _cancel(),
+          onPressed: () => cancel(),
           // TODO: Replace with arb
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: () => _addAnyway(),
+          onPressed: () => addAnyway(),
           // TODO: Replace with arb
           child: const Text('Add'),
         ),

@@ -1,6 +1,9 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:galli_text_to_speech/text_to_speech.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+
+final textToSpeechDataSourceProvider = Provider((ref) => TextToSpeechDataSource());
 
 class TextToSpeechDataSource {
   final TextToSpeech _tts = TextToSpeech();

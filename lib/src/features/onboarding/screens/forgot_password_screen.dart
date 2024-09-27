@@ -1,32 +1,28 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/usecases/authentication/send_password_reset_email_use_case.dart';
 import 'package:vocabualize/src/features/onboarding/screens/sign_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
+class ForgotPasswordScreen extends ConsumerStatefulWidget {
   static const String routeName = "${WelcomeScreen.routeName}/${SignScreen.routeName}/ForgotPassword";
 
   const ForgotPasswordScreen({super.key});
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  ConsumerState<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final _sendPasswordResetEmail = sl.get<SendPasswordResetEmailUseCase>();
-
+class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
   bool _sendButtonBlocked = false;
   Timer? _resetBlockTimer;
   final int _seconds = 60;
   late int _secondsLeft;
 
-  Future<void> _onSendPasswordResetEmailClick(String email) async {
-    _sendPasswordResetEmail(email);
-
+  Future<void> startBlockedTimer() async {
     setState(() => _sendButtonBlocked = true);
     _resetBlockTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _secondsLeft -= 1);
@@ -52,6 +48,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void onSendPasswordResetEmailClick(String email) {
+      ref.read(sendPasswordResetEmailUseCaseProvider(email));
+      startBlockedTimer();
+    }
+
     return SafeArea(
       child: ClipRRect(
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
@@ -81,7 +82,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   const SizedBox(height: 32),
                   ElevatedButton(
-                    onPressed: _sendButtonBlocked ? null : () => _onSendPasswordResetEmailClick(_emailController.text),
+                    onPressed: _sendButtonBlocked
+                        ? null
+                        : () {
+                            onSendPasswordResetEmailClick(_emailController.text);
+                          },
                     // TODO: Replace with arb
                     child: Text(_sendButtonBlocked ? "Wait $_secondsLeft seconds" : "Send link"),
                   ),

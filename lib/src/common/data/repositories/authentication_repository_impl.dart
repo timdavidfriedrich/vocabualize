@@ -1,22 +1,33 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/authentication_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
 import 'package:vocabualize/src/common/data/mappers/auth_mappers.dart';
 import 'package:vocabualize/src/common/domain/entities/app_user.dart';
 import 'package:vocabualize/src/common/domain/repositories/authentication_repository.dart';
 
+final authenticationRepositoryProvider = Provider((ref) {
+  return AuthenticationRepositoryImpl(
+    connectionClient: ref.watch(remoteConnectionClientProvider),
+    authenticationDataSource: ref.watch(authenticationDataSourceProvider),
+  );
+});
+
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
-  final RemoteConnectionClient _connectionClient = sl.get<RemoteConnectionClient>();
-  final AuthenticationDataSource _authenticationDataSource = sl.get<AuthenticationDataSource>();
+  final RemoteConnectionClient _connectionClient;
+  final AuthenticationDataSource _authenticationDataSource;
 
   final StreamController<AppUser?> _userStreamController = StreamController<AppUser?>.broadcast();
   Stream<AppUser?> get stream => _userStreamController.stream.asBroadcastStream();
 
-  AuthenticationRepositoryImpl() {
+  AuthenticationRepositoryImpl({
+    required RemoteConnectionClient connectionClient,
+    required AuthenticationDataSource authenticationDataSource,
+  })  : _connectionClient = connectionClient,
+        _authenticationDataSource = authenticationDataSource {
     _initUserStream();
   }
 

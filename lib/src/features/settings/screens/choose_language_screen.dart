@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:vocabualize/service_locator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/get_available_languages_use_case.dart';
 
-class ChooseLanguageScreen extends StatelessWidget {
+class ChooseLanguageScreen extends ConsumerWidget {
   static const String routeName = "ChooseLanguageScreen";
 
   const ChooseLanguageScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final getAvailableLanguages = sl.get<GetAvailableLanguagesUseCase>();
-
-    Future<List<Language>> getLanguages() async {
-      return await getAvailableLanguages();
-    }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final getAvailableLanguages = ref.watch(getAvailableLanguagesUseCaseProvider);
 
     void returnLanguage(Language language) {
       Navigator.pop(context, language);
@@ -30,11 +26,15 @@ class ChooseLanguageScreen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Center(
-            child: FutureBuilder<List<Language>>(
-              future: getLanguages(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return const CircularProgressIndicator();
-                List<Language> languages = snapshot.data ?? [];
+            child: getAvailableLanguages.when(
+              loading: () {
+                return const Center(child: CircularProgressIndicator.adaptive());
+              },
+              error: (error, stackTrace) {
+                // TODO: Replace with error widget
+                return const Text("Error");
+              },
+              data: (List<Language> languages) {
                 return ListView(
                   controller: scrollController,
                   children: [

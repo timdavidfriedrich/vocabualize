@@ -1,11 +1,21 @@
-import 'package:vocabualize/service_locator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_source.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/text_to_speech_repository.dart';
 
+final textToSpeechRepositoryProvider = Provider((ref) {
+  return TextToSpeechRepositoryImpl(
+    textToSpeechDataSource: ref.watch(textToSpeechDataSourceProvider),
+  );
+});
+
 class TextToSpeechRepositoryImpl implements TextToSpeechRepository {
-  final _textToSpeechDataSource = sl.get<TextToSpeechDataSource>();
+  final TextToSpeechDataSource _textToSpeechDataSource;
+
+  const TextToSpeechRepositoryImpl({
+    required TextToSpeechDataSource textToSpeechDataSource,
+  }) : _textToSpeechDataSource = textToSpeechDataSource;
 
   @override
   Future<List<String>> getLanguages() {

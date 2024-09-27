@@ -1,22 +1,22 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
 
-class StatusCardIndicator extends StatefulWidget {
+class StatusCardIndicator extends ConsumerStatefulWidget {
   final Widget parent;
   final Tag? tag;
 
   const StatusCardIndicator({super.key, required this.parent, this.tag});
 
   @override
-  State<StatusCardIndicator> createState() => _StatusCardIndicatorState();
+  ConsumerState<StatusCardIndicator> createState() => _StatusCardIndicatorState();
 }
 
-class _StatusCardIndicatorState extends State<StatusCardIndicator> {
-  final getVocabulariesToPractise = sl.get<GetVocabulariesToPractiseUseCase>();
+class _StatusCardIndicatorState extends ConsumerState<StatusCardIndicator> {
   late Timer timer;
 
   void _startReloadTimer() async {
@@ -43,36 +43,44 @@ class _StatusCardIndicatorState extends State<StatusCardIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: getVocabulariesToPractise(tag: widget.tag),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return widget.parent;
-          }
-          final vocabularies = snapshot.data;
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              widget.parent,
-              vocabularies == null || vocabularies.isEmpty
-                  ? Container()
-                  : Positioned(
-                      top: -4,
-                      right: -4,
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          "${vocabularies.length}",
-                          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10),
-                        ),
-                      ),
-                    ),
-            ],
-          );
-        });
+    final getVocabulariesToPractise = ref.watch(getVocabulariesToPractiseUseCaseProvider(null));
+
+    return getVocabulariesToPractise.when(
+      loading: () {
+        return widget.parent;
+      },
+      error: (error, stackStrace) {
+        return widget.parent;
+      },
+      data: (List<Vocabulary> vocabularies) {
+        if (vocabularies.isEmpty) {
+          return widget.parent;
+        }
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            widget.parent,
+            Positioned(
+              top: -4,
+              right: -4,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  "${vocabularies.length}",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 10,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

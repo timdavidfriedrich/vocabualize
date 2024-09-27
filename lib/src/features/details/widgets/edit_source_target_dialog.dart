@@ -1,5 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
@@ -9,61 +9,71 @@ import 'package:vocabualize/src/features/record/services/record_service.dart';
 import 'package:vocabualize/src/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/src/features/reports/utils/report_arguments.dart';
 
-class EditSourceTargetDialog extends StatefulWidget {
+class EditSourceTargetDialog extends ConsumerStatefulWidget {
   final Vocabulary vocabulary;
   final bool editTarget;
 
-  const EditSourceTargetDialog({super.key, required this.vocabulary, this.editTarget = false});
+  const EditSourceTargetDialog({
+    super.key,
+    required this.vocabulary,
+    this.editTarget = false,
+  });
 
   @override
-  State<EditSourceTargetDialog> createState() => _EditSourceTargetDialogState();
+  ConsumerState<EditSourceTargetDialog> createState() => _EditSourceTargetDialogState();
 }
 
-class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
-  final deleteVocabulary = sl.get<DeleteVocabularyUseCase>();
-  final updateVocabulary = sl.get<UpdateVocabularyUseCase>();
-  TextEditingController controller = TextEditingController();
-  String input = "";
-
-  void _reportTranslation() {
-    Navigator.pushNamed(context, ReportScreen.routeName, arguments: ReportArguments.translation(vocabulary: widget.vocabulary));
-  }
-
-  void _submit() async {
-    if (input.isEmpty || !_hasChanged()) return Navigator.pop(context);
-    if (widget.editTarget) {
-      final updatedVocabulary = widget.vocabulary.copyWith(target: input);
-      updateVocabulary(updatedVocabulary);
-      Navigator.pop(context);
-    } else {
-      bool hasClickedReplace = await HelperWidgets.showStaticDialog(ReplaceVocabularyDialog(vocabulary: widget.vocabulary));
-      if (hasClickedReplace) {
-        if (mounted) deleteVocabulary(widget.vocabulary);
-        RecordService().validateAndSave(source: input);
-      } else {
-        final updatedVocabulary = widget.vocabulary.copyWith(source: input);
-        updateVocabulary(updatedVocabulary);
-        if (mounted) Navigator.pop(context);
-      }
-    }
-  }
-
-  bool _hasChanged() {
-    if (widget.editTarget) {
-      return input != widget.vocabulary.target;
-    } else {
-      return input != widget.vocabulary.source;
-    }
-  }
+class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog> {
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    controller.text = widget.editTarget ? widget.vocabulary.target : widget.vocabulary.source;
+    _controller.text = widget.editTarget ? widget.vocabulary.target : widget.vocabulary.source;
   }
 
   @override
   Widget build(BuildContext context) {
+    void reportTranslation() {
+      Navigator.pushNamed(
+        context,
+        ReportScreen.routeName,
+        arguments: ReportArguments.translation(vocabulary: widget.vocabulary),
+      );
+    }
+
+    bool hasChanged() {
+      if (widget.editTarget) {
+        return _controller.text != widget.vocabulary.target;
+      } else {
+        return _controller.text != widget.vocabulary.source;
+      }
+    }
+
+    void submit() async {
+      if (_controller.text.isEmpty || !hasChanged()) return Navigator.pop(context);
+      if (widget.editTarget) {
+        final updatedVocabulary = widget.vocabulary.copyWith(target: _controller.text);
+        ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
+        Navigator.pop(context);
+      } else {
+        bool hasClickedReplace = await HelperWidgets.showStaticDialog(
+          ReplaceVocabularyDialog(vocabulary: widget.vocabulary),
+        );
+        if (hasClickedReplace) {
+          if (mounted) {
+            ref.read(deleteVocabularyUseCaseProvider(widget.vocabulary));
+          }
+          // TODO ARCHITECTURE: Replace RecordService() with use case
+          RecordService().validateAndSave(unwantedRef: ref, source: _controller.text);
+        } else {
+          final updatedVocabulary = widget.vocabulary.copyWith(source: _controller.text);
+          ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
+          if (context.mounted) Navigator.pop(context);
+        }
+      }
+    }
+
     return AlertDialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 64),
       contentPadding: EdgeInsets.fromLTRB(12, 12, 8, widget.editTarget ? 8 : 12),
@@ -78,36 +88,42 @@ class _EditSourceTargetDialogState extends State<EditSourceTargetDialog> {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: controller,
-                    toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
+                    controller: _controller,
+                    // TODO: Update deprecated toolbar options for EditSourceTargetDialog
+                    toolbarOptions: const ToolbarOptions(
+                      copy: false,
+                      cut: false,
+                      paste: false,
+                      selectAll: false,
+                    ),
                     decoration: InputDecoration(
                       hintText: widget.editTarget ? widget.vocabulary.target : widget.vocabulary.source,
                       // TODO: Replace with arb
                       label: widget.editTarget ? const Text("Target") : const Text("Source"),
                     ),
-                    onChanged: (text) => setState(() => input = text),
                   ),
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  onPressed: () => _submit(),
-                  icon: Icon(input.isNotEmpty && _hasChanged() ? Icons.save_rounded : Icons.close_rounded),
+                  onPressed: () => submit(),
+                  icon: Icon(
+                    _controller.text.isNotEmpty && hasChanged() ? Icons.save_rounded : Icons.close_rounded,
+                  ),
                 ),
               ],
             ),
-            !widget.editTarget
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: TextButton(
-                      onPressed: () => _reportTranslation(),
-                      child: Text(
-                        // TODO: Replace with arb
-                        "Report faulty translation",
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
-                      ),
-                    ),
+            if (widget.editTarget)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: TextButton(
+                  onPressed: () => reportTranslation(),
+                  child: Text(
+                    // TODO: Replace with arb
+                    "Report faulty translation",
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
                   ),
+                ),
+              ),
           ],
         ),
       ),

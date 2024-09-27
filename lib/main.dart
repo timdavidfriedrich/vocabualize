@@ -1,14 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/config/themes/theme_config.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
-import 'package:vocabualize/src/common/domain/usecases/notification/init_cloud_notifications_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/notification/init_local_notifications_use_case.dart';
 import 'package:vocabualize/src/features/collections/screens/collection_screen.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
@@ -27,11 +24,7 @@ import 'package:vocabualize/firebase_options.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDependencies();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  GetIt.instance<InitCloudNotificationsUseCase>();
-  GetIt.instance<InitLocalNotificationsUseCase>();
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -44,42 +37,44 @@ class Vocabualize extends StatelessWidget {
   const Vocabualize({super.key});
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return provider.MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ActiveProvider()),
-        ChangeNotifierProvider(create: (context) => SettingsProvider()),
+        provider.ChangeNotifierProvider(create: (context) => ActiveProvider()),
+        provider.ChangeNotifierProvider(create: (context) => SettingsProvider()),
       ],
-      child: MaterialApp(
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          AppLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('de', ''),
-          Locale('es', ''),
-        ],
-        theme: ThemeConfig.light(context),
-        darkTheme: ThemeConfig.dark(context),
-        debugShowCheckedModeBanner: false,
-        navigatorKey: Global.navigatorState,
-        initialRoute: Start.routeName,
-        routes: {
-          Start.routeName: (context) => const Start(),
-          WelcomeScreen.routeName: (context) => const WelcomeScreen(),
-          SignScreen.routeName: (context) => const SignScreen(),
-          ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
-          SelectLanguageScreen.routeName: (context) => const SelectLanguageScreen(),
-          ChooseLanguageScreen.routeName: (context) => const ChooseLanguageScreen(),
-          HomeScreen.routeName: (context) => const HomeScreen(),
-          PractiseScreen.routeName: (context) => const PractiseScreen(),
-          DetailsScreen.routeName: (context) => const DetailsScreen(),
-          CollectionScreen.routeName: (context) => const CollectionScreen(),
-          ReportScreen.routeName: (context) => const ReportScreen(),
-          SettingsScreen.routeName: (context) => const SettingsScreen(),
-        },
+      child: ProviderScope(
+        child: MaterialApp(
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            AppLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', ''),
+            Locale('de', ''),
+            Locale('es', ''),
+          ],
+          theme: ThemeConfig.light(context),
+          darkTheme: ThemeConfig.dark(context),
+          debugShowCheckedModeBanner: false,
+          navigatorKey: Global.navigatorState,
+          initialRoute: Start.routeName,
+          routes: {
+            Start.routeName: (context) => const Start(),
+            WelcomeScreen.routeName: (context) => const WelcomeScreen(),
+            SignScreen.routeName: (context) => const SignScreen(),
+            ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
+            SelectLanguageScreen.routeName: (context) => const SelectLanguageScreen(),
+            ChooseLanguageScreen.routeName: (context) => const ChooseLanguageScreen(),
+            HomeScreen.routeName: (context) => const HomeScreen(),
+            PractiseScreen.routeName: (context) => const PractiseScreen(),
+            DetailsScreen.routeName: (context) => const DetailsScreen(),
+            CollectionScreen.routeName: (context) => const CollectionScreen(),
+            ReportScreen.routeName: (context) => const ReportScreen(),
+            SettingsScreen.routeName: (context) => const SettingsScreen(),
+          },
+        ),
       ),
     );
   }

@@ -1,36 +1,42 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
 
-class AddTagDialog extends StatefulWidget {
+class AddTagDialog extends ConsumerStatefulWidget {
   final Vocabulary vocabulary;
 
   const AddTagDialog({super.key, required this.vocabulary});
 
   @override
-  State<AddTagDialog> createState() => _AddTagDialogState();
+  ConsumerState<AddTagDialog> createState() => _AddTagDialogState();
 }
 
-class _AddTagDialogState extends State<AddTagDialog> {
-  final updateVocabulary = sl.get<UpdateVocabularyUseCase>();
-  String input = "";
+class _AddTagDialogState extends ConsumerState<AddTagDialog> {
+  final _controller = TextEditingController();
 
-  void _submit() {
-    /// ?: add directly to vocabulary, or just to list first and confirm with save
-    if (input.isNotEmpty) {
-      final tag = Tag(name: input.trim());
-      final updatedVocabulary = widget.vocabulary.copyWith(
-        tags: [...widget.vocabulary.tags, tag],
-      );
-      updateVocabulary(updatedVocabulary);
-    }
-    Navigator.pop(context);
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    void submit() {
+      /// ?: add directly to vocabulary, or just to list first and confirm with save
+      final text = _controller.text;
+      if (text.isNotEmpty) {
+        final tag = Tag(name: text.trim());
+        final updatedVocabulary = widget.vocabulary.copyWith(
+          tags: [...widget.vocabulary.tags, tag],
+        );
+        ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
+      }
+      Navigator.pop(context);
+    }
+
     return AlertDialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 64),
       contentPadding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
@@ -41,16 +47,27 @@ class _AddTagDialogState extends State<AddTagDialog> {
           children: [
             Expanded(
               child: TextField(
-                toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
+                // TODO: Update deprecated toolbar options for AddTagDialog
+                toolbarOptions: const ToolbarOptions(
+                  copy: false,
+                  cut: false,
+                  paste: false,
+                  selectAll: false,
+                ),
+                controller: _controller,
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)?.record_addTagHint,
                   label: Text(AppLocalizations.of(context)?.record_addTagLabel ?? ""),
                 ),
-                onChanged: (text) => setState(() => input = text),
               ),
             ),
             const SizedBox(width: 8),
-            IconButton(onPressed: () => _submit(), icon: Icon(input.isNotEmpty ? Icons.save_rounded : Icons.close_rounded)),
+            IconButton(
+              onPressed: () => submit(),
+              icon: Icon(
+                _controller.text.isNotEmpty ? Icons.save_rounded : Icons.close_rounded,
+              ),
+            ),
           ],
         ),
       ),

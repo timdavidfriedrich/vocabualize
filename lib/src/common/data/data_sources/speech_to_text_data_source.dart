@@ -1,10 +1,15 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
 import 'package:vocabualize/src/features/record/services/record_service.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
+
+final speechToTextDataSourceProvider = Provider((ref) => SpeechToTextDataSource());
+
+// TODO ARCHITECTURE: Remove Provider package and pass default values and settings to the methods
 
 class SpeechToTextDataSource {
   SpeechToTextDataSource() {
@@ -22,8 +27,10 @@ class SpeechToTextDataSource {
       options: [],
       onStatus: (status) async {
         if (_stt.isNotListening && status == "done") {
-          Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
+          provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
           if (_stt.lastRecognizedWords.isNotEmpty) {
+            // ! URGENT
+            // TODO ARCHITECTURE (URGENT): Refactor RecordService
             RecordService().validateAndSave(source: _text);
           }
           _stt.stop;
@@ -31,7 +38,7 @@ class SpeechToTextDataSource {
       },
       onError: (e) async {
         Log.error("Failed to initialize speech to text service.", exception: e);
-        Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
+        provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
 
         _stt.stop;
       },
@@ -39,18 +46,18 @@ class SpeechToTextDataSource {
   }
 
   Future<void> record() async {
-    if (!Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive) {
-      Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = true;
+    if (!provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive) {
+      provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = true;
 
       if (_available) {
         _stt.listen(
-          localeId: Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage.speechToTextId,
+          localeId: provider.Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage.speechToTextId,
           onResult: (result) => _text = result.recognizedWords,
         );
       }
     } else {
       if (_stt.isListening) _stt.cancel();
-      Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
+      provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
     }
   }
 }

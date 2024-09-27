@@ -1,8 +1,8 @@
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/config/themes/level_palette.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
@@ -15,20 +15,15 @@ import 'package:vocabualize/src/common/domain/entities/answer.dart';
 import 'package:vocabualize/src/features/practise/utils/practise_arguments.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
-class PractiseScreen extends StatefulWidget {
+class PractiseScreen extends ConsumerStatefulWidget {
   static const String routeName = "${HomeScreen.routeName}/Practise";
   const PractiseScreen({super.key});
 
   @override
-  State<PractiseScreen> createState() => _PractiseScreenState();
+  ConsumerState<PractiseScreen> createState() => _PractiseScreenState();
 }
 
-class _PractiseScreenState extends State<PractiseScreen> {
-  final getVocabulariesToPractise = sl.get<GetVocabulariesToPractiseUseCase>();
-  final answerVocabulary = sl.get<AnswerVocabularyUseCase>();
-  final isCollectionMultilingual = sl.get<IsCollectionMultilingualUseCase>();
-  final speak = sl.get<ReadOutUseCase>();
-
+class _PractiseScreenState extends ConsumerState<PractiseScreen> {
   Tag? tag;
   List<Vocabulary> vocabulariesToPractise = [];
   int initialVocCount = 0;
@@ -71,13 +66,20 @@ class _PractiseScreenState extends State<PractiseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getVocabulariesToPractise(tag: tag),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        vocabulariesToPractise = snapshot.data ?? [];
+    final getVocabulariesToPratice = ref.watch(getVocabulariesToPractiseUseCaseProvider(tag));
+    final answerVocabulary = ref.watch(answerVocabularyUseCaseProvider);
+    final isCollectionMultilingual = ref.watch(isCollectionMultilingualUseCaseProvider);
+    final speak = ref.watch(readOutUseCaseProvider);
+
+    return getVocabulariesToPratice.when(
+      loading: () {
+        return const Center(child: CircularProgressIndicator.adaptive());
+      },
+      error: (error, stackTrace) {
+        return const PractiseDoneScreen();
+      },
+      data: (List<Vocabulary> vocabularies) {
+        vocabulariesToPractise = vocabularies;
         initialVocCount = vocabulariesToPractise.length;
         if (vocabulariesToPractise.isEmpty) {
           return const PractiseDoneScreen();
@@ -140,7 +142,7 @@ class _PractiseScreenState extends State<PractiseScreen> {
                         );
                       },
                     ),
-                    Provider.of<SettingsProvider>(context).areImagesDisabled && !isSolutionShown
+                    provider.Provider.of<SettingsProvider>(context).areImagesDisabled && !isSolutionShown
                         ? Container()
                         : Expanded(
                             flex: 2,
@@ -148,7 +150,7 @@ class _PractiseScreenState extends State<PractiseScreen> {
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.surface,
                                 borderRadius: BorderRadius.circular(24),
-                                image: Provider.of<SettingsProvider>(context).areImagesDisabled
+                                image: provider.Provider.of<SettingsProvider>(context).areImagesDisabled
                                     ? null
                                     : DecorationImage(
                                         fit: BoxFit.cover,

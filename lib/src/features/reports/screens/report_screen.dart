@@ -1,7 +1,7 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/report/send_report_use_case.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
@@ -9,18 +9,16 @@ import 'package:vocabualize/src/common/domain/entities/report.dart';
 import 'package:vocabualize/src/features/reports/utils/report_arguments.dart';
 import 'package:vocabualize/src/features/reports/utils/report_type.dart';
 
-class ReportScreen extends StatefulWidget {
+class ReportScreen extends ConsumerStatefulWidget {
   static const String routeName = "${HomeScreen.routeName}/Report";
 
   const ReportScreen({super.key});
 
   @override
-  State<ReportScreen> createState() => _ReportScreenState();
+  ConsumerState<ReportScreen> createState() => _ReportScreenState();
 }
 
-class _ReportScreenState extends State<ReportScreen> {
-  final _sendReport = sl.get<SendReportUseCase>();
-
+class _ReportScreenState extends ConsumerState<ReportScreen> {
   late ReportArguments arguments;
   late ReportType reportType = ReportType.none;
   Vocabulary? vocabulary;
@@ -32,23 +30,6 @@ class _ReportScreenState extends State<ReportScreen> {
   int maxLength = 240;
   final int _maxLinesTranslation = 4;
   final int _maxLengthTranslation = 64;
-
-  void _submit() {
-    Report report;
-    if (reportType == ReportType.translation) {
-      report = TranslationReport(
-        source: vocabulary!.source,
-        target: vocabulary!.target,
-        sourceLanguage: vocabulary!.sourceLanguage,
-        targetLanguage: vocabulary!.targetLanguage,
-        description: text,
-      );
-    } else {
-      report = BugReport(description: text);
-    }
-    _sendReport(report);
-    Navigator.pop(context);
-  }
 
   void _updateText(String text) {
     this.text = text;
@@ -76,6 +57,25 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final sendReport = ref.watch(sendReportUseCaseProvider);
+
+    void submit() {
+      Report report;
+      if (reportType == ReportType.translation) {
+        report = TranslationReport(
+          source: vocabulary!.source,
+          target: vocabulary!.target,
+          sourceLanguage: vocabulary!.sourceLanguage,
+          targetLanguage: vocabulary!.targetLanguage,
+          description: text,
+        );
+      } else {
+        report = BugReport(description: text);
+      }
+      sendReport(report);
+      Navigator.pop(context);
+    }
+
     return SafeArea(
       child: ClipRRect(
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
@@ -117,7 +117,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: !textIsValid || (reportType == ReportType.bug && text.isEmpty) ? null : () => _submit(),
+                  onPressed: !textIsValid || (reportType == ReportType.bug && text.isEmpty) ? null : () => submit(),
                   // onPressed: null,
                   // TODO: Replace with arb
                   child: const Text("Submit"),

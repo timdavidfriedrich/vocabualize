@@ -7,10 +7,10 @@ import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/src/features/home/widgets/info_dialog.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
-class NewWordCard extends StatelessWidget {
+class NewVocabularyCard extends StatelessWidget {
   final Vocabulary vocabulary;
 
-  const NewWordCard({super.key, required this.vocabulary});
+  const NewVocabularyCard({super.key, required this.vocabulary});
 
   @override
   Widget build(BuildContext context) {

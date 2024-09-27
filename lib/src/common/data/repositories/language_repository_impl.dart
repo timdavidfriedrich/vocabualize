@@ -1,7 +1,7 @@
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart' as provider;
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/free_translator_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/premium_translator_data_source.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
@@ -10,11 +10,30 @@ import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_sou
 import 'package:vocabualize/src/common/domain/repositories/language_repository.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
+final languageRepositoryProvider = Provider((ref) {
+  return LanguageRepositoryImpl(
+    freeTranslatorDataSource: ref.watch(freeTranslatorDataSourceProvider),
+    premiumTranslatorDataSource: ref.watch(premiumTranslatorDataSourceProvider),
+    speechToTextDataSource: ref.watch(speechToTextDataSourceProvider),
+    textToSpeechDataSource: ref.watch(textToSpeechDataSourceProvider),
+  );
+});
+
 class LanguageRepositoryImpl implements LanguageRepository {
-  final _freeTranslatorDataSource = sl.get<FreeTranslatorDataSource>();
-  final _premiumTranslatorDataSource = sl.get<PremiumTranslatorDataSource>();
-  final _speechToTextDataSource = sl.get<SpeechToTextDataSource>();
-  final _textToSpeechDataSource = sl.get<TextToSpeechDataSource>();
+  final FreeTranslatorDataSource _freeTranslatorDataSource;
+  final PremiumTranslatorDataSource _premiumTranslatorDataSource;
+  final SpeechToTextDataSource _speechToTextDataSource;
+  final TextToSpeechDataSource _textToSpeechDataSource;
+
+  const LanguageRepositoryImpl({
+    required FreeTranslatorDataSource freeTranslatorDataSource,
+    required PremiumTranslatorDataSource premiumTranslatorDataSource,
+    required SpeechToTextDataSource speechToTextDataSource,
+    required TextToSpeechDataSource textToSpeechDataSource,
+  })  : _freeTranslatorDataSource = freeTranslatorDataSource,
+        _premiumTranslatorDataSource = premiumTranslatorDataSource,
+        _speechToTextDataSource = speechToTextDataSource,
+        _textToSpeechDataSource = textToSpeechDataSource;
 
   @override
   Future<Language?> findLanguage({String? translatorId, String? speechToTextId, String? textToSpeechId}) async {
@@ -29,10 +48,12 @@ class LanguageRepositoryImpl implements LanguageRepository {
     return result;
   }
 
+  // TODO ARCHITECTURE: Remove provider package and use settings data source maybe or something similar
+
   @override
   Future<List<Language>> getLangauges() async {
     List<Language> result = [];
-    List<String> translatorIds = Provider.of<SettingsProvider>(Global.context, listen: false).usePremiumTranslator
+    List<String> translatorIds = provider.Provider.of<SettingsProvider>(Global.context, listen: false).usePremiumTranslator
         ? _premiumTranslatorDataSource.translatorLanguages.keys.toList()
         : _freeTranslatorDataSource.translatorLanguages.keys.toList();
     Map<String, String> speechToTextMap = await _getSpeechToTextMap();

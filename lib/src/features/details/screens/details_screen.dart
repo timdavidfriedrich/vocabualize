@@ -1,9 +1,9 @@
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabualize/constants/image_constants.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/get_draft_image_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/get_stock_images_use_case.dart';
@@ -22,23 +22,16 @@ import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/src/features/settings/screens/settings_screen.dart';
 
-class DetailsScreen extends StatefulWidget {
+class DetailsScreen extends ConsumerStatefulWidget {
   static const String routeName = "${HomeScreen.routeName}/AddDetails";
 
   const DetailsScreen({super.key});
 
   @override
-  State<DetailsScreen> createState() => _DetailsScreenState();
+  ConsumerState<DetailsScreen> createState() => _DetailsScreenState();
 }
 
-class _DetailsScreenState extends State<DetailsScreen> {
-  final getDraftImage = sl.get<GetDraftImageUseCase>();
-  final updateVocabulary = sl.get<UpdateVocabularyUseCase>();
-  final deleteVocabulary = sl.get<DeleteVocabularyUseCase>();
-  final getStockImages = sl.get<GetStockImagesUseCase>();
-  final uploadImage = sl.get<UploadImageUseCase>();
-  final translateToEnglish = sl.get<TranslateToEnglishUseCase>();
-
+class _DetailsScreenState extends ConsumerState<DetailsScreen> {
   Vocabulary vocabulary = Vocabulary();
 
   List<StockImage> _stockImages = [];
@@ -64,6 +57,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _getDraftImage() async {
+    final getDraftImage = ref.read(getDraftImageUseCaseProvider);
     final image = await getDraftImage();
     if (image != null) {
       setState(() => _selected = image);
@@ -71,9 +65,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _loadStockImages() async {
+    final translateToEnglish = ref.read(translateToEnglishUseCaseProvider);
     final searchTerm = Formatter.filterOutArticles(
       await translateToEnglish(vocabulary.source),
     );
+    final getStockImages = ref.read(getStockImagesUseCaseProvider);
     List<StockImage> stockImages = await getStockImages(searchTerm);
     if (mounted) setState(() => _stockImages = stockImages);
   }
@@ -106,10 +102,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
   void _save() async {
     final image = _selected;
     if (image != null) {
-      uploadImage(image);
+      ref.read(uploadImageUseCaseProvider(image));
     }
     final updatedVocabulary = vocabulary.copyWith(image: _selected);
-    updateVocabulary(updatedVocabulary);
+    ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
     Navigator.pop(Global.context);
   }
 
@@ -118,7 +114,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   void _delete() {
-    deleteVocabulary(vocabulary);
+    ref.read(deleteVocabularyUseCaseProvider(vocabulary));
     Navigator.pop(context);
   }
 
@@ -134,7 +130,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider.of<SettingsProvider>(context).areImagesDisabled
+    return provider.Provider.of<SettingsProvider>(context).areImagesDisabled
         ? const DetailsDisabledImagesScreen()
         : SafeArea(
             child: ClipRRect(
@@ -142,7 +138,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
                 body: vocabulary.source.isEmpty
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator.adaptive())
                     : Padding(
                         padding: const EdgeInsets.fromLTRB(48, 0, 48, 24),
                         child: Column(
@@ -279,8 +275,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                 _stockImages.isEmpty ? null : _selectImage(_stockImages.elementAt(index + firstIndex - 1)),
                                             borderRadius: BorderRadius.circular(16),
                                             child: firstIndex + index >= _stockImages.length + 1
-                                                ? const Padding(
-                                                    padding: EdgeInsets.all(24), child: CircularProgressIndicator(strokeWidth: 2))
+                                                ? const Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator.adaptive())
                                                 : Ink(
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(16),

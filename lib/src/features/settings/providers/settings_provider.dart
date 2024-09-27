@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/find_language_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/notification/schedule_gather_notification_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/notification/schedule_practise_notification_use_case.dart';
+
+// ! URGENT
+// TODO ARCHITECTURE (URGENT): Remove SettingsProvider and replace with datasource, repo and use cases
 
 class SettingsProvider extends ChangeNotifier {
   final _findLanguage = sl.get<FindLanguageUseCase>();

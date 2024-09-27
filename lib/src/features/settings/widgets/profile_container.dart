@@ -1,25 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/usecases/authentication/sign_out_use_case.dart';
 
-class ProfileContainer extends StatefulWidget {
+class ProfileContainer extends ConsumerWidget {
   const ProfileContainer({super.key});
 
   @override
-  State<ProfileContainer> createState() => _ProfileContainerState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final signOut = ref.watch(signOutUseCaseProvider);
 
-class _ProfileContainerState extends State<ProfileContainer> {
-  final _signOut = sl.get<SignOutUseCase>();
+    void onSignOutClick() async {
+      await signOut().whenComplete(() {
+        Navigator.pop(context);
+      });
+    }
 
-  void _onSignOutClick() async {
-    await _signOut();
-    if (mounted) Navigator.pop(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -32,7 +28,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.info_outline_rounded, size: 32, color: Theme.of(context).colorScheme.onBackground),
+                    Icon(
+                      Icons.info_outline_rounded,
+                      size: 32,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     const SizedBox(width: 16),
                     // TODO: Replace with arb
                     const Flexible(child: Text("Sign in to sync your data across devices.")),
@@ -40,7 +40,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 ),
                 const SizedBox(height: 16),
                 // TODO: Replace with arb
-                ElevatedButton(onPressed: () => _onSignOutClick(), child: const Text("Sign in")),
+                ElevatedButton(onPressed: () => onSignOutClick(), child: const Text("Sign in")),
               ],
             )
           : Row(
@@ -67,7 +67,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                       // TODO: Replace with arb
                       Align(
                         alignment: Alignment.topRight,
-                        child: ElevatedButton(onPressed: () => _onSignOutClick(), child: const Text("Sign out")),
+                        child: ElevatedButton(onPressed: () => onSignOutClick(), child: const Text("Sign out")),
                       ),
                     ],
                   ),

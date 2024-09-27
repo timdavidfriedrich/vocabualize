@@ -1,11 +1,22 @@
-import 'package:vocabualize/service_locator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabualize/src/common/data/repositories/language_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/language_repository.dart';
 
+final getAvailableLanguagesUseCaseProvider = FutureProvider((ref) {
+  return GetAvailableLanguagesUseCase(
+    languageRepository: ref.watch(languageRepositoryProvider),
+  ).call();
+});
+
 class GetAvailableLanguagesUseCase {
-  final languageRepository = sl.get<LanguageRepository>();
+  final LanguageRepository _languageRepository;
+
+  const GetAvailableLanguagesUseCase({
+    required LanguageRepository languageRepository,
+  }) : _languageRepository = languageRepository;
 
   Future<List<Language>> call() {
-    return languageRepository.getLangauges();
+    return _languageRepository.getLangauges();
   }
 }

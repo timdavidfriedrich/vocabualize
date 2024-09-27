@@ -1,13 +1,26 @@
-import 'package:vocabualize/service_locator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/data_sources/draft_image_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/stock_image_data_source.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_image_mappers.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/repositories/image_repository.dart';
 
+final imageRepositoryProvider = Provider((ref) {
+  return ImageRepositoryImpl(
+    draftImageDataSource: ref.watch(draftImageDataSourceProvider),
+    stockImageDataSource: ref.watch(stockImageDataSourceProvider),
+  );
+});
+
 class ImageRepositoryImpl implements ImageRepository {
-  final _draftImageDataSource = sl.get<DraftImageDataSource>();
-  final _stockImageDataSource = sl.get<StockImageDataSource>();
+  final DraftImageDataSource _draftImageDataSource;
+  final StockImageDataSource _stockImageDataSource;
+
+  const ImageRepositoryImpl({
+    required DraftImageDataSource draftImageDataSource,
+    required StockImageDataSource stockImageDataSource,
+  })  : _draftImageDataSource = draftImageDataSource,
+        _stockImageDataSource = stockImageDataSource;
 
   @override
   Future<List<StockImage>> getStockImages(String search) {

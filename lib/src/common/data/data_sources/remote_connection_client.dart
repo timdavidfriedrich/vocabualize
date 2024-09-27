@@ -1,7 +1,10 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/constants/secrets/pocketbase_secrets.dart';
+
+final remoteConnectionClientProvider = Provider((ref) => RemoteConnectionClient());
 
 class RemoteConnectionClient {
   final String _authStoreKey = "authStore";

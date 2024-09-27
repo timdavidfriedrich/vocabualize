@@ -10,7 +10,7 @@ class HelperWidgets {
       context: Global.context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return const Dialog(backgroundColor: Colors.transparent, elevation: 0, child: Center(child: CircularProgressIndicator()));
+        return const Dialog(backgroundColor: Colors.transparent, elevation: 0, child: Center(child: CircularProgressIndicator.adaptive()));
       },
     );
   }

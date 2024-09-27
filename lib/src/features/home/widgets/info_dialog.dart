@@ -1,37 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
+import 'package:vocabualize/src/features/home/extensions/vocabulary_extensions.dart';
 
-class InfoDialog extends StatelessWidget {
+class InfoDialog extends ConsumerWidget {
   final Vocabulary vocabulary;
 
   const InfoDialog({super.key, required this.vocabulary});
 
   @override
-  Widget build(BuildContext context) {
-    final deleteVocabulary = sl.get<DeleteVocabularyUseCase>();
-
+  Widget build(BuildContext context, WidgetRef ref) {
     void delete() {
-      deleteVocabulary(vocabulary);
+      ref.read(deleteVocabularyUseCaseProvider(vocabulary));
       Navigator.pop(context);
     }
 
     void close() {
       Navigator.of(context).pop();
-    }
-
-    String reappearsIn() {
-      DateTime now = DateTime.now();
-      Duration difference = vocabulary.nextDate.difference(now);
-      // TODO: Replace with arb
-      if (difference.isNegative) return "Now";
-      if (difference.inMinutes < 1) return "In less than a minutes";
-      if (difference.inHours < 1) return "In ${difference.inMinutes} minutes";
-      if (difference.inDays < 1) return "In ${difference.inHours} hours";
-      if (difference.inDays <= 7) return "In ${difference.inDays} days";
-      return DateFormat("dd.MM.yyyy - HH:mm").format(vocabulary.nextDate);
     }
 
     return AlertDialog(
@@ -59,7 +46,7 @@ class InfoDialog extends StatelessWidget {
                 children: [
                   // TODO: Replace with arb
                   const TextSpan(text: "Reappears:\n", style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: reappearsIn()),
+                  TextSpan(text: vocabulary.reappearsIn()),
                 ],
               ),
             ),

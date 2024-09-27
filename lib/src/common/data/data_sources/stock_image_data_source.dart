@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:vocabualize/constants/image_constants.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary_image.dart';
 import 'package:vocabualize/constants/secrets/pexels_secrets.dart';
 import 'package:vocabualize/src/common/data/utils/uri_parser.dart';
+
+final stockImageDataSourceProvider = Provider((ref) => StockImageDataSource());
 
 class StockImageDataSource {
   final queryParameterName = "query";

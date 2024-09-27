@@ -72,6 +72,7 @@ class Vocabulary {
         created = DateParser.parseOrNull(recordModel.data['created']) ?? DateTime.now(),
         updated = DateParser.parseOrNull(recordModel.data['updated']) ?? DateTime.now();
 
+  // TODO: Change to getter
   bool isValid() {
     bool sourceNotEmpty = source.isNotEmpty;
     bool targetNotEmpty = target.isNotEmpty;
@@ -116,7 +117,7 @@ class Vocabulary {
     );
   }
 
-  Vocabulary reset() {
+  Vocabulary copyWithResetProgress() {
     return copyWith(
       level: const Level(),
       isNovice: true,

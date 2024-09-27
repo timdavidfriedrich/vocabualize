@@ -1,19 +1,17 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/usecases/authentication/send_verification_email_use_case.dart';
 
-class VerifyScreen extends StatefulWidget {
+class VerifyScreen extends ConsumerStatefulWidget {
   const VerifyScreen({super.key});
 
   @override
-  State<VerifyScreen> createState() => _VerifyScreenState();
+  ConsumerState<VerifyScreen> createState() => _VerifyScreenState();
 }
 
-class _VerifyScreenState extends State<VerifyScreen> {
-  final _sendVerificationEmail = sl.get<SendVerificationEmailUseCase>();
-
+class _VerifyScreenState extends ConsumerState<VerifyScreen> {
   Timer? reloadTimer;
   bool _sendButtonBlocked = false;
   Timer? _blockTimer;
@@ -24,6 +22,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
     setState(() => reloadTimer = Timer.periodic(const Duration(seconds: 3), (_) => _reload()));
   }
 
+  // TODO: Implement reload method for verification (also implement verification in general lol)
   void _reload() async {
     // await AuthService.instance.reloadUser().whenComplete(() {
     //   if (FirebaseAuth.instance.currentUser!.emailVerified) {
@@ -38,8 +37,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
     setState(() => _secondsLeft = _seconds);
   }
 
-  Future<void> _onSendVerificationEmailClick() async {
-    _sendVerificationEmail();
+  Future<void> _startBlockedTimer() async {
     setState(() => _sendButtonBlocked = true);
     _blockTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _secondsLeft -= 1);
@@ -66,6 +64,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final sendVerificationEmail = ref.watch(sendVerificationEmailUseCaseProvider);
+
+    Future<void> onSendVerificationEmailClick() async {
+      sendVerificationEmail();
+      _startBlockedTimer();
+    }
+
     return SafeArea(
       child: ClipRRect(
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
@@ -85,7 +90,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                   const Text("We sent you an email with a link. Please, click on it to verify your email address."),
                   const SizedBox(height: 32),
                   ElevatedButton(
-                    onPressed: _sendButtonBlocked ? null : () => _onSendVerificationEmailClick(),
+                    onPressed: _sendButtonBlocked ? null : () => onSendVerificationEmailClick(),
                     // TODO: Replace with arb
                     child: Text(_sendButtonBlocked ? "Wait $_secondsLeft seconds" : "Resend verification email"),
                   ),

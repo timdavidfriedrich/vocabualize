@@ -1,8 +1,9 @@
 import 'dart:math';
 
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
+import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_use_case.dart';
 import 'package:vocabualize/src/features/collections/screens/collection_screen.dart';
@@ -10,27 +11,37 @@ import 'package:vocabualize/src/features/collections/utils/collection_arguments.
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
-class TagCardButton extends StatelessWidget {
+class TagCardButton extends ConsumerWidget {
   final Tag tag;
 
   const TagCardButton({super.key, required this.tag});
 
   @override
-  Widget build(BuildContext context) {
-    final getVocabularies = sl.get<GetVocabulariesUseCase>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final getVocabularies = ref.watch(
+      getVocabulariesUseCaseProvider(
+        FilterOptions(tag: tag),
+      ),
+    );
 
     void click() {
       Navigator.pushNamed(context, CollectionScreen.routeName, arguments: CollectionScreenArguments(tag: tag));
     }
 
-    return StreamBuilder<List<Vocabulary>>(
-      stream: getVocabularies(tag: tag),
-      builder: (context, snapshot) {
+    return getVocabularies.when(
+      loading: () {
+        return const SizedBox();
+      },
+      error: (error, stackStrace) {
+        return const SizedBox();
+      },
+      data: (List<Vocabulary> tagVocabularies) {
         return MaterialButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           color: Theme.of(context).colorScheme.surface,
           onPressed: () => click(),
-          padding: Provider.of<SettingsProvider>(context).areImagesDisabled ? const EdgeInsets.all(16.0) : const EdgeInsets.all(8.0),
+          padding:
+              provider.Provider.of<SettingsProvider>(context).areImagesDisabled ? const EdgeInsets.all(16.0) : const EdgeInsets.all(8.0),
           elevation: 0,
           disabledElevation: 0,
           focusElevation: 0,
@@ -40,7 +51,7 @@ class TagCardButton extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: buildContent(context, snapshot.data),
+            children: buildContent(context, tagVocabularies),
           ),
         );
       },
@@ -53,39 +64,38 @@ class TagCardButton extends StatelessWidget {
   ) {
     if (vocabularies == null) {
       return [
-        const CircularProgressIndicator(),
+        const CircularProgressIndicator.adaptive(),
       ];
     }
     return [
-      Provider.of<SettingsProvider>(context).areImagesDisabled
-          ? Container()
-          : SizedBox(
-              width: 128,
-              height: 128,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
-                  ),
-                  child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: min(vocabularies.length, 2),
-                    ),
-                    itemCount: min(vocabularies.length, 4),
-                    itemBuilder: (context, index) {
-                      return Image(
-                        image: NetworkImage(
-                          vocabularies.elementAt(index).image.url,
-                        ),
-                      );
-                    },
-                  ),
+      if (!provider.Provider.of<SettingsProvider>(context).areImagesDisabled)
+        SizedBox(
+          width: 128,
+          height: 128,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+              ),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: min(vocabularies.length, 2),
                 ),
+                itemCount: min(vocabularies.length, 4),
+                itemBuilder: (context, index) {
+                  return Image(
+                    image: NetworkImage(
+                      vocabularies.elementAt(index).image.url,
+                    ),
+                  );
+                },
               ),
             ),
-      Provider.of<SettingsProvider>(context).areImagesDisabled ? Container() : const SizedBox(height: 8),
+          ),
+        ),
+      if (!provider.Provider.of<SettingsProvider>(context).areImagesDisabled) const SizedBox(height: 8),
       SizedBox(
         width: 128,
         child: Padding(
@@ -93,7 +103,7 @@ class TagCardButton extends StatelessWidget {
           child: Text(
             tag.name,
             style: Theme.of(context).textTheme.bodyMedium,
-            textAlign: Provider.of<SettingsProvider>(context).areImagesDisabled ? TextAlign.center : TextAlign.start,
+            textAlign: provider.Provider.of<SettingsProvider>(context).areImagesDisabled ? TextAlign.center : TextAlign.start,
           ),
         ),
       ),

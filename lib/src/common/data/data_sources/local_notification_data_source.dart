@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:log/log.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
 // ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest.dart' as tz;
 // ignore: depend_on_referenced_packages
@@ -13,6 +14,10 @@ import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
+
+final localNotificationDataSourceProvider = Provider((ref) => LocalNotificationDataSource());
+
+// TODO ARCHITUCTURE: Remove Provider package and pass default values and settings to the methods
 
 class LocalNotificationDataSource {
   static const TimeOfDay _defaultScheduleTime = TimeOfDay(hour: 13, minute: 0);
@@ -80,20 +85,20 @@ class LocalNotificationDataSource {
       title: "Let's practise 🎯",
       // TODO: Replace with arb
       body: "$numberOfVocabularies words are due. You'll rock this! :D",
-      time: timeOfDay ?? Provider.of<SettingsProvider>(Global.context, listen: false).practiseNotificationTime,
+      time: timeOfDay ?? provider.Provider.of<SettingsProvider>(Global.context, listen: false).practiseNotificationTime,
     );
   }
 
   void scheduleGatherNotification() async {
     await _localNotifications.cancel(2);
-    final Language targetLanguage = Provider.of<SettingsProvider>(Global.context, listen: false).targetLanguage;
+    final Language targetLanguage = provider.Provider.of<SettingsProvider>(Global.context, listen: false).targetLanguage;
     _scheduleLocalNotification(
       id: 2,
       // TODO: Replace with arb
       title: "Look around you 👀",
       // TODO: Replace with arb
       body: "Which things don't you know in ${targetLanguage.name}?\nLet's add them to your collection!",
-      time: Provider.of<SettingsProvider>(Global.context, listen: false).gatherNotificationTime,
+      time: provider.Provider.of<SettingsProvider>(Global.context, listen: false).gatherNotificationTime,
     );
   }
 

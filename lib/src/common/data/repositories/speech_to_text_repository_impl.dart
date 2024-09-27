@@ -1,18 +1,28 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/speech_to_text_data_source.dart';
 import 'package:vocabualize/src/common/domain/repositories/speech_to_text_repository.dart';
 
+final speechToTextRepositoryProvider = Provider((ref) {
+  return SpeechToTextRepositoryImpl(
+    speechToTextDataSource: ref.watch(speechToTextDataSourceProvider),
+  );
+});
+
 class SpeechToTextRepositoryImpl implements SpeechToTextRepository {
-  final speechToTextDataSource = sl.get<SpeechToTextDataSource>();
+  final SpeechToTextDataSource _speechToTextDataSource;
+
+  const SpeechToTextRepositoryImpl({
+    required SpeechToTextDataSource speechToTextDataSource,
+  }) : _speechToTextDataSource = speechToTextDataSource;
 
   @override
   Future<List<LocaleName>> getLocales() {
-    return speechToTextDataSource.getLocales();
+    return _speechToTextDataSource.getLocales();
   }
 
   @override
   Future<void> record() {
-    return speechToTextDataSource.record();
+    return _speechToTextDataSource.record();
   }
 }

@@ -1,16 +1,26 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 
+final authenticationDataSourceProvider = Provider((ref) {
+  return AuthenticationDataSource(
+    connectionClient: ref.watch(remoteConnectionClientProvider),
+  );
+});
+
 class AuthenticationDataSource {
-  final RemoteConnectionClient _connectionClient = sl.get<RemoteConnectionClient>();
+  final RemoteConnectionClient _connectionClient;
   final String _usersCollectionName = "users";
+
+  const AuthenticationDataSource({
+    required RemoteConnectionClient connectionClient,
+  }) : _connectionClient = connectionClient;
 
   Future signInAnonymously() async {
     // ? TODO: Implement signInAnonymously ?

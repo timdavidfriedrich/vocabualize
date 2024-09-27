@@ -1,7 +1,7 @@
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/domain/usecases/authentication/create_user_with_email_and_password_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/authentication/sign_in_with_email_and_password_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
@@ -12,18 +12,15 @@ import 'package:vocabualize/src/features/onboarding/utils/sign_arguments.dart';
 import 'package:vocabualize/src/features/onboarding/utils/sign_type.dart';
 import 'package:vocabualize/src/features/onboarding/widgets/passwords_dont_match_dialog.dart';
 
-class SignScreen extends StatefulWidget {
+class SignScreen extends ConsumerStatefulWidget {
   static const String routeName = "${WelcomeScreen.routeName}/Sign";
   const SignScreen({super.key});
 
   @override
-  State<SignScreen> createState() => _SignScreenState();
+  ConsumerState<SignScreen> createState() => _SignScreenState();
 }
 
-class _SignScreenState extends State<SignScreen> {
-  final _signInWithEmailAndPassword = sl.get<SignInWithEmailAndPasswordUseCase>();
-  final _createUserWithEmailAndPassword = sl.get<CreateUserWithEmailAndPasswordUseCase>();
-
+class _SignScreenState extends ConsumerState<SignScreen> {
   late SignArguments arguments;
   SignType signType = SignType.none;
 
@@ -32,24 +29,6 @@ class _SignScreenState extends State<SignScreen> {
   String _repeatedPassword = "";
   bool _isEmailValid = false;
   bool _isPasswordObscured = true;
-
-  void _signIn() async {
-    bool wasSuccessful = await _signInWithEmailAndPassword(_email, _password);
-    if (mounted && wasSuccessful) {
-      Navigator.pop(context);
-    }
-  }
-
-  void _signUp() async {
-    if (_password != _repeatedPassword) {
-      HelperWidgets.showStaticDialog(const PasswordsDontMatchDialog());
-      return;
-    }
-    bool wasSuccessful = await _createUserWithEmailAndPassword(_email, _password);
-    if (mounted && wasSuccessful) {
-      Navigator.pop(context);
-    }
-  }
 
   void _updateEmail(String email) {
     setState(() => _email = email);
@@ -88,6 +67,27 @@ class _SignScreenState extends State<SignScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final signInWithEmailAndPassword = ref.watch(signInWithEmailAndPasswordUseCaseProvider);
+    final createUserWithEmailAndPassword = ref.watch(createUserWithEmailAndPasswordUseCaseProvider);
+
+    void signIn() async {
+      bool wasSuccessful = await signInWithEmailAndPassword(_email, _password);
+      if (context.mounted && wasSuccessful) {
+        Navigator.pop(context);
+      }
+    }
+
+    void signUp() async {
+      if (_password != _repeatedPassword) {
+        HelperWidgets.showStaticDialog(const PasswordsDontMatchDialog());
+        return;
+      }
+      bool wasSuccessful = await createUserWithEmailAndPassword(_email, _password);
+      if (context.mounted && wasSuccessful) {
+        Navigator.pop(context);
+      }
+    }
+
     return SafeArea(
       child: ClipRRect(
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
@@ -159,13 +159,13 @@ class _SignScreenState extends State<SignScreen> {
                     const SizedBox(height: 32),
                     signType == SignType.signIn
                         ? ElevatedButton(
-                            onPressed: !_isEmailValid || _email.isEmpty || _password.isEmpty ? null : () => _signIn(),
+                            onPressed: !_isEmailValid || _email.isEmpty || _password.isEmpty ? null : () => signIn(),
                             // TODO: Replace with arb
                             child: const Text("Sign in"),
                           )
                         : ElevatedButton(
                             onPressed:
-                                !_isEmailValid || _email.isEmpty || _password.isEmpty || _repeatedPassword.isEmpty ? null : () => _signUp(),
+                                !_isEmailValid || _email.isEmpty || _password.isEmpty || _repeatedPassword.isEmpty ? null : () => signUp(),
                             // TODO: Replace with arb
                             child: const Text("Sign up"),
                           ),

@@ -1,15 +1,28 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
-import 'package:vocabualize/service_locator.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_mappers.dart';
+import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
+final vocabularyRepositoryProvider = Provider((ref) {
+  return VocabularyRepositoryImpl(
+    remoteDatabaseDataSource: ref.watch(remoteDatabaseDataSourceProvider),
+  );
+});
+
 class VocabularyRepositoryImpl implements VocabularyRepository {
-  final _remoteDatabaseDataSource = sl.get<RemoteDatabaseDataSource>();
+  final RemoteDatabaseDataSource _remoteDatabaseDataSource;
+
+  VocabularyRepositoryImpl({
+    required RemoteDatabaseDataSource remoteDatabaseDataSource,
+  }) : _remoteDatabaseDataSource = remoteDatabaseDataSource {
+    _loadVocabularies();
+  }
 
   StreamController<List<Vocabulary>> _streamController = StreamController<List<Vocabulary>>.broadcast();
   Stream<List<Vocabulary>> get _stream => _streamController.stream;
@@ -49,9 +62,9 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
   }
 
   @override
-  Stream<List<Vocabulary>> getVocabularies({String? searchTerm, Tag? tag}) {
+  Stream<List<Vocabulary>> getVocabularies(FilterOptions? filterOptions) {
     final filteredStream = _getStreamAndLoadIfNecessary().map((vocabularies) {
-      return vocabularies.filterBySearchTerm(searchTerm).filterByTag(tag);
+      return vocabularies.filterBySearchTerm(filterOptions?.searchTerm).filterByTag(filterOptions?.tag);
     });
     return filteredStream;
   }

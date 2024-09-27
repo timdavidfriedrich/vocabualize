@@ -1,36 +1,39 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
 import 'package:vocabualize/src/features/record/services/record_service.dart';
 
-class TypeButton extends StatefulWidget {
+// TODO ARCHITECTURE: Remvoe Provider package from TypeButton
+
+class TypeButton extends ConsumerStatefulWidget {
   const TypeButton({super.key});
 
   @override
-  State<TypeButton> createState() => _TypeButtonState();
+  ConsumerState<TypeButton> createState() => _TypeButtonState();
 }
 
-class _TypeButtonState extends State<TypeButton> {
+class _TypeButtonState extends ConsumerState<TypeButton> {
   TextEditingController controller = TextEditingController();
   FocusNode focusNode = FocusNode();
   String currentSource = "";
 
   _focus() {
-    Provider.of<ActiveProvider>(context, listen: false).typeIsActive = true;
+    provider.Provider.of<ActiveProvider>(context, listen: false).typeIsActive = true;
   }
 
   _cancel() {
     FocusManager.instance.primaryFocus?.unfocus();
     controller.clear();
     currentSource = "";
-    Provider.of<ActiveProvider>(context, listen: false).typeIsActive = false;
+    provider.Provider.of<ActiveProvider>(context, listen: false).typeIsActive = false;
   }
 
   _submit() async {
     if (!await HelperWidgets.isOnline()) return _cancel();
     if (!mounted) return;
-    RecordService().validateAndSave(source: currentSource);
+    RecordService().validateAndSave(unwantedRef: ref, source: currentSource);
     currentSource = "";
     controller.clear();
     focusNode.requestFocus();
@@ -52,30 +55,38 @@ class _TypeButtonState extends State<TypeButton> {
           maxLines: 1,
           onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
           decoration: InputDecoration(
-            enabled: !Provider.of<ActiveProvider>(context).micIsActive,
+            enabled: !provider.Provider.of<ActiveProvider>(context).micIsActive,
             hintText: AppLocalizations.of(context)?.record_type,
             counterText: "",
             contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
             hintStyle: TextStyle(color: Theme.of(context).hintColor),
             labelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4),
+              borderRadius: BorderRadius.circular(16),
+            ),
             disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).hintColor, width: 4), borderRadius: BorderRadius.circular(16)),
+              borderSide: BorderSide(color: Theme.of(context).hintColor, width: 4),
+              borderRadius: BorderRadius.circular(16),
+            ),
             border: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4),
+              borderRadius: BorderRadius.circular(16),
+            ),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4), borderRadius: BorderRadius.circular(16)),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 4),
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
-          onTap: Provider.of<ActiveProvider>(context).micIsActive ? () {} : () => _focus(),
+          onTap: provider.Provider.of<ActiveProvider>(context).micIsActive ? () {} : () => _focus(),
           onChanged: (text) {
             setState(() => currentSource = text);
             _focus(); // long pressing on field ignores onTap, that's why this workaround
           },
           onFieldSubmitted: (text) async => _submit,
         ),
-        currentSource.isEmpty && !Provider.of<ActiveProvider>(context).typeIsActive ? Container() : const SizedBox(height: 16),
-        currentSource.isEmpty && !Provider.of<ActiveProvider>(context).typeIsActive
+        currentSource.isEmpty && !provider.Provider.of<ActiveProvider>(context).typeIsActive ? Container() : const SizedBox(height: 16),
+        currentSource.isEmpty && !provider.Provider.of<ActiveProvider>(context).typeIsActive
             ? Container()
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

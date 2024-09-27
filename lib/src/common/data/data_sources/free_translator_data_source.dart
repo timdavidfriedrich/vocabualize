@@ -1,4 +1,7 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:translator_plus/translator_plus.dart';
+
+final freeTranslatorDataSourceProvider = Provider((ref) => FreeTranslatorDataSource());
 
 class FreeTranslatorDataSource {
   Future<String> translate({
