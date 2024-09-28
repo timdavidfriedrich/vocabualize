@@ -1,9 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart' as provider;
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/usecases/translator/translate_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/features/details/screens/details_screen.dart';
+import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
-import 'package:vocabualize/src/features/record/services/record_service.dart';
 
 // TODO ARCHITECTURE: Remvoe Provider package from TypeButton
 
@@ -33,10 +36,22 @@ class _TypeButtonState extends ConsumerState<TypeButton> {
   _submit() async {
     if (!await HelperWidgets.isOnline()) return _cancel();
     if (!mounted) return;
-    RecordService().validateAndSave(unwantedRef: ref, source: currentSource);
+    _validateAndGoToDetails(currentSource);
     currentSource = "";
     controller.clear();
     focusNode.requestFocus();
+  }
+
+  Future<void> _validateAndGoToDetails(String source) async {
+    final translate = ref.read(translateUseCaseProvider);
+    Vocabulary draftVocabulary = Vocabulary(source: source, target: await translate(source));
+    if (draftVocabulary.isValid()) {
+      Navigator.pushNamed(
+        Global.context,
+        DetailsScreen.routeName,
+        arguments: DetailsScreenArguments(vocabulary: draftVocabulary),
+      );
+    }
   }
 
   @override

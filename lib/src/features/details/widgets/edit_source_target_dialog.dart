@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/src/common/domain/usecases/translator/translate_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/features/details/screens/details_screen.dart';
+import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/src/features/details/widgets/replace_vocabulary_dialog.dart';
-import 'package:vocabualize/src/features/record/services/record_service.dart';
 import 'package:vocabualize/src/features/reports/screens/report_screen.dart';
 import 'package:vocabualize/src/features/reports/utils/report_arguments.dart';
 
@@ -50,6 +52,25 @@ class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog>
       }
     }
 
+    void translateAndGoToDetails() async {
+      final translate = ref.read(translateUseCaseProvider);
+      final translation = await translate(_controller.text);
+      Vocabulary draftVocabulary = Vocabulary(
+        source: _controller.text,
+        target: translation,
+      );
+      Navigator.pushNamed(
+        Global.context,
+        DetailsScreen.routeName,
+        arguments: DetailsScreenArguments(vocabulary: draftVocabulary),
+      );
+    }
+
+    void deleteCurrentVocabulary() {
+      // TODO: Do I need to delete this? I don't add the vocabulary instantly, but it should rather be added on save.
+      ref.read(deleteVocabularyUseCaseProvider(widget.vocabulary));
+    }
+
     void submit() async {
       if (_controller.text.isEmpty || !hasChanged()) return Navigator.pop(context);
       if (widget.editTarget) {
@@ -61,11 +82,8 @@ class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog>
           ReplaceVocabularyDialog(vocabulary: widget.vocabulary),
         );
         if (hasClickedReplace) {
-          if (mounted) {
-            ref.read(deleteVocabularyUseCaseProvider(widget.vocabulary));
-          }
-          // TODO ARCHITECTURE: Replace RecordService() with use case
-          RecordService().validateAndSave(unwantedRef: ref, source: _controller.text);
+          deleteCurrentVocabulary();
+          translateAndGoToDetails();
         } else {
           final updatedVocabulary = widget.vocabulary.copyWith(source: _controller.text);
           ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));

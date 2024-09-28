@@ -2,7 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/features/record/services/record_service.dart';
+import 'package:vocabualize/src/features/details/screens/details_screen.dart';
+import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 
 class DuplicateDialog extends ConsumerWidget {
   final Vocabulary vocabulary;
@@ -15,8 +16,12 @@ class DuplicateDialog extends ConsumerWidget {
       Navigator.popUntil(Global.context, ModalRoute.withName(Start.routeName));
     }
 
-    void addAnyway() {
-      RecordService().save(unwantedRef: ref, vocabulary: vocabulary,);
+    void proceedAnyway() {
+      Navigator.pushNamed(
+        Global.context,
+        DetailsScreen.routeName,
+        arguments: DetailsScreenArguments(vocabulary: vocabulary),
+      );
     }
 
     return AlertDialog(
@@ -40,7 +45,7 @@ class DuplicateDialog extends ConsumerWidget {
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: () => addAnyway(),
+          onPressed: () => proceedAnyway(),
           // TODO: Replace with arb
           child: const Text('Add'),
         ),

@@ -15,7 +15,7 @@ class RecordSpeechUseCase {
     required this.speechToTextRepository,
   });
 
-  Future<void> call() {
-    return speechToTextRepository.record();
+  Future<void> call({required Function(String) onResult}) {
+    return speechToTextRepository.record(onResult);
   }
 }

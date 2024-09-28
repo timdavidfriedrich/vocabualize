@@ -22,7 +22,7 @@ class SpeechToTextRepositoryImpl implements SpeechToTextRepository {
   }
 
   @override
-  Future<void> record() {
-    return _speechToTextDataSource.record();
+  Future<void> record(Function(String) onResult) {
+    return _speechToTextDataSource.record(onResult);
   }
 }

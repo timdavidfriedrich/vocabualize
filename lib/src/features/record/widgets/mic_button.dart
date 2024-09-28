@@ -2,8 +2,12 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart' as provider;
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/record_speech_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/translator/translate_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/features/details/screens/details_screen.dart';
+import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
 
 // TODO ARCHITECTURE: Remove Provider package from MicButton
@@ -15,9 +19,27 @@ class MicButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recordSpeech = ref.watch(recordSpeechUseCaseProvider);
 
+    // TODO: Create a use case for translate and go to details (maybe in record folder)
+    void translateAndProceed(String source) async {
+      final translate = ref.read(translateUseCaseProvider);
+      await translate(source).then((String target) {
+        final draftVocabulary = Vocabulary(
+          source: source,
+          target: target,
+        );
+        Navigator.pushNamed(
+          context,
+          DetailsScreen.routeName,
+          arguments: DetailsScreenArguments(vocabulary: draftVocabulary),
+        );
+      });
+    }
+
     void clicked() async {
       if (await HelperWidgets.isOnline()) {
-        recordSpeech();
+        recordSpeech(
+          onResult: translateAndProceed,
+        );
       }
     }
 
