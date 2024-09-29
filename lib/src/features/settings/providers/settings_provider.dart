@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:provider/provider.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
@@ -11,9 +12,13 @@ import 'package:vocabualize/src/common/domain/usecases/notification/schedule_pra
 // TODO ARCHITECTURE (URGENT): Remove SettingsProvider and replace with datasource, repo and use cases
 
 class SettingsProvider extends ChangeNotifier {
-  final _findLanguage = sl.get<FindLanguageUseCase>();
-  final _scheduleGatherNotification = sl.get<ScheduleGatherNotificationUseCase>();
-  final _schedulePracticeNotification = sl.get<SchedulePractiseNotificationUseCase>();
+  // !  ref is not availabe. This should be used in the use cases
+  final _findLanguage = ref.watch(findLanguageUseCaseProvider);
+  // !  ref is not availabe. This should be used in the use cases
+  final _scheduleGatherNotification = ref.watch(scheduleGatherNotificationUseCaseProvider);
+  // !  ref is not availabe. This should be used in the use cases
+  final _schedulePracticeNotification = ref.watch(schedulePractiseNotificationUseCaseProvider);
+  
   late SharedPreferences prefs;
 
   Language _sourceLanguage = Language.defaultSource();

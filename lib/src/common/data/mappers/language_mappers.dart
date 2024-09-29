@@ -23,4 +23,30 @@ extension LanguageMappers on Language {
       textToSpeechId: textToSpeechId,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'translatorId': translatorId,
+      'speechToTextId': speechToTextId,
+      'textToSpeechId': textToSpeechId,
+      'created': created?.toIso8601String(),
+      'updated': updated?.toIso8601String(),
+    };
+  }
+}
+
+extension LanguageJsonMappers on Map<String, dynamic> {
+  Language toLanguage() {
+    return Language(
+      id: this['id'] ?? "empty_id",
+      name: this['name'],
+      translatorId: this['translatorId'],
+      speechToTextId: this['speechToTextId'],
+      textToSpeechId: this['textToSpeechId'],
+      created: this['created'] != null ? DateTime.parse(this['created']) : null,
+      updated: this['updated'] != null ? DateTime.parse(this['updated']) : null,
+    );
+  }
 }
