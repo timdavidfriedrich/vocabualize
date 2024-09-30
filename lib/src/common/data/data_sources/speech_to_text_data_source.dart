@@ -4,11 +4,10 @@ import 'package:log/log.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
-import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
 final speechToTextDataSourceProvider = Provider((ref) => SpeechToTextDataSource());
 
-// TODO ARCHITECTURE: Remove Provider package and pass default values and settings to the methods
+// TODO ARCHITECTURE: Remove ActiveProvider + Provider package, and move this UI to an UI layer
 
 class SpeechToTextDataSource {
   SpeechToTextDataSource() {
@@ -41,13 +40,13 @@ class SpeechToTextDataSource {
     );
   }
 
-  Future<void> record(Function(String) onResult) async {
+  Future<void> record({required String sourceSpeechToTextId, required Function(String) onResult}) async {
     if (!provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive) {
       provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = true;
 
       if (_available) {
         _stt.listen(
-          localeId: provider.Provider.of<SettingsProvider>(Global.context, listen: false).sourceLanguage.speechToTextId,
+          localeId: sourceSpeechToTextId,
           onResult: (result) => onResult(result.recognizedWords),
         );
       }

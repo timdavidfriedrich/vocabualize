@@ -13,7 +13,6 @@ import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_done_screen.dart';
 import 'package:vocabualize/src/common/domain/entities/answer.dart';
 import 'package:vocabualize/src/features/practise/utils/practise_arguments.dart';
-import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
 class PractiseScreen extends ConsumerStatefulWidget {
   static const String routeName = "${HomeScreen.routeName}/Practise";

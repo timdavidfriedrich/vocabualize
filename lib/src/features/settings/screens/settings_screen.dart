@@ -2,7 +2,6 @@ import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
-import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/src/features/settings/screens/choose_language_screen.dart';
 import 'package:vocabualize/src/features/settings/widgets/profile_container.dart';
 import 'package:vocabualize/src/features/settings/widgets/settings_list_tile.dart';

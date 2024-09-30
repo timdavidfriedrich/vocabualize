@@ -1,11 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/get_available_languages_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/set_target_language_use_case.dart';
 import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
-import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
 class SelectLanguageScreen extends ConsumerWidget {
   static const String routeName = "${WelcomeScreen.routeName}/SelectLanguage";

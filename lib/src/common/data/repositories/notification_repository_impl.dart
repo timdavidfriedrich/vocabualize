@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/data/data_sources/cloud_notification_data_source.dart';
 import 'package:vocabualize/src/common/data/data_sources/local_notification_data_source.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/notification_repository.dart';
 
 final notificationRepositoryProvider = Provider((ref) {
@@ -32,15 +33,18 @@ class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   @override
-  void scheduleGatherNotification() {
-    _localNotificaionDataSource.scheduleGatherNotification();
+  void scheduleGatherNotification({required TimeOfDay time, required Language targetLanguage}) {
+    _localNotificaionDataSource.scheduleGatherNotification(
+      time: time,
+      targetLanguage: targetLanguage,
+    );
   }
 
   @override
-  void schedulePractiseNotification({int? numberOfVocabularies, TimeOfDay? timeOfDay}) {
+  void schedulePractiseNotification({required TimeOfDay time, int? numberOfVocabularies}) {
     _localNotificaionDataSource.schedulePractiseNotification(
+      time: time,
       numberOfVocabularies: numberOfVocabularies,
-      timeOfDay: timeOfDay,
     );
   }
 }

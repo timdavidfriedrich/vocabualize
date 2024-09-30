@@ -1,13 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
 import 'package:vocabualize/src/features/home/widgets/info_snackbar.dart';
-import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 
 class VocabularyListTile extends ConsumerWidget {
   final Vocabulary vocabulary;

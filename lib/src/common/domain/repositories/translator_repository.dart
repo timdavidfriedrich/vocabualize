@@ -1,4 +1,8 @@
 abstract interface class TranslatorRepository {
-  Future<String> translateToEnglish(String source);
-  Future<String> translate(String source, {String? sourceLanguageId, String? targetLanguageId});
+  Future<String> translate({
+    required String source,
+    required String sourceLanguageId,
+    required String targetLanguageId,
+    required bool usePremiumTranslator,
+  });
 }

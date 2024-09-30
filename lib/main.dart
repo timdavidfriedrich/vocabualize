@@ -17,7 +17,6 @@ import 'package:vocabualize/src/features/practise/screens/practise_screen.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/reports/screens/report_screen.dart';
-import 'package:vocabualize/src/features/settings/providers/settings_provider.dart';
 import 'package:vocabualize/src/features/settings/screens/choose_language_screen.dart';
 import 'package:vocabualize/src/features/settings/screens/settings_screen.dart';
 import 'package:vocabualize/firebase_options.dart';
@@ -40,7 +39,6 @@ class Vocabualize extends StatelessWidget {
     return provider.MultiProvider(
       providers: [
         provider.ChangeNotifierProvider(create: (context) => ActiveProvider()),
-        provider.ChangeNotifierProvider(create: (context) => SettingsProvider()),
       ],
       child: ProviderScope(
         child: MaterialApp(
