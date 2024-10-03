@@ -3,13 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/answer_vocabulary_use_case.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/controllers/practise_controller.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_done_screen.dart';
 import 'package:vocabualize/src/common/domain/entities/answer.dart';
+import 'package:vocabualize/src/features/practise/states/practise_state.dart';
 import 'package:vocabualize/src/features/practise/utils/practise_arguments.dart';
 
 class PractiseScreen extends ConsumerStatefulWidget {
@@ -22,29 +20,6 @@ class PractiseScreen extends ConsumerStatefulWidget {
 
 class _PractiseScreenState extends ConsumerState<PractiseScreen> {
   Tag? tag;
-  List<Vocabulary> vocabulariesToPractise = [];
-  int initialVocCount = 0;
-  bool isSolutionShown = false;
-  bool isDone = false;
-  Vocabulary currentVoc = Vocabulary(source: "", target: "");
-
-  bool isMultilingual = false;
-
-  // TODO ARCHITECTURE: This should be removed, I guess?
-  void _refreshVoc() {
-    if (!mounted) return;
-    setState(() => isSolutionShown = false);
-    if (vocabulariesToPractise.isEmpty) {
-      setState(() => isDone = true);
-    } else {
-      setState(() {
-        if (currentVoc.source.isEmpty && vocabulariesToPractise.isEmpty) return;
-        vocabulariesToPractise.remove(currentVoc);
-        if (vocabulariesToPractise.isEmpty) return;
-        currentVoc = vocabulariesToPractise.first;
-      });
-    }
-  }
 
   void _close() {
     Navigator.pop(context);
@@ -63,22 +38,17 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final answerVocabulary = ref.watch(answerVocabularyUseCaseProvider);
-    final speak = ref.watch(readOutUseCaseProvider);
-
-    final asyncState = ref.watch(practiseControllerProvider(tag));
-
-    return asyncState.when(
+    return ref.watch(practiseControllerProvider(tag)).when(
       loading: () {
-        return const Center(child: CircularProgressIndicator.adaptive());
+        return const Center(
+          child: CircularProgressIndicator.adaptive(),
+        );
       },
       error: (error, stackTrace) {
         return const PractiseDoneScreen();
       },
-      data: (state) {
-        vocabulariesToPractise = state.vocabulariesLeftToPractise;
-        initialVocCount = vocabulariesToPractise.length;
-        if (vocabulariesToPractise.isEmpty) {
+      data: (PractiseState state) {
+        if (state.isDone) {
           return const PractiseDoneScreen();
         }
         return SafeArea(
@@ -93,7 +63,7 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                     const SizedBox(height: 36),
                     Row(
                       children: [
-                        Text("${initialVocCount - vocabulariesToPractise.length} / $initialVocCount",
+                        Text("${state.initialVocabularyCount - state.vocabulariesLeftToPractise.length} / ${state.initialVocabularyCount}",
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
@@ -104,7 +74,7 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: LinearProgressIndicator(
-                              value: vocabulariesToPractise.isEmpty ? 1 : 1 - (vocabulariesToPractise.length / initialVocCount),
+                              value: state.isDone ? 1 : 1 - (state.vocabulariesLeftToPractise.length / state.initialVocabularyCount),
                               minHeight: 12,
                               color: Theme.of(context).colorScheme.primary,
                               backgroundColor: Theme.of(context).colorScheme.surface,
@@ -118,12 +88,12 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                     const Spacer(),
                     if (state.isMultilingual)
                       Text(
-                        "${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}",
+                        "${state.currentVocabulary.sourceLanguage.name}  ►  ${state.currentVocabulary.targetLanguage.name}",
                         style: TextStyle(color: Theme.of(context).hintColor),
                         textAlign: TextAlign.center,
                       ),
                     const SizedBox(height: 12),
-                    if (!state.areImagesDisabled || isSolutionShown)
+                    if (!state.areImagesDisabled || state.isSolutionShown)
                       Expanded(
                         flex: 2,
                         child: Container(
@@ -135,11 +105,11 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                                 : DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(
-                                      currentVoc.image.url,
+                                      state.currentVocabulary.image.url,
                                     ),
                                   ),
                           ),
-                          child: !isSolutionShown
+                          child: !state.isSolutionShown
                               ? null
                               : Container(
                                   decoration: BoxDecoration(
@@ -152,14 +122,16 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                                     children: [
                                       Flexible(
                                         child: Text(
-                                          currentVoc.target,
+                                          state.currentVocabulary.target,
                                           style: Theme.of(context).textTheme.headlineMedium,
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
                                       const SizedBox(width: 8),
                                       IconButton(
-                                        onPressed: () => speak(currentVoc),
+                                        onPressed: () {
+                                          ref.read(practiseControllerProvider(tag).notifier).readOut(state.currentVocabulary);
+                                        },
                                         icon: const Icon(Icons.volume_up_rounded, size: 32),
                                       ),
                                     ],
@@ -168,9 +140,9 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                         ),
                       ),
                     const SizedBox(height: 32),
-                    Center(child: Text(currentVoc.source, style: Theme.of(context).textTheme.bodyMedium)),
+                    Center(child: Text(state.currentVocabulary.source, style: Theme.of(context).textTheme.bodyMedium)),
                     const Spacer(),
-                    if (isSolutionShown)
+                    if (state.isSolutionShown)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -180,12 +152,11 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                                 padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
                                 backgroundColor: LevelPalette.beginner,
                               ),
-                              onPressed: () async {
-                                await answerVocabulary(
-                                  vocabulary: currentVoc,
-                                  answer: Answer.hard,
-                                );
-                                _refreshVoc();
+                              onPressed: () {
+                                ref.read(practiseControllerProvider(tag).notifier).answer(
+                                      vocabulary: state.currentVocabulary,
+                                      answer: Answer.hard,
+                                    );
                               },
                               child: Text(AppLocalizations.of(context)?.pracise_rating_hardButton ?? ""),
                             ),
@@ -197,12 +168,11 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                                 padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
                                 backgroundColor: LevelPalette.advanced,
                               ),
-                              onPressed: () async {
-                                await answerVocabulary(
-                                  vocabulary: currentVoc,
-                                  answer: Answer.good,
-                                );
-                                _refreshVoc();
+                              onPressed: () {
+                                ref.read(practiseControllerProvider(tag).notifier).answer(
+                                      vocabulary: state.currentVocabulary,
+                                      answer: Answer.good,
+                                    );
                               },
                               child: Text(AppLocalizations.of(context)?.pracise_rating_goodButton ?? ""),
                             ),
@@ -214,12 +184,11 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                                 padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
                                 backgroundColor: LevelPalette.expert,
                               ),
-                              onPressed: () async {
-                                await answerVocabulary(
-                                  vocabulary: currentVoc,
-                                  answer: Answer.easy,
-                                );
-                                _refreshVoc();
+                              onPressed: () {
+                                ref.read(practiseControllerProvider(tag).notifier).answer(
+                                      vocabulary: state.currentVocabulary,
+                                      answer: Answer.easy,
+                                    );
                               },
                               child: Text(AppLocalizations.of(context)?.pracise_rating_easyButton ?? ""),
                             ),
@@ -227,18 +196,17 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                         ],
                       ),
                     const SizedBox(height: 16),
-                    !isSolutionShown
+                    !state.isSolutionShown
                         ? ElevatedButton(
-                            onPressed: () => setState(() => isSolutionShown = true),
+                            onPressed: ref.read(practiseControllerProvider(tag).notifier).showSolution,
                             child: Text(AppLocalizations.of(context)?.pracise_solutionButton ?? ""),
                           )
                         : OutlinedButton(
-                            onPressed: () async {
-                              await answerVocabulary(
-                                vocabulary: currentVoc,
-                                answer: Answer.forgot,
-                              );
-                              _refreshVoc();
+                            onPressed: () {
+                              ref.read(practiseControllerProvider(tag).notifier).answer(
+                                    vocabulary: state.currentVocabulary,
+                                    answer: Answer.forgot,
+                                  );
                             },
                             child: Text(
                               AppLocalizations.of(context)?.pracise_rating_didntKnowButton ?? "",

@@ -16,6 +16,7 @@ class PractiseState {
   });
 
   Vocabulary get currentVocabulary => vocabulariesLeftToPractise.first;
+  bool get isDone => vocabulariesLeftToPractise.isEmpty;
 
   PractiseState copyWith({
     int? initialVocabularyCount,
