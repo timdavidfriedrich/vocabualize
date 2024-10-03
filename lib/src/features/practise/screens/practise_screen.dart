@@ -1,15 +1,13 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/answer_vocabulary_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/is_collection_multilingual_use_case.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
+import 'package:vocabualize/src/features/practise/controllers/practise_controller.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_done_screen.dart';
 import 'package:vocabualize/src/common/domain/entities/answer.dart';
 import 'package:vocabualize/src/features/practise/utils/practise_arguments.dart';
@@ -65,20 +63,20 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final getVocabulariesToPratice = ref.watch(getVocabulariesToPractiseUseCaseProvider(tag));
     final answerVocabulary = ref.watch(answerVocabularyUseCaseProvider);
-    final isCollectionMultilingual = ref.watch(isCollectionMultilingualUseCaseProvider);
     final speak = ref.watch(readOutUseCaseProvider);
 
-    return getVocabulariesToPratice.when(
+    final asyncState = ref.watch(practiseControllerProvider(tag));
+
+    return asyncState.when(
       loading: () {
         return const Center(child: CircularProgressIndicator.adaptive());
       },
       error: (error, stackTrace) {
         return const PractiseDoneScreen();
       },
-      data: (List<Vocabulary> vocabularies) {
-        vocabulariesToPractise = vocabularies;
+      data: (state) {
+        vocabulariesToPractise = state.vocabulariesLeftToPractise;
         initialVocCount = vocabulariesToPractise.length;
         if (vocabulariesToPractise.isEmpty) {
           return const PractiseDoneScreen();
@@ -118,74 +116,57 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                       ],
                     ),
                     const Spacer(),
-                    FutureBuilder(
-                      future: isCollectionMultilingual(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return const SizedBox();
-                        }
-                        isMultilingual = snapshot.data as bool;
-                        if (!isMultilingual) {
-                          return const SizedBox();
-                        }
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}",
-                              style: TextStyle(color: Theme.of(context).hintColor),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 12),
-                          ],
-                        );
-                      },
-                    ),
-                    provider.Provider.of<SettingsProvider>(context).areImagesDisabled && !isSolutionShown
-                        ? Container()
-                        : Expanded(
-                            flex: 2,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surface,
-                                borderRadius: BorderRadius.circular(24),
-                                image: provider.Provider.of<SettingsProvider>(context).areImagesDisabled
-                                    ? null
-                                    : DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                          currentVoc.image.url,
+                    if (state.isMultilingual)
+                      Text(
+                        "${currentVoc.sourceLanguage.name}  ►  ${currentVoc.targetLanguage.name}",
+                        style: TextStyle(color: Theme.of(context).hintColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    const SizedBox(height: 12),
+                    if (!state.areImagesDisabled || isSolutionShown)
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            borderRadius: BorderRadius.circular(24),
+                            image: state.areImagesDisabled
+                                ? null
+                                : DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      currentVoc.image.url,
+                                    ),
+                                  ),
+                          ),
+                          child: !isSolutionShown
+                              ? null
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.surface.withOpacity(0.75),
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                  child: Center(
+                                      child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          currentVoc.target,
+                                          style: Theme.of(context).textTheme.headlineMedium,
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
-                              ),
-                              child: !isSolutionShown
-                                  ? null
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.surface.withOpacity(0.75),
-                                        borderRadius: BorderRadius.circular(24),
+                                      const SizedBox(width: 8),
+                                      IconButton(
+                                        onPressed: () => speak(currentVoc),
+                                        icon: const Icon(Icons.volume_up_rounded, size: 32),
                                       ),
-                                      child: Center(
-                                          child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              currentVoc.target,
-                                              style: Theme.of(context).textTheme.headlineMedium,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          IconButton(
-                                            onPressed: () => speak(currentVoc),
-                                            icon: const Icon(Icons.volume_up_rounded, size: 32),
-                                          ),
-                                        ],
-                                      )),
-                                    ),
-                            ),
-                          ),
+                                    ],
+                                  )),
+                                ),
+                        ),
+                      ),
                     const SizedBox(height: 32),
                     Center(child: Text(currentVoc.source, style: Theme.of(context).textTheme.bodyMedium)),
                     const Spacer(),
