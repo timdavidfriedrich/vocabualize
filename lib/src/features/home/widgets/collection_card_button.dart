@@ -5,7 +5,7 @@ import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/domain/usecases/settings/are_images_enabled_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/settings/get_are_images_enabled_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_use_case.dart';
 import 'package:vocabualize/src/features/collections/screens/collection_screen.dart';
 import 'package:vocabualize/src/features/collections/utils/collection_arguments.dart';
@@ -18,7 +18,7 @@ class TagCardButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final areImagesEnabled = ref.watch(areImagesEnabledUseCaseProvider);
+    final areImagesEnabled = ref.watch(getAreImagesEnabledUseCaseProvider);
     final getVocabularies = ref.watch(
       getVocabulariesUseCaseProvider(
         FilterOptions(tag: tag),

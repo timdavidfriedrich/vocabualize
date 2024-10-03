@@ -7,7 +7,7 @@ import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/get_draft_image_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/get_stock_images_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/upload_image_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/settings/are_images_enabled_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/settings/get_are_images_enabled_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/translator/translate_to_english_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
@@ -131,7 +131,7 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final getAreImagesEnabled = ref.watch(areImagesEnabledUseCaseProvider);
+    final getAreImagesEnabled = ref.watch(getAreImagesEnabledUseCaseProvider);
     return getAreImagesEnabled.when(
       loading: () {
         return const Center(

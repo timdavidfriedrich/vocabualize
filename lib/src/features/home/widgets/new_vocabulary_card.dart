@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/domain/usecases/settings/are_images_enabled_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/settings/get_are_images_enabled_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
@@ -14,7 +14,7 @@ class NewVocabularyCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final getAreImagesEnabled = ref.watch(areImagesEnabledUseCaseProvider);
+    final getAreImagesEnabled = ref.watch(getAreImagesEnabledUseCaseProvider);
 
     return getAreImagesEnabled.when(
       loading: () {

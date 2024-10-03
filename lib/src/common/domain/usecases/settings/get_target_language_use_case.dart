@@ -1,19 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/settings_repository_impl.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 
-final areImagesEnabledUseCaseProvider = FutureProvider((ref) {
-  return AreImagesEnabledUseCase(
+final getTargetLanguageUseCaseProvider = Provider((ref) {
+  return GetTargetLanguageUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
   ).call();
 });
 
-class AreImagesEnabledUseCase {
+class GetTargetLanguageUseCase {
   final SettingsRepository _settingsRepository;
 
-  const AreImagesEnabledUseCase({
+  const GetTargetLanguageUseCase({
     required SettingsRepository settingsRepository,
   }) : _settingsRepository = settingsRepository;
 
-  Future<bool> call() => _settingsRepository.getAreImagesEnabled();
+  Future<Language> call() async {
+    return await _settingsRepository.getTargetLanguage();
+  }
 }

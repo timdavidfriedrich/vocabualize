@@ -5,7 +5,7 @@ import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository
 final isCollectionMultilingualUseCaseProvider = Provider((ref) {
   return IsCollectionMultilingualUseCase(
     vocabularyRepository: ref.watch(vocabularyRepositoryProvider),
-  );
+  ).call();
 });
 
 class IsCollectionMultilingualUseCase {
