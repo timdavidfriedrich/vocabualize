@@ -12,9 +12,7 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<SettingsState> getState = ref.watch(settingsControllerProvider);
-
-    return getState.when(
+    return ref.watch(settingsControllerProvider).when(
       loading: () {
         return const Center(child: CircularProgressIndicator.adaptive());
       },
@@ -22,7 +20,7 @@ class SettingsScreen extends ConsumerWidget {
         // TODO: Replace with error widget
         return Center(child: Text(error.toString()));
       },
-      data: (state) {
+      data: (SettingsState state) {
         return SafeArea(
           child: ClipRRect(
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
