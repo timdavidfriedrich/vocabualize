@@ -45,7 +45,7 @@ class _TypeButtonState extends ConsumerState<TypeButton> {
   Future<void> _validateAndGoToDetails(String source) async {
     final translate = ref.read(translateUseCaseProvider);
     Vocabulary draftVocabulary = Vocabulary(source: source, target: await translate(source));
-    if (draftVocabulary.isValid()) {
+    if (draftVocabulary.isValid) {
       Navigator.pushNamed(
         Global.context,
         DetailsScreen.routeName,

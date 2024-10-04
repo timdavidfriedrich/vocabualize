@@ -27,6 +27,18 @@ class Vocabulary {
   final DateTime updated;
   final DateTime nextDate;
 
+  bool get isValid {
+    bool sourceNotEmpty = source.isNotEmpty;
+    bool targetNotEmpty = target.isNotEmpty;
+    bool isLevelValid = level.value >= 0 && level.value <= DueAlgorithmConstants.levelLimit;
+    bool isIntervalValid = interval >= 0;
+    return sourceNotEmpty && targetNotEmpty && isLevelValid && isIntervalValid;
+  }
+
+  bool get isDue {
+    return nextDate.isBefore(DateTime.now());
+  }
+
   Vocabulary({
     id,
     this.source = "",
@@ -71,15 +83,6 @@ class Vocabulary {
         nextDate = DateParser.parseOrNull(recordModel.data['nextDate']) ?? DateTime.now(),
         created = DateParser.parseOrNull(recordModel.data['created']) ?? DateTime.now(),
         updated = DateParser.parseOrNull(recordModel.data['updated']) ?? DateTime.now();
-
-  // TODO: Change to getter
-  bool isValid() {
-    bool sourceNotEmpty = source.isNotEmpty;
-    bool targetNotEmpty = target.isNotEmpty;
-    bool isLevelValid = level.value >= 0 && level.value <= DueAlgorithmConstants.levelLimit;
-    bool isIntervalValid = interval >= 0;
-    return sourceNotEmpty && targetNotEmpty && isLevelValid && isIntervalValid;
-  }
 
   Vocabulary copyWith({
     String? id,
