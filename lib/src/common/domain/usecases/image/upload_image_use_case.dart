@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/image_repository_impl.d
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/repositories/image_repository.dart';
 
-final uploadImageUseCaseProvider = Provider.family((ref, VocabularyImage image) {
+final uploadImageUseCaseProvider = AutoDisposeProvider.family((ref, VocabularyImage image) {
   return UploadImageUseCase(
     imageRepository: ref.watch(imageRepositoryProvider),
   ).call(image);

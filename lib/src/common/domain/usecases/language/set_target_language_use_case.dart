@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/text_to_speech_reposito
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/text_to_speech_repository.dart';
 
-final setTargetLanguageUseCaseProvider = Provider.family((ref, Language language) {
+final setTargetLanguageUseCaseProvider = AutoDisposeProvider.family((ref, Language language) {
   return SetTargetLanguageUseCase(
     textToSpeechRepository: ref.watch(textToSpeechRepositoryProvider),
   ).call(language);

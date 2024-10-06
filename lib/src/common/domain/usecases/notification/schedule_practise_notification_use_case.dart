@@ -6,7 +6,7 @@ import 'package:vocabualize/src/common/domain/repositories/notification_reposito
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-final schedulePractiseNotificationUseCaseProvider = Provider((ref) {
+final schedulePractiseNotificationUseCaseProvider = AutoDisposeProvider((ref) {
   return SchedulePractiseNotificationUseCase(
     notificationRepository: ref.watch(notificationRepositoryProvider),
     settingsRepository: ref.watch(settingsRepositoryProvider),

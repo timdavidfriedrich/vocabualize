@@ -5,7 +5,7 @@ import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/translator_repository.dart';
 
-final translateUseCaseProvider = Provider((ref) {
+final translateUseCaseProvider = AutoDisposeProvider((ref) {
   return TranslateUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
     translatorRepository: ref.watch(translatorRepositoryProvider),

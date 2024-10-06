@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/text_to_speech_reposito
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/text_to_speech_repository.dart';
 
-final readOutUseCaseProvider = Provider((ref) {
+final readOutUseCaseProvider = AutoDisposeProvider((ref) {
   return ReadOutUseCase(
     textToSpeechRepository: ref.watch(textToSpeechRepositoryProvider),
   );

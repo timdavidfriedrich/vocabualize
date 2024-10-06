@@ -5,7 +5,7 @@ import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
 // TODO ARCHITECTURE: How to deal with searchTerm, tag, and other params?
-final getVocabulariesUseCaseProvider = StreamProvider.family((ref, FilterOptions? filterOptions) {
+final getVocabulariesUseCaseProvider = AutoDisposeStreamProvider.family((ref, FilterOptions? filterOptions) {
   return GetVocabulariesUseCase(
     vocabularyRepository: ref.watch(vocabularyRepositoryProvider),
   ).call(filterOptions);

@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/settings_repository_imp
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 
-final setTargetLanguageUseCaseProvider = Provider.family((ref, Language language) {
+final setTargetLanguageUseCaseProvider = AutoDisposeProvider.family((ref, Language language) {
   return SetTargetLanguageUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
   ).call(language);

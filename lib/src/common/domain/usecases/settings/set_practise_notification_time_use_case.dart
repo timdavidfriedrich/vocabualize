@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/settings_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 
-final setPractiseNotificationTimeUseCaseProvider = Provider.family((ref, TimeOfDay time) {
+final setPractiseNotificationTimeUseCaseProvider = AutoDisposeProvider.family((ref, TimeOfDay time) {
   return SetPractiseNotificationTimeUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
   ).call(time);

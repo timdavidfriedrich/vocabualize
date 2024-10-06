@@ -7,7 +7,7 @@ import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-final answerVocabularyUseCaseProvider = Provider((ref) {
+final answerVocabularyUseCaseProvider = AutoDisposeProvider((ref) {
   return AnswerVocabularyUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
     vocabularyRepository: ref.watch(vocabularyRepositoryProvider),

@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/authentication_reposito
 import 'package:vocabualize/src/common/domain/entities/app_user.dart';
 import 'package:vocabualize/src/common/domain/repositories/authentication_repository.dart';
 
-final getCurrentUserUseCaseProvider = StreamProvider((ref) {
+final getCurrentUserUseCaseProvider = AutoDisposeStreamProvider((ref) {
   return GetCurrentUserUseCase(
     authenticationRepository: ref.watch(authenticationRepositoryProvider),
   ).call();

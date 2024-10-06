@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/vocabulary_repository_i
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-final deleteVocabularyUseCaseProvider = Provider.family((ref, Vocabulary vocabulary) {
+final deleteVocabularyUseCaseProvider = AutoDisposeProvider.family((ref, Vocabulary vocabulary) {
   return DeleteVocabularyUseCase(
     vocabularyRepository: ref.watch(vocabularyRepositoryProvider),
   ).call(vocabulary);

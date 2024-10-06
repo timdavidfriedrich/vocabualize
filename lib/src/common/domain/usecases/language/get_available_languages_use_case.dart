@@ -5,7 +5,7 @@ import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/language_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 
-final getAvailableLanguagesUseCaseProvider = FutureProvider((ref) {
+final getAvailableLanguagesUseCaseProvider = AutoDisposeFutureProvider((ref) {
   return GetAvailableLanguagesUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
     languageRepository: ref.watch(languageRepositoryProvider),

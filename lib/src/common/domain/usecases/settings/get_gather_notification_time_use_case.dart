@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/settings_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 
-final getGatherNotificationTimeUseCaseProvider = Provider((ref) {
+final getGatherNotificationTimeUseCaseProvider = AutoDisposeProvider((ref) {
   return GetGatherNotificationTimeUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
   ).call();

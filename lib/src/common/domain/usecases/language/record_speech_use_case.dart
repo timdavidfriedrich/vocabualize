@@ -4,7 +4,7 @@ import 'package:vocabualize/src/common/data/repositories/speech_to_text_reposito
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/speech_to_text_repository.dart';
 
-final recordSpeechUseCaseProvider = Provider((ref) {
+final recordSpeechUseCaseProvider = AutoDisposeProvider((ref) {
   return RecordSpeechUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
     speechToTextRepository: ref.watch(speechToTextRepositoryProvider),

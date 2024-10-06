@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/authentication_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/repositories/authentication_repository.dart';
 
-final signInWithEmailAndPasswordUseCaseProvider = Provider((ref) {
+final signInWithEmailAndPasswordUseCaseProvider = AutoDisposeProvider((ref) {
   return SignInWithEmailAndPasswordUseCase(
     authenticationRepository: ref.watch(authenticationRepositoryProvider),
   );

@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/vocabulary_repository_i
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-final getNewVocabulariesUseCaseProvider = StreamProvider((ref) {
+final getNewVocabulariesUseCaseProvider = AutoDisposeStreamProvider((ref) {
   return GetNewVocabulariesUseCase(
     vocabularyRepository: ref.watch(vocabularyRepositoryProvider),
   ).call();

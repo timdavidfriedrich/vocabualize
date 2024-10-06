@@ -9,7 +9,7 @@ typedef FindLanguageParameters = ({
   String? textToSpeechId,
 });
 
-final findLanguageUseCaseProvider = Provider.family((ref, FindLanguageParameters parameters) {
+final findLanguageUseCaseProvider = AutoDisposeProvider.family((ref, FindLanguageParameters parameters) {
   return FindLanguageUseCase(
     languageRepository: ref.watch(languageRepositoryProvider),
   ).call(

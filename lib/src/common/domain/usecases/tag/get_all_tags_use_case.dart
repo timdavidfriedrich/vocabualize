@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/tag_repository_impl.dar
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/repositories/tag_repository.dart';
 
-final getAllTagsUseCaseProvider = FutureProvider((ref) {
+final getAllTagsUseCaseProvider = AutoDisposeFutureProvider((ref) {
   return GetAllTagsUseCase(
     tagRepository: ref.watch(tagRepositoryProvider),
   ).call();

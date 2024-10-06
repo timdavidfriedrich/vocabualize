@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/image_repository_impl.d
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/repositories/image_repository.dart';
 
-final getStockImagesUseCaseProvider = FutureProvider.family((ref, String searchTerm) {
+final getStockImagesUseCaseProvider = AutoDisposeFutureProvider.family((ref, String searchTerm) {
   return GetStockImagesUseCase(
     stockImageRepository: ref.watch(imageRepositoryProvider),
   ).call(searchTerm);

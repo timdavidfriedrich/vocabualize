@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/settings_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 
-final getAreImagesEnabledUseCaseProvider = Provider((ref) {
+final getAreImagesEnabledUseCaseProvider = AutoDisposeProvider((ref) {
   return GetAreImagesEnabledUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
   ).call();

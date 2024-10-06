@@ -4,7 +4,7 @@ import 'package:vocabualize/src/common/data/repositories/settings_repository_imp
 import 'package:vocabualize/src/common/domain/repositories/notification_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 
-final scheduleGatherNotificationUseCaseProvider = Provider((ref) {
+final scheduleGatherNotificationUseCaseProvider = AutoDisposeProvider((ref) {
   return ScheduleGatherNotificationUseCase(
     notificationRepository: ref.watch(notificationRepositoryProvider),
     settingsRepository: ref.watch(settingsRepositoryProvider),

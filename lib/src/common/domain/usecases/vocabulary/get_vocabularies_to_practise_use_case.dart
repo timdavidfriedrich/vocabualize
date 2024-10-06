@@ -4,7 +4,7 @@ import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-final getVocabulariesToPractiseUseCaseProvider = Provider.family((ref, Tag? tag) {
+final getVocabulariesToPractiseUseCaseProvider = AutoDisposeProvider.family((ref, Tag? tag) {
   return GetVocabulariesToPractiseUseCase(
     vocabularyRepository: ref.watch(vocabularyRepositoryProvider),
   ).call(tag: tag);
