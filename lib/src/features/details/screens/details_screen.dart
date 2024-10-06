@@ -1,4 +1,3 @@
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/constants/image_constants.dart';
@@ -24,12 +23,10 @@ class DetailsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Vocabulary vocabulary = Vocabulary();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      DetailsScreenArguments? arguments = ModalRoute.of(context)!.settings.arguments as DetailsScreenArguments?;
-      if (arguments != null) {
-        vocabulary = arguments.vocabulary;
-      }
-    });
+    DetailsScreenArguments? arguments = ModalRoute.of(context)?.settings.arguments as DetailsScreenArguments?;
+    if (arguments != null) {
+      vocabulary = arguments.vocabulary;
+    }
 
     final asyncState = ref.watch(detailsControllerProvider(vocabulary));
     return asyncState.when(
