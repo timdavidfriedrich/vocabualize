@@ -39,12 +39,10 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
 
   void browseNext() {
     state.whenData((value) {
-      final nextFirstIndex = value.firstStockImageIndex - value.stockImagesPerPage;
-      final nextLastIndex = value.lastStockImageIndex + value.stockImagesPerPage;
-      if (nextLastIndex < value.totalStockImages) {
+      if (value.lastStockImageIndex + value.stockImagesPerPage < value.totalStockImages) {
         state = AsyncData(value.copyWith(
-          firstStockImageIndex: nextFirstIndex,
-          lastStockImageIndex: nextLastIndex,
+          firstStockImageIndex: value.firstStockImageIndex + value.stockImagesPerPage,
+          lastStockImageIndex: value.lastStockImageIndex + value.stockImagesPerPage,
         ));
       } else {
         state = AsyncData(value.copyWith(
