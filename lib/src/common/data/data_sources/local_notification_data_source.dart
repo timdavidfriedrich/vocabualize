@@ -46,6 +46,7 @@ class LocalNotificationDataSource {
     bool allowedNotifications = true;
 
     if (androidInfo.version.sdkInt >= 33) {
+      // ! TODO: Another permission request is already in progress
       allowedNotifications = await _localNotifications
               .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
               ?.requestNotificationsPermission() ??
