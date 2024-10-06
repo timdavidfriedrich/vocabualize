@@ -3,20 +3,24 @@ import 'package:vocabualize/src/common/data/repositories/vocabulary_repository_i
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-final addVocabularyUseCaseProvider = Provider((ref) {
-  return AddVocabularyUseCase(
+final addOrUpdateVocabularyUseCaseProvider = Provider.family((ref, Vocabulary vocabulary) {
+  return AddOrUpdateVocabularyUseCase(
     vocabularyRepository: ref.watch(vocabularyRepositoryProvider),
-  );
+  ).call(vocabulary);
 });
 
-class AddVocabularyUseCase {
+class AddOrUpdateVocabularyUseCase {
   final VocabularyRepository _vocabularyRepository;
 
-  const AddVocabularyUseCase({
+  const AddOrUpdateVocabularyUseCase({
     required VocabularyRepository vocabularyRepository,
   }) : _vocabularyRepository = vocabularyRepository;
 
   Future<void> call(Vocabulary vocabulary) async {
-    return _vocabularyRepository.addVocabulary(vocabulary);
+    // TODO: Is checking vocabulary.id == null enough to determine if it's a new vocabulary?
+    if (vocabulary.id == null) {
+      return _vocabularyRepository.addVocabulary(vocabulary);
+    }
+    return _vocabularyRepository.updateVocabulary(vocabulary);
   }
 }

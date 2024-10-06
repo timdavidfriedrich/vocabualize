@@ -2,13 +2,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_new_vocabularies_use_case.dart';
+import 'package:vocabualize/src/features/home/states/home_state.dart';
 import 'package:vocabualize/src/features/home/widgets/new_vocabulary_card.dart';
 
 class NewVocabulariesRow extends ConsumerWidget {
-  const NewVocabulariesRow({super.key});
+  final HomeState state;
+  const NewVocabulariesRow({
+    required this.state,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // TODO ARCHITECTURE: Move getNewVocabularies to HomeController?
     final getNewVocabularies = ref.watch(getNewVocabulariesUseCaseProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -54,6 +60,7 @@ class NewVocabulariesRow extends ConsumerWidget {
                     return Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: NewVocabularyCard(
+                        state: state,
                         vocabulary: newVocabularies.elementAt(index - 1),
                       ),
                     );

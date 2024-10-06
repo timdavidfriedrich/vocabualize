@@ -3,10 +3,10 @@ import 'package:vocabualize/src/common/data/repositories/image_repository_impl.d
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/repositories/image_repository.dart';
 
-final getDraftImageUseCaseProvider = Provider((ref) {
+final getDraftImageUseCaseProvider = FutureProvider((ref) {
   return GetDraftImageUseCase(
     imageRepository: ref.watch(imageRepositoryProvider),
-  );
+  ).call();
 });
 
 class GetDraftImageUseCase {

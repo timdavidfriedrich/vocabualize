@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
+import 'package:vocabualize/src/features/home/controllers/home_controller.dart';
 
 class StatusCardIndicator extends ConsumerStatefulWidget {
   final Widget parent;
@@ -43,44 +42,30 @@ class _StatusCardIndicatorState extends ConsumerState<StatusCardIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    final getVocabulariesToPractise = ref.watch(getVocabulariesToPractiseUseCaseProvider(null));
-
-    return getVocabulariesToPractise.when(
-      loading: () {
-        return widget.parent;
-      },
-      error: (error, stackStrace) {
-        return widget.parent;
-      },
-      data: (List<Vocabulary> vocabularies) {
-        if (vocabularies.isEmpty) {
-          return widget.parent;
-        }
-        return Stack(
-          clipBehavior: Clip.none,
-          children: [
-            widget.parent,
-            Positioned(
-              top: -4,
-              right: -4,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Text(
-                  "${vocabularies.length}",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 10,
-                  ),
-                ),
+    final voabulariesToPractise = ref.watch(homeControllerProvider.notifier).getVocabulariesToPracise();
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        widget.parent,
+        Positioned(
+          top: -4,
+          right: -4,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onPrimary,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Text(
+              "${voabulariesToPractise.length}",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 10,
               ),
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 }

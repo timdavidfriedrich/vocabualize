@@ -45,16 +45,17 @@ class LocalNotificationDataSource {
     bool allowedExactAlarms = true;
     bool allowedNotifications = true;
 
-    if (androidInfo.version.sdkInt >= 34) {
-      allowedExactAlarms = await _localNotifications
-              .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-              ?.requestExactAlarmsPermission() ??
-          false;
-    }
     if (androidInfo.version.sdkInt >= 33) {
       allowedNotifications = await _localNotifications
               .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
               ?.requestNotificationsPermission() ??
+          false;
+    }
+
+    if (androidInfo.version.sdkInt >= 34) {
+      allowedExactAlarms = await _localNotifications
+              .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+              ?.requestExactAlarmsPermission() ??
           false;
     }
 

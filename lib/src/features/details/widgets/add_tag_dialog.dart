@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/add_or_update_vocabulary_use_case.dart';
 
 class AddTagDialog extends ConsumerStatefulWidget {
   final Vocabulary vocabulary;
@@ -32,7 +32,7 @@ class _AddTagDialogState extends ConsumerState<AddTagDialog> {
         final updatedVocabulary = widget.vocabulary.copyWith(
           tags: [...widget.vocabulary.tags, tag],
         );
-        ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
+        ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
       }
       Navigator.pop(context);
     }

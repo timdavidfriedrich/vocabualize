@@ -2,7 +2,7 @@ import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/features/onboarding/screens/sign_screen.dart';
-import 'package:vocabualize/src/features/onboarding/screens/select_language_screen.dart';
+import 'package:vocabualize/src/features/onboarding/screens/choose_languages_screen.dart';
 import 'package:vocabualize/src/features/onboarding/utils/sign_arguments.dart';
 import 'package:vocabualize/src/features/onboarding/utils/sign_type.dart';
 
@@ -19,7 +19,7 @@ class WelcomeScreen extends StatelessWidget {
   }
 
   void _continueAsGuest(BuildContext context) {
-    Navigator.of(context).pushNamed(SelectLanguageScreen.routeName);
+    Navigator.of(context).pushNamed(ChooseLanguagesScreen.routeName);
   }
 
   @override

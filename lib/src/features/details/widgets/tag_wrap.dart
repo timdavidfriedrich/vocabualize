@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/usecases/tag/get_all_tags_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/add_or_update_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/widgets/add_tag_dialog.dart';
@@ -28,12 +28,12 @@ class TagWrap extends ConsumerWidget {
         final updatedVocabulary = vocabulary.copyWith(
           tags: vocabulary.tags.where((t) => t != tag).toList(),
         );
-        ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
+        ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
       } else {
         final updatedVocabulary = vocabulary.copyWith(
           tags: [...vocabulary.tags, tag],
         );
-        ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
+        ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
       }
       // TODO: In TagWrap were "setState(() {});" before. Maybe this doesn't update anymore?
     }

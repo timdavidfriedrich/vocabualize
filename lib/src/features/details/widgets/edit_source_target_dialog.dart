@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/usecases/translator/translate_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/add_or_update_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
@@ -75,7 +75,7 @@ class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog>
       if (_controller.text.isEmpty || !hasChanged()) return Navigator.pop(context);
       if (widget.editTarget) {
         final updatedVocabulary = widget.vocabulary.copyWith(target: _controller.text);
-        ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
+        ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
         Navigator.pop(context);
       } else {
         bool hasClickedReplace = await HelperWidgets.showStaticDialog(
@@ -86,7 +86,7 @@ class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog>
           translateAndGoToDetails();
         } else {
           final updatedVocabulary = widget.vocabulary.copyWith(source: _controller.text);
-          ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
+          ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
           if (context.mounted) Navigator.pop(context);
         }
       }

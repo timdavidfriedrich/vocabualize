@@ -15,7 +15,7 @@ import 'package:vocabualize/src/common/domain/usecases/settings/set_gather_notif
 import 'package:vocabualize/src/common/domain/usecases/settings/set_practise_notification_time_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/settings/set_source_language_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/settings/set_use_premium_translator_use_case.dart';
-import 'package:vocabualize/src/features/settings/screens/choose_language_screen.dart';
+import 'package:vocabualize/src/common/presentation/screens/language_picker_screen.dart';
 import 'package:vocabualize/src/features/settings/states/settings_state.dart';
 
 final settingsControllerProvider = AutoDisposeAsyncNotifierProvider<SettingsController, SettingsState>(() {
@@ -37,7 +37,7 @@ class SettingsController extends AutoDisposeAsyncNotifier<SettingsState> {
   }
 
   Future<void> selectSourceLanguage(BuildContext context) async {
-    final seletectedLanguage = await Navigator.pushNamed(context, ChooseLanguageScreen.routeName) as Language?;
+    final seletectedLanguage = await Navigator.pushNamed(context, LanguagePickerScreen.routeName) as Language?;
     if (seletectedLanguage != null) {
       state = const AsyncLoading();
       await ref.read(setSourceLanguageUseCaseProvider(seletectedLanguage));
@@ -45,7 +45,7 @@ class SettingsController extends AutoDisposeAsyncNotifier<SettingsState> {
   }
 
   Future<void> selectTargetLanguage(BuildContext context) async {
-    final seletectedLanguage = await Navigator.pushNamed(context, ChooseLanguageScreen.routeName) as Language?;
+    final seletectedLanguage = await Navigator.pushNamed(context, LanguagePickerScreen.routeName) as Language?;
     if (seletectedLanguage != null) {
       state = const AsyncLoading();
       await ref.read(setTargetLanguageUseCaseProvider(seletectedLanguage));

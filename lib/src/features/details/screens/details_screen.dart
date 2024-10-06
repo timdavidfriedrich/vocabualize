@@ -1,138 +1,38 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabualize/constants/image_constants.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
-import 'package:vocabualize/src/common/domain/usecases/image/get_draft_image_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/image/get_stock_images_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/image/upload_image_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/settings/get_are_images_enabled_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/translator/translate_to_english_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/update_vocabulary_use_case.dart';
-import 'package:vocabualize/src/common/domain/utils/formatter.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extentions.dart';
+import 'package:vocabualize/src/features/details/controllers/details_controller.dart';
 import 'package:vocabualize/src/features/details/screens/details_disabled_images_screen.dart';
+import 'package:vocabualize/src/features/details/states/details_state.dart';
 import 'package:vocabualize/src/features/details/widgets/source_to_target.dart';
 import 'package:vocabualize/src/features/details/widgets/tag_wrap.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
-import 'package:vocabualize/src/features/settings/screens/settings_screen.dart';
 
 // TODO: Refactor DetailsScreen. Especially only save vocabulary on 'Save'. Perhaps, even translate the vocabulary here
 
-class DetailsScreen extends ConsumerStatefulWidget {
+class DetailsScreen extends ConsumerWidget {
   static const String routeName = "${HomeScreen.routeName}/AddDetails";
 
   const DetailsScreen({super.key});
 
   @override
-  ConsumerState<DetailsScreen> createState() => _DetailsScreenState();
-}
-
-class _DetailsScreenState extends ConsumerState<DetailsScreen> {
-  Vocabulary vocabulary = Vocabulary();
-
-  List<StockImage> _stockImages = [];
-  VocabularyImage? _selected;
-
-  final int itemCount = 7;
-  final int maxItems = 70;
-
-  int firstIndex = 0;
-  int lastIndex = 6;
-
-  void _initArguments() {
-    DetailsScreenArguments arguments = ModalRoute.of(context)!.settings.arguments as DetailsScreenArguments;
-    setState(() => vocabulary = arguments.vocabulary);
-  }
-
-  void _initImage() {
-    final image = vocabulary.image;
-    if (image is FallbackImage) {
-      return;
-    }
-    _selected = vocabulary.image;
-  }
-
-  void _getDraftImage() async {
-    final getDraftImage = ref.read(getDraftImageUseCaseProvider);
-    final image = await getDraftImage();
-    if (image != null) {
-      setState(() => _selected = image);
-    }
-  }
-
-  void _loadStockImages() async {
-    final translateToEnglish = ref.read(translateToEnglishUseCaseProvider);
-    final searchTerm = Formatter.filterOutArticles(
-      await translateToEnglish(vocabulary.source),
-    );
-    final getStockImages = ref.read(getStockImagesUseCaseProvider);
-    List<StockImage> stockImages = await getStockImages(searchTerm);
-    if (mounted) setState(() => _stockImages = stockImages);
-  }
-
-  void _browseNext() {
-    if (lastIndex + itemCount < maxItems) {
-      setState(() {
-        firstIndex += itemCount;
-        lastIndex += itemCount;
-      });
-    } else {
-      setState(() {
-        firstIndex = 0;
-        lastIndex = 6;
-      });
-    }
-  }
-
-  void _openPhotographerLink() async {
-    final imageUrl = _selected?.url;
-    if (imageUrl == null) return;
-    await launchUrl(Uri.parse(imageUrl), mode: LaunchMode.externalApplication);
-  }
-
-  void _selectImage(VocabularyImage? image) {
-    if (image == null) return;
-    setState(() => _selected = image);
-  }
-
-  void _save() async {
-    final image = _selected;
-    if (image != null) {
-      ref.read(uploadImageUseCaseProvider(image));
-    }
-    final updatedVocabulary = vocabulary.copyWith(image: _selected);
-    ref.read(updateVocabularyUseCaseProvider(updatedVocabulary));
-    Navigator.pop(Global.context);
-  }
-
-  void _navigateToSettings() async {
-    Navigator.pushNamed(context, SettingsScreen.routeName);
-  }
-
-  void _delete() {
-    ref.read(deleteVocabularyUseCaseProvider(vocabulary));
-    Navigator.pop(context);
-  }
-
-  @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    Vocabulary vocabulary = Vocabulary();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      _initArguments();
-      _initImage();
-      _loadStockImages();
+      DetailsScreenArguments? arguments = ModalRoute.of(context)!.settings.arguments as DetailsScreenArguments?;
+      if (arguments != null) {
+        vocabulary = arguments.vocabulary;
+      }
     });
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    final getAreImagesEnabled = ref.watch(getAreImagesEnabledUseCaseProvider);
-    return getAreImagesEnabled.when(
+    final asyncState = ref.watch(detailsControllerProvider(vocabulary));
+    return asyncState.when(
       loading: () {
         return const Center(
           child: CircularProgressIndicator.adaptive(),
@@ -142,8 +42,8 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
         // TODO: Replace with error widget
         return const Text("Error DetailsScreen");
       },
-      data: (bool areImagesEnabled) {
-        if (!areImagesEnabled) {
+      data: (DetailsState state) {
+        if (!state.areImagesEnabled) {
           const DetailsDisabledImagesScreen();
         }
         return SafeArea(
@@ -174,21 +74,21 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                                       borderRadius: BorderRadius.circular(16),
                                       border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
                                       color: Theme.of(context).colorScheme.surface,
-                                      image: _selected == null
+                                      image: state.selectedImage == null
                                           ? null
                                           : DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: _selected!.getImageProvider(),
+                                              image: state.selectedImage!.getImageProvider(),
                                             ),
                                     ),
-                                    child: _selected == null
+                                    child: state.selectedImage == null
                                         ? Center(
                                             child: Text(
                                               AppLocalizations.of(context)?.record_addDetails_noImage ?? "",
                                               textAlign: TextAlign.center,
                                             ),
                                           )
-                                        : _selected is StockImage
+                                        : state.selectedImage is StockImage
                                             ? Container(
                                                 decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(14),
@@ -200,7 +100,9 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                                                 child: Align(
                                                   alignment: Alignment.bottomCenter,
                                                   child: TextButton(
-                                                    onPressed: () => _openPhotographerLink(),
+                                                    onPressed: () {
+                                                      ref.read(detailsControllerProvider(vocabulary).notifier).openPhotographerLink();
+                                                    },
                                                     child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       mainAxisSize: MainAxisSize.min,
@@ -209,7 +111,7 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                                                         Flexible(
                                                           child: Text(
                                                             // TODO: Replace with arb
-                                                            "Photo by ${(_selected as StockImage).photographer}",
+                                                            "Photo by ${(state.selectedImage as StockImage).photographer}",
                                                             style: Theme.of(context)
                                                                 .textTheme
                                                                 .bodySmall!
@@ -237,7 +139,12 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                                   children: [
                                     Text(AppLocalizations.of(context)?.record_addDetails_providedBy ?? "",
                                         style: Theme.of(context).textTheme.bodySmall),
-                                    IconButton(onPressed: () => _browseNext(), icon: const Icon(Icons.find_replace_rounded)),
+                                    IconButton(
+                                      onPressed: () {
+                                        ref.read(detailsControllerProvider(vocabulary).notifier).browseNext();
+                                      },
+                                      icon: const Icon(Icons.find_replace_rounded),
+                                    ),
                                   ],
                                 ),
                                 GridView.builder(
@@ -249,15 +156,17 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                                     mainAxisSpacing: 4,
                                     crossAxisSpacing: 4,
                                   ),
-                                  itemCount: itemCount + 1,
+                                  itemCount: state.stockImagesPerPage + 1,
                                   itemBuilder: (context, index) => index == 0
                                       ? MaterialButton(
                                           padding: EdgeInsets.zero,
                                           elevation: 0,
-                                          onPressed: _getDraftImage,
+                                          onPressed: () {
+                                            ref.read(detailsControllerProvider(vocabulary).notifier).getDraftImage();
+                                          },
                                           color: Theme.of(context).colorScheme.surface,
                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                          child: _selected is DraftImage
+                                          child: state.selectedImage is DraftImage
                                               ? Ink(
                                                   padding: EdgeInsets.zero,
                                                   decoration: BoxDecoration(
@@ -268,7 +177,7 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                                                     ),
                                                     image: DecorationImage(
                                                       fit: BoxFit.cover,
-                                                      image: _selected!.getImageProvider(),
+                                                      image: state.selectedImage!.getImageProvider(),
                                                     ),
                                                   ),
                                                   child: Center(
@@ -285,26 +194,35 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                                                 ),
                                         )
                                       : InkWell(
-                                          onTap: () =>
-                                              _stockImages.isEmpty ? null : _selectImage(_stockImages.elementAt(index + firstIndex - 1)),
+                                          onTap: state.stockImages.isEmpty
+                                              ? null
+                                              : () {
+                                                  ref.read(detailsControllerProvider(vocabulary).notifier).selectOrUnselectImage(
+                                                        state.stockImages.elementAt(index + state.firstStockImageIndex - 1),
+                                                      );
+                                                },
                                           borderRadius: BorderRadius.circular(16),
-                                          child: firstIndex + index >= _stockImages.length + 1
+                                          child: state.firstStockImageIndex + index >= state.stockImages.length + 1
                                               ? const Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator.adaptive())
                                               : Ink(
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(16),
-                                                    border: _stockImages.elementAt(index + firstIndex - 1) != _selected
+                                                    border: state.stockImages.elementAt(index + state.firstStockImageIndex - 1) !=
+                                                            state.selectedImage
                                                         ? null
                                                         : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
                                                     image: DecorationImage(
                                                       fit: BoxFit.cover,
                                                       image: NetworkImage(
-                                                        _stockImages.elementAt(index + firstIndex - 1).sizeVariants?["small"] ??
+                                                        state.stockImages
+                                                                .elementAt(index + state.firstStockImageIndex - 1)
+                                                                .sizeVariants?["small"] ??
                                                             ImageConstants.fallbackImageUrl,
                                                       ),
                                                     ),
                                                   ),
-                                                  child: _stockImages.elementAt(index + firstIndex - 1) != _selected
+                                                  child: state.stockImages.elementAt(index + state.firstStockImageIndex - 1) !=
+                                                          state.selectedImage
                                                       ? null
                                                       : Center(
                                                           child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onSurface),
@@ -326,15 +244,19 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                                   backgroundColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
                                   foregroundColor: Theme.of(context).colorScheme.error,
                                 ),
-                                onPressed: () => _delete(),
+                                onPressed: () {
+                                  ref.read(deleteVocabularyUseCaseProvider(vocabulary));
+                                },
                                 child: const Icon(Icons.delete_rounded),
                               ),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: () => _save(),
+                                  onPressed: () {
+                                    ref.read(detailsControllerProvider(vocabulary).notifier).save(context);
+                                  },
                                   child: Text(
-                                    _selected == null
+                                    state.selectedImage == null
                                         ? AppLocalizations.of(context)?.record_addDetails_saveWithoutButton ?? ""
                                         : AppLocalizations.of(context)?.record_addDetails_saveButton ?? "",
                                   ),
@@ -344,7 +266,9 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                           ),
                           const SizedBox(height: 8),
                           TextButton(
-                            onPressed: () => _navigateToSettings(),
+                            onPressed: () {
+                              ref.read(detailsControllerProvider(vocabulary).notifier).goToSettings(context);
+                            },
                             child: Text(
                               AppLocalizations.of(context)?.record_addDetails_neverAskForImageButton ?? "",
                               textAlign: TextAlign.center,

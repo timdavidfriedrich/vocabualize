@@ -1,21 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/details/utils/details_arguments.dart';
+import 'package:vocabualize/src/features/home/controllers/home_controller.dart';
 import 'package:vocabualize/src/features/home/widgets/info_snackbar.dart';
 
 class VocabularyListTile extends ConsumerWidget {
+  final bool areImagesEnabled;
   final Vocabulary vocabulary;
 
-  const VocabularyListTile({super.key, required this.vocabulary});
+  const VocabularyListTile({
+    required this.areImagesEnabled,
+    required this.vocabulary,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ReadOutUseCase readOut = ref.watch(readOutUseCaseProvider);
-
     void showVocabularyInfo() {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -84,7 +87,7 @@ class VocabularyListTile extends ConsumerWidget {
                 width: 4,
               ),
               const SizedBox(width: 12),
-              if (provider.Provider.of<SettingsProvider>(context).areImagesEnabled)
+              if (areImagesEnabled)
                 SizedBox(
                   width: 48,
                   height: 48,
@@ -112,7 +115,9 @@ class VocabularyListTile extends ConsumerWidget {
             style: const ButtonStyle(
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            onPressed: () => readOut(vocabulary),
+            onPressed: () {
+              ref.read(homeControllerProvider.notifier).readOut(vocabulary);
+            },
             icon: const Icon(Icons.volume_up),
           ),
         ),

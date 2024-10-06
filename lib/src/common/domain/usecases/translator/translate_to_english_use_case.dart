@@ -5,11 +5,11 @@ import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/translator_repository.dart';
 
-final translateToEnglishUseCaseProvider = Provider((ref) {
+final translateToEnglishUseCaseProvider = FutureProvider.family((ref, String source) {
   return TranslateToEnglishUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
     translatorRepository: ref.watch(translatorRepositoryProvider),
-  );
+  ).call(source);
 });
 
 class TranslateToEnglishUseCase {

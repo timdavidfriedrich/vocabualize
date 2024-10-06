@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/usecases/language/get_available_languages_use_case.dart';
 
-class ChooseLanguageScreen extends ConsumerWidget {
-  static const String routeName = "ChooseLanguageScreen";
+class LanguagePickerScreen extends ConsumerWidget {
+  static const String routeName = "/LanguagePickerScreen";
 
-  const ChooseLanguageScreen({super.key});
+  const LanguagePickerScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -11,13 +11,13 @@ import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/forgot_password_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/sign_screen.dart';
-import 'package:vocabualize/src/features/onboarding/screens/select_language_screen.dart';
+import 'package:vocabualize/src/features/onboarding/screens/choose_languages_screen.dart';
 import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_screen.dart';
 import 'package:vocabualize/src/features/record/providers/active_provider.dart';
 import 'package:vocabualize/src/features/details/screens/details_screen.dart';
 import 'package:vocabualize/src/features/reports/screens/report_screen.dart';
-import 'package:vocabualize/src/features/settings/screens/choose_language_screen.dart';
+import 'package:vocabualize/src/common/presentation/screens/language_picker_screen.dart';
 import 'package:vocabualize/src/features/settings/screens/settings_screen.dart';
 import 'package:vocabualize/firebase_options.dart';
 
@@ -63,8 +63,8 @@ class Vocabualize extends StatelessWidget {
             WelcomeScreen.routeName: (context) => const WelcomeScreen(),
             SignScreen.routeName: (context) => const SignScreen(),
             ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
-            SelectLanguageScreen.routeName: (context) => const SelectLanguageScreen(),
-            ChooseLanguageScreen.routeName: (context) => const ChooseLanguageScreen(),
+            ChooseLanguagesScreen.routeName: (context) => const ChooseLanguagesScreen(),
+            LanguagePickerScreen.routeName: (context) => const LanguagePickerScreen(),
             HomeScreen.routeName: (context) => const HomeScreen(),
             PractiseScreen.routeName: (context) => const PractiseScreen(),
             DetailsScreen.routeName: (context) => const DetailsScreen(),

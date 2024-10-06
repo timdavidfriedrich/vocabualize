@@ -84,7 +84,7 @@ extension VocabularyModelMappers on RdbVocabulary {
 extension VocabularyMappers on Vocabulary {
   RdbVocabulary toRdbVocabulary() {
     return RdbVocabulary(
-      id: id,
+      id: id ?? "",
       // TODO: Replace with current user id
       user: const RdbUser(),
       source: source,

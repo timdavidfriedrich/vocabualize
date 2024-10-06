@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:pocketbase/pocketbase.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:vocabualize/constants/due_algorithm_constants.dart';
 import 'package:vocabualize/src/common/data/utils/date_parser.dart';
@@ -11,7 +10,7 @@ import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 
 class Vocabulary {
-  final String id;
+  final String? id;
   final String source;
   final String target;
   final Language sourceLanguage;
@@ -40,7 +39,7 @@ class Vocabulary {
   }
 
   Vocabulary({
-    id,
+    this.id,
     this.source = "",
     this.target = "",
     sourceLanguage,
@@ -55,8 +54,7 @@ class Vocabulary {
     created,
     updated,
     nextDate,
-  })  : id = id ?? "vocabulary--${const Uuid().v4()}",
-        sourceLanguage = sourceLanguage ?? Language.defaultSource(),
+  })  : sourceLanguage = sourceLanguage ?? Language.defaultSource(),
         targetLanguage = targetLanguage ?? Language.defaultTarget(),
         created = created ?? DateTime.now(),
         updated = updated ?? DateTime.now(),
