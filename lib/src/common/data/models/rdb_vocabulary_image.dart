@@ -55,7 +55,7 @@ class RdbVocabualaryImage {
       id: (json['id'] as int?).toString(),
       width: json['width'] as int,
       height: json['height'] as int,
-      url: json['url'] as String,
+      url: json['src']['original'] as String,
       photographer: json['photographer'] != null ? json['photographer'] as String : null,
       photographerUrl: json['photographerUrl'] != null ? json['photographerUrl'] as String : null,
       photographerID: json['photographerID'] != null ? json['photographerID'] as int : null,
