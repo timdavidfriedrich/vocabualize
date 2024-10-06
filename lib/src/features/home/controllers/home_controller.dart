@@ -34,7 +34,7 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
     return HomeState(
       vocabularies: _vocabularies,
       tags: await ref.watch(getAllTagsUseCaseProvider.future),
-      areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider),
+      areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
     );
   }
 

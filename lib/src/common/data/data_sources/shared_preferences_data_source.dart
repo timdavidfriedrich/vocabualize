@@ -1,10 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final _sharedPreferencesProvider = Provider((ref) => SharedPreferencesAsync());
+
 final sharedPreferencesDataSourceProvider = Provider((ref) {
-  final asyncSharedPreferences = SharedPreferencesAsync();
   return SharedPreferencesDataSource(
-    sharedPreferences: asyncSharedPreferences,
+    sharedPreferences: ref.watch(_sharedPreferencesProvider),
   );
 });
 
@@ -48,20 +49,20 @@ class SharedPreferencesDataSource {
     return _sharedPreferences.setString(_targetLanguageCodeKey, targetLanguageCode);
   }
 
-  Future<bool?> getAreImagesEnabled() {
-    return _sharedPreferences.getBool(_areImagesEnabledKey);
+  Future<bool?> getAreImagesEnabled() async {
+    return await _sharedPreferences.getBool(_areImagesEnabledKey);
   }
 
-  Future<void> setAreImagesEnabled(bool areImagesEnabled) {
-    return _sharedPreferences.setBool(_areImagesEnabledKey, areImagesEnabled);
+  Future<void> setAreImagesEnabled(bool areImagesEnabled) async {
+    return await _sharedPreferences.setBool(_areImagesEnabledKey, areImagesEnabled);
   }
 
-  Future<bool?> getUsePremiumTranslator() {
-    return _sharedPreferences.getBool(_usePremiumTranslatorKey);
+  Future<bool?> getUsePremiumTranslator() async {
+    return await _sharedPreferences.getBool(_usePremiumTranslatorKey);
   }
 
-  Future<void> setUsePremiumTranslator(bool usePremiumTranslator) {
-    return _sharedPreferences.setBool(_usePremiumTranslatorKey, usePremiumTranslator);
+  Future<void> setUsePremiumTranslator(bool usePremiumTranslator) async {
+    return await _sharedPreferences.setBool(_usePremiumTranslatorKey, usePremiumTranslator);
   }
 
   Future<int?> getInitialInterval() {

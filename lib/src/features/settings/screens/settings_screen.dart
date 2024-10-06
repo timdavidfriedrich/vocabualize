@@ -71,8 +71,9 @@ class SettingsScreen extends ConsumerWidget {
                       // TODO: Replace with arb
                       subtitle: Text("Likely to increase translation quality.", style: TextStyle(color: Theme.of(context).hintColor)),
                       trailing: Switch(
-                          value: state.usePremiumTranslator,
-                          onChanged: ref.read(settingsControllerProvider.notifier).setUsePremiumTranslator),
+                        value: state.usePremiumTranslator,
+                        onChanged: ref.read(settingsControllerProvider.notifier).setUsePremiumTranslator,
+                      ),
                     ),
                     SettingsListTile(
                       // TODO: Replace with arb

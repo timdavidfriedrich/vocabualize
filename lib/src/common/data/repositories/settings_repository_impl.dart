@@ -65,7 +65,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   Future<void> setAreImagesEnabled(bool areImagesEnabled) async {
-    _sharedPreferencesDataSource.setAreImagesEnabled(areImagesEnabled);
+    await _sharedPreferencesDataSource.setAreImagesEnabled(areImagesEnabled);
   }
 
   @override
@@ -76,7 +76,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   Future<void> setUsePremiumTranslator(bool usePremiumTranslator) async {
-    _sharedPreferencesDataSource.setUsePremiumTranslator(usePremiumTranslator);
+    await _sharedPreferencesDataSource.setUsePremiumTranslator(usePremiumTranslator);
   }
 
   @override

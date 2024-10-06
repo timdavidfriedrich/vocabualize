@@ -24,7 +24,7 @@ class PractiseController extends AutoDisposeFamilyAsyncNotifier<PractiseState, T
       vocabulariesLeftToPractise: vocabulariesToPractise,
       isMultilingual: await ref.watch(isCollectionMultilingualUseCaseProvider),
       isSolutionShown: false,
-      areImagesDisabled: await ref.watch(getAreImagesEnabledUseCaseProvider),
+      areImagesDisabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
     );
   }
 

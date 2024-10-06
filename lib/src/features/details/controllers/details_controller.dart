@@ -26,7 +26,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
       vocabulary: vocabulary,
       stockImages: await _getStockImages(vocabulary),
       selectedImage: vocabulary.image is FallbackImage ? null : vocabulary.image,
-      areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider),
+      areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
     );
   }
 
