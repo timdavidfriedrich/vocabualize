@@ -31,21 +31,6 @@ class RdbVocabualaryImage {
     this.src,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'type': type.name,
-      'id': id,
-      'width': width,
-      'height': height,
-      'url': url,
-      'photographer': photographer,
-      'photographerUrl': photographerUrl,
-      'photographerID': photographerID,
-      'avgColor': avgColor,
-      'src': src,
-    };
-  }
-
   factory RdbVocabualaryImage.fromRecord(Map<String, dynamic> json, {required RdbVocabularyImageType type}) {
     return RdbVocabualaryImage(
       type: RdbVocabularyImageType.values.firstWhere(

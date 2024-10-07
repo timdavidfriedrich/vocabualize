@@ -63,8 +63,8 @@ extension VocabularyModelMappers on RdbVocabulary {
         "source": source,
         "target": target,
         // TODO: Add language convertion
-        "sourceLanguage": "", //sourceLanguage.toRecordModel(),
-        "targetLanguage": "", //targetLanguage.toRecordModel(),
+        "sourceLanguage": sourceLanguage.id, //sourceLanguage.toRecordModel(),
+        "targetLanguage": targetLanguage.id, //targetLanguage.toRecordModel(),
         // TODO: Add tag convertion
         "tags": "", // tags.map((tag) => tag.toRecordModel()).toList(),
         // TODO: Add image convertion

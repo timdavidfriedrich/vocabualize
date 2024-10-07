@@ -41,14 +41,14 @@ extension XFileMappers on XFile {
 }
 
 extension VocabularyImageMappers on VocabularyImage {
-  RdbVocabualaryImage toRdbVocabularyImage() {
+  RdbVocabualaryImage? toRdbVocabularyImage() {
     switch (runtimeType) {
       case const (StockImage):
         return (this as StockImage).toRdbVocabularyImage();
       case const (CustomImage):
         return (this as CustomImage).toRdbVocabularyImage();
       case const (FallbackImage):
-        return (this as FallbackImage).toRdbVocabularyImage();
+        return null;
       default:
         throw UnimplementedError('Unknown VocabularyImage type: "$runtimeType"');
     }
