@@ -5,7 +5,6 @@ import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/get_draft_image_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/image/get_stock_images_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/image/upload_image_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/settings/get_are_images_enabled_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/translator/translate_to_english_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/vocabulary/delete_vocabulary_use_case.dart';
@@ -17,6 +16,8 @@ import 'package:vocabualize/src/features/settings/screens/settings_screen.dart';
 final detailsControllerProvider = AutoDisposeAsyncNotifierProviderFamily<DetailsController, DetailsState, Vocabulary>(() {
   return DetailsController();
 });
+
+// TODO: When changing state, change the state of the vocabulary (instead of selectedImage, use vocabulary.image) ??
 
 class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Vocabulary> {
   @override
@@ -99,12 +100,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
 
   Future<void> save(BuildContext context) async {
     state.whenData((value) async {
-      final selectedImage = value.selectedImage;
-      if (selectedImage != null) {
-        ref.read(uploadImageUseCaseProvider(selectedImage));
-      }
-      final updatedVocabulary = value.vocabulary.copyWith(image: value.selectedImage);
-      await ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
+      await ref.read(addOrUpdateVocabularyUseCaseProvider(value.vocabulary));
       if (context.mounted) {
         Navigator.pop(context);
       }
