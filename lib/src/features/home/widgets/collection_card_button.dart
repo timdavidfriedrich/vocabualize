@@ -3,16 +3,18 @@ import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/home/controllers/home_controller.dart';
-import 'package:vocabualize/src/features/home/states/home_state.dart';
 
 class TagCardButton extends ConsumerWidget {
-  final HomeState state;
+  final bool areImagesEnabled;
   final Tag tag;
+  final List<Vocabulary> tagVocabularies;
 
   const TagCardButton({
-    required this.state,
+    required this.areImagesEnabled,
     required this.tag,
+    required this.tagVocabularies,
     super.key,
   });
 
@@ -24,7 +26,7 @@ class TagCardButton extends ConsumerWidget {
       onPressed: () {
         ref.read(homeControllerProvider.notifier).goToCollection(context, tag);
       },
-      padding: state.areImagesEnabled ? const EdgeInsets.all(8.0) : const EdgeInsets.all(16.0),
+      padding: areImagesEnabled ? const EdgeInsets.all(8.0) : const EdgeInsets.all(16.0),
       elevation: 0,
       disabledElevation: 0,
       focusElevation: 0,
@@ -34,18 +36,30 @@ class TagCardButton extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: _buildContent(context: context, state: state),
+        children: _buildContent(
+          context: context,
+          areImagesEnabled: areImagesEnabled,
+          tagVocabularies: tagVocabularies,
+        ),
       ),
     );
   }
 
   List<Widget> _buildContent({
     required BuildContext context,
-    required HomeState state,
+    required bool areImagesEnabled,
+    required List<Vocabulary> tagVocabularies,
   }) {
-    final tagVocabularies = state.vocabularies.where((v) => v.tags.contains(tag)).toList();
+    if (tagVocabularies.isEmpty) {
+      return [
+        Icon(
+          Icons.error_outline,
+          color: Theme.of(context).colorScheme.onSurface,
+        )
+      ];
+    }
     return [
-      if (state.areImagesEnabled)
+      if (areImagesEnabled)
         SizedBox(
           width: 128,
           height: 128,
@@ -72,7 +86,7 @@ class TagCardButton extends ConsumerWidget {
             ),
           ),
         ),
-      if (state.areImagesEnabled) const SizedBox(height: 8),
+      if (areImagesEnabled) const SizedBox(height: 8),
       SizedBox(
         width: 128,
         child: Padding(
@@ -80,7 +94,7 @@ class TagCardButton extends ConsumerWidget {
           child: Text(
             tag.name,
             style: Theme.of(context).textTheme.bodyMedium,
-            textAlign: state.areImagesEnabled ? TextAlign.start : TextAlign.center,
+            textAlign: areImagesEnabled ? TextAlign.start : TextAlign.center,
           ),
         ),
       ),
