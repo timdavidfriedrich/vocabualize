@@ -1,11 +1,18 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:http/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
+import 'package:vocabualize/src/common/data/mappers/language_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/report_mappers.dart';
+import 'package:vocabualize/src/common/data/mappers/tag_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_mappers.dart';
 import 'package:vocabualize/src/common/data/models/rdb_bug_report.dart';
+import 'package:vocabualize/src/common/data/models/rdb_language.dart';
+import 'package:vocabualize/src/common/data/models/rdb_tag.dart';
 import 'package:vocabualize/src/common/data/models/rdb_translation_report.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
@@ -25,33 +32,14 @@ class RemoteDatabaseDataSource {
 
   final String _vocabulariesCollectionName = "vocabularies";
   final String _languagesCollectionName = "languages";
-  final String _tagsCollectionName = "tags_by_user";
+  final String _tagsCollectionName = "tags";
+  final String _tagsByUserViewName = "tags_by_user";
   final String _translationReportCollectionName = "translation_reports";
   final String _bugReportCollectionName = "bug_reports";
+  final String _userFieldName = "user";
+  final String _customImageFieldName = "custimImage";
 
   /*
-  Future<List<Vocabulary>> _fetchData({required String userId}) async {
-    List<Language> languages = await _fetchLanguages();
-    List<Tag> tags = await _fetchTags(userId: userId);
-    List<Vocabulary> vocabularies = await _fetchVocabularies(userId: userId, languages: languages, tags: tags);
-    return vocabularies;
-  }
-
-  Future<List<Language>> _fetchLanguages() async {
-    final PocketBase pocketbase = await getConnection();
-    final languageRecords = await pocketbase.collection(_languagesCollectionName).getList();
-    final test = languageRecords.items.map((e) => Language.fromRecord(e)).toList();
-    return test;
-  }
-
-  Future<List<Tag>> _fetchTags({required String userId}) async {
-    final PocketBase pocketbase = await getConnection();
-    final String userFilter = "user=\"$userId\"";
-    final tagsRecords = await pocketbase.collection(_tagsCollectionName).getList(filter: userFilter);
-    final test = tagsRecords.items.map((e) => Tag.fromRecord(e)).toList();
-    return test;
-  }
-
   Future<List<Vocabulary>> _fetchVocabularies({required String userId, List<Tag>? tags, List<Language>? languages}) async {
     final PocketBase pocketbase = await getConnection();
     final String userFilter = "user=\"$userId\"";
@@ -77,30 +65,85 @@ class RemoteDatabaseDataSource {
     await pocketbase.collection(_translationReportCollectionName).create(body: translationReport.toRecordModel().toJson());
   }
 
+  Future<List<RdbLanguage>> getAvailabeLanguages() async {
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final languageRecords = await pocketbase.collection(_languagesCollectionName).getList();
+    return languageRecords.items.map((record) => record.toRdbLanguage()).toList();
+  }
+
+  Future<RdbLanguage> getLanguageById(String id) async {
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final languageRecord = await pocketbase.collection(_languagesCollectionName).getOne(id);
+    return languageRecord.toRdbLanguage();
+  }
+
+  Future<List<RdbTag>> getTags({String? userId}) async {
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final String? userFilter = userId != null ? "$_userFieldName=\"$userId\"" : null;
+    final tagsRecords = await pocketbase.collection(_tagsByUserViewName).getList(filter: userFilter);
+    return tagsRecords.items.map((record) => record.toRdbTag()).toList();
+  }
+
+  Future<RdbTag> getTagById(String id) async {
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final tagRecord = await pocketbase.collection(_tagsCollectionName).getOne(id);
+    return tagRecord.toRdbTag();
+  }
+
+  Future<void> createTag(RdbTag tag) async {
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final data = tag.toRecordModel().toJson();
+    await pocketbase.collection(_tagsCollectionName).create(body: data);
+  }
+
+  Future<void> updateTag(RdbTag tag) async {
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final data = tag.toRecordModel().toJson();
+    await pocketbase.collection(_tagsCollectionName).update(tag.id, body: data);
+  }
+
+  Future<void> deleteTag(RdbTag tag) async {
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+    await pocketbase.collection(_tagsCollectionName).delete(tag.id);
+  }
+
   Future<List<RdbVocabulary>> getVocabularies({
     String? searchTerm,
     Tag? tag,
     String? userId,
   }) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final String searchFilter = searchTerm != null ? "searchTerms contains \"$searchTerm\"" : "";
-    final String tagFilter = tag != null ? "tags contains \"${tag.id}\"" : "";
-    final String userFilter = userId != null ? "user=\"$userId\"" : "";
-    final String filter = [userFilter, tagFilter, searchFilter].where((e) => e.isNotEmpty).join(" AND ");
+    final String? searchFilter = searchTerm != null ? "(source LIKE \"%$searchTerm%\" OR target LIKE \"%$searchTerm%\")" : null;
+    final String? tagFilter = tag != null ? "tags LIKE \"%${tag.id}%\"" : null;
+    final String? userFilter = userId != null ? "$_userFieldName=\"$userId\"" : null;
+    final String filter = [userFilter, tagFilter, searchFilter].nonNulls.join(" AND ");
 
     return pocketbase.collection(_vocabulariesCollectionName).getList(filter: filter).then((value) async {
       return value.items.map((RecordModel record) => record.toRdbVocabulary()).toList();
     });
   }
 
-  Future<void> addVocabulary(RdbVocabulary vocabulary) async {
+  Future<void> addVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final data = vocabulary.toRecordModel().toJson();
-    await pocketbase.collection(_vocabulariesCollectionName).create(body: data);
+    Log.debug("raw vocabulary: $vocabulary, data: $data");
+    if (draftImageToUpload == null) {
+      await pocketbase.collection(_vocabulariesCollectionName).create(body: data);
+    } else {
+      await pocketbase.collection(_vocabulariesCollectionName).create(
+        body: data,
+        files: [
+          MultipartFile.fromBytes(
+            _customImageFieldName,
+            draftImageToUpload,
+          ),
+        ],
+      );
+    }
   }
 
   Future<void> deleteAllVocabularies() async {
-    // TODO: Implement deleteAllVocabularies
+    // TODO: Implement deleteAllVocabularies for data source
     //final PocketBase pocketbase = await RemoteDatabaseDataSource.getConnection();
     //await pocketbase.collection(_vocabulariesCollectionName).delete();
   }
@@ -110,9 +153,22 @@ class RemoteDatabaseDataSource {
     await pocketbase.collection(_vocabulariesCollectionName).delete(vocabulary.id);
   }
 
-  Future<void> updateVocabulary(RdbVocabulary vocabulary) async {
+  Future<void> updateVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final data = vocabulary.toRecordModel().toJson();
-    await pocketbase.collection(_vocabulariesCollectionName).update(vocabulary.id, body: data);
+    if (draftImageToUpload == null) {
+      await pocketbase.collection(_vocabulariesCollectionName).update(vocabulary.id, body: data);
+    } else {
+      await pocketbase.collection(_vocabulariesCollectionName).update(
+        vocabulary.id,
+        body: data,
+        files: [
+          MultipartFile.fromBytes(
+            _customImageFieldName,
+            draftImageToUpload,
+          ),
+        ],
+      );
+    }
   }
 }

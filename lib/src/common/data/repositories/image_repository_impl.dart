@@ -30,12 +30,6 @@ class ImageRepositoryImpl implements ImageRepository {
   }
 
   @override
-  Future<bool> uploadImage(VocabularyImage image) {
-    // TODO: implement uploadImage
-    throw UnimplementedError();
-  }
-
-  @override
   Future<DraftImage?> getImageFromCameraOrFiles() {
     return _draftImageDataSource.getImageFromCameraOrFiles().then((image) {
       return image?.toDraftImage();

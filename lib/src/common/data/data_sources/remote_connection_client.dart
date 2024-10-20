@@ -25,7 +25,6 @@ class RemoteConnectionClient {
         ),
       );
     } else {
-      Log.debug("Pocketbase: ${_pocketBase?.authStore.model}");
       return _pocketBase!;
     }
   }

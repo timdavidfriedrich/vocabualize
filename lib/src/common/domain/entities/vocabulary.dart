@@ -60,6 +60,7 @@ class Vocabulary {
         updated = updated ?? DateTime.now(),
         nextDate = nextDate ?? DateTime.now();
 
+  // TODO: Remove Vocabulary.fromRecord() => use mappers if not already done
   Vocabulary.fromRecord(
     RecordModel recordModel, {
     List<Tag>? tags,
@@ -127,5 +128,10 @@ class Vocabulary {
       ease: DueAlgorithmConstants.initialEase,
       nextDate: DateTime.now(),
     );
+  }
+
+  @override
+  String toString() {
+    return 'Vocabulary{id: $id, source: $source, target: $target, sourceLanguage: $sourceLanguage, targetLanguage: $targetLanguage, tags: $tags, image: $image, level: $level, isNovice: $isNovice, noviceInterval: $noviceInterval, interval: $interval, ease: $ease, created: $created, updated: $updated, nextDate: $nextDate}';
   }
 }

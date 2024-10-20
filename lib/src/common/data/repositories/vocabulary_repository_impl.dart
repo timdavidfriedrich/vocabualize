@@ -4,9 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_mappers.dart';
+import 'package:vocabualize/src/common/data/models/rdb_language.dart';
 import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
 final vocabularyRepositoryProvider = Provider((ref) {
@@ -27,13 +29,19 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
   StreamController<List<Vocabulary>> _streamController = StreamController<List<Vocabulary>>.broadcast();
   Stream<List<Vocabulary>> get _stream => _streamController.stream;
 
+  List<RdbLanguage> _availableLanguages = [];
+
   void dispose() {
     _streamController.close();
   }
 
   @override
   Future<void> addVocabulary(Vocabulary vocabulary) async {
-    _remoteDatabaseDataSource.addVocabulary(vocabulary.toRdbVocabulary());
+    final draftImage = vocabulary.image is DraftImage ? vocabulary.image as DraftImage : null;
+    _remoteDatabaseDataSource.addVocabulary(
+      vocabulary.toRdbVocabulary(),
+      draftImageToUpload: draftImage?.content,
+    );
   }
 
   @override
@@ -69,7 +77,7 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
     return filteredStream;
   }
 
-  // !!! EINMAL REFACTORING BITTE, DANKE!
+  // !!! TODO: EINMAL REFACTORING BITTE, DANKE!
   Stream<List<Vocabulary>> _getStreamAndLoadIfNecessary() {
     if (_streamController.isClosed) {
       _streamController = StreamController<List<Vocabulary>>.broadcast();
@@ -82,10 +90,34 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
     return _stream;
   }
 
+  // TODO: Move language caching to language repo
+  Future<List<RdbLanguage>> _getCachedRdbLanguagesOrFetch() async {
+    if (_availableLanguages.isEmpty) {
+      _availableLanguages = await _remoteDatabaseDataSource.getAvailabeLanguages();
+    }
+    return _availableLanguages;
+  }
+
   Future<void> _loadVocabularies() async {
+    // TODO: Implement tag caching in tag repo. maybe with stream
+    // ? Maybe move this to use case then? => don't mix repos
+    final tags = await _remoteDatabaseDataSource.getTags();
+    final languages = await _getCachedRdbLanguagesOrFetch();
     _remoteDatabaseDataSource.getVocabularies().then((rdbVocabularies) {
       final vocabularies = rdbVocabularies.map((rdbVocabulary) {
-        return rdbVocabulary.toVocabulary();
+        final vocabulary = rdbVocabulary.copyWith(
+          tags: tags.where((tag) {
+            return rdbVocabulary.tags.map((t) => t.id).contains(tag.id);
+          }).toList(),
+          // TODO: Check if language equalation in vocabulary repo works or if this will return null/default lang
+          sourceLanguage: languages.where((language) {
+            return language.id == rdbVocabulary.sourceLanguage.id;
+          }).firstOrNull,
+          targetLanguage: languages.where((language) {
+            return language.id == rdbVocabulary.targetLanguage.id;
+          }).firstOrNull,
+        );
+        return vocabulary.toVocabulary();
       }).toList();
       _streamController.sink.add(vocabularies);
     });
@@ -123,7 +155,11 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
 
   @override
   Future<void> updateVocabulary(Vocabulary vocabulary) async {
-    _remoteDatabaseDataSource.updateVocabulary(vocabulary.toRdbVocabulary());
+    final draftImage = vocabulary.image is DraftImage ? vocabulary.image as DraftImage : null;
+    _remoteDatabaseDataSource.updateVocabulary(
+      vocabulary.toRdbVocabulary(),
+      draftImageToUpload: draftImage?.content,
+    );
   }
 }
 

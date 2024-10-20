@@ -4,8 +4,8 @@ class RdbLanguage {
   final String translatorId;
   final String speechToTextId;
   final String textToSpeechId;
-  final String created;
-  final String updated;
+  final String? created;
+  final String? updated;
 
   const RdbLanguage({
     this.id = "",

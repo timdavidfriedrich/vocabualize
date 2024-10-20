@@ -82,7 +82,8 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
       if (value.selectedImage == image) {
         state = AsyncData(value.copyWith(selectedImage: null));
       } else {
-        state = AsyncData(value.copyWith(selectedImage: image));
+        state = AsyncData(value.copyWith(vocabulary: value.vocabulary.copyWith(image: image)));
+        //state = AsyncData(value.copyWith(selectedImage: image));
       }
     });
   }

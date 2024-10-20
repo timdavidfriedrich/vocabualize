@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
+import 'package:vocabualize/src/common/data/mappers/tag_mappers.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/repositories/tag_repository.dart';
 
@@ -17,32 +18,31 @@ class TagRepositoryImpl implements TagRepository {
   }) : _remoteDatabaseDataSource = remoteDatabaseDataSource;
 
   @override
-  Future<Tag> createTag(Tag tag) {
-    // TODO: implement createTag
-    throw UnimplementedError();
+  Future<Tag> getTagById(String id) async {
+    return await _remoteDatabaseDataSource.getTagById(id).then((value) {
+      return value.toTag();
+    });
   }
 
   @override
-  Future<Tag> deleteTag(Tag tag) {
-    // TODO: implement deleteTag
-    throw UnimplementedError();
+  Future<List<Tag>> getAllTags() async {
+    return await _remoteDatabaseDataSource.getTags().then((value) {
+      return value.map((e) => e.toTag()).toList();
+    });
   }
 
   @override
-  Future<Tag> getTagById(String id) {
-    // TODO: implement getTag
-    throw UnimplementedError();
+  Future<void> createTag(Tag tag) async {
+    await _remoteDatabaseDataSource.createTag(tag.toRdbTag());
   }
 
   @override
-  Future<List<Tag>> getAllTags() {
-    // TODO: implement getTags
-    return Future.value([]);
+  Future<void> deleteTag(Tag tag) async {
+    await _remoteDatabaseDataSource.deleteTag(tag.toRdbTag());
   }
 
   @override
-  Future<Tag> updateTag(Tag tag) {
-    // TODO: implement updateTag
-    throw UnimplementedError();
+  Future<void> updateTag(Tag tag) async {
+    await _remoteDatabaseDataSource.updateTag(tag.toRdbTag());
   }
 }

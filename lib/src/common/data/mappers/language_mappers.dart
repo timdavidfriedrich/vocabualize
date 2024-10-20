@@ -1,3 +1,4 @@
+import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/src/common/data/models/rdb_language.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 
@@ -47,6 +48,20 @@ extension LanguageJsonMappers on Map<String, dynamic> {
       textToSpeechId: this['textToSpeechId'],
       created: this['created'] != null ? DateTime.parse(this['created']) : null,
       updated: this['updated'] != null ? DateTime.parse(this['updated']) : null,
+    );
+  }
+}
+
+extension RecordModelLanguageMappers on RecordModel {
+  RdbLanguage toRdbLanguage() {
+    return RdbLanguage(
+      id: id,
+      name: data['name'],
+      translatorId: data['translatorId'],
+      speechToTextId: data['speechToTextId'],
+      textToSpeechId: data['textToSpeechId'],
+      created: data['created'],
+      updated: data['updated'],
     );
   }
 }

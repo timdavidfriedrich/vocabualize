@@ -71,21 +71,21 @@ class DetailsScreen extends ConsumerWidget {
                                       borderRadius: BorderRadius.circular(16),
                                       border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
                                       color: Theme.of(context).colorScheme.surface,
-                                      image: state.selectedImage == null
+                                      image: state.vocabulary.image is FallbackImage
                                           ? null
                                           : DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: state.selectedImage!.getImageProvider(),
+                                              image: state.vocabulary.image.getImageProvider(),
                                             ),
                                     ),
-                                    child: state.selectedImage == null
+                                    child: state.vocabulary.image is FallbackImage
                                         ? Center(
                                             child: Text(
                                               AppLocalizations.of(context)?.record_addDetails_noImage ?? "",
                                               textAlign: TextAlign.center,
                                             ),
                                           )
-                                        : state.selectedImage is StockImage
+                                        : state.vocabulary.image is StockImage
                                             ? Container(
                                                 decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(14),
@@ -108,7 +108,7 @@ class DetailsScreen extends ConsumerWidget {
                                                         Flexible(
                                                           child: Text(
                                                             // TODO: Replace with arb
-                                                            "Photo by ${(state.selectedImage as StockImage).photographer}",
+                                                            "Photo by ${(state.vocabulary.image as StockImage).photographer}",
                                                             style: Theme.of(context)
                                                                 .textTheme
                                                                 .bodySmall!
