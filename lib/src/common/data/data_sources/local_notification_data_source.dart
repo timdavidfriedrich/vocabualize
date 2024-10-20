@@ -1,11 +1,10 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:log/log.dart';
+import 'package:permission_handler/permission_handler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:timezone/data/latest.dart' as tz;
 // ignore: depend_on_referenced_packages
@@ -30,39 +29,23 @@ class LocalNotificationDataSource {
       macOS: darwinInitializationSettings,
       linux: linuxInitializationSettings,
     );
-
-    if (Platform.isAndroid) {
-      _requestAndroidPermissions();
-    }
-
+    await _requestPermissions();
     await _localNotifications.initialize(initializationSettings);
-
     await _initTimeZone();
   }
 
-  void _requestAndroidPermissions() async {
-    var androidInfo = await DeviceInfoPlugin().androidInfo;
-    bool allowedExactAlarms = true;
-    bool allowedNotifications = true;
-
-    if (androidInfo.version.sdkInt >= 33) {
-      // ! TODO: Another permission request is already in progress
-      allowedNotifications = await _localNotifications
-              .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-              ?.requestNotificationsPermission() ??
-          false;
-    }
-
-    if (androidInfo.version.sdkInt >= 34) {
-      allowedExactAlarms = await _localNotifications
-              .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-              ?.requestExactAlarmsPermission() ??
-          false;
-    }
-
-    if (!allowedExactAlarms || !allowedNotifications) {
-      Log.warning("Notification permissions got rejected.");
-      return;
+  Future<void> _requestPermissions() async {
+    try {
+      if (await Permission.notification.isDenied) {
+        final hasGranted = await Permission.notification.request().isGranted;
+        Log.hint("Notification permission has been ${hasGranted ? "granted" : "denied"}.");
+      }
+      if (await Permission.scheduleExactAlarm.isDenied) {
+        final hasGranted = await Permission.scheduleExactAlarm.request().isGranted;
+        Log.hint("Schedule exact alarm permission has been ${hasGranted ? "granted" : "denied"}.");
+      }
+    } on PlatformException catch (e) {
+      Log.error("Failed to request permissions", exception: e);
     }
   }
 
