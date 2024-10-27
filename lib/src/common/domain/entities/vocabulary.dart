@@ -1,21 +1,15 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
-import 'package:pocketbase/pocketbase.dart';
-
 import 'package:vocabualize/constants/due_algorithm_constants.dart';
-import 'package:vocabualize/src/common/data/utils/date_parser.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/entities/level.dart';
-import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 
 class Vocabulary {
   final String? id;
   final String source;
   final String target;
-  final Language sourceLanguage;
-  final Language targetLanguage;
-  final List<Tag> tags;
+  final String sourceLanguageId;
+  final String targetLanguageId;
+  final List<String> tagIds;
   final VocabularyImage image;
   final Level level;
   final bool isNovice;
@@ -42,9 +36,9 @@ class Vocabulary {
     this.id,
     this.source = "",
     this.target = "",
-    sourceLanguage,
-    targetLanguage,
-    this.tags = const [],
+    String? sourceLanguageId,
+    String? targetLanguageId,
+    this.tagIds = const [],
     this.image = const FallbackImage(),
     this.level = const Level(),
     this.isNovice = true,
@@ -54,42 +48,20 @@ class Vocabulary {
     created,
     updated,
     nextDate,
-  })  : sourceLanguage = sourceLanguage ?? Language.defaultSource(),
-        targetLanguage = targetLanguage ?? Language.defaultTarget(),
+  })  : // TODO: Remove default sourceLanguageId and targetLanguageId
+        sourceLanguageId = sourceLanguageId ?? Language.defaultSource().id,
+        targetLanguageId = targetLanguageId ?? Language.defaultTarget().id,
         created = created ?? DateTime.now(),
         updated = updated ?? DateTime.now(),
         nextDate = nextDate ?? DateTime.now();
-
-  // TODO: Remove Vocabulary.fromRecord() => use mappers if not already done
-  Vocabulary.fromRecord(
-    RecordModel recordModel, {
-    List<Tag>? tags,
-    List<Language>? languages,
-  })  : id = recordModel.id,
-        source = recordModel.data['source'],
-        target = recordModel.data['target'],
-        // TODO: Replace with usecase??? or maybe just do this when creating the vocabulary
-        sourceLanguage = languages?.where((element) => element.id == recordModel.data['sourceLanguage']).first ?? Language.defaultSource(),
-        targetLanguage = languages?.where((element) => element.id == recordModel.data['targetLanguage']).first ?? Language.defaultTarget(),
-        tags = tags ?? [],
-        // TODO: Implement image
-        image = const FallbackImage(), //VocabularyImage.fromJson(recordModel.data['image']),
-        level = Level.withValue(value: recordModel.data['levelValue'] ?? 0.0),
-        isNovice = recordModel.data['isNovice'] ?? false,
-        noviceInterval = recordModel.data['noviceInterval'] ?? DueAlgorithmConstants.initialNoviceInterval,
-        interval = recordModel.data['interval'] ?? DueAlgorithmConstants.initialInterval,
-        ease = recordModel.data['ease'] ?? DueAlgorithmConstants.initialEase,
-        nextDate = DateParser.parseOrNull(recordModel.data['nextDate']) ?? DateTime.now(),
-        created = DateParser.parseOrNull(recordModel.data['created']) ?? DateTime.now(),
-        updated = DateParser.parseOrNull(recordModel.data['updated']) ?? DateTime.now();
 
   Vocabulary copyWith({
     String? id,
     String? source,
     String? target,
-    Language? sourceLanguage,
-    Language? targetLanguage,
-    List<Tag>? tags,
+    String? sourceLanguageId,
+    String? targetLanguageId,
+    List<String>? tagIds,
     VocabularyImage? image,
     Level? level,
     bool? isNovice,
@@ -104,9 +76,9 @@ class Vocabulary {
       id: id ?? this.id,
       source: source ?? this.source,
       target: target ?? this.target,
-      sourceLanguage: sourceLanguage ?? this.sourceLanguage,
-      targetLanguage: targetLanguage ?? this.targetLanguage,
-      tags: tags ?? this.tags,
+      sourceLanguageId: sourceLanguageId ?? this.sourceLanguageId,
+      targetLanguageId: targetLanguageId ?? this.targetLanguageId,
+      tagIds: tagIds ?? this.tagIds,
       image: image ?? this.image,
       level: level ?? this.level,
       isNovice: isNovice ?? this.isNovice,
@@ -132,6 +104,6 @@ class Vocabulary {
 
   @override
   String toString() {
-    return 'Vocabulary{id: $id, source: $source, target: $target, sourceLanguage: $sourceLanguage, targetLanguage: $targetLanguage, tags: $tags, image: $image, level: $level, isNovice: $isNovice, noviceInterval: $noviceInterval, interval: $interval, ease: $ease, created: $created, updated: $updated, nextDate: $nextDate}';
+    return 'Vocabulary{id: $id, source: $source, target: $target, sourceLanguageId: $sourceLanguageId, targetLanguageId: $targetLanguageId, tagIds: $tagIds, image: $image, level: $level, isNovice: $isNovice, noviceInterval: $noviceInterval, interval: $interval, ease: $ease, created: $created, updated: $updated, nextDate: $nextDate}';
   }
 }

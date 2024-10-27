@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/features/reports/utils/report_type.dart';
 
 // TODO ARCHITECTURE: Check if Report class is fine
@@ -64,33 +63,21 @@ class BugReport extends Report {
 class TranslationReport extends Report {
   final String source;
   final String target;
-  final Language sourceLanguage;
-  final Language targetLanguage;
+  final String sourceLanguageId;
+  final String targetLanguageId;
   final String description;
 
   TranslationReport({
     required this.source,
     required this.target,
-    required this.sourceLanguage,
-    required this.targetLanguage,
+    required this.sourceLanguageId,
+    required this.targetLanguageId,
     this.description = "",
   });
   TranslationReport.empty()
       : source = "",
         target = "",
         description = "",
-        sourceLanguage = Language.defaultSource(),
-        targetLanguage = Language.defaultTarget();
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      "done": done,
-      "source": source,
-      "target": target,
-      "sourceLanguage": sourceLanguage.id,
-      "targetLanguage": targetLanguage.id,
-      "description": description,
-    };
-  }
+        sourceLanguageId = "",
+        targetLanguageId = "";
 }

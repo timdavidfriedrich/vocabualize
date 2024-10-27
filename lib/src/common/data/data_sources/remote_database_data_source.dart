@@ -125,13 +125,13 @@ class RemoteDatabaseDataSource {
 
   Future<void> addVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final data = vocabulary.toRecordModel().toJson();
-    Log.debug("raw vocabulary: $vocabulary, data: $data");
+    final body = vocabulary.toRecordModel().toJson();
+    Log.debug("raw vocabulary: $vocabulary, data: $body");
     if (draftImageToUpload == null) {
-      await pocketbase.collection(_vocabulariesCollectionName).create(body: data);
+      await pocketbase.collection(_vocabulariesCollectionName).create(body: body);
     } else {
       await pocketbase.collection(_vocabulariesCollectionName).create(
-        body: data,
+        body: body,
         files: [
           MultipartFile.fromBytes(
             _customImageFieldName,
@@ -150,17 +150,23 @@ class RemoteDatabaseDataSource {
 
   Future<void> deleteVocabulary(RdbVocabulary vocabulary) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    await pocketbase.collection(_vocabulariesCollectionName).delete(vocabulary.id);
+    if (vocabulary.id == null) {
+      throw const FormatException("updateVocabulary: RdbVocabulary id is null");
+    }
+    await pocketbase.collection(_vocabulariesCollectionName).delete(vocabulary.id!);
   }
 
   Future<void> updateVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final data = vocabulary.toRecordModel().toJson();
+    if (vocabulary.id == null) {
+      throw const FormatException("updateVocabulary: RdbVocabulary id is null");
+    }
     if (draftImageToUpload == null) {
-      await pocketbase.collection(_vocabulariesCollectionName).update(vocabulary.id, body: data);
+      await pocketbase.collection(_vocabulariesCollectionName).update(vocabulary.id!, body: data);
     } else {
       await pocketbase.collection(_vocabulariesCollectionName).update(
-        vocabulary.id,
+        vocabulary.id!,
         body: data,
         files: [
           MultipartFile.fromBytes(

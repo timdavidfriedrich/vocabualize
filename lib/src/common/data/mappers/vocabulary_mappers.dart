@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/constants/due_algorithm_constants.dart';
 import 'package:vocabualize/constants/secrets/pocketbase_secrets.dart';
-import 'package:vocabualize/src/common/data/mappers/language_mappers.dart';
-import 'package:vocabualize/src/common/data/mappers/tag_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_image_mappers.dart';
 import 'package:vocabualize/src/common/data/models/rdb_user.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary.dart';
@@ -34,10 +30,10 @@ extension RecordModelMappers on RecordModel {
       source: getStringValue("source", ""),
       target: getStringValue("target", ""),
       // TODO: Add language convertion
-      //sourceLanguage: data["sourceLanguage"] ?? "",
-      //targetLanguage: data["targetLanguage"] ?? "",
+      //sourceLanguageId: data["sourceLanguageId"] ?? "",
+      //targetLanguageId: data["targetLanguageId"] ?? "",
       // TODO: Add tag convertion
-      tags: [], //(data["tags"] as List<String>) ?? [],
+      tagIds: [], //(data["tagIds"] as List<String>) ?? [],
       customImage: customImage,
       stockImage: stockImage,
       levelValue: getDoubleValue("levelValue", 0.0),
@@ -58,9 +54,9 @@ extension VocabularyModelMappers on RdbVocabulary {
       id: id,
       source: source,
       target: target,
-      sourceLanguage: sourceLanguage.toLanguage(),
-      targetLanguage: targetLanguage.toLanguage(),
-      tags: tags.map((rdbTag) => rdbTag.toTag()).toList(),
+      sourceLanguageId: sourceLanguageId,
+      targetLanguageId: targetLanguageId,
+      tagIds: tagIds,
       image: rdbImage?.toVocabularyImage() ?? const FallbackImage(),
       level: Level.withValue(value: levelValue),
       isNovice: isNovice,
@@ -74,16 +70,14 @@ extension VocabularyModelMappers on RdbVocabulary {
 
   RecordModel toRecordModel() {
     return RecordModel(
-      id: id,
+      id: id ?? "",
       data: {
         "user": user.id,
         "source": source,
         "target": target,
-        // TODO: Add language convertion
-        "sourceLanguage": sourceLanguage.id, //sourceLanguage.toRecordModel(),
-        "targetLanguage": targetLanguage.id, //targetLanguage.toRecordModel(),
-        // TODO: Add tag convertion
-        "tags": "", // tags.map((tag) => tag.toRecordModel()).toList(),
+        "sourceLanguage": sourceLanguageId,
+        "targetLanguage": targetLanguageId,
+        "tags": tagIds,
         "customImage": customImage?.fileName,
         "stockImage": stockImage?.toRecordModel().toJson(),
         "levelValue": levelValue,
@@ -104,14 +98,14 @@ extension VocabularyMappers on Vocabulary {
     final customImage = rdbImage is RdbCustomImage ? rdbImage : null;
     final stockImage = rdbImage is RdbStockImage ? rdbImage : null;
     return RdbVocabulary(
-      id: id ?? "",
+      id: id,
       // TODO: Replace with current user id
       user: const RdbUser(),
       source: source,
       target: target,
-      sourceLanguage: sourceLanguage.toRdbLanguage(),
-      targetLanguage: targetLanguage.toRdbLanguage(),
-      tags: tags.map((tag) => tag.toRdbTag()).toList(),
+      sourceLanguageId: sourceLanguageId,
+      targetLanguageId: targetLanguageId,
+      tagIds: tagIds,
       customImage: customImage,
       stockImage: stockImage,
       levelValue: level.value,

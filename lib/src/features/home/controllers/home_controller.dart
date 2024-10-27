@@ -46,7 +46,7 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
   List<Vocabulary> getVocabulariesToPracise({Tag? tag}) {
     return _vocabularies.where((vocabulary) {
       if (tag == null) return vocabulary.isDue;
-      return vocabulary.isDue && vocabulary.tags.contains(tag);
+      return vocabulary.isDue && vocabulary.tagIds.contains(tag.id);
     }).toList();
   }
 

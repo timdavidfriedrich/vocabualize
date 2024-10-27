@@ -1,87 +1,54 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:speech_to_text/speech_to_text.dart';
-import 'package:vocabualize/src/common/data/data_sources/free_translator_data_source.dart';
-import 'package:vocabualize/src/common/data/data_sources/premium_translator_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
+import 'package:vocabualize/src/common/data/mappers/language_mappers.dart';
+import 'package:vocabualize/src/common/data/models/rdb_language.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
-import 'package:vocabualize/src/common/data/data_sources/speech_to_text_data_source.dart';
-import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_source.dart';
 import 'package:vocabualize/src/common/domain/repositories/language_repository.dart';
 
 final languageRepositoryProvider = Provider((ref) {
   return LanguageRepositoryImpl(
-    freeTranslatorDataSource: ref.watch(freeTranslatorDataSourceProvider),
-    premiumTranslatorDataSource: ref.watch(premiumTranslatorDataSourceProvider),
-    speechToTextDataSource: ref.watch(speechToTextDataSourceProvider),
-    textToSpeechDataSource: ref.watch(textToSpeechDataSourceProvider),
+    remoteDatabaseDataSource: ref.watch(remoteDatabaseDataSourceProvider),
   );
 });
 
 class LanguageRepositoryImpl implements LanguageRepository {
-  final FreeTranslatorDataSource _freeTranslatorDataSource;
-  final PremiumTranslatorDataSource _premiumTranslatorDataSource;
-  final SpeechToTextDataSource _speechToTextDataSource;
-  final TextToSpeechDataSource _textToSpeechDataSource;
+  final RemoteDatabaseDataSource _remoteDatabaseDataSource;
 
-  const LanguageRepositoryImpl({
-    required FreeTranslatorDataSource freeTranslatorDataSource,
-    required PremiumTranslatorDataSource premiumTranslatorDataSource,
-    required SpeechToTextDataSource speechToTextDataSource,
-    required TextToSpeechDataSource textToSpeechDataSource,
-  })  : _freeTranslatorDataSource = freeTranslatorDataSource,
-        _premiumTranslatorDataSource = premiumTranslatorDataSource,
-        _speechToTextDataSource = speechToTextDataSource,
-        _textToSpeechDataSource = textToSpeechDataSource;
+  LanguageRepositoryImpl({
+    required RemoteDatabaseDataSource remoteDatabaseDataSource,
+  }) : _remoteDatabaseDataSource = remoteDatabaseDataSource;
+
+  List<Language> _availableLanguages = [];
+
+  Future<List<Language>> _getCachedLanguagesOrLoad() async {
+    _availableLanguages = await _remoteDatabaseDataSource.getAvailabeLanguages().then((languages) {
+      return languages.map((RdbLanguage language) => language.toLanguage()).toList();
+    });
+    return _availableLanguages;
+  }
+
+  @override
+  Future<Language?> getLanguageById(String id) async {
+    final languages = await _getCachedLanguagesOrLoad();
+    return languages.cast<Language?>().firstWhere((language) {
+      return language?.id == id;
+    }, orElse: () => null);
+  }
 
   @override
   Future<Language?> findLanguage({String? translatorId, String? speechToTextId, String? textToSpeechId}) async {
-    Language? result;
-    List<Language> languages = await getLangauges();
+    final languages = await _getCachedLanguagesOrLoad();
     for (Language language in languages) {
       if (translatorId != null && language.translatorId.toLowerCase() != translatorId.toLowerCase()) continue;
       if (speechToTextId != null && language.translatorId.toLowerCase() != speechToTextId) continue;
       if (textToSpeechId != null && language.translatorId.toLowerCase() != textToSpeechId) continue;
-      result = language;
+      return language;
     }
-    return result;
+    return null;
   }
 
   @override
-  Future<List<Language>> getLangauges({bool? usePremiumTranslator}) async {
-    List<Language> result = [];
-    List<String> translatorIds = usePremiumTranslator == true
-        ? _premiumTranslatorDataSource.translatorLanguages.keys.toList()
-        : _freeTranslatorDataSource.translatorLanguages.keys.toList();
-    Map<String, String> speechToTextMap = await _getSpeechToTextMap();
-    List<String> textToSpeechIds = await _textToSpeechDataSource.getLanguages();
-    for (String translatorId in translatorIds) {
-      String speechToTextId = speechToTextMap.keys.toList().firstWhere(
-            (id) => id.toLowerCase().startsWith(translatorId.toLowerCase()),
-            orElse: () => "",
-          );
-      String textToSpeechId = textToSpeechIds.firstWhere(
-        (id) => id.toLowerCase().startsWith(translatorId.toLowerCase()),
-        orElse: () => "",
-      );
-      if (speechToTextId == "" || textToSpeechId == "") continue;
-      result.add(
-        Language(
-            name: (speechToTextMap[speechToTextId] ?? "Unknown").split(" (").first,
-            translatorId: translatorId,
-            speechToTextId: speechToTextId,
-            textToSpeechId: textToSpeechId),
-      );
-    }
-    result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
-    return result;
-  }
-
-  Future<Map<String, String>> _getSpeechToTextMap() async {
-    List<LocaleName> locales = await _speechToTextDataSource.getLocales();
-
-    Map<String, String> result = {};
-    for (LocaleName locale in locales) {
-      result[locale.localeId] = locale.name;
-    }
-    return result;
+  Future<List<Language>> getAvailableLanguages() async {
+    return await _getCachedLanguagesOrLoad();
   }
 }

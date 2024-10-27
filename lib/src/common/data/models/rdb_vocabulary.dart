@@ -1,17 +1,15 @@
 import 'package:vocabualize/constants/due_algorithm_constants.dart';
-import 'package:vocabualize/src/common/data/models/rdb_language.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary_image.dart';
-import 'package:vocabualize/src/common/data/models/rdb_tag.dart';
 import 'package:vocabualize/src/common/data/models/rdb_user.dart';
 
 class RdbVocabulary {
-  final String id;
+  final String? id;
   final RdbUser user;
   final String source;
   final String target;
-  final RdbLanguage sourceLanguage;
-  final RdbLanguage targetLanguage;
-  final List<RdbTag> tags;
+  final String sourceLanguageId;
+  final String targetLanguageId;
+  final List<String> tagIds;
   final RdbCustomImage? customImage;
   final RdbStockImage? stockImage;
   final double levelValue;
@@ -23,13 +21,13 @@ class RdbVocabulary {
   final String updated;
 
   const RdbVocabulary({
-    this.id = "",
+    this.id,
     this.user = const RdbUser(),
     this.source = "",
     this.target = "",
-    this.sourceLanguage = const RdbLanguage(),
-    this.targetLanguage = const RdbLanguage(),
-    this.tags = const [],
+    this.sourceLanguageId = "",
+    this.targetLanguageId = "",
+    this.tagIds = const [],
     this.customImage,
     this.stockImage,
     this.levelValue = 0.0,
@@ -46,9 +44,9 @@ class RdbVocabulary {
     RdbUser? user,
     String? source,
     String? target,
-    RdbLanguage? sourceLanguage,
-    RdbLanguage? targetLanguage,
-    List<RdbTag>? tags,
+    String? sourceLanguageId,
+    String? targetLanguageId,
+    List<String>? tagIds,
     RdbCustomImage? customImage,
     RdbStockImage? stockImage,
     double? levelValue,
@@ -64,9 +62,9 @@ class RdbVocabulary {
       user: user ?? this.user,
       source: source ?? this.source,
       target: target ?? this.target,
-      sourceLanguage: sourceLanguage ?? this.sourceLanguage,
-      targetLanguage: targetLanguage ?? this.targetLanguage,
-      tags: tags ?? this.tags,
+      sourceLanguageId: sourceLanguageId ?? this.sourceLanguageId,
+      targetLanguageId: targetLanguageId ?? this.targetLanguageId,
+      tagIds: tagIds ?? this.tagIds,
       customImage: customImage ?? this.customImage,
       stockImage: stockImage ?? this.stockImage,
       levelValue: levelValue ?? this.levelValue,
@@ -81,6 +79,6 @@ class RdbVocabulary {
 
   @override
   String toString() {
-    return 'RdbVocabulary(id: $id, user: $user, source: $source, target: $target, sourceLanguage: $sourceLanguage, targetLanguage: $targetLanguage, tags: $tags, customImage: $customImage, stockImage: $stockImage, levelValue: $levelValue, isNovice: $isNovice, interval: $interval, ease: $ease, nextDate: $nextDate, created: $created, updated: $updated)';
+    return 'RdbVocabulary(id: $id, user: $user, source: $source, target: $target, sourceLanguageId: $sourceLanguageId, targetLanguageId: $targetLanguageId, tagIds: $tagIds, customImage: $customImage, stockImage: $stockImage, levelValue: $levelValue, isNovice: $isNovice, interval: $interval, ease: $ease, nextDate: $nextDate, created: $created, updated: $updated)';
   }
 }

@@ -106,16 +106,26 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
     _remoteDatabaseDataSource.getVocabularies().then((rdbVocabularies) {
       final vocabularies = rdbVocabularies.map((rdbVocabulary) {
         final vocabulary = rdbVocabulary.copyWith(
-          tags: tags.where((tag) {
-            return rdbVocabulary.tags.map((t) => t.id).contains(tag.id);
-          }).toList(),
+          tagIds: tags
+              .where((tag) {
+                return rdbVocabulary.tagIds.contains(tag.id);
+              })
+              .toList()
+              .map((tag) => tag.id)
+              .toList(),
           // TODO: Check if language equalation in vocabulary repo works or if this will return null/default lang
-          sourceLanguage: languages.where((language) {
-            return language.id == rdbVocabulary.sourceLanguage.id;
-          }).firstOrNull,
-          targetLanguage: languages.where((language) {
-            return language.id == rdbVocabulary.targetLanguage.id;
-          }).firstOrNull,
+          sourceLanguageId: languages
+              .where((language) {
+                return language.id == rdbVocabulary.sourceLanguageId;
+              })
+              .firstOrNull
+              ?.id,
+          targetLanguageId: languages
+              .where((language) {
+                return language.id == rdbVocabulary.targetLanguageId;
+              })
+              .firstOrNull
+              ?.id,
         );
         return vocabulary.toVocabulary();
       }).toList();
@@ -130,7 +140,7 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
     Log.debug("getVocabulariesToPractise() = ${latestVocabularies.length}");
     return latestVocabularies.where((vocabulary) {
       final isDue = vocabulary.nextDate.isBefore(DateTime.now());
-      final containsTag = tag == null || vocabulary.tags.contains(tag);
+      final containsTag = tag == null || vocabulary.tagIds.contains(tag.id);
       return isDue && containsTag;
     }).toList();
   }
@@ -141,15 +151,15 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
     if (latestVocabularies.isEmpty) return false;
     final firstVocabulary = tag != null
         ? latestVocabularies.firstWhere(
-            (vocabulary) => vocabulary.tags.contains(tag),
+            (vocabulary) => vocabulary.tagIds.contains(tag.id),
             orElse: () => Vocabulary(),
           )
         : latestVocabularies.first;
     return latestVocabularies.any((vocabulary) {
-      final containsTag = tag == null || vocabulary.tags.contains(tag);
-      final hasDifferentSourceLangauge = vocabulary.sourceLanguage != firstVocabulary.sourceLanguage;
-      final hasDifferentTargetLangauge = vocabulary.targetLanguage != firstVocabulary.targetLanguage;
-      return containsTag && (hasDifferentSourceLangauge || hasDifferentTargetLangauge);
+      final containsTag = tag == null || vocabulary.tagIds.contains(tag.id);
+      final hasDifferentSourceLanguage = vocabulary.sourceLanguageId != firstVocabulary.sourceLanguageId;
+      final hasDifferentTargetLanguage = vocabulary.targetLanguageId != firstVocabulary.targetLanguageId;
+      return containsTag && (hasDifferentSourceLanguage || hasDifferentTargetLanguage);
     });
   }
 
@@ -174,7 +184,7 @@ extension on List<Vocabulary> {
   List<Vocabulary> filterByTag(Tag? tag) {
     if (tag == null) return this;
     return where((vocabulary) {
-      return vocabulary.tags.contains(tag);
+      return vocabulary.tagIds.contains(tag.id);
     }).toList();
   }
 }

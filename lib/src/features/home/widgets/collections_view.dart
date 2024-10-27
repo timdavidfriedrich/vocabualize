@@ -51,7 +51,7 @@ class CollectionsView extends StatelessWidget {
                     }
                     final tag = firstTags.elementAt(index - 1);
                     final tagVocabularies = state.vocabularies.where((element) {
-                      return element.tags.contains(tag);
+                      return element.tagIds.contains(tag.id);
                     }).toList();
                     return Padding(
                       padding: const EdgeInsets.only(left: 8),
@@ -80,7 +80,7 @@ class CollectionsView extends StatelessWidget {
                     }
                     final tag = secondTags.elementAt(index - 1);
                     final tagVocabularies = state.vocabularies.where((element) {
-                      return element.tags.contains(tag);
+                      return element.tagIds.contains(tag.id);
                     }).toList();
                     return Padding(
                       padding: const EdgeInsets.only(left: 8),

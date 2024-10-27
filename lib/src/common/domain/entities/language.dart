@@ -1,10 +1,10 @@
-import 'package:pocketbase/pocketbase.dart';
 import 'package:uuid/uuid.dart';
 
 class Language {
   final String id;
   final String name;
   final String translatorId;
+  final String premiumTranslatorId;
   final String speechToTextId;
   final String textToSpeechId;
   final DateTime? created;
@@ -14,35 +14,31 @@ class Language {
     String? id,
     required this.name,
     required this.translatorId,
+    required this.premiumTranslatorId,
     required this.speechToTextId,
     required this.textToSpeechId,
     this.created,
     this.updated,
   }) : id = id ?? "language--${const Uuid().v4()}";
 
-  Language.fromJson(Map<String, dynamic> json)
-      : id = json['id'] ?? "empty_id",
-        name = json['name'],
-        translatorId = json['translatorId'],
-        speechToTextId = json['speechToTextId'],
-        textToSpeechId = json['textToSpeechId'],
-        created = json['created'] != null ? DateTime.parse(json['created']) : null,
-        updated = json['updated'] != null ? DateTime.parse(json['updated']) : null;
-
-  Language.fromRecord(RecordModel recordModel)
-      : id = recordModel.id,
-        name = recordModel.data['name'] ?? "",
-        translatorId = recordModel.data['translatorId'] ?? "",
-        speechToTextId = recordModel.data['speechToTextId'] ?? "",
-        textToSpeechId = recordModel.data['textToSpeechId'] ?? "",
-        created = DateTime.tryParse(recordModel.created),
-        updated = DateTime.tryParse(recordModel.updated);
-
   /// TODO: apply device language for name (to have the correct language on init)
   /// => Maybe setting this at onboarding will be enough
-  factory Language.english() => Language(name: "English", translatorId: "en", speechToTextId: "en_AU", textToSpeechId: "en-US");
+  factory Language.english() => Language(
+      id: "l4ucqbw6jc5i7bj",
+      name: "English",
+      translatorId: "en",
+      premiumTranslatorId: "EN-US",
+      speechToTextId: "en_US",
+      textToSpeechId: "en-US");
+  factory Language.spanish() => Language(
+      id: "m6m3nliuhu85xny",
+      name: "Spanish",
+      translatorId: "es",
+      premiumTranslatorId: "ES",
+      speechToTextId: "es_ES",
+      textToSpeechId: "es-ES");
   factory Language.defaultSource() => Language.english();
-  factory Language.defaultTarget() => Language(name: "Spanish", translatorId: "es", speechToTextId: "es_AR", textToSpeechId: "es-ES");
+  factory Language.defaultTarget() => Language.spanish();
 
   @override
   // ignore: hash_and_equals
@@ -56,7 +52,7 @@ class Language {
 
   @override
   String toString() {
-    return "Language(id: $id, name: $name, translatorId: $translatorId, speechToTextId: $speechToTextId, "
+    return "Language(id: $id, name: $name, translatorId: $translatorId, premiumTranslatorId: $premiumTranslatorId, speechToTextId: $speechToTextId, "
         "textToSpeechId: $textToSpeechId, created: $created, updated: $updated)";
   }
 }

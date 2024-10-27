@@ -28,9 +28,10 @@ class _AddTagDialogState extends ConsumerState<AddTagDialog> {
       /// ?: add directly to vocabulary, or just to list first and confirm with save
       final text = _controller.text;
       if (text.isNotEmpty) {
+        // TODO ARCHITECTURE: This tag's id doesn't match database. First, save tag, then use its id.
         final tag = Tag(name: text.trim());
         final updatedVocabulary = widget.vocabulary.copyWith(
-          tags: [...widget.vocabulary.tags, tag],
+          tagIds: [...widget.vocabulary.tagIds, tag.id],
         );
         ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
       }

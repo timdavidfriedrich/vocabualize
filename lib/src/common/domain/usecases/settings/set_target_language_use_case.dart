@@ -27,7 +27,7 @@ class SetTargetLanguageUseCase {
         _textToSpeechRepository = textToSpeechRepository;
 
   Future<void> call(Language language) {
-    _textToSpeechRepository.setLanguage(language);
+    _textToSpeechRepository.setLanguage(language.textToSpeechId);
     return _settingsRepository.setTargetLanguage(language);
   }
 }

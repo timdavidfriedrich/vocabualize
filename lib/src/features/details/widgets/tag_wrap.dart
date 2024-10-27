@@ -24,14 +24,14 @@ class TagWrap extends ConsumerWidget {
     }
 
     void toggleTag(Tag tag) {
-      if (vocabulary.tags.contains(tag)) {
+      if (vocabulary.tagIds.contains(tag.id)) {
         final updatedVocabulary = vocabulary.copyWith(
-          tags: vocabulary.tags.where((t) => t != tag).toList(),
+          tagIds: vocabulary.tagIds.where((id) => id != tag.id).toList(),
         );
         ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
       } else {
         final updatedVocabulary = vocabulary.copyWith(
-          tags: [...vocabulary.tags, tag],
+          tagIds: [...vocabulary.tagIds, tag.id],
         );
         ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
       }
@@ -59,10 +59,10 @@ class TagWrap extends ConsumerWidget {
                 );
               }
               final tag = tags.elementAt(index);
-              final vocabularyTags = vocabulary.tags;
+              final vocabularyTags = vocabulary.tagIds;
               return FilterChip(
                 label: Text(tag.name),
-                backgroundColor: vocabularyTags.contains(tag) ? Theme.of(context).primaryColor : null,
+                backgroundColor: vocabularyTags.contains(tag.id) ? Theme.of(context).primaryColor : null,
                 onSelected: (enabled) => toggleTag(tag),
               );
             },

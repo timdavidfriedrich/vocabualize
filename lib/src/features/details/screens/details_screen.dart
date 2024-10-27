@@ -163,7 +163,7 @@ class DetailsScreen extends ConsumerWidget {
                                           },
                                           color: Theme.of(context).colorScheme.surface,
                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                          child: state.selectedImage is DraftImage
+                                          child: state.vocabulary.image is DraftImage
                                               ? Ink(
                                                   padding: EdgeInsets.zero,
                                                   decoration: BoxDecoration(
@@ -174,7 +174,7 @@ class DetailsScreen extends ConsumerWidget {
                                                     ),
                                                     image: DecorationImage(
                                                       fit: BoxFit.cover,
-                                                      image: state.selectedImage!.getImageProvider(),
+                                                      image: state.vocabulary.image.getImageProvider(),
                                                     ),
                                                   ),
                                                   child: Center(
@@ -205,7 +205,7 @@ class DetailsScreen extends ConsumerWidget {
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(16),
                                                     border: state.stockImages.elementAt(index + state.firstStockImageIndex - 1) !=
-                                                            state.selectedImage
+                                                            state.vocabulary.image
                                                         ? null
                                                         : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
                                                     image: DecorationImage(
@@ -219,7 +219,7 @@ class DetailsScreen extends ConsumerWidget {
                                                     ),
                                                   ),
                                                   child: state.stockImages.elementAt(index + state.firstStockImageIndex - 1) !=
-                                                          state.selectedImage
+                                                          state.vocabulary.image
                                                       ? null
                                                       : Center(
                                                           child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onSurface),
@@ -253,7 +253,7 @@ class DetailsScreen extends ConsumerWidget {
                                     ref.read(detailsControllerProvider(vocabulary).notifier).save(context);
                                   },
                                   child: Text(
-                                    state.selectedImage == null
+                                    state.vocabulary.image is FallbackImage
                                         ? AppLocalizations.of(context)?.record_addDetails_saveWithoutButton ?? ""
                                         : AppLocalizations.of(context)?.record_addDetails_saveButton ?? "",
                                   ),

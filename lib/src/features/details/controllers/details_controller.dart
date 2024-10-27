@@ -17,8 +17,6 @@ final detailsControllerProvider = AutoDisposeAsyncNotifierProviderFamily<Details
   return DetailsController();
 });
 
-// TODO: When changing state, change the state of the vocabulary (instead of selectedImage, use vocabulary.image) ??
-
 class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Vocabulary> {
   @override
   Future<DetailsState> build(Vocabulary arg) async {
@@ -26,7 +24,6 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
     return DetailsState(
       vocabulary: vocabulary,
       stockImages: await _getStockImages(vocabulary),
-      selectedImage: vocabulary.image is FallbackImage ? null : vocabulary.image,
       areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
     );
   }
@@ -58,19 +55,23 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
     state.whenData((value) async {
       // TODO: Is loading necessary then getting a draft image?
       state = const AsyncLoading();
-      final image = await ref.read(getDraftImageUseCaseProvider.future);
-      if (image != null) {
-        state = AsyncData(value.copyWith(selectedImage: image));
+      final newImage = await ref.read(getDraftImageUseCaseProvider.future);
+      if (newImage != null) {
+        state = AsyncData(value.copyWith(
+          vocabulary: value.vocabulary.copyWith(image: newImage),
+        ));
       }
     });
   }
 
   Future<void> openPhotographerLink() async {
     state.whenData((value) async {
-      final imageUrl = value.selectedImage?.url;
-      if (imageUrl == null) return;
+      final image = value.vocabulary.image;
+      if (image is! StockImage) return;
+      final photographerUrl = image.photographerUrl;
+      if (photographerUrl == null) return;
       await launchUrl(
-        Uri.parse(imageUrl),
+        Uri.parse(photographerUrl),
         mode: LaunchMode.externalApplication,
       );
     });
@@ -79,12 +80,12 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   void selectOrUnselectImage(VocabularyImage? image) {
     if (image == null) return;
     state.whenData((value) {
-      if (value.selectedImage == image) {
-        state = AsyncData(value.copyWith(selectedImage: null));
-      } else {
-        state = AsyncData(value.copyWith(vocabulary: value.vocabulary.copyWith(image: image)));
-        //state = AsyncData(value.copyWith(selectedImage: image));
-      }
+      final newImage = value.vocabulary.image == image ? const FallbackImage() : image;
+      state = AsyncData(
+        value.copyWith(
+          vocabulary: value.vocabulary.copyWith(image: newImage),
+        ),
+      );
     });
   }
 

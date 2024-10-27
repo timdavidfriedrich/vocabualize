@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/usecases/language/get_language_by_id_use_case.dart';
 import 'package:vocabualize/src/features/home/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/controllers/practise_controller.dart';
 import 'package:vocabualize/src/features/practise/screens/practise_done_screen.dart';
@@ -38,6 +39,14 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Future<String> getMultilingualLabel(PractiseState state) async {
+      final currentVocabulary = state.currentVocabulary;
+      final getLanguageById = ref.read(getLanguageByIdUseCaseProvider);
+      final currentSourceLanguage = await getLanguageById(currentVocabulary.sourceLanguageId);
+      final currentTargetLanguage = await getLanguageById(currentVocabulary.targetLanguageId);
+      return "${currentSourceLanguage?.name}  ►  ${currentTargetLanguage?.name}";
+    }
+
     return ref.watch(practiseControllerProvider(tag)).when(
       loading: () {
         return const Center(
@@ -87,10 +96,18 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                     ),
                     const Spacer(),
                     if (state.isMultilingual)
-                      Text(
-                        "${state.currentVocabulary.sourceLanguage.name}  ►  ${state.currentVocabulary.targetLanguage.name}",
-                        style: TextStyle(color: Theme.of(context).hintColor),
-                        textAlign: TextAlign.center,
+                      FutureBuilder(
+                        future: getMultilingualLabel(state),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const SizedBox();
+                          }
+                          return Text(
+                            snapshot.data ?? "",
+                            style: TextStyle(color: Theme.of(context).hintColor),
+                            textAlign: TextAlign.center,
+                          );
+                        },
                       ),
                     const SizedBox(height: 12),
                     if (!state.areImagesDisabled || state.isSolutionShown)

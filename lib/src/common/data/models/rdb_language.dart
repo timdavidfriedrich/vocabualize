@@ -2,6 +2,7 @@ class RdbLanguage {
   final String id;
   final String name;
   final String translatorId;
+  final String premiumTranslatorId;
   final String speechToTextId;
   final String textToSpeechId;
   final String? created;
@@ -11,6 +12,7 @@ class RdbLanguage {
     this.id = "",
     this.name = "",
     this.translatorId = "",
+    this.premiumTranslatorId = "",
     this.speechToTextId = "",
     this.textToSpeechId = "",
     this.created = "",

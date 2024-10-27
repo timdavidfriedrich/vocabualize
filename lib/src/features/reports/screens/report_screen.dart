@@ -65,8 +65,8 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
         report = TranslationReport(
           source: vocabulary!.source,
           target: vocabulary!.target,
-          sourceLanguage: vocabulary!.sourceLanguage,
-          targetLanguage: vocabulary!.targetLanguage,
+          sourceLanguageId: vocabulary!.sourceLanguageId,
+          targetLanguageId: vocabulary!.targetLanguageId,
           description: text,
         );
       } else {
