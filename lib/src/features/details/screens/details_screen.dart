@@ -235,18 +235,20 @@ class DetailsScreen extends ConsumerWidget {
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.all(12),
-                                  backgroundColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
-                                  foregroundColor: Theme.of(context).colorScheme.error,
+                              if (state.vocabulary.id != null) ...[
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.all(12),
+                                    backgroundColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                                    foregroundColor: Theme.of(context).colorScheme.error,
+                                  ),
+                                  onPressed: () {
+                                    ref.read(deleteVocabularyUseCaseProvider(vocabulary));
+                                  },
+                                  child: const Icon(Icons.delete_rounded),
                                 ),
-                                onPressed: () {
-                                  ref.read(deleteVocabularyUseCaseProvider(vocabulary));
-                                },
-                                child: const Icon(Icons.delete_rounded),
-                              ),
-                              const SizedBox(width: 12),
+                                const SizedBox(width: 12),
+                              ],
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
