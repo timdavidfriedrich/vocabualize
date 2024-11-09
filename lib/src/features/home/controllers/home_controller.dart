@@ -22,17 +22,20 @@ final homeControllerProvider = AutoDisposeAsyncNotifierProvider<HomeController, 
 });
 
 class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
-  List<Vocabulary> _vocabularies = [];
   @override
   Future<HomeState> build() async {
+    List<Vocabulary> vocabularies = [];
     final getVocabularies = ref.watch(getVocabulariesUseCaseProvider(null));
     getVocabularies.when(
-      loading: () {},
-      error: (_, __) {},
-      data: (vocabularies) => _vocabularies = vocabularies,
+      loading: () => state = const AsyncLoading(),
+      error: (error, stackTrace) => state = AsyncError(error, stackTrace),
+      data: (data) {
+        return vocabularies = data;
+      },
     );
     return HomeState(
-      vocabularies: _vocabularies,
+      isStillLoading: true,
+      vocabularies: vocabularies,
       tags: await ref.watch(getAllTagsUseCaseProvider.future),
       areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
     );
@@ -44,10 +47,16 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
   }
 
   List<Vocabulary> getVocabulariesToPracise({Tag? tag}) {
-    return _vocabularies.where((vocabulary) {
-      if (tag == null) return vocabulary.isDue;
-      return vocabulary.isDue && vocabulary.tagIds.contains(tag.id);
-    }).toList();
+    state.whenData((data) {});
+    return state.maybeWhen(
+      data: (data) {
+        return data.vocabularies.where((vocabulary) {
+          if (tag == null) return vocabulary.isDue;
+          return vocabulary.isDue && vocabulary.tagIds.contains(tag.id);
+        }).toList();
+      },
+      orElse: () => [],
+    );
   }
 
   void showVocabularyInfo(Vocabulary vocabulary) {
