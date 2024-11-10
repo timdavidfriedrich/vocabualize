@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/features/home/controllers/home_controller.dart';
 import 'package:vocabualize/src/features/home/states/home_state.dart';
 
@@ -52,7 +53,11 @@ class NewVocabularyCard extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(16),
                 child: Image(
                   image: NetworkImage(
-                    vocabulary.image.url,
+                    // TODO: Make it easiert and safer to get size variants of images (NewVocabularyCard), also replace this if image getter
+                    vocabulary.image is StockImage
+                        ? (vocabulary.image as StockImage).sizeVariants?.entries.firstWhere((e) => e.key == "medium").value ??
+                            vocabulary.image.url
+                        : vocabulary.image.url,
                   ),
                   fit: BoxFit.cover,
                 ),
