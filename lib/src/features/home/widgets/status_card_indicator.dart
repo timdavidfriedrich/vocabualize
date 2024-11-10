@@ -43,6 +43,9 @@ class _StatusCardIndicatorState extends ConsumerState<StatusCardIndicator> {
   @override
   Widget build(BuildContext context) {
     final voabulariesToPractise = ref.watch(homeControllerProvider.notifier).getVocabulariesToPracise();
+    if (voabulariesToPractise.isEmpty) {
+      return widget.parent;
+    }
     return Stack(
       clipBehavior: Clip.none,
       children: [
