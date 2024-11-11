@@ -5,9 +5,9 @@ import 'package:vocabualize/src/common/domain/entities/app_user.dart';
 import 'package:vocabualize/src/common/domain/usecases/authentication/get_current_user_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/notification/init_cloud_notifications_use_case.dart';
 import 'package:vocabualize/src/common/domain/usecases/notification/init_local_notifications_use_case.dart';
-import 'package:vocabualize/src/features/home/screens/home_screen.dart';
-import 'package:vocabualize/src/features/onboarding/screens/verify_screen.dart';
-import 'package:vocabualize/src/features/onboarding/screens/welcome_screen.dart';
+import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
+import 'package:vocabualize/src/features/onboarding/presentation/screens/verify_screen.dart';
+import 'package:vocabualize/src/features/onboarding/presentation/screens/welcome_screen.dart';
 
 class Start extends ConsumerWidget {
   static const routeName = "/";

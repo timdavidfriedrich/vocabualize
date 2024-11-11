@@ -3,7 +3,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:vocabualize/src/features/record/providers/active_provider.dart';
+import 'package:vocabualize/src/features/record/presentation/providers/active_provider.dart';
 
 final speechToTextDataSourceProvider = Provider((ref) => SpeechToTextDataSource());
 

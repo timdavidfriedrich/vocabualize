@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:log/log.dart';
 import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
-import 'package:vocabualize/src/features/details/widgets/camera_gallery_dialog.dart';
+import 'package:vocabualize/src/features/details/presentation/widgets/camera_gallery_dialog.dart';
 
 final draftImageDataSourceProvider = Provider((ref) => DraftImageDataSource());
 

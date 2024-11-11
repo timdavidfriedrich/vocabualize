@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vocabualize/src/features/reports/utils/report_type.dart';
+import 'package:vocabualize/src/features/reports/domain/entities/report_type.dart';
 
 // TODO ARCHITECTURE: Check if Report class is fine
 class Report {
