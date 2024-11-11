@@ -12,6 +12,7 @@ import 'package:vocabualize/src/common/data/mappers/tag_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_mappers.dart';
 import 'package:vocabualize/src/common/data/models/rdb_bug_report.dart';
 import 'package:vocabualize/src/common/data/models/rdb_language.dart';
+import 'package:vocabualize/src/common/data/models/rdb_event_type.dart';
 import 'package:vocabualize/src/common/data/models/rdb_tag.dart';
 import 'package:vocabualize/src/common/data/models/rdb_translation_report.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary.dart';
@@ -118,9 +119,56 @@ class RemoteDatabaseDataSource {
     final String? userFilter = userId != null ? "$_userFieldName=\"$userId\"" : null;
     final String filter = [userFilter, tagFilter, searchFilter].nonNulls.join(" AND ");
 
-    return pocketbase.collection(_vocabulariesCollectionName).getList(filter: filter).then((value) async {
-      return value.items.map((RecordModel record) => record.toRdbVocabulary()).toList();
+    return pocketbase.collection(_vocabulariesCollectionName).getFullList(filter: filter).then((value) async {
+      return value.map((RecordModel record) => record.toRdbVocabulary()).toList();
     });
+  }
+
+  void subscribeToVocabularyChanges(Function(RdbEventType type, RdbVocabulary rdbVocabulary) onEvent, {String? userId}) async {
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+
+    // ? Unsubscribe from previous subscriptions
+    // * (could lead to bugs, if different subscriptions with other topics are used)
+    try {
+      pocketbase.collection(_vocabulariesCollectionName).unsubscribe("*");
+    } catch (e) {
+      Log.error("Failed to unsubscribe from previous vocabulary subscriptions.", exception: e);
+    }
+
+    final String? userFilter = userId == null ? null : "$_userFieldName=\"$userId\"";
+
+    pocketbase.collection(_vocabulariesCollectionName).subscribe("*", filter: userFilter, (RecordSubscriptionEvent event) {
+      // TODO: Add user filter for vocabulary changes (.subscribe has a parameter for this)
+      final eventType = switch (event.action) {
+        "create" => RdbEventType.create,
+        "update" => RdbEventType.update,
+        "delete" => RdbEventType.delete,
+        _ => null,
+      };
+      if (eventType == null) return;
+      final vocabulary = event.record?.toRdbVocabulary();
+      if (vocabulary != null) {
+        onEvent(eventType, vocabulary);
+      }
+    });
+  }
+
+  Stream<List<RdbVocabulary>> getVocabularyStream({
+    String? searchTerm,
+    Tag? tag,
+    String? userId,
+  }) async* {
+    final controller = StreamController<List<RdbVocabulary>>();
+
+    yield await getVocabularies(searchTerm: searchTerm, tag: tag, userId: userId);
+
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+    pocketbase.collection(_vocabulariesCollectionName).subscribe("*", (event) async {
+      final vocabularies = await getVocabularies(searchTerm: searchTerm, tag: tag, userId: userId);
+      controller.add(vocabularies);
+    });
+
+    yield* controller.stream;
   }
 
   Future<void> addVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {

@@ -7,10 +7,7 @@ abstract interface class VocabularyRepository {
   Future<void> deleteAllLocalVocabularies();
   Future<void> deleteAllVocabularies();
   Future<void> deleteVocabulary(Vocabulary vocabulary);
-  Stream<List<Vocabulary>> getNewVocabularies();
-  // TODO: Add filter and sort options
-  Stream<List<Vocabulary>> getVocabularies(FilterOptions? filterOptions);
-  Future<List<Vocabulary>> getVocabulariesToPractise({Tag? tag});
+  Stream<List<Vocabulary>> getVocabularies({FilterOptions? filterOptions});
   Future<bool> isCollectionMultilingual({Tag? tag});
   Future<void> updateVocabulary(Vocabulary vocabulary);
 }

@@ -4,12 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_mappers.dart';
-import 'package:vocabualize/src/common/data/models/rdb_language.dart';
+import 'package:vocabualize/src/common/data/models/rdb_event_type.dart';
 import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
+
+final vocabularyProvider = StreamProviderFamily<List<Vocabulary>, FilterOptions?>((ref, FilterOptions? filterOptions) {
+  final vocabularyRepository = ref.watch(vocabularyRepositoryProvider);
+  return vocabularyRepository.getVocabularies(filterOptions: filterOptions);
+});
 
 final vocabularyRepositoryProvider = Provider((ref) {
   return VocabularyRepositoryImpl(
@@ -22,17 +27,71 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
 
   VocabularyRepositoryImpl({
     required RemoteDatabaseDataSource remoteDatabaseDataSource,
-  }) : _remoteDatabaseDataSource = remoteDatabaseDataSource {
-    _loadVocabularies();
+  }) : _remoteDatabaseDataSource = remoteDatabaseDataSource;
+
+  // ? Should this stream controller be disposed somewhere? Or is it automatically disposed when repo is disposed?
+  StreamController<List<Vocabulary>> _cachedStreamController = StreamController<List<Vocabulary>>.broadcast();
+  List<Vocabulary> _cachedVocabularies = [];
+
+  void _dispatchCache() {
+    _cachedStreamController.sink.add(_cachedVocabularies);
   }
 
-  StreamController<List<Vocabulary>> _streamController = StreamController<List<Vocabulary>>.broadcast();
-  Stream<List<Vocabulary>> get _stream => _streamController.stream;
+  @override
+  Stream<List<Vocabulary>> getVocabularies({FilterOptions? filterOptions}) {
+    final filteredStream = _getStreamAndLoadIfNecessary().map((vocabularies) {
+      return vocabularies.filterBySearchTerm(filterOptions?.searchTerm).filterByTag(filterOptions?.tag);
+    });
+    return filteredStream;
+  }
 
-  List<RdbLanguage> _availableLanguages = [];
+  Stream<List<Vocabulary>> _getStreamAndLoadIfNecessary() {
+    if (_cachedStreamController.isClosed) {
+      _cachedStreamController = StreamController<List<Vocabulary>>.broadcast();
+      Log.warning("Attempted to add data to a closed StreamController. Controller reinitialized.");
+    }
+    if (!_cachedStreamController.hasListener) {
+      Log.debug("No listener found.");
+    }
+    if (_cachedVocabularies.isEmpty) {
+      Log.debug("No cached vocabularies. Will load.");
+      _loadVocabularies();
+    }
+    return _cachedStreamController.stream;
+  }
 
-  void dispose() {
-    _streamController.close();
+  Future<void> _loadVocabularies() async {
+    _remoteDatabaseDataSource.getVocabularies().then((rdbVocabularies) {
+      final vocabularies = rdbVocabularies.map((rdbVocabulary) {
+        return rdbVocabulary.toVocabulary();
+      }).toList();
+      _cachedVocabularies = vocabularies;
+      _dispatchCache();
+    });
+    _subscribeToChanges();
+  }
+
+  void _subscribeToChanges() {
+    _remoteDatabaseDataSource.subscribeToVocabularyChanges((type, rdbVocabulary) async {
+      final vocabulary = rdbVocabulary.toVocabulary();
+      switch (type) {
+        case RdbEventType.create:
+          _cachedVocabularies.add(vocabulary);
+          break;
+        case RdbEventType.update:
+          final index = _cachedVocabularies.indexWhere((v) => v.id == vocabulary.id);
+          if (index != -1) {
+            _cachedVocabularies[index] = vocabulary;
+          }
+          break;
+        case RdbEventType.delete:
+          _cachedVocabularies.removeWhere((v) => v.id == vocabulary.id);
+          break;
+        default:
+          break;
+      }
+      _dispatchCache();
+    });
   }
 
   @override
@@ -45,122 +104,19 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
   }
 
   @override
+  Future<void> deleteAllVocabularies() {
+    return _remoteDatabaseDataSource.deleteAllVocabularies();
+  }
+
+  @override
   Future<void> deleteAllLocalVocabularies() {
     // TODO: implement deleteAllLocalVocabularies
     throw UnimplementedError();
   }
 
   @override
-  Future<void> deleteAllVocabularies() {
-    return _remoteDatabaseDataSource.deleteAllVocabularies();
-  }
-
-  @override
   Future<void> deleteVocabulary(Vocabulary vocabulary) async {
     _remoteDatabaseDataSource.deleteVocabulary(vocabulary.toRdbVocabulary());
-  }
-
-  @override
-  Stream<List<Vocabulary>> getNewVocabularies() {
-    return _stream.map((vocabularies) {
-      return vocabularies.where((vocabulary) {
-        return vocabulary.created.isAfter(DateTime.now().subtract(const Duration(days: 7)));
-      }).toList();
-    });
-  }
-
-  @override
-  Stream<List<Vocabulary>> getVocabularies(FilterOptions? filterOptions) {
-    final filteredStream = _getStreamAndLoadIfNecessary().map((vocabularies) {
-      return vocabularies.filterBySearchTerm(filterOptions?.searchTerm).filterByTag(filterOptions?.tag);
-    });
-    return filteredStream;
-  }
-
-  // !!! TODO: EINMAL REFACTORING BITTE, DANKE!
-  Stream<List<Vocabulary>> _getStreamAndLoadIfNecessary() {
-    if (_streamController.isClosed) {
-      _streamController = StreamController<List<Vocabulary>>.broadcast();
-      Log.warning("Attempted to add data to a closed StreamController. Controller reinitialized.");
-    }
-    if (!_streamController.hasListener) {
-      Log.debug("No listener found. Loading vocabulary data.");
-      _loadVocabularies();
-    }
-    return _stream;
-  }
-
-  // TODO: Move language caching to language repo
-  Future<List<RdbLanguage>> _getCachedRdbLanguagesOrFetch() async {
-    if (_availableLanguages.isEmpty) {
-      _availableLanguages = await _remoteDatabaseDataSource.getAvailabeLanguages();
-    }
-    return _availableLanguages;
-  }
-
-  Future<void> _loadVocabularies() async {
-    // TODO: Implement tag caching in tag repo. maybe with stream
-    // ? Maybe move this to use case then? => don't mix repos
-    final tags = await _remoteDatabaseDataSource.getTags();
-    final languages = await _getCachedRdbLanguagesOrFetch();
-    _remoteDatabaseDataSource.getVocabularies().then((rdbVocabularies) {
-      final vocabularies = rdbVocabularies.map((rdbVocabulary) {
-        final vocabulary = rdbVocabulary.copyWith(
-          tagIds: tags
-              .where((tag) {
-                return rdbVocabulary.tagIds.contains(tag.id);
-              })
-              .toList()
-              .map((tag) => tag.id)
-              .toList(),
-          // TODO: Check if language equalation in vocabulary repo works or if this will return null/default lang
-          sourceLanguageId: languages
-              .where((language) {
-                return language.id == rdbVocabulary.sourceLanguageId;
-              })
-              .firstOrNull
-              ?.id,
-          targetLanguageId: languages
-              .where((language) {
-                return language.id == rdbVocabulary.targetLanguageId;
-              })
-              .firstOrNull
-              ?.id,
-        );
-        return vocabulary.toVocabulary();
-      }).toList();
-      _streamController.sink.add(vocabularies);
-    });
-  }
-
-  @override
-  Future<List<Vocabulary>> getVocabulariesToPractise({Tag? tag}) async {
-    Log.debug("getVocabulariesToPractise(tag: $tag)");
-    final latestVocabularies = await _getStreamAndLoadIfNecessary().first;
-    Log.debug("getVocabulariesToPractise() = ${latestVocabularies.length}");
-    return latestVocabularies.where((vocabulary) {
-      final isDue = vocabulary.nextDate.isBefore(DateTime.now());
-      final containsTag = tag == null || vocabulary.tagIds.contains(tag.id);
-      return isDue && containsTag;
-    }).toList();
-  }
-
-  @override
-  Future<bool> isCollectionMultilingual({Tag? tag}) async {
-    final latestVocabularies = await _getStreamAndLoadIfNecessary().first;
-    if (latestVocabularies.isEmpty) return false;
-    final firstVocabulary = tag != null
-        ? latestVocabularies.firstWhere(
-            (vocabulary) => vocabulary.tagIds.contains(tag.id),
-            orElse: () => Vocabulary(),
-          )
-        : latestVocabularies.first;
-    return latestVocabularies.any((vocabulary) {
-      final containsTag = tag == null || vocabulary.tagIds.contains(tag.id);
-      final hasDifferentSourceLanguage = vocabulary.sourceLanguageId != firstVocabulary.sourceLanguageId;
-      final hasDifferentTargetLanguage = vocabulary.targetLanguageId != firstVocabulary.targetLanguageId;
-      return containsTag && (hasDifferentSourceLanguage || hasDifferentTargetLanguage);
-    });
   }
 
   @override
@@ -170,6 +126,23 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
       vocabulary.toRdbVocabulary(),
       draftImageToUpload: draftImage?.content,
     );
+  }
+
+  @override
+  Future<bool> isCollectionMultilingual({Tag? tag}) async {
+    if (_cachedVocabularies.isEmpty) return false;
+    final firstVocabulary = tag != null
+        ? _cachedVocabularies.firstWhere(
+            (vocabulary) => vocabulary.tagIds.contains(tag.id),
+            orElse: () => Vocabulary(),
+          )
+        : _cachedVocabularies.first;
+    return _cachedVocabularies.any((vocabulary) {
+      final containsTag = tag == null || vocabulary.tagIds.contains(tag.id);
+      final hasDifferentSourceLanguage = vocabulary.sourceLanguageId != firstVocabulary.sourceLanguageId;
+      final hasDifferentTargetLanguage = vocabulary.targetLanguageId != firstVocabulary.targetLanguageId;
+      return containsTag && (hasDifferentSourceLanguage || hasDifferentTargetLanguage);
+    });
   }
 }
 

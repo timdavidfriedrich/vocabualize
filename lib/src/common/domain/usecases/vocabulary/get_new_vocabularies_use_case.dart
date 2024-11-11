@@ -1,22 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/vocabulary_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-final getNewVocabulariesUseCaseProvider = AutoDisposeStreamProvider((ref) {
+final getNewVocabulariesUseCaseProvider = Provider((ref) {
   return GetNewVocabulariesUseCase(
-    vocabularyRepository: ref.watch(vocabularyRepositoryProvider),
+    vocabularies: ref.watch(vocabularyProvider(null)).asData?.value ?? [],
   ).call();
 });
 
 class GetNewVocabulariesUseCase {
-  final VocabularyRepository _vocabularyRepository;
+  final List<Vocabulary> _vocabularies;
 
   const GetNewVocabulariesUseCase({
-    required VocabularyRepository vocabularyRepository,
-  }) : _vocabularyRepository = vocabularyRepository;
+    required List<Vocabulary> vocabularies,
+  }) : _vocabularies = vocabularies;
 
-  Stream<List<Vocabulary>> call() {
-    return _vocabularyRepository.getNewVocabularies();
+  List<Vocabulary> call() {
+    return _vocabularies.reversed.where((vocabulary) => vocabulary.isNew).take(10).toList();
   }
 }

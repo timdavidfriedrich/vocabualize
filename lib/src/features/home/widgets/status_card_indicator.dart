@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/features/home/controllers/home_controller.dart';
+import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
 
 class StatusCardIndicator extends ConsumerStatefulWidget {
   final Widget parent;
@@ -42,7 +42,7 @@ class _StatusCardIndicatorState extends ConsumerState<StatusCardIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    final voabulariesToPractise = ref.watch(homeControllerProvider.notifier).getVocabulariesToPracise();
+    final voabulariesToPractise = ref.watch(getVocabulariesToPractiseUseCaseProvider(widget.tag));
     if (voabulariesToPractise.isEmpty) {
       return widget.parent;
     }

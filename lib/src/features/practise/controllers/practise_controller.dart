@@ -14,17 +14,16 @@ final practiseControllerProvider = AutoDisposeAsyncNotifierProviderFamily<Practi
 });
 
 class PractiseController extends AutoDisposeFamilyAsyncNotifier<PractiseState, Tag?> {
-  // TODO: Not sure if ref.read will work here.
   @override
   Future<PractiseState> build(Tag? arg) async {
-    state = const AsyncLoading();
-    final vocabulariesToPractise = await ref.read(getVocabulariesToPractiseUseCaseProvider(arg));
+    final tag = arg;
+    List<Vocabulary> vocabulariesToPractise = ref.read(getVocabulariesToPractiseUseCaseProvider(null));
     return PractiseState(
       initialVocabularyCount: vocabulariesToPractise.length,
       vocabulariesLeftToPractise: vocabulariesToPractise,
-      isMultilingual: await ref.watch(isCollectionMultilingualUseCaseProvider),
+      isMultilingual: await ref.read(isCollectionMultilingualUseCaseProvider(tag)),
       isSolutionShown: false,
-      areImagesDisabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
+      areImagesEnabled: await ref.read(getAreImagesEnabledUseCaseProvider.future),
     );
   }
 
@@ -48,7 +47,10 @@ class PractiseController extends AutoDisposeFamilyAsyncNotifier<PractiseState, T
     final answerVocabulary = ref.read(answerVocabularyUseCaseProvider);
     await answerVocabulary(vocabulary: vocabulary, answer: answer);
     final newState = previousState?.copyWith(
-      vocabulariesLeftToPractise: previousState.vocabulariesLeftToPractise.where((v) => v != vocabulary).toList(),
+      isSolutionShown: false,
+      vocabulariesLeftToPractise: previousState.vocabulariesLeftToPractise.where((v) {
+        return v != vocabulary;
+      }).toList(),
     );
     if (newState != null) {
       state = AsyncData(newState);
