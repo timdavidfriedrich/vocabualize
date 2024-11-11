@@ -32,6 +32,12 @@ class Vocabulary {
     return nextDate.isBefore(DateTime.now());
   }
 
+  bool get isNew {
+    return created.isAfter(
+      DateTime.now().subtract(const Duration(days: 7)),
+    );
+  }
+
   Vocabulary({
     this.id,
     this.source = "",
