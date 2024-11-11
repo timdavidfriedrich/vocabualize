@@ -5,14 +5,14 @@ class PractiseState {
   final List<Vocabulary> vocabulariesLeftToPractise;
   final bool isMultilingual;
   final bool isSolutionShown;
-  final bool areImagesDisabled;
+  final bool areImagesEnabled;
 
   const PractiseState({
     required this.initialVocabularyCount,
     required this.vocabulariesLeftToPractise,
     required this.isMultilingual,
     required this.isSolutionShown,
-    required this.areImagesDisabled,
+    required this.areImagesEnabled,
   });
 
   Vocabulary get currentVocabulary => vocabulariesLeftToPractise.first;
@@ -23,14 +23,14 @@ class PractiseState {
     List<Vocabulary>? vocabulariesLeftToPractise,
     bool? isMultilingual,
     bool? isSolutionShown,
-    bool? areImagesDisabled,
+    bool? areImagesEnabled,
   }) {
     return PractiseState(
       initialVocabularyCount: initialVocabularyCount ?? this.initialVocabularyCount,
       vocabulariesLeftToPractise: vocabulariesLeftToPractise ?? this.vocabulariesLeftToPractise,
       isMultilingual: isMultilingual ?? this.isMultilingual,
       isSolutionShown: isSolutionShown ?? this.isSolutionShown,
-      areImagesDisabled: areImagesDisabled ?? this.areImagesDisabled,
+      areImagesEnabled: areImagesEnabled ?? this.areImagesEnabled,
     );
   }
 }

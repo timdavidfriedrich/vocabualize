@@ -110,14 +110,14 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                         },
                       ),
                     const SizedBox(height: 12),
-                    if (!state.areImagesDisabled || state.isSolutionShown)
+                    if (state.areImagesEnabled || state.isSolutionShown)
                       Expanded(
                         flex: 2,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surface,
                             borderRadius: BorderRadius.circular(24),
-                            image: state.areImagesDisabled
+                            image: !state.areImagesEnabled
                                 ? null
                                 : DecorationImage(
                                     fit: BoxFit.cover,
