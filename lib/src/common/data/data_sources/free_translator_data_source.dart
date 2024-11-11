@@ -10,6 +10,9 @@ class FreeTranslatorDataSource {
     String? sourceLang,
   }) async {
     final translator = GoogleTranslator();
+    if (source.isEmpty) {
+      return "";
+    }
     final translation = await translator.translate(
       source,
       from: sourceLang ?? "auto",
