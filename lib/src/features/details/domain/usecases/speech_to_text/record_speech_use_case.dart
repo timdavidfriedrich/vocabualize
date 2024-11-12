@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/settings_repository_impl.dart';
-import 'package:vocabualize/src/common/data/repositories/speech_to_text_repository_impl.dart';
+import 'package:vocabualize/src/features/details/data/repositories/speech_to_text_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
-import 'package:vocabualize/src/common/domain/repositories/speech_to_text_repository.dart';
+import 'package:vocabualize/src/features/details/domain/repositories/speech_to_text_repository.dart';
 
 final recordSpeechUseCaseProvider = AutoDisposeProvider((ref) {
   return RecordSpeechUseCase(

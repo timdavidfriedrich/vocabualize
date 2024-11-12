@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/src/common/data/repositories/image_repository_impl.dart';
+import 'package:vocabualize/src/features/details/data/repositories/image_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
-import 'package:vocabualize/src/common/domain/repositories/image_repository.dart';
+import 'package:vocabualize/src/features/details/domain/repositories/image_repository.dart';
 
 final getDraftImageUseCaseProvider = AutoDisposeFutureProvider((ref) {
   return GetDraftImageUseCase(

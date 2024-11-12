@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/src/common/data/data_sources/text_to_speech_data_source.dart';
+import 'package:vocabualize/src/common/data/sources/text_to_speech_data_source.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/repositories/text_to_speech_repository.dart';
 

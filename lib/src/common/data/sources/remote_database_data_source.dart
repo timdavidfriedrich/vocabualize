@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
+import 'package:vocabualize/src/common/data/sources/remote_connection_client.dart';
 import 'package:vocabualize/src/common/data/mappers/language_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/report_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/tag_mappers.dart';

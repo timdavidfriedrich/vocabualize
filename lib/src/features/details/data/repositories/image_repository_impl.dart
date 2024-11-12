@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/src/common/data/data_sources/draft_image_data_source.dart';
-import 'package:vocabualize/src/common/data/data_sources/stock_image_data_source.dart';
+import 'package:vocabualize/src/features/details/data/sources/draft_image_data_source.dart';
+import 'package:vocabualize/src/features/details/data/sources/stock_image_data_source.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_image_mappers.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
-import 'package:vocabualize/src/common/domain/repositories/image_repository.dart';
+import 'package:vocabualize/src/features/details/domain/repositories/image_repository.dart';
 
 final imageRepositoryProvider = Provider((ref) {
   return ImageRepositoryImpl(
