@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/settings_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
-import 'package:vocabualize/src/common/domain/usecases/settings/get_use_premium_translator_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/settings/get_use_premium_translator_use_case.dart';
 
 final setUsePremiumTranslatorUseCaseProvider = AutoDisposeFutureProvider.family((ref, bool value) {
   ref.onDispose(() {

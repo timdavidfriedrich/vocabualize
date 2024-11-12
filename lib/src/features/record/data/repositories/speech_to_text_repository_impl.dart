@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:vocabualize/src/features/record/data/sources/speech_to_text_data_source.dart';
-import 'package:vocabualize/src/features/details/domain/repositories/speech_to_text_repository.dart';
+import 'package:vocabualize/src/features/record/data/data_sources/speech_to_text_data_source.dart';
+import 'package:vocabualize/src/features/record/domain/repositories/speech_to_text_repository.dart';
 
 final speechToTextRepositoryProvider = Provider((ref) {
   return SpeechToTextRepositoryImpl(

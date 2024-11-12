@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/domain/usecases/language/get_language_by_id_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/language/get_language_by_id_use_case.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/presentation/controllers/practise_controller.dart';
 import 'package:vocabualize/src/features/practise/presentation/screens/practise_done_screen.dart';

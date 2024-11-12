@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/settings_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
-import 'package:vocabualize/src/common/domain/usecases/settings/get_practise_notification_time_use_dart.dart';
+import 'package:vocabualize/src/common/domain/use_cases/settings/get_gather_notification_time_use_case.dart';
 
-final setPractiseNotificationTimeUseCaseProvider = AutoDisposeProvider.family((ref, TimeOfDay time) {
+final setGatherNotificationTimeUseCaseProvider = AutoDisposeProvider.family((ref, TimeOfDay time) {
   ref.onDispose(() {
-    ref.invalidate(getPractiseNotificationTimeUseCaseProvider);
+    ref.invalidate(getGatherNotificationTimeUseCaseProvider);
   });
-  return SetPractiseNotificationTimeUseCase(
+  return SetGatherNotificationTimeUseCase(
     settingsRepository: ref.watch(settingsRepositoryProvider),
   ).call(time);
 });
 
-class SetPractiseNotificationTimeUseCase {
+class SetGatherNotificationTimeUseCase {
   final SettingsRepository _settingsRepository;
 
-  const SetPractiseNotificationTimeUseCase({
+  const SetGatherNotificationTimeUseCase({
     required SettingsRepository settingsRepository,
   }) : _settingsRepository = settingsRepository;
 
-  Future<void> call(TimeOfDay time) => _settingsRepository.setPractiseNotificationTime(time);
+  Future<void> call(TimeOfDay time) => _settingsRepository.setGatherNotificationTime(time);
 }

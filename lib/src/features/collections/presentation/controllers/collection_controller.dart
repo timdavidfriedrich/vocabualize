@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/domain/usecases/settings/get_are_images_enabled_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/settings/get_are_images_enabled_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/vocabulary/get_vocabularies_use_case.dart';
 import 'package:vocabualize/src/features/collections/presentation/states/collection_state.dart';
 import 'package:vocabualize/src/features/practise/presentation/screens/practise_screen.dart';
 

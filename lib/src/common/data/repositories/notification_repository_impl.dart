@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/data/sources/cloud_notification_data_source.dart';
-import 'package:vocabualize/src/common/data/sources/local_notification_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/cloud_notification_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/local_notification_data_source.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/notification_repository.dart';
 

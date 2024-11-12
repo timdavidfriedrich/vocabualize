@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/src/common/data/sources/remote_database_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/remote_database_data_source.dart';
 import 'package:vocabualize/src/common/data/mappers/language_mappers.dart';
 import 'package:vocabualize/src/common/data/models/rdb_language.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';

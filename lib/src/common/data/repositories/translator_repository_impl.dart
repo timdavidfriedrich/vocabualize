@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/src/common/data/sources/free_translator_data_source.dart';
-import 'package:vocabualize/src/common/data/sources/premium_translator_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/free_translator_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/premium_translator_data_source.dart';
 import 'package:vocabualize/src/common/domain/repositories/translator_repository.dart';
 
 final translatorRepositoryProvider = Provider((ref) {

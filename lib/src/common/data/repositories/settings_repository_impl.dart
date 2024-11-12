@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/due_algorithm_constants.dart';
 import 'package:vocabualize/constants/notification_constants.dart';
-import 'package:vocabualize/src/common/data/sources/shared_preferences_data_source.dart';
+import 'package:vocabualize/src/common/data/data_sources/shared_preferences_data_source.dart';
 import 'package:vocabualize/src/common/data/mappers/language_mappers.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';

@@ -4,7 +4,7 @@ import 'package:vocabualize/src/common/data/repositories/text_to_speech_reposito
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/text_to_speech_repository.dart';
-import 'package:vocabualize/src/common/domain/usecases/settings/get_target_language_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/settings/get_target_language_use_case.dart';
 
 final setTargetLanguageUseCaseProvider = AutoDisposeProvider.family((ref, Language language) {
   ref.onDispose(() {

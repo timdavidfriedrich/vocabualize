@@ -3,7 +3,7 @@ import 'package:vocabualize/src/common/data/repositories/notification_repository
 import 'package:vocabualize/src/common/data/repositories/settings_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/repositories/notification_repository.dart';
 import 'package:vocabualize/src/common/domain/repositories/settings_repository.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/vocabulary/get_vocabularies_to_practise_use_case.dart';
 
 final schedulePractiseNotificationUseCaseProvider = AutoDisposeProvider((ref) {
   // TODO: Refactor schedulePractiseNotificationUseCaseProvider to not use getVocabulariesToPractiseUseCaseProvider (don't mix use cases)

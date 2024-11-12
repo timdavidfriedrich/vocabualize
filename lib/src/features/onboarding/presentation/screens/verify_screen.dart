@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/domain/usecases/authentication/send_verification_email_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/authentication/send_verification_email_use_case.dart';
 
 class VerifyScreen extends ConsumerStatefulWidget {
   const VerifyScreen({super.key});

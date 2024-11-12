@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/domain/usecases/authentication/send_password_reset_email_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/authentication/send_password_reset_email_use_case.dart';
 import 'package:vocabualize/src/features/onboarding/presentation/screens/sign_screen.dart';
 import 'package:vocabualize/src/features/onboarding/presentation/screens/welcome_screen.dart';
 

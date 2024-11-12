@@ -2,11 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/entities/answer.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/domain/usecases/language/read_out_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/settings/get_are_images_enabled_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/answer_vocabulary_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/get_vocabularies_to_practise_use_case.dart';
-import 'package:vocabualize/src/common/domain/usecases/vocabulary/is_collection_multilingual_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/language/read_out_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/settings/get_are_images_enabled_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/vocabulary/answer_vocabulary_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/vocabulary/get_vocabularies_to_practise_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/vocabulary/is_collection_multilingual_use_case.dart';
 import 'package:vocabualize/src/features/practise/presentation/states/practise_state.dart';
 
 final practiseControllerProvider = AutoDisposeAsyncNotifierProviderFamily<PractiseController, PractiseState, Tag?>(() {
