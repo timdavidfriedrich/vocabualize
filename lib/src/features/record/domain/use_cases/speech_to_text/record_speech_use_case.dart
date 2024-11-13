@@ -23,7 +23,7 @@ class RecordSpeechUseCase {
 
   Future<void> call({required Function(String) onResult}) async {
     final sourceLanguage = await _settingsRepository.getSourceLanguage();
-    return _speechToTextRepository.record(
+    return await _speechToTextRepository.record(
       sourceSpeechToTextId: sourceLanguage.speechToTextId,
       onResult: onResult,
     );

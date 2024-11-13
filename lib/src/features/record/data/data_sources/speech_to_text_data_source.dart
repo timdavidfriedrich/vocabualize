@@ -21,12 +21,12 @@ class SpeechToTextDataSource {
 
   Future<void> _init() async {
     _available = await _stt.initialize(
-      options: [],
       onStatus: (status) async {
         if (_stt.isNotListening && status == "done") {
           provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = false;
           if (_stt.lastRecognizedWords.isNotEmpty) {
             // TODO: Is _stt.lastRecognizedWords.isNotEmpty necessary?
+            Log.debug("onStatus Recognized words: ${_stt.lastRecognizedWords}");
           }
           _stt.stop;
         }
@@ -44,10 +44,17 @@ class SpeechToTextDataSource {
     if (!provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive) {
       provider.Provider.of<ActiveProvider>(Global.context, listen: false).micIsActive = true;
 
+      // ? Braucht man Mic überhaupt?? Man kann ja stt von tastatur nutzen
+
       if (_available) {
         _stt.listen(
           localeId: sourceSpeechToTextId,
-          onResult: (result) => onResult(result.recognizedWords),
+          onResult: (result) {
+            if (result.recognizedWords.isEmpty) return;
+            if (!result.finalResult) return;
+            Log.debug("onResult Recognized words: ${result.recognizedWords}");
+            onResult(result.recognizedWords);
+          },
         );
       }
     } else {
