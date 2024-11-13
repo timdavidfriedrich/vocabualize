@@ -5,8 +5,8 @@ import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/record/domain/use_cases/speech_to_text/record_speech_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/translator/translate_use_case.dart';
-import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
+import 'package:vocabualize/src/features/record/presentation/controllers/record_controller.dart';
 import 'package:vocabualize/src/features/record/presentation/providers/active_provider.dart';
 
 // TODO: Remove ActiveProvider package from MicButton
@@ -36,7 +36,7 @@ class MicButton extends ConsumerWidget {
     }
 
     void clicked() async {
-      if (await HelperWidgets.isOnline()) {
+      if (!await ref.read(recordControllerProvider.notifier).isOnlineAndShowDialogIfNot(context)) {
         recordSpeech(
           onResult: translateAndProceed,
         );

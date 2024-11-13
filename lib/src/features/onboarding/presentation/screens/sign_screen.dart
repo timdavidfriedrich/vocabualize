@@ -4,7 +4,7 @@ import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/use_cases/authentication/create_user_with_email_and_password_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/authentication/sign_in_with_email_and_password_use_case.dart';
-import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/onboarding/presentation/screens/forgot_password_screen.dart';
 import 'package:vocabualize/src/features/onboarding/presentation/screens/welcome_screen.dart';
 import 'package:vocabualize/src/features/onboarding/domain/utils/email_validator.dart';
@@ -83,7 +83,7 @@ class _SignScreenState extends ConsumerState<SignScreen> {
 
     void signUp() async {
       if (_password != _repeatedPassword) {
-        HelperWidgets.showStaticDialog(const PasswordsDontMatchDialog());
+        await context.showDialog(const PasswordsDontMatchDialog());
         return;
       }
       bool wasSuccessful = await createUserWithEmailAndPassword(_email, _password);

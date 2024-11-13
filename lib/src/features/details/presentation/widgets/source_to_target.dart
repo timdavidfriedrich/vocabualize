@@ -1,5 +1,5 @@
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/edit_source_target_dialog.dart';
 
@@ -14,10 +14,10 @@ class SourceToTarget extends StatefulWidget {
 }
 
 class _SourceToTargetState extends State<SourceToTarget> {
-  void _click({required bool editTarget}) {
-    HelperWidgets.showStaticDialog(
-      EditSourceTargetDialog(vocabulary: widget.vocabulary, editTarget: editTarget),
-    ).whenComplete(() => setState(() {}));
+  Future<void> _click({required bool editTarget}) async {
+    await context
+        .showDialog(EditSourceTargetDialog(vocabulary: widget.vocabulary, editTarget: editTarget))
+        .whenComplete(() => setState(() {}));
   }
 
   @override

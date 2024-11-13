@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/use_cases/language/read_out_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/get_are_images_enabled_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/tag/get_all_tags_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/get_vocabularies_use_case.dart';
-import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/collections/presentation/screens/collection_screen.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';
@@ -34,8 +34,8 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
     readOut(vocabulary);
   }
 
-  void showVocabularyInfo(Vocabulary vocabulary) {
-    HelperWidgets.showStaticDialog(
+  Future<void> showVocabularyInfo(Vocabulary vocabulary) async {
+    await Global.context.showDialog(
       InfoDialog(vocabulary: vocabulary),
     );
   }

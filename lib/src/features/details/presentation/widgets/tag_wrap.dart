@@ -3,7 +3,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/use_cases/tag/get_all_tags_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/add_or_update_vocabulary_use_case.dart';
-import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/add_tag_dialog.dart';
 
@@ -17,7 +17,7 @@ class TagWrap extends ConsumerWidget {
     final getAllTags = ref.watch(getAllTagsUseCaseProvider);
 
     void add() async {
-      await HelperWidgets.showStaticDialog(
+      await context.showDialog(
         AddTagDialog(vocabulary: vocabulary),
       );
       // TODO: In TagWrap were "setState(() {});" before. Maybe this doesn't update anymore?

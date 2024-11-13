@@ -3,7 +3,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/use_cases/translator/translate_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/add_or_update_vocabulary_use_case.dart';
-import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/replace_vocabulary_dialog.dart';
@@ -57,11 +57,13 @@ class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog>
         source: _controller.text,
         target: translation,
       );
-      Navigator.pushNamed(
-        Global.context,
-        DetailsScreen.routeName,
-        arguments: DetailsScreenArguments(vocabulary: draftVocabulary),
-      );
+      if (context.mounted) {
+        Navigator.pushNamed(
+          context,
+          DetailsScreen.routeName,
+          arguments: DetailsScreenArguments(vocabulary: draftVocabulary),
+        );
+      }
     }
 
     void deleteCurrentVocabulary() {
@@ -76,7 +78,7 @@ class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog>
         ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
         Navigator.pop(context);
       } else {
-        bool hasClickedReplace = await HelperWidgets.showStaticDialog(
+        bool hasClickedReplace = await context.showDialog(
           ReplaceVocabularyDialog(vocabulary: widget.vocabulary),
         );
         if (hasClickedReplace) {

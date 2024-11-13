@@ -4,16 +4,16 @@ import 'package:image_picker/image_picker.dart';
 class CameraGalleryDialog extends StatelessWidget {
   const CameraGalleryDialog({super.key});
 
-  void _return(ImageSource imageSource) {
-    Navigator.pop(Global.context, imageSource);
-  }
-
-  void _cancel() {
-    Navigator.pop(Global.context);
-  }
-
   @override
   Widget build(BuildContext context) {
+    void choose(ImageSource imageSource) {
+      Navigator.pop(context, imageSource);
+    }
+
+    void cancel() {
+      Navigator.pop(context);
+    }
+
     return AlertDialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 64),
       contentPadding: const EdgeInsets.all(12),
@@ -24,7 +24,7 @@ class CameraGalleryDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ElevatedButton(
-              onPressed: () => _return(ImageSource.camera),
+              onPressed: () => choose(ImageSource.camera),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -37,7 +37,7 @@ class CameraGalleryDialog extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: () => _return(ImageSource.gallery),
+              onPressed: () => choose(ImageSource.gallery),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -50,7 +50,7 @@ class CameraGalleryDialog extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             OutlinedButton(
-                onPressed: () => _cancel(), child: Text(AppLocalizations.of(context)?.record_addDetails_cancelCustomImageButton ?? "")),
+                onPressed: () => cancel(), child: Text(AppLocalizations.of(context)?.record_addDetails_cancelCustomImageButton ?? "")),
           ],
         ),
       ),

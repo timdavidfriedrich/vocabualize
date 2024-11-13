@@ -1,15 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:log/log.dart';
-import 'package:vocabualize/src/common/presentation/widgets/connection_checker.dart';
+import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/camera_gallery_dialog.dart';
 
 final draftImageDataSourceProvider = Provider((ref) => DraftImageDataSource());
 
 class DraftImageDataSource {
   Future<XFile?> getImageFromCameraOrFiles() async {
-    final imageSource = await HelperWidgets.showStaticDialog(const CameraGalleryDialog());
+    final imageSource = await Global.context.showDialog(const CameraGalleryDialog());
     if (imageSource == null) return null;
+    if (imageSource! is ImageSource) return null;
 
     try {
       return await ImagePicker().pickImage(source: imageSource);
