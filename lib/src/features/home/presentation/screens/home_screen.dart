@@ -20,7 +20,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    RecordSheetController recordSheetController = RecordSheetController.instance;
+    RecordSheetController recordSheetController = ref.watch(recordSheetControllerProvider);
 
     return SafeArea(
       child: ClipRRect(

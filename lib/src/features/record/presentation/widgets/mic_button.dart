@@ -9,8 +9,8 @@ import 'package:vocabualize/src/common/presentation/widgets/connection_checker.d
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/record/presentation/providers/active_provider.dart';
 
-// TODO ARCHITECTURE: Remove Provider package from MicButton
-// TODO ARCHITECTURE: Create RecordController and move functions to this reuse them in TypeButton
+// TODO: Remove ActiveProvider package from MicButton
+// TODO: Create RecordController and move functions to this reuse them in TypeButton
 
 class MicButton extends ConsumerWidget {
   const MicButton({super.key});

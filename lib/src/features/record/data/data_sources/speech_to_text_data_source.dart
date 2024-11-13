@@ -7,7 +7,7 @@ import 'package:vocabualize/src/features/record/presentation/providers/active_pr
 
 final speechToTextDataSourceProvider = Provider((ref) => SpeechToTextDataSource());
 
-// TODO ARCHITECTURE: Remove ActiveProvider + Provider package, and move this UI to an UI layer
+// TODO: Remove ActiveProvider + Provider package, and move this UI to an UI layer
 
 class SpeechToTextDataSource {
   SpeechToTextDataSource() {

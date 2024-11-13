@@ -13,7 +13,6 @@ class NewVocabulariesRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO ARCHITECTURE: Move getNewVocabularies to HomeController?
     final newVocabularies = ref.watch(getNewVocabulariesUseCaseProvider);
     if (newVocabularies.isEmpty) {
       return const SizedBox();

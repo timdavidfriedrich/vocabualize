@@ -4,17 +4,6 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/presentation/widgets/disconnected_dialog.dart';
 
 class HelperWidgets {
-  // TODO ARCHITECTURE: Remove from this class and create a new file in presentation
-  static void loadingAnimation() {
-    showDialog(
-      context: Global.context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const Dialog(backgroundColor: Colors.transparent, elevation: 0, child: Center(child: CircularProgressIndicator.adaptive()));
-      },
-    );
-  }
-
   // TODO ARCHITECTURE: Move connection checking to a util file and move ui elements to presentation layer
   static Future<bool> isOnline() async {
     try {

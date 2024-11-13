@@ -6,13 +6,13 @@ import 'package:vocabualize/src/common/domain/use_cases/vocabulary/delete_vocabu
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extentions.dart';
 import 'package:vocabualize/src/features/details/presentation/controllers/details_controller.dart';
-import 'package:vocabualize/src/features/details/presentation/screens/details_disabled_images_screen.dart';
 import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/source_to_target.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/tag_wrap.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
 
-// TODO: Refactor DetailsScreen. Especially only save vocabulary on 'Save'. Perhaps, even translate the vocabulary here
+// TODO ARCHITECTURE: Refactor DetailsScreen. Especially only save vocabulary on 'Save'.
+// TODO: Redesign disabled image state for DetailsScreen
 
 class DetailsScreenArguments {
   final Vocabulary vocabulary;
@@ -44,9 +44,6 @@ class DetailsScreen extends ConsumerWidget {
         return const Text("Error DetailsScreen");
       },
       data: (DetailsState state) {
-        if (!state.areImagesEnabled) {
-          const DetailsDisabledImagesScreen();
-        }
         return SafeArea(
           child: ClipRRect(
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
@@ -66,171 +63,173 @@ class DetailsScreen extends ConsumerWidget {
                               children: [
                                 const SizedBox(height: 24),
                                 SourceToTarget(vocabulary: vocabulary),
-                                const SizedBox(height: 12),
-                                AspectRatio(
-                                  aspectRatio: 4 / 3,
-                                  child: Container(
-                                    padding: EdgeInsets.zero,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
-                                      color: Theme.of(context).colorScheme.surface,
-                                      image: state.vocabulary.image is FallbackImage
-                                          ? null
-                                          : DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: state.vocabulary.image.getImageProvider(),
-                                            ),
-                                    ),
-                                    child: state.vocabulary.image is FallbackImage
-                                        ? Center(
-                                            child: Text(
-                                              AppLocalizations.of(context)?.record_addDetails_noImage ?? "",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          )
-                                        : state.vocabulary.image is StockImage
-                                            ? Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(14),
-                                                    backgroundBlendMode: BlendMode.darken,
-                                                    gradient: LinearGradient(
-                                                        begin: Alignment.bottomCenter,
-                                                        end: Alignment.topCenter / 12,
-                                                        colors: [Colors.black.withOpacity(0.5), Colors.transparent])),
-                                                child: Align(
-                                                  alignment: Alignment.bottomCenter,
-                                                  child: TextButton(
-                                                    onPressed: () {
-                                                      ref.read(detailsControllerProvider(vocabulary).notifier).openPhotographerLink();
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: [
-                                                        const SizedBox(width: 8),
-                                                        Flexible(
-                                                          child: Text(
-                                                            // TODO: Replace with arb
-                                                            "Photo by ${(state.vocabulary.image as StockImage).photographer}",
-                                                            style: Theme.of(context)
-                                                                .textTheme
-                                                                .bodySmall!
-                                                                .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                if (state.areImagesEnabled) ...[
+                                  const SizedBox(height: 12),
+                                  AspectRatio(
+                                    aspectRatio: 4 / 3,
+                                    child: Container(
+                                      padding: EdgeInsets.zero,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
+                                        color: Theme.of(context).colorScheme.surface,
+                                        image: state.vocabulary.image is FallbackImage
+                                            ? null
+                                            : DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: state.vocabulary.image.getImageProvider(),
+                                              ),
+                                      ),
+                                      child: state.vocabulary.image is FallbackImage
+                                          ? Center(
+                                              child: Text(
+                                                AppLocalizations.of(context)?.record_addDetails_noImage ?? "",
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            )
+                                          : state.vocabulary.image is StockImage
+                                              ? Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(14),
+                                                      backgroundBlendMode: BlendMode.darken,
+                                                      gradient: LinearGradient(
+                                                          begin: Alignment.bottomCenter,
+                                                          end: Alignment.topCenter / 12,
+                                                          colors: [Colors.black.withOpacity(0.5), Colors.transparent])),
+                                                  child: Align(
+                                                    alignment: Alignment.bottomCenter,
+                                                    child: TextButton(
+                                                      onPressed: () {
+                                                        ref.read(detailsControllerProvider(vocabulary).notifier).openPhotographerLink();
+                                                      },
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          const SizedBox(width: 8),
+                                                          Flexible(
+                                                            child: Text(
+                                                              // TODO: Replace with arb
+                                                              "Photo by ${(state.vocabulary.image as StockImage).photographer}",
+                                                              style: Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodySmall!
+                                                                  .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        const SizedBox(width: 8),
-                                                        Icon(
-                                                          Icons.launch_rounded,
-                                                          size: 18,
-                                                          color: Theme.of(context).colorScheme.onPrimary,
-                                                        ),
-                                                        const SizedBox(width: 8),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            : const SizedBox(),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(AppLocalizations.of(context)?.record_addDetails_providedBy ?? "",
-                                        style: Theme.of(context).textTheme.bodySmall),
-                                    IconButton(
-                                      onPressed: () {
-                                        ref.read(detailsControllerProvider(vocabulary).notifier).browseNext();
-                                      },
-                                      icon: const Icon(Icons.find_replace_rounded),
-                                    ),
-                                  ],
-                                ),
-                                GridView.builder(
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.zero,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4,
-                                    mainAxisSpacing: 4,
-                                    crossAxisSpacing: 4,
-                                  ),
-                                  itemCount: state.stockImagesPerPage + 1,
-                                  itemBuilder: (context, index) => index == 0
-                                      ? MaterialButton(
-                                          padding: EdgeInsets.zero,
-                                          elevation: 0,
-                                          onPressed: () {
-                                            ref.read(detailsControllerProvider(vocabulary).notifier).getDraftImage();
-                                          },
-                                          color: Theme.of(context).colorScheme.surface,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                          child: state.vocabulary.image is DraftImage
-                                              ? Ink(
-                                                  padding: EdgeInsets.zero,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(16),
-                                                    border: Border.all(
-                                                      width: 2,
-                                                      color: Theme.of(context).colorScheme.primary,
-                                                    ),
-                                                    image: DecorationImage(
-                                                      fit: BoxFit.cover,
-                                                      image: state.vocabulary.image.getImageProvider(),
-                                                    ),
-                                                  ),
-                                                  child: Center(
-                                                    child: Icon(
-                                                      Icons.done_rounded,
-                                                      color: Theme.of(context).colorScheme.onSurface,
-                                                    ),
-                                                  ),
-                                                )
-                                              : Icon(
-                                                  Icons.camera_alt_rounded,
-                                                  color: Theme.of(context).colorScheme.primary,
-                                                  size: 28,
-                                                ),
-                                        )
-                                      : InkWell(
-                                          onTap: state.stockImages.isEmpty
-                                              ? null
-                                              : () {
-                                                  ref.read(detailsControllerProvider(vocabulary).notifier).selectOrUnselectImage(
-                                                        state.stockImages.elementAt(index + state.firstStockImageIndex - 1),
-                                                      );
-                                                },
-                                          borderRadius: BorderRadius.circular(16),
-                                          child: state.firstStockImageIndex + index >= state.stockImages.length + 1
-                                              ? const Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator.adaptive())
-                                              : Ink(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(16),
-                                                    border: state.stockImages.elementAt(index + state.firstStockImageIndex - 1) !=
-                                                            state.vocabulary.image
-                                                        ? null
-                                                        : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
-                                                    image: DecorationImage(
-                                                      fit: BoxFit.cover,
-                                                      image: NetworkImage(
-                                                        state.stockImages
-                                                                .elementAt(index + state.firstStockImageIndex - 1)
-                                                                .sizeVariants?["small"] ??
-                                                            ImageConstants.fallbackImageUrl,
+                                                          const SizedBox(width: 8),
+                                                          Icon(
+                                                            Icons.launch_rounded,
+                                                            size: 18,
+                                                            color: Theme.of(context).colorScheme.onPrimary,
+                                                          ),
+                                                          const SizedBox(width: 8),
+                                                        ],
                                                       ),
                                                     ),
                                                   ),
-                                                  child: state.stockImages.elementAt(index + state.firstStockImageIndex - 1) !=
-                                                          state.vocabulary.image
-                                                      ? null
-                                                      : Center(
-                                                          child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onSurface),
+                                                )
+                                              : const SizedBox(),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(AppLocalizations.of(context)?.record_addDetails_providedBy ?? "",
+                                          style: Theme.of(context).textTheme.bodySmall),
+                                      IconButton(
+                                        onPressed: () {
+                                          ref.read(detailsControllerProvider(vocabulary).notifier).browseNext();
+                                        },
+                                        icon: const Icon(Icons.find_replace_rounded),
+                                      ),
+                                    ],
+                                  ),
+                                  GridView.builder(
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.zero,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      mainAxisSpacing: 4,
+                                      crossAxisSpacing: 4,
+                                    ),
+                                    itemCount: state.stockImagesPerPage + 1,
+                                    itemBuilder: (context, index) => index == 0
+                                        ? MaterialButton(
+                                            padding: EdgeInsets.zero,
+                                            elevation: 0,
+                                            onPressed: () {
+                                              ref.read(detailsControllerProvider(vocabulary).notifier).getDraftImage();
+                                            },
+                                            color: Theme.of(context).colorScheme.surface,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                            child: state.vocabulary.image is DraftImage
+                                                ? Ink(
+                                                    padding: EdgeInsets.zero,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(16),
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color: Theme.of(context).colorScheme.primary,
+                                                      ),
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: state.vocabulary.image.getImageProvider(),
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Icon(
+                                                        Icons.done_rounded,
+                                                        color: Theme.of(context).colorScheme.onSurface,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Icon(
+                                                    Icons.camera_alt_rounded,
+                                                    color: Theme.of(context).colorScheme.primary,
+                                                    size: 28,
+                                                  ),
+                                          )
+                                        : InkWell(
+                                            onTap: state.stockImages.isEmpty
+                                                ? null
+                                                : () {
+                                                    ref.read(detailsControllerProvider(vocabulary).notifier).selectOrUnselectImage(
+                                                          state.stockImages.elementAt(index + state.firstStockImageIndex - 1),
+                                                        );
+                                                  },
+                                            borderRadius: BorderRadius.circular(16),
+                                            child: state.firstStockImageIndex + index >= state.stockImages.length + 1
+                                                ? const Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator.adaptive())
+                                                : Ink(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(16),
+                                                      border: state.stockImages.elementAt(index + state.firstStockImageIndex - 1) !=
+                                                              state.vocabulary.image
+                                                          ? null
+                                                          : Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: NetworkImage(
+                                                          state.stockImages
+                                                                  .elementAt(index + state.firstStockImageIndex - 1)
+                                                                  .sizeVariants?["small"] ??
+                                                              ImageConstants.fallbackImageUrl,
                                                         ),
-                                                ),
-                                        ),
-                                ),
+                                                      ),
+                                                    ),
+                                                    child: state.stockImages.elementAt(index + state.firstStockImageIndex - 1) !=
+                                                            state.vocabulary.image
+                                                        ? null
+                                                        : Center(
+                                                            child: Icon(Icons.done_rounded, color: Theme.of(context).colorScheme.onSurface),
+                                                          ),
+                                                  ),
+                                          ),
+                                  ),
+                                ],
                                 const SizedBox(height: 16),
                                 TagWrap(vocabulary: vocabulary),
                               ],

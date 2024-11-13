@@ -7,7 +7,7 @@ import 'package:vocabualize/src/common/presentation/widgets/connection_checker.d
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/record/presentation/providers/active_provider.dart';
 
-// TODO ARCHITECTURE: Remvoe Provider package from TypeButton
+// TODO: Remvoe ActiveProvider package from TypeButton
 
 class TypeButton extends ConsumerStatefulWidget {
   const TypeButton({super.key});
