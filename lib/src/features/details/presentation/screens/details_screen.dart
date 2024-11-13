@@ -4,7 +4,7 @@ import 'package:vocabualize/constants/image_constants.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extentions.dart';
+import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extensions.dart';
 import 'package:vocabualize/src/features/details/presentation/controllers/details_controller.dart';
 import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/source_to_target.dart';

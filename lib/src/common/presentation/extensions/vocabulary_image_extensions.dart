@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 
-extension VocabularyImageExtentions on VocabularyImage {
+extension VocabularyImageExtensions on VocabularyImage {
   // TODO: Make it easiert and safer to get size variants of images (VocabularyImageExtentions) => maybe with class/enum, and pass it here
   ImageProvider getImageProvider() {
     return getImage().image;
