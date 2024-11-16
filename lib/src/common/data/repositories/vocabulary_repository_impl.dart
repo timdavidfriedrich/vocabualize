@@ -104,8 +104,10 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
   }
 
   @override
-  Future<void> deleteAllVocabularies() {
-    return _remoteDatabaseDataSource.deleteAllVocabularies();
+  Future<void> deleteAllVocabularies() async {
+    for (final vocabulary in _cachedVocabularies) {
+      _remoteDatabaseDataSource.deleteVocabulary(vocabulary.toRdbVocabulary());
+    }
   }
 
   @override
