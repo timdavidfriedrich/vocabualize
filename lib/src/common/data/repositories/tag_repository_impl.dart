@@ -32,8 +32,8 @@ class TagRepositoryImpl implements TagRepository {
   }
 
   @override
-  Future<void> createTag(Tag tag) async {
-    await _remoteDatabaseDataSource.createTag(tag.toRdbTag());
+  Future<String> createTag(Tag tag) async {
+    return await _remoteDatabaseDataSource.createTag(tag.toRdbTag());
   }
 
   @override
@@ -42,7 +42,7 @@ class TagRepositoryImpl implements TagRepository {
   }
 
   @override
-  Future<void> updateTag(Tag tag) async {
-    await _remoteDatabaseDataSource.updateTag(tag.toRdbTag());
+  Future<String> updateTag(Tag tag) async {
+    return await _remoteDatabaseDataSource.updateTag(tag.toRdbTag());
   }
 }

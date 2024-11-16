@@ -1,29 +1,29 @@
-import 'package:pocketbase/pocketbase.dart';
-import 'package:uuid/uuid.dart';
-
 class Tag {
-  final String id;
-  String name;
-  DateTime? created;
-  DateTime? updated;
+  final String? id;
+  final String name;
+  final DateTime? created;
+  final DateTime? updated;
 
-  Tag({required this.name, String? id}) : id = id ?? "tag--${const Uuid().v4()}";
+  const Tag({
+    this.id,
+    this.name = "",
+    this.created,
+    this.updated,
+  });
 
-  Tag.fromJson(Map<String, dynamic> json)
-      : id = json['id'] ?? "empty_id",
-        name = json['name'],
-        created = DateTime.tryParse(json['created']),
-        updated = DateTime.tryParse(json['updated']);
-
-  Tag.fromRecord(RecordModel recordModel)
-      : id = recordModel.id,
-        name = recordModel.data['name'],
-        created = DateTime.tryParse(recordModel.created),
-        updated = DateTime.tryParse(recordModel.updated);
-
-  Tag.empty()
-      : id = "tag--${const Uuid().v4()}",
-        name = "empty_name";
+  Tag copyWith({
+    String? id,
+    String? name,
+    DateTime? created,
+    DateTime? updated,
+  }) {
+    return Tag(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      created: created ?? this.created,
+      updated: updated ?? this.updated,
+    );
+  }
 
   @override
   String toString() {

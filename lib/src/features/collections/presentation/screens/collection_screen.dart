@@ -19,7 +19,7 @@ class CollectionScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Tag tag = Tag.empty();
+    Tag tag = const Tag();
     CollectionScreenArguments? arguments = ModalRoute.of(context)?.settings.arguments as CollectionScreenArguments?;
     if (arguments != null) {
       tag = arguments.tag;

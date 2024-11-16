@@ -1,48 +1,102 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
-import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/features/details/presentation/widgets/edit_source_target_dialog.dart';
+import 'package:vocabualize/constants/dimensions.dart';
+import 'package:vocabualize/src/features/details/presentation/controllers/details_controller.dart';
+import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
 
-class SourceToTarget extends StatefulWidget {
-  final Vocabulary vocabulary;
+class SourceToTarget extends StatelessWidget {
+  final DetailsState state;
+  final Refreshable<DetailsController> notifier;
   final bool isVertical;
 
-  const SourceToTarget({super.key, required this.vocabulary, this.isVertical = false});
-
-  @override
-  State<SourceToTarget> createState() => _SourceToTargetState();
-}
-
-class _SourceToTargetState extends State<SourceToTarget> {
-  Future<void> _click({required bool editTarget}) async {
-    await context
-        .showDialog(EditSourceTargetDialog(vocabulary: widget.vocabulary, editTarget: editTarget))
-        .whenComplete(() => setState(() {}));
-  }
+  const SourceToTarget({
+    super.key,
+    required this.state,
+    required this.notifier,
+    this.isVertical = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     List<Widget> children = <Widget>[
       Flexible(
-        child: TextButton(
-          onPressed: () => _click(editTarget: false),
-          child: Text(widget.vocabulary.source, textAlign: TextAlign.right, style: Theme.of(Global.context).textTheme.displayMedium),
-        ),
+        child: _SourceButton(state: state, notifier: notifier),
       ),
-      const SizedBox(width: 8, height: 8),
-      Icon(widget.isVertical ? Icons.arrow_downward_rounded : Icons.arrow_forward_rounded,
-          color: Theme.of(Global.context).colorScheme.primary),
-      const SizedBox(width: 8, height: 8),
+      const SizedBox(
+        width: Dimensions.smallSpacing,
+        height: Dimensions.smallSpacing,
+      ),
+      Icon(
+        isVertical ? Icons.arrow_downward_rounded : Icons.arrow_forward_rounded,
+        color: Theme.of(Global.context).colorScheme.primary,
+      ),
+      const SizedBox(
+        width: Dimensions.smallSpacing,
+        height: Dimensions.smallSpacing,
+      ),
       Flexible(
-        child: TextButton(
-          onPressed: () => _click(editTarget: true),
-          child: Text(widget.vocabulary.target, textAlign: TextAlign.left, style: Theme.of(Global.context).textTheme.displayMedium),
-        ),
+        child: _TargetButton(state: state, notifier: notifier),
       ),
     ];
 
-    return widget.isVertical
-        ? Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: children)
-        : Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: children);
+    return switch (isVertical) {
+      true => Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: children,
+        ),
+      false => Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: children,
+        ),
+    };
+  }
+}
+
+class _SourceButton extends ConsumerWidget {
+  final DetailsState state;
+  final Refreshable<DetailsController> notifier;
+  const _SourceButton({
+    required this.state,
+    required this.notifier,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton(
+      onPressed: () {
+        ref.read(notifier).openEditSourceDialog(context);
+      },
+      child: Text(
+        state.vocabulary.source,
+        textAlign: TextAlign.right,
+        style: Theme.of(Global.context).textTheme.displayMedium,
+      ),
+    );
+  }
+}
+
+class _TargetButton extends ConsumerWidget {
+  final DetailsState state;
+  final Refreshable<DetailsController> notifier;
+  const _TargetButton({
+    required this.state,
+    required this.notifier,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton(
+      onPressed: () {
+        ref.read(notifier).openEditTargetDialog(context);
+      },
+      child: Text(
+        state.vocabulary.target,
+        textAlign: TextAlign.left,
+        style: Theme.of(Global.context).textTheme.displayMedium,
+      ),
+    );
   }
 }

@@ -1,19 +1,14 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/common_imports.dart';
-import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/domain/use_cases/vocabulary/add_or_update_vocabulary_use_case.dart';
+import 'package:vocabualize/constants/dimensions.dart';
 
-class AddTagDialog extends ConsumerStatefulWidget {
-  final Vocabulary vocabulary;
-
-  const AddTagDialog({super.key, required this.vocabulary});
+class AddTagDialog extends StatefulWidget {
+  const AddTagDialog({super.key});
 
   @override
-  ConsumerState<AddTagDialog> createState() => _AddTagDialogState();
+  State<AddTagDialog> createState() => _AddTagDialogState();
 }
 
-class _AddTagDialogState extends ConsumerState<AddTagDialog> {
+class _AddTagDialogState extends State<AddTagDialog> {
   final _controller = TextEditingController();
 
   @override
@@ -25,22 +20,18 @@ class _AddTagDialogState extends ConsumerState<AddTagDialog> {
   @override
   Widget build(BuildContext context) {
     void submit() {
-      /// ?: add directly to vocabulary, or just to list first and confirm with save
       final text = _controller.text;
-      if (text.isNotEmpty) {
-        // TODO ARCHITECTURE: This tag's id doesn't match database. First, save tag, then use its id.
-        final tag = Tag(name: text.trim());
-        final updatedVocabulary = widget.vocabulary.copyWith(
-          tagIds: [...widget.vocabulary.tagIds, tag.id],
-        );
-        ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
-      }
-      Navigator.pop(context);
+      Navigator.pop<String?>(context, text.isNotEmpty ? text : null);
     }
 
     return AlertDialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 64),
-      contentPadding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
+      insetPadding: const EdgeInsets.symmetric(horizontal: Dimensions.extraExtraLargeSpacing),
+      contentPadding: const EdgeInsets.fromLTRB(
+        Dimensions.semiSmallSpacing,
+        Dimensions.semiSmallSpacing,
+        Dimensions.smallSpacing,
+        Dimensions.semiSmallSpacing,
+      ),
       content: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Row(
@@ -48,13 +39,6 @@ class _AddTagDialogState extends ConsumerState<AddTagDialog> {
           children: [
             Expanded(
               child: TextField(
-                // TODO: Update deprecated toolbar options for AddTagDialog
-                toolbarOptions: const ToolbarOptions(
-                  copy: false,
-                  cut: false,
-                  paste: false,
-                  selectAll: false,
-                ),
                 controller: _controller,
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)?.record_addTagHint,
@@ -62,12 +46,13 @@ class _AddTagDialogState extends ConsumerState<AddTagDialog> {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: Dimensions.smallSpacing),
             IconButton(
               onPressed: () => submit(),
-              icon: Icon(
-                _controller.text.isNotEmpty ? Icons.save_rounded : Icons.close_rounded,
-              ),
+              icon: switch (_controller.text.isNotEmpty) {
+                true => const Icon(Icons.save_rounded),
+                false => const Icon(Icons.close_rounded),
+              },
             ),
           ],
         ),

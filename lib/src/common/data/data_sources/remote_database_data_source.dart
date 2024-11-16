@@ -91,16 +91,18 @@ class RemoteDatabaseDataSource {
     return tagRecord.toRdbTag();
   }
 
-  Future<void> createTag(RdbTag tag) async {
+  Future<String> createTag(RdbTag tag) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final data = tag.toRecordModel().toJson();
-    await pocketbase.collection(_tagsCollectionName).create(body: data);
+    final recordModel = await pocketbase.collection(_tagsCollectionName).create(body: data);
+    return recordModel.id;
   }
 
-  Future<void> updateTag(RdbTag tag) async {
+  Future<String> updateTag(RdbTag tag) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final data = tag.toRecordModel().toJson();
-    await pocketbase.collection(_tagsCollectionName).update(tag.id, body: data);
+    final recordModel = await pocketbase.collection(_tagsCollectionName).update(tag.id, body: data);
+    return recordModel.id;
   }
 
   Future<void> deleteTag(RdbTag tag) async {

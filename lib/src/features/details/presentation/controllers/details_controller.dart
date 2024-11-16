@@ -1,8 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:log/log.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+import 'package:vocabualize/src/common/domain/use_cases/tag/add_or_update_tag_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/translator/translate_use_case.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/details/domain/use_cases/image/get_draft_image_use_case.dart';
 import 'package:vocabualize/src/features/details/domain/use_cases/image/get_stock_images_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/get_are_images_enabled_use_case.dart';
@@ -10,7 +15,11 @@ import 'package:vocabualize/src/common/domain/use_cases/translator/translate_to_
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/delete_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/add_or_update_vocabulary_use_case.dart';
 import 'package:vocabualize/src/common/domain/utils/formatter.dart';
+import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
+import 'package:vocabualize/src/features/details/presentation/widgets/add_tag_dialog.dart';
+import 'package:vocabualize/src/features/details/presentation/widgets/edit_source_target_dialog.dart';
+import 'package:vocabualize/src/features/details/presentation/widgets/replace_vocabulary_dialog.dart';
 import 'package:vocabualize/src/features/settings/presentation/screens/settings_screen.dart';
 
 final detailsControllerProvider = AutoDisposeAsyncNotifierProviderFamily<DetailsController, DetailsState, Vocabulary>(() {
@@ -28,6 +37,56 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
     );
   }
 
+  Future<void> openEditSourceDialog(BuildContext context) async {
+    state.whenData((value) async {
+      final Vocabulary? updatedVocabulary = await context.showDialog(
+        EditSourceTargetDialog(
+          vocabulary: value.vocabulary,
+        ),
+      );
+      if (!context.mounted) return;
+      if (updatedVocabulary == null) return;
+      if (updatedVocabulary.source == value.vocabulary.source) return;
+      bool? hasClickedRetranslate = await context.showDialog(
+        const ReplaceVocabularyDialog(),
+      );
+      if (!context.mounted) return;
+      if (hasClickedRetranslate == true) {
+        _retranslateAndReload(context, updatedVocabulary);
+      } else {
+        state = AsyncData(value.copyWith(vocabulary: updatedVocabulary));
+      }
+    });
+  }
+
+  Future<void> _retranslateAndReload(BuildContext context, Vocabulary vocabulary) async {
+    final translate = ref.read(translateUseCaseProvider);
+    final retranslatedVocabulary = vocabulary.copyWith(
+      target: await translate(vocabulary.source),
+    );
+    if (!context.mounted) return;
+    Navigator.popAndPushNamed(
+      context,
+      DetailsScreen.routeName,
+      arguments: DetailsScreenArguments(vocabulary: retranslatedVocabulary),
+    );
+  }
+
+  Future<void> openEditTargetDialog(BuildContext context) async {
+    state.whenData((value) async {
+      final Vocabulary? updatedVocabulary = await context.showDialog(
+        EditSourceTargetDialog(
+          vocabulary: value.vocabulary,
+          editTarget: true,
+        ),
+      );
+      if (!context.mounted) return;
+      if (updatedVocabulary == null) return;
+      if (updatedVocabulary.target == value.vocabulary.target) return;
+      state = AsyncData(value.copyWith(vocabulary: updatedVocabulary));
+    });
+  }
+
   Future<List<StockImage>> _getStockImages(Vocabulary vocabulary) async {
     final searchTerm = Formatter.filterOutArticles(
       await ref.read(translateToEnglishUseCaseProvider(vocabulary.source).future),
@@ -36,7 +95,9 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   }
 
   void browseNext() {
+    Log.debug("Test $state");
     state.whenData((value) {
+      Log.debug("Test222");
       if (value.lastStockImageIndex + value.stockImagesPerPage < value.totalStockImages) {
         state = AsyncData(value.copyWith(
           firstStockImageIndex: value.firstStockImageIndex + value.stockImagesPerPage,
@@ -53,8 +114,6 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
 
   Future<void> getDraftImage() async {
     state.whenData((value) async {
-      // TODO: Is loading necessary then getting a draft image?
-      state = const AsyncLoading();
       final newImage = await ref.read(getDraftImageUseCaseProvider.future);
       if (newImage != null) {
         state = AsyncData(value.copyWith(
@@ -86,6 +145,33 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
           vocabulary: value.vocabulary.copyWith(image: newImage),
         ),
       );
+    });
+  }
+
+  Future<void> openCreateTagDialogAndSave(BuildContext context) async {
+    state.whenData((value) async {
+      final String? tagName = await context.showDialog(
+        const AddTagDialog(),
+      );
+      if (!context.mounted) return;
+      if (tagName == null) return;
+      if (tagName.isEmpty) return;
+      final addOrUpdateTag = await ref.read(addOrUpdateTagProvider.future);
+      final tagId = await addOrUpdateTag(Tag(name: tagName));
+      addOrRemoveTag(tagId);
+    });
+  }
+
+  Future<void> addOrRemoveTag(String? tagId) async {
+    if (tagId == null) return;
+    state.whenData((value) {
+      final tagIds = value.vocabulary.tagIds;
+      final updatedTagIds = switch (tagIds.contains(tagId)) {
+        true => tagIds.where((id) => id != tagId).toList(),
+        false => [...tagIds, tagId],
+      };
+      final updatedVocabulary = value.vocabulary.copyWith(tagIds: updatedTagIds);
+      state = AsyncData(value.copyWith(vocabulary: updatedVocabulary));
     });
   }
 

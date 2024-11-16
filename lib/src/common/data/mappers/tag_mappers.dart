@@ -34,7 +34,7 @@ extension RdbTagMappers on RdbTag {
 extension TagMappers on Tag {
   RdbTag toRdbTag() {
     return RdbTag(
-      id: id,
+      id: id ?? "",
       name: name,
     );
   }

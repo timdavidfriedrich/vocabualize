@@ -7,7 +7,7 @@ class RdbTag {
   const RdbTag({
     this.id = "",
     this.name = "",
-    this.created = "",
-    this.updated = "",
+    this.created,
+    this.updated,
   });
 }
