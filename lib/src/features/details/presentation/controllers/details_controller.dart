@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:log/log.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
@@ -96,9 +95,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   }
 
   void browseNext() {
-    Log.debug("Test $state");
     state.value?.let((value) {
-      Log.debug("Test222");
       if (value.lastStockImageIndex + value.stockImagesPerPage < value.totalStockImages) {
         state = AsyncData(value.copyWith(
           firstStockImageIndex: value.firstStockImageIndex + value.stockImagesPerPage,

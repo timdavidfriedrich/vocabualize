@@ -29,7 +29,6 @@ class VocabularyListTile extends ConsumerWidget {
     }
 
     void editVocabualary() {
-      Log.debug("Editing vocabulary: $vocabulary");
       Navigator.pushNamed(
         context,
         DetailsScreen.routeName,
