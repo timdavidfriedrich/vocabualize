@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/get_are_images_enabled_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/get_gather_notification_time_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/get_practise_notification_time_use_dart.dart';
@@ -52,7 +53,7 @@ class SettingsController extends AutoDisposeAsyncNotifier<SettingsState> {
   }
 
   Future<void> setAreImagesEnabled(bool areImagesEnabled) async {
-    state.whenData((value) async {
+    state.value?.let((value) async {
       await ref.read(setAreImagesEnabledUseCaseProvider(areImagesEnabled).future);
       state = AsyncData(
         value.copyWith(
@@ -63,7 +64,7 @@ class SettingsController extends AutoDisposeAsyncNotifier<SettingsState> {
   }
 
   Future<void> setUsePremiumTranslator(bool usePremiumTranslator) async {
-    state.whenData((value) async {
+    state.value?.let((value) async {
       await ref.read(setUsePremiumTranslatorUseCaseProvider(usePremiumTranslator).future);
       state = AsyncData(
         value.copyWith(

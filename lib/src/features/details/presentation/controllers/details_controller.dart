@@ -5,6 +5,7 @@ import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/common/domain/use_cases/tag/add_or_update_tag_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/translator/translate_use_case.dart';
 import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
@@ -38,7 +39,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   }
 
   Future<void> openEditSourceDialog(BuildContext context) async {
-    state.whenData((value) async {
+    state.value?.let((value) async {
       final Vocabulary? updatedVocabulary = await context.showDialog(
         EditSourceTargetDialog(
           vocabulary: value.vocabulary,
@@ -73,7 +74,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   }
 
   Future<void> openEditTargetDialog(BuildContext context) async {
-    state.whenData((value) async {
+    state.value?.let((value) async {
       final Vocabulary? updatedVocabulary = await context.showDialog(
         EditSourceTargetDialog(
           vocabulary: value.vocabulary,
@@ -96,7 +97,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
 
   void browseNext() {
     Log.debug("Test $state");
-    state.whenData((value) {
+    state.value?.let((value) {
       Log.debug("Test222");
       if (value.lastStockImageIndex + value.stockImagesPerPage < value.totalStockImages) {
         state = AsyncData(value.copyWith(
@@ -113,7 +114,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   }
 
   Future<void> getDraftImage() async {
-    state.whenData((value) async {
+    state.value?.let((value) async {
       final newImage = await ref.read(getDraftImageUseCaseProvider.future);
       if (newImage != null) {
         state = AsyncData(value.copyWith(
@@ -124,7 +125,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   }
 
   Future<void> openPhotographerLink() async {
-    state.whenData((value) async {
+    state.value?.let((value) async {
       final image = value.vocabulary.image;
       if (image is! StockImage) return;
       final photographerUrl = image.photographerUrl;
@@ -138,7 +139,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
 
   void selectOrUnselectImage(VocabularyImage? image) {
     if (image == null) return;
-    state.whenData((value) {
+    state.value?.let((value) {
       final newImage = value.vocabulary.image == image ? const FallbackImage() : image;
       state = AsyncData(
         value.copyWith(
@@ -149,7 +150,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   }
 
   Future<void> openCreateTagDialogAndSave(BuildContext context) async {
-    state.whenData((value) async {
+    state.value?.let((value) async {
       final String? tagName = await context.showDialog(
         const AddTagDialog(),
       );
@@ -164,7 +165,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
 
   Future<void> addOrRemoveTag(String? tagId) async {
     if (tagId == null) return;
-    state.whenData((value) {
+    state.value?.let((value) {
       final tagIds = value.vocabulary.tagIds;
       final updatedTagIds = switch (tagIds.contains(tagId)) {
         true => tagIds.where((id) => id != tagId).toList(),
@@ -176,7 +177,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   }
 
   void deleteVocabulary(BuildContext context) {
-    state.whenData((value) {
+    state.value?.let((value) {
       ref.read(deleteVocabularyUseCaseProvider(value.vocabulary));
       Navigator.pop(context);
     });
@@ -187,7 +188,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   }
 
   Future<void> save(BuildContext context) async {
-    state.whenData((value) async {
+    state.value?.let((value) async {
       await ref.read(addOrUpdateVocabularyUseCaseProvider(value.vocabulary));
       if (context.mounted) {
         Navigator.pop(context);
