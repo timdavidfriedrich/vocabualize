@@ -18,6 +18,7 @@ import 'package:vocabualize/src/common/data/models/rdb_tag.dart';
 import 'package:vocabualize/src/common/data/models/rdb_translation_report.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 
 final remoteDatabaseDataSourceProvider = Provider((ref) {
   return RemoteDatabaseDataSource(
@@ -66,7 +67,7 @@ class RemoteDatabaseDataSource {
   Future<List<RdbTag>> getTags() async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
-    final userFilter = userId != null ? "$_userFieldName=\"$userId\"" : null;
+    final String? userFilter = userId?.let((id) => "$_userFieldName=\"$id\"");
     final tagsRecords = await pocketbase.collection(_tagsByUserViewName).getList(filter: userFilter);
     return tagsRecords.items.map((record) => record.toRdbTag()).toList();
   }
@@ -101,10 +102,10 @@ class RemoteDatabaseDataSource {
     Tag? tag,
   }) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final String? searchFilter = searchTerm != null ? "source LIKE \"%$searchTerm%\" OR target LIKE \"%$searchTerm%\"" : null;
-    final String? tagFilter = tag != null ? "tags LIKE \"%${tag.id}%\"" : null;
+    final String? searchFilter = searchTerm?.let((term) => "source LIKE \"%$term%\" OR target LIKE \"%$term%\"");
+    final String? tagFilter = tag?.let((t) => "tags LIKE \"%${t.id}%\"");
     final String? userId = pocketbase.authStore.toAppUser()?.id;
-    final String? userFilter = userId != null ? "$_userFieldName=\"$userId\"" : null;
+    final String? userFilter = userId?.let((id) => "$_userFieldName=\"$id\"");
     final String filter = [userFilter, tagFilter, searchFilter].nonNulls.map((f) => "($f)").join(" AND ");
 
     return pocketbase.collection(_vocabulariesCollectionName).getFullList(filter: filter).then((value) async {
@@ -124,7 +125,7 @@ class RemoteDatabaseDataSource {
     }
 
     final userId = pocketbase.authStore.toAppUser()?.id;
-    final String? userFilter = userId == null ? null : "$_userFieldName=\"$userId\"";
+    final String? userFilter = userId?.let((id) => "$_userFieldName=\"$id\"");
 
     pocketbase.collection(_vocabulariesCollectionName).subscribe(
       "*",

@@ -1,5 +1,6 @@
 import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/constants/dimensions.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 
 class AddTagDialog extends StatefulWidget {
   const AddTagDialog({super.key});
@@ -21,7 +22,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
   Widget build(BuildContext context) {
     void submit() {
       final text = _controller.text;
-      Navigator.pop<String?>(context, text.isNotEmpty ? text : null);
+      Navigator.pop<String?>(context, text.takeUnless((t) => t.isEmpty));
     }
 
     return AlertDialog(
