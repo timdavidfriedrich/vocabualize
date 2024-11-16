@@ -39,7 +39,7 @@ class RemoteDatabaseDataSource {
   final String _translationReportCollectionName = "translation_reports";
   final String _bugReportCollectionName = "bug_reports";
   final String _userFieldName = "user";
-  final String _customImageFieldName = "custimImage";
+  final String _customImageFieldName = "customImage";
 
   Future<void> sendBugReport(RdbBugReport bugReport) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
