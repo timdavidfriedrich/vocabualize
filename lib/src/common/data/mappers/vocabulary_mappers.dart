@@ -2,7 +2,6 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/constants/due_algorithm_constants.dart';
 import 'package:vocabualize/constants/secrets/pocketbase_secrets.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_image_mappers.dart';
-import 'package:vocabualize/src/common/data/models/rdb_user.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary_image.dart';
 import 'package:vocabualize/src/common/data/utils/date_parser.dart';
@@ -26,14 +25,12 @@ extension RecordModelMappers on RecordModel {
     final customImage = customImageUrl != null ? RdbCustomImage(id: "", fileName: customImageUrl) : null;
     return RdbVocabulary(
       id: id,
-      //user: data["user"] ?? "",
+      user: getStringValue("user", ""),
       source: getStringValue("source", ""),
       target: getStringValue("target", ""),
-      // TODO: Add language convertion
-      //sourceLanguageId: data["sourceLanguageId"] ?? "",
-      //targetLanguageId: data["targetLanguageId"] ?? "",
-      // TODO: Add tag convertion
-      tagIds: [], //(data["tagIds"] as List<String>) ?? [],
+      sourceLanguageId: getStringValue("sourceLanguage", ""),
+      targetLanguageId: getStringValue("targetLanguage", ""),
+      tagIds: getListValue("tags", []),
       customImage: customImage,
       stockImage: stockImage,
       levelValue: getDoubleValue("levelValue", 0.0),
@@ -72,7 +69,7 @@ extension VocabularyModelMappers on RdbVocabulary {
     return RecordModel(
       id: id ?? "",
       data: {
-        "user": user.id,
+        "user": user,
         "source": source,
         "target": target,
         "sourceLanguage": sourceLanguageId,
@@ -99,8 +96,8 @@ extension VocabularyMappers on Vocabulary {
     final stockImage = rdbImage is RdbStockImage ? rdbImage : null;
     return RdbVocabulary(
       id: id,
-      // TODO: Replace with current user id
-      user: const RdbUser(),
+      // * user id is added in data source
+      user: "",
       source: source,
       target: target,
       sourceLanguageId: sourceLanguageId,

@@ -1,10 +1,9 @@
 import 'package:vocabualize/constants/due_algorithm_constants.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary_image.dart';
-import 'package:vocabualize/src/common/data/models/rdb_user.dart';
 
 class RdbVocabulary {
   final String? id;
-  final RdbUser user;
+  final String user;
   final String source;
   final String target;
   final String sourceLanguageId;
@@ -22,7 +21,7 @@ class RdbVocabulary {
 
   const RdbVocabulary({
     this.id,
-    this.user = const RdbUser(),
+    this.user = "",
     this.source = "",
     this.target = "",
     this.sourceLanguageId = "",
@@ -41,7 +40,7 @@ class RdbVocabulary {
 
   RdbVocabulary copyWith({
     String? id,
-    RdbUser? user,
+    String? user,
     String? source,
     String? target,
     String? sourceLanguageId,

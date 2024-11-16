@@ -101,11 +101,11 @@ class RemoteDatabaseDataSource {
     Tag? tag,
   }) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final String? searchFilter = searchTerm != null ? "(source LIKE \"%$searchTerm%\" OR target LIKE \"%$searchTerm%\")" : null;
+    final String? searchFilter = searchTerm != null ? "source LIKE \"%$searchTerm%\" OR target LIKE \"%$searchTerm%\"" : null;
     final String? tagFilter = tag != null ? "tags LIKE \"%${tag.id}%\"" : null;
     final String? userId = pocketbase.authStore.toAppUser()?.id;
     final String? userFilter = userId != null ? "$_userFieldName=\"$userId\"" : null;
-    final String filter = [userFilter, tagFilter, searchFilter].nonNulls.join(" AND ");
+    final String filter = [userFilter, tagFilter, searchFilter].nonNulls.map((f) => "($f)").join(" AND ");
 
     return pocketbase.collection(_vocabulariesCollectionName).getFullList(filter: filter).then((value) async {
       return value.map((RecordModel record) => record.toRdbVocabulary()).toList();
@@ -164,8 +164,9 @@ class RemoteDatabaseDataSource {
 
   Future<void> addVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final body = vocabulary.toRecordModel().toJson();
-    Log.debug("raw vocabulary: $vocabulary, data: $body");
+    final userId = pocketbase.authStore.toAppUser()?.id;
+    final vocabularyWithUser = vocabulary.copyWith(user: userId);
+    final body = vocabularyWithUser.toRecordModel().toJson();
     if (draftImageToUpload == null) {
       await pocketbase.collection(_vocabulariesCollectionName).create(body: body);
     } else {
@@ -183,24 +184,28 @@ class RemoteDatabaseDataSource {
 
   Future<void> deleteVocabulary(RdbVocabulary vocabulary) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    if (vocabulary.id == null) {
+    final userId = pocketbase.authStore.toAppUser()?.id;
+    final vocabularyWithUser = vocabulary.copyWith(user: userId);
+    if (vocabularyWithUser.id == null) {
       throw const FormatException("updateVocabulary: RdbVocabulary id is null");
     }
-    await pocketbase.collection(_vocabulariesCollectionName).delete(vocabulary.id!);
+    await pocketbase.collection(_vocabulariesCollectionName).delete(vocabularyWithUser.id!);
   }
 
   Future<void> updateVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final data = vocabulary.toRecordModel().toJson();
+    final userId = pocketbase.authStore.toAppUser()?.id;
+    final vocabularyWithUser = vocabulary.copyWith(user: userId);
+    final body = vocabularyWithUser.toRecordModel().toJson();
     if (vocabulary.id == null) {
       throw const FormatException("updateVocabulary: RdbVocabulary id is null");
     }
     if (draftImageToUpload == null) {
-      await pocketbase.collection(_vocabulariesCollectionName).update(vocabulary.id!, body: data);
+      await pocketbase.collection(_vocabulariesCollectionName).update(vocabulary.id!, body: body);
     } else {
       await pocketbase.collection(_vocabulariesCollectionName).update(
         vocabulary.id!,
-        body: data,
+        body: body,
         files: [
           MultipartFile.fromBytes(
             _customImageFieldName,
