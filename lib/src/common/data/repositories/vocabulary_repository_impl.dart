@@ -11,9 +11,9 @@ import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
-final vocabularyProvider = StreamProviderFamily<List<Vocabulary>, FilterOptions?>((ref, FilterOptions? filterOptions) {
+final vocabularyProvider = StreamProvider<List<Vocabulary>>((ref) {
   final vocabularyRepository = ref.watch(vocabularyRepositoryProvider);
-  return vocabularyRepository.getVocabularies(filterOptions: filterOptions);
+  return vocabularyRepository.getVocabularies();
 });
 
 final vocabularyRepositoryProvider = Provider((ref) {
@@ -39,10 +39,7 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
 
   @override
   Stream<List<Vocabulary>> getVocabularies({FilterOptions? filterOptions}) {
-    final filteredStream = _getStreamAndLoadIfNecessary().map((vocabularies) {
-      return vocabularies.filterBySearchTerm(filterOptions?.searchTerm).filterByTag(filterOptions?.tag);
-    });
-    return filteredStream;
+    return _getStreamAndLoadIfNecessary();
   }
 
   Stream<List<Vocabulary>> _getStreamAndLoadIfNecessary() {
@@ -155,21 +152,5 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
       final hasDifferentTargetLanguage = vocabulary.targetLanguageId != firstVocabulary.targetLanguageId;
       return containsTag && (hasDifferentSourceLanguage || hasDifferentTargetLanguage);
     });
-  }
-}
-
-extension on List<Vocabulary> {
-  List<Vocabulary> filterBySearchTerm(String? searchTerm) {
-    if (searchTerm == null || searchTerm.isEmpty) return this;
-    return where((vocabulary) {
-      return vocabulary.source.contains(searchTerm) || vocabulary.target.contains(searchTerm);
-    }).toList();
-  }
-
-  List<Vocabulary> filterByTag(Tag? tag) {
-    if (tag == null) return this;
-    return where((vocabulary) {
-      return vocabulary.tagIds.contains(tag.id);
-    }).toList();
   }
 }

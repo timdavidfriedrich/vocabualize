@@ -4,7 +4,7 @@ import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 
 final getNewVocabulariesUseCaseProvider = Provider((ref) {
   return GetNewVocabulariesUseCase(
-    vocabularies: ref.watch(vocabularyProvider(null)).asData?.value ?? [],
+    vocabularies: ref.watch(vocabularyProvider).asData?.value ?? [],
   ).call();
 });
 
