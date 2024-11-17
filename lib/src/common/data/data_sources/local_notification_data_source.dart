@@ -10,7 +10,6 @@ import 'package:timezone/data/latest.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 import 'package:vocabualize/constants/common_constants.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 
 final localNotificationDataSourceProvider = Provider((ref) => LocalNotificationDataSource());

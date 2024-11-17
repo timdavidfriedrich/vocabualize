@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/features/details/presentation/controllers/details_controller.dart';
 import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/image_chooser.dart';
@@ -24,9 +26,7 @@ class DetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Vocabulary vocabulary = Vocabulary();
     DetailsScreenArguments? arguments = ModalRoute.of(context)?.settings.arguments as DetailsScreenArguments?;
-    if (arguments != null) {
-      vocabulary = arguments.vocabulary;
-    }
+    arguments?.let((args) => vocabulary = args.vocabulary);
 
     final provider = detailsControllerProvider(vocabulary);
     final notifier = provider.notifier;
@@ -169,7 +169,9 @@ class _SettingsButton extends ConsumerWidget {
       child: Text(
         AppLocalizations.of(context)?.record_addDetails_neverAskForImageButton ?? "",
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).hintColor,
+            ),
       ),
     );
   }

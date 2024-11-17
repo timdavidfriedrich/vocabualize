@@ -1,5 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/use_cases/translator/translate_use_case.dart';
@@ -44,9 +45,9 @@ class _TypeButtonState extends ConsumerState<TypeButton> {
   Future<void> _validateAndGoToDetails(String source) async {
     final translate = ref.read(translateUseCaseProvider);
     Vocabulary draftVocabulary = Vocabulary(source: source, target: await translate(source));
-    if (draftVocabulary.isValid) {
+    if (draftVocabulary.isValid && mounted) {
       Navigator.pushNamed(
-        Global.context,
+        context,
         DetailsScreen.routeName,
         arguments: DetailsScreenArguments(vocabulary: draftVocabulary),
       );
@@ -60,7 +61,6 @@ class _TypeButtonState extends ConsumerState<TypeButton> {
       children: [
         TextFormField(
           style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-          toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
           autofocus: false,
           focusNode: focusNode,
           controller: controller,

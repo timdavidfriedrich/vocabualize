@@ -1,6 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/record/domain/use_cases/speech_to_text/record_speech_use_case.dart';
@@ -48,7 +48,6 @@ class MicButton extends ConsumerWidget {
       child: MaterialButton(
         padding: const EdgeInsets.all(0),
         onPressed: () => clicked(),
-        //height: context.size!.width,
         color: provider.Provider.of<ActiveProvider>(context).micIsActive ? Theme.of(context).colorScheme.onPrimary : null,
         shape: CircleBorder(side: BorderSide(width: 8, color: Theme.of(context).colorScheme.onPrimary)),
         child: AvatarGlow(

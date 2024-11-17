@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/set_source_language_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/set_target_language_use_case.dart';
 import 'package:vocabualize/src/common/presentation/screens/language_picker_screen.dart';
@@ -23,18 +24,16 @@ class ChooseLanguagesController extends AutoDisposeAsyncNotifier<ChooseLanguages
 
   Future<void> openPickerAndSelectSourceLanguage(BuildContext context) async {
     final seletectedLanguage = await Navigator.pushNamed(context, LanguagePickerScreen.routeName) as Language?;
-    if (seletectedLanguage != null) {
-      state = const AsyncLoading();
-      await ref.read(setSourceLanguageUseCaseProvider(seletectedLanguage));
-    }
+    seletectedLanguage?.let((language) async {
+      await ref.read(setSourceLanguageUseCaseProvider(language));
+    });
   }
 
   Future<void> openPickerAndSelectTargetLanguage(BuildContext context) async {
     final seletectedLanguage = await Navigator.pushNamed(context, LanguagePickerScreen.routeName) as Language?;
-    if (seletectedLanguage != null) {
-      state = const AsyncLoading();
-      await ref.read(setTargetLanguageUseCaseProvider(seletectedLanguage));
-    }
+    seletectedLanguage?.let((language) async {
+      await ref.read(setTargetLanguageUseCaseProvider(language));
+    });
   }
 
   void close(BuildContext context) {

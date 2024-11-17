@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:flutter/material.dart';
 
+// TODO: Remove Firebase from SignInFailedDialog
 class SignInFailedDialog extends StatelessWidget {
   final FirebaseAuthException error;
 

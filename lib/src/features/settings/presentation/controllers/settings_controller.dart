@@ -38,18 +38,18 @@ class SettingsController extends AutoDisposeAsyncNotifier<SettingsState> {
 
   Future<void> selectSourceLanguage(BuildContext context) async {
     final seletectedLanguage = await Navigator.pushNamed(context, LanguagePickerScreen.routeName) as Language?;
-    if (seletectedLanguage != null) {
+    seletectedLanguage?.let((language) async {
       state = const AsyncLoading();
-      await ref.read(setSourceLanguageUseCaseProvider(seletectedLanguage).future);
-    }
+      await ref.read(setSourceLanguageUseCaseProvider(language));
+    });
   }
 
   Future<void> selectTargetLanguage(BuildContext context) async {
     final seletectedLanguage = await Navigator.pushNamed(context, LanguagePickerScreen.routeName) as Language?;
-    if (seletectedLanguage != null) {
+    seletectedLanguage?.let((language) async {
       state = const AsyncLoading();
-      await ref.read(setTargetLanguageUseCaseProvider(seletectedLanguage));
-    }
+      await ref.read(setTargetLanguageUseCaseProvider(language));
+    });
   }
 
   Future<void> setAreImagesEnabled(bool areImagesEnabled) async {
@@ -76,36 +76,15 @@ class SettingsController extends AutoDisposeAsyncNotifier<SettingsState> {
 
   Future<void> selectGatherNotificationTime(BuildContext context) async {
     final TimeOfDay? time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-    if (time != null && context.mounted) {
-      state = const AsyncLoading();
-      await ref.read(setGatherNotificationTimeUseCaseProvider(time));
-    }
+    time?.let((t) async {
+      await ref.read(setGatherNotificationTimeUseCaseProvider(t));
+    });
   }
 
   Future<void> selectPractiseNotificationTime(BuildContext context) async {
     final TimeOfDay? time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-    if (time != null && context.mounted) {
-      state = const AsyncLoading();
-      await ref.read(setPractiseNotificationTimeUseCaseProvider(time));
-    }
+    time?.let((t) async {
+      await ref.read(setPractiseNotificationTimeUseCaseProvider(t));
+    });
   }
-
-  /*
-  Future<void> getSourceLanguage() async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      return ref.read(getSourceLanguageUseCaseProvider);
-    }).then(
-      (AsyncValue<Language> asyncLanguage) async {
-        final newState = state.asData?.value.copyWith(
-          sourceLanguage: asyncLanguage.value,
-        );
-        if (newState != null) {
-          return AsyncData(newState);
-        }
-        return state;
-      },
-    );
-  }
-  */
 }

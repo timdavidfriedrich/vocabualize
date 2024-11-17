@@ -1,4 +1,5 @@
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/home/domain/utils/card_generator.dart';

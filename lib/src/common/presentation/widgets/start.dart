@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/app_user.dart';
 import 'package:vocabualize/src/common/domain/use_cases/authentication/get_current_user_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/notification/init_cloud_notifications_use_case.dart';
@@ -24,7 +24,11 @@ class Start extends ConsumerWidget {
 
     return currentUser.when(
       loading: () {
-        return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator.adaptive(),
+          ),
+        );
       },
       data: (AppUser? user) {
         if (user == null) {

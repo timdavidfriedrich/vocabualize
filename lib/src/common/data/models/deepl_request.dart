@@ -28,6 +28,6 @@ class DeepLRequest {
     this.ignoreTags,
   }) {
     targetLang = targetLang.toUpperCase();
-    if (sourceLang != null) sourceLang = sourceLang!.toUpperCase();
+    sourceLang = sourceLang?.toUpperCase();
   }
 }

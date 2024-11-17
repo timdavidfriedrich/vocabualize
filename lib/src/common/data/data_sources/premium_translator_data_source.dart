@@ -7,6 +7,7 @@ import 'package:log/log.dart';
 import 'package:vocabualize/constants/secrets/deepl_secrets.dart';
 import 'package:vocabualize/src/common/data/models/deepl_request.dart';
 import 'package:vocabualize/src/common/data/models/deepl_response.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 
 final premiumTranslatorDataSourceProvider = Provider((ref) => PremiumTranslatorDataSource());
 
@@ -35,36 +36,36 @@ class PremiumTranslatorDataSource {
       'target_lang': deepLRequest.targetLang,
     };
 
-    if (deepLRequest.sourceLang != null) {
-      body.addAll({'source_lang': deepLRequest.sourceLang!});
-    }
-    if (deepLRequest.splitSentences != null) {
-      body.addAll({'split_sentences': deepLRequest.splitSentences!});
-    }
-    if (deepLRequest.preserveFormatting != null) {
-      body.addAll({'preserve_formatting': deepLRequest.preserveFormatting!});
-    }
-    if (deepLRequest.formality != null) {
-      body.addAll({'formality': deepLRequest.formality!});
-    }
-    if (deepLRequest.glossaryId != null) {
-      body.addAll({'glossary_id': deepLRequest.glossaryId!});
-    }
-    if (deepLRequest.tagHandling != null) {
-      body.addAll({'tag_handling': deepLRequest.tagHandling!});
-    }
-    if (deepLRequest.nonSplittingTags != null) {
-      body.addAll({'non_splitting_tags': deepLRequest.nonSplittingTags!});
-    }
-    if (deepLRequest.outlineDetection != null) {
-      body.addAll({'outline_detection': deepLRequest.outlineDetection!});
-    }
-    if (deepLRequest.splittingTags != null) {
-      body.addAll({'splitting_tags': deepLRequest.splittingTags!});
-    }
-    if (deepLRequest.ignoreTags != null) {
-      body.addAll({'ignore_tags': deepLRequest.ignoreTags!});
-    }
+    deepLRequest.sourceLang?.let((sourceLang) {
+      body.addAll({'source_lang': sourceLang});
+    });
+    deepLRequest.splitSentences?.let((splitSentences) {
+      body.addAll({'split_sentences': splitSentences});
+    });
+    deepLRequest.preserveFormatting?.let((preserveFormatting) {
+      body.addAll({'preserve_formatting': preserveFormatting});
+    });
+    deepLRequest.formality?.let((formality) {
+      body.addAll({'formality': formality});
+    });
+    deepLRequest.glossaryId?.let((glossaryId) {
+      body.addAll({'glossary_id': glossaryId});
+    });
+    deepLRequest.tagHandling?.let((tagHandling) {
+      body.addAll({'tag_handling': tagHandling});
+    });
+    deepLRequest.nonSplittingTags?.let((nonSplittingTags) {
+      body.addAll({'non_splitting_tags': nonSplittingTags});
+    });
+    deepLRequest.outlineDetection?.let((outlineDetection) {
+      body.addAll({'outline_detection': outlineDetection});
+    });
+    deepLRequest.splittingTags?.let((splittingTags) {
+      body.addAll({'splitting_tags': splittingTags});
+    });
+    deepLRequest.ignoreTags?.let((ignoreTags) {
+      body.addAll({'ignore_tags': ignoreTags});
+    });
 
     Client client = Client();
     Response response = await client.post(Uri.parse(url), headers: headers, body: body);

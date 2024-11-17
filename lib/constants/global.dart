@@ -1,4 +1,4 @@
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:flutter/widgets.dart';
 
 class Global {
   static GlobalKey<NavigatorState> navigatorState = GlobalKey<NavigatorState>();

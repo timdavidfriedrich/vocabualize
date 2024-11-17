@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 final recordSheetControllerProvider = Provider((ref) => RecordSheetController());

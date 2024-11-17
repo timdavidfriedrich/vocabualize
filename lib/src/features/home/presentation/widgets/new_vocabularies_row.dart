@@ -1,5 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/get_new_vocabularies_use_case.dart';
 import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';
 import 'package:vocabualize/src/features/home/presentation/widgets/new_vocabulary_card.dart';

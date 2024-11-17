@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_constants.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/features/onboarding/presentation/screens/sign_screen.dart';
 import 'package:vocabualize/src/features/onboarding/presentation/screens/choose_languages_screen.dart';
 import 'package:vocabualize/src/features/onboarding/domain/entities/sign_type.dart';
@@ -34,9 +34,13 @@ class WelcomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 48),
-                Text(CommonConstants.appName,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
+                Text(
+                  CommonConstants.appName,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                ),
                 const SizedBox(height: 24),
                 Flexible(child: Image.asset(AssetPath.mascotIdle)),
                 const SizedBox(height: 48),

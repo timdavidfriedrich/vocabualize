@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/constants/dimensions.dart';
+import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/src/features/details/presentation/controllers/details_controller.dart';
 import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
 

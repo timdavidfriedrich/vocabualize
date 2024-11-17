@@ -1,4 +1,4 @@
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vocabualize/config/themes/dark_palette.dart';
 import 'package:vocabualize/config/themes/light_palette.dart';

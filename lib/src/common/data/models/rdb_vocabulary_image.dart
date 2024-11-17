@@ -31,20 +31,6 @@ class RdbStockImage implements RdbImage {
     this.avgColor,
     this.src,
   });
-
-  factory RdbStockImage.fromRecord(Map<String, dynamic> json, {required RdbVocabularyImageType type}) {
-    return RdbStockImage(
-      id: (json['id'] as int?).toString(),
-      width: json['width'] as int,
-      height: json['height'] as int,
-      url: json['src']['original'] as String,
-      photographer: json['photographer'] != null ? json['photographer'] as String : null,
-      photographerUrl: json['photographerUrl'] != null ? json['photographerUrl'] as String : null,
-      photographerID: json['photographerID'] != null ? json['photographerID'] as int : null,
-      avgColor: json['avgColor'] != null ? json['avgColor'] as String : null,
-      src: json['src'] != null ? Map<String, dynamic>.from(json['src'] as Map<String, dynamic>) : null,
-    );
-  }
 }
 
 class RdbCustomImage implements RdbImage {
@@ -56,13 +42,6 @@ class RdbCustomImage implements RdbImage {
     required this.id,
     required this.fileName,
   });
-
-  factory RdbCustomImage.fromRecord(Map<String, dynamic> json, {required RdbVocabularyImageType type}) {
-    return RdbCustomImage(
-      id: (json['id'] as int?).toString(),
-      fileName: json['imageUrl'] as String,
-    );
-  }
 }
 
 // TODO: Remove old RdbVocabualaryImage class
@@ -96,6 +75,7 @@ class RdbVocabualaryImage {
     this.src,
   });
 
+  // TODO: Is this method still needed?
   factory RdbVocabualaryImage.fromRecord(Map<String, dynamic> json, {required RdbVocabularyImageType type}) {
     return RdbVocabualaryImage(
       type: RdbVocabularyImageType.values.firstWhere(

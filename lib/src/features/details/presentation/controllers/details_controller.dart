@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
@@ -113,11 +113,11 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   Future<void> getDraftImage() async {
     state.value?.let((value) async {
       final newImage = await ref.read(getDraftImageUseCaseProvider.future);
-      if (newImage != null) {
+      newImage?.let((image) {
         state = AsyncData(value.copyWith(
-          vocabulary: value.vocabulary.copyWith(image: newImage),
+          vocabulary: value.vocabulary.copyWith(image: image),
         ));
-      }
+      });
     });
   }
 

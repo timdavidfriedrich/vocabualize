@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/constants/secrets/pocketbase_secrets.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 
 final remoteConnectionClientProvider = Provider((ref) => RemoteConnectionClient());
 
@@ -12,20 +13,19 @@ class RemoteConnectionClient {
 
   Future<PocketBase> getConnection() async {
     FlutterSecureStorage? secureStorage = const FlutterSecureStorage();
-    if (_pocketBase == null) {
-      Log.debug("Current authStore: ${await secureStorage.read(key: _authStoreKey)}");
-      return _pocketBase = PocketBase(
-        PocketbaseSecrets.databaseUrl,
-        authStore: AsyncAuthStore(
-          save: (String data) async {
-            Log.debug("Saving authStore: $data");
-            return secureStorage.write(key: _authStoreKey, value: data);
-          },
-          initial: await secureStorage.read(key: _authStoreKey),
-        ),
-      );
-    } else {
-      return _pocketBase!;
-    }
+    Log.debug("Current authStore: ${await secureStorage.read(key: _authStoreKey)}");
+    return _pocketBase ??
+        PocketBase(
+          PocketbaseSecrets.databaseUrl,
+          authStore: AsyncAuthStore(
+            save: (String data) async {
+              Log.debug("Saving authStore: $data");
+              return secureStorage.write(key: _authStoreKey, value: data);
+            },
+            initial: await secureStorage.read(key: _authStoreKey),
+          ),
+        ).also((pb) {
+          _pocketBase = pb;
+        });
   }
 }

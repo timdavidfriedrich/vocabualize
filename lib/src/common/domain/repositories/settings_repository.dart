@@ -1,4 +1,4 @@
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:flutter/material.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 
 abstract interface class SettingsRepository {

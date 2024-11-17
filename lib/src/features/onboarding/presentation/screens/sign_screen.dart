@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/asset_path.dart';
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/common/domain/use_cases/authentication/create_user_with_email_and_password_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/authentication/sign_in_with_email_and_password_use_case.dart';
 import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
@@ -25,7 +26,7 @@ class SignScreen extends ConsumerStatefulWidget {
 }
 
 class _SignScreenState extends ConsumerState<SignScreen> {
-  late SignArguments arguments;
+  late SignArguments? arguments;
   SignType signType = SignType.none;
 
   String _email = "";
@@ -63,8 +64,10 @@ class _SignScreenState extends ConsumerState<SignScreen> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        arguments = (ModalRoute.of(context)!.settings.arguments as SignArguments);
-        signType = arguments.signType;
+        arguments = (ModalRoute.of(context)?.settings.arguments as SignArguments?);
+        arguments?.let((args) {
+          signType = args.signType;
+        });
       });
     });
   }
@@ -181,7 +184,9 @@ class _SignScreenState extends ConsumerState<SignScreen> {
                               // TODO: Replace with arb
                               "Forgot password?",
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).hintColor),
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(context).hintColor,
+                                  ),
                             ),
                           )
                         : Container(),

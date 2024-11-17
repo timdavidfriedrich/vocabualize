@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/features/collections/presentation/controllers/collection_controller.dart';
 import 'package:vocabualize/src/features/collections/presentation/states/collection_state.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
@@ -21,9 +23,7 @@ class CollectionScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Tag tag = const Tag();
     CollectionScreenArguments? arguments = ModalRoute.of(context)?.settings.arguments as CollectionScreenArguments?;
-    if (arguments != null) {
-      tag = arguments.tag;
-    }
+    arguments?.let((args) => tag = args.tag);
 
     final asyncState = ref.watch(collectionControllerProvider(tag));
 

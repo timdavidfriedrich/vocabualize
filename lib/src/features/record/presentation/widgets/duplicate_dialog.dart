@@ -1,5 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';

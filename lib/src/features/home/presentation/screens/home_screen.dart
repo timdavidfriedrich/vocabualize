@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:vocabualize/constants/common_constants.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/features/home/presentation/controllers/home_controller.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_empty_screen.dart';
 import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';

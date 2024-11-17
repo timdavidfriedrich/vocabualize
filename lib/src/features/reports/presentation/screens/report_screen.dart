@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/common/domain/use_cases/report/send_report_use_case.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
 import 'package:vocabualize/src/common/domain/entities/report.dart';
@@ -26,7 +27,7 @@ class ReportScreen extends ConsumerStatefulWidget {
 }
 
 class _ReportScreenState extends ConsumerState<ReportScreen> {
-  late ReportArguments arguments;
+  late ReportArguments? arguments;
   late ReportType reportType = ReportType.none;
   Vocabulary? vocabulary;
 
@@ -51,13 +52,15 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        arguments = (ModalRoute.of(context)!.settings.arguments as ReportArguments);
-        reportType = arguments.reportType;
-        if (reportType == ReportType.translation) {
-          vocabulary = arguments.vocabulary;
-          maxLines = _maxLinesTranslation;
-          maxLength = _maxLengthTranslation;
-        }
+        arguments = (ModalRoute.of(context)?.settings.arguments as ReportArguments?);
+        arguments?.let((args) {
+          reportType = args.reportType;
+          if (reportType == ReportType.translation) {
+            vocabulary = args.vocabulary;
+            maxLines = _maxLinesTranslation;
+            maxLength = _maxLengthTranslation;
+          }
+        });
       });
     });
   }
@@ -70,10 +73,10 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
       Report report;
       if (reportType == ReportType.translation) {
         report = TranslationReport(
-          source: vocabulary!.source,
-          target: vocabulary!.target,
-          sourceLanguageId: vocabulary!.sourceLanguageId,
-          targetLanguageId: vocabulary!.targetLanguageId,
+          source: vocabulary?.source ?? "",
+          target: vocabulary?.target ?? "",
+          sourceLanguageId: vocabulary?.sourceLanguageId ?? "",
+          targetLanguageId: vocabulary?.targetLanguageId ?? "",
           description: text,
         );
       } else {
@@ -101,11 +104,11 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Flexible(child: Text(vocabulary!.source)),
+                          Flexible(child: Text(vocabulary?.source ?? "")),
                           const SizedBox(width: 8),
                           const Icon(Icons.arrow_forward_rounded),
                           const SizedBox(width: 8),
-                          Flexible(child: Text(vocabulary!.target, style: TextStyle(color: Theme.of(context).colorScheme.error))),
+                          Flexible(child: Text(vocabulary?.target ?? "", style: TextStyle(color: Theme.of(context).colorScheme.error))),
                         ],
                       ),
                 reportType != ReportType.translation ? Container() : const SizedBox(height: 32),

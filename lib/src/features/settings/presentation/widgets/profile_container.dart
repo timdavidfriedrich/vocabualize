@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/domain/use_cases/authentication/sign_out_use_case.dart';
+
+// TODO: Remove Firebase from Profile
 
 class ProfileContainer extends ConsumerWidget {
   const ProfileContainer({super.key});
@@ -22,6 +24,7 @@ class ProfileContainer extends ConsumerWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
       ),
+      // TODO: Check if anonymous user
       child: 1 + 1 != 2 // FirebaseAuth.instance.currentUser!.isAnonymous
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -46,6 +49,7 @@ class ProfileContainer extends ConsumerWidget {
           : Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // TODO: Check if user has photo
                 1 + 1 != 2 // FirebaseAuth.instance.currentUser!.photoURL != null
                     ? CircleAvatar(
                         backgroundImage: NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!),

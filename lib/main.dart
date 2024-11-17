@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/config/themes/theme_config.dart';
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/src/features/collections/presentation/screens/collection_screen.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';

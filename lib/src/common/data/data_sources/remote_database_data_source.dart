@@ -139,9 +139,9 @@ class RemoteDatabaseDataSource {
         };
         if (eventType == null) return;
         final vocabulary = event.record?.toRdbVocabulary();
-        if (vocabulary != null) {
-          onEvent(eventType, vocabulary);
-        }
+        vocabulary?.let((v) {
+          onEvent(eventType, v);
+        });
       },
     );
   }
@@ -187,10 +187,9 @@ class RemoteDatabaseDataSource {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
     final vocabularyWithUser = vocabulary.copyWith(user: userId);
-    if (vocabularyWithUser.id == null) {
-      throw const FormatException("updateVocabulary: RdbVocabulary id is null");
-    }
-    await pocketbase.collection(_vocabulariesCollectionName).delete(vocabularyWithUser.id!);
+    vocabularyWithUser.id?.let((id) async {
+      await pocketbase.collection(_vocabulariesCollectionName).delete(id);
+    });
   }
 
   Future<void> updateVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
@@ -198,22 +197,21 @@ class RemoteDatabaseDataSource {
     final userId = pocketbase.authStore.toAppUser()?.id;
     final vocabularyWithUser = vocabulary.copyWith(user: userId);
     final body = vocabularyWithUser.toRecordModel().toJson();
-    if (vocabulary.id == null) {
-      throw const FormatException("updateVocabulary: RdbVocabulary id is null");
-    }
-    if (draftImageToUpload == null) {
-      await pocketbase.collection(_vocabulariesCollectionName).update(vocabulary.id!, body: body);
-    } else {
-      await pocketbase.collection(_vocabulariesCollectionName).update(
-        vocabulary.id!,
-        body: body,
-        files: [
-          MultipartFile.fromBytes(
-            _customImageFieldName,
-            draftImageToUpload,
-          ),
-        ],
-      );
-    }
+    vocabulary.id?.let((id) async {
+      if (draftImageToUpload == null) {
+        await pocketbase.collection(_vocabulariesCollectionName).update(id, body: body);
+      } else {
+        await pocketbase.collection(_vocabulariesCollectionName).update(
+          id,
+          body: body,
+          files: [
+            MultipartFile.fromBytes(
+              _customImageFieldName,
+              draftImageToUpload,
+            ),
+          ],
+        );
+      }
+    });
   }
 }

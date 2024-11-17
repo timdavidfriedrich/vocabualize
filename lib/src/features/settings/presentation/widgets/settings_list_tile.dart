@@ -1,4 +1,5 @@
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:flutter/material.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 
 class SettingsListTile extends StatelessWidget {
   final Text title;
@@ -12,7 +13,9 @@ class SettingsListTile extends StatelessWidget {
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       title: title,
-      subtitle: subtitle == null ? null : Text(subtitle!.data!, style: TextStyle(color: Theme.of(context).hintColor)),
+      subtitle: subtitle?.data?.let((data) {
+        return Text(data, style: TextStyle(color: Theme.of(context).hintColor));
+      }),
       trailing: trailing,
     );
   }

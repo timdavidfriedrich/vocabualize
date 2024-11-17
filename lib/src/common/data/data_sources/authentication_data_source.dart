@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:log/log.dart';
+import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
 import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/entities/answer.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/common/domain/use_cases/language/read_out_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/get_are_images_enabled_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/answer_vocabulary_use_case.dart';
@@ -33,16 +34,16 @@ class PractiseController extends AutoDisposeFamilyAsyncNotifier<PractiseState, T
   }
 
   void showSolution() {
-    final newState = state.asData?.value.copyWith(
+    final newState = state.value?.copyWith(
       isSolutionShown: true,
     );
-    if (newState != null) {
-      state = AsyncData(newState);
-    }
+    newState?.let((s) {
+      state = AsyncData(s);
+    });
   }
 
   Future<void> answer({required Vocabulary vocabulary, required Answer answer}) async {
-    final previousState = state.asData?.value;
+    final previousState = state.value;
     state = const AsyncLoading();
     final answerVocabulary = ref.read(answerVocabularyUseCaseProvider);
     await answerVocabulary(vocabulary: vocabulary, answer: answer);
@@ -52,8 +53,8 @@ class PractiseController extends AutoDisposeFamilyAsyncNotifier<PractiseState, T
         return v != vocabulary;
       }).toList(),
     );
-    if (newState != null) {
-      state = AsyncData(newState);
-    }
+    newState?.let((s) {
+      state = AsyncData(s);
+    });
   }
 }

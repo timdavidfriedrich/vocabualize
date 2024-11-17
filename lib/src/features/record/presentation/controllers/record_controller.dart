@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/common_imports.dart';
 import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/common/presentation/widgets/disconnected_dialog.dart';
 import 'package:vocabualize/src/features/record/presentation/states/record_state.dart';

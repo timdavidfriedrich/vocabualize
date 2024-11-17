@@ -8,6 +8,7 @@ import 'package:vocabualize/src/common/data/utils/date_parser.dart';
 import 'package:vocabualize/src/common/domain/entities/level.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 
 extension on String {
   // TODO: Remove String.toFileUrl() extension and find an alternative using pb.files.getUrl(record, filename)
@@ -21,8 +22,12 @@ extension RecordModelMappers on RecordModel {
     final Map<String, dynamic>? stockImageJson = getDataValue("stockImage", null);
     final stockImage = stockImageJson?.toRdbStockImage();
     final customImageName = getStringValue("customImage", "");
-    final customImageUrl = customImageName.isNotEmpty ? customImageName.toFileUrl(id, collectionName) : null;
-    final customImage = customImageUrl != null ? RdbCustomImage(id: "", fileName: customImageUrl) : null;
+    final customImageUrl = customImageName.takeUnless((name) => name.isEmpty)?.let((name) {
+      return customImageName.toFileUrl(id, collectionName);
+    });
+    final customImage = customImageUrl?.let((url) {
+      return RdbCustomImage(id: "", fileName: url);
+    });
     return RdbVocabulary(
       id: id,
       user: getStringValue("user", ""),
