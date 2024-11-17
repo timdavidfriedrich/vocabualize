@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
@@ -18,6 +19,7 @@ import 'package:vocabualize/src/common/domain/utils/formatter.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/add_tag_dialog.dart';
+import 'package:vocabualize/src/features/details/presentation/widgets/camera_gallery_dialog.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/edit_source_target_dialog.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/replace_vocabulary_dialog.dart';
 import 'package:vocabualize/src/features/settings/presentation/screens/settings_screen.dart';
@@ -110,10 +112,16 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
     });
   }
 
-  Future<void> getDraftImage() async {
+  Future<void> getDraftImage(BuildContext context) async {
     state.value?.let((value) async {
+      final imageSource = await context.showDialog(
+        const CameraGalleryDialog(),
+      );
+      if (imageSource == null) return;
+      if (imageSource is! ImageSource) return;
       final newImage = await ref.read(getDraftImageUseCaseProvider.future);
-      newImage?.let((image) {
+      final newImageFile = await newImage(imageSource: imageSource);
+      newImageFile?.let((image) {
         state = AsyncData(value.copyWith(
           vocabulary: value.vocabulary.copyWith(image: image),
         ));

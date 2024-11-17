@@ -177,19 +177,11 @@ class RemoteDatabaseDataSource {
           MultipartFile.fromBytes(
             _customImageFieldName,
             draftImageToUpload,
+            filename: "image.jpg",
           ),
         ],
       );
     }
-  }
-
-  Future<void> deleteVocabulary(RdbVocabulary vocabulary) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
-    final userId = pocketbase.authStore.toAppUser()?.id;
-    final vocabularyWithUser = vocabulary.copyWith(user: userId);
-    vocabularyWithUser.id?.let((id) async {
-      await pocketbase.collection(_vocabulariesCollectionName).delete(id);
-    });
   }
 
   Future<void> updateVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
@@ -208,10 +200,20 @@ class RemoteDatabaseDataSource {
             MultipartFile.fromBytes(
               _customImageFieldName,
               draftImageToUpload,
+              filename: "image.jpg",
             ),
           ],
         );
       }
+    });
+  }
+
+  Future<void> deleteVocabulary(RdbVocabulary vocabulary) async {
+    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final userId = pocketbase.authStore.toAppUser()?.id;
+    final vocabularyWithUser = vocabulary.copyWith(user: userId);
+    vocabularyWithUser.id?.let((id) async {
+      await pocketbase.collection(_vocabulariesCollectionName).delete(id);
     });
   }
 }

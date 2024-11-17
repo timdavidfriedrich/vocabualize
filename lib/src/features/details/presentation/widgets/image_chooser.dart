@@ -146,7 +146,7 @@ class _CustomImageButton extends ConsumerWidget {
       padding: EdgeInsets.zero,
       elevation: 0,
       onPressed: () {
-        ref.read(notifier).getDraftImage();
+        ref.read(notifier).getDraftImage(context);
       },
       color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(

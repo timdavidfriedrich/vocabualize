@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:vocabualize/src/features/details/data/data_sources/draft_image_data_source.dart';
 import 'package:vocabualize/src/features/details/data/data_sources/stock_image_data_source.dart';
 import 'package:vocabualize/src/common/data/mappers/vocabulary_image_mappers.dart';
@@ -30,8 +31,8 @@ class ImageRepositoryImpl implements ImageRepository {
   }
 
   @override
-  Future<DraftImage?> getImageFromCameraOrFiles() {
-    return _draftImageDataSource.getImageFromCameraOrFiles().then((image) {
+  Future<DraftImage?> getImageFromCameraOrFiles({required ImageSource imageSource}) {
+    return _draftImageDataSource.getImageFromCameraOrFiles(imageSource: imageSource).then((image) {
       return image?.toDraftImage();
     });
   }

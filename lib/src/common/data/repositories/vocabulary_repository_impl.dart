@@ -96,11 +96,30 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
 
   @override
   Future<void> addVocabulary(Vocabulary vocabulary) async {
-    final draftImage = vocabulary.image is DraftImage ? vocabulary.image as DraftImage : null;
-    _remoteDatabaseDataSource.addVocabulary(
-      vocabulary.toRdbVocabulary(),
-      draftImageToUpload: draftImage?.content,
-    );
+    if (vocabulary.image is DraftImage) {
+      final draftImage = vocabulary.image as DraftImage;
+      final vocabularyWithoutImage = vocabulary.copyWith(image: const FallbackImage());
+      _remoteDatabaseDataSource.addVocabulary(
+        vocabularyWithoutImage.toRdbVocabulary(),
+        draftImageToUpload: draftImage.content,
+      );
+    } else {
+      _remoteDatabaseDataSource.addVocabulary(vocabulary.toRdbVocabulary());
+    }
+  }
+
+  @override
+  Future<void> updateVocabulary(Vocabulary vocabulary) async {
+    if (vocabulary.image is DraftImage) {
+      final draftImage = vocabulary.image as DraftImage;
+      final vocabularyWithoutImage = vocabulary.copyWith(image: const FallbackImage());
+      _remoteDatabaseDataSource.updateVocabulary(
+        vocabularyWithoutImage.toRdbVocabulary(),
+        draftImageToUpload: draftImage.content,
+      );
+    } else {
+      _remoteDatabaseDataSource.updateVocabulary(vocabulary.toRdbVocabulary());
+    }
   }
 
   @override
@@ -119,15 +138,6 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
   @override
   Future<void> deleteVocabulary(Vocabulary vocabulary) async {
     _remoteDatabaseDataSource.deleteVocabulary(vocabulary.toRdbVocabulary());
-  }
-
-  @override
-  Future<void> updateVocabulary(Vocabulary vocabulary) async {
-    final draftImage = vocabulary.image is DraftImage ? vocabulary.image as DraftImage : null;
-    _remoteDatabaseDataSource.updateVocabulary(
-      vocabulary.toRdbVocabulary(),
-      draftImageToUpload: draftImage?.content,
-    );
   }
 
   @override
