@@ -77,6 +77,7 @@ class TagCardButton extends ConsumerWidget {
                 itemCount: min(tagVocabularies.length, 4),
                 itemBuilder: (context, index) {
                   return Image(
+                    fit: BoxFit.cover,
                     image: NetworkImage(
                       tagVocabularies.elementAt(index).image.url,
                     ),
