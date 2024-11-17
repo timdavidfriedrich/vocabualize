@@ -12,6 +12,8 @@ class Dimensions {
 
   static const double mediumBorderWidth = 2.0;
 
+  static const double smallBorderRadius = 8.0;
+  static const double semiSmallBorderRadius = 10.0;
   static const double mediumBorderRadius = 16.0;
   static const double largeBorderRadius = 32.0;
 }

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/home/presentation/controllers/home_controller.dart';
@@ -21,12 +22,14 @@ class TagCardButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialButton(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
+      ),
       color: Theme.of(context).colorScheme.surface,
       onPressed: () {
         ref.read(homeControllerProvider.notifier).goToCollection(context, tag);
       },
-      padding: areImagesEnabled ? const EdgeInsets.all(8.0) : const EdgeInsets.all(16.0),
+      padding: areImagesEnabled ? const EdgeInsets.all(Dimensions.smallSpacing) : const EdgeInsets.all(Dimensions.mediumSpacing),
       elevation: 0,
       disabledElevation: 0,
       focusElevation: 0,
@@ -64,7 +67,7 @@ class TagCardButton extends ConsumerWidget {
           width: 128,
           height: 128,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(Dimensions.semiSmallBorderRadius),
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
@@ -87,11 +90,13 @@ class TagCardButton extends ConsumerWidget {
             ),
           ),
         ),
-      if (areImagesEnabled) const SizedBox(height: 8),
+      if (areImagesEnabled) const SizedBox(height: Dimensions.smallSpacing),
       SizedBox(
         width: 128,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
+          padding: const EdgeInsets.symmetric(
+            horizontal: Dimensions.extraSmallSpacing,
+          ),
           child: Text(
             tag.name,
             style: Theme.of(context).textTheme.bodyMedium,
