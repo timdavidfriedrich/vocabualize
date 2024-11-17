@@ -14,6 +14,7 @@ class CardGenerator {
     return false;
   }
 
+  // TODO: Refactor Card String generation to avoid using Global.context
   static String generateMessage(List<Vocabulary>? vocabularyList) {
     if (vocabularyList == null) return "";
 

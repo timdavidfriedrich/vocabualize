@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/use_cases/language/read_out_use_case.dart';
@@ -35,8 +34,8 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
     readOut(vocabulary);
   }
 
-  Future<void> showVocabularyInfo(Vocabulary vocabulary) async {
-    await Global.context.showDialog(
+  Future<void> showVocabularyInfo(BuildContext context, Vocabulary vocabulary) async {
+    await context.showDialog(
       InfoDialog(vocabulary: vocabulary),
     );
   }

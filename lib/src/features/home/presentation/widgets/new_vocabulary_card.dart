@@ -32,7 +32,7 @@ class NewVocabularyCard extends ConsumerWidget {
         ref.read(homeControllerProvider.notifier).goToDetails(context, vocabulary);
       },
       onLongPress: () {
-        ref.read(homeControllerProvider.notifier).showVocabularyInfo(vocabulary);
+        ref.read(homeControllerProvider.notifier).showVocabularyInfo(context, vocabulary);
       },
       padding: state.areImagesEnabled ? const EdgeInsets.all(8.0) : const EdgeInsets.all(16.0),
       elevation: 0,

@@ -35,6 +35,7 @@ class AuthenticationDataSource {
       Log.hint("Signed in with email and password (AuthData: $authData)");
       return true;
     } catch (e) {
+      // TODO: Remove dialog from AuthenticationDataSource and handle it in the UI
       if (Global.context.mounted) {
         await Global.context.showDialog(AlertDialog.adaptive(content: Text(e.toString())));
       }
@@ -53,6 +54,7 @@ class AuthenticationDataSource {
       Log.hint("Created user with email and password (AuthData: $authData)");
       return true;
     } catch (e) {
+      // TODO: Remove dialog from AuthenticationDataSource and handle it in the UI
       if (Global.context.mounted) {
         await Global.context.showDialog(AlertDialog.adaptive(content: Text(e.toString())));
       }

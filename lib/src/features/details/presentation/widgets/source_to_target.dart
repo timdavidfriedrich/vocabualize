@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/dimensions.dart';
-import 'package:vocabualize/constants/global.dart';
 import 'package:vocabualize/src/features/details/presentation/controllers/details_controller.dart';
 import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
 
@@ -29,7 +28,7 @@ class SourceToTarget extends StatelessWidget {
       ),
       Icon(
         isVertical ? Icons.arrow_downward_rounded : Icons.arrow_forward_rounded,
-        color: Theme.of(Global.context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.primary,
       ),
       const SizedBox(
         width: Dimensions.smallSpacing,
@@ -73,7 +72,7 @@ class _SourceButton extends ConsumerWidget {
       child: Text(
         state.vocabulary.source,
         textAlign: TextAlign.right,
-        style: Theme.of(Global.context).textTheme.displayMedium,
+        style: Theme.of(context).textTheme.displayMedium,
       ),
     );
   }
@@ -96,7 +95,7 @@ class _TargetButton extends ConsumerWidget {
       child: Text(
         state.vocabulary.target,
         textAlign: TextAlign.left,
-        style: Theme.of(Global.context).textTheme.displayMedium,
+        style: Theme.of(context).textTheme.displayMedium,
       ),
     );
   }
