@@ -125,12 +125,12 @@ class RemoteDatabaseDataSource {
     }
 
     final userId = pocketbase.authStore.toAppUser()?.id;
-    final String? userFilter = userId?.let((id) => "$_userFieldName=\"$id\"");
 
     pocketbase.collection(_vocabulariesCollectionName).subscribe(
       "*",
-      filter: userFilter,
       (RecordSubscriptionEvent event) {
+        // * This if statement replaces filter, since it didn't work here
+        if (event.record?.getStringValue(_userFieldName) != userId) return;
         final eventType = switch (event.action) {
           "create" => RdbEventType.create,
           "update" => RdbEventType.update,

@@ -19,7 +19,7 @@ class CollectionController extends AutoDisposeFamilyAsyncNotifier<CollectionStat
     final tag = arg;
     return CollectionState(
       tag: tag,
-      tagVocabularies: await ref.watch(getVocabulariesUseCaseProvider(FilterOptions(tag: tag))),
+      tagVocabularies: ref.watch(getVocabulariesUseCaseProvider).call(filterOptions: FilterOptions(tag: tag)),
       areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
     );
   }

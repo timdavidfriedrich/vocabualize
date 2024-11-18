@@ -23,7 +23,7 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
   Future<HomeState> build() async {
     return HomeState(
       isStillLoading: true,
-      vocabularies: ref.watch(getVocabulariesUseCaseProvider(null)),
+      vocabularies: ref.watch(getVocabulariesUseCaseProvider).call(),
       tags: await ref.watch(getAllTagsUseCaseProvider.future),
       areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
     );
