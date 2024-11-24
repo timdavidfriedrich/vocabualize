@@ -5,6 +5,7 @@ import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/use_cases/language/read_out_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/get_are_images_enabled_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/tag/get_all_tags_use_case.dart';
+import 'package:vocabualize/src/common/domain/use_cases/vocabulary/get_new_vocabularies_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/get_vocabularies_use_case.dart';
 import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/collections/presentation/screens/collection_screen.dart';
@@ -24,6 +25,7 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
     return HomeState(
       isStillLoading: true,
       vocabularies: ref.watch(getVocabulariesUseCaseProvider).call(),
+      newVocabularies: ref.watch(getNewVocabulariesUseCaseProvider),
       tags: await ref.watch(getAllTagsUseCaseProvider.future),
       areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
     );

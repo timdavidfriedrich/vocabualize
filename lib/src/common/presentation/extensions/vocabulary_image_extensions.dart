@@ -7,6 +7,7 @@ extension VocabularyImageExtensions on VocabularyImage {
     return getImage().image;
   }
 
+  // TODO: Replace Image with CachedNetworkImage
   Image getImage() {
     switch (runtimeType) {
       case const (StockImage):

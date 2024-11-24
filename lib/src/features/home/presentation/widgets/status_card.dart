@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
-import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/home/domain/utils/card_generator.dart';
+import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';
 import 'package:vocabualize/src/features/home/presentation/widgets/status_card_indicator.dart';
 import 'package:vocabualize/src/features/practise/presentation/screens/practise_screen.dart';
 
-class StatusCard extends StatelessWidget {
-  final List<Vocabulary>? vocabularies;
-  const StatusCard({required this.vocabularies, super.key});
+class StatusCard extends ConsumerWidget {
+  final HomeState state;
+  const StatusCard({required this.state, super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     void startPractise() {
       Navigator.pushNamed(
         context,
@@ -19,14 +20,14 @@ class StatusCard extends StatelessWidget {
       );
     }
 
-    final message = CardGenerator.generateMessage(vocabularies);
-    final beginnerAmout = vocabularies?.where((voc) {
+    final message = CardGenerator.generateMessage(state.vocabularies);
+    final beginnerAmout = state.vocabularies.where((voc) {
       return voc.level.color == LevelPalette.beginner;
     }).length;
-    final advancedAmount = vocabularies?.where((voc) {
+    final advancedAmount = state.vocabularies.where((voc) {
       return voc.level.color == LevelPalette.advanced;
     }).length;
-    final expertAmount = vocabularies?.where((voc) {
+    final expertAmount = state.vocabularies.where((voc) {
       return voc.level.color == LevelPalette.expert;
     }).length;
 
@@ -54,21 +55,21 @@ class StatusCard extends StatelessWidget {
                   Column(
                     children: [
                       const Icon(Icons.circle, color: LevelPalette.beginner),
-                      Text("${beginnerAmout ?? '?'}"),
+                      Text("$beginnerAmout"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
                       const Icon(Icons.circle, color: LevelPalette.advanced),
-                      Text("${advancedAmount ?? '?'}"),
+                      Text("$advancedAmount"),
                     ],
                   ),
                   const SizedBox(width: 12),
                   Column(
                     children: [
                       const Icon(Icons.circle, color: LevelPalette.expert),
-                      Text("${expertAmount ?? '?'}"),
+                      Text("$expertAmount"),
                     ],
                   ),
                 ],
