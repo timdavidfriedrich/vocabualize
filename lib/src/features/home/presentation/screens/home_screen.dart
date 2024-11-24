@@ -115,7 +115,7 @@ class HomeScreen extends ConsumerWidget {
                           horizontal: Dimensions.largeSpacing,
                         ),
                         // TODO: Replace with arb
-                        child: _SectionTitle("Tags"),
+                        child: _SectionTitle("Collections"),
                       ),
                       const SizedBox(height: Dimensions.semiSmallSpacing),
                       CollectionsSection(state: state, notifier: notifier),
