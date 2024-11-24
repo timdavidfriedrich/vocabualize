@@ -11,9 +11,13 @@ class Dimensions {
   static const double extraExtraLargeSpacing = 64.0;
 
   static const double mediumBorderWidth = 2.0;
+  static const double largeBorderWidth = 4.0;
 
   static const double smallBorderRadius = 8.0;
   static const double semiSmallBorderRadius = 10.0;
   static const double mediumBorderRadius = 16.0;
+  static const double semiLargeBorderRadius = 24.0;
   static const double largeBorderRadius = 32.0;
+
+  static const double largeIconSize = 32.0;
 }

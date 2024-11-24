@@ -3,14 +3,12 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
+import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
-import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
-import 'package:vocabualize/src/common/domain/use_cases/language/get_language_by_id_use_case.dart';
 import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extensions.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/presentation/controllers/practise_controller.dart';
-import 'package:vocabualize/src/features/practise/presentation/screens/practise_done_screen.dart';
 import 'package:vocabualize/src/common/domain/entities/answer.dart';
 import 'package:vocabualize/src/features/practise/presentation/states/practise_state.dart';
 
@@ -30,15 +28,13 @@ class PractiseScreen extends ConsumerStatefulWidget {
 class _PractiseScreenState extends ConsumerState<PractiseScreen> {
   Tag? tag;
 
-  void _close() {
-    Navigator.pop(context);
-  }
-
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      PractiseScreenArguments? arguments = ModalRoute.of(context)?.settings.arguments as PractiseScreenArguments?;
+      PractiseScreenArguments? arguments = ModalRoute.of(context)
+          ?.settings
+          .arguments as PractiseScreenArguments?;
       setState(() {
         tag = arguments?.tag;
       });
@@ -47,198 +43,110 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<String> getMultilingualLabel(PractiseState state) async {
-      final currentVocabulary = state.currentVocabulary;
-      final getLanguageById = ref.read(getLanguageByIdUseCaseProvider);
-      final currentSourceLanguage = await getLanguageById(currentVocabulary.sourceLanguageId);
-      final currentTargetLanguage = await getLanguageById(currentVocabulary.targetLanguageId);
-      return "${currentSourceLanguage?.name}  ►  ${currentTargetLanguage?.name}";
-    }
+    final provider = practiseControllerProvider(tag);
+    final notifier = provider.notifier;
+    final asyncState = ref.watch(provider);
 
-    return ref.watch(practiseControllerProvider(tag)).when(
+    return asyncState.when(
       loading: () {
         return const Center(
           child: CircularProgressIndicator.adaptive(),
         );
       },
       error: (error, stackTrace) {
-        return const PractiseDoneScreen();
+        return const _PractiseDoneScreen();
       },
       data: (PractiseState state) {
         if (state.isDone) {
-          return const PractiseDoneScreen();
+          return const _PractiseDoneScreen();
         }
+
+        final strings = AppLocalizations.of(context);
+
         return SafeArea(
           child: ClipRRect(
-            borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(Dimensions.largeBorderRadius),
+              topRight: Radius.circular(Dimensions.largeBorderRadius),
+            ),
             child: Scaffold(
               body: Padding(
-                padding: const EdgeInsets.fromLTRB(48, 0, 48, 0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.extraLargeSpacing,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(height: 36),
-                    Row(
-                      children: [
-                        Text(
-                          "${state.initialVocabularyCount - state.vocabulariesLeftToPractise.length} / ${state.initialVocabularyCount}",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                        const SizedBox(width: 24),
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: LinearProgressIndicator(
-                              value: state.isDone ? 1 : 1 - (state.vocabulariesLeftToPractise.length / state.initialVocabularyCount),
-                              minHeight: 12,
-                              color: Theme.of(context).colorScheme.primary,
-                              backgroundColor: Theme.of(context).colorScheme.surface,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        IconButton(padding: EdgeInsets.zero, onPressed: () => _close(), icon: const Icon(Icons.close_rounded, weight: 4)),
-                      ],
-                    ),
+                    const SizedBox(height: Dimensions.largeSpacing),
+                    _ProgressBar(state: state),
                     const Spacer(),
                     if (state.isMultilingual) ...[
-                      FutureBuilder(
-                        future: getMultilingualLabel(state),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return const SizedBox();
-                          }
-                          return Text(
-                            snapshot.data ?? "",
-                            style: TextStyle(color: Theme.of(context).hintColor),
-                            textAlign: TextAlign.center,
-                          );
-                        },
-                      ),
+                      _MultilingualLabel(state: state, notifier: notifier),
                     ],
-                    const SizedBox(height: 12),
-                    if (state.areImagesEnabled || state.isSolutionShown) ...[
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface,
-                            borderRadius: BorderRadius.circular(24),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: state.currentVocabulary.image.getImageProvider(size: ImageSize.medium),
-                            ).takeUnless((_) => state.areImagesEnabled),
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface.withOpacity(0.75),
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                            child: Center(
-                                child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    state.currentVocabulary.target,
-                                    style: Theme.of(context).textTheme.headlineMedium,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                IconButton(
-                                  onPressed: () {
-                                    ref.read(practiseControllerProvider(tag).notifier).readOut(state.currentVocabulary);
-                                  },
-                                  icon: const Icon(Icons.volume_up_rounded, size: 32),
-                                ),
-                              ],
-                            )),
-                          ).takeUnless((_) => state.isSolutionShown),
-                        ),
-                      ),
-                    ],
-                    const SizedBox(height: 32),
-                    Center(child: Text(state.currentVocabulary.source, style: Theme.of(context).textTheme.bodyMedium)),
+                    const SizedBox(height: Dimensions.semiSmallSpacing),
+                    Stack(
+                      children: [
+                        if (state.areImagesEnabled) ...[
+                          _ImageBox(state: state, notifier: notifier),
+                        ],
+                        if (state.isSolutionShown) ...[
+                          _Solution(state: state, notifier: notifier),
+                        ],
+                      ].map((child) {
+                        return AspectRatio(aspectRatio: 4 / 3, child: child);
+                      }).toList(),
+                    ),
+                    const SizedBox(height: Dimensions.largeSpacing),
+                    Text(
+                      state.currentVocabulary.source,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
                     const Spacer(),
-                    if (state.isSolutionShown)
-                      Row(
+                    Opacity(
+                      opacity: state.isSolutionShown ? 1 : 0,
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-                                backgroundColor: LevelPalette.beginner,
-                              ),
-                              onPressed: () {
-                                ref.read(practiseControllerProvider(tag).notifier).answer(
-                                      vocabulary: state.currentVocabulary,
-                                      answer: Answer.hard,
-                                    );
-                              },
-                              child: Text(AppLocalizations.of(context)?.pracise_rating_hardButton ?? ""),
+                            child: _RateButton(
+                              state: state,
+                              notifier: notifier,
+                              answer: Answer.hard,
+                              color: LevelPalette.beginner,
+                              text: strings?.pracise_rating_hardButton ?? "",
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: Dimensions.semiSmallSpacing),
                           Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-                                backgroundColor: LevelPalette.advanced,
-                              ),
-                              onPressed: () {
-                                ref.read(practiseControllerProvider(tag).notifier).answer(
-                                      vocabulary: state.currentVocabulary,
-                                      answer: Answer.good,
-                                    );
-                              },
-                              child: Text(AppLocalizations.of(context)?.pracise_rating_goodButton ?? ""),
+                            child: _RateButton(
+                              state: state,
+                              notifier: notifier,
+                              answer: Answer.good,
+                              color: LevelPalette.advanced,
+                              text: strings?.pracise_rating_goodButton ?? "",
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: Dimensions.semiSmallSpacing),
                           Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-                                backgroundColor: LevelPalette.expert,
-                              ),
-                              onPressed: () {
-                                ref.read(practiseControllerProvider(tag).notifier).answer(
-                                      vocabulary: state.currentVocabulary,
-                                      answer: Answer.easy,
-                                    );
-                              },
-                              child: Text(AppLocalizations.of(context)?.pracise_rating_easyButton ?? ""),
+                            child: _RateButton(
+                              state: state,
+                              notifier: notifier,
+                              answer: Answer.easy,
+                              color: LevelPalette.expert,
+                              text: strings?.pracise_rating_easyButton ?? "",
                             ),
                           ),
                         ],
                       ),
-                    const SizedBox(height: 16),
+                    ),
+                    const SizedBox(height: Dimensions.mediumSpacing),
                     if (state.isSolutionShown) ...[
-                      OutlinedButton(
-                        onPressed: () {
-                          ref.read(practiseControllerProvider(tag).notifier).answer(
-                                vocabulary: state.currentVocabulary,
-                                answer: Answer.forgot,
-                              );
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)?.pracise_rating_didntKnowButton ?? "",
-                          style: const TextStyle(color: LevelPalette.novice),
-                        ),
-                      )
+                      _ForgotButton(state: state, notifier: notifier),
                     ] else ...[
-                      ElevatedButton(
-                        onPressed: ref.read(practiseControllerProvider(tag).notifier).showSolution,
-                        child: Text(AppLocalizations.of(context)?.pracise_solutionButton ?? ""),
-                      )
+                      _ShowSolutionButton(state: state, notifier: notifier),
                     ],
-                    const SizedBox(height: 64),
+                    const SizedBox(height: Dimensions.extraExtraLargeSpacing),
                   ],
                 ),
               ),
@@ -246,6 +154,270 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+class _PractiseDoneScreen extends StatelessWidget {
+  const _PractiseDoneScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    void close() {
+      Navigator.pop(context);
+    }
+
+    return SafeArea(
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(Dimensions.largeBorderRadius),
+          topRight: Radius.circular(Dimensions.largeBorderRadius),
+        ),
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Dimensions.largeSpacing,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Spacer(),
+                Text(
+                  // TODO: Replace with arb
+                  "Congratulations!",
+                  style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: Dimensions.mediumSpacing),
+                const Text(
+                  // TODO: Replace with arb
+                  "You finished all\nof your current words!",
+                  textAlign: TextAlign.center,
+                ),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () => close(),
+                  // TODO: Replace with arb
+                  child: const Text("Main menu"),
+                ),
+                const SizedBox(height: Dimensions.extraExtraLargeSpacing),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ProgressBar extends StatelessWidget {
+  final PractiseState state;
+  const _ProgressBar({required this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    void close() {
+      Navigator.pop(context);
+    }
+
+    final int totalCount = state.initialVocabularyCount;
+    final int leftCount = state.vocabulariesLeft.length;
+    final int doneCount = totalCount - leftCount;
+    final String countText = "$doneCount / $totalCount";
+
+    return Row(
+      children: [
+        Text(
+          countText,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        const SizedBox(width: Dimensions.semiLargeSpacing),
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(Dimensions.smallSpacing),
+            child: LinearProgressIndicator(
+              value: 1 - (leftCount / totalCount),
+              minHeight: Dimensions.semiSmallSpacing,
+              color: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+            ),
+          ),
+        ),
+        const SizedBox(width: Dimensions.mediumSpacing),
+        IconButton(
+          padding: EdgeInsets.zero,
+          onPressed: () => close(),
+          icon: const Icon(Icons.close_rounded),
+        ),
+      ],
+    );
+  }
+}
+
+class _MultilingualLabel extends ConsumerWidget {
+  final PractiseState state;
+  final Refreshable<PractiseController> notifier;
+  const _MultilingualLabel({
+    required this.state,
+    required this.notifier,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FutureBuilder(
+      future: ref.watch(notifier).getMultilingualLabel(state),
+      builder: (context, snapshot) {
+        return Text(
+          snapshot.data ?? "",
+          style: TextStyle(
+            color: Theme.of(context).hintColor,
+          ),
+          textAlign: TextAlign.center,
+        );
+      },
+    );
+  }
+}
+
+class _ImageBox extends ConsumerWidget {
+  final PractiseState state;
+  final Refreshable<PractiseController> notifier;
+  const _ImageBox({
+    required this.state,
+    required this.notifier,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(Dimensions.semiLargeSpacing),
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: state.currentVocabulary.image.getImageProvider(
+            size: ImageSize.medium,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Solution extends ConsumerWidget {
+  final PractiseState state;
+  final Refreshable<PractiseController> notifier;
+  const _Solution({
+    required this.state,
+    required this.notifier,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface.withOpacity(0.75),
+        borderRadius: BorderRadius.circular(Dimensions.semiLargeBorderRadius),
+      ),
+      child: Center(
+          child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: Text(
+              state.currentVocabulary.target,
+              style: Theme.of(context).textTheme.headlineMedium,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(width: Dimensions.smallSpacing),
+          IconButton(
+            onPressed: () {
+              ref.read(notifier).readOutCurrent();
+            },
+            icon: const Icon(
+              Icons.volume_up_rounded,
+              size: Dimensions.largeIconSize,
+            ),
+          ),
+        ],
+      )),
+    );
+  }
+}
+
+class _ShowSolutionButton extends ConsumerWidget {
+  final PractiseState state;
+  final Refreshable<PractiseController> notifier;
+  const _ShowSolutionButton({
+    required this.state,
+    required this.notifier,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(
+      onPressed: ref.read(notifier).showSolution,
+      child: Text(
+        AppLocalizations.of(context)?.pracise_solutionButton ?? "",
+      ),
+    );
+  }
+}
+
+class _ForgotButton extends ConsumerWidget {
+  final PractiseState state;
+  final Refreshable<PractiseController> notifier;
+  const _ForgotButton({
+    required this.state,
+    required this.notifier,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return OutlinedButton(
+      onPressed: () {
+        ref.read(notifier).answerCurrent(Answer.forgot);
+      },
+      child: Text(
+        AppLocalizations.of(context)?.pracise_rating_didntKnowButton ?? "",
+        style: const TextStyle(color: LevelPalette.novice),
+      ),
+    );
+  }
+}
+
+class _RateButton extends ConsumerWidget {
+  final PractiseState state;
+  final Refreshable<PractiseController> notifier;
+  final Answer answer;
+  final Color color;
+  final String text;
+  const _RateButton({
+    required this.state,
+    required this.notifier,
+    required this.answer,
+    required this.color,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          vertical: Dimensions.semiSmallSpacing,
+        ),
+        backgroundColor: color,
+      ),
+      onPressed: () {
+        ref.read(notifier).answerCurrent(answer);
+      },
+      child: Text(text),
     );
   }
 }
