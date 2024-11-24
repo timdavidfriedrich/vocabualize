@@ -2,8 +2,36 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+import 'package:vocabualize/src/common/domain/extensions/iterable_extensions.dart';
 
-// TODO: Remove RdbVocabularyImageMappers, after removing RdbVocabularyImage
+extension _SrcMappers on Map<String, dynamic>? {
+  Map<ImageSize, String>? toSizeVariants() {
+    return this?.entries.fold<Map<ImageSize, String>>({}, (result, entry) {
+      if (entry.value is! String) {
+        return result;
+      }
+      final size = ImageSize.values.firstWhereOrNull(
+        (e) => e?.name == entry.key,
+      );
+      if (size == null) {
+        return result;
+      }
+      result[size] = entry.value;
+      return result;
+    });
+  }
+}
+
+extension _SizeVariantsMappers on Map<ImageSize, String>? {
+  Map<String, dynamic>? toSrc() {
+    return this?.entries.fold<Map<String, dynamic>>({}, (result, entry) {
+      result[entry.key.name] = entry.value;
+      return result;
+    });
+  }
+}
+
+// TODO: Remove RdbVocabularyImageMappers, after removing RdbVocabularyImage ?? still relevant??
 extension RdbVocabularyImageMappers on RdbVocabualaryImage {
   VocabularyImage toVocabularyImage() {
     switch (type) {
@@ -22,7 +50,7 @@ extension RdbVocabularyImageMappers on RdbVocabualaryImage {
       url: url,
       photographer: photographer,
       photographerUrl: photographerUrl,
-      sizeVariants: src,
+      sizeVariants: src.toSizeVariants(),
     );
   }
 
@@ -52,7 +80,8 @@ extension VocabularyImageMappers on VocabularyImage {
       case const (FallbackImage):
         return null;
       default:
-        throw UnimplementedError('Unknown VocabularyImage type: "$runtimeType"');
+        throw UnimplementedError(
+            'Unknown VocabularyImage type: "$runtimeType"');
     }
   }
 
@@ -66,7 +95,8 @@ extension VocabularyImageMappers on VocabularyImage {
       case const (FallbackImage):
         return null;
       default:
-        throw UnimplementedError('Unknown VocabularyImage type: "$runtimeType"');
+        throw UnimplementedError(
+            'Unknown VocabularyImage type: "$runtimeType"');
     }
   }
 }
@@ -116,7 +146,7 @@ extension RdbStockImageMappers on RdbStockImage {
       url: url,
       photographer: photographer,
       photographerUrl: photographerUrl,
-      sizeVariants: src,
+      sizeVariants: src.toSizeVariants(),
     );
   }
 
@@ -152,7 +182,7 @@ extension StockImageMappers on StockImage {
       url: url,
       photographer: photographer,
       photographerUrl: photographerUrl,
-      src: sizeVariants,
+      src: sizeVariants.toSrc(),
     );
   }
 
@@ -166,7 +196,7 @@ extension StockImageMappers on StockImage {
       url: url,
       photographer: photographer,
       photographerUrl: photographerUrl,
-      src: sizeVariants,
+      src: sizeVariants.toSrc(),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extensions.dart';
 import 'package:vocabualize/src/features/home/presentation/controllers/home_controller.dart';
 import 'package:vocabualize/src/features/home/presentation/extentions/list_extensions.dart';
@@ -174,11 +175,10 @@ class _ImageBox extends StatelessWidget {
             ),
             itemCount: min(tagVocabularies.length, 4),
             itemBuilder: (context, index) {
-              final vocabulary = tagVocabularies.elementAt(index);
-              // TODO: Make it easiert and safer to get size variants of images (CollectionsSection), also replace this if image getter
+              final vocabulary = tagVocabularies.reversed.elementAt(index);
               return Image(
                 fit: BoxFit.cover,
-                image: vocabulary.image.getImageProvider(),
+                image: vocabulary.image.getImageProvider(size: ImageSize.small),
               );
             },
           ),

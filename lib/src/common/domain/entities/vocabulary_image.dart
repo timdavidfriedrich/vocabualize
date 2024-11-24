@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:vocabualize/constants/image_constants.dart';
 
+enum ImageSize { tiny, small, medium, large, original }
+
 sealed class VocabularyImage {
   final String id;
   final String url;
@@ -17,7 +19,7 @@ class StockImage extends VocabularyImage {
   final int height;
   final String? photographer;
   final String? photographerUrl;
-  final Map<String, dynamic>? sizeVariants;
+  final Map<ImageSize, String>? sizeVariants;
 
   const StockImage({
     required super.id,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extensions.dart';
 import 'package:vocabualize/src/features/home/presentation/controllers/home_controller.dart';
 import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';
 
@@ -127,18 +128,7 @@ class _ImageBox extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
         child: Image(
-          image: NetworkImage(
-            // TODO: Make it easiert and safer to get size variants of images (NewVocabulariesSection), also replace this if image getter
-            vocabulary.image is StockImage
-                ? (vocabulary.image as StockImage)
-                        .sizeVariants
-                        ?.entries
-                        .firstWhere((e) {
-                      return e.key == "medium";
-                    }).value ??
-                    vocabulary.image.url
-                : vocabulary.image.url,
-          ),
+          image: vocabulary.image.getImageProvider(size: ImageSize.medium),
           fit: BoxFit.cover,
         ),
       ),

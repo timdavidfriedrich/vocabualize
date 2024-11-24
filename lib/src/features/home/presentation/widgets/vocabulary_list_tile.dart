@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/delete_vocabulary_use_case.dart';
+import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extensions.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/home/presentation/controllers/home_controller.dart';
 import 'package:vocabualize/src/features/home/presentation/widgets/info_snackbar.dart';
@@ -94,12 +95,8 @@ class VocabularyListTile extends ConsumerWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: Image(
-                      image: NetworkImage(
-                        // TODO: Make it easier and safer to get size variants for images (VocabularyListTile), also replace this if image getter
-                        vocabulary.image is StockImage
-                            ? (vocabulary.image as StockImage).sizeVariants?.entries.firstWhere((e) => e.key == "tiny").value ??
-                                vocabulary.image.url
-                            : vocabulary.image.url,
+                      image: vocabulary.image.getImageProvider(
+                        size: ImageSize.tiny,
                       ),
                       fit: BoxFit.cover,
                     ),

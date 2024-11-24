@@ -4,8 +4,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
+import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/common/domain/use_cases/language/get_language_by_id_use_case.dart';
+import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extensions.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/presentation/controllers/practise_controller.dart';
 import 'package:vocabualize/src/features/practise/presentation/screens/practise_done_screen.dart';
@@ -128,9 +130,7 @@ class _PractiseScreenState extends ConsumerState<PractiseScreen> {
                             borderRadius: BorderRadius.circular(24),
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(
-                                state.currentVocabulary.image.url,
-                              ),
+                              image: state.currentVocabulary.image.getImageProvider(size: ImageSize.medium),
                             ).takeUnless((_) => state.areImagesEnabled),
                           ),
                           child: Container(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/constants/dimensions.dart';
-import 'package:vocabualize/constants/image_constants.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extensions.dart';
 import 'package:vocabualize/src/features/details/presentation/controllers/details_controller.dart';
 import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
@@ -27,7 +27,8 @@ class ImageChooser extends ConsumerWidget {
           child: Container(
             padding: EdgeInsets.zero,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
+              borderRadius:
+                  BorderRadius.circular(Dimensions.mediumBorderRadius),
               border: Border.all(
                 width: Dimensions.mediumBorderWidth,
                 color: Theme.of(context).colorScheme.primary,
@@ -43,7 +44,8 @@ class ImageChooser extends ConsumerWidget {
             child: state.vocabulary.image is FallbackImage
                 ? Center(
                     child: Text(
-                      AppLocalizations.of(context)?.record_addDetails_noImage ?? "",
+                      AppLocalizations.of(context)?.record_addDetails_noImage ??
+                          "",
                       textAlign: TextAlign.center,
                     ),
                   )
@@ -76,8 +78,13 @@ class ImageChooser extends ConsumerWidget {
                                   child: Text(
                                     // TODO: Replace with arb
                                     "Photo by ${(state.vocabulary.image as StockImage).photographer}",
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: Theme.of(context).colorScheme.onPrimary,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                         ),
                                   ),
                                 ),
@@ -85,7 +92,8 @@ class ImageChooser extends ConsumerWidget {
                                 Icon(
                                   Icons.launch_rounded,
                                   size: 18,
-                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                 ),
                                 const SizedBox(width: Dimensions.smallSpacing),
                               ],
@@ -100,7 +108,10 @@ class ImageChooser extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(AppLocalizations.of(context)?.record_addDetails_providedBy ?? "", style: Theme.of(context).textTheme.bodySmall),
+            Text(
+                AppLocalizations.of(context)?.record_addDetails_providedBy ??
+                    "",
+                style: Theme.of(context).textTheme.bodySmall),
             IconButton(
               onPressed: () {
                 ref.read(notifier).browseNext();
@@ -119,13 +130,18 @@ class ImageChooser extends ConsumerWidget {
             crossAxisSpacing: 4,
           ),
           itemCount: state.stockImagesPerPage + 1,
-          itemBuilder: (context, index) => index == 0
-              ? _CustomImageButton(notifier: notifier, state: state)
-              : _StockImageButton(
-                  notifier: notifier,
-                  state: state,
-                  index: index - 1,
-                ),
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return _CustomImageButton(notifier: notifier, state: state);
+            }
+            return _StockImageButton(
+              notifier: notifier,
+              state: state,
+              stockImage: state.stockImages.elementAt(
+                index + state.firstStockImageIndex - 1,
+              ),
+            );
+          },
         ),
       ],
     );
@@ -156,7 +172,8 @@ class _CustomImageButton extends ConsumerWidget {
           ? Ink(
               padding: EdgeInsets.zero,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
+                borderRadius:
+                    BorderRadius.circular(Dimensions.mediumBorderRadius),
                 border: Border.all(
                   width: Dimensions.mediumBorderWidth,
                   color: Theme.of(context).colorScheme.primary,
@@ -185,52 +202,39 @@ class _CustomImageButton extends ConsumerWidget {
 class _StockImageButton extends ConsumerWidget {
   final Refreshable<DetailsController> notifier;
   final DetailsState state;
-  final int index;
+  final StockImage stockImage;
   const _StockImageButton({
     required this.notifier,
     required this.state,
-    required this.index,
+    required this.stockImage,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onTap: state.stockImages.isEmpty
-          ? null
-          : () {
-              ref.read(notifier).selectOrUnselectImage(
-                    state.stockImages.elementAt(index + state.firstStockImageIndex),
-                  );
-            },
+      onTap: () => ref.read(notifier).selectOrUnselectImage(stockImage),
       borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
-      child: state.firstStockImageIndex + index >= state.stockImages.length
-          ? const Center(child: CircularProgressIndicator.adaptive())
-          : Ink(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
-                border: state.stockImages.elementAt(index + state.firstStockImageIndex) != state.vocabulary.image
-                    ? null
-                    : Border.all(
-                        width: Dimensions.mediumBorderWidth,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    state.stockImages.elementAt(index + state.firstStockImageIndex).sizeVariants?["small"] ??
-                        ImageConstants.fallbackImageUrl,
-                  ),
-                ),
-              ),
-              child: state.stockImages.elementAt(index + state.firstStockImageIndex) != state.vocabulary.image
-                  ? null
-                  : Center(
-                      child: Icon(
-                        Icons.done_rounded,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-            ),
+      child: Ink(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            Dimensions.mediumBorderRadius,
+          ),
+          border: Border.all(
+            width: Dimensions.mediumBorderWidth,
+            color: Theme.of(context).colorScheme.primary,
+          ).takeUnless((_) => stockImage.id != state.vocabulary.image.id),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: stockImage.getImageProvider(size: ImageSize.small),
+          ),
+        ),
+        child: Center(
+          child: Icon(
+            Icons.done_rounded,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ).takeUnless((_) => stockImage.id != state.vocabulary.image.id),
+      ),
     );
   }
 }

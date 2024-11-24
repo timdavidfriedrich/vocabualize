@@ -1,25 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 
 extension VocabularyImageExtensions on VocabularyImage {
-  // TODO: Make it easiert and safer to get size variants of images (VocabularyImageExtentions) => maybe with class/enum, and pass it here
-  ImageProvider getImageProvider() {
-    return getImage().image;
+  ImageProvider getImageProvider({ImageSize size = ImageSize.original}) {
+    return switch (runtimeType) {
+      const (FallbackImage) => Image.asset(AssetPath.fallbackDefault).image,
+      const (DraftImage) => Image.memory((this as DraftImage).content).image,
+      const (StockImage) => CachedNetworkImageProvider(
+          (this as StockImage).sizeVariants?[size] ?? url,
+        ),
+      _ => CachedNetworkImageProvider(url),
+    };
   }
 
-  // TODO: Replace Image with CachedNetworkImage
-  Image getImage() {
-    switch (runtimeType) {
-      case const (StockImage):
-        return Image.network(url);
-      case const (CustomImage):
-        return Image.network(url);
-      case const (FallbackImage):
-        return Image.network(url);
-      case const (DraftImage):
-        return Image.memory((this as DraftImage).content);
-      default:
-        return Image.network(url);
-    }
+  Image getImage({ImageSize size = ImageSize.original}) {
+    return Image(image: getImageProvider(size: size));
   }
 }

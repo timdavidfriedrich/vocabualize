@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/data/repositories/vocabulary_repository_impl.dart';
 import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/domain/extensions/list_extensions.dart';
+import 'package:vocabualize/src/common/domain/extensions/iterable_extensions.dart';
 
 final getVocabulariesUseCaseProvider = AutoDisposeProvider((ref) {
   return GetVocabulariesUseCase(
