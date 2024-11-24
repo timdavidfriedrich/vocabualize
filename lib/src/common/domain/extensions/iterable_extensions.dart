@@ -26,4 +26,8 @@ extension IterableExtensions<ElementType> on Iterable<ElementType> {
   ElementType? firstWhereOrNull(bool Function(ElementType? element) condition) {
     return asNullable().firstWhere(condition, orElse: () => null);
   }
+
+  bool containsAny(Iterable<ElementType> elements) {
+    return elements.any(contains);
+  }
 }
