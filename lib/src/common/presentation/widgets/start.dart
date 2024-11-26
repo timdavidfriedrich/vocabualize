@@ -15,13 +15,10 @@ class Start extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final initCloudNotificationsUseCase = ref.watch(initCloudNotificationsUseCaseProvider);
-    final initLocalNotificationsUseCase = ref.watch(initLocalNotificationsUseCaseProvider);
+    ref.watch(initCloudNotificationsUseCaseProvider)();
+    ref.watch(initLocalNotificationsUseCaseProvider)();
+
     final currentUser = ref.watch(getCurrentUserUseCaseProvider);
-
-    initCloudNotificationsUseCase();
-    initLocalNotificationsUseCase();
-
     return currentUser.when(
       loading: () {
         return const Scaffold(
@@ -30,18 +27,19 @@ class Start extends ConsumerWidget {
           ),
         );
       },
-      data: (AppUser? user) {
-        if (user == null) {
-          return const WelcomeScreen();
-        }
-        if (!user.verified) {
-          return const VerifyScreen();
-        }
-        return const HomeScreen();
-      },
       error: (error, stackTrace) {
         Log.error("Error getting current user: $error", exception: stackTrace);
-        return const Scaffold(body: Center(child: Text("Error getting current user")));
+        // TODO: Replace with Error widget
+        return const Scaffold(
+          body: Center(child: Text("Error getting current user")),
+        );
+      },
+      data: (AppUser? user) {
+        return switch (user?.verified) {
+          true => const HomeScreen(),
+          false => const VerifyScreen(),
+          null => const WelcomeScreen(),
+        };
       },
     );
   }
