@@ -23,7 +23,7 @@ class DuplicateDialog extends ConsumerWidget {
       );
     }
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       // TODO: Replace with arb
       title: const Text('Duplicate'),
       // TODO: Replace with arb

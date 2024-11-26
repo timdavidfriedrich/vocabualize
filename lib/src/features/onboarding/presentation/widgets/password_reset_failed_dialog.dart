@@ -30,7 +30,7 @@ class PasswordResetFailedDialog extends StatelessWidget {
       }
     }
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       // TODO: Replace with arb
       title: const Text('Password reset failed'),
       // TODO: Replace with arb

@@ -16,7 +16,7 @@ class CameraGalleryDialog extends StatelessWidget {
       context.pop();
     }
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       insetPadding: const EdgeInsets.symmetric(horizontal: 64),
       contentPadding: const EdgeInsets.all(12),
       content: SizedBox(

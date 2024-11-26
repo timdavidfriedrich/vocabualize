@@ -14,7 +14,7 @@ class ReplaceVocabularyDialog extends StatelessWidget {
       context.pop(true);
     }
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       // TODO: Replace with arb
       title: const Text('Replace'),
       // TODO: Replace with arb

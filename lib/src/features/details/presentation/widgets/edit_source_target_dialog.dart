@@ -55,7 +55,7 @@ class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog>
       context.pop<Vocabulary>(updatedVocabulary);
     }
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       insetPadding: const EdgeInsets.symmetric(horizontal: 64),
       contentPadding: EdgeInsets.fromLTRB(12, 12, 8, widget.editTarget ? 8 : 12),
       content: SizedBox(

@@ -27,7 +27,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
       context.pop<String?>(text.takeUnless((t) => t.isEmpty));
     }
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       insetPadding: const EdgeInsets.symmetric(horizontal: Dimensions.extraExtraLargeSpacing),
       contentPadding: const EdgeInsets.fromLTRB(
         Dimensions.semiSmallSpacing,

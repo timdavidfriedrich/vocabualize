@@ -7,7 +7,7 @@ class DisconnectedDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return AlertDialog.adaptive(
       insetPadding: const EdgeInsets.all(32),
       contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
       actionsPadding: const EdgeInsets.fromLTRB(24, 24, 24, 24),

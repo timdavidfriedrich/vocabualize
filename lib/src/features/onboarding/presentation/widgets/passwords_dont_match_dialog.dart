@@ -6,7 +6,7 @@ class PasswordsDontMatchDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return AlertDialog.adaptive(
       // TODO: Replace with arb
       title: const Text("Sign up failed"),
       // TODO: Replace with arb

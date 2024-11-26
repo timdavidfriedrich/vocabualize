@@ -30,7 +30,7 @@ class SignUpFailedDialog extends StatelessWidget {
       }
     }
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       // TODO: Replace with arb
       title: const Text("Sign up failed"),
       content: Text(errorMessage()),

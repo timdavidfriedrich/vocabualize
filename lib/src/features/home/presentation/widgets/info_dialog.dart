@@ -22,7 +22,7 @@ class InfoDialog extends ConsumerWidget {
       context.pop();
     }
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       title: Text(vocabulary.target),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
