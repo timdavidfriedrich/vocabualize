@@ -1,14 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vocabualize/src/features/reports/domain/entities/report_type.dart';
 
 class Report {
   final bool done;
-  final Timestamp date;
 
   Report({
     this.done = false,
     date,
-  }) : date = date ?? Timestamp.now();
+  });
 
   factory Report.fromType({required ReportType type}) {
     switch (type) {

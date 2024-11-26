@@ -64,7 +64,8 @@ class _SignScreenState extends ConsumerState<SignScreen> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        arguments = (ModalRoute.of(context)?.settings.arguments as SignArguments?);
+        arguments =
+            (ModalRoute.of(context)?.settings.arguments as SignArguments?);
         arguments?.let((args) {
           signType = args.signType;
         });
@@ -74,13 +75,25 @@ class _SignScreenState extends ConsumerState<SignScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final signInWithEmailAndPassword = ref.watch(signInWithEmailAndPasswordUseCaseProvider);
-    final createUserWithEmailAndPassword = ref.watch(createUserWithEmailAndPasswordUseCaseProvider);
+    final signInWithEmailAndPassword =
+        ref.watch(signInWithEmailAndPasswordUseCaseProvider);
+    final createUserWithEmailAndPassword =
+        ref.watch(createUserWithEmailAndPasswordUseCaseProvider);
 
     void signIn() async {
       bool wasSuccessful = await signInWithEmailAndPassword(_email, _password);
-      if (context.mounted && wasSuccessful) {
+      if (!context.mounted) return;
+      if (wasSuccessful) {
         context.pop();
+      } else {
+        context.showDialog(
+          const AlertDialog.adaptive(
+            // TODO: Replace with arb
+            title: Text("Sign in failed"),
+            // TODO: Replace with arb
+            content: Text("Check your email and password."),
+          ),
+        );
       }
     }
 
@@ -89,15 +102,27 @@ class _SignScreenState extends ConsumerState<SignScreen> {
         await context.showDialog(const PasswordsDontMatchDialog());
         return;
       }
-      bool wasSuccessful = await createUserWithEmailAndPassword(_email, _password);
-      if (context.mounted && wasSuccessful) {
+      bool wasSuccessful =
+          await createUserWithEmailAndPassword(_email, _password);
+      if (!context.mounted) return;
+      if (wasSuccessful) {
         context.pop();
+      } else {
+        context.showDialog(
+          const AlertDialog.adaptive(
+            // TODO: Replace with arb
+            title: Text("Sign up failed"),
+            // TODO: Replace with arb
+            content: Text("This email is invalid or already in use."),
+          ),
+        );
       }
     }
 
     return SafeArea(
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32), topRight: Radius.circular(32)),
         child: Scaffold(
           // resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).colorScheme.surface,
@@ -109,7 +134,9 @@ class _SignScreenState extends ConsumerState<SignScreen> {
             children: [
               Expanded(
                 child: Image.asset(
-                  signType == SignType.signIn ? AssetPath.mascotWaving : AssetPath.mascotHanging,
+                  signType == SignType.signIn
+                      ? AssetPath.mascotWaving
+                      : AssetPath.mascotHanging,
                 ),
               ),
               Padding(
@@ -120,14 +147,19 @@ class _SignScreenState extends ConsumerState<SignScreen> {
                   children: [
                     Text(
                       // TODO: Replace with arb
-                      signType == SignType.signIn ? "Great to see\nyou again!" : "Welcome!",
+                      signType == SignType.signIn
+                          ? "Great to see\nyou again!"
+                          : "Welcome!",
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
                     const SizedBox(height: 48),
                     TextField(
                       // TODO: Replace with arb
-                      decoration: const InputDecoration(label: Text("Email"), floatingLabelBehavior: FloatingLabelBehavior.auto),
+                      decoration: const InputDecoration(
+                        label: Text("Email"),
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      ),
                       textInputAction: TextInputAction.next,
                       onChanged: (text) {
                         _updateEmail(text);
@@ -144,10 +176,16 @@ class _SignScreenState extends ConsumerState<SignScreen> {
                             ? null
                             : IconButton(
                                 onPressed: () => _changePasswordVisibility(),
-                                icon: Icon(_isPasswordObscured ? Icons.visibility_rounded : Icons.visibility_off_rounded),
+                                icon: Icon(
+                                  _isPasswordObscured
+                                      ? Icons.visibility_rounded
+                                      : Icons.visibility_off_rounded,
+                                ),
                               ),
                       ),
-                      textInputAction: signType == SignType.signIn ? TextInputAction.done : TextInputAction.next,
+                      textInputAction: signType == SignType.signIn
+                          ? TextInputAction.done
+                          : TextInputAction.next,
                       obscureText: _isPasswordObscured,
                       onChanged: (text) => _updatePassword(text),
                     ),
@@ -166,13 +204,21 @@ class _SignScreenState extends ConsumerState<SignScreen> {
                     const SizedBox(height: 32),
                     signType == SignType.signIn
                         ? ElevatedButton(
-                            onPressed: !_isEmailValid || _email.isEmpty || _password.isEmpty ? null : () => signIn(),
+                            onPressed: !_isEmailValid ||
+                                    _email.isEmpty ||
+                                    _password.isEmpty
+                                ? null
+                                : () => signIn(),
                             // TODO: Replace with arb
                             child: const Text("Sign in"),
                           )
                         : ElevatedButton(
-                            onPressed:
-                                !_isEmailValid || _email.isEmpty || _password.isEmpty || _repeatedPassword.isEmpty ? null : () => signUp(),
+                            onPressed: !_isEmailValid ||
+                                    _email.isEmpty ||
+                                    _password.isEmpty ||
+                                    _repeatedPassword.isEmpty
+                                ? null
+                                : () => signUp(),
                             // TODO: Replace with arb
                             child: const Text("Sign up"),
                           ),
@@ -184,7 +230,10 @@ class _SignScreenState extends ConsumerState<SignScreen> {
                               // TODO: Replace with arb
                               "Forgot password?",
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
                                     color: Theme.of(context).hintColor,
                                   ),
                             ),
