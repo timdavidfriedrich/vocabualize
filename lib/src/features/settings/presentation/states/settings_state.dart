@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:vocabualize/src/common/domain/entities/app_user.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 
 class SettingsState {
+  final AppUser? currentUser;
   final Language sourceLanguage;
   final Language targetLanguage;
   final bool areImagesEnabled;
@@ -10,6 +12,7 @@ class SettingsState {
   final TimeOfDay practiseNotificationTime;
 
   const SettingsState({
+    required this.currentUser,
     required this.sourceLanguage,
     required this.targetLanguage,
     required this.areImagesEnabled,
@@ -19,6 +22,7 @@ class SettingsState {
   });
 
   SettingsState copyWith({
+    AppUser? currentUser,
     Language? sourceLanguage,
     Language? targetLanguage,
     bool? areImagesEnabled,
@@ -27,12 +31,15 @@ class SettingsState {
     TimeOfDay? practiseNotificationTime,
   }) {
     return SettingsState(
+      currentUser: currentUser ?? this.currentUser,
       sourceLanguage: sourceLanguage ?? this.sourceLanguage,
       targetLanguage: targetLanguage ?? this.targetLanguage,
       areImagesEnabled: areImagesEnabled ?? this.areImagesEnabled,
       usePremiumTranslator: usePremiumTranslator ?? this.usePremiumTranslator,
-      gatherNotificationTime: gatherNotificationTime ?? this.gatherNotificationTime,
-      practiseNotificationTime: practiseNotificationTime ?? this.practiseNotificationTime,
+      gatherNotificationTime:
+          gatherNotificationTime ?? this.gatherNotificationTime,
+      practiseNotificationTime:
+          practiseNotificationTime ?? this.practiseNotificationTime,
     );
   }
 }

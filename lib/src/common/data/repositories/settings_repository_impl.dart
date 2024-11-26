@@ -188,7 +188,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   Future<void> setGatherNotificationTime(TimeOfDay gatherNotificationTime) async {
-    _sharedPreferencesDataSource.setGatherNotificationTimeMinute(gatherNotificationTime.hour);
+    _sharedPreferencesDataSource.setGatherNotificationTimeHour(gatherNotificationTime.hour);
     _sharedPreferencesDataSource.setGatherNotificationTimeMinute(gatherNotificationTime.minute);
   }
 

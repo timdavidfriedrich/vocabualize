@@ -1,42 +1,37 @@
 import 'package:pocketbase/pocketbase.dart';
+import 'package:vocabualize/src/common/data/extensions/string_extensions.dart';
 import 'package:vocabualize/src/common/domain/entities/app_user.dart';
+import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 
 extension AuthStoreMappers on AuthStore {
   AppUser? toAppUser() {
-    if (model == null) {
-      return null;
-    }
-    if (model is! RecordModel) {
-      return null;
-    }
-    final record = model as RecordModel;
-    return AppUser(
-      id: record.id,
-      name: record.data['name'],
-      verified: record.data['verified'],
-      created: DateTime.tryParse(record.created),
-      updated: DateTime.tryParse(record.updated),
-      lastLogin: DateTime.tryParse(record.data['lastLogin'] ?? ""),
-    );
+    final record = model is RecordModel? ? model as RecordModel? : null;
+    return record?.toAppUser();
   }
 }
 
 extension AuthStoreEventMappers on AuthStoreEvent {
   AppUser? toAppUser() {
-    if (model == null) {
-      return null;
-    }
-    if (model is! RecordModel) {
-      return null;
-    }
-    final record = model as RecordModel;
+    final record = model is RecordModel? ? model as RecordModel? : null;
+    return record?.toAppUser();
+  }
+}
+
+extension _AuthRecordModelMappers on RecordModel {
+  AppUser? toAppUser() {
+    final avatarFileName = getDataValue<String?>("avatar")?.takeUnless((url) {
+      return url.isEmpty;
+    });
     return AppUser(
-      id: record.id,
-      name: record.data['name'],
-      verified: record.data['verified'],
-      created: DateTime.tryParse(record.created),
-      updated: DateTime.tryParse(record.updated),
-      lastLogin: DateTime.tryParse(record.data['lastLogin'] ?? ""),
+      id: id,
+      username: getDataValue<String?>("username"),
+      name: getStringValue("name", "Anonymous"),
+      email: getDataValue<String?>("email"),
+      emailVisibility: getDataValue<bool?>("emailVisibility"),
+      verified: getDataValue<bool?>("verified"),
+      avatarUrl: avatarFileName?.toFileUrl(id, collectionName),
+      created: DateTime.tryParse(created),
+      updated: DateTime.tryParse(updated),
     );
   }
 }
