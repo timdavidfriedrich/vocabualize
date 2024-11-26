@@ -67,18 +67,17 @@ class PractiseController
   }
 
   Future<void> answerCurrent(Answer answer) async {
-    final previousState = state.value;
-    state = const AsyncLoading();
-    previousState?.let((previous) async {
+    state.value?.let((previousState) async {
       final answerVocabulary = ref.read(answerVocabularyUseCaseProvider);
+      state = const AsyncLoading();
       state = await AsyncValue.guard(() async {
         final updatedVocabulary = await answerVocabulary(
-          vocabulary: previous.currentVocabulary,
+          vocabulary: previousState.currentVocabulary,
           answer: answer,
         );
         await ref.read(addOrUpdateVocabularyUseCaseProvider(updatedVocabulary));
-        return previous.copyWith(
-          vocabulariesLeftToPractise: previous.vocabulariesLeft.sublist(1),
+        return previousState.copyWith(
+          vocabulariesLeftToPractise: previousState.vocabulariesLeft.sublist(1),
           isSolutionShown: false,
         );
       });

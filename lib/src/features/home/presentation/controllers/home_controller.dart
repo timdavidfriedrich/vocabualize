@@ -43,22 +43,21 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
   }
 
   void goToDetails(BuildContext context, Vocabulary vocabulary) {
-    Navigator.pushNamed(
-      context,
+    context.pushNamed(
       DetailsScreen.routeName,
       arguments: DetailsScreenArguments(vocabulary: vocabulary),
     );
   }
 
   void openReportPage(BuildContext context) {
-    Navigator.pushNamed(context, ReportScreen.routeName, arguments: ReportArguments.bug());
+    context.pushNamed(ReportScreen.routeName, arguments: ReportArguments.bug());
   }
 
   void showSettings(BuildContext context) {
-    Navigator.pushNamed(context, SettingsScreen.routeName);
+    context.pushNamed(SettingsScreen.routeName);
   }
 
   void goToCollection(BuildContext context, Tag tag) {
-    Navigator.pushNamed(context, CollectionScreen.routeName, arguments: CollectionScreenArguments(tag: tag));
+    context.pushNamed(CollectionScreen.routeName, arguments: CollectionScreenArguments(tag: tag));
   }
 }

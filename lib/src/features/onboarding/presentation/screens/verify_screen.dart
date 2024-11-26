@@ -27,7 +27,7 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
     // await AuthService.instance.reloadUser().whenComplete(() {
     //   if (FirebaseAuth.instance.currentUser!.emailVerified) {
     //     reloadTimer?.cancel();
-    //     Navigator.pushNamed(context, SelectLanguageScreen.routeName);
+    //     context.pushNamed(SelectLanguageScreen.routeName);
     //   }
     // });
   }

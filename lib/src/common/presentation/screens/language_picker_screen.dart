@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/use_cases/language/get_available_languages_use_case.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 
 class LanguagePickerScreen extends ConsumerWidget {
   static const String routeName = "/LanguagePickerScreen";
@@ -13,7 +14,7 @@ class LanguagePickerScreen extends ConsumerWidget {
     final getAvailableLanguages = ref.watch(getAvailableLanguagesUseCaseProvider);
 
     void returnLanguage(Language language) {
-      Navigator.pop(context, language);
+      context.pop(language);
     }
 
     ScrollController scrollController = ScrollController();

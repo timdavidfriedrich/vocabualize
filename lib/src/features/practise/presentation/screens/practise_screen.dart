@@ -6,6 +6,7 @@ import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extensions.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
 import 'package:vocabualize/src/features/practise/presentation/controllers/practise_controller.dart';
@@ -164,7 +165,7 @@ class _PractiseDoneScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void close() {
-      Navigator.pop(context);
+      context.pop();
     }
 
     return SafeArea(
@@ -217,7 +218,7 @@ class _ProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void close() {
-      Navigator.pop(context);
+      context.pop();
     }
 
     final int totalCount = state.initialVocabularyCount;

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 
 // TODO: Remove Firebase from SignInFailedDialog
 class SignInFailedDialog extends StatelessWidget {
@@ -10,7 +11,7 @@ class SignInFailedDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void okay() {
-      Navigator.pop(context);
+      context.pop();
     }
 
     String errorMessage() {

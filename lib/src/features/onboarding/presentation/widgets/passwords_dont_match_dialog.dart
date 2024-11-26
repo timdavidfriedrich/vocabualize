@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 
 class PasswordsDontMatchDialog extends StatelessWidget {
   const PasswordsDontMatchDialog({super.key});
@@ -12,7 +13,7 @@ class PasswordsDontMatchDialog extends StatelessWidget {
       content: const Text("The passwords don't match. Please try again."),
       actions: [
         ElevatedButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
           // TODO: Replace with arb
           child: const Text("Okay"),
         ),

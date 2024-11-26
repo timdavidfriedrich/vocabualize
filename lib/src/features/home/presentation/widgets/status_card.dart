@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/home/domain/utils/card_generator.dart';
 import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';
 import 'package:vocabualize/src/features/home/presentation/widgets/status_card_indicator.dart';
@@ -14,10 +15,7 @@ class StatusCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void startPractise() {
-      Navigator.pushNamed(
-        context,
-        PractiseScreen.routeName,
-      );
+      context.pushNamed(PractiseScreen.routeName);
     }
 
     final message = CardGenerator.generateMessage(state.vocabularies);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 
 class AddTagDialog extends StatefulWidget {
   const AddTagDialog({super.key});
@@ -23,7 +24,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
   Widget build(BuildContext context) {
     void submit() {
       final text = _controller.text;
-      Navigator.pop<String?>(context, text.takeUnless((t) => t.isEmpty));
+      context.pop<String?>(text.takeUnless((t) => t.isEmpty));
     }
 
     return AlertDialog(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 
 class CameraGalleryDialog extends StatelessWidget {
   const CameraGalleryDialog({super.key});
@@ -8,11 +9,11 @@ class CameraGalleryDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void choose(ImageSource imageSource) {
-      Navigator.pop(context, imageSource);
+      context.pop(imageSource);
     }
 
     void cancel() {
-      Navigator.pop(context);
+      context.pop();
     }
 
     return AlertDialog(

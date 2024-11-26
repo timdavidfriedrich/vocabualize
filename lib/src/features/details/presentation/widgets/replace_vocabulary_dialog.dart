@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 
 class ReplaceVocabularyDialog extends StatelessWidget {
   const ReplaceVocabularyDialog({super.key});
@@ -6,11 +7,11 @@ class ReplaceVocabularyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void cancel() {
-      Navigator.pop(context, false);
+      context.pop(false);
     }
 
     void replace() {
-      Navigator.pop(context, true);
+      context.pop(true);
     }
 
     return AlertDialog(

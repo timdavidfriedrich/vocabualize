@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/use_cases/authentication/sign_out_use_case.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 
 // TODO: Remove Firebase from Profile
 
@@ -14,7 +15,7 @@ class ProfileContainer extends ConsumerWidget {
 
     void onSignOutClick() async {
       await signOut().whenComplete(() {
-        Navigator.pop(context);
+        context.pop();
       });
     }
 

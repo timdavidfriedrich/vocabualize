@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/reports/presentation/screens/report_screen.dart';
 
 class EditSourceTargetDialog extends ConsumerStatefulWidget {
@@ -29,8 +30,7 @@ class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog>
   @override
   Widget build(BuildContext context) {
     void reportTranslation() {
-      Navigator.pushNamed(
-        context,
+      context.pushNamed(
         ReportScreen.routeName,
         arguments: ReportArguments.translation(vocabulary: widget.vocabulary),
       );
@@ -46,13 +46,13 @@ class _EditSourceTargetDialogState extends ConsumerState<EditSourceTargetDialog>
 
     void submit() async {
       if (_controller.text.isEmpty || !hasChanged()) {
-        return Navigator.pop(context);
+        return context.pop();
       }
       final updatedVocabulary = switch (widget.editTarget) {
         true => widget.vocabulary.copyWith(target: _controller.text),
         false => widget.vocabulary.copyWith(source: _controller.text),
       };
-      Navigator.pop<Vocabulary>(context, updatedVocabulary);
+      context.pop<Vocabulary>(updatedVocabulary);
     }
 
     return AlertDialog(

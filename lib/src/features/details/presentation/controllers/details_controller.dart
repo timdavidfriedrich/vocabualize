@@ -67,8 +67,7 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
       target: await translate(vocabulary.source),
     );
     if (!context.mounted) return;
-    Navigator.popAndPushNamed(
-      context,
+    context.popAndPushNamed(
       DetailsScreen.routeName,
       arguments: DetailsScreenArguments(vocabulary: retranslatedVocabulary),
     );
@@ -184,19 +183,19 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   void deleteVocabulary(BuildContext context) {
     state.value?.let((value) {
       ref.read(deleteVocabularyUseCaseProvider(value.vocabulary));
-      Navigator.pop(context);
+      context.pop();
     });
   }
 
   void goToSettings(BuildContext context) {
-    Navigator.pushNamed(context, SettingsScreen.routeName);
+    context.pushNamed(SettingsScreen.routeName);
   }
 
   Future<void> save(BuildContext context) async {
     state.value?.let((value) async {
       await ref.read(addOrUpdateVocabularyUseCaseProvider(value.vocabulary));
       if (context.mounted) {
-        Navigator.pop(context);
+        context.pop();
       }
     });
   }

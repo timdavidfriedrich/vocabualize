@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 
 class DisconnectedDialog extends StatelessWidget {
   const DisconnectedDialog({super.key});
@@ -19,7 +20,7 @@ class DisconnectedDialog extends StatelessWidget {
       actions: [
         ElevatedButton(
           // TODO: move onPressed to method
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
           child: Text(AppLocalizations.of(context)?.core_disconnected_okayButton ?? ""),
         ),
       ],

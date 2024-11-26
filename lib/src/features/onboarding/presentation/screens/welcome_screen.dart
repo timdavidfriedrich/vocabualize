@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_constants.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/onboarding/presentation/screens/sign_screen.dart';
 import 'package:vocabualize/src/features/onboarding/presentation/screens/choose_languages_screen.dart';
 import 'package:vocabualize/src/features/onboarding/domain/entities/sign_type.dart';
@@ -10,15 +11,15 @@ class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   void _navigateToSignIn(BuildContext context) {
-    Navigator.of(context).pushNamed(SignScreen.routeName, arguments: SignArguments(signType: SignType.signIn));
+    context.pushNamed(SignScreen.routeName, arguments: SignArguments(signType: SignType.signIn));
   }
 
   void _navigateToSignUp(BuildContext context) {
-    Navigator.of(context).pushNamed(SignScreen.routeName, arguments: SignArguments(signType: SignType.signUp));
+    context.pushNamed(SignScreen.routeName, arguments: SignArguments(signType: SignType.signUp));
   }
 
   void _continueAsGuest(BuildContext context) {
-    Navigator.of(context).pushNamed(ChooseLanguagesScreen.routeName);
+    context.pushNamed(ChooseLanguagesScreen.routeName);
   }
 
   @override

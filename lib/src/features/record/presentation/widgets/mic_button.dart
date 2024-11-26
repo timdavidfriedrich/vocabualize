@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/record/domain/use_cases/speech_to_text/record_speech_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/translator/translate_use_case.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
@@ -27,8 +28,7 @@ class MicButton extends ConsumerWidget {
           source: source,
           target: target,
         );
-        Navigator.pushNamed(
-          context,
+        context.pushNamed(
           DetailsScreen.routeName,
           arguments: DetailsScreenArguments(vocabulary: draftVocabulary),
         );

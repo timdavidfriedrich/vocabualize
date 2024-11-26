@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/delete_vocabulary_use_case.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/home/domain/extensions/vocabulary_extensions.dart';
 
 class InfoDialog extends ConsumerWidget {
@@ -14,11 +15,11 @@ class InfoDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     void delete() {
       ref.read(deleteVocabularyUseCaseProvider(vocabulary));
-      Navigator.pop(context);
+      context.pop();
     }
 
     void close() {
-      Navigator.of(context).pop();
+      context.pop();
     }
 
     return AlertDialog(

@@ -6,6 +6,7 @@ import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/use_cases/settings/get_are_images_enabled_use_case.dart';
 import 'package:vocabualize/src/common/domain/use_cases/vocabulary/get_vocabularies_use_case.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/collections/presentation/states/collection_state.dart';
 import 'package:vocabualize/src/features/practise/presentation/screens/practise_screen.dart';
 
@@ -29,8 +30,7 @@ class CollectionController extends AutoDisposeFamilyAsyncNotifier<CollectionStat
   }
 
   void startPractise({required BuildContext context, required Tag tag}) {
-    Navigator.pushNamed(
-      context,
+    context.pushNamed(
       PractiseScreen.routeName,
       arguments: PractiseScreenArguments(
         tag: tag,

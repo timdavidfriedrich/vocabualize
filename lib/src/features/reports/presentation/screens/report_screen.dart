@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/common/domain/use_cases/report/send_report_use_case.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
 import 'package:vocabualize/src/common/domain/entities/report.dart';
 import 'package:vocabualize/src/features/reports/domain/entities/report_type.dart';
@@ -83,7 +84,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
         report = BugReport(description: text);
       }
       sendReport(report);
-      Navigator.pop(context);
+      context.pop();
     }
 
     return SafeArea(

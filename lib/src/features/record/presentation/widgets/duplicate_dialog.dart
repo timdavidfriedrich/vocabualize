@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/common/presentation/widgets/start.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
@@ -12,12 +13,11 @@ class DuplicateDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void cancel() {
-      Navigator.popUntil(context, ModalRoute.withName(Start.routeName));
+      context.popUntilNamed(Start.routeName);
     }
 
     void proceedAnyway() {
-      Navigator.pushNamed(
-        context,
+      context.pushNamed(
         DetailsScreen.routeName,
         arguments: DetailsScreenArguments(vocabulary: vocabulary),
       );

@@ -56,7 +56,7 @@ class _SignScreenState extends ConsumerState<SignScreen> {
   }
 
   void _navigateToForgotPasswordScreen() {
-    Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
+    context.pushNamed(ForgotPasswordScreen.routeName);
   }
 
   @override
@@ -80,7 +80,7 @@ class _SignScreenState extends ConsumerState<SignScreen> {
     void signIn() async {
       bool wasSuccessful = await signInWithEmailAndPassword(_email, _password);
       if (context.mounted && wasSuccessful) {
-        Navigator.pop(context);
+        context.pop();
       }
     }
 
@@ -91,7 +91,7 @@ class _SignScreenState extends ConsumerState<SignScreen> {
       }
       bool wasSuccessful = await createUserWithEmailAndPassword(_email, _password);
       if (context.mounted && wasSuccessful) {
-        Navigator.pop(context);
+        context.pop();
       }
     }
 
