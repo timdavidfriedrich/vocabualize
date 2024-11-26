@@ -138,7 +138,7 @@ class ImageChooser extends ConsumerWidget {
               notifier: notifier,
               state: state,
               stockImage: state.stockImages.elementAt(
-                index + state.firstStockImageIndex - 1,
+                index + state.firstStockImageIndex + 1,
               ),
             );
           },
