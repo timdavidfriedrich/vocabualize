@@ -171,7 +171,7 @@ class _ImageBox extends StatelessWidget {
           child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: min(tagVocabularies.length, 2),
+              crossAxisCount: tagVocabularies.length == 1 ? 1 : 2,
             ),
             itemCount: min(tagVocabularies.length, 4),
             itemBuilder: (context, index) {
