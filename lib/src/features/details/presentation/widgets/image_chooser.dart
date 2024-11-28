@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -129,7 +131,10 @@ class ImageChooser extends ConsumerWidget {
             mainAxisSpacing: 4,
             crossAxisSpacing: 4,
           ),
-          itemCount: state.stockImagesPerPage + 1,
+          itemCount: min(
+            state.stockImages.length + 1,
+            state.stockImagesPerPage + 1,
+          ),
           itemBuilder: (context, index) {
             if (index == 0) {
               return _CustomImageButton(notifier: notifier, state: state);
@@ -138,7 +143,7 @@ class ImageChooser extends ConsumerWidget {
               notifier: notifier,
               state: state,
               stockImage: state.stockImages.elementAt(
-                index + state.firstStockImageIndex + 1,
+                index + state.firstStockImageIndex - 1,
               ),
             );
           },
