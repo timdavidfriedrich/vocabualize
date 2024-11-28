@@ -6,4 +6,5 @@ class ImageConstants {
   static const fallbackImageWidth = 600;
   static const fallbackImageHeight = 400;
   static const fallbackImageUrl = "https://fakeimg.pl/${fallbackImageWidth}x$fallbackImageHeight/dbdbdb/dbdbdb";
+  static const defaultCompressQuality = 80;
 }

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
+import 'package:vocabualize/src/common/data/extensions/uint8list_extensions.dart';
 import 'package:vocabualize/src/common/data/mappers/auth_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/language_mappers.dart';
 import 'package:vocabualize/src/common/data/mappers/report_mappers.dart';
@@ -207,7 +208,7 @@ class RemoteDatabaseDataSource {
     final body = vocabularyWithUser.toRecordModel().toJson();
 
     // * Workaround. Creating records with images didn't work properly.
-    
+
     final record = await pocketbase
         .collection(_vocabulariesCollectionName)
         .create(body: body);
@@ -218,7 +219,7 @@ class RemoteDatabaseDataSource {
         files: [
           MultipartFile.fromBytes(
             _customImageFieldName,
-            image,
+            await image.compress(),
             filename: "image.jpg",
           ),
         ],
@@ -230,30 +231,31 @@ class RemoteDatabaseDataSource {
     RdbVocabulary vocabulary, {
     Uint8List? draftImageToUpload,
   }) async {
+    final id = vocabulary.id;
+    if (id == null) return;
+
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
     final vocabularyWithUser = vocabulary.copyWith(user: userId);
     final body = vocabularyWithUser.toRecordModel().toJson();
 
-    vocabulary.id?.let((id) async {
-      if (draftImageToUpload == null) {
-        await pocketbase
-            .collection(_vocabulariesCollectionName)
-            .update(id, body: body);
-      } else {
-        await pocketbase.collection(_vocabulariesCollectionName).update(
-          id,
-          body: body,
-          files: [
-            MultipartFile.fromBytes(
-              _customImageFieldName,
-              draftImageToUpload,
-              filename: "image.jpg",
-            ),
-          ],
-        );
-      }
-    });
+    if (draftImageToUpload == null) {
+      await pocketbase
+          .collection(_vocabulariesCollectionName)
+          .update(id, body: body);
+    } else {
+      await pocketbase.collection(_vocabulariesCollectionName).update(
+        id,
+        body: body,
+        files: [
+          MultipartFile.fromBytes(
+            _customImageFieldName,
+            await draftImageToUpload.compress(),
+            filename: "image.jpg",
+          ),
+        ],
+      );
+    }
   }
 
   Future<void> deleteVocabulary(RdbVocabulary vocabulary) async {
