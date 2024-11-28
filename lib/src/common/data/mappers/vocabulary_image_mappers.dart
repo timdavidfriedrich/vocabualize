@@ -31,37 +31,6 @@ extension _SizeVariantsMappers on Map<ImageSize, String>? {
   }
 }
 
-// TODO: Remove RdbVocabularyImageMappers, after removing RdbVocabularyImage ?? still relevant??
-extension RdbVocabularyImageMappers on RdbVocabualaryImage {
-  VocabularyImage toVocabularyImage() {
-    switch (type) {
-      case RdbVocabularyImageType.stock:
-        return toStockImage();
-      case RdbVocabularyImageType.custom:
-        return toCustomImage();
-    }
-  }
-
-  StockImage toStockImage() {
-    return StockImage(
-      id: id,
-      width: width,
-      height: height,
-      url: url,
-      photographer: photographer,
-      photographerUrl: photographerUrl,
-      sizeVariants: src.toSizeVariants(),
-    );
-  }
-
-  CustomImage toCustomImage() {
-    return CustomImage(
-      id: id,
-      url: url,
-    );
-  }
-}
-
 extension XFileMappers on XFile {
   Future<DraftImage> toDraftImage() async {
     return DraftImage(
@@ -77,21 +46,6 @@ extension VocabularyImageMappers on VocabularyImage {
         return (this as StockImage).toRdbStockImage();
       case const (CustomImage):
         return (this as CustomImage).toRdbCustomImage();
-      case const (FallbackImage):
-        return null;
-      default:
-        throw UnimplementedError(
-            'Unknown VocabularyImage type: "$runtimeType"');
-    }
-  }
-
-  // TODO: Remove toRdbVocabularyImage, after removing RdbVocabularyImage
-  RdbVocabualaryImage? toRdbVocabularyImage() {
-    switch (runtimeType) {
-      case const (StockImage):
-        return (this as StockImage).toRdbVocabularyImage();
-      case const (CustomImage):
-        return (this as CustomImage).toRdbVocabularyImage();
       case const (FallbackImage):
         return null;
       default:
@@ -115,11 +69,14 @@ extension RdbStockImageJsonMappers on Map<String, dynamic> {
   }
 }
 
-extension RdbCustomImageJsonMappers on Map<String, dynamic> {
-  RdbCustomImage toRdbCustomImage() {
+extension RdbCustomImageStringMappers on String {
+  RdbCustomImage? toRdbCustomImage() {
+    // TODO: Check if Uri.parse check on RdbCustomImageStringMappers is overkill (performance issues?)
+    if (Uri.tryParse(this) == null) {
+      return null;
+    }
     return RdbCustomImage(
-      id: (this['id'] as int?).toString(),
-      fileName: this['imageUrl'] as String,
+      url: this,
     );
   }
 }
@@ -167,8 +124,7 @@ extension RdbStockImageMappers on RdbStockImage {
 extension RdbCustomImageMappers on RdbCustomImage {
   CustomImage toCustomImage() {
     return CustomImage(
-      id: id,
-      url: fileName,
+      url: url,
     );
   }
 }
@@ -185,35 +141,11 @@ extension StockImageMappers on StockImage {
       src: sizeVariants.toSrc(),
     );
   }
-
-  // TODO: Remove toRdbVocabularyImage, after removing RdbVocabularyImage
-  RdbVocabualaryImage toRdbVocabularyImage() {
-    return RdbVocabualaryImage(
-      type: RdbVocabularyImageType.stock,
-      id: id,
-      width: width,
-      height: height,
-      url: url,
-      photographer: photographer,
-      photographerUrl: photographerUrl,
-      src: sizeVariants.toSrc(),
-    );
-  }
 }
 
 extension CustomImageMappers on CustomImage {
   RdbCustomImage toRdbCustomImage() {
     return RdbCustomImage(
-      id: id,
-      fileName: url,
-    );
-  }
-
-  // TODO: Remove toRdbVocabularyImage, after removing RdbVocabularyImage
-  RdbVocabualaryImage toRdbVocabularyImage() {
-    return RdbVocabualaryImage(
-      type: RdbVocabularyImageType.custom,
-      id: id,
       url: url,
     );
   }

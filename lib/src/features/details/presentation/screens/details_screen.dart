@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:log/log.dart';
 import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
@@ -25,7 +26,8 @@ class DetailsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Vocabulary vocabulary = Vocabulary();
-    DetailsScreenArguments? arguments = ModalRoute.of(context)?.settings.arguments as DetailsScreenArguments?;
+    DetailsScreenArguments? arguments =
+        ModalRoute.of(context)?.settings.arguments as DetailsScreenArguments?;
     arguments?.let((args) => vocabulary = args.vocabulary);
 
     final provider = detailsControllerProvider(vocabulary);
@@ -38,6 +40,7 @@ class DetailsScreen extends ConsumerWidget {
         );
       },
       error: (error, stackTrace) {
+        Log.error("Error in DetailsScreen: $error", exception: stackTrace);
         // TODO: Replace with error widget
         return const Text("Error DetailsScreen");
       },
@@ -149,7 +152,9 @@ class _SaveButton extends ConsumerWidget {
       },
       child: Text(
         state.vocabulary.image is FallbackImage
-            ? AppLocalizations.of(context)?.record_addDetails_saveWithoutButton ?? ""
+            ? AppLocalizations.of(context)
+                    ?.record_addDetails_saveWithoutButton ??
+                ""
             : AppLocalizations.of(context)?.record_addDetails_saveButton ?? "",
       ),
     );
@@ -167,7 +172,9 @@ class _SettingsButton extends ConsumerWidget {
         ref.read(notifier).goToSettings(context);
       },
       child: Text(
-        AppLocalizations.of(context)?.record_addDetails_neverAskForImageButton ?? "",
+        AppLocalizations.of(context)
+                ?.record_addDetails_neverAskForImageButton ??
+            "",
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).hintColor,

@@ -9,9 +9,14 @@ extension VocabularyImageExtensions on VocabularyImage {
       const (FallbackImage) => Image.asset(AssetPath.fallbackDefault).image,
       const (DraftImage) => Image.memory((this as DraftImage).content).image,
       const (StockImage) => CachedNetworkImageProvider(
-          (this as StockImage).sizeVariants?[size] ?? url,
+          (this as StockImage).sizeVariants?[size] ?? (this as StockImage).url,
         ),
-      _ => CachedNetworkImageProvider(url),
+      const (CustomImage) => CachedNetworkImageProvider(
+          (this as CustomImage).url,
+        ),
+      _ => throw UnimplementedError(
+          "Unknown VocabularyImage type: \"$runtimeType\"",
+        ),
     };
   }
 

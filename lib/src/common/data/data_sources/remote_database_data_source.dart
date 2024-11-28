@@ -44,51 +44,63 @@ class RemoteDatabaseDataSource {
 
   Future<void> sendBugReport(RdbBugReport bugReport) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    await pocketbase.collection(_bugReportCollectionName).create(body: bugReport.toRecordModel().toJson());
+    await pocketbase
+        .collection(_bugReportCollectionName)
+        .create(body: bugReport.toRecordModel().toJson());
   }
 
-  Future<void> sendTranslationReport(RdbTranslationReport translationReport) async {
+  Future<void> sendTranslationReport(
+      RdbTranslationReport translationReport) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    await pocketbase.collection(_translationReportCollectionName).create(body: translationReport.toRecordModel().toJson());
+    await pocketbase
+        .collection(_translationReportCollectionName)
+        .create(body: translationReport.toRecordModel().toJson());
   }
 
   Future<List<RdbLanguage>> getAvailabeLanguages() async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final languageRecords = await pocketbase.collection(_languagesCollectionName).getList();
-    return languageRecords.items.map((record) => record.toRdbLanguage()).toList();
+    final records =
+        await pocketbase.collection(_languagesCollectionName).getList();
+    return records.items.map((record) => record.toRdbLanguage()).toList();
   }
 
   Future<RdbLanguage> getLanguageById(String id) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final languageRecord = await pocketbase.collection(_languagesCollectionName).getOne(id);
-    return languageRecord.toRdbLanguage();
+    final record =
+        await pocketbase.collection(_languagesCollectionName).getOne(id);
+    return record.toRdbLanguage();
   }
 
   Future<List<RdbTag>> getTags() async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
     final String? userFilter = userId?.let((id) => "$_userFieldName=\"$id\"");
-    final tagsRecords = await pocketbase.collection(_tagsByUserViewName).getList(filter: userFilter);
+    final tagsRecords = await pocketbase
+        .collection(_tagsByUserViewName)
+        .getList(filter: userFilter);
     return tagsRecords.items.map((record) => record.toRdbTag()).toList();
   }
 
   Future<RdbTag> getTagById(String id) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final tagRecord = await pocketbase.collection(_tagsCollectionName).getOne(id);
-    return tagRecord.toRdbTag();
+    final record = await pocketbase.collection(_tagsCollectionName).getOne(id);
+    return record.toRdbTag();
   }
 
   Future<String> createTag(RdbTag tag) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final data = tag.toRecordModel().toJson();
-    final recordModel = await pocketbase.collection(_tagsCollectionName).create(body: data);
-    return recordModel.id;
+    final record =
+        await pocketbase.collection(_tagsCollectionName).create(body: data);
+    return record.id;
   }
 
   Future<String> updateTag(RdbTag tag) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final data = tag.toRecordModel().toJson();
-    final recordModel = await pocketbase.collection(_tagsCollectionName).update(tag.id, body: data);
+    final recordModel = await pocketbase
+        .collection(_tagsCollectionName)
+        .update(tag.id, body: data);
     return recordModel.id;
   }
 
@@ -102,18 +114,30 @@ class RemoteDatabaseDataSource {
     Tag? tag,
   }) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    final String? searchFilter = searchTerm?.let((term) => "source LIKE \"%$term%\" OR target LIKE \"%$term%\"");
+    final String? searchFilter = searchTerm?.let((term) {
+      return "source LIKE \"%$term%\" OR target LIKE \"%$term%\"";
+    });
     final String? tagFilter = tag?.let((t) => "tags LIKE \"%${t.id}%\"");
     final String? userId = pocketbase.authStore.toAppUser()?.id;
     final String? userFilter = userId?.let((id) => "$_userFieldName=\"$id\"");
-    final String filter = [userFilter, tagFilter, searchFilter].nonNulls.map((f) => "($f)").join(" AND ");
+    final String filter = [userFilter, tagFilter, searchFilter]
+        .nonNulls
+        .map((f) => "($f)")
+        .join(" AND ");
 
-    return pocketbase.collection(_vocabulariesCollectionName).getFullList(filter: filter).then((value) async {
-      return value.map((RecordModel record) => record.toRdbVocabulary()).toList();
+    return pocketbase
+        .collection(_vocabulariesCollectionName)
+        .getFullList(filter: filter)
+        .then((value) async {
+      return value
+          .map((RecordModel record) => record.toRdbVocabulary())
+          .toList();
     });
   }
 
-  void subscribeToVocabularyChanges(Function(RdbEventType type, RdbVocabulary rdbVocabulary) onEvent) async {
+  void subscribeToVocabularyChanges(
+    Function(RdbEventType type, RdbVocabulary rdbVocabulary) onEvent,
+  ) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
 
     // ? Unsubscribe from previous subscriptions
@@ -121,7 +145,10 @@ class RemoteDatabaseDataSource {
     try {
       pocketbase.collection(_vocabulariesCollectionName).unsubscribe("*");
     } catch (e) {
-      Log.error("Failed to unsubscribe from previous vocabulary subscriptions.", exception: e);
+      Log.error(
+        "Failed to unsubscribe from previous vocabulary subscriptions.",
+        exception: e,
+      );
     }
 
     final userId = pocketbase.authStore.toAppUser()?.id;
@@ -155,43 +182,64 @@ class RemoteDatabaseDataSource {
     yield await getVocabularies(searchTerm: searchTerm, tag: tag);
 
     final PocketBase pocketbase = await _connectionClient.getConnection();
-    pocketbase.collection(_vocabulariesCollectionName).subscribe("*", (event) async {
-      final vocabularies = await getVocabularies(searchTerm: searchTerm, tag: tag);
-      controller.add(vocabularies);
-    });
+
+    pocketbase.collection(_vocabulariesCollectionName).subscribe(
+      "*",
+      (event) async {
+        final vocabularies = await getVocabularies(
+          searchTerm: searchTerm,
+          tag: tag,
+        );
+        controller.add(vocabularies);
+      },
+    );
 
     yield* controller.stream;
   }
 
-  Future<void> addVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
+  Future<void> addVocabulary(
+    RdbVocabulary vocabulary, {
+    Uint8List? draftImageToUpload,
+  }) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
     final vocabularyWithUser = vocabulary.copyWith(user: userId);
     final body = vocabularyWithUser.toRecordModel().toJson();
-    if (draftImageToUpload == null) {
-      await pocketbase.collection(_vocabulariesCollectionName).create(body: body);
-    } else {
-      await pocketbase.collection(_vocabulariesCollectionName).create(
-        body: body,
+
+    // * Workaround. Creating records with images didn't work properly.
+    
+    final record = await pocketbase
+        .collection(_vocabulariesCollectionName)
+        .create(body: body);
+
+    draftImageToUpload?.let((image) async {
+      await pocketbase.collection(_vocabulariesCollectionName).update(
+        record.id,
         files: [
           MultipartFile.fromBytes(
             _customImageFieldName,
-            draftImageToUpload,
+            image,
             filename: "image.jpg",
           ),
         ],
       );
-    }
+    });
   }
 
-  Future<void> updateVocabulary(RdbVocabulary vocabulary, {Uint8List? draftImageToUpload}) async {
+  Future<void> updateVocabulary(
+    RdbVocabulary vocabulary, {
+    Uint8List? draftImageToUpload,
+  }) async {
     final PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
     final vocabularyWithUser = vocabulary.copyWith(user: userId);
     final body = vocabularyWithUser.toRecordModel().toJson();
+
     vocabulary.id?.let((id) async {
       if (draftImageToUpload == null) {
-        await pocketbase.collection(_vocabulariesCollectionName).update(id, body: body);
+        await pocketbase
+            .collection(_vocabulariesCollectionName)
+            .update(id, body: body);
       } else {
         await pocketbase.collection(_vocabulariesCollectionName).update(
           id,

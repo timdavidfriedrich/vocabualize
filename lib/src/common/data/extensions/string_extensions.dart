@@ -5,4 +5,8 @@ extension StringExtensions on String {
   String toFileUrl(String recordId, String collectionName) {
     return "${PocketbaseSecrets.databaseUrl}/api/files/$collectionName/$recordId/$this";
   }
+
+  String toFileName() {
+    return split("/").last;
+  }
 }

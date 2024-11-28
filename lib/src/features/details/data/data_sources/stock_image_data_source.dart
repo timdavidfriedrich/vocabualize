@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:vocabualize/constants/image_constants.dart';
+import 'package:vocabualize/src/common/data/mappers/vocabulary_image_mappers.dart';
 import 'package:vocabualize/src/common/data/models/rdb_vocabulary_image.dart';
 import 'package:vocabualize/constants/secrets/pexels_secrets.dart';
 import 'package:vocabualize/src/common/data/utils/uri_parser.dart';
@@ -15,8 +16,7 @@ class StockImageDataSource {
   final perPageParameterName = "per_page";
   final photosFieldName = "photos";
 
-  Future<List<RdbVocabualaryImage>> getImages(String search) async {
-    List<RdbVocabualaryImage> imageModelList = [];
+  Future<List<RdbStockImage>> getImages(String search) async {
     Client client = Client();
     Response response = await client.get(
       UriParser.parseWithParameters(
@@ -31,16 +31,13 @@ class StockImageDataSource {
       },
     );
     if (response.statusCode == 200) {
-      final decoded = jsonDecode(utf8.decode(response.bodyBytes))[photosFieldName];
-      for (final imageModel in decoded) {
-        imageModelList.add(
-          RdbVocabualaryImage.fromRecord(
-            imageModel,
-            type: RdbVocabularyImageType.stock,
-          ),
-        );
-      }
+      final List<dynamic> imageModels =
+          jsonDecode(utf8.decode(response.bodyBytes))[photosFieldName];
+      return imageModels
+          .cast<Map<String, dynamic>>()
+          .map((model) => model.toRdbStockImage())
+          .toList();
     }
-    return imageModelList;
+    return [];
   }
 }

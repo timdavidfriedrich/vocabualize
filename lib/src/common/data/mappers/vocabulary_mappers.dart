@@ -12,16 +12,14 @@ import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart'
 
 extension RecordModelMappers on RecordModel {
   RdbVocabulary toRdbVocabulary() {
-    final Map<String, dynamic>? stockImageJson =
-        getDataValue("stockImage", null);
+    final stockImageJson =
+        getDataValue<Map<String, dynamic>?>("stockImage", null);
     final stockImage = stockImageJson?.toRdbStockImage();
-    final customImageName = getStringValue("customImage", "");
-    final customImageUrl = customImageName
-        .takeUnless((name) => name.isEmpty)
-        ?.toFileUrl(id, collectionName);
-    final customImage = customImageUrl?.let((url) {
-      return RdbCustomImage(id: "", fileName: url);
-    });
+    final customImageName = getDataValue<String?>("customImage", null);
+    final customImage = customImageName
+        ?.takeUnless((name) => name.isEmpty)
+        ?.toFileUrl(id, collectionName)
+        .toRdbCustomImage();
     return RdbVocabulary(
       id: id,
       user: getStringValue("user", ""),
@@ -36,8 +34,10 @@ extension RecordModelMappers on RecordModel {
       isNovice: getBoolValue("isNovice", true),
       interval: getIntValue("interval", DueAlgorithmConstants.initialInterval),
       ease: getDoubleValue("ease", DueAlgorithmConstants.initialEase),
-      nextDate: getStringValue("nextDate",
-          DateTime.now().subtract(const Duration(days: 1)).toIso8601String()),
+      nextDate: getStringValue(
+        "nextDate",
+        DateTime.now().subtract(const Duration(days: 1)).toIso8601String(),
+      ),
       created: created,
       updated: updated,
     );
@@ -75,7 +75,7 @@ extension VocabularyModelMappers on RdbVocabulary {
         "sourceLanguage": sourceLanguageId,
         "targetLanguage": targetLanguageId,
         "tags": tagIds,
-        "customImage": customImage?.fileName,
+        "customImage": customImage?.url.toFileName(),
         "stockImage": stockImage?.toRecordModel().toJson(),
         "levelValue": levelValue,
         "isNovice": isNovice,

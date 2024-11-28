@@ -216,6 +216,8 @@ class _StockImageButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isSelected = state.vocabulary.image is StockImage &&
+        (state.vocabulary.image as StockImage).id == stockImage.id;
     return InkWell(
       onTap: () => ref.read(notifier).selectOrUnselectImage(stockImage),
       borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
@@ -227,7 +229,7 @@ class _StockImageButton extends ConsumerWidget {
           border: Border.all(
             width: Dimensions.mediumBorderWidth,
             color: Theme.of(context).colorScheme.primary,
-          ).takeUnless((_) => stockImage.id != state.vocabulary.image.id),
+          ).takeIf((_) => isSelected),
           image: DecorationImage(
             fit: BoxFit.cover,
             image: stockImage.getImageProvider(size: ImageSize.small),
@@ -238,7 +240,7 @@ class _StockImageButton extends ConsumerWidget {
             Icons.done_rounded,
             color: Theme.of(context).colorScheme.onSurface,
           ),
-        ).takeUnless((_) => stockImage.id != state.vocabulary.image.id),
+        ).takeIf((_) => isSelected),
       ),
     );
   }
