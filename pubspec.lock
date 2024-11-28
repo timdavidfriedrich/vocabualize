@@ -34,7 +34,7 @@ packages:
     source: hosted
     version: "2.5.0"
   async:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: async
       sha256: "947bfcf187f74dbc5e146c9eb9c0f10c9f8b30743e341481c1e2ed3ecc18c20c"
@@ -49,14 +49,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
-  bloc:
-    dependency: transitive
-    description:
-      name: bloc
-      sha256: "106842ad6569f0b60297619e9e0b1885c2fb9bf84812935490e6c5275777804e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.1.4"
   boolean_selector:
     dependency: transitive
     description:
@@ -169,22 +161,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.10"
-  device_info_plus:
-    dependency: "direct main"
-    description:
-      name: device_info_plus
-      sha256: "93429694c9253d2871b3af80cf11b3cbb5c65660d402ed7bf69854ce4a089f82"
-      url: "https://pub.dev"
-    source: hosted
-    version: "10.1.1"
-  device_info_plus_platform_interface:
-    dependency: transitive
-    description:
-      name: device_info_plus_platform_interface
-      sha256: "282d3cf731045a2feb66abfe61bbc40870ae50a3ed10a4d3d217556c35c8c2ba"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -302,14 +278,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_bloc:
-    dependency: "direct main"
-    description:
-      name: flutter_bloc
-      sha256: b594505eac31a0518bdcb4b5b79573b8d9117b193cc80cc12e17d639b10aa27a
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.1.6"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -483,14 +451,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
-  flutter_svg:
-    dependency: "direct main"
-    description:
-      name: flutter_svg
-      sha256: "7b4ca6cf3304575fe9c8ec64813c8d02ee41d2afe60bcfe0678bcb5375d596a2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.10+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -740,16 +700,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
-  path_parsing:
-    dependency: transitive
-    description:
-      name: path_parsing
-      sha256: e3e67b1629e6f7e8100b367d3db6ba6af4b1f0bb80f64db18ef1fbabd2fa9ccf
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   path_provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path_provider
       sha256: fec0d61223fba3154d87759e3cc27fe2c8dc498f6386c6d6fc80d1afdd1bf378
@@ -901,7 +853,7 @@ packages:
     source: hosted
     version: "2.5.1"
   rxdart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: rxdart
       sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
@@ -1210,37 +1162,13 @@ packages:
     source: hosted
     version: "3.1.2"
   uuid:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: uuid
       sha256: "83d37c7ad7aaf9aa8e275490669535c8080377cfa7a7004c24dfac53afffaa90"
       url: "https://pub.dev"
     source: hosted
     version: "4.4.2"
-  vector_graphics:
-    dependency: transitive
-    description:
-      name: vector_graphics
-      sha256: "32c3c684e02f9bc0afb0ae0aa653337a2fe022e8ab064bcd7ffda27a74e288e3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.11+1"
-  vector_graphics_codec:
-    dependency: transitive
-    description:
-      name: vector_graphics_codec
-      sha256: c86987475f162fadff579e7320c7ddda04cd2fdeffbe1129227a85d9ac9e03da
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.11+1"
-  vector_graphics_compiler:
-    dependency: transitive
-    description:
-      name: vector_graphics_compiler
-      sha256: "12faff3f73b1741a36ca7e31b292ddeb629af819ca9efe9953b70bd63fc8cd81"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.11+1"
   vector_math:
     dependency: transitive
     description:
@@ -1273,14 +1201,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.5.3"
-  win32_registry:
-    dependency: transitive
-    description:
-      name: win32_registry
-      sha256: "723b7f851e5724c55409bb3d5a32b203b3afe8587eaf5dafb93a5fed8ecda0d6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.4"
   xdg_directories:
     dependency: transitive
     description:

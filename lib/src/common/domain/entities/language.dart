@@ -1,5 +1,3 @@
-import 'package:uuid/uuid.dart';
-
 class Language {
   final String id;
   final String name;
@@ -10,8 +8,8 @@ class Language {
   final DateTime? created;
   final DateTime? updated;
 
-  Language({
-    String? id,
+  const Language({
+    this.id = "",
     required this.name,
     required this.translatorId,
     required this.premiumTranslatorId,
@@ -19,18 +17,18 @@ class Language {
     required this.textToSpeechId,
     this.created,
     this.updated,
-  }) : id = id ?? "language--${const Uuid().v4()}";
+  });
 
   /// TODO: apply device language for name (to have the correct language on init)
   /// => Maybe setting this at onboarding will be enough
-  factory Language.english() => Language(
+  factory Language.english() => const Language(
       id: "l4ucqbw6jc5i7bj",
       name: "English",
       translatorId: "en",
       premiumTranslatorId: "EN-US",
       speechToTextId: "en_US",
       textToSpeechId: "en-US");
-  factory Language.spanish() => Language(
+  factory Language.spanish() => const Language(
       id: "m6m3nliuhu85xny",
       name: "Spanish",
       translatorId: "es",
