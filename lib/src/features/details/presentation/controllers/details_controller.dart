@@ -24,18 +24,20 @@ import 'package:vocabualize/src/features/details/presentation/widgets/edit_sourc
 import 'package:vocabualize/src/features/details/presentation/widgets/replace_vocabulary_dialog.dart';
 import 'package:vocabualize/src/features/settings/presentation/screens/settings_screen.dart';
 
-final detailsControllerProvider = AutoDisposeAsyncNotifierProviderFamily<DetailsController, DetailsState, Vocabulary>(() {
+final detailsControllerProvider = AutoDisposeAsyncNotifierProviderFamily<DetailsController, DetailsState, Vocabulary?>(() {
   return DetailsController();
 });
 
-class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Vocabulary> {
+class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Vocabulary?> {
   @override
-  Future<DetailsState> build(Vocabulary arg) async {
-    final vocabulary = arg;
+  Future<DetailsState> build(Vocabulary? arg) async {
+    final vocabulary = arg ?? Vocabulary();
     return DetailsState(
       vocabulary: vocabulary,
       stockImages: await _getStockImages(vocabulary),
-      areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
+      areImagesEnabled: await ref.watch(
+        getAreImagesEnabledUseCaseProvider.future,
+      ),
     );
   }
 
@@ -61,7 +63,10 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
     });
   }
 
-  Future<void> _retranslateAndReload(BuildContext context, Vocabulary vocabulary) async {
+  Future<void> _retranslateAndReload(
+    BuildContext context,
+    Vocabulary vocabulary,
+  ) async {
     final translate = ref.read(translateUseCaseProvider);
     final retranslatedVocabulary = vocabulary.copyWith(
       target: await translate(vocabulary.source),
@@ -90,17 +95,22 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
 
   Future<List<StockImage>> _getStockImages(Vocabulary vocabulary) async {
     final searchTerm = Formatter.filterOutArticles(
-      await ref.read(translateToEnglishUseCaseProvider(vocabulary.source).future),
+      await ref.read(
+        translateToEnglishUseCaseProvider(vocabulary.source).future,
+      ),
     );
     return await ref.read(getStockImagesUseCaseProvider(searchTerm).future);
   }
 
   void browseNext() {
     state.value?.let((value) {
-      if (value.lastStockImageIndex + value.stockImagesPerPage < value.totalStockImages) {
+      if (value.lastStockImageIndex + value.stockImagesPerPage <
+          value.totalStockImages) {
         state = AsyncData(value.copyWith(
-          firstStockImageIndex: value.firstStockImageIndex + value.stockImagesPerPage,
-          lastStockImageIndex: value.lastStockImageIndex + value.stockImagesPerPage,
+          firstStockImageIndex:
+              value.firstStockImageIndex + value.stockImagesPerPage,
+          lastStockImageIndex:
+              value.lastStockImageIndex + value.stockImagesPerPage,
         ));
       } else {
         state = AsyncData(value.copyWith(
@@ -144,7 +154,9 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   void selectOrUnselectImage(VocabularyImage? image) {
     if (image == null) return;
     state.value?.let((value) {
-      final newImage = value.vocabulary.image == image ? const FallbackImage() : image;
+      final newImage = value.vocabulary.image == image 
+          ? const FallbackImage() 
+          : image;
       state = AsyncData(
         value.copyWith(
           vocabulary: value.vocabulary.copyWith(image: newImage),
@@ -175,7 +187,9 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
         true => tagIds.where((id) => id != tagId).toList(),
         false => [...tagIds, tagId],
       };
-      final updatedVocabulary = value.vocabulary.copyWith(tagIds: updatedTagIds);
+      final updatedVocabulary = value.vocabulary.copyWith(
+        tagIds: updatedTagIds,
+      );
       state = AsyncData(value.copyWith(vocabulary: updatedVocabulary));
     });
   }

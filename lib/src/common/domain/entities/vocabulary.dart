@@ -1,5 +1,4 @@
 import 'package:vocabualize/constants/due_algorithm_constants.dart';
-import 'package:vocabualize/src/common/domain/entities/language.dart';
 import 'package:vocabualize/src/common/domain/entities/level.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 
@@ -42,8 +41,8 @@ class Vocabulary {
     this.id,
     this.source = "",
     this.target = "",
-    String? sourceLanguageId,
-    String? targetLanguageId,
+    this.sourceLanguageId = "",
+    this.targetLanguageId = "",
     this.tagIds = const [],
     this.image = const FallbackImage(),
     this.level = const Level(),
@@ -54,10 +53,7 @@ class Vocabulary {
     created,
     updated,
     nextDate,
-  })  : // TODO: Remove default sourceLanguageId and targetLanguageId
-        sourceLanguageId = sourceLanguageId ?? Language.defaultSource().id,
-        targetLanguageId = targetLanguageId ?? Language.defaultTarget().id,
-        created = created ?? DateTime.now(),
+  })  : created = created ?? DateTime.now(),
         updated = updated ?? DateTime.now(),
         nextDate = nextDate ?? DateTime.now();
 

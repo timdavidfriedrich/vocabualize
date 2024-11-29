@@ -5,7 +5,6 @@ import 'package:log/log.dart';
 import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
-import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/features/details/presentation/controllers/details_controller.dart';
 import 'package:vocabualize/src/features/details/presentation/states/details_state.dart';
 import 'package:vocabualize/src/features/details/presentation/widgets/image_chooser.dart';
@@ -25,14 +24,13 @@ class DetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Vocabulary vocabulary = Vocabulary();
     DetailsScreenArguments? arguments =
         ModalRoute.of(context)?.settings.arguments as DetailsScreenArguments?;
-    arguments?.let((args) => vocabulary = args.vocabulary);
 
-    final provider = detailsControllerProvider(vocabulary);
+    final provider = detailsControllerProvider(arguments?.vocabulary);
     final notifier = provider.notifier;
     final asyncState = ref.watch(provider);
+
     return asyncState.when(
       loading: () {
         return const Center(
