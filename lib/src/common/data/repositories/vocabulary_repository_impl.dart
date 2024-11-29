@@ -9,6 +9,7 @@ import 'package:vocabualize/src/common/domain/entities/filter_options.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary_image.dart';
+import 'package:vocabualize/src/common/domain/extensions/iterable_extensions.dart';
 import 'package:vocabualize/src/common/domain/repositories/vocabulary_repository.dart';
 
 final vocabularyProvider = StreamProvider<List<Vocabulary>>((ref) {
@@ -141,16 +142,24 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
   Future<bool> isCollectionMultilingual({Tag? tag}) async {
     if (_cachedVocabularies.isEmpty) return false;
     final firstVocabulary = tag != null
-        ? _cachedVocabularies.firstWhere(
-            (vocabulary) => vocabulary.tagIds.contains(tag.id),
-            orElse: () => Vocabulary(),
+        ? _cachedVocabularies.firstWhereOrNull(
+            (vocabulary) {
+              return vocabulary?.tagIds.contains(tag.id) == true 
+                  && vocabulary?.sourceLanguageId.isNotEmpty == true 
+                  && vocabulary?.targetLanguageId.isNotEmpty == true;
+            },
           )
-        : _cachedVocabularies.first;
+        : _cachedVocabularies.firstWhereOrNull((vocabulary) {
+            return vocabulary?.sourceLanguageId.isNotEmpty == true 
+                && vocabulary?.targetLanguageId.isNotEmpty == true;
+          });
+    if (firstVocabulary == null) return false;
     return _cachedVocabularies.any((vocabulary) {
       final containsTag = tag == null || vocabulary.tagIds.contains(tag.id);
+      final hasLanguages = vocabulary.sourceLanguageId.isNotEmpty && vocabulary.targetLanguageId.isNotEmpty;
       final hasDifferentSourceLanguage = vocabulary.sourceLanguageId != firstVocabulary.sourceLanguageId;
       final hasDifferentTargetLanguage = vocabulary.targetLanguageId != firstVocabulary.targetLanguageId;
-      return containsTag && (hasDifferentSourceLanguage || hasDifferentTargetLanguage);
+      return containsTag && hasLanguages && (hasDifferentSourceLanguage || hasDifferentTargetLanguage);
     });
   }
 }
