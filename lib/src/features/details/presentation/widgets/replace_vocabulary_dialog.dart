@@ -23,7 +23,7 @@ class ReplaceVocabularyDialog extends StatelessWidget {
         OutlinedButton(
           onPressed: () => cancel(),
           // TODO: Replace with arb
-          child: const Text('Cancel'),
+          child: const Text('No'),
         ),
         ElevatedButton(
           onPressed: () => replace(),
