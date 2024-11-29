@@ -9,6 +9,10 @@ class Dimensions {
   static const double largeSpacing = 32.0;
   static const double extraLargeSpacing = 48.0;
   static const double extraExtraLargeSpacing = 64.0;
+  static const double semiUltraLargeSpacing = 96.0;
+  static const double ultraLargeSpacing = 128.0;
+
+  static const double scrollEndSpacing = ultraLargeSpacing;
 
   static const double mediumBorderWidth = 2.0;
   static const double largeBorderWidth = 4.0;

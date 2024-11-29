@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:log/log.dart';
+import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/domain/entities/tag.dart';
-import 'package:vocabualize/src/common/domain/extensions/object_extensions.dart';
 import 'package:vocabualize/src/features/collections/presentation/controllers/collection_controller.dart';
 import 'package:vocabualize/src/features/collections/presentation/states/collection_state.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
-import 'package:vocabualize/src/features/home/presentation/widgets/status_card_indicator.dart';
+import 'package:vocabualize/src/common/presentation/widgets/status_card_indicator.dart';
 import 'package:vocabualize/src/features/home/presentation/widgets/vocabulary_list_tile.dart';
 
 class CollectionScreenArguments {
@@ -21,69 +22,109 @@ class CollectionScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Tag tag = const Tag();
-    CollectionScreenArguments? arguments = ModalRoute.of(context)?.settings.arguments as CollectionScreenArguments?;
-    arguments?.let((args) => tag = args.tag);
+    CollectionScreenArguments? arguments = ModalRoute.of(context)
+        ?.settings
+        .arguments as CollectionScreenArguments?;
 
-    final asyncState = ref.watch(collectionControllerProvider(tag));
+    final provider = collectionControllerProvider(arguments?.tag);
+    final notifier = provider.notifier;
+    final asyncState = ref.watch(provider);
 
     return SafeArea(
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(Dimensions.largeBorderRadius),
+          topRight: Radius.circular(Dimensions.largeBorderRadius),
+        ),
         child: asyncState.when(
           loading: () {
             return const Center(child: CircularProgressIndicator.adaptive());
           },
-          error: (error, stackTrace) {
+          error: (e, stackTrace) {
+            Log.error("Error CollectionScreen: $e", exception: stackTrace);
             // TODO: Replace with error widget and arb
-            return const Center(child: Text("Error getting vocabularies"));
+            return const Center(child: Text("Error CollectionScreen"));
           },
           data: (CollectionState state) {
             return Scaffold(
               appBar: AppBar(
-                title: Text(state.tag.name, style: Theme.of(context).textTheme.headlineMedium),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.edit_rounded),
-                    onPressed: () {
-                      ref.read(collectionControllerProvider(tag).notifier).editTag();
-                    },
-                  ),
-                ],
+                title: _CollectionTitle(state: state),
+                actions: [_EditButton(notifier: notifier)],
               ),
               body: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
                 physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.largeSpacing,
+                ),
                 children: [
-                  const SizedBox(height: 16),
+                  const SizedBox(height: Dimensions.mediumSpacing),
                   StatusCardIndicator(
-                    tag: tag,
-                    parent: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          ref.read(collectionControllerProvider(tag).notifier).startPractise(context: context, tag: tag);
-                        },
-                        child: Text(AppLocalizations.of(context)?.home_statusCard_practiseButton ?? ""),
-                      ),
+                    tag: state.tag,
+                    parent: _PractiseButton(state: state, notifier: notifier),
+                  ),
+                  const SizedBox(height: Dimensions.mediumSpacing),
+                  for (final vocabulary in state.tagVocabularies.reversed)
+                    VocabularyListTile(
+                      areImagesEnabled: state.areImagesEnabled,
+                      vocabulary: vocabulary,
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: List<Widget>.generate(
-                      state.tagVocabularies.length,
-                      (index) => VocabularyListTile(
-                        areImagesEnabled: state.areImagesEnabled,
-                        vocabulary: state.tagVocabularies.elementAt(index),
-                      ),
-                    ).reversed.toList(),
-                  ),
-                  const SizedBox(height: 96),
+                  const SizedBox(height: Dimensions.scrollEndSpacing),
                 ],
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _CollectionTitle extends StatelessWidget {
+  final CollectionState state;
+  const _CollectionTitle({required this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      state.tag.name,
+      style: Theme.of(context).textTheme.headlineMedium,
+    );
+  }
+}
+
+class _EditButton extends ConsumerWidget {
+  final Refreshable<CollectionController> notifier;
+  const _EditButton({required this.notifier});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return IconButton(
+      icon: const Icon(Icons.edit_rounded),
+      onPressed: () {
+        ref.read(notifier).editTag();
+      },
+    );
+  }
+}
+
+class _PractiseButton extends ConsumerWidget {
+  final CollectionState state;
+  final Refreshable<CollectionController> notifier;
+  const _PractiseButton({
+    required this.state,
+    required this.notifier,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          ref.read(notifier).startPractise(context);
+        },
+        child: Text(
+          AppLocalizations.of(context)?.home_statusCard_practiseButton ?? "",
         ),
       ),
     );

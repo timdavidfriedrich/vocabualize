@@ -5,7 +5,7 @@ import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/home/domain/utils/card_generator.dart';
 import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';
-import 'package:vocabualize/src/features/home/presentation/widgets/status_card_indicator.dart';
+import 'package:vocabualize/src/common/presentation/widgets/status_card_indicator.dart';
 import 'package:vocabualize/src/features/practise/presentation/screens/practise_screen.dart';
 
 class StatusCard extends ConsumerWidget {
