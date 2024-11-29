@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vocabualize/constants/dimensions.dart';
 import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 
 class CameraGalleryDialog extends StatelessWidget {
@@ -16,9 +17,13 @@ class CameraGalleryDialog extends StatelessWidget {
       context.pop();
     }
 
+    final strings = AppLocalizations.of(context);
+
     return AlertDialog.adaptive(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 64),
-      contentPadding: const EdgeInsets.all(12),
+      insetPadding: const EdgeInsets.symmetric(
+        horizontal: Dimensions.extraExtraLargeSpacing,
+      ),
+      contentPadding: const EdgeInsets.all(Dimensions.semiSmallSpacing),
       content: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -32,12 +37,12 @@ class CameraGalleryDialog extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.camera_alt_rounded),
-                  const SizedBox(width: 12),
-                  Text(AppLocalizations.of(context)?.record_addDetails_takePictureButton ?? ""),
+                  const SizedBox(width: Dimensions.semiSmallSpacing),
+                  Text(strings?.record_addDetails_takePictureButton ?? ""),
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: Dimensions.semiSmallSpacing),
             ElevatedButton(
               onPressed: () => choose(ImageSource.gallery),
               child: Row(
@@ -45,14 +50,18 @@ class CameraGalleryDialog extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.photo_library_rounded),
-                  const SizedBox(width: 12),
-                  Text(AppLocalizations.of(context)?.record_addDetails_openGalleryButton ?? ""),
+                  const SizedBox(width: Dimensions.semiSmallSpacing),
+                  Text(strings?.record_addDetails_openGalleryButton ?? ""),
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: Dimensions.semiSmallSpacing),
             OutlinedButton(
-                onPressed: () => cancel(), child: Text(AppLocalizations.of(context)?.record_addDetails_cancelCustomImageButton ?? "")),
+              onPressed: cancel,
+              child: Text(
+                strings?.record_addDetails_cancelCustomImageButton ?? "",
+              ),
+            ),
           ],
         ),
       ),
