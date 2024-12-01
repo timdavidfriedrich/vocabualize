@@ -52,8 +52,8 @@ extension TranslationReportMappers on TranslationReport {
       done: done,
       source: source,
       target: target,
-      sourceLanguage: "", //sourceLanguage,
-      targetLanguage: "", //targetLanguage,
+      sourceLanguage: sourceLanguageId,
+      targetLanguage: targetLanguageId,
       description: description,
     );
   }
