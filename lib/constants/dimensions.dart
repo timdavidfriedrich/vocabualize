@@ -13,6 +13,7 @@ class Dimensions {
   static const double ultraLargeSpacing = 128.0;
 
   static const double scrollEndSpacing = ultraLargeSpacing;
+  static const double dialogInsetSpacing = largeSpacing;
 
   static const double mediumBorderWidth = 2.0;
   static const double largeBorderWidth = 4.0;
