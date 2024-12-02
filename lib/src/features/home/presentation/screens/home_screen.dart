@@ -10,7 +10,7 @@ import 'package:vocabualize/src/features/home/presentation/states/home_state.dar
 import 'package:vocabualize/src/features/home/presentation/widgets/collections_section.dart';
 import 'package:vocabualize/src/features/home/presentation/widgets/new_vocabularies_section.dart';
 import 'package:vocabualize/src/features/home/presentation/widgets/status_card.dart';
-import 'package:vocabualize/src/features/home/presentation/widgets/vocabulary_list_tile.dart';
+import 'package:vocabualize/src/common/presentation/widgets/vocabulary_list_tile.dart';
 import 'package:vocabualize/src/features/record/presentation/utils/record_sheet_controller.dart';
 import 'package:vocabualize/src/features/record/presentation/widgets/record_grab.dart';
 import 'package:vocabualize/src/features/record/presentation/widgets/record_sheet.dart';

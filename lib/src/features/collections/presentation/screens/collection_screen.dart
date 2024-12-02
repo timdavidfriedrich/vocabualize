@@ -8,7 +8,7 @@ import 'package:vocabualize/src/features/collections/presentation/controllers/co
 import 'package:vocabualize/src/features/collections/presentation/states/collection_state.dart';
 import 'package:vocabualize/src/features/home/presentation/screens/home_screen.dart';
 import 'package:vocabualize/src/common/presentation/widgets/status_card_indicator.dart';
-import 'package:vocabualize/src/features/home/presentation/widgets/vocabulary_list_tile.dart';
+import 'package:vocabualize/src/common/presentation/widgets/vocabulary_list_tile.dart';
 
 class CollectionScreenArguments {
   final Tag tag;
