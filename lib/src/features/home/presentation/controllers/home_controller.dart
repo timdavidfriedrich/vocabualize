@@ -11,7 +11,7 @@ import 'package:vocabualize/src/common/presentation/extensions/context_extension
 import 'package:vocabualize/src/features/collections/presentation/screens/collection_screen.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';
-import 'package:vocabualize/src/features/home/presentation/widgets/info_dialog.dart';
+import 'package:vocabualize/src/common/presentation/widgets/vocabulary_info_dialog.dart';
 import 'package:vocabualize/src/features/reports/presentation/screens/report_screen.dart';
 import 'package:vocabualize/src/features/settings/presentation/screens/settings_screen.dart';
 
@@ -38,7 +38,7 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
 
   Future<void> showVocabularyInfo(BuildContext context, Vocabulary vocabulary) async {
     await context.showDialog(
-      InfoDialog(vocabulary: vocabulary),
+      VocabularyInfoDialog(vocabulary: vocabulary),
     );
   }
 

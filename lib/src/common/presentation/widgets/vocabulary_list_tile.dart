@@ -9,7 +9,7 @@ import 'package:vocabualize/src/common/presentation/extensions/context_extension
 import 'package:vocabualize/src/common/presentation/extensions/vocabulary_image_extensions.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/home/presentation/controllers/home_controller.dart';
-import 'package:vocabualize/src/features/home/presentation/widgets/info_dialog.dart';
+import 'package:vocabualize/src/common/presentation/widgets/vocabulary_info_dialog.dart';
 
 class VocabularyListTile extends ConsumerWidget {
   final bool areImagesEnabled;
@@ -24,7 +24,7 @@ class VocabularyListTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void showVocabularyInfo() {
-      context.showDialog(InfoDialog(vocabulary: vocabulary));
+      context.showDialog(VocabularyInfoDialog(vocabulary: vocabulary));
     }
 
     void editVocabualary() {
