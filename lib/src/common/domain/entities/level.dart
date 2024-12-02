@@ -3,45 +3,52 @@ import 'package:flutter/material.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
 import 'package:vocabualize/constants/due_algorithm_constants.dart';
 
-enum LevelType { novice, beginner, advanced, expert }
-
-class Level {
-  final double _valueLimit = DueAlgorithmConstants.levelLimit;
+abstract class Level {
   final double value;
+  abstract final Color color;
 
-  const Level({this.value = 0.0});
-  const Level.withValue({required this.value});
+  const Level._(this.value);
 
-  Color get color {
-    if (value >= _valueLimit) {
-      return LevelPalette.expert;
-    } else if (value >= (_valueLimit / 3) * 2) {
-      return LevelPalette.advanced;
-    } else if (value > _valueLimit / 3) {
-      return LevelPalette.beginner;
-    } else {
-      return LevelPalette.novice;
-    }
+  factory Level({required double value}) {
+    const limit = DueAlgorithmConstants.levelLimit;
+    return switch (value) {
+      >= limit => ExpertLevel._(value),
+      >= (limit / 3) * 2 => AdvancedLevel._(value),
+      > limit / 3 => BeginnerLevel._(value),
+      _ => NoviceLevel._(value),
+    };
   }
 
-  /* // TODO: Move this vocabulary usecase, repo, etc.
-  void add(double difference) {
-    if (difference.isNegative) {
-      if (value > difference.abs()) value -= difference.abs();
-    } else {
-      if (value <= _valueLimit) value += difference;
-    }
+  Level copyWith({double? value}) {
+    return Level(value: value ?? this.value);
   }
-  */
 
   @override
-  String toString() => 'Level(value: $value)';
-
-  Level copyWith({
-    double? value,
-  }) {
-    return Level(
-      value: value ?? this.value,
-    );
+  String toString() {
+    return 'Level(value: $value, color: $color)';
   }
+}
+
+class NoviceLevel extends Level {
+  const NoviceLevel._(super.value) : super._();
+  @override
+  final Color color = LevelPalette.novice;
+}
+
+class BeginnerLevel extends Level {
+  const BeginnerLevel._(super.value) : super._();
+  @override
+  final Color color = LevelPalette.beginner;
+}
+
+class AdvancedLevel extends Level {
+  const AdvancedLevel._(super.value) : super._();
+  @override
+  final Color color = LevelPalette.advanced;
+}
+
+class ExpertLevel extends Level {
+  const ExpertLevel._(super.value) : super._();
+  @override
+  final Color color = LevelPalette.expert;
 }

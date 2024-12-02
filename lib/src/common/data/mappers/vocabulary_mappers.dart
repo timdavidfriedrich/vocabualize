@@ -55,7 +55,7 @@ extension VocabularyModelMappers on RdbVocabulary {
       targetLanguageId: targetLanguageId,
       tagIds: tagIds,
       image: rdbImage?.toVocabularyImage() ?? const FallbackImage(),
-      level: Level.withValue(value: levelValue),
+      level: Level(value: levelValue),
       isNovice: isNovice,
       interval: interval,
       ease: ease,

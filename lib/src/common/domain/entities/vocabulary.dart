@@ -45,15 +45,16 @@ class Vocabulary {
     this.targetLanguageId = "",
     this.tagIds = const [],
     this.image = const FallbackImage(),
-    this.level = const Level(),
+    Level? level,
     this.isNovice = true,
     this.noviceInterval = DueAlgorithmConstants.initialNoviceInterval,
     this.interval = DueAlgorithmConstants.initialInterval,
     this.ease = DueAlgorithmConstants.initialEase,
-    created,
-    updated,
-    nextDate,
-  })  : created = created ?? DateTime.now(),
+    DateTime? created,
+    DateTime? updated,
+    DateTime? nextDate,
+  })  : level = level ?? Level(value: 0.0),
+        created = created ?? DateTime.now(),
         updated = updated ?? DateTime.now(),
         nextDate = nextDate ?? DateTime.now();
 
@@ -95,7 +96,7 @@ class Vocabulary {
 
   Vocabulary copyWithResetProgress() {
     return copyWith(
-      level: const Level(),
+      level: Level(value: 0.0),
       isNovice: true,
       noviceInterval: DueAlgorithmConstants.initialNoviceInterval,
       interval: DueAlgorithmConstants.initialInterval,

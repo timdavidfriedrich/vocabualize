@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabualize/config/themes/level_palette.dart';
+import 'package:vocabualize/constants/dimensions.dart';
+import 'package:vocabualize/src/common/domain/entities/level.dart';
 import 'package:vocabualize/src/common/presentation/extensions/context_extensions.dart';
 import 'package:vocabualize/src/features/home/domain/utils/card_generator.dart';
 import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';
@@ -14,73 +16,106 @@ class StatusCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void startPractise() {
-      context.pushNamed(PractiseScreen.routeName);
-    }
-
-    final message = CardGenerator.generateMessage(state.vocabularies);
-    final beginnerAmout = state.vocabularies.where((voc) {
-      return voc.level.color == LevelPalette.beginner;
-    }).length;
-    final advancedAmount = state.vocabularies.where((voc) {
-      return voc.level.color == LevelPalette.advanced;
-    }).length;
-    final expertAmount = state.vocabularies.where((voc) {
-      return voc.level.color == LevelPalette.expert;
-    }).length;
-
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(Dimensions.semiLargeSpacing),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(Dimensions.largeBorderRadius),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            message,
-            style: Theme.of(context).textTheme.displayMedium,
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(height: 24),
+          _CardMessage(state),
+          const SizedBox(height: Dimensions.semiLargeSpacing),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      const Icon(Icons.circle, color: LevelPalette.beginner),
-                      Text("$beginnerAmout"),
-                    ],
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    children: [
-                      const Icon(Icons.circle, color: LevelPalette.advanced),
-                      Text("$advancedAmount"),
-                    ],
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    children: [
-                      const Icon(Icons.circle, color: LevelPalette.expert),
-                      Text("$expertAmount"),
-                    ],
-                  ),
-                ],
-              ),
-              StatusCardIndicator(
-                parent: ElevatedButton(
-                  onPressed: () => startPractise(),
-                  child: Text(AppLocalizations.of(context)?.home_statusCard_practiseButton ?? ""),
-                ),
+              _LevelStatistics(state),
+              const StatusCardIndicator(
+                parent: _PractiseButton(),
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _CardMessage extends StatelessWidget {
+  final HomeState state;
+  const _CardMessage(this.state);
+
+  @override
+  Widget build(BuildContext context) {
+    final message = CardGenerator.generateMessage(state.vocabularies);
+    return Text(
+      message,
+      style: Theme.of(context).textTheme.displayMedium,
+      textAlign: TextAlign.left,
+    );
+  }
+}
+
+class _LevelStatistics extends StatelessWidget {
+  final HomeState state;
+  const _LevelStatistics(this.state);
+
+  @override
+  Widget build(BuildContext context) {
+    final levelCounts = state.vocabularies.fold<Map<Type, int>>(
+      {BeginnerLevel: 0, AdvancedLevel: 0, ExpertLevel: 0},
+      (counts, voc) {
+        counts.update(voc.level.runtimeType, (x) => x + 1, ifAbsent: () => 1);
+        return counts;
+      },
+    );
+    final beginnerCount = levelCounts[BeginnerLevel] ?? 0;
+    final advancedCount = levelCounts[AdvancedLevel] ?? 0;
+    final expertCount = levelCounts[ExpertLevel] ?? 0;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            const Icon(Icons.circle, color: LevelPalette.beginner),
+            Text("$beginnerCount"),
+          ],
+        ),
+        const SizedBox(width: Dimensions.semiSmallSpacing),
+        Column(
+          children: [
+            const Icon(Icons.circle, color: LevelPalette.advanced),
+            Text("$advancedCount"),
+          ],
+        ),
+        const SizedBox(width: Dimensions.semiSmallSpacing),
+        Column(
+          children: [
+            const Icon(Icons.circle, color: LevelPalette.expert),
+            Text("$expertCount"),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _PractiseButton extends StatelessWidget {
+  const _PractiseButton();
+
+  @override
+  Widget build(BuildContext context) {
+    void startPractise() {
+      context.pushNamed(PractiseScreen.routeName);
+    }
+
+    final strings = AppLocalizations.of(context);
+    return ElevatedButton(
+      onPressed: () => startPractise(),
+      child: Text(
+        strings?.home_statusCard_practiseButton ?? "",
       ),
     );
   }
