@@ -15,7 +15,7 @@ class InitLocalNotificationsUseCase {
     required NotificationRepository notificationRepository,
   }) : _notificationRepository = notificationRepository;
 
-  void call() {
-    _notificationRepository.initLocalNotifications();
+  Future<void> call() {
+    return _notificationRepository.initLocalNotifications();
   }
 }

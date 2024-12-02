@@ -28,8 +28,8 @@ class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   @override
-  void initLocalNotifications() {
-    _localNotificaionDataSource.init();
+  Future<void> initLocalNotifications() async {
+    await _localNotificaionDataSource.init();
   }
 
   @override

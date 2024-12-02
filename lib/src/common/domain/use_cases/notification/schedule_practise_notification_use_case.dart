@@ -28,9 +28,9 @@ class SchedulePractiseNotificationUseCase {
         _notificationRepository = notificationRepository,
         _settingsRepository = settingsRepository;
 
-  void call() async {
+  Future<void> call() async {
     // TODO: Does this even make sense? The number won't be recent (or will it?)
-    final timeOfDay = await _settingsRepository.getGatherNotificationTime();
+    final timeOfDay = await _settingsRepository.getPractiseNotificationTime();
     _notificationRepository.schedulePractiseNotification(
       time: timeOfDay,
       numberOfVocabularies: _numberOfVocabulariesToPractise,

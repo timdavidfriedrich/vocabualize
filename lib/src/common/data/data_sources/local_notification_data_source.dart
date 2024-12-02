@@ -12,36 +12,43 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/src/common/domain/entities/language.dart';
 
-final localNotificationDataSourceProvider = Provider((ref) => LocalNotificationDataSource());
+final localNotificationDataSourceProvider = Provider((ref) {
+  return LocalNotificationDataSource();
+});
 
 class LocalNotificationDataSource {
-  static const TimeOfDay _defaultScheduleTime = TimeOfDay(hour: 13, minute: 0);
-  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+  final _localNotifications = FlutterLocalNotificationsPlugin();
+  final _practiseNotificationId = 1;
+  final _gatherNotificationId = 2;
 
-  void init() async {
-    const AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings("@mipmap/ic_launcher");
-    const DarwinInitializationSettings darwinInitializationSettings = DarwinInitializationSettings();
-    const LinuxInitializationSettings linuxInitializationSettings = LinuxInitializationSettings(defaultActionName: 'Open notification');
-    const InitializationSettings initializationSettings = InitializationSettings(
+  Future<void> init() async {
+    const androidInitializationSettings = AndroidInitializationSettings(
+      "@mipmap/ic_launcher",
+    );
+    const darwinInitializationSettings = DarwinInitializationSettings();
+    const initializationSettings = InitializationSettings(
       android: androidInitializationSettings,
       iOS: darwinInitializationSettings,
-      macOS: darwinInitializationSettings,
-      linux: linuxInitializationSettings,
     );
     await _requestPermissions();
-    await _localNotifications.initialize(initializationSettings);
     await _initTimeZone();
+    await _localNotifications.initialize(initializationSettings);
   }
 
   Future<void> _requestPermissions() async {
     try {
       if (await Permission.notification.isDenied) {
         final hasGranted = await Permission.notification.request().isGranted;
-        Log.hint("Notification permission has been ${hasGranted ? "granted" : "denied"}.");
+        Log.hint(
+          "Notification permission has been ${hasGranted ? "granted" : "denied"}.",
+        );
       }
       if (await Permission.scheduleExactAlarm.isDenied) {
-        final hasGranted = await Permission.scheduleExactAlarm.request().isGranted;
-        Log.hint("Schedule exact alarm permission has been ${hasGranted ? "granted" : "denied"}.");
+        final hasGranted =
+            await Permission.scheduleExactAlarm.request().isGranted;
+        Log.hint(
+          "Schedule exact alarm permission has been ${hasGranted ? "granted" : "denied"}.",
+        );
       }
     } on PlatformException catch (e) {
       Log.error("Failed to request permissions", exception: e);
@@ -54,62 +61,99 @@ class LocalNotificationDataSource {
     tz.setLocalLocation(tz.getLocation(locationName));
   }
 
-  void schedulePractiseNotification({required TimeOfDay time, int? numberOfVocabularies}) async {
-    await _localNotifications.cancel(1);
-    if (numberOfVocabularies == null || numberOfVocabularies <= 1) {
-      Log.warning("Not scheduling practise notification because there are no vocabularies to practise.");
-      return;
-    }
-    _scheduleLocalNotification(
-      id: 1,
+  void schedulePractiseNotification({
+    required TimeOfDay time,
+    int? numberOfVocabularies,
+  }) async {
+    await _localNotifications.cancel(_practiseNotificationId);
+    // * Notification will always be shown, currently, since we can't check due vocabularies rn
+    // if (numberOfVocabularies == null || numberOfVocabularies <= 1) {
+    //   Log.warning(
+    //     "Not scheduling practise notification because there are no vocabularies to practise.",
+    //   );
+    //   return;
+    // }
+    await _scheduleLocalNotification(
+      id: _practiseNotificationId,
       // TODO: Replace with arb
       title: "Let's practise 🎯",
       // TODO: Replace with arb
-      body: "$numberOfVocabularies words are due. You'll rock this! :D",
+      body: "Some vocabularies are due. You'll rock this! :D",
       time: time,
+    );
+    Log.hint(
+      "Schedule practise notification at $time with $numberOfVocabularies vocabularies.",
     );
   }
 
-  void scheduleGatherNotification({required TimeOfDay time, required Language targetLanguage}) async {
-    await _localNotifications.cancel(2);
-    _scheduleLocalNotification(
-      id: 2,
+  void scheduleGatherNotification({
+    required TimeOfDay time,
+    required Language targetLanguage,
+  }) async {
+    await _localNotifications.cancel(_gatherNotificationId);
+    await _scheduleLocalNotification(
+      id: _gatherNotificationId,
       // TODO: Replace with arb
       title: "Look around you 👀",
       // TODO: Replace with arb
-      body: "Which things don't you know in ${targetLanguage.name}?\nLet's add them to your collection!",
+      body: "Which things don't you know in ${targetLanguage.name}?"
+          "\nLet's add them to your collection!",
       time: time,
+    );
+    Log.hint(
+      "Schedule gather notification at $time for ${targetLanguage.name}.",
     );
   }
 
-  // TODO: Is this in use?
-  Future<void> showLocalNotification({int id = 0, String? title = CommonConstants.appName, String? body, String? payload}) async {
-    return await _localNotifications.show(id, title, body, await _getLocalNotificationDetails(), payload: payload);
-  }
-
   Future<void> _scheduleLocalNotification({
-    int id = 0,
+    required int id,
+    required TimeOfDay time,
     String? title = CommonConstants.appName,
     String? body,
     String? payload,
-    TimeOfDay time = _defaultScheduleTime,
   }) async {
-    final now = tz.TZDateTime.now(tz.local);
-    final scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, time.hour, time.minute);
+    final now = DateTime.now();
+    final scheduledDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      time.hour,
+      time.minute,
+    );
     return await _localNotifications.zonedSchedule(
       id,
       title,
       body,
-      scheduledDate.isBefore(now) ? scheduledDate.add(const Duration(days: 1)) : scheduledDate,
-      await _getLocalNotificationDetails(),
+      scheduledDate.isBefore(now)
+          ? scheduledDate.add(const Duration(days: 1))
+          : scheduledDate,
+      _getLocalNotificationDetails(),
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exact,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 
-  Future<NotificationDetails> _getLocalNotificationDetails() async {
+  // TODO: Is this in use?
+  Future<void> showLocalNotification({
+    int id = 0,
+    String? title = CommonConstants.appName,
+    String? body,
+    String? payload,
+  }) async {
+    return await _localNotifications.show(
+      id,
+      title,
+      body,
+      _getLocalNotificationDetails(),
+      payload: payload,
+    );
+  }
+
+  NotificationDetails _getLocalNotificationDetails() {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
         "channel_id",
