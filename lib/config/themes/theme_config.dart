@@ -186,10 +186,6 @@ class ThemeConfig {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       ),
 
-      chipTheme: ChipThemeData(
-          backgroundColor: primary.withOpacity(0.1),
-          labelStyle: GoogleFonts.poppins(color: onSurface, fontSize: 12)),
-
       ///* Text-Themes
       textTheme: TextTheme(
         titleSmall: GoogleFonts.poppins(color: Colors.blue[300]),
@@ -260,7 +256,6 @@ class ThemeConfig {
         ),
         labelLarge: GoogleFonts.poppins(
           color: onPrimary,
-          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
       ),
