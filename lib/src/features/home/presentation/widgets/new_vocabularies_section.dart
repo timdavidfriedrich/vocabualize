@@ -75,9 +75,6 @@ class _NewVocabularyCard extends ConsumerWidget {
               ),
       ),
       onPressed: () {
-        ref.read(notifier).goToDetails(context, vocabulary);
-      },
-      onLongPress: () {
         ref.read(notifier).showVocabularyInfo(context, vocabulary);
       },
       child: Column(
