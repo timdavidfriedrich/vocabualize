@@ -1,4 +1,4 @@
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:flutter/material.dart';
 
 class DarkPalette {
   static const Color primary = Color(0xff22A2FF);
