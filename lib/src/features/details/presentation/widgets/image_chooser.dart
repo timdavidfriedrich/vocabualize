@@ -26,102 +26,10 @@ class ImageChooser extends ConsumerWidget {
       children: [
         AspectRatio(
           aspectRatio: 4 / 3,
-          child: Container(
-            padding: EdgeInsets.zero,
-            decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(Dimensions.mediumBorderRadius),
-              border: Border.all(
-                width: Dimensions.mediumBorderWidth,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              color: Theme.of(context).colorScheme.surface,
-              image: state.vocabulary.image is FallbackImage
-                  ? null
-                  : DecorationImage(
-                      fit: BoxFit.cover,
-                      image: state.vocabulary.image.getImageProvider(),
-                    ),
-            ),
-            child: state.vocabulary.image is FallbackImage
-                ? Center(
-                    child: Text(
-                      AppLocalizations.of(context)?.record_addDetails_noImage ??
-                          "",
-                      textAlign: TextAlign.center,
-                    ),
-                  )
-                : state.vocabulary.image is StockImage
-                    ? Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                          backgroundBlendMode: BlendMode.darken,
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter / 12,
-                            colors: [
-                              Colors.black.withOpacity(0.5),
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: TextButton(
-                            onPressed: () {
-                              ref.read(notifier).openPhotographerLink();
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(width: Dimensions.smallSpacing),
-                                Flexible(
-                                  child: Text(
-                                    // TODO: Replace with arb
-                                    "Photo by ${(state.vocabulary.image as StockImage).photographer}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                        ),
-                                  ),
-                                ),
-                                const SizedBox(width: Dimensions.smallSpacing),
-                                Icon(
-                                  Icons.launch_rounded,
-                                  size: 18,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                                const SizedBox(width: Dimensions.smallSpacing),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    : null,
-          ),
+          child: _SelectedImageBox(state, notifier),
         ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-                AppLocalizations.of(context)?.record_addDetails_providedBy ??
-                    "",
-                style: Theme.of(context).textTheme.bodySmall),
-            IconButton(
-              onPressed: () {
-                ref.read(notifier).browseNext();
-              },
-              icon: const Icon(Icons.find_replace_rounded),
-            ),
-          ],
-        ),
+        const SizedBox(height: Dimensions.mediumSpacing),
+        _ProviderHintWithReloadButton(notifier),
         GridView.builder(
           shrinkWrap: true,
           padding: EdgeInsets.zero,
@@ -153,6 +61,137 @@ class ImageChooser extends ConsumerWidget {
   }
 }
 
+class _SelectedImageBox extends StatelessWidget {
+  final DetailsState state;
+  final Refreshable<DetailsController> notifier;
+  const _SelectedImageBox(this.state, this.notifier);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          Dimensions.mediumBorderRadius,
+        ),
+        border: Border.all(
+          width: Dimensions.mediumBorderWidth,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        color: Theme.of(context).colorScheme.surface,
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: state.vocabulary.image.getImageProvider(),
+        ).takeUnless((_) => state.vocabulary.image is FallbackImage),
+      ),
+      child: switch (state.vocabulary.image.runtimeType) {
+        const (FallbackImage) => const _NoImageMessage(),
+        const (StockImage) => _PhotographerLink(state, notifier),
+        _ => null,
+      },
+    );
+  }
+}
+
+class _NoImageMessage extends StatelessWidget {
+  const _NoImageMessage();
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+    return Center(
+      child: Text(
+        strings?.record_addDetails_noImage ?? "",
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}
+
+class _PhotographerLink extends ConsumerWidget {
+  final DetailsState state;
+  final Refreshable<DetailsController> notifier;
+  const _PhotographerLink(
+    this.state,
+    this.notifier,
+  );
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      decoration: BoxDecoration(
+        // * -2 is a fix, otherwise gradient is slightly overlapping its parent
+        borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius - 2),
+        backgroundBlendMode: BlendMode.darken,
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter / 12,
+          colors: [
+            Colors.black.withOpacity(0.5),
+            Colors.transparent,
+          ],
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: TextButton(
+          onPressed: () {
+            ref.read(notifier).openPhotographerLink();
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(width: Dimensions.smallSpacing),
+              Flexible(
+                child: Text(
+                  // TODO: Replace with arb
+                  "Photo by ${(state.vocabulary.image as StockImage).photographer}",
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                ),
+              ),
+              const SizedBox(width: Dimensions.smallSpacing),
+              Icon(
+                Icons.launch_rounded,
+                size: Dimensions.mediumIconSize,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              const SizedBox(width: Dimensions.smallSpacing),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ProviderHintWithReloadButton extends ConsumerWidget {
+  final Refreshable<DetailsController> notifier;
+  const _ProviderHintWithReloadButton(this.notifier);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final strings = AppLocalizations.of(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          strings?.record_addDetails_providedBy ?? "",
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        IconButton(
+          onPressed: () {
+            ref.read(notifier).browseNext();
+          },
+          icon: const Icon(Icons.find_replace_rounded),
+        ),
+      ],
+    );
+  }
+}
+
 class _CustomImageButton extends ConsumerWidget {
   final Refreshable<DetailsController> notifier;
   final DetailsState state;
@@ -173,33 +212,45 @@ class _CustomImageButton extends ConsumerWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
       ),
-      child: state.vocabulary.image is DraftImage
-          ? Ink(
-              padding: EdgeInsets.zero,
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(Dimensions.mediumBorderRadius),
-                border: Border.all(
-                  width: Dimensions.mediumBorderWidth,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: state.vocabulary.image.getImageProvider(),
-                ),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.done_rounded,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-            )
+      child: state.vocabulary.image.isTypeOfAny([CustomImage, DraftImage])
+          ? _CustomImageWithIcon(state)
           : Icon(
               Icons.camera_alt_rounded,
               color: Theme.of(context).colorScheme.primary,
-              size: 28,
+              size: Dimensions.largeIconSize,
             ),
+    );
+  }
+}
+
+class _CustomImageWithIcon extends StatelessWidget {
+  final DetailsState state;
+  const _CustomImageWithIcon(this.state);
+
+  @override
+  Widget build(BuildContext context) {
+    return Ink(
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          Dimensions.mediumBorderRadius,
+        ),
+        border: Border.all(
+          width: Dimensions.mediumBorderWidth,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: state.vocabulary.image.getImageProvider(),
+        ),
+      ),
+      child: Center(
+        child: Icon(
+          Icons.camera_alt_rounded,
+          color: Theme.of(context).colorScheme.onSurface,
+          size: Dimensions.largeIconSize,
+        ),
+      ),
     );
   }
 }

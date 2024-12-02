@@ -25,4 +25,8 @@ extension ObjectExtensions<ObjectType extends Object> on ObjectType {
   ObjectType? takeUnless(bool Function(ObjectType) x) {
     return x(this) ? null : this;
   }
+
+  bool isTypeOfAny(List<Type> types) {
+    return types.any((type) => runtimeType == type);
+  }
 }

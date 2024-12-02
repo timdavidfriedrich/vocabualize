@@ -24,5 +24,6 @@ class Dimensions {
   static const double semiLargeBorderRadius = 24.0;
   static const double largeBorderRadius = 32.0;
 
+  static const double mediumIconSize = 16.0;
   static const double largeIconSize = 32.0;
 }
