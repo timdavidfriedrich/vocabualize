@@ -48,7 +48,7 @@ class _CardMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final message = CardGenerator.generateMessage(state.vocabularies);
+    final message = CardGenerator.generateMessage(context, state.vocabularies);
     return Text(
       message,
       style: Theme.of(context).textTheme.displayMedium,

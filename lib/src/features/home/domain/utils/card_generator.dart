@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:vocabualize/constants/global.dart';
+import 'package:flutter/material.dart';
 import 'package:vocabualize/src/common/domain/entities/vocabulary.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,9 +14,13 @@ class CardGenerator {
     return false;
   }
 
-  // TODO: Refactor Card String generation to avoid using Global.context
-  static String generateMessage(List<Vocabulary>? vocabularyList) {
+  static String generateMessage(
+    BuildContext context, 
+    List<Vocabulary>? vocabularyList,
+  ) {
     if (vocabularyList == null) return "";
+
+    final strings = AppLocalizations.of(context);
 
     List<Vocabulary> createdToday = vocabularyList.where((vocabulary) {
       return _hasBeenCreatedToday(vocabulary);
@@ -25,30 +29,30 @@ class CardGenerator {
     List<String> possibleInfos = [];
 
     if (vocabularyList.length == 1 && _hasBeenCreatedToday(vocabularyList.first)) {
-      return AppLocalizations.of(Global.context)?.home_statusCard_firstWord ?? "";
+      return strings?.home_statusCard_firstWord ?? "";
     }
     if (vocabularyList.isEmpty) {
       possibleInfos.add(
-        AppLocalizations.of(Global.context)?.home_statusCard_isEmpty ?? "",
+        strings?.home_statusCard_isEmpty ?? "",
       );
     }
     if (createdToday.length >= 3) {
       possibleInfos.add(
-        AppLocalizations.of(Global.context)?.home_statusCard_addedToday(createdToday.length) ?? "",
+        strings?.home_statusCard_addedToday(createdToday.length) ?? "",
       );
     }
     if (vocabularyList.length >= 10) {
       possibleInfos.add(
-        AppLocalizations.of(Global.context)?.home_statusCard_addedManyInTotal(vocabularyList.length) ?? "",
+        strings?.home_statusCard_addedManyInTotal(vocabularyList.length) ?? "",
       );
     }
     if (vocabularyList.length == 1) {
       possibleInfos.add(
-        AppLocalizations.of(Global.context)?.home_statusCard_onlyOneWord(vocabularyList.length) ?? "",
+        strings?.home_statusCard_onlyOneWord(vocabularyList.length) ?? "",
       );
     }
     possibleInfos.add(
-      AppLocalizations.of(Global.context)?.home_statusCard_default(vocabularyList.length) ?? "",
+      strings?.home_statusCard_default(vocabularyList.length) ?? "",
     );
 
     return possibleInfos.elementAt(Random().nextInt(possibleInfos.length));
