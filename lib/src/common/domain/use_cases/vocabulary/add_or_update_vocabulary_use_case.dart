@@ -17,7 +17,6 @@ class AddOrUpdateVocabularyUseCase {
   }) : _vocabularyRepository = vocabularyRepository;
 
   Future<void> call(Vocabulary vocabulary) async {
-    // TODO: Is checking vocabulary.id == null enough to determine if it's a new vocabulary?
     if (vocabulary.id == null) {
       return _vocabularyRepository.addVocabulary(vocabulary);
     }
