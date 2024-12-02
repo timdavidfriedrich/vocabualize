@@ -62,7 +62,7 @@ class WelcomeScreen extends StatelessWidget {
                 OutlinedButton(
                   onPressed: () => _continueAsGuest(context),
                   style: OutlinedButton.styleFrom().copyWith(
-                    side: MaterialStateProperty.all<BorderSide>(
+                    side: WidgetStateProperty.all<BorderSide>(
                       BorderSide(width: 2, color: Theme.of(context).colorScheme.onPrimary),
                     ),
                   ),

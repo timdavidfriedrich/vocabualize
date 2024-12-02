@@ -103,9 +103,9 @@ class ThemeConfig {
 
       ///* Switch
       switchTheme: SwitchThemeData(
-        trackColor: MaterialStateProperty.resolveWith((states) =>
+        trackColor: WidgetStateProperty.resolveWith((states) =>
             states.contains(MaterialState.selected) ? primary : surface),
-        thumbColor: MaterialStateProperty.resolveWith((states) =>
+        thumbColor: WidgetStateProperty.resolveWith((states) =>
             states.contains(MaterialState.selected) ? onPrimary : onSurface),
       ),
 
@@ -161,21 +161,21 @@ class ThemeConfig {
       ///* OutlinedButton
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(onBackground),
-          padding: MaterialStateProperty.all<EdgeInsets>(
+          foregroundColor: WidgetStateProperty.all<Color>(onBackground),
+          padding: WidgetStateProperty.all<EdgeInsets>(
               const EdgeInsets.fromLTRB(32, 12, 32, 12)),
-          textStyle: MaterialStateProperty.all<TextStyle>(
+          textStyle: WidgetStateProperty.all<TextStyle>(
             GoogleFonts.poppins(
               color: onSurface,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
-          elevation: MaterialStateProperty.all<double>(0),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          elevation: WidgetStateProperty.all<double>(0),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
         ).copyWith(
-            side: MaterialStateProperty.all<BorderSide>(
+            side: WidgetStateProperty.all<BorderSide>(
                 BorderSide(width: 2, color: primary))),
       ),
 
