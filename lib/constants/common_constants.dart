@@ -1,4 +1,5 @@
-class CommonConstants {
+abstract class CommonConstants {
   static const String appName = "Vocabualize";
-  static const String pocketbaseUrl = "http://132.145.228.50:8090";
+  static const bool areImagesEnabled = true;
+  static const bool usePremiumTranslator = false;
 }

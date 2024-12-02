@@ -12,13 +12,13 @@
   "@core_disconnected_okayButton": {
     "description": "Offline pop up okay button text"
   },
-  "home_allWords": "All words",
+  "home_allWords": "All vocabularies",
   "@home_allWords": {
-    "description": "All words section title"
+    "description": "All vocabualaries section title"
   },
-  "home_newWords": "New words",
+  "home_newWords": "Recently added",
   "@home_newWords": {
-    "description": "New words section title."
+    "description": "New vocabualaries section title."
   },
   "home_noNewWords": "Oh, it seems like you have not added any words for a while now.  :(",
   "@home_noNewWords": {

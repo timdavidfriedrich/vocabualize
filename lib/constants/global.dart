@@ -1,8 +1,8 @@
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:flutter/widgets.dart';
 
+// TODO: Remove Global class, after Provider package has been removed
 class Global {
   static GlobalKey<NavigatorState> navigatorState = GlobalKey<NavigatorState>();
 
-  static get context => Global.navigatorState.currentContext!;
-  static get key => Global.navigatorState;
+  static BuildContext get context => Global.navigatorState.currentContext!;
 }

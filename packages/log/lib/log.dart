@@ -2,12 +2,12 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 
 class Log {
-  static String _debugCode = "\x1B[36m";
-  static String _hintCode = "\x1B[32m";
-  static String _warningCode = "\x1B[33m";
-  static String _errorCode = "\x1B[31m";
-  static String _whiteCode = "\x1B[37m";
-  static String _defaultCode = "\x1B[0m";
+  static const String _debugCode = "\x1B[36m";
+  static const String _hintCode = "\x1B[32m";
+  static const String _warningCode = "\x1B[33m";
+  static const String _errorCode = "\x1B[31m";
+  static const String _whiteCode = "\x1B[37m";
+  static const String _defaultCode = "\x1B[0m";
 
   static String _process(text) {
     String processedtext = text.toString().replaceAll("\n", "\n$_whiteCode");
@@ -27,10 +27,11 @@ class Log {
   }
 
   static void error(dynamic text, {dynamic exception}) {
-    if (kDebugMode)
+    if (kDebugMode) {
       log(
         "$_errorCode ERROR: ${_process(text)}"
         "${exception != null ? ' >> ${_process(exception)}' : ""}",
       );
+    }
   }
 }

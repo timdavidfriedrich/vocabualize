@@ -1,7 +1,8 @@
-import 'package:vocabualize/constants/common_imports.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vocabualize/config/themes/dark_palette.dart';
 import 'package:vocabualize/config/themes/light_palette.dart';
+import 'package:vocabualize/src/common/domain/extensions/iterable_extensions.dart';
 
 class ThemeConfig {
   static ThemeData light(BuildContext context) {
@@ -38,8 +39,19 @@ class ThemeConfig {
     );
   }
 
-  static ThemeData _theme(BuildContext context, Color primary, Color onPrimary, Color secondary, Color onSecondary, Color background,
-      Color onBackground, Color surface, Color onSurface, Color hint, Color border, Color error) {
+  static ThemeData _theme(
+      BuildContext context,
+      Color primary,
+      Color onPrimary,
+      Color secondary,
+      Color onSecondary,
+      Color background,
+      Color onBackground,
+      Color surface,
+      Color onSurface,
+      Color hint,
+      Color border,
+      Color error) {
     //
     return ThemeData(
       //
@@ -86,12 +98,15 @@ class ThemeConfig {
       useMaterial3: true,
 
       ///* AppBar
-      appBarTheme: AppBarTheme(color: background, elevation: 0, centerTitle: true),
+      appBarTheme:
+          AppBarTheme(color: background, elevation: 0, centerTitle: true),
 
       ///* Switch
       switchTheme: SwitchThemeData(
-        trackColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? primary : surface),
-        thumbColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.selected) ? onPrimary : onSurface),
+        trackColor: WidgetStateProperty.resolveWith((states) =>
+            states.contains(MaterialState.selected) ? primary : surface),
+        thumbColor: WidgetStateProperty.resolveWith((states) =>
+            states.contains(MaterialState.selected) ? onPrimary : onSurface),
       ),
 
       ///* Icons
@@ -103,24 +118,41 @@ class ThemeConfig {
       ///* ElevatedButton
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(onPrimary),
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) {
-              return hint;
-            } else {
-              return primary;
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return onPrimary.withOpacity(0.6);
             }
+            if (states.containsAny([
+              WidgetState.pressed,
+              WidgetState.hovered,
+            ])) {
+              return onPrimary.withOpacity(0.6);
+            }
+            return onPrimary;
           }),
-          padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.fromLTRB(32, 12, 32, 12)),
-          textStyle: MaterialStateProperty.all<TextStyle>(
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return hint;
+            }
+            if (states.containsAny([
+              WidgetState.pressed,
+              WidgetState.hovered,
+            ])) {
+              return primary.withOpacity(0.6);
+            }
+            return primary;
+          }),
+          padding: WidgetStateProperty.all<EdgeInsets>(
+              const EdgeInsets.fromLTRB(32, 12, 32, 12)),
+          textStyle: WidgetStateProperty.all<TextStyle>(
             GoogleFonts.poppins(
               color: onSurface,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
-          elevation: MaterialStateProperty.all<double>(0),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          elevation: WidgetStateProperty.all<double>(0),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           ),
         ),
@@ -129,18 +161,22 @@ class ThemeConfig {
       ///* OutlinedButton
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(onBackground),
-          padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.fromLTRB(32, 12, 32, 12)),
-          textStyle: MaterialStateProperty.all<TextStyle>(
+          foregroundColor: WidgetStateProperty.all<Color>(onBackground),
+          padding: WidgetStateProperty.all<EdgeInsets>(
+              const EdgeInsets.fromLTRB(32, 12, 32, 12)),
+          textStyle: WidgetStateProperty.all<TextStyle>(
             GoogleFonts.poppins(
               color: onSurface,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
-          elevation: MaterialStateProperty.all<double>(0),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-        ).copyWith(side: MaterialStateProperty.all<BorderSide>(BorderSide(width: 2, color: primary))),
+          elevation: WidgetStateProperty.all<double>(0),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+        ).copyWith(
+            side: WidgetStateProperty.all<BorderSide>(
+                BorderSide(width: 2, color: primary))),
       ),
 
       ///* Dialog
@@ -149,8 +185,6 @@ class ThemeConfig {
         backgroundColor: background,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       ),
-
-      chipTheme: ChipThemeData(backgroundColor: primary.withOpacity(0.1), labelStyle: GoogleFonts.poppins(color: onSurface, fontSize: 12)),
 
       ///* Text-Themes
       textTheme: TextTheme(
@@ -222,7 +256,6 @@ class ThemeConfig {
         ),
         labelLarge: GoogleFonts.poppins(
           color: onPrimary,
-          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -240,11 +273,21 @@ class ThemeConfig {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: false,
         contentPadding: const EdgeInsets.fromLTRB(18, 8, 18, 8),
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 2), borderRadius: BorderRadius.circular(16)),
-        disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: hint, width: 2), borderRadius: BorderRadius.circular(16)),
-        border: OutlineInputBorder(borderSide: BorderSide(color: onBackground, width: 2), borderRadius: BorderRadius.circular(16)),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: primary, width: 2), borderRadius: BorderRadius.circular(16)),
-        errorBorder: OutlineInputBorder(borderSide: BorderSide(color: error, width: 2), borderRadius: BorderRadius.circular(16)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: onBackground, width: 2),
+            borderRadius: BorderRadius.circular(16)),
+        disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: hint, width: 2),
+            borderRadius: BorderRadius.circular(16)),
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: onBackground, width: 2),
+            borderRadius: BorderRadius.circular(16)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: primary, width: 2),
+            borderRadius: BorderRadius.circular(16)),
+        errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: error, width: 2),
+            borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
