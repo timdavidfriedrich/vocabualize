@@ -61,11 +61,6 @@ class HomeScreen extends ConsumerWidget {
                 return _HomeEmptyScreen(notifier: notifier);
               },
               data: (HomeState state) {
-                if (state.vocabularies.isEmpty && state.isStillLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  );
-                }
                 if (state.vocabularies.isEmpty) {
                   return _HomeEmptyScreen(notifier: notifier);
                 }

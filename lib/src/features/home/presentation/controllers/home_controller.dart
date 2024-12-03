@@ -15,7 +15,8 @@ import 'package:vocabualize/src/common/presentation/widgets/vocabulary_info_dial
 import 'package:vocabualize/src/features/reports/presentation/screens/report_screen.dart';
 import 'package:vocabualize/src/features/settings/presentation/screens/settings_screen.dart';
 
-final homeControllerProvider = AutoDisposeAsyncNotifierProvider<HomeController, HomeState>(() {
+final homeControllerProvider =
+    AutoDisposeAsyncNotifierProvider<HomeController, HomeState>(() {
   return HomeController();
 });
 
@@ -23,11 +24,12 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
   @override
   Future<HomeState> build() async {
     return HomeState(
-      isStillLoading: true,
       vocabularies: ref.watch(getVocabulariesUseCaseProvider).call(),
       newVocabularies: ref.watch(getNewVocabulariesUseCaseProvider),
       tags: await ref.watch(getAllTagsUseCaseProvider.future),
-      areImagesEnabled: await ref.watch(getAreImagesEnabledUseCaseProvider.future),
+      areImagesEnabled: await ref.watch(
+        getAreImagesEnabledUseCaseProvider.future,
+      ),
     );
   }
 
@@ -36,7 +38,10 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
     readOut(vocabulary);
   }
 
-  Future<void> showVocabularyInfo(BuildContext context, Vocabulary vocabulary) async {
+  Future<void> showVocabularyInfo(
+    BuildContext context,
+    Vocabulary vocabulary,
+  ) async {
     await context.showDialog(
       VocabularyInfoDialog(vocabulary: vocabulary),
     );
@@ -58,6 +63,9 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
   }
 
   void goToCollection(BuildContext context, Tag tag) {
-    context.pushNamed(CollectionScreen.routeName, arguments: CollectionScreenArguments(tag: tag));
+    context.pushNamed(
+      CollectionScreen.routeName,
+      arguments: CollectionScreenArguments(tag: tag),
+    );
   }
 }
