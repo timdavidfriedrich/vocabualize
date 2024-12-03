@@ -68,7 +68,7 @@
       }
     }
   },
-  "home_statusCard_firstWord": "You added your first word! And some more and hit practise! :)",
+  "home_statusCard_firstWord": "You added your first word! Add some more and hit practise! :)",
   "@home_statusCard_firstWord": {
     "description": "Status card text if the first word has been added."
   },
