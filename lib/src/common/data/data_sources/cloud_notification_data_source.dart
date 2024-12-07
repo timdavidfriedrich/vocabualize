@@ -1,15 +1,15 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:log/log.dart';
 
-final cloudNotificationDataSourceProvider = Provider((ref) => CloudNotificationDataSource());
+final cloudNotificationDataSourceProvider =
+    Provider((ref) => CloudNotificationDataSource());
 
 class CloudNotificationDataSource {
   void init() {
-    FirebaseMessaging.onBackgroundMessage(_cloudNotificationBackgroundHandler);
+    //FirebaseMessaging.onBackgroundMessage(_cloudNotificationBackgroundHandler);
   }
 }
 
+/*
 // * Must be top-level (outside of any class)
 Future<void> _cloudNotificationBackgroundHandler(RemoteMessage message) async {
   Log.hint(
@@ -18,3 +18,4 @@ Future<void> _cloudNotificationBackgroundHandler(RemoteMessage message) async {
     "\n\tnotification: ${message.notification ?? "-"}",
   );
 }
+*/

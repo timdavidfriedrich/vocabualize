@@ -1,21 +1,32 @@
-enum ActiveMethod {
-  type,
-  mic,
-  none,
-}
+import 'dart:typed_data';
+
+import 'package:camera/camera.dart';
+import 'package:vocabualize/src/common/domain/entities/language.dart';
 
 class RecordState {
-  final ActiveMethod activeMethod;
+  final CameraController cameraController;
+  final Uint8List? imageBytes;
+  final Set<String> labels;
+  final Language? sourceLanguage;
 
   const RecordState({
-    this.activeMethod = ActiveMethod.none,
+    required this.cameraController,
+    this.imageBytes,
+    this.labels = const {},
+    this.sourceLanguage,
   });
 
   RecordState copyWith({
-    ActiveMethod? activeMethod,
+    CameraController? cameraController,
+    Uint8List? imageBytes,
+    Set<String>? labels,
+    Language? sourceLanguage,
   }) {
     return RecordState(
-      activeMethod: activeMethod ?? this.activeMethod,
+      cameraController: cameraController ?? this.cameraController,
+      imageBytes: imageBytes ?? this.imageBytes,
+      labels: labels ?? this.labels,
+      sourceLanguage: sourceLanguage ?? this.sourceLanguage,
     );
   }
 }

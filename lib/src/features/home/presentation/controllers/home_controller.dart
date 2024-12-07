@@ -12,6 +12,7 @@ import 'package:vocabualize/src/features/collections/presentation/screens/collec
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/home/presentation/states/home_state.dart';
 import 'package:vocabualize/src/common/presentation/widgets/vocabulary_info_dialog.dart';
+import 'package:vocabualize/src/features/record/presentation/screens/record_screen.dart';
 import 'package:vocabualize/src/features/reports/presentation/screens/report_screen.dart';
 import 'package:vocabualize/src/features/settings/presentation/screens/settings_screen.dart';
 
@@ -31,6 +32,10 @@ class HomeController extends AutoDisposeAsyncNotifier<HomeState> {
         getAreImagesEnabledUseCaseProvider.future,
       ),
     );
+  }
+
+  void goToRecordScreen(BuildContext context) {
+    context.pushNamed(RecordScreen.routeName);
   }
 
   void readOut(Vocabulary vocabulary) {

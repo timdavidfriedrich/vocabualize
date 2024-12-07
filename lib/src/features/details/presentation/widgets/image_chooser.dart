@@ -25,7 +25,7 @@ class ImageChooser extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         AspectRatio(
-          aspectRatio: 4 / 3,
+          aspectRatio: 1 / 1,
           child: _SelectedImageBox(state, notifier),
         ),
         const SizedBox(height: Dimensions.mediumSpacing),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:vocabualize/constants/asset_path.dart';
 import 'package:vocabualize/constants/common_constants.dart';
 import 'package:vocabualize/constants/dimensions.dart';
@@ -11,9 +10,6 @@ import 'package:vocabualize/src/features/home/presentation/widgets/collections_s
 import 'package:vocabualize/src/features/home/presentation/widgets/new_vocabularies_section.dart';
 import 'package:vocabualize/src/features/home/presentation/widgets/status_card.dart';
 import 'package:vocabualize/src/common/presentation/widgets/vocabulary_list_tile.dart';
-import 'package:vocabualize/src/features/record/presentation/utils/record_sheet_controller.dart';
-import 'package:vocabualize/src/features/record/presentation/widgets/record_grab.dart';
-import 'package:vocabualize/src/features/record/presentation/widgets/record_sheet.dart';
 
 class HomeScreen extends ConsumerWidget {
   static const String routeName = "/Home";
@@ -22,9 +18,6 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    RecordSheetController recordSheetController =
-        ref.watch(recordSheetControllerProvider);
-
     final provider = homeControllerProvider;
     final notifier = provider.notifier;
     final asyncState = ref.watch(provider);
@@ -37,108 +30,99 @@ class HomeScreen extends ConsumerWidget {
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: SnappingSheet(
-            controller: recordSheetController,
-            initialSnappingPosition: recordSheetController.retractedPosition,
-            snappingPositions: [
-              recordSheetController.retractedPosition,
-              recordSheetController.extendedPosition,
-            ],
-            grabbing: const RecordGrab(),
-            grabbingHeight: Dimensions.extraExtraLargeSpacing,
-            sheetBelow: SnappingSheetContent(
-              draggable: true,
-              child: const RecordSheet(),
-            ),
-            child: asyncState.when(
-              loading: () {
-                return const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                );
-              },
-              error: (error, stackTrace) {
-                // TODO: Replace with error widget
+          floatingActionButton: FloatingActionButton.large(
+            onPressed: () {
+              ref.read(notifier).goToRecordScreen(context);
+            },
+            child: const Icon(Icons.add_rounded),
+          ),
+          body: asyncState.when(
+            loading: () {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            },
+            error: (error, stackTrace) {
+              // TODO: Replace with error widget
+              return _HomeEmptyScreen(notifier: notifier);
+            },
+            data: (HomeState state) {
+              if (state.vocabularies.isEmpty) {
                 return _HomeEmptyScreen(notifier: notifier);
-              },
-              data: (HomeState state) {
-                if (state.vocabularies.isEmpty) {
-                  return _HomeEmptyScreen(notifier: notifier);
-                }
-                return ListView(
-                  physics: const BouncingScrollPhysics(),
-                  restorationId: "homeScreen",
-                  children: [
+              }
+              return ListView(
+                physics: const BouncingScrollPhysics(),
+                restorationId: "homeScreen",
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.largeSpacing,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: Dimensions.largeSpacing,
+                        ),
+                        Row(
+                          children: [
+                            const Expanded(child: _AppTitle()),
+                            const SizedBox(width: Dimensions.mediumSpacing),
+                            _BugReportButton(notifier: notifier),
+                            _SettingsButton(notifier: notifier),
+                          ],
+                        ),
+                        const SizedBox(height: Dimensions.semiLargeSpacing),
+                        StatusCard(state: state),
+                      ],
+                    ),
+                  ),
+                  if (state.newVocabularies.isNotEmpty) ...[
+                    const SizedBox(height: Dimensions.largeSpacing),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: Dimensions.largeSpacing,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: Dimensions.largeSpacing,
-                          ),
-                          Row(
-                            children: [
-                              const Expanded(child: _AppTitle()),
-                              const SizedBox(width: Dimensions.mediumSpacing),
-                              _BugReportButton(notifier: notifier),
-                              _SettingsButton(notifier: notifier),
-                            ],
-                          ),
-                          const SizedBox(height: Dimensions.semiLargeSpacing),
-                          StatusCard(state: state),
-                        ],
-                      ),
+                      child: _SectionTitle(
+                          AppLocalizations.of(context)?.home_newWords ?? ""),
                     ),
-                    if (state.newVocabularies.isNotEmpty) ...[
-                      const SizedBox(height: Dimensions.largeSpacing),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.largeSpacing,
-                        ),
-                        child: _SectionTitle(
-                            AppLocalizations.of(context)?.home_newWords ?? ""),
-                      ),
-                      const SizedBox(height: Dimensions.semiSmallSpacing),
-                      NewVocabulariesSection(state: state, notifier: notifier),
-                    ],
-                    if (state.tags.isNotEmpty) ...[
-                      const SizedBox(height: Dimensions.largeSpacing),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: Dimensions.largeSpacing,
-                        ),
-                        // TODO: Replace with arb
-                        child: _SectionTitle("Collections"),
-                      ),
-                      const SizedBox(height: Dimensions.semiSmallSpacing),
-                      CollectionsSection(state: state, notifier: notifier),
-                    ],
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Dimensions.largeSpacing,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: Dimensions.largeSpacing),
-                          _SectionTitle(
-                              AppLocalizations.of(context)?.home_allWords ??
-                                  ""),
-                          const SizedBox(height: Dimensions.semiSmallSpacing),
-                          _VocabularyFeed(state: state),
-                          const SizedBox(
-                              height: Dimensions.extraExtraLargeSpacing),
-                          const SizedBox(
-                              height: Dimensions.extraExtraLargeSpacing),
-                        ],
-                      ),
-                    ),
+                    const SizedBox(height: Dimensions.semiSmallSpacing),
+                    NewVocabulariesSection(state: state, notifier: notifier),
                   ],
-                );
-              },
-            ),
+                  if (state.tags.isNotEmpty) ...[
+                    const SizedBox(height: Dimensions.largeSpacing),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Dimensions.largeSpacing,
+                      ),
+                      // TODO: Replace with arb
+                      child: _SectionTitle("Collections"),
+                    ),
+                    const SizedBox(height: Dimensions.semiSmallSpacing),
+                    CollectionsSection(state: state, notifier: notifier),
+                  ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.largeSpacing,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: Dimensions.largeSpacing),
+                        _SectionTitle(
+                            AppLocalizations.of(context)?.home_allWords ?? ""),
+                        const SizedBox(height: Dimensions.semiSmallSpacing),
+                        _VocabularyFeed(state: state),
+                        const SizedBox(
+                            height: Dimensions.extraExtraLargeSpacing),
+                        const SizedBox(
+                            height: Dimensions.extraExtraLargeSpacing),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,14 +17,14 @@ import 'package:vocabualize/src/features/onboarding/presentation/screens/welcome
 import 'package:vocabualize/src/features/practise/presentation/screens/practise_screen.dart';
 import 'package:vocabualize/src/features/record/presentation/providers/active_provider.dart';
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
+import 'package:vocabualize/src/features/record/presentation/screens/record_screen.dart';
 import 'package:vocabualize/src/features/reports/presentation/screens/report_screen.dart';
 import 'package:vocabualize/src/common/presentation/screens/language_picker_screen.dart';
 import 'package:vocabualize/src/features/settings/presentation/screens/settings_screen.dart';
-import 'package:vocabualize/firebase_options.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -68,6 +67,7 @@ class Vocabualize extends StatelessWidget {
             ChooseLanguagesScreen.routeName: (context) => const ChooseLanguagesScreen(),
             LanguagePickerScreen.routeName: (context) => const LanguagePickerScreen(),
             HomeScreen.routeName: (context) => const HomeScreen(),
+            RecordScreen.routeName: (context) => const RecordScreen(),
             PractiseScreen.routeName: (context) => const PractiseScreen(),
             DetailsScreen.routeName: (context) => const DetailsScreen(),
             CollectionScreen.routeName: (context) => const CollectionScreen(),

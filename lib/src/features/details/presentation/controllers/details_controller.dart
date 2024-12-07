@@ -24,11 +24,13 @@ import 'package:vocabualize/src/features/details/presentation/widgets/edit_sourc
 import 'package:vocabualize/src/features/details/presentation/widgets/replace_vocabulary_dialog.dart';
 import 'package:vocabualize/src/features/settings/presentation/screens/settings_screen.dart';
 
-final detailsControllerProvider = AutoDisposeAsyncNotifierProviderFamily<DetailsController, DetailsState, Vocabulary?>(() {
+final detailsControllerProvider = AutoDisposeAsyncNotifierProviderFamily<
+    DetailsController, DetailsState, Vocabulary?>(() {
   return DetailsController();
 });
 
-class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Vocabulary?> {
+class DetailsController
+    extends AutoDisposeFamilyAsyncNotifier<DetailsState, Vocabulary?> {
   @override
   Future<DetailsState> build(Vocabulary? arg) async {
     final vocabulary = arg ?? Vocabulary();
@@ -154,9 +156,8 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
   void selectOrUnselectImage(VocabularyImage? image) {
     if (image == null) return;
     state.value?.let((value) {
-      final newImage = value.vocabulary.image == image 
-          ? const FallbackImage() 
-          : image;
+      final newImage =
+          value.vocabulary.image == image ? const FallbackImage() : image;
       state = AsyncData(
         value.copyWith(
           vocabulary: value.vocabulary.copyWith(image: newImage),
@@ -209,6 +210,8 @@ class DetailsController extends AutoDisposeFamilyAsyncNotifier<DetailsState, Voc
     state.value?.let((value) async {
       await ref.read(addOrUpdateVocabularyUseCaseProvider(value.vocabulary));
       if (context.mounted) {
+        // TODO: Replace this with popUntil home
+        context.pop();
         context.pop();
       }
     });
