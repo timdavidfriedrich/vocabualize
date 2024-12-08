@@ -239,6 +239,7 @@ class _CustomImageWithIcon extends StatelessWidget {
           width: Dimensions.mediumBorderWidth,
           color: Theme.of(context).colorScheme.primary,
         ),
+        color: Theme.of(context).colorScheme.surface,
         image: DecorationImage(
           fit: BoxFit.cover,
           image: state.vocabulary.image.getImageProvider(),
@@ -281,6 +282,7 @@ class _StockImageButton extends ConsumerWidget {
             width: Dimensions.mediumBorderWidth,
             color: Theme.of(context).colorScheme.primary,
           ).takeIf((_) => isSelected),
+          color: Theme.of(context).colorScheme.surface,
           image: DecorationImage(
             fit: BoxFit.cover,
             image: stockImage.getImageProvider(size: ImageSize.small),

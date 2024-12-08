@@ -176,9 +176,9 @@ class _ImageBox extends StatelessWidget {
             itemCount: min(tagVocabularies.length, 4),
             itemBuilder: (context, index) {
               final vocabulary = tagVocabularies.reversed.elementAt(index);
-              return Image(
+              return vocabulary.image.getImage(
                 fit: BoxFit.cover,
-                image: vocabulary.image.getImageProvider(size: ImageSize.small),
+                size: ImageSize.small,
               );
             },
           ),

@@ -124,9 +124,9 @@ class _ImageBox extends StatelessWidget {
       height: cardSpacing,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
-        child: Image(
-          image: vocabulary.image.getImageProvider(size: ImageSize.medium),
+        child: vocabulary.image.getImage(
           fit: BoxFit.cover,
+          size: ImageSize.medium,
         ),
       ),
     );

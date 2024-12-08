@@ -104,9 +104,9 @@ class _ImageBox extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(Dimensions.mediumBorderRadius),
       clipBehavior: Clip.hardEdge,
-      child: Image(
-        image: image.getImageProvider(size: ImageSize.large),
+      child:  image.getImage(
         fit: BoxFit.cover,
+        size: ImageSize.large,
       ),
     );
   }

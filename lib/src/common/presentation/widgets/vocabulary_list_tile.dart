@@ -154,11 +154,9 @@ class _AvatarBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           Dimensions.mediumBorderRadius,
         ),
-        child: Image(
-          image: image.getImageProvider(
-            size: ImageSize.tiny,
-          ),
+        child: image.getImage(
           fit: BoxFit.cover,
+          size: ImageSize.tiny,
         ),
       ),
     );

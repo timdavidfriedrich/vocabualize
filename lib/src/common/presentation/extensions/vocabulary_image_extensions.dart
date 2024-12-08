@@ -20,7 +20,16 @@ extension VocabularyImageExtensions on VocabularyImage {
     };
   }
 
-  Image getImage({ImageSize size = ImageSize.original}) {
-    return Image(image: getImageProvider(size: size));
+  Image getImage({
+    BoxFit? fit,
+    ImageSize size = ImageSize.original,
+  }) {
+    return Image(
+      fit: fit,
+      image: getImageProvider(size: size),
+      errorBuilder: (context, error, stackTrace) {
+        return Image.asset(AssetPath.fallbackDefault);
+      },
+    );
   }
 }
