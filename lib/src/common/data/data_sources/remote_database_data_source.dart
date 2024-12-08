@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:http/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log/log.dart';
-import 'package:pocketbase/pocketbase.dart';
+import 'package:pocketbase/pocketbase.dart' as pb;
 import 'package:vocabualize/src/common/data/data_sources/remote_connection_client.dart';
 import 'package:vocabualize/src/common/data/extensions/uint8list_extensions.dart';
 import 'package:vocabualize/src/common/data/mappers/auth_mappers.dart';
@@ -44,7 +44,7 @@ class RemoteDatabaseDataSource {
   final String _customImageFieldName = "customImage";
 
   Future<void> sendBugReport(RdbBugReport bugReport) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     await pocketbase
         .collection(_bugReportCollectionName)
         .create(body: bugReport.toRecordModel().toJson());
@@ -52,28 +52,28 @@ class RemoteDatabaseDataSource {
 
   Future<void> sendTranslationReport(
       RdbTranslationReport translationReport) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     await pocketbase
         .collection(_translationReportCollectionName)
         .create(body: translationReport.toRecordModel().toJson());
   }
 
   Future<List<RdbLanguage>> getAvailabeLanguages() async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final records =
         await pocketbase.collection(_languagesCollectionName).getList();
     return records.items.map((record) => record.toRdbLanguage()).toList();
   }
 
   Future<RdbLanguage> getLanguageById(String id) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final record =
         await pocketbase.collection(_languagesCollectionName).getOne(id);
     return record.toRdbLanguage();
   }
 
   Future<List<RdbTag>> getTags() async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
     final String? userFilter = userId?.let((id) => "$_userFieldName=\"$id\"");
     final tagsRecords = await pocketbase
@@ -83,13 +83,13 @@ class RemoteDatabaseDataSource {
   }
 
   Future<RdbTag> getTagById(String id) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final record = await pocketbase.collection(_tagsCollectionName).getOne(id);
     return record.toRdbTag();
   }
 
   Future<String> createTag(RdbTag tag) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final data = tag.toRecordModel().toJson();
     final record =
         await pocketbase.collection(_tagsCollectionName).create(body: data);
@@ -97,7 +97,7 @@ class RemoteDatabaseDataSource {
   }
 
   Future<String> updateTag(RdbTag tag) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final data = tag.toRecordModel().toJson();
     final recordModel = await pocketbase
         .collection(_tagsCollectionName)
@@ -106,7 +106,7 @@ class RemoteDatabaseDataSource {
   }
 
   Future<void> deleteTag(RdbTag tag) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     await pocketbase.collection(_tagsCollectionName).delete(tag.id);
   }
 
@@ -114,7 +114,7 @@ class RemoteDatabaseDataSource {
     String? searchTerm,
     Tag? tag,
   }) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final String? searchFilter = searchTerm?.let((term) {
       return "source LIKE \"%$term%\" OR target LIKE \"%$term%\"";
     });
@@ -126,20 +126,28 @@ class RemoteDatabaseDataSource {
         .map((f) => "($f)")
         .join(" AND ");
 
-    return pocketbase
-        .collection(_vocabulariesCollectionName)
-        .getFullList(filter: filter)
-        .then((value) async {
-      return value
-          .map((RecordModel record) => record.toRdbVocabulary())
-          .toList();
-    });
+    try {
+      return pocketbase
+          .collection(_vocabulariesCollectionName)
+          .getFullList(filter: filter)
+          .then((value) async {
+        return value
+            .map((pb.RecordModel record) => record.toRdbVocabulary())
+            .toList();
+      });
+    } on pb.ClientException catch (e) {
+      Log.error("Could not load vocabularies.", exception: e);
+      // TODO: Implement AppResult to not use normal empty list
+      return [];
+    } catch (e) {
+      rethrow;
+    }
   }
 
   void subscribeToVocabularyChanges(
     Function(RdbEventType type, RdbVocabulary rdbVocabulary) onEvent,
   ) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
 
     // ? Unsubscribe from previous subscriptions
     // * (could lead to bugs, if different subscriptions with other topics are used)
@@ -156,7 +164,7 @@ class RemoteDatabaseDataSource {
 
     pocketbase.collection(_vocabulariesCollectionName).subscribe(
       "*",
-      (RecordSubscriptionEvent event) {
+      (pb.RecordSubscriptionEvent event) {
         // * This if statement replaces filter, since it didn't work here
         if (event.record?.getStringValue(_userFieldName) != userId) return;
         final eventType = switch (event.action) {
@@ -182,7 +190,7 @@ class RemoteDatabaseDataSource {
 
     yield await getVocabularies(searchTerm: searchTerm, tag: tag);
 
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
 
     pocketbase.collection(_vocabulariesCollectionName).subscribe(
       "*",
@@ -202,7 +210,7 @@ class RemoteDatabaseDataSource {
     RdbVocabulary vocabulary, {
     Uint8List? draftImageToUpload,
   }) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
     final vocabularyWithUser = vocabulary.copyWith(user: userId);
     final body = vocabularyWithUser.toRecordModel().toJson();
@@ -234,7 +242,7 @@ class RemoteDatabaseDataSource {
     final id = vocabulary.id;
     if (id == null) return;
 
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
     final vocabularyWithUser = vocabulary.copyWith(user: userId);
     final body = vocabularyWithUser.toRecordModel().toJson();
@@ -259,7 +267,7 @@ class RemoteDatabaseDataSource {
   }
 
   Future<void> deleteVocabulary(RdbVocabulary vocabulary) async {
-    final PocketBase pocketbase = await _connectionClient.getConnection();
+    final pb.PocketBase pocketbase = await _connectionClient.getConnection();
     final userId = pocketbase.authStore.toAppUser()?.id;
     final vocabularyWithUser = vocabulary.copyWith(user: userId);
     vocabularyWithUser.id?.let((id) async {
