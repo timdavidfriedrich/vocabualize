@@ -134,9 +134,9 @@ class RecordController extends AutoDisposeAsyncNotifier<RecordState> {
     BuildContext context, {
     required String source,
   }) async {
+    state = state.copyWithPrevious(const AsyncLoading());
     state.value?.let((value) async {
       final translate = ref.read(translateUseCaseProvider);
-
       final image = value.imageBytes?.let((data) => DraftImage(content: data));
       Vocabulary draftVocabulary = Vocabulary(
         source: source,
