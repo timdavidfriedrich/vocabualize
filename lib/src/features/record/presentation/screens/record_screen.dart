@@ -131,6 +131,7 @@ class _TakePhotoButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton.large(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       onPressed: () {
         ref.read(notifier).takePhotoAndScan();
       },
