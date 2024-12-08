@@ -21,7 +21,8 @@ import 'package:vocabualize/src/common/presentation/widgets/disconnected_dialog.
 import 'package:vocabualize/src/features/details/presentation/screens/details_screen.dart';
 import 'package:vocabualize/src/features/record/presentation/states/record_state.dart';
 
-final recordControllerProvider = AutoDisposeAsyncNotifierProvider<RecordController, RecordState>(() {
+final recordControllerProvider =
+    AutoDisposeAsyncNotifierProvider<RecordController, RecordState>(() {
   return RecordController();
 });
 
@@ -42,13 +43,14 @@ class RecordController extends AutoDisposeAsyncNotifier<RecordState> {
 
     final cameraController = CameraController(
       firstCamera,
-      ResolutionPreset.medium,
+      ResolutionPreset.high,
       imageFormatGroup: Platform.isAndroid
           ? ImageFormatGroup.nv21
           : ImageFormatGroup.bgra8888,
     );
 
     await cameraController.initialize();
+    await cameraController.setFlashMode(FlashMode.off);
     return cameraController;
   }
 
@@ -71,6 +73,24 @@ class RecordController extends AutoDisposeAsyncNotifier<RecordState> {
   // TODO: Move photo taking + scanning to (separate?) use cases
   Future<void> takePhotoAndScan() async {
     state.value?.let((value) async {
+      try {
+        final photo = await value.cameraController.takePicture();
+        final data = await photo.readAsBytes();
+
+        state = AsyncData(
+          value.copyWith(
+            imageBytes: () => data,
+          ),
+        );
+        _scanForSuggestions(InputImage.fromFilePath(photo.path));
+      } catch (e) {
+        Log.error('Error taking picture.', exception: e);
+      }
+    });
+  }
+
+  Future<void> _scanForSuggestions(InputImage inputImage) async {
+    state.value?.let((value) async {
       final modelPath = await _getModelPath(AssetPath.mlModel);
       final options = LocalLabelerOptions(
         confidenceThreshold: 0.1,
@@ -78,26 +98,24 @@ class RecordController extends AutoDisposeAsyncNotifier<RecordState> {
         modelPath: modelPath,
       );
       final imageLabeler = ImageLabeler(options: options);
+      final proccesedlabels = await imageLabeler.processImage(inputImage);
 
-      try {
-        final photo = await value.cameraController.takePicture();
-        final inputImage = InputImage.fromFilePath(photo.path);
-        final proccesedlabels = await imageLabeler.processImage(inputImage);
+      final Iterable<String> suggestions = await Future.wait(
+        proccesedlabels.map((e) async {
+          final label = e.label.trim();
+          return await ref.read(translateUseCaseProvider)(
+            label,
+            sourceLanguage: Language.english(),
+            targetLanguage: value.sourceLanguage,
+          );
+        }),
+      );
 
-        // TODO: Translate all labels after taking photo
-        final data = await photo.readAsBytes();
-        final Iterable<String> labels = proccesedlabels.map((e) {
-          return e.label.trim();
-        });
-        state = AsyncData(
-          value.copyWith(
-            labels: {...value.labels, ...labels},
-            imageBytes: data,
-          ),
-        );
-      } catch (e) {
-        Log.error('Error taking picture.', exception: e);
-      }
+      state = AsyncData(
+        value.copyWith(
+          suggestions: {...suggestions},
+        ),
+      );
     });
   }
 
@@ -105,8 +123,8 @@ class RecordController extends AutoDisposeAsyncNotifier<RecordState> {
     state.value?.let((value) {
       state = AsyncData(
         value.copyWith(
-          labels: {},
-          imageBytes: null,
+          suggestions: {},
+          imageBytes: () => null,
         ),
       );
     });
@@ -121,11 +139,7 @@ class RecordController extends AutoDisposeAsyncNotifier<RecordState> {
 
       final image = value.imageBytes?.let((data) => DraftImage(content: data));
       Vocabulary draftVocabulary = Vocabulary(
-        source: await translate(
-          source,
-          sourceLanguage: Language.english(),
-          targetLanguage: value.sourceLanguage,
-        ),
+        source: source,
         target: await translate(source),
         sourceLanguageId: value.sourceLanguage?.id ?? "",
         targetLanguageId: value.targetLanguage?.id ?? "",

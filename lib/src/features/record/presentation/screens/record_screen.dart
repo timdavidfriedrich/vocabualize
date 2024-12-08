@@ -45,39 +45,42 @@ class RecordScreen extends ConsumerWidget {
           },
           child: Scaffold(
             appBar: AppBar(title: null),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Dimensions.largeSpacing,
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: Dimensions.mediumSpacing),
-                  AspectRatio(
-                    aspectRatio: 1 / 1,
-                    child: _CameraBox(state: state, notifier: notifier),
-                  ),
-                  if (state.imageBytes == null) ...[
-                    const Spacer(),
-                    _TakePhotoButton(notifier: notifier),
-                  ] else ...[
-                    const SizedBox(height: Dimensions.largeSpacing),
-                    _ManualSourceField(state: state, notifier: notifier),
-                    if (state.labels.isNotEmpty) ...[
-                      const SizedBox(height: Dimensions.semiLargeSpacing),
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        // TODO: Replace with arb
-                        child: Text("Suggestions:"),
+            body: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.largeSpacing,
+                    ),
+                    children: [
+                      const SizedBox(height: Dimensions.mediumSpacing),
+                      AspectRatio(
+                        aspectRatio: 1 / 1,
+                        child: _CameraBox(state: state, notifier: notifier),
                       ),
-                      const SizedBox(height: Dimensions.semiSmallSpacing),
-                      _SuggestionsList(state: state, notifier: notifier),
-                      const SizedBox(height: Dimensions.largeSpacing)
-                    ] else ...[
-                      const Spacer(),
+                      if (state.imageBytes != null) ...[
+                        const SizedBox(height: Dimensions.largeSpacing),
+                        _ManualSourceField(state: state, notifier: notifier),
+                        if (state.suggestions.isNotEmpty) ...[
+                          const SizedBox(height: Dimensions.semiLargeSpacing),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            // TODO: Replace with arb
+                            child: Text("Suggestions:"),
+                          ),
+                          const SizedBox(height: Dimensions.semiSmallSpacing),
+                          _SuggestionsList(state: state, notifier: notifier),
+                          const SizedBox(height: Dimensions.largeSpacing)
+                        ],
+                      ],
                     ],
-                  ],
-                ],
-              ),
+                  ),
+                ),
+                if (state.imageBytes == null) ...[
+                  _TakePhotoButton(notifier: notifier),
+                  const SizedBox(height: Dimensions.largeSpacing)
+                ]
+              ],
             ),
           ),
         );
@@ -101,7 +104,14 @@ class _CameraBox extends ConsumerWidget {
         Dimensions.largeBorderRadius,
       ),
       child: state.imageBytes == null
-          ? CameraPreview(state.cameraController)
+          ? FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: state.cameraController.value.previewSize?.height,
+                height: state.cameraController.value.previewSize?.width,
+                child: CameraPreview(state.cameraController),
+              ),
+            )
           : state.imageBytes?.let((bytes) {
               return Image.memory(
                 bytes,
@@ -139,11 +149,12 @@ class _ManualSourceField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // TODO: Add the source language's flag as a leading?
     return TextField(
       decoration: InputDecoration(
         hintText:
             // TODO: Replace with arb
-            "Type in ${state.sourceLanguage?.name ?? "Source"} word",
+            "Type ${state.sourceLanguage?.name ?? "source"} word",
       ),
       onSubmitted: (value) {
         ref.read(notifier).validateAndGoToDetails(context, source: value);
@@ -162,26 +173,23 @@ class _SuggestionsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.builder(
-      itemCount: state.labels.length,
+    return GridView.builder(
+      restorationId: "SuggestionsList",
+      physics: const BouncingScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: state.suggestions.length == 1 ? 1 : 2,
+        childAspectRatio: 5 / 2,
+      ),
       shrinkWrap: true,
+      itemCount: state.suggestions.length,
       itemBuilder: (context, index) {
-        final label = state.labels.elementAt(index);
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: Dimensions.smallSpacing,
-          ),
+        final suggestion = state.suggestions.elementAt(index);
+        return Card(
           child: ListTile(
-            title: Text(label),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                Dimensions.mediumBorderRadius,
-              ),
-            ),
-            tileColor: Theme.of(context).colorScheme.surface,
-            onTap: () {
-              ref.read(notifier).validateAndGoToDetails(context, source: label);
-            },
+            title: Text(suggestion),
+            onTap: () => ref
+                .read(notifier)
+                .validateAndGoToDetails(context, source: suggestion),
           ),
         );
       },
