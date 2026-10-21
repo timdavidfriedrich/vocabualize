@@ -11,6 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 
 import 'package:core/di/core_module.module.dart' as _i8;
+import 'package:feature_collections/di/feature_collections_module.module.dart'
+    as _i285;
 import 'package:feature_details/di/feature_details_module.module.dart' as _i159;
 import 'package:feature_home/di/feature_home_module.module.dart' as _i606;
 import 'package:feature_practice/di/feature_practice_module.module.dart'
@@ -34,6 +36,7 @@ extension GetItInjectableX on _i174.GetIt {
     await _i276.FeatureWelcomePackageModule().init(gh);
     await _i159.FeatureDetailsPackageModule().init(gh);
     await _i391.FeaturePracticePackageModule().init(gh);
+    await _i285.FeatureCollectionsPackageModule().init(gh);
     gh.singleton<_i2.NavigationRouter>(() => _i2.NavigationRouter());
     return this;
   }

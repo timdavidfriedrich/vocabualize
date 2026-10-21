@@ -13,6 +13,7 @@ workspace:
   - packages/feature_welcome
   - packages/feature_details
   - packages/feature_practice
+  - packages/feature_collections
 
 dependencies:
   flutter:
@@ -24,6 +25,7 @@ dependencies:
   feature_welcome:
   feature_details:
   feature_practice:
+  feature_collections:
   flutter_bloc: ^9.1.1
   get_it: ^9.3.0
   go_router: ^18.1.1
