@@ -10,6 +10,7 @@ workspace:
   - packages/core
   - packages/shared
   - packages/feature_home
+  - packages/feature_welcome
 
 dependencies:
   flutter:
@@ -18,6 +19,7 @@ dependencies:
   core:
   shared:
   feature_home:
+  feature_welcome:
   flutter_bloc: ^9.1.1
   get_it: ^9.3.0
   go_router: ^18.1.1

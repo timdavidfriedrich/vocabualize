@@ -12,6 +12,7 @@
 
 import 'package:core/di/core_module.module.dart' as _i8;
 import 'package:feature_home/di/feature_home_module.module.dart' as _i606;
+import 'package:feature_welcome/di/feature_welcome_module.module.dart' as _i276;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared/di/shared_module.module.dart' as _i826;
@@ -27,6 +28,7 @@ extension GetItInjectableX on _i174.GetIt {
     await _i8.CorePackageModule().init(gh);
     await _i826.SharedPackageModule().init(gh);
     await _i606.FeatureHomePackageModule().init(gh);
+    await _i276.FeatureWelcomePackageModule().init(gh);
     gh.singleton<_i2.NavigationRouter>(() => _i2.NavigationRouter());
     return this;
   }
