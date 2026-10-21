@@ -17,6 +17,7 @@ import 'package:feature_details/di/feature_details_module.module.dart' as _i159;
 import 'package:feature_home/di/feature_home_module.module.dart' as _i606;
 import 'package:feature_practice/di/feature_practice_module.module.dart'
     as _i391;
+import 'package:feature_report/di/feature_report_module.module.dart' as _i123;
 import 'package:feature_scan/di/feature_scan_module.module.dart' as _i767;
 import 'package:feature_settings/di/feature_settings_module.module.dart'
     as _i924;
@@ -42,6 +43,7 @@ extension GetItInjectableX on _i174.GetIt {
     await _i285.FeatureCollectionsPackageModule().init(gh);
     await _i767.FeatureScanPackageModule().init(gh);
     await _i924.FeatureSettingsPackageModule().init(gh);
+    await _i123.FeatureReportPackageModule().init(gh);
     gh.singleton<_i2.NavigationRouter>(() => _i2.NavigationRouter());
     return this;
   }
