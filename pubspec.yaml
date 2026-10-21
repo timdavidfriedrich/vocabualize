@@ -17,6 +17,7 @@ workspace:
   - packages/feature_scan
   - packages/feature_settings
   - packages/feature_report
+  - packages/feature_gate
 
 dependencies:
   flutter:
@@ -32,6 +33,7 @@ dependencies:
   feature_scan:
   feature_settings:
   feature_report:
+  feature_gate:
   flutter_bloc: ^9.1.1
   get_it: ^9.3.0
   go_router: ^18.1.1
