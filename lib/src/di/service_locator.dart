@@ -1,6 +1,7 @@
 import 'package:core/di/core_module.module.dart';
 import 'package:feature_details/di/feature_details_module.module.dart';
 import 'package:feature_home/di/feature_home_module.module.dart';
+import 'package:feature_practice/di/feature_practice_module.module.dart';
 import 'package:feature_welcome/di/feature_welcome_module.module.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -16,6 +17,7 @@ final sl = GetIt.instance;
     ExternalModule(FeatureHomePackageModule),
     ExternalModule(FeatureWelcomePackageModule),
     ExternalModule(FeatureDetailsPackageModule),
+    ExternalModule(FeaturePracticePackageModule),
   ],
 )
 Future<void> configureDependencies() async => sl.init();
