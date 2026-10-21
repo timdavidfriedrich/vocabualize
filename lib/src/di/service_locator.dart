@@ -1,4 +1,5 @@
 import 'package:core/di/core_module.module.dart';
+import 'package:feature_details/di/feature_details_module.module.dart';
 import 'package:feature_home/di/feature_home_module.module.dart';
 import 'package:feature_welcome/di/feature_welcome_module.module.dart';
 import 'package:get_it/get_it.dart';
@@ -14,6 +15,7 @@ final sl = GetIt.instance;
     ExternalModule(SharedPackageModule),
     ExternalModule(FeatureHomePackageModule),
     ExternalModule(FeatureWelcomePackageModule),
+    ExternalModule(FeatureDetailsPackageModule),
   ],
 )
 Future<void> configureDependencies() async => sl.init();
