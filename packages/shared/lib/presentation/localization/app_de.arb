@@ -1,0 +1,18 @@
+{
+  "@@locale": "de",
+  "appTitle": "Vocabualize",
+  "cancel": "Abbrechen",
+  "close": "Schließen",
+  "back": "Zurück",
+  "tryAgain": "Erneut versuchen",
+  "error": "Fehler",
+  "errorConnection": "Keine Internetverbindung.",
+  "errorApi": "Fehler bei der Kommunikation mit dem Server: {message}.",
+  "@errorApi": { "placeholders": { "message": { "type": "String" } } },
+  "errorAuth": "Du bist nicht angemeldet.",
+  "errorValidation": "Die empfangenen Daten sind ungültig.",
+  "errorNotFound": "Nicht gefunden.",
+  "errorUnexpected": "Ein unerwarteter Fehler ist aufgetreten.",
+  "homeTitle": "Start",
+  "homeEmptyMessage": "Hier ist noch nichts."
+}

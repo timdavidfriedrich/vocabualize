@@ -1,0 +1,23 @@
+name: shared
+version: 0.0.1
+environment:
+  sdk: ^3.13.5
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  core:
+  go_router: ^18.1.1
+  intl: ^0.20.3
+  injectable: ^3.0.0
+  dart_mappable: ^4.10.0
+
+flutter:
+  generate: true
+dev_dependencies:
+  build_runner: ^2.16.1
+  dart_mappable_builder: ^4.10.0
+  injectable_generator: ^3.1.3

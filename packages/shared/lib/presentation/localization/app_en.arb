@@ -1,0 +1,18 @@
+{
+  "@@locale": "en",
+  "appTitle": "Vocabualize",
+  "cancel": "Cancel",
+  "close": "Close",
+  "back": "Back",
+  "tryAgain": "Try again",
+  "error": "Error",
+  "errorConnection": "No internet connection.",
+  "errorApi": "Error while communicating with the server: {message}.",
+  "@errorApi": { "placeholders": { "message": { "type": "String" } } },
+  "errorAuth": "You are not signed in.",
+  "errorValidation": "The data received is invalid.",
+  "errorNotFound": "Not found.",
+  "errorUnexpected": "An unexpected error occurred.",
+  "homeTitle": "Home",
+  "homeEmptyMessage": "Nothing here yet."
+}
