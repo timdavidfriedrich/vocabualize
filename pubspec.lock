@@ -317,6 +317,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.4.0"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -534,6 +542,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  serverpod_auth_core_client:
+    dependency: transitive
+    description:
+      name: serverpod_auth_core_client
+      sha256: "7134c42b8ae0a36397d0e832f8e2679221eb2fe66c3b8435b3c1e9beb19440c6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0-beta.3"
+  serverpod_auth_idp_client:
+    dependency: transitive
+    description:
+      name: serverpod_auth_idp_client
+      sha256: ddd77e09d92f647979f566aeb376fdeafc9618a9eb67f21dc4ef9b37eca3789a
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0-beta.3"
+  serverpod_client:
+    dependency: transitive
+    description:
+      name: serverpod_client
+      sha256: "7ef8695dc9af88e50dab305d6741ad2f7539fdb6fd1d87fb7a3b05617d84a175"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0-beta.3"
+  serverpod_serialization:
+    dependency: transitive
+    description:
+      name: serverpod_serialization
+      sha256: "0351adbe9cba0339c76f203bf834bc23fd45724efa9c1266a4d9bf0b872a6ad2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0-beta.3"
   shelf:
     dependency: transitive
     description:
@@ -635,6 +675,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "9b129329f58692f6e6578329498a8fe9fbe98f090beb764ffbb8ee2eadd01dcd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.6.0"
   vector_math:
     dependency: transitive
     description:

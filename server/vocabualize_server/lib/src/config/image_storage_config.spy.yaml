@@ -1,0 +1,8 @@
+class: ImageStorageConfig
+serverOnly: true
+
+fields:
+  provider: String
+  bucket: String
+  region: String
+  endpoint: String

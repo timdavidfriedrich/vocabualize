@@ -1,0 +1,10 @@
+type: server
+
+client_package_path: ../../packages/vocabualize_client
+
+experimental_features:
+  databaseSync: true
+
+modules:
+  serverpod_offline_sync:
+    nickname: offline_sync

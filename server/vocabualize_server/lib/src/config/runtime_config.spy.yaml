@@ -1,0 +1,7 @@
+class: RuntimeConfig
+serverOnly: true
+
+fields:
+  version: int
+  client: RemoteAppConfig
+  images: ImageStorageConfig

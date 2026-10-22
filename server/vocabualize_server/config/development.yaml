@@ -1,0 +1,25 @@
+apiServer:
+  port: 8180
+  publicHost: localhost
+  publicPort: 8180
+  publicScheme: http
+
+insightsServer:
+  port: 8181
+  publicHost: localhost
+  publicPort: 8181
+  publicScheme: http
+
+database:
+  host: localhost
+  port: 8190
+  name: vocabualize
+  user: postgres
+  dataPath: .serverpod/development/pgdata
+
+maxRequestSize: 1048576
+
+sessionLogs:
+  persistentEnabled: true
+  consoleEnabled: true
+  consoleLogFormat: text

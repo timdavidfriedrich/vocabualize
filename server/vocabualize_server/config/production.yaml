@@ -1,0 +1,25 @@
+apiServer:
+  port: 8080
+  publicHost: vocabualize-api.timdavidfriedrich.de
+  publicPort: 443
+  publicScheme: https
+
+insightsServer:
+  port: 8081
+  publicHost: vocabualize-api.timdavidfriedrich.de
+  publicPort: 8081
+  publicScheme: https
+
+database:
+  host: postgres
+  port: 5432
+  name: vocabualize
+  user: postgres
+  requireSsl: false
+
+maxRequestSize: 1048576
+
+sessionLogs:
+  consoleEnabled: true
+  consoleLogFormat: json
+  persistentEnabled: true

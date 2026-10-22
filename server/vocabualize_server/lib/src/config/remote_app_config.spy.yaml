@@ -1,0 +1,7 @@
+class: RemoteAppConfig
+
+fields:
+  version: int
+  minSupportedBuild: int
+  maintenanceMode: bool
+  maintenanceMessage: String?

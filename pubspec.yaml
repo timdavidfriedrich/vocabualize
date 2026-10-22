@@ -7,6 +7,7 @@ environment:
   sdk: ^3.13.5
 
 workspace:
+  - packages/vocabualize_client
   - packages/core
   - packages/shared
   - packages/feature_home

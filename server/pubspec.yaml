@@ -1,0 +1,8 @@
+name: _
+publish_to: none
+
+environment:
+  sdk: ^3.13.5
+
+workspace:
+  - vocabualize_server

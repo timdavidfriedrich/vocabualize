@@ -1,0 +1,8 @@
+googleIdp:
+  - login:
+  - loginWithCode:
+  - hasAccount:
+jwtRefresh:
+  - refreshAccessToken:
+config:
+  - fetch:

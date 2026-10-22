@@ -1,0 +1,12 @@
+name: vocabualize_client
+description: Generated Serverpod client for vocabualize_server.
+publish_to: none
+
+environment:
+  sdk: ^3.13.5
+
+resolution: workspace
+
+dependencies:
+  serverpod_auth_idp_client: 4.1.0-beta.3
+  serverpod_client: 4.1.0-beta.3

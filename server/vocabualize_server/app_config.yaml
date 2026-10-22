@@ -1,0 +1,12 @@
+version: 1
+
+client:
+  minSupportedBuild: 13
+  maintenanceMode: false
+  maintenanceMessage: null
+
+images:
+  provider: database
+  bucket: vocabualize-images
+  region: garage
+  endpoint: http://localhost:3900
