@@ -8,11 +8,163 @@
   "error": "Error",
   "errorConnection": "No internet connection.",
   "errorApi": "Error while communicating with the server: {message}.",
-  "@errorApi": { "placeholders": { "message": { "type": "String" } } },
+  "@errorApi": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
   "errorAuth": "You are not signed in.",
   "errorValidation": "The data received is invalid.",
   "errorNotFound": "Not found.",
   "errorUnexpected": "An unexpected error occurred.",
   "homeTitle": "Home",
-  "homeEmptyMessage": "Nothing here yet."
+  "homeEmptyMessage": "Nothing here yet.",
+  "unknown": "unknown",
+  "no": "No",
+  "yes": "Yes",
+  "okay": "Okay",
+  "submit": "Submit",
+  "delete": "Delete",
+  "languagePickerTitle": "Select language",
+  "vocabularyDeleteTitle": "Delete?",
+  "vocabularyDeleteMessage": "Do you really want to delete this vocabulary?",
+  "vocabularyCreatedLabel": "Created:",
+  "vocabularyReappearsLabel": "Reappears:",
+  "vocabularyReappearsNow": "Now",
+  "vocabularyReappearsLessThanMinute": "In less than a minute",
+  "notificationPracticeChannelName": "Practice vocabulary",
+  "notificationPracticeChannelDescription": "Let’s practice 🎯",
+  "notificationPracticeTitle": "Let’s practice 🎯",
+  "notificationPracticeBody": "Some vocabulary may be due. You’ll rock this! :D",
+  "welcomeSourceLanguageTitle": "I speak",
+  "welcomeTargetLanguageTitle": "I want to learn",
+  "welcomeStartButton": "Let’s start!",
+  "welcomeGoogleSignInButton": "Sign in with Google",
+  "welcomeContinueWithoutAccountButton": "Continue without account",
+  "welcomeSignInFailedTitle": "Sign in failed",
+  "homeCollectionsTitle": "Collections",
+  "homeAddFirstWordMessage": "Click the button\nto add your first word",
+  "homeAllWordsTitle": "All vocabulary",
+  "homeNewWordsTitle": "Recently added",
+  "homeNoNewWordsMessage": "Oh, it seems like you have not added any words for a while now. :(",
+  "homeStatusFirstWordMessage": "You added your first word! Add some more and hit “practice”! :)",
+  "homeStatusEmptyMessage": "Why don’t you add some new words? :)",
+  "homePracticeButton": "Practice",
+  "homeScanButton": "Scan",
+  "homeWriteButton": "Write",
+  "homeWriteHint": "Type in word...",
+  "detailsSourceLabel": "Source",
+  "detailsTargetLabel": "Target",
+  "detailsReportTranslationButton": "Report faulty translation",
+  "detailsAddCollectionButton": "Add collection",
+  "detailsReplaceTitle": "Replace",
+  "detailsReplaceMessage": "Retranslate and replace the vocabulary?",
+  "detailsDuplicateTitle": "Duplicate!",
+  "detailsDuplicateAddButton": "Add",
+  "detailsNoImageMessage": "Choose an image\nor save without one",
+  "detailsOpenGalleryButton": "Open Gallery",
+  "detailsPexelsAttribution": "Images provided by Pexels.",
+  "detailsSaveButton": "Save",
+  "detailsSaveWithoutImageButton": "Save without",
+  "detailsTakePictureButton": "Take picture",
+  "detailsCollectionNameHint": "Untitled",
+  "detailsCollectionNameLabel": "Tag name",
+  "practiceDoneTitle": "Congratulations!",
+  "practiceDoneMessage": "You’ve practiced all\nof your due words.",
+  "practiceDoneButton": "Done",
+  "practiceForgotButton": "I didn’t know",
+  "practiceEasyButton": "Easy",
+  "practiceGoodButton": "Good",
+  "practiceHardButton": "Hard",
+  "practiceSolutionButton": "Solution",
+  "practiceAnswerLabel": "Your answer",
+  "scanAddButton": "Add",
+  "scanSuggestionsTitle": "Suggestions",
+  "scanNoSuggestionsMessage": "No objects could be recognized. Please try again later.",
+  "reportBugTitle": "Report bug",
+  "reportTranslationTitle": "Faulty translation",
+  "reportTranslationNoteHint": "Note (optional)",
+  "settingsTitle": "Settings",
+  "settingsSignInHint": "Sign in to sync your data across devices.",
+  "settingsSignInButton": "Sign in",
+  "settingsTypeAnswerDisabledTitle": "Disable Type Answer mode",
+  "settingsTypeAnswerDisabledHint": "Only use Memory Recall with self-assessment",
+  "settingsCollectionsTitle": "Enable collections",
+  "settingsCollectionsHint": "Categorise words in collections",
+  "settingsImagesHiddenTitle": "Hide images",
+  "settingsImagesHiddenHint": "Could decrease learning quality",
+  "settingsSourceLanguageTitle": "Source language",
+  "settingsSourceLanguageHint": "A language you know well",
+  "settingsTargetLanguageTitle": "Target language",
+  "settingsTargetLanguageHint": "The language you learn",
+  "settingsNotificationsTitle": "Toggle notifications",
+  "settingsNotificationsHint": "Open app system settings to manage",
+  "vocabularyReappearsInMinutes": "{count, plural, one{In {count} minute} other{In {count} minutes}}",
+  "@vocabularyReappearsInMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "vocabularyReappearsInHours": "{count, plural, one{In {count} hour} other{In {count} hours}}",
+  "@vocabularyReappearsInHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "vocabularyReappearsInDays": "{count, plural, one{In {count} day} other{In {count} days}}",
+  "@vocabularyReappearsInDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStatusTotalMessage": "{count, plural, one{Your collection contains only {count} word. It’s feeling lonely. Add some more! :)} other{Your collection contains {count} words.}}",
+  "@homeStatusTotalMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStatusAddedTodayMessage": "{count, plural, one{Wow, you already added {count} word today. Keep it up!} other{Wow, you already added {count} words today. Keep it up!}}",
+  "@homeStatusAddedTodayMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStatusManyInTotalMessage": "{count, plural, other{Damn, you added {count} words in total. Not bad!}}",
+  "@homeStatusManyInTotalMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "detailsDuplicateMessage": "It seems that “{word}” already exists in your collection.\n\nAdd it anyway?",
+  "@detailsDuplicateMessage": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "detailsPhotoByLabel": "Photo by {author}",
+  "@detailsPhotoByLabel": {
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "detailsReplaceButton": "Replace",
+  "reportBugDescriptionHint": "Describe the bug..."
 }
