@@ -51,3 +51,6 @@ app.*.map.json
 .fvm/
 # Codegen output in workspace members
 packages/*/build/
+
+# Local build configuration
+dart_defines.json

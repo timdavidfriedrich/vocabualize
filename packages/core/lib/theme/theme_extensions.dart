@@ -18,3 +18,31 @@ class const StatusColors({
     );
   }
 }
+
+class const LevelColors({
+  required final Color novice,
+  required final Color beginner,
+  required final Color advanced,
+  required final Color expert,
+}) extends ThemeExtension<LevelColors> {
+  @override
+  LevelColors copyWith({Color? novice, Color? beginner, Color? advanced, Color? expert}) {
+    return LevelColors(
+      novice: novice ?? this.novice,
+      beginner: beginner ?? this.beginner,
+      advanced: advanced ?? this.advanced,
+      expert: expert ?? this.expert,
+    );
+  }
+
+  @override
+  LevelColors lerp(LevelColors? other, double t) {
+    if (other == null) return this;
+    return LevelColors(
+      novice: Color.lerp(novice, other.novice, t)!,
+      beginner: Color.lerp(beginner, other.beginner, t)!,
+      advanced: Color.lerp(advanced, other.advanced, t)!,
+      expert: Color.lerp(expert, other.expert, t)!,
+    );
+  }
+}

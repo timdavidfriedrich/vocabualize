@@ -21,8 +21,7 @@ class const App({
     return MaterialApp.router(
       routerConfig: sl<NavigationRouter>().router,
       onGenerateTitle: (context) => context.s.appTitle,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
+      theme: AppTheme.dark,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
