@@ -37,5 +37,7 @@ The spike's findings are in `docs/spike_serverpod_sync.md` and are binding for t
 
 ## Running
 
-- Copy `dart_defines.example.json` to `dart_defines.json` and set `API_BASE_URL` (`http://10.0.2.2:8180/` reaches a local server from the Android emulator).
-- Run with `fvm flutter run --dart-define-from-file=dart_defines.json`.
+- Copy `dart_defines.example.json` to `dart_defines.json`. Set `API_BASE_URL` to `http://localhost:8180/` and `GOOGLE_SERVER_CLIENT_ID` to the web client ID.
+- Start the local backend from `server/vocabualize_server` (see `server/AGENTS.md`).
+- On each Android device or emulator, run `adb -s <device> reverse tcp:8180 tcp:8180` once per connection, so the device's `localhost:8180` reaches this Mac.
+- Run with `fvm flutter run -d <device> --dart-define-from-file=dart_defines.json`.
