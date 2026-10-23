@@ -12,6 +12,7 @@ const _localOwnerFileName = "local_owner_id";
 const _userDatabasePrefix = "user_";
 const _databaseExtension = ".db";
 const _databaseFileSuffixes = ["", "-wal", "-shm"];
+const _openTimeout = Duration(seconds: 20);
 
 abstract class DatabaseSessionDataSource {
   OfflineSyncDatabaseSession? get currentSession;
@@ -89,15 +90,27 @@ class DatabaseSessionDataSourceImpl(
     final current = _session;
     if (current != null && _sessionPath == path) return current;
     await close();
-    final session = await _client.createSyncSession(
-      path,
-      isDebugMode: kDebugMode,
-      persistentUserId: ownerId,
-    );
+    final session = await _openSyncSession(path, ownerId);
     _session = session;
     _sessionPath = path;
     _sessionChanges.add(session);
     return session;
+  }
+
+  Future<OfflineSyncDatabaseSession> _openSyncSession(String path, UuidValue ownerId) async {
+    try {
+      return await _createSyncSession(path, ownerId);
+    } on TimeoutException {
+      final recoverySession = await _client.createSession(path).timeout(_openTimeout);
+      await recoverySession.close();
+      return _createSyncSession(path, ownerId);
+    }
+  }
+
+  Future<OfflineSyncDatabaseSession> _createSyncSession(String path, UuidValue ownerId) {
+    return _client
+        .createSyncSession(path, isDebugMode: kDebugMode, persistentUserId: ownerId)
+        .timeout(_openTimeout);
   }
 
   Future<void> _delete(String path) async {
