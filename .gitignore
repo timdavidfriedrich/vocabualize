@@ -54,3 +54,9 @@ packages/*/build/
 
 # Local build configuration
 dart_defines.json
+
+# Signing keys and certificates, never committed
+*.jks
+*.keystore
+*.pem
+key.properties
