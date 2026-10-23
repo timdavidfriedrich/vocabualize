@@ -12,7 +12,17 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_database/serverpod_database.dart' as _isd;
 
+import 'sync/local_activity.dart' as _ilpzzhur;
+import 'sync/local_tag.dart' as _ia93wqla;
+import 'sync/local_vocabulary.dart' as _ifmbxptn;
+import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
+
 /// The tables synchronized between client and server by the
 /// `serverpod_offline_sync` package, including the ones owned by modules and
 /// shared packages.
-final List<_isd.Table> syncTables = [];
+final List<_isd.Table> syncTables = [
+  _ilpzzhur.LocalActivity.t,
+  _ia93wqla.LocalTag.t,
+  _ifmbxptn.LocalVocabulary.t,
+  _iagtk9m4.LocalVocabularyTag.t,
+];

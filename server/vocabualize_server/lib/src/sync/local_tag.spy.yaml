@@ -1,0 +1,7 @@
+class: LocalTag
+table: tag
+database: sync
+fields:
+  name: String
+  createdAt: DateTime
+  extras: String?

@@ -1,0 +1,10 @@
+class: LocalActivity
+table: activity
+database: sync
+fields:
+  type: String
+  localDate: String
+  occurredAt: DateTime
+indexes:
+  activity_local_date_idx:
+    fields: localDate

@@ -16,15 +16,25 @@ import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _iaic;
 import 'package:serverpod_client/serverpod_client.dart' as _isc;
+import 'package:serverpod_database/serverpod_database.dart' as _isd;
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart'
     as _ipulbpi2;
+
 import 'config/remote_app_config.dart' as _ia9g9wp9;
+import 'sync/local_activity.dart' as _ilpzzhur;
+import 'sync/local_tag.dart' as _ia93wqla;
+import 'sync/local_vocabulary.dart' as _ifmbxptn;
+import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
 export 'config/remote_app_config.dart';
+export 'sync/local_activity.dart';
+export 'sync/local_tag.dart';
+export 'sync/local_vocabulary.dart';
+export 'sync/local_vocabulary_tag.dart';
 export 'client.dart';
 export 'sync_tables.dart';
 
-class Protocol extends _isc.SerializationManager
-    implements _isc.ProtocolDeserializationProvider {
+class Protocol extends _isd.DatabaseSerializationManager
+    implements _isd.DatabaseProtocolDeserializationProvider {
   Protocol._();
 
   factory Protocol() => _instance;
@@ -37,7 +47,15 @@ class Protocol extends _isc.SerializationManager
         this,
         types: const [
           _isc.getType<_ia9g9wp9.RemoteAppConfig>,
+          _isc.getType<_ilpzzhur.LocalActivity>,
+          _isc.getType<_ia93wqla.LocalTag>,
+          _isc.getType<_ifmbxptn.LocalVocabulary>,
+          _isc.getType<_iagtk9m4.LocalVocabularyTag>,
           _isc.getType<_ia9g9wp9.RemoteAppConfig?>,
+          _isc.getType<_ilpzzhur.LocalActivity?>,
+          _isc.getType<_ia93wqla.LocalTag?>,
+          _isc.getType<_ifmbxptn.LocalVocabulary?>,
+          _isc.getType<_iagtk9m4.LocalVocabularyTag?>,
         ],
         modules: const [
           _iaic.Protocol.new,
@@ -45,6 +63,380 @@ class Protocol extends _isc.SerializationManager
           _iacc.Protocol.new,
         ],
       );
+
+  static List<_isd.TableDefinition> get targetTableDefinitions => [
+    _isd.TableDefinition(
+      name: 'activity',
+      dartName: 'LocalActivity',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isd.ColumnDefinition(
+          name: 'id',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isd.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isd.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'type',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'localDate',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'occurredAt',
+          columnType: _isd.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+      ],
+      foreignKeys: [
+        _isd.ForeignKeyDefinition(
+          constraintName: 'activity_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isd.IndexDefinition(
+          indexName: 'activity_local_date_idx',
+          tableSpace: null,
+          elements: [
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'localDate',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isd.TableDefinition(
+      name: 'tag',
+      dartName: 'LocalTag',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isd.ColumnDefinition(
+          name: 'id',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isd.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isd.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'name',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isd.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isd.ColumnDefinition(
+          name: 'extras',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [
+        _isd.ForeignKeyDefinition(
+          constraintName: 'tag_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [],
+      managed: true,
+    ),
+    _isd.TableDefinition(
+      name: 'vocabulary',
+      dartName: 'LocalVocabulary',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isd.ColumnDefinition(
+          name: 'id',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isd.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isd.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'source',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'target',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'sourceLanguageCode',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'targetLanguageCode',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'level',
+          columnType: _isd.ColumnType.doublePrecision,
+          isNullable: false,
+          dartType: 'double',
+        ),
+        _isd.ColumnDefinition(
+          name: 'isNovice',
+          columnType: _isd.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+        _isd.ColumnDefinition(
+          name: 'intervalMinutes',
+          columnType: _isd.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isd.ColumnDefinition(
+          name: 'ease',
+          columnType: _isd.ColumnType.doublePrecision,
+          isNullable: false,
+          dartType: 'double',
+        ),
+        _isd.ColumnDefinition(
+          name: 'nextReviewAt',
+          columnType: _isd.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isd.ColumnDefinition(
+          name: 'imageKind',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'customImageId',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'stockImageId',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'stockImageUrl',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'stockImageThumbUrl',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'stockPhotographer',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'stockPhotographerUrl',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isd.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isd.ColumnDefinition(
+          name: 'extras',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [
+        _isd.ForeignKeyDefinition(
+          constraintName: 'vocabulary_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isd.IndexDefinition(
+          indexName: 'vocabulary_next_review_at_idx',
+          tableSpace: null,
+          elements: [
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'nextReviewAt',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _isd.IndexDefinition(
+          indexName: 'vocabulary_created_at_idx',
+          tableSpace: null,
+          elements: [
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'createdAt',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isd.TableDefinition(
+      name: 'vocabulary_tag',
+      dartName: 'LocalVocabularyTag',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isd.ColumnDefinition(
+          name: 'id',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isd.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isd.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'vocabularyId',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _isd.ColumnDefinition(
+          name: 'tagId',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+      ],
+      foreignKeys: [
+        _isd.ForeignKeyDefinition(
+          constraintName: 'vocabulary_tag_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _isd.ForeignKeyDefinition(
+          constraintName: 'vocabulary_tag_fk_1',
+          columns: ['vocabularyId'],
+          referenceTable: 'vocabulary',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+          deferrable: _isd.DeferrableConstraint.initiallyDeferred,
+        ),
+        _isd.ForeignKeyDefinition(
+          constraintName: 'vocabulary_tag_fk_2',
+          columns: ['tagId'],
+          referenceTable: 'tag',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+          deferrable: _isd.DeferrableConstraint.initiallyDeferred,
+        ),
+      ],
+      indexes: [],
+      managed: true,
+    ),
+    ..._iaic.Protocol() is _isd.DatabaseSerializationManager
+        ? (_iaic.Protocol() as _isd.DatabaseSerializationManager)
+              .getTargetTableDefinitions()
+        : [],
+    ..._ipulbpi2.Protocol() is _isd.DatabaseSerializationManager
+        ? (_ipulbpi2.Protocol() as _isd.DatabaseSerializationManager)
+              .getTargetTableDefinitions()
+        : [],
+    ..._iacc.Protocol() is _isd.DatabaseSerializationManager
+        ? (_iacc.Protocol() as _isd.DatabaseSerializationManager)
+              .getTargetTableDefinitions()
+        : [],
+  ];
 
   static String? getClassNameFromObjectJson(dynamic data) {
     if (data is! Map) return null;
@@ -76,8 +468,35 @@ class Protocol extends _isc.SerializationManager
     if (t == _ia9g9wp9.RemoteAppConfig) {
       return _ia9g9wp9.RemoteAppConfig.fromJson(data) as T;
     }
+    if (t == _ilpzzhur.LocalActivity) {
+      return _ilpzzhur.LocalActivity.fromJson(data) as T;
+    }
+    if (t == _ia93wqla.LocalTag) {
+      return _ia93wqla.LocalTag.fromJson(data) as T;
+    }
+    if (t == _ifmbxptn.LocalVocabulary) {
+      return _ifmbxptn.LocalVocabulary.fromJson(data) as T;
+    }
+    if (t == _iagtk9m4.LocalVocabularyTag) {
+      return _iagtk9m4.LocalVocabularyTag.fromJson(data) as T;
+    }
     if (t == _isc.getType<_ia9g9wp9.RemoteAppConfig?>()) {
       return (data != null ? _ia9g9wp9.RemoteAppConfig.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ilpzzhur.LocalActivity?>()) {
+      return (data != null ? _ilpzzhur.LocalActivity.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ia93wqla.LocalTag?>()) {
+      return (data != null ? _ia93wqla.LocalTag.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ifmbxptn.LocalVocabulary?>()) {
+      return (data != null ? _ifmbxptn.LocalVocabulary.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iagtk9m4.LocalVocabularyTag?>()) {
+      return (data != null ? _iagtk9m4.LocalVocabularyTag.fromJson(data) : null)
           as T;
     }
     final modules = dataClassName == null
@@ -95,6 +514,10 @@ class Protocol extends _isc.SerializationManager
   static String? getClassNameForType(Type type) {
     return switch (type) {
       _ia9g9wp9.RemoteAppConfig => 'RemoteAppConfig',
+      _ilpzzhur.LocalActivity => 'LocalActivity',
+      _ia93wqla.LocalTag => 'LocalTag',
+      _ifmbxptn.LocalVocabulary => 'LocalVocabulary',
+      _iagtk9m4.LocalVocabularyTag => 'LocalVocabularyTag',
       _ => null,
     };
   }
@@ -111,6 +534,14 @@ class Protocol extends _isc.SerializationManager
     switch (data) {
       case _ia9g9wp9.RemoteAppConfig():
         return 'RemoteAppConfig';
+      case _ilpzzhur.LocalActivity():
+        return 'LocalActivity';
+      case _ia93wqla.LocalTag():
+        return 'LocalTag';
+      case _ifmbxptn.LocalVocabulary():
+        return 'LocalVocabulary';
+      case _iagtk9m4.LocalVocabularyTag():
+        return 'LocalVocabularyTag';
     }
     className = _iaic.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -142,6 +573,18 @@ class Protocol extends _isc.SerializationManager
     if (dataClassName == 'RemoteAppConfig') {
       return deserialize<_ia9g9wp9.RemoteAppConfig>(data['data']);
     }
+    if (dataClassName == 'LocalActivity') {
+      return deserialize<_ilpzzhur.LocalActivity>(data['data']);
+    }
+    if (dataClassName == 'LocalTag') {
+      return deserialize<_ia93wqla.LocalTag>(data['data']);
+    }
+    if (dataClassName == 'LocalVocabulary') {
+      return deserialize<_ifmbxptn.LocalVocabulary>(data['data']);
+    }
+    if (dataClassName == 'LocalVocabularyTag') {
+      return deserialize<_iagtk9m4.LocalVocabularyTag>(data['data']);
+    }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
       return _iaic.Protocol().deserializeByClassName(data);
@@ -162,6 +605,52 @@ class Protocol extends _isc.SerializationManager
     _ipulbpi2.Protocol().registerHostProtocol('vocabualize', this);
     _iacc.Protocol().registerHostProtocol('vocabualize', this);
   }
+
+  @override
+  _isd.Table? getTableForType(Type t) {
+    {
+      var protocol = _iaic.Protocol();
+      var table = protocol is _isd.DatabaseSerializationManager
+          ? (protocol as _isd.DatabaseSerializationManager).getTableForType(t)
+          : null;
+      if (table != null) {
+        return table;
+      }
+    }
+    {
+      var protocol = _ipulbpi2.Protocol();
+      var table = protocol is _isd.DatabaseSerializationManager
+          ? (protocol as _isd.DatabaseSerializationManager).getTableForType(t)
+          : null;
+      if (table != null) {
+        return table;
+      }
+    }
+    {
+      var protocol = _iacc.Protocol();
+      var table = protocol is _isd.DatabaseSerializationManager
+          ? (protocol as _isd.DatabaseSerializationManager).getTableForType(t)
+          : null;
+      if (table != null) {
+        return table;
+      }
+    }
+    switch (t) {
+      case _ilpzzhur.LocalActivity:
+        return _ilpzzhur.LocalActivity.t;
+      case _ia93wqla.LocalTag:
+        return _ia93wqla.LocalTag.t;
+      case _ifmbxptn.LocalVocabulary:
+        return _ifmbxptn.LocalVocabulary.t;
+      case _iagtk9m4.LocalVocabularyTag:
+        return _iagtk9m4.LocalVocabularyTag.t;
+    }
+    return null;
+  }
+
+  @override
+  List<_isd.TableDefinition> getTargetTableDefinitions() =>
+      targetTableDefinitions;
 
   @override
   String getModuleName() => 'vocabualize';

@@ -12,8 +12,6 @@
   "errorValidation": "Los datos recibidos no son válidos.",
   "errorNotFound": "No encontrado.",
   "errorUnexpected": "Se ha producido un error inesperado.",
-  "homeTitle": "Inicio",
-  "homeEmptyMessage": "Aún no hay nada aquí.",
   "unknown": "desconocido",
   "no": "No",
   "yes": "Sí",

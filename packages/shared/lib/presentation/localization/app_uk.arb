@@ -12,8 +12,6 @@
   "errorValidation": "Отримані дані недійсні.",
   "errorNotFound": "Не знайдено.",
   "errorUnexpected": "Сталася неочікувана помилка.",
-  "homeTitle": "Головна",
-  "homeEmptyMessage": "Тут поки нічого немає.",
   "unknown": "невідомо",
   "no": "Ні",
   "yes": "Так",

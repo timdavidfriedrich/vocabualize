@@ -4,11 +4,10 @@ sealed class AppRoute extends KaiselRoute {
   const AppRoute();
 }
 
+class const Splash() extends AppRoute;
+
+class const Welcome() extends AppRoute;
+
 class const Home() extends AppRoute;
 
-class const ArticleDetail({
-  required final String articleId,
-}) extends AppRoute {
-  @override
-  List<Object?> get props => [articleId];
-}
+class const VocabularyDetails() extends AppRoute;

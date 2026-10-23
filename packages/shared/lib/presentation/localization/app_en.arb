@@ -19,8 +19,6 @@
   "errorValidation": "The data received is invalid.",
   "errorNotFound": "Not found.",
   "errorUnexpected": "An unexpected error occurred.",
-  "homeTitle": "Home",
-  "homeEmptyMessage": "Nothing here yet.",
   "unknown": "unknown",
   "no": "No",
   "yes": "Yes",

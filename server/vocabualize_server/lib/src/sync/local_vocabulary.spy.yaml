@@ -1,0 +1,27 @@
+class: LocalVocabulary
+table: vocabulary
+database: sync
+fields:
+  source: String
+  target: String
+  sourceLanguageCode: String
+  targetLanguageCode: String
+  level: double
+  isNovice: bool
+  intervalMinutes: int
+  ease: double
+  nextReviewAt: DateTime
+  imageKind: String
+  customImageId: String?
+  stockImageId: String?
+  stockImageUrl: String?
+  stockImageThumbUrl: String?
+  stockPhotographer: String?
+  stockPhotographerUrl: String?
+  createdAt: DateTime
+  extras: String?
+indexes:
+  vocabulary_next_review_at_idx:
+    fields: nextReviewAt
+  vocabulary_created_at_idx:
+    fields: createdAt

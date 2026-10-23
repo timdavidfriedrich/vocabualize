@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/localization/generated/app_localizations.dart';
 
@@ -10,6 +13,7 @@ import 'package:vocabualize/src/theme/app_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
+  unawaited(sl<AccountRepository>().restoreAuthStatus());
   runApp(const App());
 }
 

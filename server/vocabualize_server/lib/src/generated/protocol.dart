@@ -16,13 +16,20 @@ import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart' as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _iais;
 import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart' as _izehhkf5;
-
 import 'config/image_storage_config.dart' as _il54hkej;
 import 'config/remote_app_config.dart' as _ia9g9wp9;
 import 'config/runtime_config.dart' as _iadewe5j;
+import 'sync/local_activity.dart' as _ilpzzhur;
+import 'sync/local_tag.dart' as _ia93wqla;
+import 'sync/local_vocabulary.dart' as _ifmbxptn;
+import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
 export 'config/image_storage_config.dart';
 export 'config/remote_app_config.dart';
 export 'config/runtime_config.dart';
+export 'sync/local_activity.dart';
+export 'sync/local_tag.dart';
+export 'sync/local_vocabulary.dart';
+export 'sync/local_vocabulary_tag.dart';
 export 'sync_tables.dart';
 
 class Protocol extends _is.DatabaseSerializationManager
@@ -40,9 +47,17 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_il54hkej.ImageStorageConfig>,
       _is.getType<_ia9g9wp9.RemoteAppConfig>,
       _is.getType<_iadewe5j.RuntimeConfig>,
+      _is.getType<_ilpzzhur.LocalActivity>,
+      _is.getType<_ia93wqla.LocalTag>,
+      _is.getType<_ifmbxptn.LocalVocabulary>,
+      _is.getType<_iagtk9m4.LocalVocabularyTag>,
       _is.getType<_il54hkej.ImageStorageConfig?>,
       _is.getType<_ia9g9wp9.RemoteAppConfig?>,
       _is.getType<_iadewe5j.RuntimeConfig?>,
+      _is.getType<_ilpzzhur.LocalActivity?>,
+      _is.getType<_ia93wqla.LocalTag?>,
+      _is.getType<_ifmbxptn.LocalVocabulary?>,
+      _is.getType<_iagtk9m4.LocalVocabularyTag?>,
     ],
     modules: const [
       _iais.Protocol.new,
@@ -53,6 +68,365 @@ class Protocol extends _is.DatabaseSerializationManager
   );
 
   static List<_isp.TableDefinition> get targetTableDefinitions => [
+    _isp.TableDefinition(
+      name: 'activity',
+      dartName: 'LocalActivity',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isp.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'type',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'localDate',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'occurredAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'activity_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'activity_local_date_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'localDate',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'tag',
+      dartName: 'LocalTag',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isp.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'name',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isp.ColumnDefinition(
+          name: 'extras',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'tag_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'vocabulary',
+      dartName: 'LocalVocabulary',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isp.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'source',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'target',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'sourceLanguageCode',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'targetLanguageCode',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'level',
+          columnType: _isp.ColumnType.doublePrecision,
+          isNullable: false,
+          dartType: 'double',
+        ),
+        _isp.ColumnDefinition(
+          name: 'isNovice',
+          columnType: _isp.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+        _isp.ColumnDefinition(
+          name: 'intervalMinutes',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'ease',
+          columnType: _isp.ColumnType.doublePrecision,
+          isNullable: false,
+          dartType: 'double',
+        ),
+        _isp.ColumnDefinition(
+          name: 'nextReviewAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isp.ColumnDefinition(
+          name: 'imageKind',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'customImageId',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'stockImageId',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'stockImageUrl',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'stockImageThumbUrl',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'stockPhotographer',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'stockPhotographerUrl',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isp.ColumnDefinition(
+          name: 'extras',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'vocabulary_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'vocabulary_next_review_at_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'nextReviewAt',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _isp.IndexDefinition(
+          indexName: 'vocabulary_created_at_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'createdAt',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'vocabulary_tag',
+      dartName: 'LocalVocabularyTag',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isp.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'vocabularyId',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _isp.ColumnDefinition(
+          name: 'tagId',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'vocabulary_tag_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'vocabulary_tag_fk_1',
+          columns: ['vocabularyId'],
+          referenceTable: 'vocabulary',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+          deferrable: _isp.DeferrableConstraint.initiallyDeferred,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'vocabulary_tag_fk_2',
+          columns: ['tagId'],
+          referenceTable: 'tag',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+          deferrable: _isp.DeferrableConstraint.initiallyDeferred,
+        ),
+      ],
+      indexes: [],
+      managed: true,
+    ),
     ..._iais.Protocol.targetTableDefinitions,
     ..._izehhkf5.Protocol.targetTableDefinitions,
     ..._iacs.Protocol.targetTableDefinitions,
@@ -95,6 +469,18 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _iadewe5j.RuntimeConfig) {
       return _iadewe5j.RuntimeConfig.fromJson(data) as T;
     }
+    if (t == _ilpzzhur.LocalActivity) {
+      return _ilpzzhur.LocalActivity.fromJson(data) as T;
+    }
+    if (t == _ia93wqla.LocalTag) {
+      return _ia93wqla.LocalTag.fromJson(data) as T;
+    }
+    if (t == _ifmbxptn.LocalVocabulary) {
+      return _ifmbxptn.LocalVocabulary.fromJson(data) as T;
+    }
+    if (t == _iagtk9m4.LocalVocabularyTag) {
+      return _iagtk9m4.LocalVocabularyTag.fromJson(data) as T;
+    }
     if (t == _is.getType<_il54hkej.ImageStorageConfig?>()) {
       return (data != null ? _il54hkej.ImageStorageConfig.fromJson(data) : null) as T;
     }
@@ -103,6 +489,18 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (t == _is.getType<_iadewe5j.RuntimeConfig?>()) {
       return (data != null ? _iadewe5j.RuntimeConfig.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ilpzzhur.LocalActivity?>()) {
+      return (data != null ? _ilpzzhur.LocalActivity.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ia93wqla.LocalTag?>()) {
+      return (data != null ? _ia93wqla.LocalTag.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ifmbxptn.LocalVocabulary?>()) {
+      return (data != null ? _ifmbxptn.LocalVocabulary.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_iagtk9m4.LocalVocabularyTag?>()) {
+      return (data != null ? _iagtk9m4.LocalVocabularyTag.fromJson(data) : null) as T;
     }
     final modules = dataClassName == null
         ? deserializationMetadata.modulesForType(t)
@@ -121,6 +519,10 @@ class Protocol extends _is.DatabaseSerializationManager
       _il54hkej.ImageStorageConfig => 'ImageStorageConfig',
       _ia9g9wp9.RemoteAppConfig => 'RemoteAppConfig',
       _iadewe5j.RuntimeConfig => 'RuntimeConfig',
+      _ilpzzhur.LocalActivity => 'LocalActivity',
+      _ia93wqla.LocalTag => 'LocalTag',
+      _ifmbxptn.LocalVocabulary => 'LocalVocabulary',
+      _iagtk9m4.LocalVocabularyTag => 'LocalVocabularyTag',
       _ => null,
     };
   }
@@ -141,6 +543,14 @@ class Protocol extends _is.DatabaseSerializationManager
         return 'RemoteAppConfig';
       case _iadewe5j.RuntimeConfig():
         return 'RuntimeConfig';
+      case _ilpzzhur.LocalActivity():
+        return 'LocalActivity';
+      case _ia93wqla.LocalTag():
+        return 'LocalTag';
+      case _ifmbxptn.LocalVocabulary():
+        return 'LocalVocabulary';
+      case _iagtk9m4.LocalVocabularyTag():
+        return 'LocalVocabularyTag';
     }
     className = _iais.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -175,6 +585,18 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (dataClassName == 'RuntimeConfig') {
       return deserialize<_iadewe5j.RuntimeConfig>(data['data']);
+    }
+    if (dataClassName == 'LocalActivity') {
+      return deserialize<_ilpzzhur.LocalActivity>(data['data']);
+    }
+    if (dataClassName == 'LocalTag') {
+      return deserialize<_ia93wqla.LocalTag>(data['data']);
+    }
+    if (dataClassName == 'LocalVocabulary') {
+      return deserialize<_ifmbxptn.LocalVocabulary>(data['data']);
+    }
+    if (dataClassName == 'LocalVocabularyTag') {
+      return deserialize<_iagtk9m4.LocalVocabularyTag>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
@@ -226,6 +648,16 @@ class Protocol extends _is.DatabaseSerializationManager
       if (table != null) {
         return table;
       }
+    }
+    switch (t) {
+      case _ilpzzhur.LocalActivity:
+        return _ilpzzhur.LocalActivity.t;
+      case _ia93wqla.LocalTag:
+        return _ia93wqla.LocalTag.t;
+      case _ifmbxptn.LocalVocabulary:
+        return _ifmbxptn.LocalVocabulary.t;
+      case _iagtk9m4.LocalVocabularyTag:
+        return _iagtk9m4.LocalVocabularyTag.t;
     }
     return null;
   }

@@ -12,8 +12,6 @@
   "errorValidation": "Die empfangenen Daten sind ungültig.",
   "errorNotFound": "Nicht gefunden.",
   "errorUnexpected": "Ein unerwarteter Fehler ist aufgetreten.",
-  "homeTitle": "Start",
-  "homeEmptyMessage": "Hier ist noch nichts.",
   "unknown": "unbekannt",
   "no": "Nein",
   "yes": "Ja",

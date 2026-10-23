@@ -12,7 +12,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:vocabualize_server/src/generated/protocol.dart' as _i935iz7n;
-
 import '../config/image_storage_config.dart' as _iillbwio;
 import '../config/remote_app_config.dart' as _ig8hny3m;
 

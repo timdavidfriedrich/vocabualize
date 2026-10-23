@@ -1,22 +1,52 @@
-import 'package:feature_home/presentation/article_detail/article_detail_bloc.dart';
-import 'package:feature_home/presentation/article_detail/article_detail_event.dart';
-import 'package:feature_home/presentation/article_detail/article_detail_screen.dart';
-import 'package:feature_home/presentation/home/home_bloc.dart';
-import 'package:feature_home/presentation/home/home_event.dart';
-import 'package:feature_home/presentation/home/home_screen.dart';
+import 'dart:async';
+
+import 'package:feature_details/presentation/details_bloc.dart';
+import 'package:feature_details/presentation/details_screen.dart';
+import 'package:feature_gate/presentation/splash_screen.dart';
+import 'package:feature_home/presentation/home_bloc.dart';
+import 'package:feature_home/presentation/home_event.dart';
+import 'package:feature_home/presentation/home_screen.dart';
+import 'package:feature_welcome/presentation/welcome_bloc.dart';
+import 'package:feature_welcome/presentation/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kaisel/kaisel.dart';
+import 'package:shared/domain/entities/auth_status.dart';
+import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/presentation/navigation/routes.dart';
 import 'package:vocabualize/src/di/service_locator.dart';
 
 @lazySingleton
-class NavigationRouter() {
+class NavigationRouter(
+  final AccountRepository _accountRepository,
+) {
   late final KaiselRouterConfig<AppRoute> config = KaiselRouterConfig<AppRoute>(
-    initial: const Home(),
+    initial: const Splash(),
     builder: (context, route) => _AppPage(route: route),
   );
+
+  StreamSubscription<AuthStatus>? _authStatusSubscription;
+
+  @PostConstruct()
+  void listenToAuthStatus() {
+    _authStatusSubscription ??= _accountRepository.watchAuthStatus().listen(_onAuthStatus);
+  }
+
+  void _onAuthStatus(AuthStatus status) {
+    final router = config.router;
+    final isOnEntryRoute = switch (router.current) {
+      Splash() || Welcome() => true,
+      _ => false,
+    };
+    final target = switch (status) {
+      AuthUnknown() => null,
+      AuthUnauthenticated() => const <AppRoute>[Welcome()],
+      AuthAuthenticated() when isOnEntryRoute => const <AppRoute>[Home()],
+      AuthAuthenticated() => null,
+    };
+    if (target != null) unawaited(router.set(target));
+  }
 }
 
 class const _AppPage({
@@ -24,13 +54,18 @@ class const _AppPage({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) => switch (_route) {
+    Splash() => const SplashScreen(),
+    Welcome() => BlocProvider(
+      create: (_) => sl<WelcomeBloc>(),
+      child: const WelcomeScreen(),
+    ),
     Home() => BlocProvider(
       create: (_) => sl<HomeBloc>()..add(const HomeStarted()),
       child: const HomeScreen(),
     ),
-    ArticleDetail(:final articleId) => BlocProvider(
-      create: (_) => sl<ArticleDetailBloc>(param1: articleId)..add(const ArticleDetailStarted()),
-      child: const ArticleDetailScreen(),
+    VocabularyDetails() => BlocProvider(
+      create: (_) => sl<DetailsBloc>(),
+      child: const DetailsScreen(),
     ),
   };
 }

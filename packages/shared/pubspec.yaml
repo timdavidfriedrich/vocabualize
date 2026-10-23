@@ -14,6 +14,12 @@ dependencies:
   injectable: ^3.0.0
   dart_mappable: ^4.10.0
   kaisel: ^1.1.0
+  vocabualize_client:
+  serverpod_flutter: 4.1.0-beta.3
+  serverpod_auth_idp_flutter: 4.1.0-beta.3
+  path_provider: ^2.1.6
+  serverpod_offline_sync_client: 0.0.11
+  serverpod_database: 4.1.0-beta.3
 
 flutter:
   generate: true

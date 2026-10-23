@@ -14,7 +14,6 @@ import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart' as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _iais;
 import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart' as _izehhkf5;
-
 import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
 import '../endpoints/config_endpoint.dart' as _i74a5xur;
@@ -103,10 +102,12 @@ class Endpoints extends _is.EndpointDispatch {
         'hasAccount': _is.MethodConnector(
           name: 'hasAccount',
           params: {},
-          call: (
-            _is.Session session,
-            Map<String, dynamic> params,
-          ) async => (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint).hasAccount(session),
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint).hasAccount(session),
         ),
       },
     );
@@ -142,10 +143,11 @@ class Endpoints extends _is.EndpointDispatch {
         'fetch': _is.MethodConnector(
           name: 'fetch',
           params: {},
-          call: (
-            _is.Session session,
-            Map<String, dynamic> params,
-          ) async => (endpoints['config'] as _i74a5xur.ConfigEndpoint).fetch(session),
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['config'] as _i74a5xur.ConfigEndpoint).fetch(session),
         ),
       },
     );

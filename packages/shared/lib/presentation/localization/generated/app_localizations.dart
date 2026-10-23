@@ -174,18 +174,6 @@ abstract class AppLocalizations {
   /// **'An unexpected error occurred.'**
   String get errorUnexpected;
 
-  /// No description provided for @homeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Home'**
-  String get homeTitle;
-
-  /// No description provided for @homeEmptyMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Nothing here yet.'**
-  String get homeEmptyMessage;
-
   /// No description provided for @unknown.
   ///
   /// In en, this message translates to:

@@ -48,12 +48,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorUnexpected => 'Se ha producido un error inesperado.';
 
   @override
-  String get homeTitle => 'Inicio';
-
-  @override
-  String get homeEmptyMessage => 'Aún no hay nada aquí.';
-
-  @override
   String get unknown => 'desconocido';
 
   @override

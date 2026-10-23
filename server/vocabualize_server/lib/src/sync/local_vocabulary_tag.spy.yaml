@@ -1,0 +1,6 @@
+class: LocalVocabularyTag
+table: vocabulary_tag
+database: sync
+fields:
+  vocabulary: LocalVocabulary?, relation(fk, onDelete=Cascade, deferred)
+  tag: LocalTag?, relation(fk, onDelete=Cascade, deferred)

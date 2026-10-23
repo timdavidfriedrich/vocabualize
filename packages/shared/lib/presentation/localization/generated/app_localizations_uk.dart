@@ -48,12 +48,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get errorUnexpected => 'Сталася неочікувана помилка.';
 
   @override
-  String get homeTitle => 'Головна';
-
-  @override
-  String get homeEmptyMessage => 'Тут поки нічого немає.';
-
-  @override
   String get unknown => 'невідомо';
 
   @override
