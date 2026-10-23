@@ -161,14 +161,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
-  cupertino_ui:
-    dependency: transitive
-    description:
-      name: cupertino_ui
-      sha256: a47c4e7c66fd7444a063a602597fceb238f705c3f6b1322bc0053d0a2638ee6e
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.4"
   dart_mappable:
     dependency: transitive
     description:
@@ -264,11 +256,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_web_plugins:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -293,14 +280,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-  go_router:
-    dependency: "direct main"
-    description:
-      name: go_router
-      sha256: "07089be6dc124eb9596a51b5e359c657f30a59929287f11b126c2cd13eaaece0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "18.1.1"
   graphs:
     dependency: transitive
     description:
@@ -381,6 +360,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.12.0"
+  kaisel:
+    dependency: "direct main"
+    description:
+      name: kaisel
+      sha256: c205470b2fba57105e6bfdd5e43b6cf007e051fd2b2ef68639c96ab3e2d7c5e7
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
+  kaisel_core:
+    dependency: transitive
+    description:
+      name: kaisel_core
+      sha256: af9f87790eaea4980288a2f185e0350d6d80ebdedd62b0946e298dba01a0df37
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   klog:
     dependency: "direct main"
     description:
@@ -454,14 +449,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.0"
-  material_ui:
-    dependency: transitive
-    description:
-      name: material_ui
-      sha256: e4031746f96c8316864d9b92bce375f1320a36ed56e166307e1e1bda9d90b4ab
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.8.0"
   meta:
     dependency: transitive
     description:
@@ -749,4 +736,4 @@ packages:
     version: "3.1.4"
 sdks:
   dart: ">=3.13.5 <4.0.0"
-  flutter: ">=3.47.0"
+  flutter: ">=3.24.0"

@@ -19,7 +19,7 @@ class const App({
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: sl<NavigationRouter>().router,
+      routerConfig: sl<NavigationRouter>().config,
       onGenerateTitle: (context) => context.s.appTitle,
       theme: AppTheme.dark,
       localizationsDelegates: const [

@@ -46,7 +46,7 @@ extension GetItInjectableX on _i174.GetIt {
     await _i924.FeatureSettingsPackageModule().init(gh);
     await _i123.FeatureReportPackageModule().init(gh);
     await _i188.FeatureGatePackageModule().init(gh);
-    gh.singleton<_i2.NavigationRouter>(() => _i2.NavigationRouter());
+    gh.lazySingleton<_i2.NavigationRouter>(() => _i2.NavigationRouter());
     return this;
   }
 }

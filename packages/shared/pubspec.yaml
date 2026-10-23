@@ -10,10 +10,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   core:
-  go_router: ^18.1.1
   intl: ^0.20.3
   injectable: ^3.0.0
   dart_mappable: ^4.10.0
+  kaisel: ^1.1.0
 
 flutter:
   generate: true

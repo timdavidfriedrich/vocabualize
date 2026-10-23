@@ -21,6 +21,11 @@ These were decided on purpose; do not "fix" them:
 2. **Serverpod's client and `FileUploader` are the transport** for the API, sync and uploads. `dio` is only used for downloading images from signed URLs.
 3. **Remote config is server data**, loaded through a repository from `ConfigEndpoint` (`server/vocabualize_server/app_config.yaml`). The rule in `logging.md` against reading configuration at runtime still applies to build configuration.
 4. **`server/` is a separate pub workspace** outside the app workspace. Only the generated client is a member of the app workspace.
+5. **`kaisel` replaces `go_router`** (routing.md). The setup follows `../book_marker`:
+   - **Routes:** a sealed `AppRoute extends KaiselRoute` hierarchy in `shared/presentation/navigation/routes.dart`, instead of the `NavigationRoute` enum. A route with fields overrides `props`.
+   - **Navigation:** typed navigation stays in `NavigationExtension` (`shared/presentation/navigation/navigation_extensions.dart`), for example `context.pushArticleDetail(articleId: id)`. Screens never build routes themselves.
+   - **Composition:** `NavigationRouter` (`@lazySingleton`, `lib/src/navigation/navigation_router.dart`) owns the `KaiselRouterConfig`, and its exhaustive page switch is the only place that creates `BlocProvider`s for routes.
+   - **Gating:** auth and app-status redirects are kaisel guards, or an app-status listener that calls `router.set(...)`. There is no refresh stream.
 
 ## Rules from the sync spike
 

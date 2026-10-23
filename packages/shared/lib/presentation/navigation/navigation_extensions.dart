@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
+import 'package:kaisel/kaisel.dart';
 import 'package:shared/presentation/navigation/routes.dart';
 
 extension NavigationExtension on BuildContext {
-  void pushArticleDetail({required String articleId}) =>
-      push(NavigationRoute.articleDetail.path.replaceFirst(":$parameterId", articleId));
+  KaiselRouter<AppRoute> get appRouter => router<AppRoute>();
+
+  Future<void> pushArticleDetail({required String articleId}) =>
+      appRouter.push(ArticleDetail(articleId: articleId));
 }

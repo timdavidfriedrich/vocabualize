@@ -1,10 +1,14 @@
-const parameterId = "id";
+import 'package:kaisel/kaisel.dart';
 
-enum NavigationRoute {
-  home("/home"),
-  articleDetail("/home/:$parameterId");
+sealed class AppRoute extends KaiselRoute {
+  const AppRoute();
+}
 
-  const NavigationRoute(this.path);
+class const Home() extends AppRoute;
 
-  final String path;
+class const ArticleDetail({
+  required final String articleId,
+}) extends AppRoute {
+  @override
+  List<Object?> get props => [articleId];
 }

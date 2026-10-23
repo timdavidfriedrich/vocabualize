@@ -4,16 +4,15 @@ import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 
-const _environmentUrl = "POCKETBASE_URL";
-const _environmentUserId = "LEGACY_USER_ID";
+const _environmentUrl = "https://api.vocabualize.de";
+const _environmentUserId = "p3hx19mjei3z8d3";
 const _environmentToken = "POCKETBASE_TOKEN";
-const _environmentEmail = "POCKETBASE_ADMIN_EMAIL";
-const _environmentPassword = "POCKETBASE_ADMIN_PASSWORD";
+const _environmentEmail = "hey@timdavidfriedrich.de";
+const _environmentPassword = "qYNxfkY#&qh%YtF37U6oKH!y";
 
 const _defaultOutputPath = "out/legacy_backup.zip";
 const _pageSize = 500;
 const _jsonIndent = "  ";
-const _exitUsage = 64;
 const _exitFailure = 1;
 
 const _formatName = "vocabualize-backup";
@@ -43,17 +42,8 @@ class const _ExportException(final String message) implements Exception;
 typedef _Record = Map<String, Object?>;
 
 Future<void> main(List<String> arguments) async {
-  final environment = Platform.environment;
-  final baseUrl = environment[_environmentUrl];
-  final userId = environment[_environmentUserId];
-  if (baseUrl == null || userId == null) {
-    stderr.writeln(
-      "Set $_environmentUrl and $_environmentUserId, plus either $_environmentToken "
-      "or $_environmentEmail and $_environmentPassword.",
-    );
-    exitCode = _exitUsage;
-    return;
-  }
+  const baseUrl = _environmentUrl;
+  const userId = _environmentUserId;
   final outputPath = arguments.isEmpty ? _defaultOutputPath : arguments.first;
   final client = HttpClient();
   try {
@@ -63,7 +53,10 @@ Future<void> main(List<String> arguments) async {
         baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl,
       ),
     );
-    final token = environment[_environmentToken] ?? await api.authenticate(environment);
+    final token = await api.authenticate({
+      _environmentEmail: _environmentEmail,
+      _environmentPassword: _environmentPassword,
+    });
     await _export(api, token, userId, outputPath);
   } on _ExportException catch (exception) {
     stderr.writeln(exception.message);
