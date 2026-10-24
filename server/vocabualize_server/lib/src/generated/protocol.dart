@@ -23,6 +23,7 @@ import 'config/runtime_config.dart' as _iadewe5j;
 import 'images/remote_image_download.dart' as _i35otcr0;
 import 'images/stored_image.dart' as _i3kglx6m;
 import 'sync/local_activity.dart' as _ilpzzhur;
+import 'sync/local_setting.dart' as _ij5ultnt;
 import 'sync/local_tag.dart' as _ia93wqla;
 import 'sync/local_vocabulary.dart' as _ifmbxptn;
 import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
@@ -32,6 +33,7 @@ export 'config/runtime_config.dart';
 export 'images/remote_image_download.dart';
 export 'images/stored_image.dart';
 export 'sync/local_activity.dart';
+export 'sync/local_setting.dart';
 export 'sync/local_tag.dart';
 export 'sync/local_vocabulary.dart';
 export 'sync/local_vocabulary_tag.dart';
@@ -55,6 +57,7 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_i35otcr0.RemoteImageDownload>,
       _is.getType<_i3kglx6m.StoredImage>,
       _is.getType<_ilpzzhur.LocalActivity>,
+      _is.getType<_ij5ultnt.LocalSetting>,
       _is.getType<_ia93wqla.LocalTag>,
       _is.getType<_ifmbxptn.LocalVocabulary>,
       _is.getType<_iagtk9m4.LocalVocabularyTag>,
@@ -64,6 +67,7 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_i35otcr0.RemoteImageDownload?>,
       _is.getType<_i3kglx6m.StoredImage?>,
       _is.getType<_ilpzzhur.LocalActivity?>,
+      _is.getType<_ij5ultnt.LocalSetting?>,
       _is.getType<_ia93wqla.LocalTag?>,
       _is.getType<_ifmbxptn.LocalVocabulary?>,
       _is.getType<_iagtk9m4.LocalVocabularyTag?>,
@@ -143,6 +147,83 @@ class Protocol extends _is.DatabaseSerializationManager
             _isp.IndexElementDefinition(
               type: _isp.IndexElementDefinitionType.column,
               definition: 'localDate',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'setting',
+      dartName: 'LocalSetting',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isp.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'key',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'value',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'changedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isp.ColumnDefinition(
+          name: 'extras',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'setting_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'setting_key_changed_at_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'key',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'changedAt',
             ),
           ],
           type: 'btree',
@@ -577,6 +658,9 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _ilpzzhur.LocalActivity) {
       return _ilpzzhur.LocalActivity.fromJson(data) as T;
     }
+    if (t == _ij5ultnt.LocalSetting) {
+      return _ij5ultnt.LocalSetting.fromJson(data) as T;
+    }
     if (t == _ia93wqla.LocalTag) {
       return _ia93wqla.LocalTag.fromJson(data) as T;
     }
@@ -603,6 +687,9 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (t == _is.getType<_ilpzzhur.LocalActivity?>()) {
       return (data != null ? _ilpzzhur.LocalActivity.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ij5ultnt.LocalSetting?>()) {
+      return (data != null ? _ij5ultnt.LocalSetting.fromJson(data) : null) as T;
     }
     if (t == _is.getType<_ia93wqla.LocalTag?>()) {
       return (data != null ? _ia93wqla.LocalTag.fromJson(data) : null) as T;
@@ -639,6 +726,7 @@ class Protocol extends _is.DatabaseSerializationManager
       _i35otcr0.RemoteImageDownload => 'RemoteImageDownload',
       _i3kglx6m.StoredImage => 'StoredImage',
       _ilpzzhur.LocalActivity => 'LocalActivity',
+      _ij5ultnt.LocalSetting => 'LocalSetting',
       _ia93wqla.LocalTag => 'LocalTag',
       _ifmbxptn.LocalVocabulary => 'LocalVocabulary',
       _iagtk9m4.LocalVocabularyTag => 'LocalVocabularyTag',
@@ -668,6 +756,8 @@ class Protocol extends _is.DatabaseSerializationManager
         return 'StoredImage';
       case _ilpzzhur.LocalActivity():
         return 'LocalActivity';
+      case _ij5ultnt.LocalSetting():
+        return 'LocalSetting';
       case _ia93wqla.LocalTag():
         return 'LocalTag';
       case _ifmbxptn.LocalVocabulary():
@@ -717,6 +807,9 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (dataClassName == 'LocalActivity') {
       return deserialize<_ilpzzhur.LocalActivity>(data['data']);
+    }
+    if (dataClassName == 'LocalSetting') {
+      return deserialize<_ij5ultnt.LocalSetting>(data['data']);
     }
     if (dataClassName == 'LocalTag') {
       return deserialize<_ia93wqla.LocalTag>(data['data']);
@@ -783,6 +876,8 @@ class Protocol extends _is.DatabaseSerializationManager
         return _i3kglx6m.StoredImage.t;
       case _ilpzzhur.LocalActivity:
         return _ilpzzhur.LocalActivity.t;
+      case _ij5ultnt.LocalSetting:
+        return _ij5ultnt.LocalSetting.t;
       case _ia93wqla.LocalTag:
         return _ia93wqla.LocalTag.t;
       case _ifmbxptn.LocalVocabulary:

@@ -1,4 +1,5 @@
 import 'package:core/error/app_result.dart';
+import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 
@@ -10,8 +11,7 @@ abstract class VocabularyRepository {
   Future<AppResult<Vocabulary>> addVocabulary({
     required String source,
     required String target,
-    required String sourceLanguageCode,
-    required String targetLanguageCode,
+    required LanguagePair languages,
     required ProcessedImage? image,
   });
 

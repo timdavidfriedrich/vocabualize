@@ -5,14 +5,12 @@ import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
-
-const _defaultSourceLanguageCode = "en";
-const _defaultTargetLanguageCode = "es";
 
 @injectable
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
-  DetailsBloc(this._vocabularyRepository, this._pickImage)
+  DetailsBloc(this._vocabularyRepository, this._settingsRepository, this._pickImage)
     : super(const DetailsEditing(image: null, isBusy: false, error: null)) {
     on<DetailsImagePickRequested>(_onImagePickRequested);
     on<DetailsImageRemoved>(_onImageRemoved);
@@ -20,6 +18,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   final VocabularyRepository _vocabularyRepository;
+  final SettingsRepository _settingsRepository;
   final PickImageUseCase _pickImage;
 
   Future<void> _onImagePickRequested(
@@ -55,11 +54,18 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     }
     final busy = current.copyWith(isBusy: true, error: null);
     emit(busy);
+    final languages = switch (await _settingsRepository.readLanguagePair()) {
+      Success(data: final pair?) => pair,
+      Success() || Failure() => null,
+    };
+    if (languages == null) {
+      emit(busy.copyWith(isBusy: false, error: const ValidationError()));
+      return;
+    }
     final result = await _vocabularyRepository.addVocabulary(
       source: source,
       target: target,
-      sourceLanguageCode: _defaultSourceLanguageCode,
-      targetLanguageCode: _defaultTargetLanguageCode,
+      languages: languages,
       image: current.image,
     );
     emit(switch (result) {

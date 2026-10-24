@@ -470,4 +470,36 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get errorInvalidBackup => 'Ce fichier n\'est pas une sauvegarde Vocabualize.';
+
+  @override
+  String get languageEnglish => 'Anglais';
+
+  @override
+  String get languageGerman => 'Allemand';
+
+  @override
+  String get languageSpanish => 'Espagnol';
+
+  @override
+  String get languageFrench => 'Français';
+
+  @override
+  String get languagePolish => 'Polonais';
+
+  @override
+  String languagePairLabel(String source, String target) {
+    return '$source → $target';
+  }
+
+  @override
+  String get languageSelectionTitle => 'Vos langues';
+
+  @override
+  String get languageSelectionContinueButton => 'Continuer';
+
+  @override
+  String get settingsLanguagesTitle => 'Langues';
+
+  @override
+  String get languageSelectionSaveButton => 'Enregistrer';
 }

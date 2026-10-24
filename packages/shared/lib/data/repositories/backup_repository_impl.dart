@@ -9,7 +9,9 @@ import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/image_processing_data_source.dart';
 import 'package:shared/data/data_sources/local_import_data_source.dart';
+import 'package:shared/data/data_sources/setting_local_data_source.dart';
 import 'package:shared/data/mappers/backup_mappers.dart';
+import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/models/local_backup.dart';
 import 'package:shared/data/models/local_image_variant.dart';
@@ -26,6 +28,7 @@ class const BackupRepositoryImpl(
   final ImageProcessingDataSource _imageProcessingDataSource,
   final BackupArchiveDataSource _archiveDataSource,
   final BackupFileDataSource _fileDataSource,
+  final SettingLocalDataSource _settingDataSource,
 ) implements BackupRepository {
   @override
   Future<AppResult<()>> exportBackup() async {
@@ -68,6 +71,10 @@ class const BackupRepositoryImpl(
         ),
         images: images,
         missingImages: missingImages,
+        settings: (await _settingDataSource.readLanguagePair())
+            ?.toLanguagePair()
+            ?.toLocalLanguagePairSetting()
+            .toLocalBackupSettings(),
       );
       await _fileDataSource.shareArchive(archivePath);
       return const Success(());
@@ -135,6 +142,14 @@ class const BackupRepositoryImpl(
       ],
       vocabularyTags: vocabularyTags,
       activities: [for (final activity in contents.activities) activity.toLocalActivity(id: _newId())],
+      settings: [
+        if (archive.manifest.settings?.toLocalLanguagePairSetting() case final pair?
+            when pair.toLanguagePair() != null)
+          _settingDataSource.createLanguagePair(
+            value: pair.toJson(),
+            changedAt: archive.manifest.createdAt,
+          ),
+      ],
     );
   }
 

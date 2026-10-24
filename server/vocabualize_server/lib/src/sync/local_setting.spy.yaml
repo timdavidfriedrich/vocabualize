@@ -1,0 +1,11 @@
+class: LocalSetting
+table: setting
+database: sync
+fields:
+  key: String
+  value: String
+  changedAt: DateTime
+  extras: String?
+indexes:
+  setting_key_changed_at_idx:
+    fields: key, changedAt

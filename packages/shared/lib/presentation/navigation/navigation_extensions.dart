@@ -10,4 +10,7 @@ extension NavigationExtension on BuildContext {
   Future<void> pushVocabularyDetails() => appRouter.push(const VocabularyDetails());
 
   Future<void> pushSettings() => appRouter.push(const Settings());
+
+  Future<void> pushLanguageSelection() =>
+      appRouter.push(const LanguageSelection(isOnboarding: false));
 }

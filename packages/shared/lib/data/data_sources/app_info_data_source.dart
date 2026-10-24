@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,6 +12,8 @@ abstract class AppInfoDataSource {
   Future<int> buildNumber();
 
   Future<bool> openStoreListing();
+
+  String deviceLanguageCode();
 }
 
 @Injectable(as: AppInfoDataSource)
@@ -25,4 +29,7 @@ class const AppInfoDataSourceImpl() implements AppInfoDataSource {
       mode: LaunchMode.externalApplication,
     );
   }
+
+  @override
+  String deviceLanguageCode() => PlatformDispatcher.instance.locale.languageCode;
 }

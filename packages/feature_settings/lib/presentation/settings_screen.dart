@@ -5,10 +5,14 @@ import 'package:feature_settings/presentation/settings_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/account.dart';
+import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/sync_status.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/sync_status_extensions.dart';
+import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
+import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 
 class const SettingsScreen({
@@ -67,6 +71,18 @@ class const SettingsScreen({
                     isBusy: isBusy,
                   ),
                 },
+                const SizedBox(height: Spacing.xl),
+                Text(context.s.settingsLanguagesTitle, style: context.t.titleMedium),
+                BlocBuilder<LanguagePairCubit, LanguagePair?>(
+                  builder: (context, pair) => ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    enabled: !isBusy,
+                    leading: const Icon(Icons.translate_rounded),
+                    title: Text(pair?.toLabel(context) ?? context.s.unknown),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: context.pushLanguageSelection,
+                  ),
+                ),
                 const SizedBox(height: Spacing.xl),
                 Text(context.s.settingsBackupTitle, style: context.t.titleMedium),
                 const SizedBox(height: Spacing.xs),

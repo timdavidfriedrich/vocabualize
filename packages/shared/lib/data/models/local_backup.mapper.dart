@@ -15,6 +15,7 @@ class LocalBackupManifestMapper extends ClassMapperBase<LocalBackupManifest> {
   static LocalBackupManifestMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = LocalBackupManifestMapper._());
+      LocalBackupSettingsMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -50,6 +51,9 @@ class LocalBackupManifestMapper extends ClassMapperBase<LocalBackupManifest> {
   static List<String> _$missingImages(LocalBackupManifest v) => v.missingImages;
   static const Field<LocalBackupManifest, List<String>> _f$missingImages =
       Field('missingImages', _$missingImages);
+  static LocalBackupSettings? _$settings(LocalBackupManifest v) => v.settings;
+  static const Field<LocalBackupManifest, LocalBackupSettings> _f$settings =
+      Field('settings', _$settings);
 
   @override
   final MappableFields<LocalBackupManifest> fields = const {
@@ -59,6 +63,7 @@ class LocalBackupManifestMapper extends ClassMapperBase<LocalBackupManifest> {
     #createdAt: _f$createdAt,
     #counts: _f$counts,
     #missingImages: _f$missingImages,
+    #settings: _f$settings,
   };
 
   static LocalBackupManifest _instantiate(DecodingData data) {
@@ -69,6 +74,7 @@ class LocalBackupManifestMapper extends ClassMapperBase<LocalBackupManifest> {
       createdAt: data.dec(_f$createdAt),
       counts: data.dec(_f$counts),
       missingImages: data.dec(_f$missingImages),
+      settings: data.dec(_f$settings),
     );
   }
 
@@ -145,6 +151,8 @@ abstract class LocalBackupManifestCopyWith<
   MapCopyWith<$R, String, int, ObjectCopyWith<$R, int, int>> get counts;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
   get missingImages;
+  LocalBackupSettingsCopyWith<$R, LocalBackupSettings, LocalBackupSettings>?
+  get settings;
   $R call({
     String? format,
     int? version,
@@ -152,6 +160,7 @@ abstract class LocalBackupManifestCopyWith<
     DateTime? createdAt,
     Map<String, int>? counts,
     List<String>? missingImages,
+    LocalBackupSettings? settings,
   });
   LocalBackupManifestCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -181,6 +190,9 @@ class _LocalBackupManifestCopyWithImpl<$R, $Out>
     (v) => call(missingImages: v),
   );
   @override
+  LocalBackupSettingsCopyWith<$R, LocalBackupSettings, LocalBackupSettings>?
+  get settings => $value.settings?.copyWith.$chain((v) => call(settings: v));
+  @override
   $R call({
     String? format,
     int? version,
@@ -188,6 +200,7 @@ class _LocalBackupManifestCopyWithImpl<$R, $Out>
     DateTime? createdAt,
     Map<String, int>? counts,
     List<String>? missingImages,
+    Object? settings = $none,
   }) => $apply(
     FieldCopyWithData({
       if (format != null) #format: format,
@@ -196,6 +209,7 @@ class _LocalBackupManifestCopyWithImpl<$R, $Out>
       if (createdAt != null) #createdAt: createdAt,
       if (counts != null) #counts: counts,
       if (missingImages != null) #missingImages: missingImages,
+      if (settings != $none) #settings: settings,
     }),
   );
   @override
@@ -206,12 +220,162 @@ class _LocalBackupManifestCopyWithImpl<$R, $Out>
     createdAt: data.get(#createdAt, or: $value.createdAt),
     counts: data.get(#counts, or: $value.counts),
     missingImages: data.get(#missingImages, or: $value.missingImages),
+    settings: data.get(#settings, or: $value.settings),
   );
 
   @override
   LocalBackupManifestCopyWith<$R2, LocalBackupManifest, $Out2>
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _LocalBackupManifestCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class LocalBackupSettingsMapper extends ClassMapperBase<LocalBackupSettings> {
+  LocalBackupSettingsMapper._();
+
+  static LocalBackupSettingsMapper? _instance;
+  static LocalBackupSettingsMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = LocalBackupSettingsMapper._());
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'LocalBackupSettings';
+
+  static String _$sourceLanguageCode(LocalBackupSettings v) =>
+      v.sourceLanguageCode;
+  static const Field<LocalBackupSettings, String> _f$sourceLanguageCode = Field(
+    'sourceLanguageCode',
+    _$sourceLanguageCode,
+  );
+  static String _$targetLanguageCode(LocalBackupSettings v) =>
+      v.targetLanguageCode;
+  static const Field<LocalBackupSettings, String> _f$targetLanguageCode = Field(
+    'targetLanguageCode',
+    _$targetLanguageCode,
+  );
+
+  @override
+  final MappableFields<LocalBackupSettings> fields = const {
+    #sourceLanguageCode: _f$sourceLanguageCode,
+    #targetLanguageCode: _f$targetLanguageCode,
+  };
+
+  static LocalBackupSettings _instantiate(DecodingData data) {
+    return LocalBackupSettings(
+      sourceLanguageCode: data.dec(_f$sourceLanguageCode),
+      targetLanguageCode: data.dec(_f$targetLanguageCode),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static LocalBackupSettings fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<LocalBackupSettings>(map);
+  }
+
+  static LocalBackupSettings fromJson(String json) {
+    return ensureInitialized().decodeJson<LocalBackupSettings>(json);
+  }
+}
+
+mixin LocalBackupSettingsMappable {
+  String toJson() {
+    return LocalBackupSettingsMapper.ensureInitialized()
+        .encodeJson<LocalBackupSettings>(this as LocalBackupSettings);
+  }
+
+  Map<String, dynamic> toMap() {
+    return LocalBackupSettingsMapper.ensureInitialized()
+        .encodeMap<LocalBackupSettings>(this as LocalBackupSettings);
+  }
+
+  LocalBackupSettingsCopyWith<
+    LocalBackupSettings,
+    LocalBackupSettings,
+    LocalBackupSettings
+  >
+  get copyWith =>
+      _LocalBackupSettingsCopyWithImpl<
+        LocalBackupSettings,
+        LocalBackupSettings
+      >(this as LocalBackupSettings, $identity, $identity);
+  @override
+  String toString() {
+    return LocalBackupSettingsMapper.ensureInitialized().stringifyValue(
+      this as LocalBackupSettings,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return LocalBackupSettingsMapper.ensureInitialized().equalsValue(
+      this as LocalBackupSettings,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return LocalBackupSettingsMapper.ensureInitialized().hashValue(
+      this as LocalBackupSettings,
+    );
+  }
+}
+
+extension LocalBackupSettingsValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, LocalBackupSettings, $Out> {
+  LocalBackupSettingsCopyWith<$R, LocalBackupSettings, $Out>
+  get $asLocalBackupSettings => $base.as(
+    (v, t, t2) => _LocalBackupSettingsCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class LocalBackupSettingsCopyWith<
+  $R,
+  $In extends LocalBackupSettings,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call({String? sourceLanguageCode, String? targetLanguageCode});
+  LocalBackupSettingsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _LocalBackupSettingsCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, LocalBackupSettings, $Out>
+    implements LocalBackupSettingsCopyWith<$R, LocalBackupSettings, $Out> {
+  _LocalBackupSettingsCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<LocalBackupSettings> $mapper =
+      LocalBackupSettingsMapper.ensureInitialized();
+  @override
+  $R call({String? sourceLanguageCode, String? targetLanguageCode}) => $apply(
+    FieldCopyWithData({
+      if (sourceLanguageCode != null) #sourceLanguageCode: sourceLanguageCode,
+      if (targetLanguageCode != null) #targetLanguageCode: targetLanguageCode,
+    }),
+  );
+  @override
+  LocalBackupSettings $make(CopyWithData data) => LocalBackupSettings(
+    sourceLanguageCode: data.get(
+      #sourceLanguageCode,
+      or: $value.sourceLanguageCode,
+    ),
+    targetLanguageCode: data.get(
+      #targetLanguageCode,
+      or: $value.targetLanguageCode,
+    ),
+  );
+
+  @override
+  LocalBackupSettingsCopyWith<$R2, LocalBackupSettings, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _LocalBackupSettingsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class LocalBackupVocabularyMapper

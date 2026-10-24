@@ -40,11 +40,15 @@ class const LocalImportDataSourceImpl(
     final activities = [
       for (final activity in snapshot.activities) activity.copyWith(id: _newId(), spaceId: null),
     ];
+    final settings = [
+      for (final setting in snapshot.settings) setting.copyWith(id: _newId(), spaceId: null),
+    ];
     await session.db.transaction((transaction) async {
       await LocalTag.db.insert(session, tags, transaction: transaction);
       await LocalVocabulary.db.insert(session, vocabularies, transaction: transaction);
       await LocalVocabularyTag.db.insert(session, vocabularyTags, transaction: transaction);
       await LocalActivity.db.insert(session, activities, transaction: transaction);
+      await LocalSetting.db.insert(session, settings, transaction: transaction);
     });
   }
 

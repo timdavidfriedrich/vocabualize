@@ -1,6 +1,6 @@
 import 'package:core/error/app_result.dart';
-import 'package:feature_welcome/presentation/welcome_event.dart';
-import 'package:feature_welcome/presentation/welcome_state.dart';
+import 'package:feature_welcome/presentation/welcome/welcome_event.dart';
+import 'package:feature_welcome/presentation/welcome/welcome_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/account.dart';

@@ -128,5 +128,15 @@
   "settingsImportBackupConfirmMessage": "Alle Wörter, Sammlungen und Bilder aus der Sicherung werden zu deiner Sammlung hinzugefügt. Deine vorhandenen Wörter bleiben unverändert.",
   "settingsImportBackupConfirmButton": "Importieren",
   "settingsImportBackupDone": "{count, plural, one{{count} Wort importiert.} other{{count} Wörter importiert.}}",
-  "errorInvalidBackup": "Diese Datei ist keine Vocabualize-Sicherung."
+  "errorInvalidBackup": "Diese Datei ist keine Vocabualize-Sicherung.",
+  "languageEnglish": "Englisch",
+  "languageGerman": "Deutsch",
+  "languageSpanish": "Spanisch",
+  "languageFrench": "Französisch",
+  "languagePolish": "Polnisch",
+  "languagePairLabel": "{source} → {target}",
+  "languageSelectionTitle": "Deine Sprachen",
+  "languageSelectionContinueButton": "Weiter",
+  "settingsLanguagesTitle": "Sprachen",
+  "languageSelectionSaveButton": "Speichern"
 }

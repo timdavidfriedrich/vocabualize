@@ -128,5 +128,15 @@
   "settingsImportBackupConfirmMessage": "Усі слова, колекції та зображення з резервної копії буде додано до вашої колекції. Ваші наявні слова не зміняться.",
   "settingsImportBackupConfirmButton": "Імпортувати",
   "settingsImportBackupDone": "{count, plural, one{Імпортовано {count} слово.} few{Імпортовано {count} слова.} many{Імпортовано {count} слів.} other{Імпортовано {count} слова.}}",
-  "errorInvalidBackup": "Цей файл не є резервною копією Vocabualize."
+  "errorInvalidBackup": "Цей файл не є резервною копією Vocabualize.",
+  "languageEnglish": "Англійська",
+  "languageGerman": "Німецька",
+  "languageSpanish": "Іспанська",
+  "languageFrench": "Французька",
+  "languagePolish": "Польська",
+  "languagePairLabel": "{source} → {target}",
+  "languageSelectionTitle": "Ваші мови",
+  "languageSelectionContinueButton": "Продовжити",
+  "settingsLanguagesTitle": "Мови",
+  "languageSelectionSaveButton": "Зберегти"
 }

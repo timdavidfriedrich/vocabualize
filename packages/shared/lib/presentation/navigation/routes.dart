@@ -8,6 +8,10 @@ class const Splash() extends AppRoute;
 
 class const Welcome() extends AppRoute;
 
+class const LanguageSelection({
+  required final bool isOnboarding,
+}) extends AppRoute;
+
 class const Home() extends AppRoute;
 
 class const VocabularyDetails() extends AppRoute;

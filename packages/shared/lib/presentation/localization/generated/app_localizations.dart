@@ -875,6 +875,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This file isn\'t a Vocabualize backup.'**
   String get errorInvalidBackup;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @languageGerman.
+  ///
+  /// In en, this message translates to:
+  /// **'German'**
+  String get languageGerman;
+
+  /// No description provided for @languageSpanish.
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get languageSpanish;
+
+  /// No description provided for @languageFrench.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get languageFrench;
+
+  /// No description provided for @languagePolish.
+  ///
+  /// In en, this message translates to:
+  /// **'Polish'**
+  String get languagePolish;
+
+  /// No description provided for @languagePairLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{source} → {target}'**
+  String languagePairLabel(String source, String target);
+
+  /// No description provided for @languageSelectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your languages'**
+  String get languageSelectionTitle;
+
+  /// No description provided for @languageSelectionContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get languageSelectionContinueButton;
+
+  /// No description provided for @settingsLanguagesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get settingsLanguagesTitle;
+
+  /// No description provided for @languageSelectionSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get languageSelectionSaveButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

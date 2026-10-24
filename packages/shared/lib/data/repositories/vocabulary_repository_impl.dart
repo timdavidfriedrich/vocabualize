@@ -4,8 +4,10 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
+import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/models/local_image_variant.dart';
+import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
@@ -41,8 +43,7 @@ class const VocabularyRepositoryImpl(
   Future<AppResult<Vocabulary>> addVocabulary({
     required String source,
     required String target,
-    required String sourceLanguageCode,
-    required String targetLanguageCode,
+    required LanguagePair languages,
     required ProcessedImage? image,
   }) async {
     final now = DateTime.now().toUtc();
@@ -52,8 +53,8 @@ class const VocabularyRepositoryImpl(
         id: const Uuid().v7obj().uuid,
         source: source,
         target: target,
-        sourceLanguageCode: sourceLanguageCode,
-        targetLanguageCode: targetLanguageCode,
+        sourceLanguageCode: languages.source.toLanguageCode(),
+        targetLanguageCode: languages.target.toLanguageCode(),
         level: _initialLevel,
         isNovice: true,
         intervalMinutes: _initialIntervalMinutes,

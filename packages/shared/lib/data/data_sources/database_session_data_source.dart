@@ -172,6 +172,7 @@ class DatabaseSessionDataSourceImpl(
       tags: await LocalTag.db.find(session),
       vocabularyTags: await LocalVocabularyTag.db.find(session),
       activities: await LocalActivity.db.find(session),
+      settings: await LocalSetting.db.find(session),
     );
   }
 

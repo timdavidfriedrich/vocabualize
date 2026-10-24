@@ -31,6 +31,8 @@ import 'package:shared/data/data_sources/image_transfer_data_source.dart'
     as _i28;
 import 'package:shared/data/data_sources/local_import_data_source.dart'
     as _i843;
+import 'package:shared/data/data_sources/setting_local_data_source.dart'
+    as _i555;
 import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart'
     as _i397;
@@ -41,6 +43,8 @@ import 'package:shared/data/repositories/app_info_repository_impl.dart'
     as _i1026;
 import 'package:shared/data/repositories/backup_repository_impl.dart' as _i237;
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
+import 'package:shared/data/repositories/settings_repository_impl.dart'
+    as _i921;
 import 'package:shared/data/repositories/sync_repository_impl.dart' as _i368;
 import 'package:shared/data/repositories/vocabulary_repository_impl.dart'
     as _i22;
@@ -50,8 +54,11 @@ import 'package:shared/domain/repositories/app_config_repository.dart' as _i541;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/backup_repository.dart' as _i152;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
+import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
+import 'package:shared/presentation/language_pair/language_pair_cubit.dart'
+    as _i650;
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart'
     as _i765;
 import 'package:vocabualize_client/vocabualize_client.dart' as _i1040;
@@ -113,12 +120,21 @@ class SharedPackageModule extends _i526.MicroPackageModule {
             gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i765.SyncStatusCubit>(
         () => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
+    gh.factory<_i555.SettingLocalDataSource>(() =>
+        _i555.SettingLocalDataSourceImpl(
+            gh<_i862.DatabaseSessionDataSource>()));
     gh.lazySingleton<_i532.ImageFileDataSource>(() =>
         _i532.ImageFileDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i208.VocabularyRepository>(() => _i22.VocabularyRepositoryImpl(
           gh<_i397.VocabularyLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
         ));
+    gh.factory<_i0.SettingsRepository>(() => _i921.SettingsRepositoryImpl(
+          gh<_i555.SettingLocalDataSource>(),
+          gh<_i394.AppInfoDataSource>(),
+        ));
+    gh.factory<_i650.LanguagePairCubit>(
+        () => _i650.LanguagePairCubit(gh<_i0.SettingsRepository>()));
     gh.factory<_i152.BackupRepository>(() => _i237.BackupRepositoryImpl(
           gh<_i862.DatabaseSessionDataSource>(),
           gh<_i843.LocalImportDataSource>(),
@@ -126,6 +142,7 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i179.ImageProcessingDataSource>(),
           gh<_i100.BackupArchiveDataSource>(),
           gh<_i460.BackupFileDataSource>(),
+          gh<_i555.SettingLocalDataSource>(),
         ));
     gh.lazySingleton<_i61.ImageSyncDataSource>(
         () => _i61.ImageSyncDataSourceImpl(

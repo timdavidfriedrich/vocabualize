@@ -1,11 +1,12 @@
 import 'package:core/theme/spacing.dart';
-import 'package:feature_welcome/presentation/welcome_bloc.dart';
-import 'package:feature_welcome/presentation/welcome_event.dart';
-import 'package:feature_welcome/presentation/welcome_state.dart';
+import 'package:feature_welcome/presentation/welcome/welcome_bloc.dart';
+import 'package:feature_welcome/presentation/welcome/welcome_event.dart';
+import 'package:feature_welcome/presentation/welcome/welcome_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/mascot.dart';
 
 class const WelcomeScreen({
   super.key,
@@ -39,11 +40,15 @@ class const _Content({
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Spacer(),
-        Text(context.s.appTitle, style: context.t.headlineLarge, textAlign: TextAlign.center),
-        const Spacer(),
-        if (_isBusy) const Center(child: CircularProgressIndicator()),
         const SizedBox(height: Spacing.xl),
+        Text(context.s.appTitle, style: context.t.headlineLarge, textAlign: TextAlign.center),
+        const SizedBox(height: Spacing.xl),
+        const Expanded(child: Mascot(pose: MascotPose.waving)),
+        const SizedBox(height: Spacing.xl),
+        if (_isBusy) ...[
+          const Center(child: CircularProgressIndicator()),
+          const SizedBox(height: Spacing.xl),
+        ],
         FilledButton(
           onPressed: _isBusy ? null : () => bloc.add(const WelcomeGoogleSignInChosen()),
           child: Text(context.s.welcomeGoogleSignInButton),

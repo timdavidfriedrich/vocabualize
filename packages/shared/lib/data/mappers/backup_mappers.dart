@@ -1,4 +1,5 @@
 import 'package:shared/data/models/local_backup.dart';
+import 'package:shared/data/models/local_language_pair_setting.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
@@ -120,5 +121,17 @@ extension LocalBackupActivityMappers on LocalBackupActivity {
       localDate: localDate,
       occurredAt: DateTime.parse(localDate).toUtc(),
     );
+  }
+}
+
+extension LocalBackupSettingsMappers on LocalBackupSettings {
+  LocalLanguagePairSetting toLocalLanguagePairSetting() {
+    return LocalLanguagePairSetting(source: sourceLanguageCode, target: targetLanguageCode);
+  }
+}
+
+extension LocalLanguagePairSettingBackupMappers on LocalLanguagePairSetting {
+  LocalBackupSettings toLocalBackupSettings() {
+    return LocalBackupSettings(sourceLanguageCode: source, targetLanguageCode: target);
   }
 }

@@ -43,6 +43,7 @@ abstract class BackupArchiveDataSource {
     required LocalBackupContents contents,
     required Map<String, String> images,
     required List<String> missingImages,
+    required LocalBackupSettings? settings,
   });
 
   Future<void> deleteArchive(LocalBackupArchive archive);
@@ -65,6 +66,7 @@ class const BackupArchiveDataSourceImpl() implements BackupArchiveDataSource {
       }
       return LocalBackupArchive(
         directoryPath: directory.path,
+        manifest: manifest,
         contents: LocalBackupContents(
           vocabularies: _decodeList(
             _document(documents, _vocabulariesFileName),
@@ -106,6 +108,7 @@ class const BackupArchiveDataSourceImpl() implements BackupArchiveDataSource {
     required LocalBackupContents contents,
     required Map<String, String> images,
     required List<String> missingImages,
+    required LocalBackupSettings? settings,
   }) async {
     final directory = Directory("${(await getTemporaryDirectory()).path}/$_exportsFolderName");
     if (await directory.exists()) await directory.delete(recursive: true);
@@ -125,6 +128,7 @@ class const BackupArchiveDataSourceImpl() implements BackupArchiveDataSource {
         _countActivities: contents.activities.length,
       },
       missingImages: missingImages,
+      settings: settings,
     );
     final documents = {
       _manifestFileName: manifest.toJson(),

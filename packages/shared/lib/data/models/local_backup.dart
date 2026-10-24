@@ -10,7 +10,14 @@ class const LocalBackupManifest({
   required final DateTime createdAt,
   required final Map<String, int> counts,
   required final List<String> missingImages,
+  required final LocalBackupSettings? settings,
 }) with LocalBackupManifestMappable;
+
+@MappableClass()
+class const LocalBackupSettings({
+  required final String sourceLanguageCode,
+  required final String targetLanguageCode,
+}) with LocalBackupSettingsMappable;
 
 @MappableClass()
 class const LocalBackupVocabulary({
@@ -60,5 +67,6 @@ class const LocalBackupContents({
 
 class const LocalBackupArchive({
   required final String directoryPath,
+  required final LocalBackupManifest manifest,
   required final LocalBackupContents contents,
 });

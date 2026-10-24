@@ -198,5 +198,25 @@
         "type": "int"
       }
     }
-  }
+  },
+  "languageEnglish": "English",
+  "languageGerman": "German",
+  "languageSpanish": "Spanish",
+  "languageFrench": "French",
+  "languagePolish": "Polish",
+  "languagePairLabel": "{source} → {target}",
+  "languageSelectionTitle": "Your languages",
+  "languageSelectionContinueButton": "Continue",
+  "settingsLanguagesTitle": "Languages",
+  "@languagePairLabel": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "languageSelectionSaveButton": "Save"
 }
