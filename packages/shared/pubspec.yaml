@@ -22,6 +22,7 @@ dependencies:
   serverpod_database: 4.1.0-beta.3
   flutter_bloc: ^9.1.1
   flutter_image_compress: ^2.5.1
+  dio: ^5.11.1
 
 flutter:
   generate: true

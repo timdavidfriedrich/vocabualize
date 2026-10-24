@@ -181,12 +181,12 @@ class CustomImageMapper extends ClassMapperBase<CustomImage> {
     'imageId',
     _$imageId,
   );
-  static String _$fullPath(CustomImage v) => v.fullPath;
+  static String? _$fullPath(CustomImage v) => v.fullPath;
   static const Field<CustomImage, String> _f$fullPath = Field(
     'fullPath',
     _$fullPath,
   );
-  static String _$thumbnailPath(CustomImage v) => v.thumbnailPath;
+  static String? _$thumbnailPath(CustomImage v) => v.thumbnailPath;
   static const Field<CustomImage, String> _f$thumbnailPath = Field(
     'thumbnailPath',
     _$thumbnailPath,
@@ -281,11 +281,15 @@ class _CustomImageCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CustomImage> $mapper =
       CustomImageMapper.ensureInitialized();
   @override
-  $R call({String? imageId, String? fullPath, String? thumbnailPath}) => $apply(
+  $R call({
+    String? imageId,
+    Object? fullPath = $none,
+    Object? thumbnailPath = $none,
+  }) => $apply(
     FieldCopyWithData({
       if (imageId != null) #imageId: imageId,
-      if (fullPath != null) #fullPath: fullPath,
-      if (thumbnailPath != null) #thumbnailPath: thumbnailPath,
+      if (fullPath != $none) #fullPath: fullPath,
+      if (thumbnailPath != $none) #thumbnailPath: thumbnailPath,
     }),
   );
   @override

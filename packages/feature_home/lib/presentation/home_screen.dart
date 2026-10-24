@@ -90,7 +90,10 @@ class const _VocabularyTile({
   Widget build(BuildContext context) {
     return ListTile(
       leading: switch (_vocabulary.image) {
-        CustomImage(:final thumbnailPath) => _Thumbnail(image: FileImage(File(thumbnailPath))),
+        CustomImage(thumbnailPath: final thumbnailPath?) => _Thumbnail(
+          image: FileImage(File(thumbnailPath)),
+        ),
+        CustomImage(thumbnailPath: null) => const _ThumbnailPlaceholder(),
         StockImage(:final thumbUrl) => _Thumbnail(image: NetworkImage(thumbUrl)),
         NoImage() => null,
       },
@@ -112,13 +115,26 @@ class const _Thumbnail({
         child: Image(
           image: _image,
           fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => ColoredBox(
-            color: context.c.surfaceContainerHighest,
-            child: Icon(
-              Icons.image_not_supported_rounded,
-              size: Spacing.iconM,
-              color: context.c.onSurfaceVariant,
-            ),
+          errorBuilder: (context, error, stackTrace) => const _ThumbnailPlaceholder(),
+        ),
+      ),
+    );
+  }
+}
+
+class const _ThumbnailPlaceholder() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(Spacing.radiusS),
+      child: SizedBox.square(
+        dimension: Spacing.xxxl,
+        child: ColoredBox(
+          color: context.c.surfaceContainerHighest,
+          child: Icon(
+            Icons.image_rounded,
+            size: Spacing.iconM,
+            color: context.c.onSurfaceVariant,
           ),
         ),
       ),

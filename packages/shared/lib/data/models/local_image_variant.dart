@@ -1,0 +1,1 @@
+enum LocalImageVariant { full, thumbnail }

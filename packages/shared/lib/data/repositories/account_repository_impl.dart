@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
+import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
 import 'package:shared/data/data_sources/auth_data_source.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
+import 'package:shared/data/data_sources/image_sync_data_source.dart';
 import 'package:shared/data/data_sources/local_import_data_source.dart';
 import 'package:shared/data/data_sources/sync_data_source.dart';
 import 'package:shared/data/mappers/account_mappers.dart';
@@ -12,7 +14,6 @@ import 'package:shared/data/models/remote_account.dart';
 import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
-import 'package:vocabualize_client/vocabualize_client.dart';
 
 @LazySingleton(as: AccountRepository)
 class AccountRepositoryImpl(
@@ -20,6 +21,7 @@ class AccountRepositoryImpl(
   final DatabaseSessionDataSource _sessions,
   final LocalImportDataSource _importDataSource,
   final SyncDataSource _syncDataSource,
+  final ImageSyncDataSource _imageSyncDataSource,
 ) implements AccountRepository {
   final _statusChanges = StreamController<AuthStatus>.broadcast();
   AuthStatus _status = const AuthUnknown();
@@ -75,14 +77,10 @@ class AccountRepositoryImpl(
   Future<AppResult<()>> signOut({required bool discardUnsyncedChanges}) async {
     if (_status case AuthAuthenticated(account: GoogleAccount(:final id))) {
       final session = _sessions.currentSession;
-      await _syncDataSource.stop();
-      if (!discardUnsyncedChanges && session != null) {
-        try {
-          await _syncDataSource.syncOnce(session);
-        } on Object {
-          _syncDataSource.start(session);
-          return const Failure(SyncPendingError());
-        }
+      await _stopSync();
+      if (!discardUnsyncedChanges && session != null && !await _uploadPending(session)) {
+        _startSync(session);
+        return const Failure(SyncPendingError());
       }
       try {
         await _authDataSource.signOut();
@@ -97,7 +95,7 @@ class AccountRepositoryImpl(
   }
 
   Future<Account> _openLocal() async {
-    await _syncDataSource.stop();
+    await _stopSync();
     await _sessions.openLocal();
     const account = LocalAccount();
     _emit(const AuthAuthenticated(account: account));
@@ -108,7 +106,7 @@ class AccountRepositoryImpl(
     final userId = UuidValue.withValidation(remoteAccount.id);
     final session = await _sessions.openForUser(userId);
     final adoption = await _adoptLocalData(userId);
-    _syncDataSource.start(session);
+    _startSync(session);
     final account = remoteAccount.toGoogleAccount();
     _emit(AuthAuthenticated(account: account));
     return switch (adoption) {
@@ -117,12 +115,32 @@ class AccountRepositoryImpl(
     };
   }
 
+  void _startSync(OfflineSyncDatabaseSession session) {
+    _syncDataSource.start(session);
+    _imageSyncDataSource.start(session);
+  }
+
+  Future<bool> _uploadPending(OfflineSyncDatabaseSession session) async {
+    if (!await _imageSyncDataSource.uploadPending(session)) return false;
+    try {
+      await _syncDataSource.syncOnce(session);
+      return true;
+    } on Object {
+      return false;
+    }
+  }
+
+  Future<void> _stopSync() async {
+    await _imageSyncDataSource.stop();
+    await _syncDataSource.stop();
+  }
+
   Future<AppResult<()>> _adoptLocalData(UuidValue userId) async {
     try {
       final snapshot = await _sessions.readLocalSnapshot();
       if (snapshot == null) return const Success(());
-      await _importDataSource.importSnapshot(snapshot);
       await _sessions.moveLocalImagesTo(userId);
+      await _importDataSource.importSnapshot(snapshot);
       await _sessions.deleteLocal();
       return const Success(());
     } on Object catch (error) {

@@ -8,7 +8,7 @@ const _imageKindStock = "stock";
 
 extension LocalVocabularyMappers on LocalVocabulary {
   Vocabulary toVocabulary({
-    required ({String full, String thumbnail}) Function(String imageId) imagePaths,
+    required Map<String, ({String? full, String? thumbnail})> imagePaths,
   }) {
     return Vocabulary(
       id: id.toString(),
@@ -27,13 +27,13 @@ extension LocalVocabularyMappers on LocalVocabulary {
   }
 
   VocabularyImage _toVocabularyImage(
-    ({String full, String thumbnail}) Function(String imageId) imagePaths,
+    Map<String, ({String? full, String? thumbnail})> imagePaths,
   ) {
     return switch ((imageKind, customImageId, stockImageId, stockImageUrl, stockImageThumbUrl)) {
       (_imageKindCustom, final String imageId, _, _, _) => CustomImage(
         imageId: imageId,
-        fullPath: imagePaths(imageId).full,
-        thumbnailPath: imagePaths(imageId).thumbnail,
+        fullPath: imagePaths[imageId]?.full,
+        thumbnailPath: imagePaths[imageId]?.thumbnail,
       ),
       (_imageKindStock, _, final String id, final String url, final String thumbUrl) => StockImage(
         id: id,
@@ -70,6 +70,7 @@ extension VocabularyMappers on Vocabulary {
       nextReviewAt: nextReviewAt.toUtc(),
       imageKind: image.kind,
       customImageId: customImage?.imageId,
+      customImageUploadedAt: null,
       stockImageId: stockImage?.id,
       stockImageUrl: stockImage?.url,
       stockImageThumbUrl: stockImage?.thumbUrl,

@@ -5,6 +5,7 @@ import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
+import 'package:shared/data/models/local_image_variant.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
@@ -24,10 +25,10 @@ class const VocabularyRepositoryImpl(
   Stream<AppResult<List<Vocabulary>>> watchVocabularies({required int limit}) {
     return _localDataSource
         .watchVocabularies(limit: limit)
-        .map(
-          (vocabularies) => vocabularies
-              .map((it) => it.toVocabulary(imagePaths: _imageFileDataSource.imagePaths))
-              .toList(),
+        .switchMap(
+          (vocabularies) => _imageFileDataSource.watchChanges().asyncMap(
+            (_) => _toVocabularies(vocabularies),
+          ),
         )
         .toAppResult();
   }
@@ -65,7 +66,7 @@ class const VocabularyRepositoryImpl(
         createdAt: now,
       );
       final inserted = await _localDataSource.insertVocabulary(vocabulary.toLocalVocabulary());
-      return Success(inserted.toVocabulary(imagePaths: _imageFileDataSource.imagePaths));
+      return Success((await _toVocabularies([inserted])).single);
     } on Object catch (error) {
       if (image != null) _imageFileDataSource.deleteImage(imageId).ignore();
       return Failure(UnexpectedError(error.toString()));
@@ -88,12 +89,25 @@ class const VocabularyRepositoryImpl(
   }
 
   Future<CustomImage> _saveImage(String imageId, ProcessedImage image) async {
-    await _imageFileDataSource.writeImage(
+    final thumbnailPath = await _imageFileDataSource.writeImage(
       imageId,
-      full: image.fullBytes,
-      thumbnail: image.thumbnailBytes,
+      LocalImageVariant.thumbnail,
+      image.thumbnailBytes,
     );
-    final paths = _imageFileDataSource.imagePaths(imageId);
-    return CustomImage(imageId: imageId, fullPath: paths.full, thumbnailPath: paths.thumbnail);
+    final fullPath = await _imageFileDataSource.writeImage(
+      imageId,
+      LocalImageVariant.full,
+      image.fullBytes,
+    );
+    return CustomImage(imageId: imageId, fullPath: fullPath, thumbnailPath: thumbnailPath);
+  }
+
+  Future<List<Vocabulary>> _toVocabularies(List<LocalVocabulary> vocabularies) async {
+    final imagePaths = await _imageFileDataSource.findImagePaths([
+      for (final vocabulary in vocabularies) ?vocabulary.customImageId,
+    ]);
+    return [
+      for (final vocabulary in vocabularies) vocabulary.toVocabulary(imagePaths: imagePaths),
+    ];
   }
 }

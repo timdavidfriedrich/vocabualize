@@ -30,6 +30,7 @@ abstract class LocalVocabulary
     required this.nextReviewAt,
     required this.imageKind,
     this.customImageId,
+    this.customImageUploadedAt,
     this.stockImageId,
     this.stockImageUrl,
     this.stockImageThumbUrl,
@@ -53,6 +54,7 @@ abstract class LocalVocabulary
     required DateTime nextReviewAt,
     required String imageKind,
     String? customImageId,
+    DateTime? customImageUploadedAt,
     String? stockImageId,
     String? stockImageUrl,
     String? stockImageThumbUrl,
@@ -81,6 +83,11 @@ abstract class LocalVocabulary
       ),
       imageKind: jsonSerialization['imageKind'] as String,
       customImageId: jsonSerialization['customImageId'] as String?,
+      customImageUploadedAt: jsonSerialization['customImageUploadedAt'] == null
+          ? null
+          : _isc.DateTimeJsonExtension.fromJson(
+              jsonSerialization['customImageUploadedAt'],
+            ),
       stockImageId: jsonSerialization['stockImageId'] as String?,
       stockImageUrl: jsonSerialization['stockImageUrl'] as String?,
       stockImageThumbUrl: jsonSerialization['stockImageThumbUrl'] as String?,
@@ -126,6 +133,8 @@ abstract class LocalVocabulary
 
   String? customImageId;
 
+  DateTime? customImageUploadedAt;
+
   String? stockImageId;
 
   String? stockImageUrl;
@@ -160,6 +169,7 @@ abstract class LocalVocabulary
     DateTime? nextReviewAt,
     String? imageKind,
     String? customImageId,
+    DateTime? customImageUploadedAt = const _isc.$UndefinedDateTime(),
     String? stockImageId,
     String? stockImageUrl,
     String? stockImageThumbUrl,
@@ -185,6 +195,8 @@ abstract class LocalVocabulary
       'nextReviewAt': nextReviewAt.toJson(),
       'imageKind': imageKind,
       if (customImageId != null) 'customImageId': customImageId,
+      if (customImageUploadedAt != null)
+        'customImageUploadedAt': customImageUploadedAt?.toJson(),
       if (stockImageId != null) 'stockImageId': stockImageId,
       if (stockImageUrl != null) 'stockImageUrl': stockImageUrl,
       if (stockImageThumbUrl != null) 'stockImageThumbUrl': stockImageThumbUrl,
@@ -213,6 +225,8 @@ abstract class LocalVocabulary
       'nextReviewAt': nextReviewAt.toJson(),
       'imageKind': imageKind,
       if (customImageId != null) 'customImageId': customImageId,
+      if (customImageUploadedAt != null)
+        'customImageUploadedAt': customImageUploadedAt?.toJson(),
       if (stockImageId != null) 'stockImageId': stockImageId,
       if (stockImageUrl != null) 'stockImageUrl': stockImageUrl,
       if (stockImageThumbUrl != null) 'stockImageThumbUrl': stockImageThumbUrl,
@@ -269,6 +283,7 @@ class _LocalVocabularyImpl extends LocalVocabulary {
     required DateTime nextReviewAt,
     required String imageKind,
     String? customImageId,
+    DateTime? customImageUploadedAt,
     String? stockImageId,
     String? stockImageUrl,
     String? stockImageThumbUrl,
@@ -290,6 +305,7 @@ class _LocalVocabularyImpl extends LocalVocabulary {
          nextReviewAt: nextReviewAt,
          imageKind: imageKind,
          customImageId: customImageId,
+         customImageUploadedAt: customImageUploadedAt,
          stockImageId: stockImageId,
          stockImageUrl: stockImageUrl,
          stockImageThumbUrl: stockImageThumbUrl,
@@ -317,6 +333,7 @@ class _LocalVocabularyImpl extends LocalVocabulary {
     DateTime? nextReviewAt,
     String? imageKind,
     Object? customImageId = _Undefined,
+    DateTime? customImageUploadedAt = const _isc.$UndefinedDateTime(),
     Object? stockImageId = _Undefined,
     Object? stockImageUrl = _Undefined,
     Object? stockImageThumbUrl = _Undefined,
@@ -341,6 +358,9 @@ class _LocalVocabularyImpl extends LocalVocabulary {
       customImageId: customImageId is String?
           ? customImageId
           : this.customImageId,
+      customImageUploadedAt: customImageUploadedAt is _isc.UndefinedSentinel
+          ? this.customImageUploadedAt
+          : customImageUploadedAt,
       stockImageId: stockImageId is String? ? stockImageId : this.stockImageId,
       stockImageUrl: stockImageUrl is String?
           ? stockImageUrl
@@ -425,6 +445,12 @@ class LocalVocabularyUpdateTable
   _isd.ColumnValue<String, String> customImageId(String? value) =>
       _isd.ColumnValue(
         table.customImageId,
+        value,
+      );
+
+  _isd.ColumnValue<DateTime, DateTime> customImageUploadedAt(DateTime? value) =>
+      _isd.ColumnValue(
+        table.customImageUploadedAt,
         value,
       );
 
@@ -521,6 +547,10 @@ class LocalVocabularyTable extends _isd.Table<_isc.UuidValue?> {
       'customImageId',
       this,
     );
+    customImageUploadedAt = _isd.ColumnDateTime(
+      'customImageUploadedAt',
+      this,
+    );
     stockImageId = _isd.ColumnString(
       'stockImageId',
       this,
@@ -578,6 +608,8 @@ class LocalVocabularyTable extends _isd.Table<_isc.UuidValue?> {
 
   late final _isd.ColumnString customImageId;
 
+  late final _isd.ColumnDateTime customImageUploadedAt;
+
   late final _isd.ColumnString stockImageId;
 
   late final _isd.ColumnString stockImageUrl;
@@ -607,6 +639,7 @@ class LocalVocabularyTable extends _isd.Table<_isc.UuidValue?> {
     nextReviewAt,
     imageKind,
     customImageId,
+    customImageUploadedAt,
     stockImageId,
     stockImageUrl,
     stockImageThumbUrl,

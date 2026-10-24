@@ -28,6 +28,7 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
     required this.nextReviewAt,
     required this.imageKind,
     this.customImageId,
+    this.customImageUploadedAt,
     this.stockImageId,
     this.stockImageUrl,
     this.stockImageThumbUrl,
@@ -51,6 +52,7 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
     required DateTime nextReviewAt,
     required String imageKind,
     String? customImageId,
+    DateTime? customImageUploadedAt,
     String? stockImageId,
     String? stockImageUrl,
     String? stockImageThumbUrl,
@@ -77,6 +79,9 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
       nextReviewAt: _is.DateTimeJsonExtension.fromJson(jsonSerialization['nextReviewAt']),
       imageKind: jsonSerialization['imageKind'] as String,
       customImageId: jsonSerialization['customImageId'] as String?,
+      customImageUploadedAt: jsonSerialization['customImageUploadedAt'] == null
+          ? null
+          : _is.DateTimeJsonExtension.fromJson(jsonSerialization['customImageUploadedAt']),
       stockImageId: jsonSerialization['stockImageId'] as String?,
       stockImageUrl: jsonSerialization['stockImageUrl'] as String?,
       stockImageThumbUrl: jsonSerialization['stockImageThumbUrl'] as String?,
@@ -119,6 +124,8 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
 
   String? customImageId;
 
+  DateTime? customImageUploadedAt;
+
   String? stockImageId;
 
   String? stockImageUrl;
@@ -153,6 +160,7 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
     DateTime? nextReviewAt,
     String? imageKind,
     String? customImageId,
+    DateTime? customImageUploadedAt = const _is.$UndefinedDateTime(),
     String? stockImageId,
     String? stockImageUrl,
     String? stockImageThumbUrl,
@@ -178,6 +186,7 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
       'nextReviewAt': nextReviewAt.toJson(),
       'imageKind': imageKind,
       if (customImageId != null) 'customImageId': customImageId,
+      if (customImageUploadedAt != null) 'customImageUploadedAt': customImageUploadedAt?.toJson(),
       if (stockImageId != null) 'stockImageId': stockImageId,
       if (stockImageUrl != null) 'stockImageUrl': stockImageUrl,
       if (stockImageThumbUrl != null) 'stockImageThumbUrl': stockImageThumbUrl,
@@ -205,6 +214,7 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
       'nextReviewAt': nextReviewAt.toJson(),
       'imageKind': imageKind,
       if (customImageId != null) 'customImageId': customImageId,
+      if (customImageUploadedAt != null) 'customImageUploadedAt': customImageUploadedAt?.toJson(),
       if (stockImageId != null) 'stockImageId': stockImageId,
       if (stockImageUrl != null) 'stockImageUrl': stockImageUrl,
       if (stockImageThumbUrl != null) 'stockImageThumbUrl': stockImageThumbUrl,
@@ -260,6 +270,7 @@ class _LocalVocabularyImpl extends LocalVocabulary {
     required DateTime nextReviewAt,
     required String imageKind,
     String? customImageId,
+    DateTime? customImageUploadedAt,
     String? stockImageId,
     String? stockImageUrl,
     String? stockImageThumbUrl,
@@ -281,6 +292,7 @@ class _LocalVocabularyImpl extends LocalVocabulary {
          nextReviewAt: nextReviewAt,
          imageKind: imageKind,
          customImageId: customImageId,
+         customImageUploadedAt: customImageUploadedAt,
          stockImageId: stockImageId,
          stockImageUrl: stockImageUrl,
          stockImageThumbUrl: stockImageThumbUrl,
@@ -308,6 +320,7 @@ class _LocalVocabularyImpl extends LocalVocabulary {
     DateTime? nextReviewAt,
     String? imageKind,
     Object? customImageId = _Undefined,
+    DateTime? customImageUploadedAt = const _is.$UndefinedDateTime(),
     Object? stockImageId = _Undefined,
     Object? stockImageUrl = _Undefined,
     Object? stockImageThumbUrl = _Undefined,
@@ -330,6 +343,9 @@ class _LocalVocabularyImpl extends LocalVocabulary {
       nextReviewAt: nextReviewAt ?? this.nextReviewAt,
       imageKind: imageKind ?? this.imageKind,
       customImageId: customImageId is String? ? customImageId : this.customImageId,
+      customImageUploadedAt: customImageUploadedAt is _is.UndefinedSentinel
+          ? this.customImageUploadedAt
+          : customImageUploadedAt,
       stockImageId: stockImageId is String? ? stockImageId : this.stockImageId,
       stockImageUrl: stockImageUrl is String? ? stockImageUrl : this.stockImageUrl,
       stockImageThumbUrl: stockImageThumbUrl is String?
@@ -405,6 +421,11 @@ class LocalVocabularyUpdateTable extends _is.UpdateTable<LocalVocabularyTable> {
 
   _is.ColumnValue<String, String> customImageId(String? value) => _is.ColumnValue(
     table.customImageId,
+    value,
+  );
+
+  _is.ColumnValue<DateTime, DateTime> customImageUploadedAt(DateTime? value) => _is.ColumnValue(
+    table.customImageUploadedAt,
     value,
   );
 
@@ -495,6 +516,10 @@ class LocalVocabularyTable extends _is.Table<_is.UuidValue?> {
       'customImageId',
       this,
     );
+    customImageUploadedAt = _is.ColumnDateTime(
+      'customImageUploadedAt',
+      this,
+    );
     stockImageId = _is.ColumnString(
       'stockImageId',
       this,
@@ -552,6 +577,8 @@ class LocalVocabularyTable extends _is.Table<_is.UuidValue?> {
 
   late final _is.ColumnString customImageId;
 
+  late final _is.ColumnDateTime customImageUploadedAt;
+
   late final _is.ColumnString stockImageId;
 
   late final _is.ColumnString stockImageUrl;
@@ -581,6 +608,7 @@ class LocalVocabularyTable extends _is.Table<_is.UuidValue?> {
     nextReviewAt,
     imageKind,
     customImageId,
+    customImageUploadedAt,
     stockImageId,
     stockImageUrl,
     stockImageThumbUrl,

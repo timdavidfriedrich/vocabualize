@@ -13,6 +13,7 @@ fields:
   nextReviewAt: DateTime
   imageKind: String
   customImageId: String?
+  customImageUploadedAt: DateTime?
   stockImageId: String?
   stockImageUrl: String?
   stockImageThumbUrl: String?

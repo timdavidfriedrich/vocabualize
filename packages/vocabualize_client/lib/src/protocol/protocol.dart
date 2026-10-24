@@ -284,6 +284,12 @@ class Protocol extends _isd.DatabaseSerializationManager
           dartType: 'String?',
         ),
         _isd.ColumnDefinition(
+          name: 'customImageUploadedAt',
+          columnType: _isd.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _isd.ColumnDefinition(
           name: 'stockImageId',
           columnType: _isd.ColumnType.text,
           isNullable: true,

@@ -6,6 +6,7 @@
 
 import 'dart:async' as _i687;
 
+import 'package:dio/dio.dart' as _i361;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart'
     as _i90;
@@ -17,6 +18,9 @@ import 'package:shared/data/data_sources/database_session_data_source.dart'
 import 'package:shared/data/data_sources/image_file_data_source.dart' as _i532;
 import 'package:shared/data/data_sources/image_processing_data_source.dart'
     as _i179;
+import 'package:shared/data/data_sources/image_sync_data_source.dart' as _i61;
+import 'package:shared/data/data_sources/image_transfer_data_source.dart'
+    as _i28;
 import 'package:shared/data/data_sources/local_import_data_source.dart'
     as _i843;
 import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
@@ -51,6 +55,11 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i90.FlutterAuthSessionManager>(),
           gh<_i90.ConnectivityMonitor>(),
         ));
+    gh.factory<_i28.ImageTransferDataSource>(
+        () => _i28.ImageTransferDataSourceImpl(
+              gh<_i1040.Client>(),
+              gh<_i361.Dio>(),
+            ));
     gh.lazySingleton<_i1034.SyncDataSource>(() => _i1034.SyncDataSourceImpl(
           gh<_i1040.Client>(),
           gh<_i654.ConnectivityMonitor>(),
@@ -72,17 +81,24 @@ class SharedPackageModule extends _i526.MicroPackageModule {
             gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i765.SyncStatusCubit>(
         () => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
-    gh.factory<_i532.ImageFileDataSource>(() =>
+    gh.lazySingleton<_i532.ImageFileDataSource>(() =>
         _i532.ImageFileDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i208.VocabularyRepository>(() => _i22.VocabularyRepositoryImpl(
           gh<_i397.VocabularyLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
         ));
+    gh.lazySingleton<_i61.ImageSyncDataSource>(
+        () => _i61.ImageSyncDataSourceImpl(
+              gh<_i1034.SyncDataSource>(),
+              gh<_i532.ImageFileDataSource>(),
+              gh<_i28.ImageTransferDataSource>(),
+            ));
     gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
           gh<_i535.AuthDataSource>(),
           gh<_i862.DatabaseSessionDataSource>(),
           gh<_i843.LocalImportDataSource>(),
           gh<_i1034.SyncDataSource>(),
+          gh<_i61.ImageSyncDataSource>(),
         ));
   }
 }
