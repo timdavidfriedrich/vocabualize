@@ -72,12 +72,17 @@ class SyncDataSourceImpl(
 
   void _connect(OfflineSyncDatabaseSession session) {
     _setState(RemoteSyncState.connecting);
-    final subscription = _client.offlineSync.syncContinuously(
-      session,
-      onMergeSuccess: (_, _) {
-        if (identical(_session, session)) _setState(RemoteSyncState.live);
-      },
+    final syncClient = OfflineSyncClient(
+      ({required changes, required once}) => _client.modules.offline_sync.offlineSync
+          .sync(changes: changes, once: once)
+          .map((event) {
+            if (event is OfflineSyncEndOfBatch && identical(_session, session)) {
+              _setState(RemoteSyncState.live);
+            }
+            return event;
+          }),
     );
+    final subscription = syncClient.syncContinuously(session);
     _subscription = subscription;
     void finish(RemoteSyncState state) {
       if (!identical(_subscription, subscription)) return;
