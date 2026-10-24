@@ -25,6 +25,8 @@ abstract class DatabaseSessionDataSource {
 
   Future<LocalSnapshot?> readLocalSnapshot();
 
+  Future<LocalSnapshot> readCurrentSnapshot();
+
   Future<OfflineSyncDatabaseSession> openLocal();
 
   Future<OfflineSyncDatabaseSession> openForUser(UuidValue userId);
@@ -65,6 +67,13 @@ class DatabaseSessionDataSourceImpl(
   Future<bool> hasLocalDatabase() async => File(await _localDatabasePath()).exists();
 
   @override
+  Future<LocalSnapshot> readCurrentSnapshot() async {
+    final session = _session;
+    if (session == null) throw StateError("No database is open.");
+    return _readSnapshot(session);
+  }
+
+  @override
   Future<LocalSnapshot?> readLocalSnapshot() async {
     final path = await _localDatabasePath();
     final ownerId = await _readLocalOwnerId();
@@ -75,12 +84,7 @@ class DatabaseSessionDataSourceImpl(
         ? current
         : await _client.createSyncSession(path, isDebugMode: kDebugMode, persistentUserId: ownerId);
     try {
-      return LocalSnapshot(
-        vocabularies: await LocalVocabulary.db.find(session),
-        tags: await LocalTag.db.find(session),
-        vocabularyTags: await LocalVocabularyTag.db.find(session),
-        activities: await LocalActivity.db.find(session),
-      );
+      return await _readSnapshot(session);
     } finally {
       if (!isLocalOpen) await session.close();
     }
@@ -160,6 +164,15 @@ class DatabaseSessionDataSourceImpl(
       final file = File("$path$suffix");
       if (await file.exists()) await file.delete();
     }
+  }
+
+  Future<LocalSnapshot> _readSnapshot(OfflineSyncDatabaseSession session) async {
+    return LocalSnapshot(
+      vocabularies: await LocalVocabulary.db.find(session),
+      tags: await LocalTag.db.find(session),
+      vocabularyTags: await LocalVocabularyTag.db.find(session),
+      activities: await LocalActivity.db.find(session),
+    );
   }
 
   Future<Directory> _imageDirectory(String name) async =>

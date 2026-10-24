@@ -11,3 +11,7 @@ class const SettingsSignOutRequested({
 }) extends SettingsEvent;
 
 class const SettingsSignOutDismissed() extends SettingsEvent;
+
+class const SettingsBackupExportRequested() extends SettingsEvent;
+
+class const SettingsBackupImportRequested() extends SettingsEvent;

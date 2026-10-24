@@ -37,6 +37,17 @@ class const SettingsScreen({
           },
           listener: (context, state) => _showSignOutBlockedDialog(context),
         ),
+        BlocListener<SettingsBloc, SettingsState>(
+          listenWhen: (previous, current) => switch ((previous, current)) {
+            (SettingsLoaded(importedCount: null), SettingsLoaded(importedCount: _?)) => true,
+            _ => false,
+          },
+          listener: (context, state) {
+            if (state case SettingsLoaded(importedCount: final count?)) {
+              context.showToast(context.s.settingsImportBackupDone(count));
+            }
+          },
+        ),
       ],
       child: Scaffold(
         appBar: AppBar(title: Text(context.s.settingsTitle)),
@@ -56,6 +67,10 @@ class const SettingsScreen({
                     isBusy: isBusy,
                   ),
                 },
+                const SizedBox(height: Spacing.xl),
+                Text(context.s.settingsBackupTitle, style: context.t.titleMedium),
+                const SizedBox(height: Spacing.xs),
+                _BackupSection(isBusy: isBusy),
               ],
             ),
           },
@@ -74,6 +89,64 @@ class const SettingsScreen({
       signOutAnyway == true
           ? const SettingsSignOutRequested(discardUnsyncedChanges: true)
           : const SettingsSignOutDismissed(),
+    );
+  }
+}
+
+class const _BackupSection({
+  required final bool _isBusy,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          enabled: !_isBusy,
+          leading: const Icon(Icons.ios_share_rounded),
+          title: Text(context.s.settingsExportBackupButton),
+          subtitle: Text(context.s.settingsExportBackupHint),
+          onTap: () => context.read<SettingsBloc>().add(const SettingsBackupExportRequested()),
+        ),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          enabled: !_isBusy,
+          leading: const Icon(Icons.download_rounded),
+          title: Text(context.s.settingsImportBackupButton),
+          subtitle: Text(context.s.settingsImportBackupHint),
+          trailing: _isBusy ? const _ButtonProgress() : null,
+          onTap: () => _confirmImport(context),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _confirmImport(BuildContext context) async {
+    final bloc = context.read<SettingsBloc>();
+    final isConfirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => const _ImportBackupDialog(),
+    );
+    if (isConfirmed == true) bloc.add(const SettingsBackupImportRequested());
+  }
+}
+
+class const _ImportBackupDialog() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(context.s.settingsImportBackupConfirmTitle),
+      content: Text(context.s.settingsImportBackupConfirmMessage),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(context.s.cancel),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          child: Text(context.s.settingsImportBackupConfirmButton),
+        ),
+      ],
     );
   }
 }

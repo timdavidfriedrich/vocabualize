@@ -18,6 +18,9 @@ import 'package:shared/data/data_sources/app_config_remote_data_source.dart'
     as _i223;
 import 'package:shared/data/data_sources/app_info_data_source.dart' as _i394;
 import 'package:shared/data/data_sources/auth_data_source.dart' as _i535;
+import 'package:shared/data/data_sources/backup_archive_data_source.dart'
+    as _i100;
+import 'package:shared/data/data_sources/backup_file_data_source.dart' as _i460;
 import 'package:shared/data/data_sources/database_session_data_source.dart'
     as _i862;
 import 'package:shared/data/data_sources/image_file_data_source.dart' as _i532;
@@ -36,6 +39,7 @@ import 'package:shared/data/repositories/app_config_repository_impl.dart'
     as _i509;
 import 'package:shared/data/repositories/app_info_repository_impl.dart'
     as _i1026;
+import 'package:shared/data/repositories/backup_repository_impl.dart' as _i237;
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
 import 'package:shared/data/repositories/sync_repository_impl.dart' as _i368;
 import 'package:shared/data/repositories/vocabulary_repository_impl.dart'
@@ -44,6 +48,7 @@ import 'package:shared/di/serverpod_client_module.dart' as _i74;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
 import 'package:shared/domain/repositories/app_config_repository.dart' as _i541;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
+import 'package:shared/domain/repositories/backup_repository.dart' as _i152;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
@@ -60,6 +65,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => serverpodClientModule.sessionManager());
     gh.lazySingleton<_i90.ConnectivityMonitor>(
         () => serverpodClientModule.connectivityMonitor());
+    gh.factory<_i100.BackupArchiveDataSource>(
+        () => const _i100.BackupArchiveDataSourceImpl());
     gh.factory<_i394.AppInfoDataSource>(
         () => const _i394.AppInfoDataSourceImpl());
     gh.factory<_i179.ImageProcessingDataSource>(
@@ -77,6 +84,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
               gh<_i1040.Client>(),
               gh<_i361.Dio>(),
             ));
+    gh.factory<_i460.BackupFileDataSource>(
+        () => const _i460.BackupFileDataSourceImpl());
     gh.lazySingleton<_i1034.SyncDataSource>(() => _i1034.SyncDataSourceImpl(
           gh<_i1040.Client>(),
           gh<_i654.ConnectivityMonitor>(),
@@ -109,6 +118,14 @@ class SharedPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i208.VocabularyRepository>(() => _i22.VocabularyRepositoryImpl(
           gh<_i397.VocabularyLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
+        ));
+    gh.factory<_i152.BackupRepository>(() => _i237.BackupRepositoryImpl(
+          gh<_i862.DatabaseSessionDataSource>(),
+          gh<_i843.LocalImportDataSource>(),
+          gh<_i532.ImageFileDataSource>(),
+          gh<_i179.ImageProcessingDataSource>(),
+          gh<_i100.BackupArchiveDataSource>(),
+          gh<_i460.BackupFileDataSource>(),
         ));
     gh.lazySingleton<_i61.ImageSyncDataSource>(
         () => _i61.ImageSyncDataSourceImpl(

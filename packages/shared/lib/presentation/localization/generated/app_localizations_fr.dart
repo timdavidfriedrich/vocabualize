@@ -431,4 +431,43 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get gateMaintenanceMessage =>
       'Vocabualize est en cours de mise à jour. Veuillez réessayer plus tard.';
+
+  @override
+  String get settingsBackupTitle => 'Sauvegarde';
+
+  @override
+  String get settingsExportBackupButton => 'Exporter une sauvegarde';
+
+  @override
+  String get settingsExportBackupHint => 'Enregistrer tous les mots et images dans un fichier';
+
+  @override
+  String get settingsImportBackupButton => 'Importer une sauvegarde';
+
+  @override
+  String get settingsImportBackupHint => 'Ajouter les mots d\'un fichier de sauvegarde';
+
+  @override
+  String get settingsImportBackupConfirmTitle => 'Importer la sauvegarde ?';
+
+  @override
+  String get settingsImportBackupConfirmMessage =>
+      'Tous les mots, collections et images de la sauvegarde sont ajoutés à votre collection. Vos mots actuels ne changent pas.';
+
+  @override
+  String get settingsImportBackupConfirmButton => 'Importer';
+
+  @override
+  String settingsImportBackupDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mots importés.',
+      one: '$count mot importé.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get errorInvalidBackup => 'Ce fichier n\'est pas une sauvegarde Vocabualize.';
 }

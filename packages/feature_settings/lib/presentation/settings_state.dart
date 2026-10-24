@@ -17,5 +17,6 @@ class const SettingsLoaded({
   required final Account account,
   required final bool isBusy,
   required final bool isSignOutBlocked,
+  required final int? importedCount,
   required final AppError? error,
 }) extends SettingsState with SettingsLoadedMappable;

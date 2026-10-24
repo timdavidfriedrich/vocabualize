@@ -118,5 +118,15 @@
   "gateUpdateMessage": "Esta versión de Vocabualize ya no es compatible. Actualice la aplicación para seguir aprendiendo.",
   "gateUpdateButton": "Actualizar",
   "gateMaintenanceTitle": "En mantenimiento",
-  "gateMaintenanceMessage": "Vocabualize se está actualizando. Inténtelo de nuevo más tarde."
+  "gateMaintenanceMessage": "Vocabualize se está actualizando. Inténtelo de nuevo más tarde.",
+  "settingsBackupTitle": "Copia de seguridad",
+  "settingsExportBackupButton": "Exportar copia de seguridad",
+  "settingsExportBackupHint": "Guardar todas las palabras e imágenes en un archivo",
+  "settingsImportBackupButton": "Importar copia de seguridad",
+  "settingsImportBackupHint": "Añadir las palabras de un archivo de copia de seguridad",
+  "settingsImportBackupConfirmTitle": "¿Importar copia de seguridad?",
+  "settingsImportBackupConfirmMessage": "Todas las palabras, colecciones e imágenes de la copia se añaden a su colección. Sus palabras actuales no cambian.",
+  "settingsImportBackupConfirmButton": "Importar",
+  "settingsImportBackupDone": "{count, plural, one{Se importó {count} palabra.} other{Se importaron {count} palabras.}}",
+  "errorInvalidBackup": "Este archivo no es una copia de seguridad de Vocabualize."
 }

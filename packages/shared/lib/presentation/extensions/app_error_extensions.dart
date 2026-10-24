@@ -10,6 +10,7 @@ extension AppErrorExtensions on AppError {
     ValidationError() => context.s.errorValidation,
     NotFoundError() => context.s.errorNotFound,
     SyncPendingError() => context.s.errorSyncPending,
+    InvalidBackupError() => context.s.errorInvalidBackup,
     UnexpectedError() => context.s.errorUnexpected,
   };
 }

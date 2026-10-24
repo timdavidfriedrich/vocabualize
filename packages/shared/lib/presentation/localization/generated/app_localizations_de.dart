@@ -427,4 +427,43 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get gateMaintenanceMessage =>
       'Vocabualize wird gerade aktualisiert. Bitte versuche es später erneut.';
+
+  @override
+  String get settingsBackupTitle => 'Sicherung';
+
+  @override
+  String get settingsExportBackupButton => 'Sicherung exportieren';
+
+  @override
+  String get settingsExportBackupHint => 'Alle Wörter und Bilder als Datei speichern';
+
+  @override
+  String get settingsImportBackupButton => 'Sicherung importieren';
+
+  @override
+  String get settingsImportBackupHint => 'Die Wörter aus einer Sicherungsdatei hinzufügen';
+
+  @override
+  String get settingsImportBackupConfirmTitle => 'Sicherung importieren?';
+
+  @override
+  String get settingsImportBackupConfirmMessage =>
+      'Alle Wörter, Sammlungen und Bilder aus der Sicherung werden zu deiner Sammlung hinzugefügt. Deine vorhandenen Wörter bleiben unverändert.';
+
+  @override
+  String get settingsImportBackupConfirmButton => 'Importieren';
+
+  @override
+  String settingsImportBackupDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Wörter importiert.',
+      one: '$count Wort importiert.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get errorInvalidBackup => 'Diese Datei ist keine Vocabualize-Sicherung.';
 }

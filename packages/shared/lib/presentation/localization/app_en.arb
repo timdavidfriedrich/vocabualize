@@ -181,5 +181,22 @@
   "gateUpdateMessage": "This version of Vocabualize is no longer supported. Please update the app to keep learning.",
   "gateUpdateButton": "Update",
   "gateMaintenanceTitle": "Under maintenance",
-  "gateMaintenanceMessage": "Vocabualize is being updated. Please try again later."
+  "gateMaintenanceMessage": "Vocabualize is being updated. Please try again later.",
+  "settingsBackupTitle": "Backup",
+  "settingsExportBackupButton": "Export backup",
+  "settingsExportBackupHint": "Save all words and images as a file",
+  "settingsImportBackupButton": "Import backup",
+  "settingsImportBackupHint": "Add the words from a backup file",
+  "settingsImportBackupConfirmTitle": "Import backup?",
+  "settingsImportBackupConfirmMessage": "All words, collections and images from the backup are added to your collection. Your current words stay as they are.",
+  "settingsImportBackupConfirmButton": "Import",
+  "settingsImportBackupDone": "{count, plural, one{Imported {count} word.} other{Imported {count} words.}}",
+  "errorInvalidBackup": "This file isn't a Vocabualize backup.",
+  "@settingsImportBackupDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

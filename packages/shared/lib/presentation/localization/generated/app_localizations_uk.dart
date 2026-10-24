@@ -438,4 +438,45 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get gateMaintenanceMessage => 'Vocabualize оновлюється. Спробуйте пізніше.';
+
+  @override
+  String get settingsBackupTitle => 'Резервна копія';
+
+  @override
+  String get settingsExportBackupButton => 'Експортувати резервну копію';
+
+  @override
+  String get settingsExportBackupHint => 'Зберегти всі слова та зображення у файл';
+
+  @override
+  String get settingsImportBackupButton => 'Імпортувати резервну копію';
+
+  @override
+  String get settingsImportBackupHint => 'Додати слова з файлу резервної копії';
+
+  @override
+  String get settingsImportBackupConfirmTitle => 'Імпортувати резервну копію?';
+
+  @override
+  String get settingsImportBackupConfirmMessage =>
+      'Усі слова, колекції та зображення з резервної копії буде додано до вашої колекції. Ваші наявні слова не зміняться.';
+
+  @override
+  String get settingsImportBackupConfirmButton => 'Імпортувати';
+
+  @override
+  String settingsImportBackupDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Імпортовано $count слова.',
+      many: 'Імпортовано $count слів.',
+      few: 'Імпортовано $count слова.',
+      one: 'Імпортовано $count слово.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get errorInvalidBackup => 'Цей файл не є резервною копією Vocabualize.';
 }

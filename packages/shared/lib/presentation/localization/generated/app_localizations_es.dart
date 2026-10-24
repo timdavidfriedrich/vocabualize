@@ -425,4 +425,43 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get gateMaintenanceMessage =>
       'Vocabualize se está actualizando. Inténtelo de nuevo más tarde.';
+
+  @override
+  String get settingsBackupTitle => 'Copia de seguridad';
+
+  @override
+  String get settingsExportBackupButton => 'Exportar copia de seguridad';
+
+  @override
+  String get settingsExportBackupHint => 'Guardar todas las palabras e imágenes en un archivo';
+
+  @override
+  String get settingsImportBackupButton => 'Importar copia de seguridad';
+
+  @override
+  String get settingsImportBackupHint => 'Añadir las palabras de un archivo de copia de seguridad';
+
+  @override
+  String get settingsImportBackupConfirmTitle => '¿Importar copia de seguridad?';
+
+  @override
+  String get settingsImportBackupConfirmMessage =>
+      'Todas las palabras, colecciones e imágenes de la copia se añaden a su colección. Sus palabras actuales no cambian.';
+
+  @override
+  String get settingsImportBackupConfirmButton => 'Importar';
+
+  @override
+  String settingsImportBackupDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Se importaron $count palabras.',
+      one: 'Se importó $count palabra.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get errorInvalidBackup => 'Este archivo no es una copia de seguridad de Vocabualize.';
 }

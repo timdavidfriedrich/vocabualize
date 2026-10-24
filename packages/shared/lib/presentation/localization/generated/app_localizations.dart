@@ -815,6 +815,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Vocabualize is being updated. Please try again later.'**
   String get gateMaintenanceMessage;
+
+  /// No description provided for @settingsBackupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get settingsBackupTitle;
+
+  /// No description provided for @settingsExportBackupButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Export backup'**
+  String get settingsExportBackupButton;
+
+  /// No description provided for @settingsExportBackupHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Save all words and images as a file'**
+  String get settingsExportBackupHint;
+
+  /// No description provided for @settingsImportBackupButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import backup'**
+  String get settingsImportBackupButton;
+
+  /// No description provided for @settingsImportBackupHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the words from a backup file'**
+  String get settingsImportBackupHint;
+
+  /// No description provided for @settingsImportBackupConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import backup?'**
+  String get settingsImportBackupConfirmTitle;
+
+  /// No description provided for @settingsImportBackupConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'All words, collections and images from the backup are added to your collection. Your current words stay as they are.'**
+  String get settingsImportBackupConfirmMessage;
+
+  /// No description provided for @settingsImportBackupConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get settingsImportBackupConfirmButton;
+
+  /// No description provided for @settingsImportBackupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Imported {count} word.} other{Imported {count} words.}}'**
+  String settingsImportBackupDone(int count);
+
+  /// No description provided for @errorInvalidBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'This file isn\'t a Vocabualize backup.'**
+  String get errorInvalidBackup;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

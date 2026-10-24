@@ -118,5 +118,15 @@
   "gateUpdateMessage": "Ця версія Vocabualize більше не підтримується. Оновіть застосунок, щоб продовжити навчання.",
   "gateUpdateButton": "Оновити",
   "gateMaintenanceTitle": "Технічне обслуговування",
-  "gateMaintenanceMessage": "Vocabualize оновлюється. Спробуйте пізніше."
+  "gateMaintenanceMessage": "Vocabualize оновлюється. Спробуйте пізніше.",
+  "settingsBackupTitle": "Резервна копія",
+  "settingsExportBackupButton": "Експортувати резервну копію",
+  "settingsExportBackupHint": "Зберегти всі слова та зображення у файл",
+  "settingsImportBackupButton": "Імпортувати резервну копію",
+  "settingsImportBackupHint": "Додати слова з файлу резервної копії",
+  "settingsImportBackupConfirmTitle": "Імпортувати резервну копію?",
+  "settingsImportBackupConfirmMessage": "Усі слова, колекції та зображення з резервної копії буде додано до вашої колекції. Ваші наявні слова не зміняться.",
+  "settingsImportBackupConfirmButton": "Імпортувати",
+  "settingsImportBackupDone": "{count, plural, one{Імпортовано {count} слово.} few{Імпортовано {count} слова.} many{Імпортовано {count} слів.} other{Імпортовано {count} слова.}}",
+  "errorInvalidBackup": "Цей файл не є резервною копією Vocabualize."
 }

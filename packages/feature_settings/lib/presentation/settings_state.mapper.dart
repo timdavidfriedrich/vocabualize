@@ -197,6 +197,11 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
     'isSignOutBlocked',
     _$isSignOutBlocked,
   );
+  static int? _$importedCount(SettingsLoaded v) => v.importedCount;
+  static const Field<SettingsLoaded, int> _f$importedCount = Field(
+    'importedCount',
+    _$importedCount,
+  );
   static AppError? _$error(SettingsLoaded v) => v.error;
   static const Field<SettingsLoaded, AppError> _f$error = Field(
     'error',
@@ -208,6 +213,7 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
     #account: _f$account,
     #isBusy: _f$isBusy,
     #isSignOutBlocked: _f$isSignOutBlocked,
+    #importedCount: _f$importedCount,
     #error: _f$error,
   };
 
@@ -216,6 +222,7 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
       account: data.dec(_f$account),
       isBusy: data.dec(_f$isBusy),
       isSignOutBlocked: data.dec(_f$isSignOutBlocked),
+      importedCount: data.dec(_f$importedCount),
       error: data.dec(_f$error),
     );
   }
@@ -288,6 +295,7 @@ abstract class SettingsLoadedCopyWith<$R, $In extends SettingsLoaded, $Out>
     Account? account,
     bool? isBusy,
     bool? isSignOutBlocked,
+    int? importedCount,
     AppError? error,
   });
   SettingsLoadedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -311,12 +319,14 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
     Account? account,
     bool? isBusy,
     bool? isSignOutBlocked,
+    Object? importedCount = $none,
     Object? error = $none,
   }) => $apply(
     FieldCopyWithData({
       if (account != null) #account: account,
       if (isBusy != null) #isBusy: isBusy,
       if (isSignOutBlocked != null) #isSignOutBlocked: isSignOutBlocked,
+      if (importedCount != $none) #importedCount: importedCount,
       if (error != $none) #error: error,
     }),
   );
@@ -325,6 +335,7 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
     account: data.get(#account, or: $value.account),
     isBusy: data.get(#isBusy, or: $value.isBusy),
     isSignOutBlocked: data.get(#isSignOutBlocked, or: $value.isSignOutBlocked),
+    importedCount: data.get(#importedCount, or: $value.importedCount),
     error: data.get(#error, or: $value.error),
   );
 

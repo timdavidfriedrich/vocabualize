@@ -6,17 +6,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
+import 'package:shared/domain/repositories/backup_repository.dart';
 
 @injectable
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  SettingsBloc(this._accountRepository) : super(const SettingsLoading()) {
+  SettingsBloc(this._accountRepository, this._backupRepository) : super(const SettingsLoading()) {
     on<SettingsStarted>(_onStarted);
     on<SettingsGoogleSignInRequested>(_onGoogleSignInRequested);
     on<SettingsSignOutRequested>(_onSignOutRequested);
     on<SettingsSignOutDismissed>(_onSignOutDismissed);
+    on<SettingsBackupExportRequested>(_onBackupExportRequested);
+    on<SettingsBackupImportRequested>(_onBackupImportRequested);
   }
 
   final AccountRepository _accountRepository;
+  final BackupRepository _backupRepository;
 
   Future<void> _onStarted(SettingsStarted event, Emitter<SettingsState> emit) {
     return emit.forEach(
@@ -28,6 +32,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           account: account,
           isBusy: false,
           isSignOutBlocked: false,
+          importedCount: null,
           error: null,
         ),
         _ => state,
@@ -52,12 +57,35 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     if (state case final SettingsLoaded loaded) emit(loaded.copyWith(isSignOutBlocked: false));
   }
 
+  Future<void> _onBackupExportRequested(
+    SettingsBackupExportRequested event,
+    Emitter<SettingsState> emit,
+  ) => _runBusy(emit, _backupRepository.exportBackup);
+
+  Future<void> _onBackupImportRequested(
+    SettingsBackupImportRequested event,
+    Emitter<SettingsState> emit,
+  ) async {
+    if (state case final SettingsLoaded loaded) {
+      emit(loaded.copyWith(isBusy: true, importedCount: null, error: null));
+    }
+    final result = await _backupRepository.importBackup();
+    if (state case final SettingsLoaded loaded) {
+      emit(switch (result) {
+        Success(:final data) => loaded.copyWith(isBusy: false, importedCount: data),
+        Failure(:final error) => loaded.copyWith(isBusy: false, error: error),
+      });
+    }
+  }
+
   Future<void> _runBusy<T>(
     Emitter<SettingsState> emit,
     Future<AppResult<T>> Function() action,
   ) async {
     if (state case final SettingsLoaded loaded) {
-      emit(loaded.copyWith(isBusy: true, isSignOutBlocked: false, error: null));
+      emit(
+        loaded.copyWith(isBusy: true, isSignOutBlocked: false, importedCount: null, error: null),
+      );
     }
     final result = await action();
     if (state case final SettingsLoaded loaded) {
