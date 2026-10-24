@@ -8,6 +8,8 @@ import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
 
+const _mascotScreenHeightFactor = 0.4;
+
 class const WaitForDataScreen({
   super.key,
   required final DataUnavailableReason _reason,
@@ -68,8 +70,12 @@ class const _Content({
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(child: Mascot(pose: _pose)),
-        const SizedBox(height: Spacing.xl),
+        const Spacer(),
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * _mascotScreenHeightFactor,
+          child: Mascot(pose: _pose),
+        ),
+        const Spacer(),
         Text(_title, style: context.t.headlineSmall, textAlign: TextAlign.center),
         const SizedBox(height: Spacing.m),
         Text(
