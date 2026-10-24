@@ -22,3 +22,6 @@ config/firebase_service_account_key.json
 
 # SQLite databases created by the ephemeral test database
 **/sp_*.db*
+
+# Local Garage secrets
+.env

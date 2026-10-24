@@ -6,7 +6,7 @@ client:
   maintenanceMessage: null
 
 images:
-  provider: database
+  provider: garage
   bucket: vocabualize-images
   region: garage
   endpoint: http://localhost:3900

@@ -37,6 +37,19 @@ The globally installed Serverpod CLI is another version, which `../book_marker` 
 - `fvm dart run serverpod_cli --no-analytics create-migration`
 - `fvm dart run serverpod_cli --no-analytics database start -s .` starts the embedded Postgres on port 8190.
 - `fvm dart run bin/main.dart --apply-migrations` serves the API on port 8180 and Insights on port 8181.
+- `docker compose up -d` (in `vocabualize_server/`) starts Garage, the S3-compatible image store, on port 3900. Its secrets live in the gitignored `vocabualize_server/.env` (`GARAGE_RPC_SECRET`, `GARAGE_ADMIN_TOKEN`).
+
+## Garage setup (once per machine)
+
+Run these against `docker compose exec -T garage /garage …`:
+
+1. `status` shows the node ID.
+2. `layout assign -z dev -c 1G <node id>`, then `layout apply --version 1`.
+3. `bucket create vocabualize-images`.
+4. `key create vocabualize-dev`. Put its key ID and secret into `config/passwords.yaml` as `garageAccessKey` and `garageSecretKey`, and never print the secret.
+5. `bucket allow --read --write --owner vocabualize-images --key vocabualize-dev`.
+
+`app_config.yaml` → `images.provider: garage` uses it; `database` keeps images in Postgres instead. The app stores only image keys, never URLs, so the provider can change without touching any data.
 
 The app is run with `fvm flutter run` from the repository root, never with `serverpod start`.
 
