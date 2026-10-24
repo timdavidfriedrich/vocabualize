@@ -7,7 +7,7 @@ x-server-image: &server-image
   image: vocabualize-server:latest
   volumes:
     - ./vocabualize_server/config/passwords.yaml:/app/config/passwords.yaml:ro
-    - ./vocabualize_server/app_config.production.yaml:/app/app_config.yaml:ro
+    - ./vocabualize_server/production:/app/production:ro
 
 services:
   postgres:

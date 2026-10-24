@@ -46,6 +46,10 @@ COPY --from=build /app/vocabualize_server/config/ config/
 COPY --from=build /app/vocabualize_server/web/ web/
 COPY --from=build /app/vocabualize_server/migrations/ migrations/
 
+# The production folder is mounted at runtime. A folder mount, unlike a single-file mount,
+# also shows edits that replace the file, so app_config.yaml changes apply without a restart.
+RUN ln -s production/app_config.yaml app_config.yaml
+
 # This file is required to enable the endpoint log filter in Insights.
 COPY --from=build /app/vocabualize_server/lib/src/generated/protocol.yaml lib/src/generated/protocol.yaml
 
