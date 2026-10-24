@@ -511,4 +511,23 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get languageSelectionSaveButton => 'Зберегти';
+
+  @override
+  String get dataOfflineTitle => 'Немає з\'єднання';
+
+  @override
+  String get dataOfflineMessage => 'Ваші слова завантажаться, щойно з\'явиться з\'єднання.';
+
+  @override
+  String get dataRetryButton => 'Спробувати ще раз';
+
+  @override
+  String get dataSignInRequiredTitle => 'Увійдіть знову';
+
+  @override
+  String get dataSignInRequiredMessage =>
+      'Ваш сеанс завершився. Увійдіть, щоб завантажити свої слова.';
+
+  @override
+  String get dataSignInButton => 'Увійти';
 }

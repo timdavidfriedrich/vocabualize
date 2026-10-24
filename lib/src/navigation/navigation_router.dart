@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:core/error/app_result.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_screen.dart';
+import 'package:feature_gate/presentation/wait_for_data/wait_for_data_cubit.dart';
+import 'package:feature_gate/presentation/wait_for_data/wait_for_data_screen.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_screen.dart';
@@ -19,24 +21,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kaisel/kaisel.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
-import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/auth_status.dart';
+import 'package:shared/domain/entities/data_readiness.dart';
 import 'package:shared/domain/entities/language_pair.dart';
-import 'package:shared/domain/entities/sync_status.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/sync_repository.dart';
 import 'package:shared/presentation/navigation/routes.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
+
 import 'package:vocabualize/src/di/service_locator.dart';
 
-typedef _EntryState = (AppResult<AuthStatus>, AppResult<LanguagePair?>?, SyncStatus?);
+typedef _EntryState = (AppResult<AuthStatus>, AppResult<DataReadiness>?, AppResult<LanguagePair?>?);
 
 @lazySingleton
 class NavigationRouter(
   final AccountRepository _accountRepository,
-  final SettingsRepository _settingsRepository,
   final SyncRepository _syncRepository,
+  final SettingsRepository _settingsRepository,
 ) {
   late final KaiselRouterConfig<AppRoute> config = KaiselRouterConfig<AppRoute>(
     initial: const Loading(),
@@ -49,24 +51,17 @@ class NavigationRouter(
   void listenToEntryState() {
     _entryStateSubscription ??= _accountRepository
         .watchAuthStatus()
-        .switchMap(_withLanguagePair)
+        .switchMap(_withDataReadiness)
         .listen(_onEntryState);
   }
 
-  Stream<_EntryState> _withLanguagePair(AppResult<AuthStatus> authStatus) => switch (authStatus) {
-    Success(data: AuthAuthenticated()) => _settingsRepository.watchLanguagePair().switchMap(
-      (languagePair) => switch (languagePair) {
-        Success(data: null) => _syncRepository.watchSyncStatus().asyncMap((result) async {
-          final syncStatus = switch (result) {
-            Success(:final data) => data,
-            Failure() => SyncStatus.offline,
-          };
-          return switch (syncStatus) {
-            SyncStatus.disabled || SyncStatus.connecting => (authStatus, languagePair, syncStatus),
-            _ => (authStatus, await _settingsRepository.readLanguagePair(), syncStatus),
-          };
-        }),
-        Success() || Failure() => Stream.value((authStatus, languagePair, null)),
+  Stream<_EntryState> _withDataReadiness(AppResult<AuthStatus> authStatus) => switch (authStatus) {
+    Success(data: AuthAuthenticated()) => _syncRepository.watchDataReadiness().switchMap(
+      (readiness) => switch (readiness) {
+        Success(data: DataReady()) => _settingsRepository.watchLanguagePair().map(
+          (languagePair) => (authStatus, readiness, languagePair),
+        ),
+        Success() || Failure() => Stream.value((authStatus, readiness, null)),
       },
     ),
     Success() || Failure() => Stream.value((authStatus, null, null)),
@@ -76,29 +71,38 @@ class NavigationRouter(
     final router = config.router;
     final current = router.current;
     final isOnEntryRoute = switch (current) {
-      Loading() || Welcome() || LanguageSelection(isOnboarding: true) => true,
-      _ => false,
-    };
-    final isSigningIn = switch (current) {
-      Loading() || Welcome() => true,
+      Loading() || Welcome() || WaitForData() || LanguageSelection(isOnboarding: true) => true,
       _ => false,
     };
     final target = switch (state) {
       (Success(data: AuthUnknown()), _, _) => null,
       (Success(data: AuthUnauthenticated()) || Failure(), _, _) => const Welcome(),
-      (Success(data: AuthAuthenticated()), Success(data: _?), _) when isOnEntryRoute => const Home(),
-      (
-        Success(data: AuthAuthenticated(account: GoogleAccount())),
-        Success(data: null),
-        SyncStatus.disabled || SyncStatus.connecting,
-      ) =>
-        isSigningIn ? const Loading() : null,
-      (Success(data: AuthAuthenticated()), Success(data: null), _) when isOnEntryRoute =>
+      (Success(data: AuthAuthenticated()), Success(data: DataDownloading()), _) => const Loading(),
+      (Success(data: AuthAuthenticated()), Success(data: DataUnavailable(:final reason)), _) =>
+        _waitForData(reason),
+      (Success(data: AuthAuthenticated()), Failure(), _) => _waitForData(
+        DataUnavailableReason.offline,
+      ),
+      (Success(data: AuthAuthenticated()), Success(data: DataReady()), Success(data: _?))
+          when isOnEntryRoute =>
+        const Home(),
+      (Success(data: AuthAuthenticated()), Success(data: DataReady()), Success(data: null))
+          when isOnEntryRoute =>
         const LanguageSelection(isOnboarding: true),
       (Success(data: AuthAuthenticated()), _, _) => null,
     };
     if (target != null && target != current) unawaited(router.set([target]));
   }
+
+  WaitForData _waitForData(DataUnavailableReason reason) => switch (reason) {
+    DataUnavailableReason.offline => const WaitForData(reason: DataUnavailableReason.offline),
+    DataUnavailableReason.signInRequired => const WaitForData(
+      reason: DataUnavailableReason.signInRequired,
+    ),
+    DataUnavailableReason.updateRequired => const WaitForData(
+      reason: DataUnavailableReason.updateRequired,
+    ),
+  };
 }
 
 class const _AppPage({
@@ -107,6 +111,10 @@ class const _AppPage({
   @override
   Widget build(BuildContext context) => switch (_route) {
     Loading() => const LoadingScreen(),
+    WaitForData(:final reason) => BlocProvider(
+      create: (_) => sl<WaitForDataCubit>(),
+      child: WaitForDataScreen(reason: reason),
+    ),
     Welcome() => BlocProvider(
       create: (_) => sl<WelcomeBloc>(),
       child: const WelcomeScreen(),

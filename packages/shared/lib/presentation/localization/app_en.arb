@@ -218,5 +218,11 @@
       }
     }
   },
-  "languageSelectionSaveButton": "Save"
+  "languageSelectionSaveButton": "Save",
+  "dataOfflineTitle": "You're offline",
+  "dataOfflineMessage": "Your words will download as soon as you're connected.",
+  "dataRetryButton": "Try again",
+  "dataSignInRequiredTitle": "Sign in again",
+  "dataSignInRequiredMessage": "Your session has expired. Sign in to load your words.",
+  "dataSignInButton": "Sign in"
 }

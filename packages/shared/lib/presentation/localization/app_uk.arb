@@ -138,5 +138,11 @@
   "languageSelectionTitle": "Ваші мови",
   "languageSelectionContinueButton": "Продовжити",
   "settingsLanguagesTitle": "Мови",
-  "languageSelectionSaveButton": "Зберегти"
+  "languageSelectionSaveButton": "Зберегти",
+  "dataOfflineTitle": "Немає з'єднання",
+  "dataOfflineMessage": "Ваші слова завантажаться, щойно з'явиться з'єднання.",
+  "dataRetryButton": "Спробувати ще раз",
+  "dataSignInRequiredTitle": "Увійдіть знову",
+  "dataSignInRequiredMessage": "Ваш сеанс завершився. Увійдіть, щоб завантажити свої слова.",
+  "dataSignInButton": "Увійти"
 }

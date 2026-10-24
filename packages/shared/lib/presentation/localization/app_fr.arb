@@ -138,5 +138,11 @@
   "languageSelectionTitle": "Vos langues",
   "languageSelectionContinueButton": "Continuer",
   "settingsLanguagesTitle": "Langues",
-  "languageSelectionSaveButton": "Enregistrer"
+  "languageSelectionSaveButton": "Enregistrer",
+  "dataOfflineTitle": "Vous êtes hors ligne",
+  "dataOfflineMessage": "Vos mots seront téléchargés dès que vous serez connecté.",
+  "dataRetryButton": "Réessayer",
+  "dataSignInRequiredTitle": "Reconnectez-vous",
+  "dataSignInRequiredMessage": "Votre session a expiré. Connectez-vous pour charger vos mots.",
+  "dataSignInButton": "Se connecter"
 }

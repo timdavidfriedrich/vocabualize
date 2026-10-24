@@ -138,5 +138,11 @@
   "languageSelectionTitle": "Sus idiomas",
   "languageSelectionContinueButton": "Continuar",
   "settingsLanguagesTitle": "Idiomas",
-  "languageSelectionSaveButton": "Guardar"
+  "languageSelectionSaveButton": "Guardar",
+  "dataOfflineTitle": "Sin conexión",
+  "dataOfflineMessage": "Sus palabras se descargarán en cuanto tenga conexión.",
+  "dataRetryButton": "Reintentar",
+  "dataSignInRequiredTitle": "Inicie sesión de nuevo",
+  "dataSignInRequiredMessage": "Su sesión ha caducado. Inicie sesión para cargar sus palabras.",
+  "dataSignInButton": "Iniciar sesión"
 }

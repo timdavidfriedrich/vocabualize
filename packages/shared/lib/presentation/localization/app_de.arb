@@ -138,5 +138,11 @@
   "languageSelectionTitle": "Deine Sprachen",
   "languageSelectionContinueButton": "Weiter",
   "settingsLanguagesTitle": "Sprachen",
-  "languageSelectionSaveButton": "Speichern"
+  "languageSelectionSaveButton": "Speichern",
+  "dataOfflineTitle": "Du bist offline",
+  "dataOfflineMessage": "Deine Wörter werden geladen, sobald du wieder online bist.",
+  "dataRetryButton": "Erneut versuchen",
+  "dataSignInRequiredTitle": "Erneut anmelden",
+  "dataSignInRequiredMessage": "Deine Sitzung ist abgelaufen. Melde dich an, um deine Wörter zu laden.",
+  "dataSignInButton": "Anmelden"
 }

@@ -496,4 +496,23 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get languageSelectionSaveButton => 'Guardar';
+
+  @override
+  String get dataOfflineTitle => 'Sin conexión';
+
+  @override
+  String get dataOfflineMessage => 'Sus palabras se descargarán en cuanto tenga conexión.';
+
+  @override
+  String get dataRetryButton => 'Reintentar';
+
+  @override
+  String get dataSignInRequiredTitle => 'Inicie sesión de nuevo';
+
+  @override
+  String get dataSignInRequiredMessage =>
+      'Su sesión ha caducado. Inicie sesión para cargar sus palabras.';
+
+  @override
+  String get dataSignInButton => 'Iniciar sesión';
 }

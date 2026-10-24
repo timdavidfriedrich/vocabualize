@@ -93,10 +93,6 @@ class SharedPackageModule extends _i526.MicroPackageModule {
             ));
     gh.factory<_i460.BackupFileDataSource>(
         () => const _i460.BackupFileDataSourceImpl());
-    gh.lazySingleton<_i1034.SyncDataSource>(() => _i1034.SyncDataSourceImpl(
-          gh<_i1040.Client>(),
-          gh<_i654.ConnectivityMonitor>(),
-        ));
     gh.factory<_i223.AppConfigRemoteDataSource>(
         () => _i223.AppConfigRemoteDataSourceImpl(gh<_i1040.Client>()));
     gh.lazySingleton<_i862.DatabaseSessionDataSource>(
@@ -113,16 +109,17 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i223.AppConfigRemoteDataSource>(),
           gh<_i49.AppConfigLocalDataSource>(),
         ));
-    gh.factory<_i523.SyncRepository>(
-        () => _i368.SyncRepositoryImpl(gh<_i1034.SyncDataSource>()));
     gh.factory<_i397.VocabularyLocalDataSource>(() =>
         _i397.VocabularyLocalDataSourceImpl(
             gh<_i862.DatabaseSessionDataSource>()));
-    gh.factory<_i765.SyncStatusCubit>(
-        () => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
     gh.factory<_i555.SettingLocalDataSource>(() =>
         _i555.SettingLocalDataSourceImpl(
             gh<_i862.DatabaseSessionDataSource>()));
+    gh.lazySingleton<_i1034.SyncDataSource>(() => _i1034.SyncDataSourceImpl(
+          gh<_i1040.Client>(),
+          gh<_i654.ConnectivityMonitor>(),
+          gh<_i862.DatabaseSessionDataSource>(),
+        ));
     gh.lazySingleton<_i532.ImageFileDataSource>(() =>
         _i532.ImageFileDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i208.VocabularyRepository>(() => _i22.VocabularyRepositoryImpl(
@@ -135,6 +132,10 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         ));
     gh.factory<_i650.LanguagePairCubit>(
         () => _i650.LanguagePairCubit(gh<_i0.SettingsRepository>()));
+    gh.factory<_i523.SyncRepository>(
+        () => _i368.SyncRepositoryImpl(gh<_i1034.SyncDataSource>()));
+    gh.factory<_i765.SyncStatusCubit>(
+        () => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
     gh.factory<_i152.BackupRepository>(() => _i237.BackupRepositoryImpl(
           gh<_i862.DatabaseSessionDataSource>(),
           gh<_i843.LocalImportDataSource>(),

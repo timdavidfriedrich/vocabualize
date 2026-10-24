@@ -493,4 +493,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageSelectionSaveButton => 'Save';
+
+  @override
+  String get dataOfflineTitle => 'You\'re offline';
+
+  @override
+  String get dataOfflineMessage => 'Your words will download as soon as you\'re connected.';
+
+  @override
+  String get dataRetryButton => 'Try again';
+
+  @override
+  String get dataSignInRequiredTitle => 'Sign in again';
+
+  @override
+  String get dataSignInRequiredMessage => 'Your session has expired. Sign in to load your words.';
+
+  @override
+  String get dataSignInButton => 'Sign in';
 }

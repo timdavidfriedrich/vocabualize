@@ -502,4 +502,23 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get languageSelectionSaveButton => 'Enregistrer';
+
+  @override
+  String get dataOfflineTitle => 'Vous êtes hors ligne';
+
+  @override
+  String get dataOfflineMessage => 'Vos mots seront téléchargés dès que vous serez connecté.';
+
+  @override
+  String get dataRetryButton => 'Réessayer';
+
+  @override
+  String get dataSignInRequiredTitle => 'Reconnectez-vous';
+
+  @override
+  String get dataSignInRequiredMessage =>
+      'Votre session a expiré. Connectez-vous pour charger vos mots.';
+
+  @override
+  String get dataSignInButton => 'Se connecter';
 }

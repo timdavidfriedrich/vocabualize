@@ -935,6 +935,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get languageSelectionSaveButton;
+
+  /// No description provided for @dataOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get dataOfflineTitle;
+
+  /// No description provided for @dataOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your words will download as soon as you\'re connected.'**
+  String get dataOfflineMessage;
+
+  /// No description provided for @dataRetryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get dataRetryButton;
+
+  /// No description provided for @dataSignInRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again'**
+  String get dataSignInRequiredTitle;
+
+  /// No description provided for @dataSignInRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Sign in to load your words.'**
+  String get dataSignInRequiredMessage;
+
+  /// No description provided for @dataSignInButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get dataSignInButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

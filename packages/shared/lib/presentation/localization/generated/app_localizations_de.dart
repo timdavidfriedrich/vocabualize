@@ -498,4 +498,23 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get languageSelectionSaveButton => 'Speichern';
+
+  @override
+  String get dataOfflineTitle => 'Du bist offline';
+
+  @override
+  String get dataOfflineMessage => 'Deine Wörter werden geladen, sobald du wieder online bist.';
+
+  @override
+  String get dataRetryButton => 'Erneut versuchen';
+
+  @override
+  String get dataSignInRequiredTitle => 'Erneut anmelden';
+
+  @override
+  String get dataSignInRequiredMessage =>
+      'Deine Sitzung ist abgelaufen. Melde dich an, um deine Wörter zu laden.';
+
+  @override
+  String get dataSignInButton => 'Anmelden';
 }

@@ -13,6 +13,7 @@ const _localOwnerFileName = "local_owner_id";
 const _userDatabasePrefix = "user_";
 const _databaseExtension = ".db";
 const _databaseFileSuffixes = ["", "-wal", "-shm"];
+const _initialSyncMarkerExtension = ".synced";
 const _imagesDirectoryName = "images";
 const _localImagesDirectoryName = "local";
 
@@ -36,6 +37,10 @@ abstract class DatabaseSessionDataSource {
   Future<void> deleteLocal();
 
   Future<void> deleteForUser(UuidValue userId);
+
+  Future<bool> hasCompletedInitialSync(UuidValue userId);
+
+  Future<void> markInitialSyncCompleted(UuidValue userId);
 
   String? get currentImageDirectoryPath;
 
@@ -122,6 +127,8 @@ class DatabaseSessionDataSourceImpl(
   @override
   Future<void> deleteForUser(UuidValue userId) async {
     await _delete(await _userDatabasePath(userId));
+    final marker = File(await _initialSyncMarkerPath(userId));
+    if (await marker.exists()) await marker.delete();
     await _deleteDirectory(await _imageDirectory(userId.uuid));
   }
 
@@ -198,6 +205,18 @@ class DatabaseSessionDataSourceImpl(
   Future<String> _directoryPath() async => (await getApplicationSupportDirectory()).path;
 
   Future<String> _localDatabasePath() async => "${await _directoryPath()}/$_localDatabaseName";
+
+  @override
+  Future<bool> hasCompletedInitialSync(UuidValue userId) async =>
+      File(await _initialSyncMarkerPath(userId)).exists();
+
+  @override
+  Future<void> markInitialSyncCompleted(UuidValue userId) async {
+    await File(await _initialSyncMarkerPath(userId)).create();
+  }
+
+  Future<String> _initialSyncMarkerPath(UuidValue userId) async =>
+      "${await _directoryPath()}/$_userDatabasePrefix${userId.uuid}$_initialSyncMarkerExtension";
 
   Future<String> _userDatabasePath(UuidValue userId) async =>
       "${await _directoryPath()}/$_userDatabasePrefix${userId.uuid}$_databaseExtension";

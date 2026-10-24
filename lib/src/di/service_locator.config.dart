@@ -52,8 +52,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i2.NavigationRouter>(
       () => _i2.NavigationRouter(
         gh<_i923.AccountRepository>(),
-        gh<_i0.SettingsRepository>(),
         gh<_i523.SyncRepository>(),
+        gh<_i0.SettingsRepository>(),
       )..listenToEntryState(),
     );
     return this;

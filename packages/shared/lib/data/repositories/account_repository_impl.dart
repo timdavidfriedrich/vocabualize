@@ -79,7 +79,7 @@ class AccountRepositoryImpl(
       final session = _sessions.currentSession;
       await _stopSync();
       if (!discardUnsyncedChanges && session != null && !await _uploadPending(session)) {
-        _startSync(session);
+        await _startSync(session, UuidValue.withValidation(id));
         return const Failure(SyncPendingError());
       }
       try {
@@ -106,7 +106,7 @@ class AccountRepositoryImpl(
     final userId = UuidValue.withValidation(remoteAccount.id);
     final session = await _sessions.openForUser(userId);
     final adoption = await _adoptLocalData(userId);
-    _startSync(session);
+    await _startSync(session, userId);
     final account = remoteAccount.toGoogleAccount();
     _emit(AuthAuthenticated(account: account));
     return switch (adoption) {
@@ -115,8 +115,12 @@ class AccountRepositoryImpl(
     };
   }
 
-  void _startSync(OfflineSyncDatabaseSession session) {
-    _syncDataSource.start(session);
+  Future<void> _startSync(OfflineSyncDatabaseSession session, UuidValue userId) async {
+    _syncDataSource.start(
+      session,
+      userId: userId,
+      needsInitialSync: !await _sessions.hasCompletedInitialSync(userId),
+    );
     _imageSyncDataSource.start(session);
   }
 
