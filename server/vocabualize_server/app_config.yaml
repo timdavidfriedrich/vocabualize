@@ -10,3 +10,4 @@ images:
   bucket: vocabualize-images
   region: garage
   endpoint: http://localhost:3900
+  publicEndpoint: http://localhost:3900

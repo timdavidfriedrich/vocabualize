@@ -18,6 +18,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
     required this.bucket,
     required this.region,
     required this.endpoint,
+    required this.publicEndpoint,
   });
 
   factory ImageStorageConfig({
@@ -25,6 +26,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
     required String bucket,
     required String region,
     required String endpoint,
+    required String publicEndpoint,
   }) = _ImageStorageConfigImpl;
 
   factory ImageStorageConfig.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -33,6 +35,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
       bucket: jsonSerialization['bucket'] as String,
       region: jsonSerialization['region'] as String,
       endpoint: jsonSerialization['endpoint'] as String,
+      publicEndpoint: jsonSerialization['publicEndpoint'] as String,
     );
   }
 
@@ -44,6 +47,8 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
 
   String endpoint;
 
+  String publicEndpoint;
+
   /// Returns a shallow copy of this [ImageStorageConfig]
   /// with some or all fields replaced by the given arguments.
   @_is.useResult
@@ -52,6 +57,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
     String? bucket,
     String? region,
     String? endpoint,
+    String? publicEndpoint,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -61,6 +67,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
       'bucket': bucket,
       'region': region,
       'endpoint': endpoint,
+      'publicEndpoint': publicEndpoint,
     };
   }
 
@@ -81,11 +88,13 @@ class _ImageStorageConfigImpl extends ImageStorageConfig {
     required String bucket,
     required String region,
     required String endpoint,
+    required String publicEndpoint,
   }) : super._(
          provider: provider,
          bucket: bucket,
          region: region,
          endpoint: endpoint,
+         publicEndpoint: publicEndpoint,
        );
 
   /// Returns a shallow copy of this [ImageStorageConfig]
@@ -97,12 +106,14 @@ class _ImageStorageConfigImpl extends ImageStorageConfig {
     String? bucket,
     String? region,
     String? endpoint,
+    String? publicEndpoint,
   }) {
     return ImageStorageConfig(
       provider: provider ?? this.provider,
       bucket: bucket ?? this.bucket,
       region: region ?? this.region,
       endpoint: endpoint ?? this.endpoint,
+      publicEndpoint: publicEndpoint ?? this.publicEndpoint,
     );
   }
 }

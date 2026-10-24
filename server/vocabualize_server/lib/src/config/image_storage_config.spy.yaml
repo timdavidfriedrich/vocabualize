@@ -6,3 +6,4 @@ fields:
   bucket: String
   region: String
   endpoint: String
+  publicEndpoint: String

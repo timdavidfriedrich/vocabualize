@@ -49,6 +49,7 @@ RuntimeConfig _parse(String source) {
       bucket: _stringAt(images["bucket"], "images.bucket"),
       region: _stringAt(images["region"], "images.region"),
       endpoint: _stringAt(images["endpoint"], "images.endpoint"),
+      publicEndpoint: _stringAt(images["publicEndpoint"], "images.publicEndpoint"),
     ),
   );
 }

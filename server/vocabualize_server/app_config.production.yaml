@@ -9,4 +9,5 @@ images:
   provider: garage
   bucket: vocabualize-images
   region: garage
-  endpoint: https://vocabualize-files.timdavidfriedrich.de
+  endpoint: http://garage:3900
+  publicEndpoint: https://vocabualize-files.timdavidfriedrich.de
