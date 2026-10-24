@@ -1,0 +1,81 @@
+name: vocabualize
+
+x-server-image: &server-image
+  build:
+    context: .
+    dockerfile: vocabualize_server/Dockerfile
+  image: vocabualize-server:latest
+  volumes:
+    - ./vocabualize_server/config/passwords.yaml:/app/config/passwords.yaml:ro
+    - ./vocabualize_server/app_config.production.yaml:/app/app_config.yaml:ro
+
+services:
+  postgres:
+    image: ghcr.io/serverpod/postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: vocabualize
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d vocabualize"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  garage:
+    image: dxflrs/garage:v2.4.1
+    restart: unless-stopped
+    environment:
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET:?set GARAGE_RPC_SECRET in .env}
+      GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN:?set GARAGE_ADMIN_TOKEN in .env}
+    volumes:
+      - ./vocabualize_server/garage/garage.toml:/etc/garage.toml:ro
+      - garage_meta:/var/lib/garage/meta
+      - garage_data:/var/lib/garage/data
+    networks:
+      internal:
+      global-proxy:
+        aliases: [vocabualize-garage]
+
+  migrate:
+    <<: *server-image
+    restart: "no"
+    entrypoint: ["./bin/server", "--mode=production", "--role=maintenance", "--apply-migrations"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [internal]
+
+  serverpod:
+    <<: *server-image
+    restart: unless-stopped
+    environment:
+      runmode: production
+      serverid: default
+      logging: normal
+      role: monolith
+    depends_on:
+      postgres:
+        condition: service_healthy
+      garage:
+        condition: service_started
+      migrate:
+        condition: service_completed_successfully
+    networks:
+      internal:
+      global-proxy:
+        aliases: [vocabualize-serverpod]
+
+volumes:
+  postgres_data:
+  garage_meta:
+  garage_data:
+
+networks:
+  internal:
+  global-proxy:
+    external: true

@@ -1,0 +1,12 @@
+version: 1
+
+client:
+  minSupportedBuild: 13
+  maintenanceMode: false
+  maintenanceMessage: null
+
+images:
+  provider: garage
+  bucket: vocabualize-images
+  region: garage
+  endpoint: https://vocabualize-files.timdavidfriedrich.de

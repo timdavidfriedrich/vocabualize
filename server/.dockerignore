@@ -1,0 +1,5 @@
+**/.dart_tool
+**/build
+vocabualize_server/.env
+vocabualize_server/.serverpod
+vocabualize_server/config/passwords.yaml

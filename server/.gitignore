@@ -17,3 +17,6 @@ pubspec_overrides.yaml
 
 # Serverpod Cloud CLI
 .scloud/
+
+# Production secrets on the VPS
+.env
