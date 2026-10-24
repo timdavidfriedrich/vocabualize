@@ -28,6 +28,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared/di/shared_module.module.dart' as _i826;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
+import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
 import 'package:vocabualize/src/navigation/navigation_router.dart' as _i2;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -52,6 +53,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i2.NavigationRouter(
         gh<_i923.AccountRepository>(),
         gh<_i0.SettingsRepository>(),
+        gh<_i523.SyncRepository>(),
       )..listenToEntryState(),
     );
     return this;
