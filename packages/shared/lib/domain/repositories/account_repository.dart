@@ -3,7 +3,7 @@ import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/auth_status.dart';
 
 abstract class AccountRepository {
-  Stream<AuthStatus> watchAuthStatus();
+  Stream<AppResult<AuthStatus>> watchAuthStatus();
 
   Future<AppResult<AuthStatus>> restoreAuthStatus();
 

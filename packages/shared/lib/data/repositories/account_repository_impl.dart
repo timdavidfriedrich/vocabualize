@@ -23,9 +23,9 @@ class AccountRepositoryImpl(
   AuthStatus _status = const AuthUnknown();
 
   @override
-  Stream<AuthStatus> watchAuthStatus() async* {
-    yield _status;
-    yield* _statusChanges.stream;
+  Stream<AppResult<AuthStatus>> watchAuthStatus() async* {
+    yield Success(_status);
+    yield* _statusChanges.stream.map<AppResult<AuthStatus>>(Success.new);
   }
 
   @override

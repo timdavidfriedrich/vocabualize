@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:core/error/app_result.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_screen.dart';
 import 'package:feature_gate/presentation/splash_screen.dart';
@@ -26,24 +27,24 @@ class NavigationRouter(
     builder: (context, route) => _AppPage(route: route),
   );
 
-  StreamSubscription<AuthStatus>? _authStatusSubscription;
+  StreamSubscription<AppResult<AuthStatus>>? _authStatusSubscription;
 
   @PostConstruct()
   void listenToAuthStatus() {
     _authStatusSubscription ??= _accountRepository.watchAuthStatus().listen(_onAuthStatus);
   }
 
-  void _onAuthStatus(AuthStatus status) {
+  void _onAuthStatus(AppResult<AuthStatus> result) {
     final router = config.router;
     final isOnEntryRoute = switch (router.current) {
       Splash() || Welcome() => true,
       _ => false,
     };
-    final target = switch (status) {
-      AuthUnknown() => null,
-      AuthUnauthenticated() => const <AppRoute>[Welcome()],
-      AuthAuthenticated() when isOnEntryRoute => const <AppRoute>[Home()],
-      AuthAuthenticated() => null,
+    final target = switch (result) {
+      Success(data: AuthUnknown()) => null,
+      Success(data: AuthUnauthenticated()) || Failure() => const <AppRoute>[Welcome()],
+      Success(data: AuthAuthenticated()) when isOnEntryRoute => const <AppRoute>[Home()],
+      Success(data: AuthAuthenticated()) => null,
     };
     if (target != null) unawaited(router.set(target));
   }
