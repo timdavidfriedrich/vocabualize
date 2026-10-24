@@ -32,7 +32,10 @@ class AccountRepositoryImpl(
   Future<AppResult<AuthStatus>> restoreAuthStatus() async {
     try {
       final remoteAccount = await _authDataSource.restoreAccount();
-      if (remoteAccount != null) await _openRemote(remoteAccount);
+      if (remoteAccount != null) {
+        await _openRemote(remoteAccount);
+        unawaited(_refreshRemote());
+      }
       if (remoteAccount == null && await _sessions.hasLocalDatabase()) await _openLocal();
       if (_status is AuthUnknown) _emit(const AuthUnauthenticated());
       return Success(_status);
@@ -75,6 +78,15 @@ class AccountRepositoryImpl(
     final account = remoteAccount.toGoogleAccount();
     _emit(AuthAuthenticated(account: account));
     return account;
+  }
+
+  Future<void> _refreshRemote() async {
+    try {
+      final remoteAccount = await _authDataSource.refreshAccount();
+      if (remoteAccount != null) _emit(AuthAuthenticated(account: remoteAccount.toGoogleAccount()));
+    } on Object {
+      return;
+    }
   }
 
   void _emit(AuthStatus status) {

@@ -17,7 +17,7 @@ database:
   user: postgres
   dataPath: .serverpod/development/pgdata
 
-maxRequestSize: 1048576
+maxRequestSize: 524288
 
 sessionLogs:
   persistentEnabled: true

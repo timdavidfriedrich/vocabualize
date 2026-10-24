@@ -8,6 +8,7 @@ import 'dart:async' as _i687;
 
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart' as _i90;
+import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart' as _i654;
 import 'package:shared/data/data_sources/auth_data_source.dart' as _i535;
 import 'package:shared/data/data_sources/database_session_data_source.dart' as _i862;
 import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
@@ -25,18 +26,27 @@ class SharedPackageModule extends _i526.MicroPackageModule {
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
     final serverpodClientModule = _$ServerpodClientModule();
     gh.lazySingleton<_i90.FlutterAuthSessionManager>(() => serverpodClientModule.sessionManager());
+    gh.lazySingleton<_i90.ConnectivityMonitor>(() => serverpodClientModule.connectivityMonitor());
     gh.lazySingleton<_i1040.Client>(
-      () => serverpodClientModule.client(gh<_i90.FlutterAuthSessionManager>()),
+      () => serverpodClientModule.client(
+        gh<_i90.FlutterAuthSessionManager>(),
+        gh<_i90.ConnectivityMonitor>(),
+      ),
+    );
+    gh.lazySingleton<_i1034.SyncDataSource>(
+      () => _i1034.SyncDataSourceImpl(
+        gh<_i1040.Client>(),
+        gh<_i654.ConnectivityMonitor>(),
+      ),
+    );
+    gh.lazySingleton<_i862.DatabaseSessionDataSource>(
+      () => _i862.DatabaseSessionDataSourceImpl(gh<_i1040.Client>()),
     );
     gh.factory<_i535.AuthDataSource>(
       () => _i535.AuthDataSourceImpl(
         gh<_i1040.Client>(),
         gh<_i90.FlutterAuthSessionManager>(),
       ),
-    );
-    gh.lazySingleton<_i1034.SyncDataSource>(() => _i1034.SyncDataSourceImpl(gh<_i1040.Client>()));
-    gh.lazySingleton<_i862.DatabaseSessionDataSource>(
-      () => _i862.DatabaseSessionDataSourceImpl(gh<_i1040.Client>()),
     );
     gh.lazySingleton<_i923.AccountRepository>(
       () => _i631.AccountRepositoryImpl(

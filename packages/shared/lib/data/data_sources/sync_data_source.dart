@@ -1,11 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
-
-const _initialRetryDelay = Duration(seconds: 2);
-const _maximumRetryDelay = Duration(minutes: 1);
 
 abstract class SyncDataSource {
   void start(OfflineSyncDatabaseSession session);
@@ -18,56 +16,57 @@ abstract class SyncDataSource {
 @LazySingleton(as: SyncDataSource)
 class SyncDataSourceImpl(
   final Client _client,
+  final ConnectivityMonitor _connectivityMonitor,
 ) implements SyncDataSource {
   OfflineSyncDatabaseSession? _session;
   OfflineSyncSubscription? _subscription;
-  Timer? _retryTimer;
-  Duration _retryDelay = _initialRetryDelay;
+  AppLifecycleListener? _lifecycleListener;
 
   @override
   void start(OfflineSyncDatabaseSession session) {
     if (identical(_session, session) && _subscription != null) return;
-    unawaited(stop());
+    unawaited(_cancelSubscription());
     _session = session;
+    _connectivityMonitor.addListener(_onConnectivityChanged);
+    _lifecycleListener ??= AppLifecycleListener(onResume: _reconnectIfIdle);
     _connect(session);
   }
 
   @override
   Future<void> stop() async {
     _session = null;
-    _retryTimer?.cancel();
-    _retryTimer = null;
-    final subscription = _subscription;
-    _subscription = null;
-    await subscription?.cancel();
+    _connectivityMonitor.removeListener(_onConnectivityChanged);
+    _lifecycleListener?.dispose();
+    _lifecycleListener = null;
+    await _cancelSubscription();
   }
 
   @override
   Future<void> syncOnce(OfflineSyncDatabaseSession session) =>
       _client.offlineSync.syncOnce(session);
 
-  void _connect(OfflineSyncDatabaseSession session) {
-    final subscription = _client.offlineSync.syncContinuously(
-      session,
-      onMergeSuccess: (_, _) => _retryDelay = _initialRetryDelay,
-    );
-    _subscription = subscription;
-    unawaited(
-      subscription.done.then(
-        (_) => _scheduleRetry(session),
-        onError: (Object _) => _scheduleRetry(session),
-      ),
-    );
+  void _onConnectivityChanged(bool connected) {
+    if (connected) _reconnectIfIdle();
   }
 
-  void _scheduleRetry(OfflineSyncDatabaseSession session) {
-    if (!identical(_session, session)) return;
+  void _reconnectIfIdle() {
+    final session = _session;
+    if (session != null && _subscription == null) _connect(session);
+  }
+
+  void _connect(OfflineSyncDatabaseSession session) {
+    final subscription = _client.offlineSync.syncContinuously(session);
+    _subscription = subscription;
+    void release(_) {
+      if (identical(_subscription, subscription)) _subscription = null;
+    }
+
+    unawaited(subscription.done.then(release, onError: release));
+  }
+
+  Future<void> _cancelSubscription() async {
+    final subscription = _subscription;
     _subscription = null;
-    _retryTimer?.cancel();
-    _retryTimer = Timer(_retryDelay, () {
-      if (identical(_session, session)) _connect(session);
-    });
-    final doubled = _retryDelay * 2;
-    _retryDelay = doubled > _maximumRetryDelay ? _maximumRetryDelay : doubled;
+    await subscription?.cancel();
   }
 }

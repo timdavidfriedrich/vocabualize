@@ -17,7 +17,7 @@ database:
   user: postgres
   requireSsl: false
 
-maxRequestSize: 1048576
+maxRequestSize: 524288
 
 sessionLogs:
   consoleEnabled: true

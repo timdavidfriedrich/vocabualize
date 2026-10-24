@@ -41,3 +41,8 @@ The spike's findings are in `docs/spike_serverpod_sync.md` and are binding for t
 - Start the local backend from `server/vocabualize_server` (see `server/AGENTS.md`).
 - On each Android device or emulator, run `adb -s <device> reverse tcp:8180 tcp:8180` once per connection, so the device's `localhost:8180` reaches this Mac.
 - Run with `fvm flutter run -d <device> --dart-define-from-file=dart_defines.json`.
+
+## Commits
+
+- Messages follow the form `[ADD] …`, `[CHANGE] …` or `[FIX] …`, with a lowercase description of what changed.
+- The author is the repository owner alone. Never add co-author, session or "generated with" lines to commits or pull requests.

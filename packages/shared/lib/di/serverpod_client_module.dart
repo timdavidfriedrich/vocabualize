@@ -12,9 +12,12 @@ abstract class ServerpodClientModule {
   FlutterAuthSessionManager sessionManager() => FlutterAuthSessionManager();
 
   @lazySingleton
-  Client client(FlutterAuthSessionManager sessionManager) {
+  ConnectivityMonitor connectivityMonitor() => FlutterConnectivityMonitor();
+
+  @lazySingleton
+  Client client(FlutterAuthSessionManager sessionManager, ConnectivityMonitor connectivityMonitor) {
     final client = Client(apiBaseUrl.isEmpty ? _fallbackBaseUrl : apiBaseUrl)
-      ..connectivityMonitor = FlutterConnectivityMonitor();
+      ..connectivityMonitor = connectivityMonitor;
     sessionManager.setCaller(client.modules.serverpod_auth_core);
     client.authKeyProvider = sessionManager;
     return client;

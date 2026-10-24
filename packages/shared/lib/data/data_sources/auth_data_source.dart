@@ -1,15 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import 'package:shared/data/models/remote_account.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
-const _restoreTimeout = Duration(seconds: 2);
-
 abstract class AuthDataSource {
   Future<RemoteAccount?> restoreAccount();
+
+  Future<RemoteAccount?> refreshAccount();
 
   Future<RemoteAccount> signInWithGoogle();
 
@@ -23,7 +22,16 @@ class const AuthDataSourceImpl(
 ) implements AuthDataSource {
   @override
   Future<RemoteAccount?> restoreAccount() async {
-    await _sessionManager.initialize(timeout: _restoreTimeout);
+    await _sessionManager.restore();
+    final authInfo = _sessionManager.authInfo;
+    if (authInfo == null) return null;
+    return RemoteAccount(id: authInfo.authUserId.toString(), fullName: null, email: null);
+  }
+
+  @override
+  Future<RemoteAccount?> refreshAccount() async {
+    final isSignedIn = await _sessionManager.validateAuthentication();
+    if (!isSignedIn) return null;
     return _currentAccount();
   }
 
@@ -56,14 +64,12 @@ class const AuthDataSourceImpl(
   Future<RemoteAccount?> _currentAccount() async {
     final authInfo = _sessionManager.authInfo;
     if (authInfo == null) return null;
-    final id = authInfo.authUserId.toString();
-    try {
-      final profile = await _client.modules.serverpod_auth_core.userProfileInfo.get();
-      return RemoteAccount(id: id, fullName: profile.fullName, email: profile.email);
-    } on Object catch (error) {
-      if (kDebugMode) debugPrint("Profile unavailable: $error");
-      return RemoteAccount(id: id, fullName: null, email: null);
-    }
+    final profile = await _client.modules.serverpod_auth_core.userProfileInfo.get();
+    return RemoteAccount(
+      id: authInfo.authUserId.toString(),
+      fullName: profile.fullName,
+      email: profile.email,
+    );
   }
 }
 
