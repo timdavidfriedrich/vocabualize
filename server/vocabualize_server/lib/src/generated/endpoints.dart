@@ -17,6 +17,7 @@ import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart
 import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
 import '../endpoints/config_endpoint.dart' as _i74a5xur;
+import '../endpoints/image_endpoint.dart' as _iu0td00j;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -38,6 +39,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'config',
+          null,
+        ),
+      'image': _iu0td00j.ImageEndpoint()
+        ..initialize(
+          server,
+          'image',
           null,
         ),
     };
@@ -148,6 +155,114 @@ class Endpoints extends _is.EndpointDispatch {
                 _is.Session session,
                 Map<String, dynamic> params,
               ) async => (endpoints['config'] as _i74a5xur.ConfigEndpoint).fetch(session),
+        ),
+      },
+    );
+    connectors['image'] = _is.EndpointConnector(
+      name: 'image',
+      endpoint: endpoints['image']!,
+      methodConnectors: {
+        'createUpload': _is.MethodConnector(
+          name: 'createUpload',
+          params: {
+            'imageId': _is.ParameterDescription(
+              name: 'imageId',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'variant': _is.ParameterDescription(
+              name: 'variant',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'byteSize': _is.ParameterDescription(
+              name: 'byteSize',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['image'] as _iu0td00j.ImageEndpoint).createUpload(
+                session,
+                params['imageId'],
+                params['variant'],
+                params['byteSize'],
+              ),
+        ),
+        'verifyUpload': _is.MethodConnector(
+          name: 'verifyUpload',
+          params: {
+            'imageId': _is.ParameterDescription(
+              name: 'imageId',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'variant': _is.ParameterDescription(
+              name: 'variant',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['image'] as _iu0td00j.ImageEndpoint).verifyUpload(
+                session,
+                params['imageId'],
+                params['variant'],
+              ),
+        ),
+        'findMissing': _is.MethodConnector(
+          name: 'findMissing',
+          params: {
+            'imageIds': _is.ParameterDescription(
+              name: 'imageIds',
+              type: _is.getType<List<String>>(),
+              nullable: false,
+            ),
+            'variant': _is.ParameterDescription(
+              name: 'variant',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['image'] as _iu0td00j.ImageEndpoint).findMissing(
+                session,
+                params['imageIds'],
+                params['variant'],
+              ),
+        ),
+        'createDownloads': _is.MethodConnector(
+          name: 'createDownloads',
+          params: {
+            'imageIds': _is.ParameterDescription(
+              name: 'imageIds',
+              type: _is.getType<List<String>>(),
+              nullable: false,
+            ),
+            'variant': _is.ParameterDescription(
+              name: 'variant',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['image'] as _iu0td00j.ImageEndpoint).createDownloads(
+                session,
+                params['imageIds'],
+                params['variant'],
+              ),
         ),
       },
     );

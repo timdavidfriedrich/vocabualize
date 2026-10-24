@@ -12,11 +12,9 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
-
 import 'package:serverpod_client/serverpod_client.dart' as _isc;
 import 'package:serverpod_database/serverpod_database.dart' as _isd;
 import 'package:vocabualize_client/src/protocol/protocol.dart' as _iow7dylj;
-
 import '../sync/local_tag.dart' as _i739zjxr;
 import '../sync/local_vocabulary.dart' as _iwjoehei;
 
@@ -29,6 +27,7 @@ abstract class LocalVocabularyTag
     this.vocabulary,
     required this.tagId,
     this.tag,
+    this.extras,
   });
 
   factory LocalVocabularyTag({
@@ -38,6 +37,7 @@ abstract class LocalVocabularyTag
     _iwjoehei.LocalVocabulary? vocabulary,
     required _isc.UuidValue tagId,
     _i739zjxr.LocalTag? tag,
+    String? extras,
   }) = _LocalVocabularyTagImpl;
 
   factory LocalVocabularyTag.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -60,6 +60,7 @@ abstract class LocalVocabularyTag
           : _iow7dylj.Protocol().deserialize<_i739zjxr.LocalTag>(
               jsonSerialization['tag'],
             ),
+      extras: jsonSerialization['extras'] as String?,
     );
   }
 
@@ -81,6 +82,8 @@ abstract class LocalVocabularyTag
 
   _i739zjxr.LocalTag? tag;
 
+  String? extras;
+
   @override
   _isd.Table<_isc.UuidValue?> get table => t;
 
@@ -95,6 +98,7 @@ abstract class LocalVocabularyTag
         const _UndefinedLocalVocabularyTag$vocabulary(),
     _isc.UuidValue? tagId,
     _i739zjxr.LocalTag? tag = const _UndefinedLocalVocabularyTag$tag(),
+    String? extras,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -106,6 +110,7 @@ abstract class LocalVocabularyTag
       if (vocabulary != null) 'vocabulary': vocabulary?.toJson(),
       'tagId': tagId.toJson(),
       if (tag != null) 'tag': tag?.toJson(),
+      if (extras != null) 'extras': extras,
     };
   }
 
@@ -119,6 +124,7 @@ abstract class LocalVocabularyTag
       if (vocabulary != null) 'vocabulary': vocabulary?.toJsonForProtocol(),
       'tagId': tagId.toJson(),
       if (tag != null) 'tag': tag?.toJsonForProtocol(),
+      if (extras != null) 'extras': extras,
     };
   }
 
@@ -176,6 +182,7 @@ class _LocalVocabularyTagImpl extends LocalVocabularyTag {
     _iwjoehei.LocalVocabulary? vocabulary,
     required _isc.UuidValue tagId,
     _i739zjxr.LocalTag? tag,
+    String? extras,
   }) : super._(
          id: id,
          spaceId: spaceId,
@@ -183,6 +190,7 @@ class _LocalVocabularyTagImpl extends LocalVocabularyTag {
          vocabulary: vocabulary,
          tagId: tagId,
          tag: tag,
+         extras: extras,
        );
 
   /// Returns a shallow copy of this [LocalVocabularyTag]
@@ -197,6 +205,7 @@ class _LocalVocabularyTagImpl extends LocalVocabularyTag {
         const _UndefinedLocalVocabularyTag$vocabulary(),
     _isc.UuidValue? tagId,
     _i739zjxr.LocalTag? tag = const _UndefinedLocalVocabularyTag$tag(),
+    Object? extras = _Undefined,
   }) {
     return LocalVocabularyTag(
       id: id is _isc.UndefinedSentinel ? this.id : id,
@@ -207,6 +216,7 @@ class _LocalVocabularyTagImpl extends LocalVocabularyTag {
           : vocabulary,
       tagId: tagId ?? this.tagId,
       tag: tag is _isc.UndefinedSentinel ? this.tag?.copyWith() : tag,
+      extras: extras is String? ? extras : this.extras,
     );
   }
 }
@@ -233,6 +243,11 @@ class LocalVocabularyTagUpdateTable
     table.tagId,
     value,
   );
+
+  _isd.ColumnValue<String, String> extras(String? value) => _isd.ColumnValue(
+    table.extras,
+    value,
+  );
 }
 
 class LocalVocabularyTagTable extends _isd.Table<_isc.UuidValue?> {
@@ -251,6 +266,10 @@ class LocalVocabularyTagTable extends _isd.Table<_isc.UuidValue?> {
       'tagId',
       this,
     );
+    extras = _isd.ColumnString(
+      'extras',
+      this,
+    );
   }
 
   late final LocalVocabularyTagUpdateTable updateTable;
@@ -265,6 +284,8 @@ class LocalVocabularyTagTable extends _isd.Table<_isc.UuidValue?> {
   late final _isd.ColumnUuid tagId;
 
   _i739zjxr.LocalTagTable? _tag;
+
+  late final _isd.ColumnString extras;
 
   _iwjoehei.LocalVocabularyTable get vocabulary {
     if (_vocabulary != null) return _vocabulary!;
@@ -298,6 +319,7 @@ class LocalVocabularyTagTable extends _isd.Table<_isc.UuidValue?> {
     spaceId,
     vocabularyId,
     tagId,
+    extras,
   ];
 
   @override

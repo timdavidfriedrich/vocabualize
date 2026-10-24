@@ -5,6 +5,7 @@ fields:
   type: String
   localDate: String
   occurredAt: DateTime
+  extras: String?
 indexes:
   activity_local_date_idx:
     fields: localDate

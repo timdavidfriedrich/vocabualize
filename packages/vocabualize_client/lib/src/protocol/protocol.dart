@@ -19,13 +19,16 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 import 'package:serverpod_database/serverpod_database.dart' as _isd;
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart'
     as _ipulbpi2;
-
+import 'package:vocabualize_client/src/protocol/images/remote_image_download.dart'
+    as _ixnafqut;
 import 'config/remote_app_config.dart' as _ia9g9wp9;
+import 'images/remote_image_download.dart' as _i35otcr0;
 import 'sync/local_activity.dart' as _ilpzzhur;
 import 'sync/local_tag.dart' as _ia93wqla;
 import 'sync/local_vocabulary.dart' as _ifmbxptn;
 import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
 export 'config/remote_app_config.dart';
+export 'images/remote_image_download.dart';
 export 'sync/local_activity.dart';
 export 'sync/local_tag.dart';
 export 'sync/local_vocabulary.dart';
@@ -47,15 +50,19 @@ class Protocol extends _isd.DatabaseSerializationManager
         this,
         types: const [
           _isc.getType<_ia9g9wp9.RemoteAppConfig>,
+          _isc.getType<_i35otcr0.RemoteImageDownload>,
           _isc.getType<_ilpzzhur.LocalActivity>,
           _isc.getType<_ia93wqla.LocalTag>,
           _isc.getType<_ifmbxptn.LocalVocabulary>,
           _isc.getType<_iagtk9m4.LocalVocabularyTag>,
           _isc.getType<_ia9g9wp9.RemoteAppConfig?>,
+          _isc.getType<_i35otcr0.RemoteImageDownload?>,
           _isc.getType<_ilpzzhur.LocalActivity?>,
           _isc.getType<_ia93wqla.LocalTag?>,
           _isc.getType<_ifmbxptn.LocalVocabulary?>,
           _isc.getType<_iagtk9m4.LocalVocabularyTag?>,
+          _isc.getType<List<String>>,
+          _isc.getType<List<_ixnafqut.RemoteImageDownload>>,
         ],
         modules: const [
           _iaic.Protocol.new,
@@ -101,6 +108,12 @@ class Protocol extends _isd.DatabaseSerializationManager
           columnType: _isd.ColumnType.timestampWithoutTimeZone,
           isNullable: false,
           dartType: 'DateTime',
+        ),
+        _isd.ColumnDefinition(
+          name: 'extras',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
         ),
       ],
       foreignKeys: [
@@ -386,6 +399,12 @@ class Protocol extends _isd.DatabaseSerializationManager
           isNullable: false,
           dartType: 'UuidValue',
         ),
+        _isd.ColumnDefinition(
+          name: 'extras',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
       ],
       foreignKeys: [
         _isd.ForeignKeyDefinition(
@@ -468,6 +487,9 @@ class Protocol extends _isd.DatabaseSerializationManager
     if (t == _ia9g9wp9.RemoteAppConfig) {
       return _ia9g9wp9.RemoteAppConfig.fromJson(data) as T;
     }
+    if (t == _i35otcr0.RemoteImageDownload) {
+      return _i35otcr0.RemoteImageDownload.fromJson(data) as T;
+    }
     if (t == _ilpzzhur.LocalActivity) {
       return _ilpzzhur.LocalActivity.fromJson(data) as T;
     }
@@ -482,6 +504,12 @@ class Protocol extends _isd.DatabaseSerializationManager
     }
     if (t == _isc.getType<_ia9g9wp9.RemoteAppConfig?>()) {
       return (data != null ? _ia9g9wp9.RemoteAppConfig.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i35otcr0.RemoteImageDownload?>()) {
+      return (data != null
+              ? _i35otcr0.RemoteImageDownload.fromJson(data)
+              : null)
           as T;
     }
     if (t == _isc.getType<_ilpzzhur.LocalActivity?>()) {
@@ -499,6 +527,15 @@ class Protocol extends _isd.DatabaseSerializationManager
       return (data != null ? _iagtk9m4.LocalVocabularyTag.fromJson(data) : null)
           as T;
     }
+    if (t == List<String>) {
+      return (data as List).map((e) => deserialize<String>(e)).toList() as T;
+    }
+    if (t == List<_ixnafqut.RemoteImageDownload>) {
+      return (data as List)
+              .map((e) => deserialize<_ixnafqut.RemoteImageDownload>(e))
+              .toList()
+          as T;
+    }
     final modules = dataClassName == null
         ? deserializationMetadata.modulesForType(t)
         : deserializationMetadata.modules;
@@ -514,6 +551,7 @@ class Protocol extends _isd.DatabaseSerializationManager
   static String? getClassNameForType(Type type) {
     return switch (type) {
       _ia9g9wp9.RemoteAppConfig => 'RemoteAppConfig',
+      _i35otcr0.RemoteImageDownload => 'RemoteImageDownload',
       _ilpzzhur.LocalActivity => 'LocalActivity',
       _ia93wqla.LocalTag => 'LocalTag',
       _ifmbxptn.LocalVocabulary => 'LocalVocabulary',
@@ -534,6 +572,8 @@ class Protocol extends _isd.DatabaseSerializationManager
     switch (data) {
       case _ia9g9wp9.RemoteAppConfig():
         return 'RemoteAppConfig';
+      case _i35otcr0.RemoteImageDownload():
+        return 'RemoteImageDownload';
       case _ilpzzhur.LocalActivity():
         return 'LocalActivity';
       case _ia93wqla.LocalTag():
@@ -572,6 +612,9 @@ class Protocol extends _isd.DatabaseSerializationManager
     }
     if (dataClassName == 'RemoteAppConfig') {
       return deserialize<_ia9g9wp9.RemoteAppConfig>(data['data']);
+    }
+    if (dataClassName == 'RemoteImageDownload') {
+      return deserialize<_i35otcr0.RemoteImageDownload>(data['data']);
     }
     if (dataClassName == 'LocalActivity') {
       return deserialize<_ilpzzhur.LocalActivity>(data['data']);

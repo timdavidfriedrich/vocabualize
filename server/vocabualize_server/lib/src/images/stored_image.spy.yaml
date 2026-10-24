@@ -1,0 +1,13 @@
+class: StoredImage
+table: stored_image
+serverOnly: true
+fields:
+  authUserId: UuidValue
+  imageId: UuidValue
+  variant: String
+  byteSize: int
+  uploadedAt: DateTime
+indexes:
+  stored_image_owner_image_variant_idx:
+    fields: authUserId, imageId, variant
+    unique: true

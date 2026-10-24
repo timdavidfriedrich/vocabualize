@@ -1,0 +1,5 @@
+class: RemoteImageDownload
+fields:
+  imageId: String
+  variant: String
+  url: String

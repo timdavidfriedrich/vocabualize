@@ -20,6 +20,7 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
     required this.type,
     required this.localDate,
     required this.occurredAt,
+    this.extras,
   });
 
   factory LocalActivity({
@@ -28,6 +29,7 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
     required String type,
     required String localDate,
     required DateTime occurredAt,
+    String? extras,
   }) = _LocalActivityImpl;
 
   factory LocalActivity.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -39,6 +41,7 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
       type: jsonSerialization['type'] as String,
       localDate: jsonSerialization['localDate'] as String,
       occurredAt: _is.DateTimeJsonExtension.fromJson(jsonSerialization['occurredAt']),
+      extras: jsonSerialization['extras'] as String?,
     );
   }
 
@@ -58,6 +61,8 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
 
   DateTime occurredAt;
 
+  String? extras;
+
   @override
   _is.Table<_is.UuidValue?> get table => t;
 
@@ -70,6 +75,7 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
     String? type,
     String? localDate,
     DateTime? occurredAt,
+    String? extras,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -80,6 +86,7 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
       'type': type,
       'localDate': localDate,
       'occurredAt': occurredAt.toJson(),
+      if (extras != null) 'extras': extras,
     };
   }
 
@@ -92,6 +99,7 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
       'type': type,
       'localDate': localDate,
       'occurredAt': occurredAt.toJson(),
+      if (extras != null) 'extras': extras,
     };
   }
 
@@ -132,12 +140,14 @@ class _LocalActivityImpl extends LocalActivity {
     required String type,
     required String localDate,
     required DateTime occurredAt,
+    String? extras,
   }) : super._(
          id: id,
          spaceId: spaceId,
          type: type,
          localDate: localDate,
          occurredAt: occurredAt,
+         extras: extras,
        );
 
   /// Returns a shallow copy of this [LocalActivity]
@@ -150,6 +160,7 @@ class _LocalActivityImpl extends LocalActivity {
     String? type,
     String? localDate,
     DateTime? occurredAt,
+    Object? extras = _Undefined,
   }) {
     return LocalActivity(
       id: id is _is.UndefinedSentinel ? this.id : id,
@@ -157,6 +168,7 @@ class _LocalActivityImpl extends LocalActivity {
       type: type ?? this.type,
       localDate: localDate ?? this.localDate,
       occurredAt: occurredAt ?? this.occurredAt,
+      extras: extras is String? ? extras : this.extras,
     );
   }
 }
@@ -183,6 +195,11 @@ class LocalActivityUpdateTable extends _is.UpdateTable<LocalActivityTable> {
     table.occurredAt,
     value,
   );
+
+  _is.ColumnValue<String, String> extras(String? value) => _is.ColumnValue(
+    table.extras,
+    value,
+  );
 }
 
 class LocalActivityTable extends _is.Table<_is.UuidValue?> {
@@ -204,6 +221,10 @@ class LocalActivityTable extends _is.Table<_is.UuidValue?> {
       'occurredAt',
       this,
     );
+    extras = _is.ColumnString(
+      'extras',
+      this,
+    );
   }
 
   late final LocalActivityUpdateTable updateTable;
@@ -217,6 +238,8 @@ class LocalActivityTable extends _is.Table<_is.UuidValue?> {
 
   late final _is.ColumnDateTime occurredAt;
 
+  late final _is.ColumnString extras;
+
   @override
   List<_is.Column> get columns => [
     id,
@@ -224,6 +247,7 @@ class LocalActivityTable extends _is.Table<_is.UuidValue?> {
     type,
     localDate,
     occurredAt,
+    extras,
   ];
 }
 

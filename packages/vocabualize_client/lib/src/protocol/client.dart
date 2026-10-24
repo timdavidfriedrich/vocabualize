@@ -11,7 +11,6 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
-
 import 'package:http/http.dart' as _i85jenna;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
@@ -23,10 +22,10 @@ import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart
     as _ipulbpi2;
 import 'package:vocabualize_client/src/protocol/config/remote_app_config.dart'
     as _iregoumn;
-
+import 'package:vocabualize_client/src/protocol/images/remote_image_download.dart'
+    as _ixnafqut;
 import 'protocol.dart' as _il2as5qe;
 import 'sync_tables.dart' as _ii3f3u05;
-
 import 'package:vocabualize_client/migrations/migration_registry.dart';
 
 /// {@category Endpoint}
@@ -138,6 +137,64 @@ class EndpointConfig extends _isc.EndpointRef {
       );
 }
 
+/// {@category Endpoint}
+class EndpointImage extends _isc.EndpointRef {
+  EndpointImage(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'image';
+
+  _ida.Future<String?> createUpload(
+    String imageId,
+    String variant,
+    int byteSize,
+  ) => caller.callServerEndpoint<String?>(
+    'image',
+    'createUpload',
+    {
+      'imageId': imageId,
+      'variant': variant,
+      'byteSize': byteSize,
+    },
+  );
+
+  _ida.Future<bool> verifyUpload(
+    String imageId,
+    String variant,
+  ) => caller.callServerEndpoint<bool>(
+    'image',
+    'verifyUpload',
+    {
+      'imageId': imageId,
+      'variant': variant,
+    },
+  );
+
+  _ida.Future<List<String>> findMissing(
+    List<String> imageIds,
+    String variant,
+  ) => caller.callServerEndpoint<List<String>>(
+    'image',
+    'findMissing',
+    {
+      'imageIds': imageIds,
+      'variant': variant,
+    },
+  );
+
+  _ida.Future<List<_ixnafqut.RemoteImageDownload>> createDownloads(
+    List<String> imageIds,
+    String variant,
+  ) => caller.callServerEndpoint<List<_ixnafqut.RemoteImageDownload>>(
+    'image',
+    'createDownloads',
+    {
+      'imageIds': imageIds,
+      'variant': variant,
+    },
+  );
+}
+
 class Modules {
   Modules(Client client) {
     serverpod_auth_idp = _iaic.Caller(client);
@@ -182,6 +239,7 @@ class Client extends _isc.ServerpodClientShared {
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
     config = EndpointConfig(this);
+    image = EndpointImage(this);
     modules = Modules(this);
   }
 
@@ -191,6 +249,8 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointConfig config;
 
+  late final EndpointImage image;
+
   late final Modules modules;
 
   @override
@@ -198,6 +258,7 @@ class Client extends _isc.ServerpodClientShared {
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
     'config': config,
+    'image': image,
   };
 
   @override

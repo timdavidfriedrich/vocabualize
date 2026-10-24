@@ -26,6 +26,7 @@ abstract class LocalVocabularyTag
     this.vocabulary,
     required this.tagId,
     this.tag,
+    this.extras,
   });
 
   factory LocalVocabularyTag({
@@ -35,6 +36,7 @@ abstract class LocalVocabularyTag
     _iwjoehei.LocalVocabulary? vocabulary,
     required _is.UuidValue tagId,
     _i739zjxr.LocalTag? tag,
+    String? extras,
   }) = _LocalVocabularyTagImpl;
 
   factory LocalVocabularyTag.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -53,6 +55,7 @@ abstract class LocalVocabularyTag
       tag: jsonSerialization['tag'] == null
           ? null
           : _i935iz7n.Protocol().deserialize<_i739zjxr.LocalTag>(jsonSerialization['tag']),
+      extras: jsonSerialization['extras'] as String?,
     );
   }
 
@@ -74,6 +77,8 @@ abstract class LocalVocabularyTag
 
   _i739zjxr.LocalTag? tag;
 
+  String? extras;
+
   @override
   _is.Table<_is.UuidValue?> get table => t;
 
@@ -87,6 +92,7 @@ abstract class LocalVocabularyTag
     _iwjoehei.LocalVocabulary? vocabulary = const _UndefinedLocalVocabularyTag$vocabulary(),
     _is.UuidValue? tagId,
     _i739zjxr.LocalTag? tag = const _UndefinedLocalVocabularyTag$tag(),
+    String? extras,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -98,6 +104,7 @@ abstract class LocalVocabularyTag
       if (vocabulary != null) 'vocabulary': vocabulary?.toJson(),
       'tagId': tagId.toJson(),
       if (tag != null) 'tag': tag?.toJson(),
+      if (extras != null) 'extras': extras,
     };
   }
 
@@ -111,6 +118,7 @@ abstract class LocalVocabularyTag
       if (vocabulary != null) 'vocabulary': vocabulary?.toJsonForProtocol(),
       'tagId': tagId.toJson(),
       if (tag != null) 'tag': tag?.toJsonForProtocol(),
+      if (extras != null) 'extras': extras,
     };
   }
 
@@ -167,6 +175,7 @@ class _LocalVocabularyTagImpl extends LocalVocabularyTag {
     _iwjoehei.LocalVocabulary? vocabulary,
     required _is.UuidValue tagId,
     _i739zjxr.LocalTag? tag,
+    String? extras,
   }) : super._(
          id: id,
          spaceId: spaceId,
@@ -174,6 +183,7 @@ class _LocalVocabularyTagImpl extends LocalVocabularyTag {
          vocabulary: vocabulary,
          tagId: tagId,
          tag: tag,
+         extras: extras,
        );
 
   /// Returns a shallow copy of this [LocalVocabularyTag]
@@ -187,6 +197,7 @@ class _LocalVocabularyTagImpl extends LocalVocabularyTag {
     _iwjoehei.LocalVocabulary? vocabulary = const _UndefinedLocalVocabularyTag$vocabulary(),
     _is.UuidValue? tagId,
     _i739zjxr.LocalTag? tag = const _UndefinedLocalVocabularyTag$tag(),
+    Object? extras = _Undefined,
   }) {
     return LocalVocabularyTag(
       id: id is _is.UndefinedSentinel ? this.id : id,
@@ -195,6 +206,7 @@ class _LocalVocabularyTagImpl extends LocalVocabularyTag {
       vocabulary: vocabulary is _is.UndefinedSentinel ? this.vocabulary?.copyWith() : vocabulary,
       tagId: tagId ?? this.tagId,
       tag: tag is _is.UndefinedSentinel ? this.tag?.copyWith() : tag,
+      extras: extras is String? ? extras : this.extras,
     );
   }
 }
@@ -217,6 +229,11 @@ class LocalVocabularyTagUpdateTable extends _is.UpdateTable<LocalVocabularyTagTa
     table.tagId,
     value,
   );
+
+  _is.ColumnValue<String, String> extras(String? value) => _is.ColumnValue(
+    table.extras,
+    value,
+  );
 }
 
 class LocalVocabularyTagTable extends _is.Table<_is.UuidValue?> {
@@ -234,6 +251,10 @@ class LocalVocabularyTagTable extends _is.Table<_is.UuidValue?> {
       'tagId',
       this,
     );
+    extras = _is.ColumnString(
+      'extras',
+      this,
+    );
   }
 
   late final LocalVocabularyTagUpdateTable updateTable;
@@ -248,6 +269,8 @@ class LocalVocabularyTagTable extends _is.Table<_is.UuidValue?> {
   late final _is.ColumnUuid tagId;
 
   _i739zjxr.LocalTagTable? _tag;
+
+  late final _is.ColumnString extras;
 
   _iwjoehei.LocalVocabularyTable get vocabulary {
     if (_vocabulary != null) return _vocabulary!;
@@ -281,6 +304,7 @@ class LocalVocabularyTagTable extends _is.Table<_is.UuidValue?> {
     spaceId,
     vocabularyId,
     tagId,
+    extras,
   ];
 
   @override

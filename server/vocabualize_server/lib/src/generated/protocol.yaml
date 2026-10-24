@@ -6,3 +6,8 @@ jwtRefresh:
   - refreshAccessToken:
 config:
   - fetch:
+image:
+  - createUpload:
+  - verifyUpload:
+  - findMissing:
+  - createDownloads:

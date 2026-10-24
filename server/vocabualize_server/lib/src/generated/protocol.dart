@@ -16,9 +16,12 @@ import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart' as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _iais;
 import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart' as _izehhkf5;
+import 'package:vocabualize_server/src/generated/images/remote_image_download.dart' as _ixx56s9r;
 import 'config/image_storage_config.dart' as _il54hkej;
 import 'config/remote_app_config.dart' as _ia9g9wp9;
 import 'config/runtime_config.dart' as _iadewe5j;
+import 'images/remote_image_download.dart' as _i35otcr0;
+import 'images/stored_image.dart' as _i3kglx6m;
 import 'sync/local_activity.dart' as _ilpzzhur;
 import 'sync/local_tag.dart' as _ia93wqla;
 import 'sync/local_vocabulary.dart' as _ifmbxptn;
@@ -26,6 +29,8 @@ import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
 export 'config/image_storage_config.dart';
 export 'config/remote_app_config.dart';
 export 'config/runtime_config.dart';
+export 'images/remote_image_download.dart';
+export 'images/stored_image.dart';
 export 'sync/local_activity.dart';
 export 'sync/local_tag.dart';
 export 'sync/local_vocabulary.dart';
@@ -47,6 +52,8 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_il54hkej.ImageStorageConfig>,
       _is.getType<_ia9g9wp9.RemoteAppConfig>,
       _is.getType<_iadewe5j.RuntimeConfig>,
+      _is.getType<_i35otcr0.RemoteImageDownload>,
+      _is.getType<_i3kglx6m.StoredImage>,
       _is.getType<_ilpzzhur.LocalActivity>,
       _is.getType<_ia93wqla.LocalTag>,
       _is.getType<_ifmbxptn.LocalVocabulary>,
@@ -54,10 +61,14 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_il54hkej.ImageStorageConfig?>,
       _is.getType<_ia9g9wp9.RemoteAppConfig?>,
       _is.getType<_iadewe5j.RuntimeConfig?>,
+      _is.getType<_i35otcr0.RemoteImageDownload?>,
+      _is.getType<_i3kglx6m.StoredImage?>,
       _is.getType<_ilpzzhur.LocalActivity?>,
       _is.getType<_ia93wqla.LocalTag?>,
       _is.getType<_ifmbxptn.LocalVocabulary?>,
       _is.getType<_iagtk9m4.LocalVocabularyTag?>,
+      _is.getType<List<String>>,
+      _is.getType<List<_ixx56s9r.RemoteImageDownload>>,
     ],
     modules: const [
       _iais.Protocol.new,
@@ -105,6 +116,12 @@ class Protocol extends _is.DatabaseSerializationManager
           isNullable: false,
           dartType: 'DateTime',
         ),
+        _isp.ColumnDefinition(
+          name: 'extras',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
       ],
       foreignKeys: [
         _isp.ForeignKeyDefinition(
@@ -130,6 +147,76 @@ class Protocol extends _is.DatabaseSerializationManager
           ],
           type: 'btree',
           isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'stored_image',
+      dartName: 'StoredImage',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'authUserId',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _isp.ColumnDefinition(
+          name: 'imageId',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _isp.ColumnDefinition(
+          name: 'variant',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'byteSize',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'uploadedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'stored_image_owner_image_variant_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'authUserId',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'imageId',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'variant',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
           isPrimary: false,
         ),
       ],
@@ -389,6 +476,12 @@ class Protocol extends _is.DatabaseSerializationManager
           isNullable: false,
           dartType: 'UuidValue',
         ),
+        _isp.ColumnDefinition(
+          name: 'extras',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
       ],
       foreignKeys: [
         _isp.ForeignKeyDefinition(
@@ -469,6 +562,12 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _iadewe5j.RuntimeConfig) {
       return _iadewe5j.RuntimeConfig.fromJson(data) as T;
     }
+    if (t == _i35otcr0.RemoteImageDownload) {
+      return _i35otcr0.RemoteImageDownload.fromJson(data) as T;
+    }
+    if (t == _i3kglx6m.StoredImage) {
+      return _i3kglx6m.StoredImage.fromJson(data) as T;
+    }
     if (t == _ilpzzhur.LocalActivity) {
       return _ilpzzhur.LocalActivity.fromJson(data) as T;
     }
@@ -490,6 +589,12 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _is.getType<_iadewe5j.RuntimeConfig?>()) {
       return (data != null ? _iadewe5j.RuntimeConfig.fromJson(data) : null) as T;
     }
+    if (t == _is.getType<_i35otcr0.RemoteImageDownload?>()) {
+      return (data != null ? _i35otcr0.RemoteImageDownload.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i3kglx6m.StoredImage?>()) {
+      return (data != null ? _i3kglx6m.StoredImage.fromJson(data) : null) as T;
+    }
     if (t == _is.getType<_ilpzzhur.LocalActivity?>()) {
       return (data != null ? _ilpzzhur.LocalActivity.fromJson(data) : null) as T;
     }
@@ -501,6 +606,12 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (t == _is.getType<_iagtk9m4.LocalVocabularyTag?>()) {
       return (data != null ? _iagtk9m4.LocalVocabularyTag.fromJson(data) : null) as T;
+    }
+    if (t == List<String>) {
+      return (data as List).map((e) => deserialize<String>(e)).toList() as T;
+    }
+    if (t == List<_ixx56s9r.RemoteImageDownload>) {
+      return (data as List).map((e) => deserialize<_ixx56s9r.RemoteImageDownload>(e)).toList() as T;
     }
     final modules = dataClassName == null
         ? deserializationMetadata.modulesForType(t)
@@ -519,6 +630,8 @@ class Protocol extends _is.DatabaseSerializationManager
       _il54hkej.ImageStorageConfig => 'ImageStorageConfig',
       _ia9g9wp9.RemoteAppConfig => 'RemoteAppConfig',
       _iadewe5j.RuntimeConfig => 'RuntimeConfig',
+      _i35otcr0.RemoteImageDownload => 'RemoteImageDownload',
+      _i3kglx6m.StoredImage => 'StoredImage',
       _ilpzzhur.LocalActivity => 'LocalActivity',
       _ia93wqla.LocalTag => 'LocalTag',
       _ifmbxptn.LocalVocabulary => 'LocalVocabulary',
@@ -543,6 +656,10 @@ class Protocol extends _is.DatabaseSerializationManager
         return 'RemoteAppConfig';
       case _iadewe5j.RuntimeConfig():
         return 'RuntimeConfig';
+      case _i35otcr0.RemoteImageDownload():
+        return 'RemoteImageDownload';
+      case _i3kglx6m.StoredImage():
+        return 'StoredImage';
       case _ilpzzhur.LocalActivity():
         return 'LocalActivity';
       case _ia93wqla.LocalTag():
@@ -585,6 +702,12 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (dataClassName == 'RuntimeConfig') {
       return deserialize<_iadewe5j.RuntimeConfig>(data['data']);
+    }
+    if (dataClassName == 'RemoteImageDownload') {
+      return deserialize<_i35otcr0.RemoteImageDownload>(data['data']);
+    }
+    if (dataClassName == 'StoredImage') {
+      return deserialize<_i3kglx6m.StoredImage>(data['data']);
     }
     if (dataClassName == 'LocalActivity') {
       return deserialize<_ilpzzhur.LocalActivity>(data['data']);
@@ -650,6 +773,8 @@ class Protocol extends _is.DatabaseSerializationManager
       }
     }
     switch (t) {
+      case _i3kglx6m.StoredImage:
+        return _i3kglx6m.StoredImage.t;
       case _ilpzzhur.LocalActivity:
         return _ilpzzhur.LocalActivity.t;
       case _ia93wqla.LocalTag:

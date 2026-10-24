@@ -4,3 +4,4 @@ database: sync
 fields:
   vocabulary: LocalVocabulary?, relation(fk, onDelete=Cascade, deferred)
   tag: LocalTag?, relation(fk, onDelete=Cascade, deferred)
+  extras: String?
