@@ -44,5 +44,11 @@ The spike's findings are in `docs/spike_serverpod_sync.md` and are binding for t
 
 ## Commits
 
-- Messages follow the form `[ADD] …`, `[CHANGE] …` or `[FIX] …`, with a lowercase description of what changed.
-- The author is the repository owner alone. Never add co-author, session or "generated with" lines to commits or pull requests.
+- **Format:** `[<FIX|FEATURE|ADD|REMOVE|CHANGE>] <one-liner>`, one thing per commit.
+  - `FIX`: a bug was fixed. The one-liner describes the original error, e.g. `[FIX] the app could not save anything without an account`.
+  - `FEATURE`: a completely new thing.
+  - `ADD`: small additions.
+  - `REMOVE`: removing something.
+  - `CHANGE`: an existing feature changed, without being strictly added or removed.
+- **Reading:** the message reads as one sentence. If the keyword works as its verb, the one-liner continues in lowercase: `[ADD] this one functionality to this existing feature`. If the keyword can't be part of the sentence, the one-liner starts in uppercase.
+- **Author:** the repository owner alone. Never add co-author, session or "generated with" lines to commits or pull requests.
