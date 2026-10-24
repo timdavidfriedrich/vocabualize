@@ -785,6 +785,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your session expired. Sign in again to keep syncing.'**
   String get syncStatusSignInRequired;
+
+  /// No description provided for @gateUpdateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update required'**
+  String get gateUpdateTitle;
+
+  /// No description provided for @gateUpdateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This version of Vocabualize is no longer supported. Please update the app to keep learning.'**
+  String get gateUpdateMessage;
+
+  /// No description provided for @gateUpdateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get gateUpdateButton;
+
+  /// No description provided for @gateMaintenanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Under maintenance'**
+  String get gateMaintenanceTitle;
+
+  /// No description provided for @gateMaintenanceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Vocabualize is being updated. Please try again later.'**
+  String get gateMaintenanceMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

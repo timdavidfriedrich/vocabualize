@@ -406,4 +406,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncStatusSignInRequired => 'Your session expired. Sign in again to keep syncing.';
+
+  @override
+  String get gateUpdateTitle => 'Update required';
+
+  @override
+  String get gateUpdateMessage =>
+      'This version of Vocabualize is no longer supported. Please update the app to keep learning.';
+
+  @override
+  String get gateUpdateButton => 'Update';
+
+  @override
+  String get gateMaintenanceTitle => 'Under maintenance';
+
+  @override
+  String get gateMaintenanceMessage => 'Vocabualize is being updated. Please try again later.';
 }

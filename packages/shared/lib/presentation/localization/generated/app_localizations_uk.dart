@@ -422,4 +422,20 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get syncStatusSignInRequired =>
       'Ваш сеанс завершився. Увійдіть знову, щоб продовжити синхронізацію.';
+
+  @override
+  String get gateUpdateTitle => 'Потрібне оновлення';
+
+  @override
+  String get gateUpdateMessage =>
+      'Ця версія Vocabualize більше не підтримується. Оновіть застосунок, щоб продовжити навчання.';
+
+  @override
+  String get gateUpdateButton => 'Оновити';
+
+  @override
+  String get gateMaintenanceTitle => 'Технічне обслуговування';
+
+  @override
+  String get gateMaintenanceMessage => 'Vocabualize оновлюється. Спробуйте пізніше.';
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:core/error/app_result.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_screen.dart';
-import 'package:feature_gate/presentation/splash_screen.dart';
+import 'package:feature_gate/presentation/splash/splash_screen.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_screen.dart';

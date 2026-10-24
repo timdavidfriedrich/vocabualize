@@ -113,5 +113,10 @@
   "syncStatusSynced": "Усі зміни синхронізовано",
   "syncStatusOffline": "Офлайн. Зміни синхронізуються, щойно ви знову будете в мережі.",
   "syncStatusUpdateRequired": "Оновіть застосунок, щоб продовжити синхронізацію.",
-  "syncStatusSignInRequired": "Ваш сеанс завершився. Увійдіть знову, щоб продовжити синхронізацію."
+  "syncStatusSignInRequired": "Ваш сеанс завершився. Увійдіть знову, щоб продовжити синхронізацію.",
+  "gateUpdateTitle": "Потрібне оновлення",
+  "gateUpdateMessage": "Ця версія Vocabualize більше не підтримується. Оновіть застосунок, щоб продовжити навчання.",
+  "gateUpdateButton": "Оновити",
+  "gateMaintenanceTitle": "Технічне обслуговування",
+  "gateMaintenanceMessage": "Vocabualize оновлюється. Спробуйте пізніше."
 }

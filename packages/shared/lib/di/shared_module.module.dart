@@ -12,6 +12,11 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart'
     as _i90;
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart'
     as _i654;
+import 'package:shared/data/data_sources/app_config_local_data_source.dart'
+    as _i49;
+import 'package:shared/data/data_sources/app_config_remote_data_source.dart'
+    as _i223;
+import 'package:shared/data/data_sources/app_info_data_source.dart' as _i394;
 import 'package:shared/data/data_sources/auth_data_source.dart' as _i535;
 import 'package:shared/data/data_sources/database_session_data_source.dart'
     as _i862;
@@ -27,12 +32,18 @@ import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart'
     as _i397;
 import 'package:shared/data/repositories/account_repository_impl.dart' as _i631;
+import 'package:shared/data/repositories/app_config_repository_impl.dart'
+    as _i509;
+import 'package:shared/data/repositories/app_info_repository_impl.dart'
+    as _i1026;
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
 import 'package:shared/data/repositories/sync_repository_impl.dart' as _i368;
 import 'package:shared/data/repositories/vocabulary_repository_impl.dart'
     as _i22;
 import 'package:shared/di/serverpod_client_module.dart' as _i74;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
+import 'package:shared/domain/repositories/app_config_repository.dart' as _i541;
+import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
@@ -49,12 +60,18 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => serverpodClientModule.sessionManager());
     gh.lazySingleton<_i90.ConnectivityMonitor>(
         () => serverpodClientModule.connectivityMonitor());
+    gh.factory<_i394.AppInfoDataSource>(
+        () => const _i394.AppInfoDataSourceImpl());
     gh.factory<_i179.ImageProcessingDataSource>(
         () => const _i179.ImageProcessingDataSourceImpl());
+    gh.lazySingleton<_i49.AppConfigLocalDataSource>(
+        () => _i49.AppConfigLocalDataSourceImpl());
     gh.lazySingleton<_i1040.Client>(() => serverpodClientModule.client(
           gh<_i90.FlutterAuthSessionManager>(),
           gh<_i90.ConnectivityMonitor>(),
         ));
+    gh.factory<_i328.AppInfoRepository>(
+        () => _i1026.AppInfoRepositoryImpl(gh<_i394.AppInfoDataSource>()));
     gh.factory<_i28.ImageTransferDataSource>(
         () => _i28.ImageTransferDataSourceImpl(
               gh<_i1040.Client>(),
@@ -64,6 +81,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i1040.Client>(),
           gh<_i654.ConnectivityMonitor>(),
         ));
+    gh.factory<_i223.AppConfigRemoteDataSource>(
+        () => _i223.AppConfigRemoteDataSourceImpl(gh<_i1040.Client>()));
     gh.lazySingleton<_i862.DatabaseSessionDataSource>(
         () => _i862.DatabaseSessionDataSourceImpl(gh<_i1040.Client>()));
     gh.factory<_i204.ImageRepository>(
@@ -73,6 +92,10 @@ class SharedPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i535.AuthDataSource>(() => _i535.AuthDataSourceImpl(
           gh<_i1040.Client>(),
           gh<_i90.FlutterAuthSessionManager>(),
+        ));
+    gh.factory<_i541.AppConfigRepository>(() => _i509.AppConfigRepositoryImpl(
+          gh<_i223.AppConfigRemoteDataSource>(),
+          gh<_i49.AppConfigLocalDataSource>(),
         ));
     gh.factory<_i523.SyncRepository>(
         () => _i368.SyncRepositoryImpl(gh<_i1034.SyncDataSource>()));

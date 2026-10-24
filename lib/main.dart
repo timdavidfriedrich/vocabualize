@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:feature_gate/presentation/gate/gate_cubit.dart';
+import 'package:feature_gate/presentation/gate/gate_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -24,10 +26,14 @@ class const App({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<SyncStatusCubit>()..start(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<SyncStatusCubit>()..start()),
+        BlocProvider(create: (_) => sl<GateCubit>()..start()),
+      ],
       child: MaterialApp.router(
         routerConfig: sl<NavigationRouter>().config,
+        builder: (context, child) => GateOverlay(child: child ?? const SizedBox.shrink()),
         onGenerateTitle: (context) => context.s.appTitle,
         theme: AppTheme.dark,
         localizationsDelegates: const [

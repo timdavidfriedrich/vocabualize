@@ -113,5 +113,10 @@
   "syncStatusSynced": "Alle Änderungen synchronisiert",
   "syncStatusOffline": "Offline. Änderungen werden synchronisiert, sobald du wieder online bist.",
   "syncStatusUpdateRequired": "Aktualisiere die App, um weiter zu synchronisieren.",
-  "syncStatusSignInRequired": "Deine Sitzung ist abgelaufen. Melde dich erneut an, um weiter zu synchronisieren."
+  "syncStatusSignInRequired": "Deine Sitzung ist abgelaufen. Melde dich erneut an, um weiter zu synchronisieren.",
+  "gateUpdateTitle": "Update erforderlich",
+  "gateUpdateMessage": "Diese Version von Vocabualize wird nicht mehr unterstützt. Bitte aktualisiere die App, um weiterzulernen.",
+  "gateUpdateButton": "Aktualisieren",
+  "gateMaintenanceTitle": "Wartungsarbeiten",
+  "gateMaintenanceMessage": "Vocabualize wird gerade aktualisiert. Bitte versuche es später erneut."
 }

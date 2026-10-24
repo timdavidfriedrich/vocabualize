@@ -113,5 +113,10 @@
   "syncStatusSynced": "Toutes les modifications sont synchronisées",
   "syncStatusOffline": "Hors ligne. Les modifications seront synchronisées dès votre retour en ligne.",
   "syncStatusUpdateRequired": "Mettez l'application à jour pour continuer la synchronisation.",
-  "syncStatusSignInRequired": "Votre session a expiré. Reconnectez-vous pour continuer la synchronisation."
+  "syncStatusSignInRequired": "Votre session a expiré. Reconnectez-vous pour continuer la synchronisation.",
+  "gateUpdateTitle": "Mise à jour requise",
+  "gateUpdateMessage": "Cette version de Vocabualize n'est plus prise en charge. Veuillez mettre à jour l'application pour continuer à apprendre.",
+  "gateUpdateButton": "Mettre à jour",
+  "gateMaintenanceTitle": "Maintenance en cours",
+  "gateMaintenanceMessage": "Vocabualize est en cours de mise à jour. Veuillez réessayer plus tard."
 }
