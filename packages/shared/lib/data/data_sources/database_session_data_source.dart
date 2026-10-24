@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
+import 'package:shared/data/models/local_snapshot.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
 const _localDatabaseName = "local.db";
@@ -19,6 +20,8 @@ abstract class DatabaseSessionDataSource {
   Stream<OfflineSyncDatabaseSession?> watchSession();
 
   Future<bool> hasLocalDatabase();
+
+  Future<LocalSnapshot?> readLocalSnapshot();
 
   Future<OfflineSyncDatabaseSession> openLocal();
 
@@ -52,12 +55,30 @@ class DatabaseSessionDataSourceImpl(
   Future<bool> hasLocalDatabase() async => File(await _localDatabasePath()).exists();
 
   @override
-  Future<OfflineSyncDatabaseSession> openLocal() async {
-    final ownerFile = File("${await _directoryPath()}/$_localOwnerFileName");
-    if (!await ownerFile.exists()) {
-      await ownerFile.writeAsString(const Uuid().v7obj().uuid);
+  Future<LocalSnapshot?> readLocalSnapshot() async {
+    final path = await _localDatabasePath();
+    final ownerId = await _readLocalOwnerId();
+    if (ownerId == null || !await File(path).exists()) return null;
+    final current = _session;
+    final isLocalOpen = current != null && _sessionPath == path;
+    final session = isLocalOpen
+        ? current
+        : await _client.createSyncSession(path, isDebugMode: kDebugMode, persistentUserId: ownerId);
+    try {
+      return LocalSnapshot(
+        vocabularies: await LocalVocabulary.db.find(session),
+        tags: await LocalTag.db.find(session),
+        vocabularyTags: await LocalVocabularyTag.db.find(session),
+        activities: await LocalActivity.db.find(session),
+      );
+    } finally {
+      if (!isLocalOpen) await session.close();
     }
-    final ownerId = UuidValue.withValidation((await ownerFile.readAsString()).trim());
+  }
+
+  @override
+  Future<OfflineSyncDatabaseSession> openLocal() async {
+    final ownerId = await _readLocalOwnerId() ?? await _createLocalOwnerId();
     return _open(await _localDatabasePath(), ownerId);
   }
 
@@ -106,6 +127,18 @@ class DatabaseSessionDataSourceImpl(
       final file = File("$path$suffix");
       if (await file.exists()) await file.delete();
     }
+  }
+
+  Future<UuidValue?> _readLocalOwnerId() async {
+    final ownerFile = File("${await _directoryPath()}/$_localOwnerFileName");
+    if (!await ownerFile.exists()) return null;
+    return UuidValue.withValidation((await ownerFile.readAsString()).trim());
+  }
+
+  Future<UuidValue> _createLocalOwnerId() async {
+    final ownerId = const Uuid().v7obj();
+    await File("${await _directoryPath()}/$_localOwnerFileName").writeAsString(ownerId.uuid);
+    return ownerId;
   }
 
   Future<String> _directoryPath() async => (await getApplicationSupportDirectory()).path;

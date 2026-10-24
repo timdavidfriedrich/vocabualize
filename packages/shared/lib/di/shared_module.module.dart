@@ -11,6 +11,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart' as _
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart' as _i654;
 import 'package:shared/data/data_sources/auth_data_source.dart' as _i535;
 import 'package:shared/data/data_sources/database_session_data_source.dart' as _i862;
+import 'package:shared/data/data_sources/local_import_data_source.dart' as _i843;
 import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart' as _i397;
 import 'package:shared/data/repositories/account_repository_impl.dart' as _i631;
@@ -42,17 +43,13 @@ class SharedPackageModule extends _i526.MicroPackageModule {
     gh.lazySingleton<_i862.DatabaseSessionDataSource>(
       () => _i862.DatabaseSessionDataSourceImpl(gh<_i1040.Client>()),
     );
+    gh.factory<_i843.LocalImportDataSource>(
+      () => _i843.LocalImportDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()),
+    );
     gh.factory<_i535.AuthDataSource>(
       () => _i535.AuthDataSourceImpl(
         gh<_i1040.Client>(),
         gh<_i90.FlutterAuthSessionManager>(),
-      ),
-    );
-    gh.lazySingleton<_i923.AccountRepository>(
-      () => _i631.AccountRepositoryImpl(
-        gh<_i535.AuthDataSource>(),
-        gh<_i862.DatabaseSessionDataSource>(),
-        gh<_i1034.SyncDataSource>(),
       ),
     );
     gh.factory<_i397.VocabularyLocalDataSource>(
@@ -60,6 +57,14 @@ class SharedPackageModule extends _i526.MicroPackageModule {
     );
     gh.factory<_i208.VocabularyRepository>(
       () => _i22.VocabularyRepositoryImpl(gh<_i397.VocabularyLocalDataSource>()),
+    );
+    gh.lazySingleton<_i923.AccountRepository>(
+      () => _i631.AccountRepositoryImpl(
+        gh<_i535.AuthDataSource>(),
+        gh<_i862.DatabaseSessionDataSource>(),
+        gh<_i843.LocalImportDataSource>(),
+        gh<_i1034.SyncDataSource>(),
+      ),
     );
   }
 }
