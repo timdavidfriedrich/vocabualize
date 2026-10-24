@@ -4,7 +4,7 @@ sealed class AppRoute extends KaiselRoute {
   const AppRoute();
 }
 
-class const Splash() extends AppRoute;
+class const Loading() extends AppRoute;
 
 class const Welcome() extends AppRoute;
 

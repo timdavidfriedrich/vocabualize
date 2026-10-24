@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:feature_gate/presentation/gate/gate_cubit.dart';
-import 'package:feature_gate/presentation/gate/gate_overlay.dart';
+import 'package:feature_gate/presentation/gate_cubit.dart';
+import 'package:feature_gate/presentation/gate_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

@@ -8,7 +8,7 @@ import 'dart:async' as _i687;
 
 import 'package:feature_gate/domain/use_cases/watch_gate_status_use_case.dart'
     as _i460;
-import 'package:feature_gate/presentation/gate/gate_cubit.dart' as _i357;
+import 'package:feature_gate/presentation/gate_cubit.dart' as _i396;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared/domain/repositories/app_config_repository.dart' as _i541;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
@@ -21,7 +21,7 @@ class FeatureGatePackageModule extends _i526.MicroPackageModule {
           gh<_i541.AppConfigRepository>(),
           gh<_i328.AppInfoRepository>(),
         ));
-    gh.factory<_i357.GateCubit>(() => _i357.GateCubit(
+    gh.factory<_i396.GateCubit>(() => _i396.GateCubit(
           gh<_i460.WatchGateStatusUseCase>(),
           gh<_i541.AppConfigRepository>(),
           gh<_i328.AppInfoRepository>(),

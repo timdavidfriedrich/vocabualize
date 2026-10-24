@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class const SplashScreen({
+class const LoadingScreen({
   super.key,
 }) extends StatelessWidget {
   @override

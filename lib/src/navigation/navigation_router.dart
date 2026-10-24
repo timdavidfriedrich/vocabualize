@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:core/error/app_result.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_screen.dart';
-import 'package:feature_gate/presentation/splash/splash_screen.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_screen.dart';
@@ -28,6 +27,7 @@ import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/sync_repository.dart';
 import 'package:shared/presentation/navigation/routes.dart';
+import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:vocabualize/src/di/service_locator.dart';
 
 typedef _EntryState = (AppResult<AuthStatus>, AppResult<LanguagePair?>?, SyncStatus?);
@@ -39,7 +39,7 @@ class NavigationRouter(
   final SyncRepository _syncRepository,
 ) {
   late final KaiselRouterConfig<AppRoute> config = KaiselRouterConfig<AppRoute>(
-    initial: const Splash(),
+    initial: const Loading(),
     builder: (context, route) => _AppPage(route: route),
   );
 
@@ -76,7 +76,11 @@ class NavigationRouter(
     final router = config.router;
     final current = router.current;
     final isOnEntryRoute = switch (current) {
-      Splash() || Welcome() || LanguageSelection(isOnboarding: true) => true,
+      Loading() || Welcome() || LanguageSelection(isOnboarding: true) => true,
+      _ => false,
+    };
+    final isSigningIn = switch (current) {
+      Loading() || Welcome() => true,
       _ => false,
     };
     final target = switch (state) {
@@ -88,7 +92,7 @@ class NavigationRouter(
         Success(data: null),
         SyncStatus.disabled || SyncStatus.connecting,
       ) =>
-        null,
+        isSigningIn ? const Loading() : null,
       (Success(data: AuthAuthenticated()), Success(data: null), _) when isOnEntryRoute =>
         const LanguageSelection(isOnboarding: true),
       (Success(data: AuthAuthenticated()), _, _) => null,
@@ -102,7 +106,7 @@ class const _AppPage({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) => switch (_route) {
-    Splash() => const SplashScreen(),
+    Loading() => const LoadingScreen(),
     Welcome() => BlocProvider(
       create: (_) => sl<WelcomeBloc>(),
       child: const WelcomeScreen(),
