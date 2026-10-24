@@ -101,5 +101,6 @@
   "detailsDuplicateMessage": "Здається, що «{word}» вже є у вашій колекції.\n\nДодати все одно?",
   "detailsPhotoByLabel": "Фото від {author}",
   "detailsReplaceButton": "Замінити",
-  "reportBugDescriptionHint": "Опишіть помилку..."
+  "reportBugDescriptionHint": "Опишіть помилку...",
+  "settingsAccountTitle": "Обліковий запис"
 }

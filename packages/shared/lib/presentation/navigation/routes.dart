@@ -11,3 +11,5 @@ class const Welcome() extends AppRoute;
 class const Home() extends AppRoute;
 
 class const VocabularyDetails() extends AppRoute;
+
+class const Settings() extends AppRoute;

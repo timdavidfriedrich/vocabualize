@@ -369,4 +369,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reportBugDescriptionHint => 'Describe el error...';
+
+  @override
+  String get settingsAccountTitle => 'Cuenta';
 }

@@ -164,5 +164,6 @@
     }
   },
   "detailsReplaceButton": "Replace",
-  "reportBugDescriptionHint": "Describe the bug..."
+  "reportBugDescriptionHint": "Describe the bug...",
+  "settingsAccountTitle": "Account"
 }

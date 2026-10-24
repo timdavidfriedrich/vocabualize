@@ -101,5 +101,6 @@
   "detailsDuplicateMessage": "Es scheint so, als existiere „{word}“ bereits in deiner Sammlung.\n\nTrotzdem hinzufügen?",
   "detailsPhotoByLabel": "Foto von {author}",
   "detailsReplaceButton": "Ersetzen",
-  "reportBugDescriptionHint": "Beschreibe den Fehler..."
+  "reportBugDescriptionHint": "Beschreibe den Fehler...",
+  "settingsAccountTitle": "Konto"
 }

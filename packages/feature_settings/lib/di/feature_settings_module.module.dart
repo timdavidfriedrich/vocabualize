@@ -6,10 +6,14 @@
 
 import 'dart:async' as _i687;
 
+import 'package:feature_settings/presentation/settings_bloc.dart' as _i242;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:shared/domain/repositories/account_repository.dart' as _i923;
 
 class FeatureSettingsPackageModule extends _i526.MicroPackageModule {
   // initializes the registration of main-scope dependencies inside of GetIt
   @override
-  _i687.FutureOr<void> init(_i526.GetItHelper gh) {}
+  _i687.FutureOr<void> init(_i526.GetItHelper gh) {
+    gh.factory<_i242.SettingsBloc>(() => _i242.SettingsBloc(gh<_i923.AccountRepository>()));
+  }
 }

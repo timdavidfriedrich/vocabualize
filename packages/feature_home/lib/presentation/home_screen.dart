@@ -14,7 +14,16 @@ class const HomeScreen({
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.s.appTitle)),
+      appBar: AppBar(
+        title: Text(context.s.appTitle),
+        actions: [
+          IconButton(
+            onPressed: context.pushSettings,
+            icon: const Icon(Icons.settings_rounded),
+            tooltip: context.s.settingsTitle,
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: context.pushVocabularyDetails,
         icon: const Icon(Icons.edit_rounded),

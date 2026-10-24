@@ -101,5 +101,6 @@
   "detailsDuplicateMessage": "Il semble que « {word} » existe déjà dans votre collection.\n\nL'ajouter quand même ?",
   "detailsPhotoByLabel": "Photo de {author}",
   "detailsReplaceButton": "Remplacer",
-  "reportBugDescriptionHint": "Décrivez le bug..."
+  "reportBugDescriptionHint": "Décrivez le bug...",
+  "settingsAccountTitle": "Compte"
 }

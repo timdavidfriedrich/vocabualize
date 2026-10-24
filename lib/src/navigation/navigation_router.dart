@@ -7,6 +7,9 @@ import 'package:feature_gate/presentation/splash_screen.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_screen.dart';
+import 'package:feature_settings/presentation/settings_bloc.dart';
+import 'package:feature_settings/presentation/settings_event.dart';
+import 'package:feature_settings/presentation/settings_screen.dart';
 import 'package:feature_welcome/presentation/welcome_bloc.dart';
 import 'package:feature_welcome/presentation/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +70,10 @@ class const _AppPage({
     VocabularyDetails() => BlocProvider(
       create: (_) => sl<DetailsBloc>(),
       child: const DetailsScreen(),
+    ),
+    Settings() => BlocProvider(
+      create: (_) => sl<SettingsBloc>()..add(const SettingsStarted()),
+      child: const SettingsScreen(),
     ),
   };
 }

@@ -374,4 +374,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get reportBugDescriptionHint => 'Décrivez le bug...';
+
+  @override
+  String get settingsAccountTitle => 'Compte';
 }

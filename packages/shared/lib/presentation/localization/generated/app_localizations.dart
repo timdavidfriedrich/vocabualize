@@ -713,6 +713,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Describe the bug...'**
   String get reportBugDescriptionHint;
+
+  /// No description provided for @settingsAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get settingsAccountTitle;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

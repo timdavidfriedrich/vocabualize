@@ -384,4 +384,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get reportBugDescriptionHint => 'Опишіть помилку...';
+
+  @override
+  String get settingsAccountTitle => 'Обліковий запис';
 }

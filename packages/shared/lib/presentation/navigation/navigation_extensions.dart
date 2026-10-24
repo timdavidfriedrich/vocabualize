@@ -8,4 +8,6 @@ extension NavigationExtension on BuildContext {
   void closeScreen() => appRouter.pop();
 
   Future<void> pushVocabularyDetails() => appRouter.push(const VocabularyDetails());
+
+  Future<void> pushSettings() => appRouter.push(const Settings());
 }
