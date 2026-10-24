@@ -388,4 +388,21 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsSignOutAnywayButton => 'Cerrar sesión de todos modos';
+
+  @override
+  String get syncStatusConnecting => 'Conectando…';
+
+  @override
+  String get syncStatusSynced => 'Todos los cambios sincronizados';
+
+  @override
+  String get syncStatusOffline =>
+      'Sin conexión. Los cambios se sincronizarán cuando vuelvas a estar en línea.';
+
+  @override
+  String get syncStatusUpdateRequired => 'Actualiza la app para seguir sincronizando.';
+
+  @override
+  String get syncStatusSignInRequired =>
+      'Tu sesión ha caducado. Inicia sesión de nuevo para seguir sincronizando.';
 }

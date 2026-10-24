@@ -15,10 +15,13 @@ import 'package:shared/data/data_sources/local_import_data_source.dart' as _i843
 import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart' as _i397;
 import 'package:shared/data/repositories/account_repository_impl.dart' as _i631;
+import 'package:shared/data/repositories/sync_repository_impl.dart' as _i368;
 import 'package:shared/data/repositories/vocabulary_repository_impl.dart' as _i22;
 import 'package:shared/di/serverpod_client_module.dart' as _i74;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
+import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
+import 'package:shared/presentation/sync_status/sync_status_cubit.dart' as _i765;
 import 'package:vocabualize_client/vocabualize_client.dart' as _i1040;
 
 class SharedPackageModule extends _i526.MicroPackageModule {
@@ -52,9 +55,11 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         gh<_i90.FlutterAuthSessionManager>(),
       ),
     );
+    gh.factory<_i523.SyncRepository>(() => _i368.SyncRepositoryImpl(gh<_i1034.SyncDataSource>()));
     gh.factory<_i397.VocabularyLocalDataSource>(
       () => _i397.VocabularyLocalDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()),
     );
+    gh.factory<_i765.SyncStatusCubit>(() => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
     gh.factory<_i208.VocabularyRepository>(
       () => _i22.VocabularyRepositoryImpl(gh<_i397.VocabularyLocalDataSource>()),
     );

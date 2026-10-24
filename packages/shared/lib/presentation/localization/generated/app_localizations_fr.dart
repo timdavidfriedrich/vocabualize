@@ -393,4 +393,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingsSignOutAnywayButton => 'Se déconnecter quand même';
+
+  @override
+  String get syncStatusConnecting => 'Connexion…';
+
+  @override
+  String get syncStatusSynced => 'Toutes les modifications sont synchronisées';
+
+  @override
+  String get syncStatusOffline =>
+      'Hors ligne. Les modifications seront synchronisées dès votre retour en ligne.';
+
+  @override
+  String get syncStatusUpdateRequired =>
+      'Mettez l\'application à jour pour continuer la synchronisation.';
+
+  @override
+  String get syncStatusSignInRequired =>
+      'Votre session a expiré. Reconnectez-vous pour continuer la synchronisation.';
 }

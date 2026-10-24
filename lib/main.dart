@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/localization/generated/app_localizations.dart';
+import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 
 import 'package:vocabualize/src/di/service_locator.dart';
 import 'package:vocabualize/src/navigation/navigation_router.dart';
@@ -22,17 +24,20 @@ class const App({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: sl<NavigationRouter>().config,
-      onGenerateTitle: (context) => context.s.appTitle,
-      theme: AppTheme.dark,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
+    return BlocProvider(
+      create: (_) => sl<SyncStatusCubit>()..start(),
+      child: MaterialApp.router(
+        routerConfig: sl<NavigationRouter>().config,
+        onGenerateTitle: (context) => context.s.appTitle,
+        theme: AppTheme.dark,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
     );
   }
 }

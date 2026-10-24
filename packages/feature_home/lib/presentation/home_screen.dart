@@ -7,6 +7,7 @@ import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/widgets/sync_status_icon.dart';
 
 class const HomeScreen({
   super.key,
@@ -17,6 +18,7 @@ class const HomeScreen({
       appBar: AppBar(
         title: Text(context.s.appTitle),
         actions: [
+          const SyncStatusIcon(),
           IconButton(
             onPressed: context.pushSettings,
             icon: const Icon(Icons.settings_rounded),

@@ -107,5 +107,10 @@
   "settingsSignOutButton": "Se déconnecter",
   "settingsSignOutBlockedTitle": "Modifications non envoyées",
   "settingsSignOutBlockedMessage": "Certaines modifications ne sont pas encore arrivées sur le serveur. Connectez-vous à internet et réessayez. Si vous vous déconnectez quand même, ces modifications seront perdues.",
-  "settingsSignOutAnywayButton": "Se déconnecter quand même"
+  "settingsSignOutAnywayButton": "Se déconnecter quand même",
+  "syncStatusConnecting": "Connexion…",
+  "syncStatusSynced": "Toutes les modifications sont synchronisées",
+  "syncStatusOffline": "Hors ligne. Les modifications seront synchronisées dès votre retour en ligne.",
+  "syncStatusUpdateRequired": "Mettez l'application à jour pour continuer la synchronisation.",
+  "syncStatusSignInRequired": "Votre session a expiré. Reconnectez-vous pour continuer la synchronisation."
 }

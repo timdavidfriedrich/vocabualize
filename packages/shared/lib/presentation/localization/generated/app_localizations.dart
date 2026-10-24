@@ -749,6 +749,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign out anyway'**
   String get settingsSignOutAnywayButton;
+
+  /// No description provided for @syncStatusConnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting…'**
+  String get syncStatusConnecting;
+
+  /// No description provided for @syncStatusSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'All changes synced'**
+  String get syncStatusSynced;
+
+  /// No description provided for @syncStatusOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline. Changes sync once you\'re back online.'**
+  String get syncStatusOffline;
+
+  /// No description provided for @syncStatusUpdateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Update the app to keep syncing.'**
+  String get syncStatusUpdateRequired;
+
+  /// No description provided for @syncStatusSignInRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session expired. Sign in again to keep syncing.'**
+  String get syncStatusSignInRequired;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

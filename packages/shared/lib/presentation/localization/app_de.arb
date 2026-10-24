@@ -107,5 +107,10 @@
   "settingsSignOutButton": "Abmelden",
   "settingsSignOutBlockedTitle": "Änderungen nicht hochgeladen",
   "settingsSignOutBlockedMessage": "Einige Änderungen sind noch nicht auf dem Server angekommen. Verbinde dich mit dem Internet und versuche es erneut. Wenn du dich trotzdem abmeldest, gehen diese Änderungen verloren.",
-  "settingsSignOutAnywayButton": "Trotzdem abmelden"
+  "settingsSignOutAnywayButton": "Trotzdem abmelden",
+  "syncStatusConnecting": "Verbinde…",
+  "syncStatusSynced": "Alle Änderungen synchronisiert",
+  "syncStatusOffline": "Offline. Änderungen werden synchronisiert, sobald du wieder online bist.",
+  "syncStatusUpdateRequired": "Aktualisiere die App, um weiter zu synchronisieren.",
+  "syncStatusSignInRequired": "Deine Sitzung ist abgelaufen. Melde dich erneut an, um weiter zu synchronisieren."
 }

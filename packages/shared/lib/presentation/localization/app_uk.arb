@@ -107,5 +107,10 @@
   "settingsSignOutButton": "Вийти",
   "settingsSignOutBlockedTitle": "Зміни не завантажено",
   "settingsSignOutBlockedMessage": "Деякі зміни ще не надійшли на сервер. Підключіться до інтернету й спробуйте ще раз. Якщо все одно вийти, ці зміни буде втрачено.",
-  "settingsSignOutAnywayButton": "Усе одно вийти"
+  "settingsSignOutAnywayButton": "Усе одно вийти",
+  "syncStatusConnecting": "Підключення…",
+  "syncStatusSynced": "Усі зміни синхронізовано",
+  "syncStatusOffline": "Офлайн. Зміни синхронізуються, щойно ви знову будете в мережі.",
+  "syncStatusUpdateRequired": "Оновіть застосунок, щоб продовжити синхронізацію.",
+  "syncStatusSignInRequired": "Ваш сеанс завершився. Увійдіть знову, щоб продовжити синхронізацію."
 }

@@ -390,4 +390,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsSignOutAnywayButton => 'Trotzdem abmelden';
+
+  @override
+  String get syncStatusConnecting => 'Verbinde…';
+
+  @override
+  String get syncStatusSynced => 'Alle Änderungen synchronisiert';
+
+  @override
+  String get syncStatusOffline =>
+      'Offline. Änderungen werden synchronisiert, sobald du wieder online bist.';
+
+  @override
+  String get syncStatusUpdateRequired => 'Aktualisiere die App, um weiter zu synchronisieren.';
+
+  @override
+  String get syncStatusSignInRequired =>
+      'Deine Sitzung ist abgelaufen. Melde dich erneut an, um weiter zu synchronisieren.';
 }

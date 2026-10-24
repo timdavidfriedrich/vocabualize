@@ -5,8 +5,11 @@ import 'package:feature_settings/presentation/settings_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/account.dart';
+import 'package:shared/domain/entities/sync_status.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/sync_status_extensions.dart';
+import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 
 class const SettingsScreen({
   super.key,
@@ -111,6 +114,17 @@ class const _GoogleAccountSection({
           leading: const Icon(Icons.account_circle_rounded),
           title: Text(_name ?? _email ?? context.s.unknown),
           subtitle: _name == null || _email == null ? null : Text(_email),
+        ),
+        BlocBuilder<SyncStatusCubit, SyncStatus>(
+          builder: (context, status) => switch (status.toLabel(context)) {
+            final label? => Text(
+              label,
+              style: context.t.bodyMedium?.copyWith(
+                color: status.needsAction ? context.c.error : context.c.onSurfaceVariant,
+              ),
+            ),
+            null => const SizedBox.shrink(),
+          },
         ),
         const SizedBox(height: Spacing.s),
         OutlinedButton(

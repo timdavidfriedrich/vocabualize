@@ -403,4 +403,20 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get settingsSignOutAnywayButton => 'Усе одно вийти';
+
+  @override
+  String get syncStatusConnecting => 'Підключення…';
+
+  @override
+  String get syncStatusSynced => 'Усі зміни синхронізовано';
+
+  @override
+  String get syncStatusOffline => 'Офлайн. Зміни синхронізуються, щойно ви знову будете в мережі.';
+
+  @override
+  String get syncStatusUpdateRequired => 'Оновіть застосунок, щоб продовжити синхронізацію.';
+
+  @override
+  String get syncStatusSignInRequired =>
+      'Ваш сеанс завершився. Увійдіть знову, щоб продовжити синхронізацію.';
 }
