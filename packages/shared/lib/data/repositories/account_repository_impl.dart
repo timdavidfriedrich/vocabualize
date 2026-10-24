@@ -105,8 +105,9 @@ class AccountRepositoryImpl(
   }
 
   Future<AppResult<Account>> _openRemote(RemoteAccount remoteAccount) async {
-    final session = await _sessions.openForUser(UuidValue.withValidation(remoteAccount.id));
-    final adoption = await _adoptLocalData();
+    final userId = UuidValue.withValidation(remoteAccount.id);
+    final session = await _sessions.openForUser(userId);
+    final adoption = await _adoptLocalData(userId);
     _syncDataSource.start(session);
     final account = remoteAccount.toGoogleAccount();
     _emit(AuthAuthenticated(account: account));
@@ -116,11 +117,12 @@ class AccountRepositoryImpl(
     };
   }
 
-  Future<AppResult<()>> _adoptLocalData() async {
+  Future<AppResult<()>> _adoptLocalData(UuidValue userId) async {
     try {
       final snapshot = await _sessions.readLocalSnapshot();
       if (snapshot == null) return const Success(());
       await _importDataSource.importSnapshot(snapshot);
+      await _sessions.moveLocalImagesTo(userId);
       await _sessions.deleteLocal();
       return const Success(());
     } on Object catch (error) {

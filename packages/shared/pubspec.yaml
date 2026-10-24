@@ -21,6 +21,7 @@ dependencies:
   serverpod_offline_sync_client: 0.0.11
   serverpod_database: 4.1.0-beta.3
   flutter_bloc: ^9.1.1
+  flutter_image_compress: ^2.5.1
 
 flutter:
   generate: true

@@ -438,6 +438,12 @@ abstract class AppLocalizations {
   /// **'Open Gallery'**
   String get detailsOpenGalleryButton;
 
+  /// No description provided for @detailsRemoveImageButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove image'**
+  String get detailsRemoveImageButton;
+
   /// No description provided for @detailsPexelsAttribution.
   ///
   /// In en, this message translates to:

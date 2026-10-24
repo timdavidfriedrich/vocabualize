@@ -182,6 +182,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsOpenGalleryButton => 'Відкрити галерею';
 
   @override
+  String get detailsRemoveImageButton => 'Видалити зображення';
+
+  @override
   String get detailsPexelsAttribution => 'Зображення надані Pexels.';
 
   @override

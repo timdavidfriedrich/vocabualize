@@ -12,7 +12,7 @@ abstract class VocabularyLocalDataSource {
 
   Future<LocalVocabulary> insertVocabulary(LocalVocabulary vocabulary);
 
-  Future<void> deleteVocabulary(UuidValue id);
+  Future<List<LocalVocabulary>> deleteVocabulary(UuidValue id);
 }
 
 @Injectable(as: VocabularyLocalDataSource)
@@ -45,8 +45,8 @@ class const VocabularyLocalDataSourceImpl(
   }
 
   @override
-  Future<void> deleteVocabulary(UuidValue id) async {
-    await LocalVocabulary.db.deleteWhere(_requireSession(), where: (t) => t.id.equals(id));
+  Future<List<LocalVocabulary>> deleteVocabulary(UuidValue id) {
+    return LocalVocabulary.db.deleteWhere(_requireSession(), where: (t) => t.id.equals(id));
   }
 
   OfflineSyncDatabaseSession _requireSession() {

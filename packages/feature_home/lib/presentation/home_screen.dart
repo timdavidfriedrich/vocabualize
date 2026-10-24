@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:core/theme/spacing.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
@@ -86,8 +89,39 @@ class const _VocabularyTile({
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      leading: switch (_vocabulary.image) {
+        CustomImage(:final thumbnailPath) => _Thumbnail(image: FileImage(File(thumbnailPath))),
+        StockImage(:final thumbUrl) => _Thumbnail(image: NetworkImage(thumbUrl)),
+        NoImage() => null,
+      },
       title: Text(_vocabulary.target, style: context.t.titleMedium),
       subtitle: Text(_vocabulary.source, style: context.t.bodyMedium),
+    );
+  }
+}
+
+class const _Thumbnail({
+  required final ImageProvider _image,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(Spacing.radiusS),
+      child: SizedBox.square(
+        dimension: Spacing.xxxl,
+        child: Image(
+          image: _image,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => ColoredBox(
+            color: context.c.surfaceContainerHighest,
+            child: Icon(
+              Icons.image_not_supported_rounded,
+              size: Spacing.iconM,
+              color: context.c.onSurfaceVariant,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

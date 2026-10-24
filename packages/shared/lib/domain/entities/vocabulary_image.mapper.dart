@@ -181,12 +181,30 @@ class CustomImageMapper extends ClassMapperBase<CustomImage> {
     'imageId',
     _$imageId,
   );
+  static String _$fullPath(CustomImage v) => v.fullPath;
+  static const Field<CustomImage, String> _f$fullPath = Field(
+    'fullPath',
+    _$fullPath,
+  );
+  static String _$thumbnailPath(CustomImage v) => v.thumbnailPath;
+  static const Field<CustomImage, String> _f$thumbnailPath = Field(
+    'thumbnailPath',
+    _$thumbnailPath,
+  );
 
   @override
-  final MappableFields<CustomImage> fields = const {#imageId: _f$imageId};
+  final MappableFields<CustomImage> fields = const {
+    #imageId: _f$imageId,
+    #fullPath: _f$fullPath,
+    #thumbnailPath: _f$thumbnailPath,
+  };
 
   static CustomImage _instantiate(DecodingData data) {
-    return CustomImage(imageId: data.dec(_f$imageId));
+    return CustomImage(
+      imageId: data.dec(_f$imageId),
+      fullPath: data.dec(_f$fullPath),
+      thumbnailPath: data.dec(_f$thumbnailPath),
+    );
   }
 
   @override
@@ -250,7 +268,7 @@ extension CustomImageValueCopy<$R, $Out>
 abstract class CustomImageCopyWith<$R, $In extends CustomImage, $Out>
     implements VocabularyImageCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? imageId});
+  $R call({String? imageId, String? fullPath, String? thumbnailPath});
   CustomImageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -263,11 +281,19 @@ class _CustomImageCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CustomImage> $mapper =
       CustomImageMapper.ensureInitialized();
   @override
-  $R call({String? imageId}) =>
-      $apply(FieldCopyWithData({if (imageId != null) #imageId: imageId}));
+  $R call({String? imageId, String? fullPath, String? thumbnailPath}) => $apply(
+    FieldCopyWithData({
+      if (imageId != null) #imageId: imageId,
+      if (fullPath != null) #fullPath: fullPath,
+      if (thumbnailPath != null) #thumbnailPath: thumbnailPath,
+    }),
+  );
   @override
-  CustomImage $make(CopyWithData data) =>
-      CustomImage(imageId: data.get(#imageId, or: $value.imageId));
+  CustomImage $make(CopyWithData data) => CustomImage(
+    imageId: data.get(#imageId, or: $value.imageId),
+    fullPath: data.get(#fullPath, or: $value.fullPath),
+    thumbnailPath: data.get(#thumbnailPath, or: $value.thumbnailPath),
+  );
 
   @override
   CustomImageCopyWith<$R2, CustomImage, $Out2> $chain<$R2, $Out2>(

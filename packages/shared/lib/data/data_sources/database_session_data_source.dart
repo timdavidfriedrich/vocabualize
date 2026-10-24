@@ -13,6 +13,8 @@ const _localOwnerFileName = "local_owner_id";
 const _userDatabasePrefix = "user_";
 const _databaseExtension = ".db";
 const _databaseFileSuffixes = ["", "-wal", "-shm"];
+const _imagesDirectoryName = "images";
+const _localImagesDirectoryName = "local";
 
 abstract class DatabaseSessionDataSource {
   OfflineSyncDatabaseSession? get currentSession;
@@ -32,6 +34,10 @@ abstract class DatabaseSessionDataSource {
   Future<void> deleteLocal();
 
   Future<void> deleteForUser(UuidValue userId);
+
+  String? get currentImageDirectoryPath;
+
+  Future<void> moveLocalImagesTo(UuidValue userId);
 }
 
 @LazySingleton(as: DatabaseSessionDataSource)
@@ -41,9 +47,13 @@ class DatabaseSessionDataSourceImpl(
   final _sessionChanges = StreamController<OfflineSyncDatabaseSession?>.broadcast();
   OfflineSyncDatabaseSession? _session;
   String? _sessionPath;
+  String? _imageDirectoryPath;
 
   @override
   OfflineSyncDatabaseSession? get currentSession => _session;
+
+  @override
+  String? get currentImageDirectoryPath => _imageDirectoryPath;
 
   @override
   Stream<OfflineSyncDatabaseSession?> watchSession() async* {
@@ -79,12 +89,12 @@ class DatabaseSessionDataSourceImpl(
   @override
   Future<OfflineSyncDatabaseSession> openLocal() async {
     final ownerId = await _readLocalOwnerId() ?? await _createLocalOwnerId();
-    return _open(await _localDatabasePath(), ownerId);
+    return _open(await _localDatabasePath(), ownerId, _localImagesDirectoryName);
   }
 
   @override
   Future<OfflineSyncDatabaseSession> openForUser(UuidValue userId) async {
-    return _open(await _userDatabasePath(userId), userId);
+    return _open(await _userDatabasePath(userId), userId, userId.uuid);
   }
 
   @override
@@ -92,6 +102,7 @@ class DatabaseSessionDataSourceImpl(
     final session = _session;
     _session = null;
     _sessionPath = null;
+    _imageDirectoryPath = null;
     _sessionChanges.add(null);
     await session?.close();
   }
@@ -99,17 +110,38 @@ class DatabaseSessionDataSourceImpl(
   @override
   Future<void> deleteLocal() async {
     await _delete(await _localDatabasePath());
+    await _deleteDirectory(await _imageDirectory(_localImagesDirectoryName));
     final ownerFile = File("${await _directoryPath()}/$_localOwnerFileName");
     if (await ownerFile.exists()) await ownerFile.delete();
   }
 
   @override
-  Future<void> deleteForUser(UuidValue userId) async => _delete(await _userDatabasePath(userId));
+  Future<void> deleteForUser(UuidValue userId) async {
+    await _delete(await _userDatabasePath(userId));
+    await _deleteDirectory(await _imageDirectory(userId.uuid));
+  }
 
-  Future<OfflineSyncDatabaseSession> _open(String path, UuidValue ownerId) async {
+  @override
+  Future<void> moveLocalImagesTo(UuidValue userId) async {
+    final source = await _imageDirectory(_localImagesDirectoryName);
+    if (!await source.exists()) return;
+    final target = await _imageDirectory(userId.uuid);
+    await target.create(recursive: true);
+    await for (final entity in source.list()) {
+      if (entity is File) await entity.rename("${target.path}/${entity.uri.pathSegments.last}");
+    }
+  }
+
+  Future<OfflineSyncDatabaseSession> _open(
+    String path,
+    UuidValue ownerId,
+    String imageDirectoryName,
+  ) async {
     final current = _session;
     if (current != null && _sessionPath == path) return current;
     await close();
+    final imageDirectory = await _imageDirectory(imageDirectoryName);
+    await imageDirectory.create(recursive: true);
     final session = await _client.createSyncSession(
       path,
       isDebugMode: kDebugMode,
@@ -117,6 +149,7 @@ class DatabaseSessionDataSourceImpl(
     );
     _session = session;
     _sessionPath = path;
+    _imageDirectoryPath = imageDirectory.path;
     _sessionChanges.add(session);
     return session;
   }
@@ -127,6 +160,13 @@ class DatabaseSessionDataSourceImpl(
       final file = File("$path$suffix");
       if (await file.exists()) await file.delete();
     }
+  }
+
+  Future<Directory> _imageDirectory(String name) async =>
+      Directory("${await _directoryPath()}/$_imagesDirectoryName/$name");
+
+  Future<void> _deleteDirectory(Directory directory) async {
+    if (await directory.exists()) await directory.delete(recursive: true);
   }
 
   Future<UuidValue?> _readLocalOwnerId() async {

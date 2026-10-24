@@ -13,6 +13,8 @@ class const NoImage() extends VocabularyImage with NoImageMappable;
 @MappableClass()
 class const CustomImage({
   required final String imageId,
+  required final String fullPath,
+  required final String thumbnailPath,
 }) extends VocabularyImage with CustomImageMappable;
 
 @MappableClass()

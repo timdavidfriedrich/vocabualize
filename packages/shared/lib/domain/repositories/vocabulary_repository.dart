@@ -1,4 +1,5 @@
 import 'package:core/error/app_result.dart';
+import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 
 abstract class VocabularyRepository {
@@ -11,6 +12,7 @@ abstract class VocabularyRepository {
     required String target,
     required String sourceLanguageCode,
     required String targetLanguageCode,
+    required ProcessedImage? image,
   });
 
   Future<AppResult<()>> deleteVocabulary(String id);

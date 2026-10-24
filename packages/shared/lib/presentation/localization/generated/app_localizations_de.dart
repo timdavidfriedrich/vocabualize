@@ -182,6 +182,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get detailsOpenGalleryButton => 'Galerie öffnen';
 
   @override
+  String get detailsRemoveImageButton => 'Bild entfernen';
+
+  @override
   String get detailsPexelsAttribution => 'Stock-Bilder von Pexels.';
 
   @override

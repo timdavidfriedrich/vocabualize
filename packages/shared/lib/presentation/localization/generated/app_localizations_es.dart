@@ -181,6 +181,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get detailsOpenGalleryButton => 'Abrir galería';
 
   @override
+  String get detailsRemoveImageButton => 'Quitar imagen';
+
+  @override
   String get detailsPexelsAttribution => 'Imágenes proporcionadas por Pexels.';
 
   @override

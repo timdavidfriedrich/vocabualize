@@ -63,6 +63,7 @@
   "detailsDuplicateAddButton": "Add",
   "detailsNoImageMessage": "Choose an image\nor save without one",
   "detailsOpenGalleryButton": "Open Gallery",
+  "detailsRemoveImageButton": "Remove image",
   "detailsPexelsAttribution": "Images provided by Pexels.",
   "detailsSaveButton": "Save",
   "detailsSaveWithoutImageButton": "Save without",
