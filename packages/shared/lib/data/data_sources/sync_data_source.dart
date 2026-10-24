@@ -146,6 +146,7 @@ class SyncDataSourceImpl(
     if (connected) {
       _resume();
     } else if (_session != null && _readiness == RemoteDataReadiness.ready) {
+      unawaited(_cancelSubscription());
       _setState(RemoteSyncState.unreachable);
     }
   }
@@ -168,11 +169,13 @@ class SyncDataSourceImpl(
 
   void _connect(OfflineSyncDatabaseSession session) {
     _setState(RemoteSyncState.connecting);
+    var hasBeenLive = false;
     final syncClient = OfflineSyncClient(
       ({required changes, required once}) => _client.modules.offline_sync.offlineSync
           .sync(changes: changes, once: once)
           .map((event) {
             if (event is OfflineSyncEndOfBatch && identical(_session, session)) {
+              hasBeenLive = true;
               _setState(RemoteSyncState.live);
             }
             return event;
@@ -184,6 +187,9 @@ class SyncDataSourceImpl(
       if (!identical(_subscription, subscription)) return;
       _subscription = null;
       _setState(state);
+      if (hasBeenLive && state == RemoteSyncState.unreachable && identical(_session, session)) {
+        _connect(session);
+      }
     }
 
     unawaited(
