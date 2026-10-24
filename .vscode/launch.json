@@ -2,11 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "vocabualize",
+      "name": "vocabualize (local backend)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main.dart",
       "toolArgs": ["--dart-define-from-file=dart_defines.json"]
+    },
+    {
+      "name": "vocabualize (production backend)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": ["--dart-define-from-file=dart_defines.production.json"]
     }
   ]
 }
