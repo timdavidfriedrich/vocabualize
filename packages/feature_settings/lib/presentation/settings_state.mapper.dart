@@ -187,29 +187,36 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
     'account',
     _$account,
   );
-  static bool _$isSigningIn(SettingsLoaded v) => v.isSigningIn;
-  static const Field<SettingsLoaded, bool> _f$isSigningIn = Field(
-    'isSigningIn',
-    _$isSigningIn,
+  static bool _$isBusy(SettingsLoaded v) => v.isBusy;
+  static const Field<SettingsLoaded, bool> _f$isBusy = Field(
+    'isBusy',
+    _$isBusy,
   );
-  static AppError? _$signInError(SettingsLoaded v) => v.signInError;
-  static const Field<SettingsLoaded, AppError> _f$signInError = Field(
-    'signInError',
-    _$signInError,
+  static bool _$isSignOutBlocked(SettingsLoaded v) => v.isSignOutBlocked;
+  static const Field<SettingsLoaded, bool> _f$isSignOutBlocked = Field(
+    'isSignOutBlocked',
+    _$isSignOutBlocked,
+  );
+  static AppError? _$error(SettingsLoaded v) => v.error;
+  static const Field<SettingsLoaded, AppError> _f$error = Field(
+    'error',
+    _$error,
   );
 
   @override
   final MappableFields<SettingsLoaded> fields = const {
     #account: _f$account,
-    #isSigningIn: _f$isSigningIn,
-    #signInError: _f$signInError,
+    #isBusy: _f$isBusy,
+    #isSignOutBlocked: _f$isSignOutBlocked,
+    #error: _f$error,
   };
 
   static SettingsLoaded _instantiate(DecodingData data) {
     return SettingsLoaded(
       account: data.dec(_f$account),
-      isSigningIn: data.dec(_f$isSigningIn),
-      signInError: data.dec(_f$signInError),
+      isBusy: data.dec(_f$isBusy),
+      isSignOutBlocked: data.dec(_f$isSignOutBlocked),
+      error: data.dec(_f$error),
     );
   }
 
@@ -277,7 +284,12 @@ abstract class SettingsLoadedCopyWith<$R, $In extends SettingsLoaded, $Out>
     implements SettingsStateCopyWith<$R, $In, $Out> {
   AccountCopyWith<$R, Account, Account> get account;
   @override
-  $R call({Account? account, bool? isSigningIn, AppError? signInError});
+  $R call({
+    Account? account,
+    bool? isBusy,
+    bool? isSignOutBlocked,
+    AppError? error,
+  });
   SettingsLoadedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -295,19 +307,25 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
   AccountCopyWith<$R, Account, Account> get account =>
       $value.account.copyWith.$chain((v) => call(account: v));
   @override
-  $R call({Account? account, bool? isSigningIn, Object? signInError = $none}) =>
-      $apply(
-        FieldCopyWithData({
-          if (account != null) #account: account,
-          if (isSigningIn != null) #isSigningIn: isSigningIn,
-          if (signInError != $none) #signInError: signInError,
-        }),
-      );
+  $R call({
+    Account? account,
+    bool? isBusy,
+    bool? isSignOutBlocked,
+    Object? error = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (account != null) #account: account,
+      if (isBusy != null) #isBusy: isBusy,
+      if (isSignOutBlocked != null) #isSignOutBlocked: isSignOutBlocked,
+      if (error != $none) #error: error,
+    }),
+  );
   @override
   SettingsLoaded $make(CopyWithData data) => SettingsLoaded(
     account: data.get(#account, or: $value.account),
-    isSigningIn: data.get(#isSigningIn, or: $value.isSigningIn),
-    signInError: data.get(#signInError, or: $value.signInError),
+    isBusy: data.get(#isBusy, or: $value.isBusy),
+    isSignOutBlocked: data.get(#isSignOutBlocked, or: $value.isSignOutBlocked),
+    error: data.get(#error, or: $value.error),
   );
 
   @override

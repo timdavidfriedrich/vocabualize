@@ -102,5 +102,10 @@
   "detailsPhotoByLabel": "Foto de {author}",
   "detailsReplaceButton": "Reemplazar",
   "reportBugDescriptionHint": "Describe el error...",
-  "settingsAccountTitle": "Cuenta"
+  "settingsAccountTitle": "Cuenta",
+  "errorSyncPending": "Tus últimos cambios aún no se han subido.",
+  "settingsSignOutButton": "Cerrar sesión",
+  "settingsSignOutBlockedTitle": "Cambios sin subir",
+  "settingsSignOutBlockedMessage": "Algunos cambios aún no han llegado al servidor. Conéctate a internet e inténtalo de nuevo. Si cierras sesión de todos modos, estos cambios se perderán.",
+  "settingsSignOutAnywayButton": "Cerrar sesión de todos modos"
 }

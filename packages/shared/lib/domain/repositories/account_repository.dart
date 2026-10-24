@@ -10,4 +10,6 @@ abstract class AccountRepository {
   Future<AppResult<Account>> continueWithoutAccount();
 
   Future<AppResult<Account>> signInWithGoogle();
+
+  Future<AppResult<()>> signOut({required bool discardUnsyncedChanges});
 }

@@ -387,4 +387,20 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get settingsAccountTitle => 'Обліковий запис';
+
+  @override
+  String get errorSyncPending => 'Ваші останні зміни ще не завантажено.';
+
+  @override
+  String get settingsSignOutButton => 'Вийти';
+
+  @override
+  String get settingsSignOutBlockedTitle => 'Зміни не завантажено';
+
+  @override
+  String get settingsSignOutBlockedMessage =>
+      'Деякі зміни ще не надійшли на сервер. Підключіться до інтернету й спробуйте ще раз. Якщо все одно вийти, ці зміни буде втрачено.';
+
+  @override
+  String get settingsSignOutAnywayButton => 'Усе одно вийти';
 }

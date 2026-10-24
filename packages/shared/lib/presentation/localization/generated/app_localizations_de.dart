@@ -374,4 +374,20 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsAccountTitle => 'Konto';
+
+  @override
+  String get errorSyncPending => 'Deine letzten Änderungen wurden noch nicht hochgeladen.';
+
+  @override
+  String get settingsSignOutButton => 'Abmelden';
+
+  @override
+  String get settingsSignOutBlockedTitle => 'Änderungen nicht hochgeladen';
+
+  @override
+  String get settingsSignOutBlockedMessage =>
+      'Einige Änderungen sind noch nicht auf dem Server angekommen. Verbinde dich mit dem Internet und versuche es erneut. Wenn du dich trotzdem abmeldest, gehen diese Änderungen verloren.';
+
+  @override
+  String get settingsSignOutAnywayButton => 'Trotzdem abmelden';
 }

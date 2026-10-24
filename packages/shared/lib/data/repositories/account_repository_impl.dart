@@ -71,6 +71,31 @@ class AccountRepositoryImpl(
     }
   }
 
+  @override
+  Future<AppResult<()>> signOut({required bool discardUnsyncedChanges}) async {
+    if (_status case AuthAuthenticated(account: GoogleAccount(:final id))) {
+      final session = _sessions.currentSession;
+      await _syncDataSource.stop();
+      if (!discardUnsyncedChanges && session != null) {
+        try {
+          await _syncDataSource.syncOnce(session);
+        } on Object {
+          _syncDataSource.start(session);
+          return const Failure(SyncPendingError());
+        }
+      }
+      try {
+        await _authDataSource.signOut();
+        await _sessions.deleteForUser(UuidValue.withValidation(id));
+      } on Object catch (error) {
+        return Failure(UnexpectedError(error.toString()));
+      }
+      _emit(const AuthUnauthenticated());
+      return const Success(());
+    }
+    return const Failure(AuthError());
+  }
+
   Future<Account> _openLocal() async {
     await _syncDataSource.stop();
     await _sessions.openLocal();

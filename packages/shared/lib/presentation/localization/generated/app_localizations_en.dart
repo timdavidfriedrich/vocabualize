@@ -372,4 +372,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAccountTitle => 'Account';
+
+  @override
+  String get errorSyncPending => 'Your latest changes haven\'t been uploaded yet.';
+
+  @override
+  String get settingsSignOutButton => 'Sign out';
+
+  @override
+  String get settingsSignOutBlockedTitle => 'Changes not uploaded';
+
+  @override
+  String get settingsSignOutBlockedMessage =>
+      'Some changes haven\'t reached the server yet. Connect to the internet and try again. If you sign out anyway, these changes are lost.';
+
+  @override
+  String get settingsSignOutAnywayButton => 'Sign out anyway';
 }

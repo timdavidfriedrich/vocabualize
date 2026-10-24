@@ -377,4 +377,20 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingsAccountTitle => 'Compte';
+
+  @override
+  String get errorSyncPending => 'Vos dernières modifications n\'ont pas encore été envoyées.';
+
+  @override
+  String get settingsSignOutButton => 'Se déconnecter';
+
+  @override
+  String get settingsSignOutBlockedTitle => 'Modifications non envoyées';
+
+  @override
+  String get settingsSignOutBlockedMessage =>
+      'Certaines modifications ne sont pas encore arrivées sur le serveur. Connectez-vous à internet et réessayez. Si vous vous déconnectez quand même, ces modifications seront perdues.';
+
+  @override
+  String get settingsSignOutAnywayButton => 'Se déconnecter quand même';
 }

@@ -15,6 +15,7 @@ class const SettingsLoading() extends SettingsState with SettingsLoadingMappable
 @MappableClass()
 class const SettingsLoaded({
   required final Account account,
-  required final bool isSigningIn,
-  required final AppError? signInError,
+  required final bool isBusy,
+  required final bool isSignOutBlocked,
+  required final AppError? error,
 }) extends SettingsState with SettingsLoadedMappable;

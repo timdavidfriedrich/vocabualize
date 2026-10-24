@@ -14,6 +14,8 @@ class const ValidationError() extends AppError;
 
 class const NotFoundError() extends AppError;
 
+class const SyncPendingError() extends AppError;
+
 class const UnexpectedError([
   final String? message,
 ]) extends AppError;

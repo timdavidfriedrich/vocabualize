@@ -719,6 +719,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account'**
   String get settingsAccountTitle;
+
+  /// No description provided for @errorSyncPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your latest changes haven\'t been uploaded yet.'**
+  String get errorSyncPending;
+
+  /// No description provided for @settingsSignOutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get settingsSignOutButton;
+
+  /// No description provided for @settingsSignOutBlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes not uploaded'**
+  String get settingsSignOutBlockedTitle;
+
+  /// No description provided for @settingsSignOutBlockedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Some changes haven\'t reached the server yet. Connect to the internet and try again. If you sign out anyway, these changes are lost.'**
+  String get settingsSignOutBlockedMessage;
+
+  /// No description provided for @settingsSignOutAnywayButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out anyway'**
+  String get settingsSignOutAnywayButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

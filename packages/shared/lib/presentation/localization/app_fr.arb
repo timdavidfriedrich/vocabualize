@@ -102,5 +102,10 @@
   "detailsPhotoByLabel": "Photo de {author}",
   "detailsReplaceButton": "Remplacer",
   "reportBugDescriptionHint": "Décrivez le bug...",
-  "settingsAccountTitle": "Compte"
+  "settingsAccountTitle": "Compte",
+  "errorSyncPending": "Vos dernières modifications n'ont pas encore été envoyées.",
+  "settingsSignOutButton": "Se déconnecter",
+  "settingsSignOutBlockedTitle": "Modifications non envoyées",
+  "settingsSignOutBlockedMessage": "Certaines modifications ne sont pas encore arrivées sur le serveur. Connectez-vous à internet et réessayez. Si vous vous déconnectez quand même, ces modifications seront perdues.",
+  "settingsSignOutAnywayButton": "Se déconnecter quand même"
 }

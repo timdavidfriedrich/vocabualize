@@ -102,5 +102,10 @@
   "detailsPhotoByLabel": "Foto von {author}",
   "detailsReplaceButton": "Ersetzen",
   "reportBugDescriptionHint": "Beschreibe den Fehler...",
-  "settingsAccountTitle": "Konto"
+  "settingsAccountTitle": "Konto",
+  "errorSyncPending": "Deine letzten Änderungen wurden noch nicht hochgeladen.",
+  "settingsSignOutButton": "Abmelden",
+  "settingsSignOutBlockedTitle": "Änderungen nicht hochgeladen",
+  "settingsSignOutBlockedMessage": "Einige Änderungen sind noch nicht auf dem Server angekommen. Verbinde dich mit dem Internet und versuche es erneut. Wenn du dich trotzdem abmeldest, gehen diese Änderungen verloren.",
+  "settingsSignOutAnywayButton": "Trotzdem abmelden"
 }

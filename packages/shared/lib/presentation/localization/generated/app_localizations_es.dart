@@ -372,4 +372,20 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsAccountTitle => 'Cuenta';
+
+  @override
+  String get errorSyncPending => 'Tus últimos cambios aún no se han subido.';
+
+  @override
+  String get settingsSignOutButton => 'Cerrar sesión';
+
+  @override
+  String get settingsSignOutBlockedTitle => 'Cambios sin subir';
+
+  @override
+  String get settingsSignOutBlockedMessage =>
+      'Algunos cambios aún no han llegado al servidor. Conéctate a internet e inténtalo de nuevo. Si cierras sesión de todos modos, estos cambios se perderán.';
+
+  @override
+  String get settingsSignOutAnywayButton => 'Cerrar sesión de todos modos';
 }
