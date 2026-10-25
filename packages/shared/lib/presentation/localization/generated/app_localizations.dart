@@ -1079,6 +1079,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your phone\'s clock is off. Turn on automatic date and time, then try again.'**
   String get errorClockWrong;
+
+  /// No description provided for @vocabularySpeakTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Read out'**
+  String get vocabularySpeakTooltip;
+
+  /// No description provided for @errorTextToSpeechUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No voice for this language is installed on this phone.'**
+  String get errorTextToSpeechUnavailable;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

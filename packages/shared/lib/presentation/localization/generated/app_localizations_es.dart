@@ -584,4 +584,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get errorClockWrong =>
       'El reloj de su teléfono no es correcto. Active la fecha y hora automáticas e inténtelo de nuevo.';
+
+  @override
+  String get vocabularySpeakTooltip => 'Leer en voz alta';
+
+  @override
+  String get errorTextToSpeechUnavailable =>
+      'No hay ninguna voz instalada para este idioma en este teléfono.';
 }

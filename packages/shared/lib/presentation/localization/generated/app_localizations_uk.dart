@@ -599,4 +599,11 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get errorClockWrong =>
       'Годинник вашого телефона показує неправильний час. Увімкніть автоматичні дату й час і спробуйте ще раз.';
+
+  @override
+  String get vocabularySpeakTooltip => 'Прочитати вголос';
+
+  @override
+  String get errorTextToSpeechUnavailable =>
+      'На цьому телефоні не встановлено голос для цієї мови.';
 }

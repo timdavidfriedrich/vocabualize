@@ -35,6 +35,8 @@ import 'package:shared/data/data_sources/local_import_data_source.dart'
 import 'package:shared/data/data_sources/setting_local_data_source.dart'
     as _i555;
 import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
+import 'package:shared/data/data_sources/text_to_speech_data_source.dart'
+    as _i820;
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart'
     as _i397;
 import 'package:shared/data/repositories/account_repository_impl.dart' as _i631;
@@ -48,6 +50,8 @@ import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
 import 'package:shared/data/repositories/settings_repository_impl.dart'
     as _i921;
 import 'package:shared/data/repositories/sync_repository_impl.dart' as _i368;
+import 'package:shared/data/repositories/text_to_speech_repository_impl.dart'
+    as _i905;
 import 'package:shared/data/repositories/vocabulary_repository_impl.dart'
     as _i22;
 import 'package:shared/di/serverpod_client_module.dart' as _i74;
@@ -59,6 +63,8 @@ import 'package:shared/domain/repositories/clock_repository.dart' as _i946;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
+import 'package:shared/domain/repositories/text_to_speech_repository.dart'
+    as _i839;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart'
     as _i650;
@@ -83,6 +89,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => const _i179.ImageProcessingDataSourceImpl());
     gh.lazySingleton<_i49.AppConfigLocalDataSource>(
         () => _i49.AppConfigLocalDataSourceImpl());
+    gh.lazySingleton<_i820.TextToSpeechDataSource>(
+        () => _i820.TextToSpeechDataSourceImpl());
     gh.lazySingleton<_i1040.Client>(() => serverpodClientModule.client(
           gh<_i90.FlutterAuthSessionManager>(),
           gh<_i90.ConnectivityMonitor>(),
@@ -104,6 +112,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i1040.Client>(),
           gh<_i1040.ConnectivityMonitor>(),
         )..listenToEvents());
+    gh.factory<_i839.TextToSpeechRepository>(() =>
+        _i905.TextToSpeechRepositoryImpl(gh<_i820.TextToSpeechDataSource>()));
     gh.factory<_i535.AuthDataSource>(() => _i535.AuthDataSourceImpl(
           gh<_i1040.Client>(),
           gh<_i90.FlutterAuthSessionManager>(),

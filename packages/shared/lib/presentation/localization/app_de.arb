@@ -162,5 +162,7 @@
   "accountConflictUnknownAccount": "unbekanntes Konto",
   "settingsSignInAgainButton": "Erneut anmelden",
   "loadingProgressLabel": "{current} / {total}",
-  "errorClockWrong": "Die Uhr deines Handys geht falsch. Aktiviere Datum und Uhrzeit automatisch und versuche es dann erneut."
+  "errorClockWrong": "Die Uhr deines Handys geht falsch. Aktiviere Datum und Uhrzeit automatisch und versuche es dann erneut.",
+  "vocabularySpeakTooltip": "Vorlesen",
+  "errorTextToSpeechUnavailable": "Auf diesem Handy ist keine Stimme für diese Sprache installiert."
 }

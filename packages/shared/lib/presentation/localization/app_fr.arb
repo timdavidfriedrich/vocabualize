@@ -162,5 +162,7 @@
   "accountConflictUnknownAccount": "compte inconnu",
   "settingsSignInAgainButton": "Se reconnecter",
   "loadingProgressLabel": "{current} / {total}",
-  "errorClockWrong": "L'horloge de votre téléphone est décalée. Activez la date et l'heure automatiques, puis réessayez."
+  "errorClockWrong": "L'horloge de votre téléphone est décalée. Activez la date et l'heure automatiques, puis réessayez.",
+  "vocabularySpeakTooltip": "Lire à voix haute",
+  "errorTextToSpeechUnavailable": "Aucune voix n'est installée pour cette langue sur ce téléphone."
 }

@@ -12,6 +12,7 @@ extension AppErrorExtensions on AppError {
     SyncPendingError() => context.s.errorSyncPending,
     InvalidBackupError() => context.s.errorInvalidBackup,
     ClockWrongError() => context.s.errorClockWrong,
+    TextToSpeechUnavailableError() => context.s.errorTextToSpeechUnavailable,
     UnexpectedError() => context.s.errorUnexpected,
   };
 }

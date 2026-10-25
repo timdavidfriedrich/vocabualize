@@ -579,4 +579,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorClockWrong =>
       'Your phone\'s clock is off. Turn on automatic date and time, then try again.';
+
+  @override
+  String get vocabularySpeakTooltip => 'Read out';
+
+  @override
+  String get errorTextToSpeechUnavailable =>
+      'No voice for this language is installed on this phone.';
 }

@@ -586,4 +586,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get errorClockWrong =>
       'Die Uhr deines Handys geht falsch. Aktiviere Datum und Uhrzeit automatisch und versuche es dann erneut.';
+
+  @override
+  String get vocabularySpeakTooltip => 'Vorlesen';
+
+  @override
+  String get errorTextToSpeechUnavailable =>
+      'Auf diesem Handy ist keine Stimme für diese Sprache installiert.';
 }

@@ -590,4 +590,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get errorClockWrong =>
       'L\'horloge de votre téléphone est décalée. Activez la date et l\'heure automatiques, puis réessayez.';
+
+  @override
+  String get vocabularySpeakTooltip => 'Lire à voix haute';
+
+  @override
+  String get errorTextToSpeechUnavailable =>
+      'Aucune voix n\'est installée pour cette langue sur ce téléphone.';
 }
