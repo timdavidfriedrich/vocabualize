@@ -12,6 +12,8 @@ class const SettingsSignOutRequested({
 
 class const SettingsSignOutDismissed() extends SettingsEvent;
 
+class const SettingsDateSettingsRequested() extends SettingsEvent;
+
 class const SettingsAccountConflictResolved({
   required final bool keepsPreviousAccount,
 }) extends SettingsEvent;

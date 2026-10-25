@@ -2,6 +2,7 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_settings/presentation/settings_bloc.dart';
 import 'package:feature_settings/presentation/settings_event.dart';
 import 'package:feature_settings/presentation/settings_state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/account.dart';
@@ -246,6 +247,14 @@ class const _GoogleAccountSection({
                     ? null
                     : () => context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
                 child: Text(context.s.settingsSignInAgainButton),
+              ),
+            ),
+            SyncStatus.clockWrong when defaultTargetPlatform == TargetPlatform.android => Padding(
+              padding: const EdgeInsets.only(top: Spacing.s),
+              child: FilledButton(
+                onPressed: () =>
+                    context.read<SettingsBloc>().add(const SettingsDateSettingsRequested()),
+                child: Text(context.s.dataOpenTimeSettingsButton),
               ),
             ),
             _ => const SizedBox.shrink(),
