@@ -46,9 +46,6 @@
   "homeAddFirstWordMessage": "Click the button\nto add your first word",
   "homeAllWordsTitle": "All vocabulary",
   "homeNewWordsTitle": "Recently added",
-  "homeNoNewWordsMessage": "Oh, it seems like you have not added any words for a while now. :(",
-  "homeStatusFirstWordMessage": "You added your first word! Add some more and hit “practice”! :)",
-  "homeStatusEmptyMessage": "Why don’t you add some new words? :)",
   "homePracticeButton": "Practice",
   "homeScanButton": "Scan",
   "homeWriteButton": "Write",
@@ -118,30 +115,6 @@
   },
   "vocabularyReappearsInDays": "{count, plural, one{In {count} day} other{In {count} days}}",
   "@vocabularyReappearsInDays": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "homeStatusTotalMessage": "{count, plural, one{Your collection contains only {count} word. It’s feeling lonely. Add some more! :)} other{Your collection contains {count} words.}}",
-  "@homeStatusTotalMessage": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "homeStatusAddedTodayMessage": "{count, plural, one{Wow, you already added {count} word today. Keep it up!} other{Wow, you already added {count} words today. Keep it up!}}",
-  "@homeStatusAddedTodayMessage": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "homeStatusManyInTotalMessage": "{count, plural, other{Damn, you added {count} words in total. Not bad!}}",
-  "@homeStatusManyInTotalMessage": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -280,6 +253,39 @@
     }
   },
   "errorClockWrong": "Your phone's clock is off. Turn on automatic date and time, then try again.",
+  "homeDueMessage": "{count, plural, one{{count} word to practice} other{{count} words to practice}}",
+  "homeAllDoneMessage": "All done for now",
+  "homeTotalWordsMessage": "{count, plural, one{{count} word in total} other{{count} words in total}}",
+  "homeNextDueTodayMessage": "Next word at {time}",
+  "homeNextDueLaterMessage": "Next word on {date}",
   "vocabularySpeakTooltip": "Read out",
-  "errorTextToSpeechUnavailable": "No voice for this language is installed on this phone."
+  "errorTextToSpeechUnavailable": "No voice for this language is installed on this phone.",
+  "@homeDueMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@homeTotalWordsMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@homeNextDueTodayMessage": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@homeNextDueLaterMessage": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

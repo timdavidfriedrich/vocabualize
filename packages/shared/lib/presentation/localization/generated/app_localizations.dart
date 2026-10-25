@@ -336,24 +336,6 @@ abstract class AppLocalizations {
   /// **'Recently added'**
   String get homeNewWordsTitle;
 
-  /// No description provided for @homeNoNewWordsMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Oh, it seems like you have not added any words for a while now. :('**
-  String get homeNoNewWordsMessage;
-
-  /// No description provided for @homeStatusFirstWordMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'You added your first word! Add some more and hit “practice”! :)'**
-  String get homeStatusFirstWordMessage;
-
-  /// No description provided for @homeStatusEmptyMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Why don’t you add some new words? :)'**
-  String get homeStatusEmptyMessage;
-
   /// No description provided for @homePracticeButton.
   ///
   /// In en, this message translates to:
@@ -677,24 +659,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, one{In {count} day} other{In {count} days}}'**
   String vocabularyReappearsInDays(int count);
-
-  /// No description provided for @homeStatusTotalMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{Your collection contains only {count} word. It’s feeling lonely. Add some more! :)} other{Your collection contains {count} words.}}'**
-  String homeStatusTotalMessage(int count);
-
-  /// No description provided for @homeStatusAddedTodayMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{Wow, you already added {count} word today. Keep it up!} other{Wow, you already added {count} words today. Keep it up!}}'**
-  String homeStatusAddedTodayMessage(int count);
-
-  /// No description provided for @homeStatusManyInTotalMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, other{Damn, you added {count} words in total. Not bad!}}'**
-  String homeStatusManyInTotalMessage(int count);
 
   /// No description provided for @detailsDuplicateMessage.
   ///
@@ -1079,6 +1043,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your phone\'s clock is off. Turn on automatic date and time, then try again.'**
   String get errorClockWrong;
+
+  /// No description provided for @homeDueMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} word to practice} other{{count} words to practice}}'**
+  String homeDueMessage(int count);
+
+  /// No description provided for @homeAllDoneMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'All done for now'**
+  String get homeAllDoneMessage;
+
+  /// No description provided for @homeTotalWordsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} word in total} other{{count} words in total}}'**
+  String homeTotalWordsMessage(int count);
+
+  /// No description provided for @homeNextDueTodayMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next word at {time}'**
+  String homeNextDueTodayMessage(String time);
+
+  /// No description provided for @homeNextDueLaterMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next word on {date}'**
+  String homeNextDueLaterMessage(String date);
 
   /// No description provided for @vocabularySpeakTooltip.
   ///

@@ -6,11 +6,14 @@ import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
+import 'package:shared/data/mappers/vocabulary_overview_mappers.dart';
 import 'package:shared/data/models/local_image_variant.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
+import 'package:shared/domain/entities/vocabulary_level.dart';
+import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -24,20 +27,24 @@ class const VocabularyRepositoryImpl(
   final ImageFileDataSource _imageFileDataSource,
 ) implements VocabularyRepository {
   @override
-  Stream<AppResult<List<Vocabulary>>> watchVocabularies({required int limit}) {
-    return _localDataSource
-        .watchVocabularies(limit: limit)
-        .switchMap(
-          (vocabularies) => _imageFileDataSource.watchChanges().asyncMap(
-            (_) => _toVocabularies(vocabularies),
-          ),
-        )
-        .toAppResult();
-  }
+  Stream<AppResult<List<Vocabulary>>> watchVocabularies({required int limit}) =>
+      _withImages(_localDataSource.watchVocabularies(limit: limit)).toAppResult();
 
   @override
-  Stream<AppResult<int>> watchVocabularyCount() =>
-      _localDataSource.watchVocabularyCount().toAppResult();
+  Stream<AppResult<List<Vocabulary>>> watchRecentVocabularies({
+    required Duration maxAge,
+    required int limit,
+  }) => _withImages(
+    _localDataSource.watchRecentVocabularies(maxAge: maxAge, limit: limit),
+  ).toAppResult();
+
+  @override
+  Stream<AppResult<VocabularyOverview>> watchVocabularyOverview() {
+    return _localDataSource
+        .watchOverview(levelFloors: [for (final level in VocabularyLevel.values) level.floor])
+        .map((overview) => overview.toVocabularyOverview())
+        .toAppResult();
+  }
 
   @override
   Future<AppResult<Vocabulary>> addVocabulary({
@@ -101,6 +108,14 @@ class const VocabularyRepositoryImpl(
       image.fullBytes,
     );
     return CustomImage(imageId: imageId, fullPath: fullPath, thumbnailPath: thumbnailPath);
+  }
+
+  Stream<List<Vocabulary>> _withImages(Stream<List<LocalVocabulary>> vocabularies) {
+    return vocabularies.switchMap(
+      (vocabularies) => _imageFileDataSource.watchChanges().asyncMap(
+        (_) => _toVocabularies(vocabularies),
+      ),
+    );
   }
 
   Future<List<Vocabulary>> _toVocabularies(List<LocalVocabulary> vocabularies) async {

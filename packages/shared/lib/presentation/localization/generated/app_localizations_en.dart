@@ -129,17 +129,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeNewWordsTitle => 'Recently added';
 
   @override
-  String get homeNoNewWordsMessage =>
-      'Oh, it seems like you have not added any words for a while now. :(';
-
-  @override
-  String get homeStatusFirstWordMessage =>
-      'You added your first word! Add some more and hit “practice”! :)';
-
-  @override
-  String get homeStatusEmptyMessage => 'Why don’t you add some new words? :)';
-
-  @override
   String get homePracticeButton => 'Practice';
 
   @override
@@ -321,38 +310,6 @@ class AppLocalizationsEn extends AppLocalizations {
       locale: localeName,
       other: 'In $count days',
       one: 'In $count day',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String homeStatusTotalMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Your collection contains $count words.',
-      one: 'Your collection contains only $count word. It’s feeling lonely. Add some more! :)',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String homeStatusAddedTodayMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Wow, you already added $count words today. Keep it up!',
-      one: 'Wow, you already added $count word today. Keep it up!',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String homeStatusManyInTotalMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Damn, you added $count words in total. Not bad!',
     );
     return '$_temp0';
   }
@@ -579,6 +536,41 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorClockWrong =>
       'Your phone\'s clock is off. Turn on automatic date and time, then try again.';
+
+  @override
+  String homeDueMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words to practice',
+      one: '$count word to practice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeAllDoneMessage => 'All done for now';
+
+  @override
+  String homeTotalWordsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words in total',
+      one: '$count word in total',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeNextDueTodayMessage(String time) {
+    return 'Next word at $time';
+  }
+
+  @override
+  String homeNextDueLaterMessage(String date) {
+    return 'Next word on $date';
+  }
 
   @override
   String get vocabularySpeakTooltip => 'Read out';

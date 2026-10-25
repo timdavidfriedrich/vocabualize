@@ -1,143 +1,296 @@
-import 'dart:io';
-
+import 'package:core/error/app_error.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
+import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_state.dart';
+import 'package:feature_home/presentation/widgets/delete_vocabulary_dialog.dart';
+import 'package:feature_home/presentation/widgets/recent_vocabularies_section.dart';
+import 'package:feature_home/presentation/widgets/record_fab.dart';
+import 'package:feature_home/presentation/widgets/status_card.dart';
+import 'package:feature_home/presentation/widgets/vocabulary_info_dialog.dart';
+import 'package:feature_home/presentation/widgets/vocabulary_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
-import 'package:shared/domain/entities/vocabulary_image.dart';
+import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/widgets/loading_screen.dart';
+import 'package:shared/presentation/widgets/mascot.dart';
 import 'package:shared/presentation/widgets/sync_status_icon.dart';
+
+const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.xxl);
+const _scrollEndSpacing = Spacing.xxxxl * 2;
+const _mascotScreenHeightFactor = 0.4;
 
 class const HomeScreen({
   super.key,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(context.s.appTitle),
-        actions: [
-          const SyncStatusIcon(),
-          IconButton(
-            onPressed: context.pushSettings,
-            icon: const Icon(Icons.settings_rounded),
-            tooltip: context.s.settingsTitle,
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: context.pushVocabularyDetails,
-        icon: const Icon(Icons.edit_rounded),
-        label: Text(context.s.homeWriteButton),
-      ),
-      body: BlocBuilder<HomeBloc, HomeState>(
+    return BlocListener<HomeBloc, HomeState>(
+      listenWhen: (previous, current) => switch ((previous, current)) {
+        (HomeLoaded(error: null), HomeLoaded(error: AppError())) => true,
+        _ => false,
+      },
+      listener: (context, state) {
+        if (state case HomeLoaded(error: final error?)) context.showToast(error.toMessage(context));
+      },
+      child: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) =>
+            previous.runtimeType != current.runtimeType || _isEmpty(previous) != _isEmpty(current),
         builder: (context, state) => switch (state) {
-          HomeLoading() => const Center(child: CircularProgressIndicator()),
-          HomeFailure(:final error) => Center(child: Text(error.toMessage(context))),
-          HomeLoaded(:final vocabularies, :final vocabularyCount) => _Feed(
-            vocabularies: vocabularies,
-            vocabularyCount: vocabularyCount,
-          ),
+          HomeLoading() => const LoadingScreen(),
+          HomeFailure(:final error) => _FailureScreen(error: error),
+          HomeLoaded() when _isEmpty(state) => const _EmptyScreen(),
+          HomeLoaded() => const _ContentScreen(),
         },
       ),
     );
   }
 }
 
-class const _Feed({
-  required final List<Vocabulary> _vocabularies,
-  required final int _vocabularyCount,
-}) extends StatelessWidget {
+bool _isEmpty(HomeState state) => switch (state) {
+  HomeLoaded(overview: VocabularyOverview(totalCount: 0), vocabularies: []) => true,
+  _ => false,
+};
+
+class const _ContentScreen() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (_vocabularies.isEmpty) {
-      return Center(
-        child: Text(context.s.homeAddFirstWordMessage, textAlign: TextAlign.center),
-      );
-    }
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.all(Spacing.m),
-          sliver: SliverToBoxAdapter(
-            child: Text(
-              context.s.homeStatusTotalMessage(_vocabularyCount),
-              style: context.t.bodyLarge,
+    return Scaffold(
+      floatingActionButton: const RecordFab(),
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverSafeArea(
+            left: false,
+            right: false,
+            sliver: SliverMainAxisGroup(
+              slivers: [
+                SliverPadding(
+                  padding: _pagePadding,
+                  sliver: SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: Spacing.xxl),
+                        const _TitleRow(),
+                        const SizedBox(height: Spacing.m),
+                        BlocSelector<HomeBloc, HomeState, VocabularyOverview?>(
+                          selector: (state) => switch (state) {
+                            HomeLoaded(:final overview) => overview,
+                            _ => null,
+                          },
+                          builder: (context, overview) => switch (overview) {
+                            final overview? => StatusCard(overview: overview),
+                            null => const SizedBox.shrink(),
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const _RecentSection(),
+                SliverPadding(
+                  padding: _pagePadding,
+                  sliver: SliverMainAxisGroup(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: Spacing.xxl),
+                            _SectionTitle(title: context.s.homeAllWordsTitle),
+                            const SizedBox(height: Spacing.m),
+                          ],
+                        ),
+                      ),
+                      const _Feed(),
+                    ],
+                  ),
+                ),
+                const SliverToBoxAdapter(child: SizedBox(height: _scrollEndSpacing)),
+              ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class const _RecentSection() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, List<Vocabulary>>(
+      selector: (state) => switch (state) {
+        HomeLoaded(:final recentVocabularies) => recentVocabularies,
+        _ => const [],
+      },
+      builder: (context, recentVocabularies) => SliverToBoxAdapter(
+        child: recentVocabularies.isEmpty
+            ? null
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: Spacing.xxl),
+                  Padding(
+                    padding: _pagePadding,
+                    child: _SectionTitle(title: context.s.homeNewWordsTitle),
+                  ),
+                  const SizedBox(height: Spacing.m),
+                  RecentVocabulariesSection(
+                    vocabularies: recentVocabularies,
+                    onTap: (vocabulary) => _showInfo(context, vocabulary),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}
+
+class const _Feed() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, ({List<Vocabulary> vocabularies, bool hasMore})>(
+      selector: (state) => switch (state) {
+        HomeLoaded(:final vocabularies, :final feedLimit) => (
+          vocabularies: vocabularies,
+          hasMore: vocabularies.length >= feedLimit,
         ),
-        SliverList.builder(
-          itemCount: _vocabularies.length,
-          itemBuilder: (context, index) => _VocabularyTile(
-            key: ValueKey(_vocabularies[index].id),
-            vocabulary: _vocabularies[index],
+        _ => (vocabularies: const [], hasMore: false),
+      },
+      builder: (context, feed) => SliverList.builder(
+        itemCount: feed.vocabularies.length + (feed.hasMore ? 1 : 0),
+        itemBuilder: (_, index) => switch (feed.vocabularies.elementAtOrNull(index)) {
+          final vocabulary? => VocabularyTile(
+            key: ValueKey(vocabulary.id),
+            vocabulary: vocabulary,
+            onTap: () => _showInfo(context, vocabulary),
+            onSpeak: () => _speak(context, vocabulary),
+            onDelete: () => _confirmDelete(context, vocabulary),
           ),
+          null => const _FeedEndLoader(),
+        },
+      ),
+    );
+  }
+}
+
+class const _FeedEndLoader() extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    useEffect(() {
+      context.read<HomeBloc>().add(const HomeFeedEndReached());
+      return null;
+    }, const []);
+    return const Padding(
+      padding: EdgeInsets.all(Spacing.m),
+      child: Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+class const _TitleRow() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: FittedBox(
+            alignment: Alignment.centerLeft,
+            fit: BoxFit.scaleDown,
+            child: Text(context.s.appTitle, style: context.t.headlineMedium),
+          ),
+        ),
+        const SizedBox(width: Spacing.m),
+        const SyncStatusIcon(),
+        IconButton(
+          onPressed: context.pushSettings,
+          tooltip: context.s.settingsTitle,
+          icon: const Icon(Icons.settings_rounded),
         ),
       ],
     );
   }
 }
 
-class const _VocabularyTile({
-  super.key,
-  required final Vocabulary _vocabulary,
+class const _SectionTitle({
+  required final String _title,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: switch (_vocabulary.image) {
-        CustomImage(thumbnailPath: final thumbnailPath?) => _Thumbnail(
-          image: FileImage(File(thumbnailPath)),
-        ),
-        CustomImage(thumbnailPath: null) => const _ThumbnailPlaceholder(),
-        StockImage(:final thumbUrl) => _Thumbnail(image: NetworkImage(thumbUrl)),
-        NoImage() => null,
-      },
-      title: Text(_vocabulary.target, style: context.t.titleMedium),
-      subtitle: Text(_vocabulary.source, style: context.t.bodyMedium),
-    );
+    return Text(_title, style: context.t.headlineSmall);
   }
 }
 
-class const _Thumbnail({
-  required final ImageProvider _image,
-}) extends StatelessWidget {
+class const _EmptyScreen() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(Spacing.radiusS),
-      child: SizedBox.square(
-        dimension: Spacing.xxxl,
-        child: Image(
-          image: _image,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => const _ThumbnailPlaceholder(),
-        ),
-      ),
-    );
-  }
-}
-
-class const _ThumbnailPlaceholder() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(Spacing.radiusS),
-      child: SizedBox.square(
-        dimension: Spacing.xxxl,
-        child: ColoredBox(
-          color: context.c.surfaceContainerHighest,
-          child: Icon(
-            Icons.image_rounded,
-            size: Spacing.iconM,
-            color: context.c.onSurfaceVariant,
+    return Scaffold(
+      floatingActionButton: const RecordFab(),
+      body: SafeArea(
+        child: Padding(
+          padding: _pagePadding,
+          child: Column(
+            children: [
+              const SizedBox(height: Spacing.xxl),
+              const _TitleRow(),
+              const Spacer(),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * _mascotScreenHeightFactor,
+                child: const Mascot(pose: MascotPose.search),
+              ),
+              const Spacer(),
+              Text(
+                context.s.homeAddFirstWordMessage,
+                style: context.t.bodyLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: _scrollEndSpacing),
+            ],
           ),
         ),
       ),
     );
+  }
+}
+
+class const _FailureScreen({
+  required final AppError _error,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: _pagePadding,
+          child: Center(child: Text(_error.toMessage(context), textAlign: TextAlign.center)),
+        ),
+      ),
+    );
+  }
+}
+
+void _showInfo(BuildContext context, Vocabulary vocabulary) {
+  final bloc = context.read<HomeBloc>();
+  showVocabularyInfoDialog(
+    context,
+    vocabulary: vocabulary,
+    onSpeak: () => bloc.add(HomeVocabularySpeakRequested(vocabulary: vocabulary)),
+  );
+}
+
+void _speak(BuildContext context, Vocabulary vocabulary) {
+  context.read<HomeBloc>().add(HomeVocabularySpeakRequested(vocabulary: vocabulary));
+}
+
+Future<void> _confirmDelete(BuildContext context, Vocabulary vocabulary) async {
+  final bloc = context.read<HomeBloc>();
+  if (await confirmsVocabularyDelete(context, vocabulary)) {
+    bloc.add(HomeVocabularyDeleteRequested(vocabularyId: vocabulary.id));
   }
 }

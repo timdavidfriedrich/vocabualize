@@ -130,16 +130,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homeNewWordsTitle => 'Нещодавно додані';
 
   @override
-  String get homeNoNewWordsMessage => 'Ой, здається, ви певний час не додавали слова. :(';
-
-  @override
-  String get homeStatusFirstWordMessage =>
-      'Ви додали своє перше слово! Додайте ще і натисніть «тренуватися»! :)';
-
-  @override
-  String get homeStatusEmptyMessage => 'Чому б не додати кілька нових слів? :)';
-
-  @override
   String get homePracticeButton => 'Тренуватися';
 
   @override
@@ -329,45 +319,6 @@ class AppLocalizationsUk extends AppLocalizations {
       many: 'За $count днів',
       few: 'За $count дні',
       one: 'За $count день',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String homeStatusTotalMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Ваша колекція містить $count слова.',
-      many: 'Ваша колекція містить $count слів.',
-      few: 'Ваша колекція містить $count слова.',
-      one: 'Ваша колекція містить лише $count слово. Воно почувається самотнім. Додайте ще!',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String homeStatusAddedTodayMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Вау, сьогодні ви вже додали $count слова. Так тримати!',
-      many: 'Вау, сьогодні ви вже додали $count слів. Так тримати!',
-      few: 'Вау, сьогодні ви вже додали $count слова. Так тримати!',
-      one: 'Вау, сьогодні ви вже додали $count слово. Так тримати!',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String homeStatusManyInTotalMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Вау, ви додали $count слова загалом. Непогано!',
-      many: 'Вау, ви додали $count слів загалом. Непогано!',
-      few: 'Вау, ви додали $count слова загалом. Непогано!',
-      one: 'Вау, ви додали $count слово загалом. Непогано!',
     );
     return '$_temp0';
   }
@@ -599,6 +550,45 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get errorClockWrong =>
       'Годинник вашого телефона показує неправильний час. Увімкніть автоматичні дату й час і спробуйте ще раз.';
+
+  @override
+  String homeDueMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count слова для повторення',
+      many: '$count слів для повторення',
+      few: '$count слова для повторення',
+      one: '$count слово для повторення',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeAllDoneMessage => 'Поки що все готово';
+
+  @override
+  String homeTotalWordsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Усього $count слова',
+      many: 'Усього $count слів',
+      few: 'Усього $count слова',
+      one: 'Усього $count слово',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeNextDueTodayMessage(String time) {
+    return 'Наступне слово о $time';
+  }
+
+  @override
+  String homeNextDueLaterMessage(String date) {
+    return 'Наступне слово $date';
+  }
 
   @override
   String get vocabularySpeakTooltip => 'Прочитати вголос';
