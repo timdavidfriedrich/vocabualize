@@ -24,6 +24,20 @@ abstract class VocabularyRepository {
 
   Future<AppResult<Vocabulary>> findVocabulary(String id);
 
+  Future<AppResult<int>> countDueVocabularies(DateTime dueBy);
+
+  Future<AppResult<List<Vocabulary>>> findDueVocabularies({
+    required DateTime dueBy,
+    required int limit,
+  });
+
+  Future<AppResult<bool>> hasDueVocabulariesOutside({
+    required DateTime dueBy,
+    required LanguagePair languages,
+  });
+
+  Future<AppResult<()>> saveReview(Vocabulary vocabulary);
+
   Future<AppResult<bool>> hasVocabularyWithSource(String source);
 
   Future<AppResult<Vocabulary>> updateVocabulary({

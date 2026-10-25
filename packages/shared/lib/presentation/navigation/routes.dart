@@ -33,4 +33,6 @@ class const EditVocabularyDetails({
   List<Object?> get props => [vocabularyId];
 }
 
+class const Practice() extends AppRoute;
+
 class const Settings() extends AppRoute;

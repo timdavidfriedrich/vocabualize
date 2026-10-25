@@ -27,7 +27,28 @@ abstract class VocabularyLocalDataSource {
 
   Future<bool> hasVocabularyWithSource(String source);
 
-  Future<LocalVocabulary> insertVocabulary(LocalVocabulary vocabulary);
+  Future<int> countDueVocabularies(DateTime dueBy);
+
+  Future<List<LocalVocabulary>> findDueVocabularies({
+    required DateTime dueBy,
+    required int limit,
+  });
+
+  Future<bool> hasDueVocabulariesOutsidePair({
+    required DateTime dueBy,
+    required String sourceLanguageCode,
+    required String targetLanguageCode,
+  });
+
+  Future<LocalVocabulary> insertVocabulary(
+    LocalVocabulary vocabulary, {
+    required LocalActivity activity,
+  });
+
+  Future<void> saveReview(
+    LocalVocabulary vocabulary, {
+    required LocalActivity activity,
+  });
 
   Future<LocalVocabulary> updateVocabulary(
     LocalVocabulary vocabulary, {
@@ -120,8 +141,72 @@ class const VocabularyLocalDataSourceImpl(
   }
 
   @override
-  Future<LocalVocabulary> insertVocabulary(LocalVocabulary vocabulary) {
-    return LocalVocabulary.db.insertRow(_sessions.requireWritableSession(), vocabulary);
+  Future<int> countDueVocabularies(DateTime dueBy) {
+    return LocalVocabulary.db.count(_requireSession(), where: (t) => t.nextReviewAt <= dueBy);
+  }
+
+  @override
+  Future<List<LocalVocabulary>> findDueVocabularies({
+    required DateTime dueBy,
+    required int limit,
+  }) {
+    return LocalVocabulary.db.find(
+      _requireSession(),
+      where: (t) => t.nextReviewAt <= dueBy,
+      orderBy: (t) => t.nextReviewAt.asc(),
+      limit: limit,
+    );
+  }
+
+  @override
+  Future<bool> hasDueVocabulariesOutsidePair({
+    required DateTime dueBy,
+    required String sourceLanguageCode,
+    required String targetLanguageCode,
+  }) async {
+    final count = await LocalVocabulary.db.count(
+      _requireSession(),
+      where: (t) =>
+          (t.nextReviewAt <= dueBy) &
+          (t.sourceLanguageCode.notEquals(sourceLanguageCode) |
+              t.targetLanguageCode.notEquals(targetLanguageCode)),
+      limit: 1,
+    );
+    return count > 0;
+  }
+
+  @override
+  Future<LocalVocabulary> insertVocabulary(
+    LocalVocabulary vocabulary, {
+    required LocalActivity activity,
+  }) {
+    final session = _sessions.requireWritableSession();
+    return session.db.transaction((transaction) async {
+      final inserted = await LocalVocabulary.db.insertRow(
+        session,
+        vocabulary,
+        transaction: transaction,
+      );
+      await _recordActivity(session, activity, transaction);
+      return inserted;
+    });
+  }
+
+  @override
+  Future<void> saveReview(
+    LocalVocabulary vocabulary, {
+    required LocalActivity activity,
+  }) {
+    final session = _sessions.requireWritableSession();
+    return session.db.transaction((transaction) async {
+      await LocalVocabulary.db.updateRow(
+        session,
+        vocabulary,
+        columns: (t) => [t.level, t.isNovice, t.intervalMinutes, t.ease, t.nextReviewAt],
+        transaction: transaction,
+      );
+      await _recordActivity(session, activity, transaction);
+    });
   }
 
   @override
@@ -142,6 +227,22 @@ class const VocabularyLocalDataSourceImpl(
       _sessions.requireWritableSession(),
       where: (t) => t.id.equals(id),
     );
+  }
+
+  Future<void> _recordActivity(
+    DatabaseSession session,
+    LocalActivity activity,
+    Transaction transaction,
+  ) async {
+    final existing = await LocalActivity.db.count(
+      session,
+      where: (t) => t.type.equals(activity.type) & t.localDate.equals(activity.localDate),
+      limit: 1,
+      transaction: transaction,
+    );
+    if (existing == 0) {
+      await LocalActivity.db.insertRow(session, activity, transaction: transaction);
+    }
   }
 
   DatabaseSession _requireSession() {

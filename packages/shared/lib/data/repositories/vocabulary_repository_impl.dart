@@ -5,9 +5,12 @@ import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
+import 'package:shared/data/mappers/activity_mappers.dart';
+import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_overview_mappers.dart';
 import 'package:shared/data/models/local_image_variant.dart';
+import 'package:shared/domain/entities/activity_type.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
@@ -74,7 +77,10 @@ class const VocabularyRepositoryImpl(
         },
         createdAt: now,
       );
-      final inserted = await _localDataSource.insertVocabulary(vocabulary.toLocalVocabulary());
+      final inserted = await _localDataSource.insertVocabulary(
+        vocabulary.toLocalVocabulary(),
+        activity: _activity(ActivityType.add),
+      );
       return Success((await _toVocabularies([inserted])).single);
     } on Object catch (error) {
       if (image != null) _imageFileDataSource.deleteImage(imageId).ignore();
@@ -88,6 +94,59 @@ class const VocabularyRepositoryImpl(
       final vocabulary = await _localDataSource.findVocabulary(UuidValue.withValidation(id));
       if (vocabulary == null) return const Failure(NotFoundError());
       return Success((await _toVocabularies([vocabulary])).single);
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<int>> countDueVocabularies(DateTime dueBy) async {
+    try {
+      return Success(await _localDataSource.countDueVocabularies(dueBy));
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<List<Vocabulary>>> findDueVocabularies({
+    required DateTime dueBy,
+    required int limit,
+  }) async {
+    try {
+      final vocabularies = await _localDataSource.findDueVocabularies(dueBy: dueBy, limit: limit);
+      return Success(await _toVocabularies(vocabularies));
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<bool>> hasDueVocabulariesOutside({
+    required DateTime dueBy,
+    required LanguagePair languages,
+  }) async {
+    try {
+      return Success(
+        await _localDataSource.hasDueVocabulariesOutsidePair(
+          dueBy: dueBy,
+          sourceLanguageCode: languages.source.toLanguageCode(),
+          targetLanguageCode: languages.target.toLanguageCode(),
+        ),
+      );
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<()>> saveReview(Vocabulary vocabulary) async {
+    try {
+      await _localDataSource.saveReview(
+        vocabulary.toLocalVocabulary(),
+        activity: _activity(ActivityType.practice),
+      );
+      return const Success(());
     } on Object catch (error) {
       return Failure(error.toAppError());
     }
@@ -179,6 +238,16 @@ class const VocabularyRepositoryImpl(
       thumbnailPath: thumbnailPath,
       photographer: image.photographer,
       photographerUrl: image.photographerUrl,
+    );
+  }
+
+  LocalActivity _activity(ActivityType type) {
+    final now = DateTime.now();
+    return LocalActivity(
+      id: const Uuid().v7obj(),
+      type: type.value,
+      localDate: now.toLocalDateString(),
+      occurredAt: now.toUtc(),
     );
   }
 

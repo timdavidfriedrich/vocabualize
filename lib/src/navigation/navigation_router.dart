@@ -9,6 +9,9 @@ import 'package:feature_gate/presentation/wait_for_data/wait_for_data_screen.dar
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_screen.dart';
+import 'package:feature_practice/presentation/practice_bloc.dart';
+import 'package:feature_practice/presentation/practice_event.dart';
+import 'package:feature_practice/presentation/practice_screen.dart';
 import 'package:feature_settings/presentation/settings_bloc.dart';
 import 'package:feature_settings/presentation/settings_event.dart';
 import 'package:feature_settings/presentation/settings_screen.dart';
@@ -30,7 +33,6 @@ import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/sync_repository.dart';
 import 'package:shared/presentation/navigation/routes.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
-
 import 'package:vocabualize/src/di/service_locator.dart';
 
 typedef _EntryState = (AppResult<AuthStatus>, AppResult<DataReadiness>?, AppResult<LanguagePair?>?);
@@ -141,6 +143,10 @@ class const _AppPage({
     EditVocabularyDetails(:final vocabularyId) => BlocProvider(
       create: (_) => sl<DetailsBloc>()..add(DetailsEditStarted(vocabularyId: vocabularyId)),
       child: const DetailsScreen(),
+    ),
+    Practice() => BlocProvider(
+      create: (_) => sl<PracticeBloc>()..add(const PracticeStarted()),
+      child: const PracticeScreen(),
     ),
     Settings() => BlocProvider(
       create: (_) => sl<SettingsBloc>()..add(const SettingsStarted()),
