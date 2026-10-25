@@ -163,5 +163,9 @@
   "homeNextDueTodayMessage": "Nächstes Wort um {time}",
   "homeNextDueLaterMessage": "Nächstes Wort am {date}",
   "vocabularySpeakTooltip": "Vorlesen",
-  "errorTextToSpeechUnavailable": "Auf diesem Handy ist keine Stimme für diese Sprache installiert."
+  "errorTextToSpeechUnavailable": "Auf diesem Handy ist keine Stimme für diese Sprache installiert.",
+  "detailsRetakeImageButton": "Bild neu aufnehmen",
+  "errorTranslationQuotaExceeded": "{limit, plural, one{Du hast deine {limit} Übersetzung der letzten 24 Stunden verbraucht. Gib die Übersetzung selbst ein oder versuche es später erneut.} other{Du hast deine {limit} Übersetzungen der letzten 24 Stunden verbraucht. Gib die Übersetzung selbst ein oder versuche es später erneut.}}",
+  "errorStockImageQuotaExceeded": "{limit, plural, one{Du hast deine {limit} Fotosuche der letzten 24 Stunden verbraucht. Mach selbst ein Foto oder versuche es später erneut.} other{Du hast deine {limit} Fotosuchen der letzten 24 Stunden verbraucht. Mach selbst ein Foto oder versuche es später erneut.}}",
+  "errorAiUnavailable": "Automatische Übersetzung und Fotosuche sind gerade nicht verfügbar."
 }

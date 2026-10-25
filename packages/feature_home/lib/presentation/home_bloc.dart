@@ -76,7 +76,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _emitError(emit, null);
     final result = await _textToSpeechRepository.speak(
       text: event.vocabulary.target,
-      languageCode: event.vocabulary.targetLanguageCode,
+      language: event.vocabulary.targetLanguage,
     );
     if (result case Failure(:final error)) _emitError(emit, error);
   }

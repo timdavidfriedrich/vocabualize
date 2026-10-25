@@ -1085,6 +1085,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No voice for this language is installed on this phone.'**
   String get errorTextToSpeechUnavailable;
+
+  /// No description provided for @detailsRetakeImageButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake image'**
+  String get detailsRetakeImageButton;
+
+  /// No description provided for @errorTranslationQuotaExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'{limit, plural, one{You\'ve used your {limit} translation for the last 24 hours. Type the translation yourself or try again later.} other{You\'ve used your {limit} translations for the last 24 hours. Type the translation yourself or try again later.}}'**
+  String errorTranslationQuotaExceeded(int limit);
+
+  /// No description provided for @errorStockImageQuotaExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'{limit, plural, one{You\'ve used your {limit} photo search for the last 24 hours. Take your own photo or try again later.} other{You\'ve used your {limit} photo searches for the last 24 hours. Take your own photo or try again later.}}'**
+  String errorStockImageQuotaExceeded(int limit);
+
+  /// No description provided for @errorAiUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic translation and photo search aren\'t available right now.'**
+  String get errorAiUnavailable;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

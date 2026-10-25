@@ -16,8 +16,15 @@ import 'package:feature_details/domain/use_cases/pick_image_use_case.dart'
     as _i831;
 import 'package:feature_details/presentation/details_bloc.dart' as _i880;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:shared/domain/repositories/account_repository.dart' as _i923;
+import 'package:shared/domain/repositories/external_link_repository.dart'
+    as _i711;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
+import 'package:shared/domain/repositories/stock_image_repository.dart'
+    as _i934;
+import 'package:shared/domain/repositories/translation_repository.dart'
+    as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
 
 class FeatureDetailsPackageModule extends _i526.MicroPackageModule {
@@ -35,6 +42,11 @@ class FeatureDetailsPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i880.DetailsBloc>(() => _i880.DetailsBloc(
           gh<_i208.VocabularyRepository>(),
           gh<_i0.SettingsRepository>(),
+          gh<_i923.AccountRepository>(),
+          gh<_i582.TranslationRepository>(),
+          gh<_i934.StockImageRepository>(),
+          gh<_i204.ImageRepository>(),
+          gh<_i711.ExternalLinkRepository>(),
           gh<_i831.PickImageUseCase>(),
         ));
   }

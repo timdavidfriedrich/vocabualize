@@ -1,7 +1,7 @@
 import 'package:core/theme/spacing.dart';
-import 'package:feature_home/presentation/widgets/vocabulary_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
+import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 class const VocabularyThumbnail({
   super.key,

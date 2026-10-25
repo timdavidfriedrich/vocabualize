@@ -1,3 +1,4 @@
+import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/models/local_backup.dart';
 import 'package:shared/data/models/local_language_pair_setting.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
@@ -16,8 +17,8 @@ extension VocabularyBackupMappers on Vocabulary {
       id: id,
       source: source,
       target: target,
-      sourceLanguageCode: sourceLanguageCode,
-      targetLanguageCode: targetLanguageCode,
+      sourceLanguageCode: sourceLanguage.toLanguageCode(),
+      targetLanguageCode: targetLanguage.toLanguageCode(),
       tagIds: tagIds,
       level: level,
       isNovice: isNovice,
@@ -26,17 +27,24 @@ extension VocabularyBackupMappers on Vocabulary {
       nextReviewAt: nextReviewAt.toUtc(),
       createdAt: createdAt.toUtc(),
       image: switch ((image, imageEntryPath)) {
-        (CustomImage(), final String path) => LocalBackupImage(
-          kind: _imageKindCustom,
-          path: path,
-          pexelsId: null,
-          url: null,
-          thumbUrl: null,
-          photographer: null,
-          photographerUrl: null,
-        ),
+        (CustomImage(:final photographer, :final photographerUrl), final String path) =>
+          LocalBackupImage(
+            kind: _imageKindCustom,
+            path: path,
+            pexelsId: null,
+            url: null,
+            thumbUrl: null,
+            photographer: photographer,
+            photographerUrl: photographerUrl,
+          ),
         (
-          StockImage(:final id, :final url, :final thumbUrl, :final photographer, :final photographerUrl),
+          StockImage(
+            :final id,
+            :final url,
+            :final thumbUrl,
+            :final photographer,
+            :final photographerUrl,
+          ),
           _,
         ) =>
           LocalBackupImage(
@@ -63,8 +71,8 @@ extension LocalBackupVocabularyMappers on LocalBackupVocabulary {
       id: id,
       source: source,
       target: target,
-      sourceLanguageCode: sourceLanguageCode,
-      targetLanguageCode: targetLanguageCode,
+      sourceLanguage: sourceLanguageCode.toLanguage(),
+      targetLanguage: targetLanguageCode.toLanguage(),
       level: level,
       isNovice: isNovice,
       intervalMinutes: intervalMinutes,

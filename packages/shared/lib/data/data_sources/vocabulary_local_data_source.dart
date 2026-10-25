@@ -23,7 +23,16 @@ abstract class VocabularyLocalDataSource {
   // * levelFloors ascend; a level counts from its floor up to the next floor, the lowest level also counts everything below its floor
   Stream<LocalVocabularyOverview> watchOverview({required List<double> levelFloors});
 
+  Future<LocalVocabulary?> findVocabulary(UuidValue id);
+
+  Future<bool> hasVocabularyWithSource(String source);
+
   Future<LocalVocabulary> insertVocabulary(LocalVocabulary vocabulary);
+
+  Future<LocalVocabulary> updateVocabulary(
+    LocalVocabulary vocabulary, {
+    required ColumnSelections<LocalVocabularyTable> columns,
+  });
 
   Future<List<LocalVocabulary>> deleteVocabulary(UuidValue id);
 }
@@ -96,8 +105,35 @@ class const VocabularyLocalDataSourceImpl(
   }
 
   @override
+  Future<LocalVocabulary?> findVocabulary(UuidValue id) {
+    return LocalVocabulary.db.findById(_requireSession(), id);
+  }
+
+  @override
+  Future<bool> hasVocabularyWithSource(String source) async {
+    final count = await LocalVocabulary.db.count(
+      _requireSession(),
+      where: (t) => t.source.equals(source),
+      limit: 1,
+    );
+    return count > 0;
+  }
+
+  @override
   Future<LocalVocabulary> insertVocabulary(LocalVocabulary vocabulary) {
     return LocalVocabulary.db.insertRow(_sessions.requireWritableSession(), vocabulary);
+  }
+
+  @override
+  Future<LocalVocabulary> updateVocabulary(
+    LocalVocabulary vocabulary, {
+    required ColumnSelections<LocalVocabularyTable> columns,
+  }) {
+    return LocalVocabulary.db.updateRow(
+      _sessions.requireWritableSession(),
+      vocabulary,
+      columns: columns,
+    );
   }
 
   @override
@@ -106,6 +142,12 @@ class const VocabularyLocalDataSourceImpl(
       _sessions.requireWritableSession(),
       where: (t) => t.id.equals(id),
     );
+  }
+
+  DatabaseSession _requireSession() {
+    final session = _sessions.currentSession;
+    if (session == null) throw StateError("No database is open.");
+    return session;
   }
 
   WhereExpressionBuilder<LocalVocabularyTable>? _levelBetween(double? from, double? until) {

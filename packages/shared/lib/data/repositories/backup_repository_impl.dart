@@ -69,7 +69,9 @@ class const BackupRepositoryImpl(
         contents: LocalBackupContents(
           vocabularies: vocabularies,
           tags: [for (final tag in snapshot.tags) tag.toLocalBackupTag()],
-          activities: [for (final activity in snapshot.activities) activity.toLocalBackupActivity()],
+          activities: [
+            for (final activity in snapshot.activities) activity.toLocalBackupActivity(),
+          ],
         ),
         images: images,
         missingImages: missingImages,
@@ -105,12 +107,12 @@ class const BackupRepositoryImpl(
       archive = openedArchive;
       final customImages = [
         for (final item in openedArchive.contents.vocabularies)
-          if (item.image?.customImagePath case final imagePath?) (item.id, imagePath),
+          if (item.image case final image? when image.customImagePath != null) (item.id, image),
       ];
       final images = <String, VocabularyImage>{};
       yield Success(BackupImportRunning(processedImages: 0, totalImages: customImages.length));
-      for (final (index, (vocabularyId, imagePath)) in customImages.indexed) {
-        images[vocabularyId] = await _importCustomImage(openedArchive, imagePath, writtenImageIds);
+      for (final (index, (vocabularyId, image)) in customImages.indexed) {
+        images[vocabularyId] = await _importCustomImage(openedArchive, image, writtenImageIds);
         yield Success(
           BackupImportRunning(processedImages: index + 1, totalImages: customImages.length),
         );
@@ -157,7 +159,9 @@ class const BackupRepositoryImpl(
           if (tagIds[tagId] case final id?) tag.toLocalTag(id: id, createdAt: now),
       ],
       vocabularyTags: vocabularyTags,
-      activities: [for (final activity in contents.activities) activity.toLocalActivity(id: _newId())],
+      activities: [
+        for (final activity in contents.activities) activity.toLocalActivity(id: _newId()),
+      ],
       settings: [
         if (archive.manifest.settings?.toLocalLanguagePairSetting() case final pair?
             when pair.toLanguagePair() != null)
@@ -171,9 +175,11 @@ class const BackupRepositoryImpl(
 
   Future<VocabularyImage> _importCustomImage(
     LocalBackupArchive archive,
-    String imagePath,
+    LocalBackupImage image,
     List<String> writtenImageIds,
   ) async {
+    final imagePath = image.customImagePath;
+    if (imagePath == null) return const NoImage();
     final sourcePath = await _archiveDataSource.findImageFile(archive, imagePath);
     if (sourcePath == null) return const NoImage();
     final ({Uint8List full, Uint8List thumbnail}) processed;
@@ -194,7 +200,13 @@ class const BackupRepositoryImpl(
       LocalImageVariant.full,
       processed.full,
     );
-    return CustomImage(imageId: imageId, fullPath: fullPath, thumbnailPath: thumbnailPath);
+    return CustomImage(
+      imageId: imageId,
+      fullPath: fullPath,
+      thumbnailPath: thumbnailPath,
+      photographer: image.photographer,
+      photographerUrl: image.photographerUrl,
+    );
   }
 
   UuidValue _newId() => const Uuid().v7obj();

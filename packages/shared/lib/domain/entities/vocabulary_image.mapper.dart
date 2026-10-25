@@ -191,12 +191,24 @@ class CustomImageMapper extends ClassMapperBase<CustomImage> {
     'thumbnailPath',
     _$thumbnailPath,
   );
+  static String? _$photographer(CustomImage v) => v.photographer;
+  static const Field<CustomImage, String> _f$photographer = Field(
+    'photographer',
+    _$photographer,
+  );
+  static String? _$photographerUrl(CustomImage v) => v.photographerUrl;
+  static const Field<CustomImage, String> _f$photographerUrl = Field(
+    'photographerUrl',
+    _$photographerUrl,
+  );
 
   @override
   final MappableFields<CustomImage> fields = const {
     #imageId: _f$imageId,
     #fullPath: _f$fullPath,
     #thumbnailPath: _f$thumbnailPath,
+    #photographer: _f$photographer,
+    #photographerUrl: _f$photographerUrl,
   };
 
   static CustomImage _instantiate(DecodingData data) {
@@ -204,6 +216,8 @@ class CustomImageMapper extends ClassMapperBase<CustomImage> {
       imageId: data.dec(_f$imageId),
       fullPath: data.dec(_f$fullPath),
       thumbnailPath: data.dec(_f$thumbnailPath),
+      photographer: data.dec(_f$photographer),
+      photographerUrl: data.dec(_f$photographerUrl),
     );
   }
 
@@ -268,7 +282,13 @@ extension CustomImageValueCopy<$R, $Out>
 abstract class CustomImageCopyWith<$R, $In extends CustomImage, $Out>
     implements VocabularyImageCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? imageId, String? fullPath, String? thumbnailPath});
+  $R call({
+    String? imageId,
+    String? fullPath,
+    String? thumbnailPath,
+    String? photographer,
+    String? photographerUrl,
+  });
   CustomImageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -285,11 +305,15 @@ class _CustomImageCopyWithImpl<$R, $Out>
     String? imageId,
     Object? fullPath = $none,
     Object? thumbnailPath = $none,
+    Object? photographer = $none,
+    Object? photographerUrl = $none,
   }) => $apply(
     FieldCopyWithData({
       if (imageId != null) #imageId: imageId,
       if (fullPath != $none) #fullPath: fullPath,
       if (thumbnailPath != $none) #thumbnailPath: thumbnailPath,
+      if (photographer != $none) #photographer: photographer,
+      if (photographerUrl != $none) #photographerUrl: photographerUrl,
     }),
   );
   @override
@@ -297,6 +321,8 @@ class _CustomImageCopyWithImpl<$R, $Out>
     imageId: data.get(#imageId, or: $value.imageId),
     fullPath: data.get(#fullPath, or: $value.fullPath),
     thumbnailPath: data.get(#thumbnailPath, or: $value.thumbnailPath),
+    photographer: data.get(#photographer, or: $value.photographer),
+    photographerUrl: data.get(#photographerUrl, or: $value.photographerUrl),
   );
 
   @override

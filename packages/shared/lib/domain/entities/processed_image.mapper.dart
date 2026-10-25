@@ -32,17 +32,31 @@ class ProcessedImageMapper extends ClassMapperBase<ProcessedImage> {
     'thumbnailBytes',
     _$thumbnailBytes,
   );
+  static String? _$photographer(ProcessedImage v) => v.photographer;
+  static const Field<ProcessedImage, String> _f$photographer = Field(
+    'photographer',
+    _$photographer,
+  );
+  static String? _$photographerUrl(ProcessedImage v) => v.photographerUrl;
+  static const Field<ProcessedImage, String> _f$photographerUrl = Field(
+    'photographerUrl',
+    _$photographerUrl,
+  );
 
   @override
   final MappableFields<ProcessedImage> fields = const {
     #fullBytes: _f$fullBytes,
     #thumbnailBytes: _f$thumbnailBytes,
+    #photographer: _f$photographer,
+    #photographerUrl: _f$photographerUrl,
   };
 
   static ProcessedImage _instantiate(DecodingData data) {
     return ProcessedImage(
       fullBytes: data.dec(_f$fullBytes),
       thumbnailBytes: data.dec(_f$thumbnailBytes),
+      photographer: data.dec(_f$photographer),
+      photographerUrl: data.dec(_f$photographerUrl),
     );
   }
 
@@ -108,7 +122,12 @@ extension ProcessedImageValueCopy<$R, $Out>
 
 abstract class ProcessedImageCopyWith<$R, $In extends ProcessedImage, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({Uint8List? fullBytes, Uint8List? thumbnailBytes});
+  $R call({
+    Uint8List? fullBytes,
+    Uint8List? thumbnailBytes,
+    String? photographer,
+    String? photographerUrl,
+  });
   ProcessedImageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -123,16 +142,25 @@ class _ProcessedImageCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ProcessedImage> $mapper =
       ProcessedImageMapper.ensureInitialized();
   @override
-  $R call({Uint8List? fullBytes, Uint8List? thumbnailBytes}) => $apply(
+  $R call({
+    Uint8List? fullBytes,
+    Uint8List? thumbnailBytes,
+    Object? photographer = $none,
+    Object? photographerUrl = $none,
+  }) => $apply(
     FieldCopyWithData({
       if (fullBytes != null) #fullBytes: fullBytes,
       if (thumbnailBytes != null) #thumbnailBytes: thumbnailBytes,
+      if (photographer != $none) #photographer: photographer,
+      if (photographerUrl != $none) #photographerUrl: photographerUrl,
     }),
   );
   @override
   ProcessedImage $make(CopyWithData data) => ProcessedImage(
     fullBytes: data.get(#fullBytes, or: $value.fullBytes),
     thumbnailBytes: data.get(#thumbnailBytes, or: $value.thumbnailBytes),
+    photographer: data.get(#photographer, or: $value.photographer),
+    photographerUrl: data.get(#photographerUrl, or: $value.photographerUrl),
   );
 
   @override

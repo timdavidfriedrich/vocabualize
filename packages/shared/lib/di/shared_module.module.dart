@@ -12,6 +12,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart'
     as _i90;
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart'
     as _i654;
+import 'package:shared/data/data_sources/ai_remote_data_source.dart' as _i395;
 import 'package:shared/data/data_sources/app_config_local_data_source.dart'
     as _i49;
 import 'package:shared/data/data_sources/app_config_remote_data_source.dart'
@@ -24,6 +25,8 @@ import 'package:shared/data/data_sources/backup_file_data_source.dart' as _i460;
 import 'package:shared/data/data_sources/clock_data_source.dart' as _i44;
 import 'package:shared/data/data_sources/database_session_data_source.dart'
     as _i862;
+import 'package:shared/data/data_sources/external_link_data_source.dart'
+    as _i515;
 import 'package:shared/data/data_sources/image_file_data_source.dart' as _i532;
 import 'package:shared/data/data_sources/image_processing_data_source.dart'
     as _i179;
@@ -48,25 +51,37 @@ import 'package:shared/data/repositories/app_info_repository_impl.dart'
     as _i1026;
 import 'package:shared/data/repositories/backup_repository_impl.dart' as _i237;
 import 'package:shared/data/repositories/clock_repository_impl.dart' as _i314;
+import 'package:shared/data/repositories/external_link_repository_impl.dart'
+    as _i22;
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
 import 'package:shared/data/repositories/settings_repository_impl.dart'
     as _i921;
+import 'package:shared/data/repositories/stock_image_repository_impl.dart'
+    as _i645;
 import 'package:shared/data/repositories/sync_repository_impl.dart' as _i368;
 import 'package:shared/data/repositories/text_to_speech_repository_impl.dart'
     as _i905;
+import 'package:shared/data/repositories/translation_repository_impl.dart'
+    as _i542;
 import 'package:shared/data/repositories/vocabulary_repository_impl.dart'
-    as _i22;
+    as _i23;
 import 'package:shared/di/serverpod_client_module.dart' as _i74;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
 import 'package:shared/domain/repositories/app_config_repository.dart' as _i541;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/backup_repository.dart' as _i152;
 import 'package:shared/domain/repositories/clock_repository.dart' as _i946;
+import 'package:shared/domain/repositories/external_link_repository.dart'
+    as _i711;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
+import 'package:shared/domain/repositories/stock_image_repository.dart'
+    as _i934;
 import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
 import 'package:shared/domain/repositories/text_to_speech_repository.dart'
     as _i839;
+import 'package:shared/domain/repositories/translation_repository.dart'
+    as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart'
     as _i650;
@@ -95,12 +110,16 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => _i820.TextToSpeechDataSourceImpl());
     gh.factory<_i753.SpaceStorageDataSource>(
         () => const _i753.SpaceStorageDataSourceImpl());
+    gh.factory<_i515.ExternalLinkDataSource>(
+        () => const _i515.ExternalLinkDataSourceImpl());
     gh.lazySingleton<_i1040.Client>(() => serverpodClientModule.client(
           gh<_i90.FlutterAuthSessionManager>(),
           gh<_i90.ConnectivityMonitor>(),
         ));
     gh.factory<_i328.AppInfoRepository>(
         () => _i1026.AppInfoRepositoryImpl(gh<_i394.AppInfoDataSource>()));
+    gh.factory<_i711.ExternalLinkRepository>(() =>
+        _i22.ExternalLinkRepositoryImpl(gh<_i515.ExternalLinkDataSource>()));
     gh.factory<_i28.ImageTransferDataSource>(
         () => _i28.ImageTransferDataSourceImpl(
               gh<_i1040.Client>(),
@@ -110,8 +129,14 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => const _i460.BackupFileDataSourceImpl());
     gh.factory<_i223.AppConfigRemoteDataSource>(
         () => _i223.AppConfigRemoteDataSourceImpl(gh<_i1040.Client>()));
-    gh.factory<_i204.ImageRepository>(
-        () => _i816.ImageRepositoryImpl(gh<_i179.ImageProcessingDataSource>()));
+    gh.factory<_i204.ImageRepository>(() => _i816.ImageRepositoryImpl(
+          gh<_i179.ImageProcessingDataSource>(),
+          gh<_i28.ImageTransferDataSource>(),
+        ));
+    gh.factory<_i395.AiRemoteDataSource>(
+        () => _i395.AiRemoteDataSourceImpl(gh<_i1040.Client>()));
+    gh.factory<_i934.StockImageRepository>(
+        () => _i645.StockImageRepositoryImpl(gh<_i395.AiRemoteDataSource>()));
     gh.lazySingleton<_i44.ClockDataSource>(() => _i44.ClockDataSourceImpl(
           gh<_i1040.Client>(),
           gh<_i1040.ConnectivityMonitor>(),
@@ -134,6 +159,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i753.SpaceStorageDataSource>(),
           gh<_i44.ClockDataSource>(),
         ));
+    gh.factory<_i582.TranslationRepository>(
+        () => _i542.TranslationRepositoryImpl(gh<_i395.AiRemoteDataSource>()));
     gh.lazySingleton<_i862.DatabaseSessionDataSource>(
         () => _i862.DatabaseSessionDataSourceImpl(
               gh<_i1040.Client>(),
@@ -162,7 +189,7 @@ class SharedPackageModule extends _i526.MicroPackageModule {
               gh<_i532.ImageFileDataSource>(),
               gh<_i28.ImageTransferDataSource>(),
             ));
-    gh.factory<_i208.VocabularyRepository>(() => _i22.VocabularyRepositoryImpl(
+    gh.factory<_i208.VocabularyRepository>(() => _i23.VocabularyRepositoryImpl(
           gh<_i397.VocabularyLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
         ));

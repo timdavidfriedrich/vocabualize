@@ -287,5 +287,23 @@
         "type": "String"
       }
     }
+  },
+  "detailsRetakeImageButton": "Retake image",
+  "errorTranslationQuotaExceeded": "{limit, plural, one{You've used your {limit} translation for the last 24 hours. Type the translation yourself or try again later.} other{You've used your {limit} translations for the last 24 hours. Type the translation yourself or try again later.}}",
+  "errorStockImageQuotaExceeded": "{limit, plural, one{You've used your {limit} photo search for the last 24 hours. Take your own photo or try again later.} other{You've used your {limit} photo searches for the last 24 hours. Take your own photo or try again later.}}",
+  "errorAiUnavailable": "Automatic translation and photo search aren't available right now.",
+  "@errorTranslationQuotaExceeded": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "@errorStockImageQuotaExceeded": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
   }
 }

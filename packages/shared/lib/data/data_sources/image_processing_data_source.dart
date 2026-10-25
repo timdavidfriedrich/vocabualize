@@ -13,6 +13,8 @@ const _labelingQuality = 70;
 abstract class ImageProcessingDataSource {
   Future<({Uint8List full, Uint8List thumbnail})> processImage(String sourcePath);
 
+  Future<({Uint8List full, Uint8List thumbnail})> processBytes(Uint8List bytes);
+
   Future<Uint8List> createLabelingImage(Uint8List fullBytes, {required int longEdge});
 }
 
@@ -32,6 +34,18 @@ class const ImageProcessingDataSourceImpl() implements ImageProcessingDataSource
       format: CompressFormat.webp,
     );
     if (full == null) throw StateError("The image could not be compressed.");
+    final thumbnail = await _compressBytes(
+      full,
+      _thumbnailLongEdge,
+      _storageQuality,
+      CompressFormat.webp,
+    );
+    return (full: full, thumbnail: thumbnail);
+  }
+
+  @override
+  Future<({Uint8List full, Uint8List thumbnail})> processBytes(Uint8List bytes) async {
+    final full = await _compressBytes(bytes, _fullLongEdge, _storageQuality, CompressFormat.webp);
     final thumbnail = await _compressBytes(
       full,
       _thumbnailLongEdge,

@@ -1,4 +1,5 @@
 import 'package:core/theme/spacing.dart';
+import 'package:feature_home/presentation/widgets/write_word_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
@@ -62,8 +63,8 @@ class const RecordFab({
                         children: [
                           _RecordFabItem(
                             onPressed: () {
-                              context.pushVocabularyDetails();
                               toggle();
+                              _write(context);
                             },
                             icon: Icons.edit_rounded,
                             label: context.s.homeWriteButton,
@@ -128,4 +129,9 @@ class const _RecordFabItem({
       ),
     );
   }
+}
+
+Future<void> _write(BuildContext context) async {
+  final word = await requestsWrittenWord(context);
+  if (word != null && context.mounted) await context.pushNewVocabularyDetails(source: word);
 }

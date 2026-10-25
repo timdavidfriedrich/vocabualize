@@ -584,4 +584,37 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get errorTextToSpeechUnavailable =>
       'Auf diesem Handy ist keine Stimme für diese Sprache installiert.';
+
+  @override
+  String get detailsRetakeImageButton => 'Bild neu aufnehmen';
+
+  @override
+  String errorTranslationQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Du hast deine $limit Übersetzungen der letzten 24 Stunden verbraucht. Gib die Übersetzung selbst ein oder versuche es später erneut.',
+      one:
+          'Du hast deine $limit Übersetzung der letzten 24 Stunden verbraucht. Gib die Übersetzung selbst ein oder versuche es später erneut.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String errorStockImageQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Du hast deine $limit Fotosuchen der letzten 24 Stunden verbraucht. Mach selbst ein Foto oder versuche es später erneut.',
+      one:
+          'Du hast deine $limit Fotosuche der letzten 24 Stunden verbraucht. Mach selbst ein Foto oder versuche es später erneut.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get errorAiUnavailable =>
+      'Automatische Übersetzung und Fotosuche sind gerade nicht verfügbar.';
 }

@@ -7,7 +7,11 @@ extension NavigationExtension on BuildContext {
 
   void closeScreen() => appRouter.pop();
 
-  Future<void> pushVocabularyDetails() => appRouter.push(const VocabularyDetails());
+  Future<void> pushNewVocabularyDetails({required String source}) =>
+      appRouter.push(NewVocabularyDetails(source: source));
+
+  Future<void> pushEditVocabularyDetails({required String vocabularyId}) =>
+      appRouter.push(EditVocabularyDetails(vocabularyId: vocabularyId));
 
   Future<void> pushSettings() => appRouter.push(const Settings());
 

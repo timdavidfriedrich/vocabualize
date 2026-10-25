@@ -1,30 +1,37 @@
 import 'package:core/theme/spacing.dart';
 import 'package:feature_home/presentation/extensions/date_time_extensions.dart';
-import 'package:feature_home/presentation/widgets/level_indicator.dart';
-import 'package:feature_home/presentation/widgets/vocabulary_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/level_indicator.dart';
+import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _targetMaxLines = 7;
 const _sourceMaxLines = 5;
+const _editBackgroundOpacity = 0.3;
 
 Future<void> showVocabularyInfoDialog(
   BuildContext context, {
   required Vocabulary vocabulary,
   required VoidCallback onSpeak,
+  required VoidCallback onEdit,
 }) {
   return showDialog<void>(
     context: context,
-    builder: (dialogContext) => _VocabularyInfoDialog(vocabulary: vocabulary, onSpeak: onSpeak),
+    builder: (dialogContext) => _VocabularyInfoDialog(
+      vocabulary: vocabulary,
+      onSpeak: onSpeak,
+      onEdit: onEdit,
+    ),
   );
 }
 
 class const _VocabularyInfoDialog({
   required final Vocabulary _vocabulary,
   required final VoidCallback _onSpeak,
+  required final VoidCallback _onEdit,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -89,6 +96,18 @@ class const _VocabularyInfoDialog({
       actions: [
         Row(
           children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _onEdit();
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(Spacing.s),
+                backgroundColor: context.c.primary.withValues(alpha: _editBackgroundOpacity),
+              ),
+              child: const Icon(Icons.edit),
+            ),
+            const SizedBox(width: Spacing.m),
             Expanded(
               child: ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),

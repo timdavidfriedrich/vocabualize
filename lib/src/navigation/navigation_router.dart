@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:core/error/app_result.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
+import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_screen.dart';
 import 'package:feature_gate/presentation/wait_for_data/wait_for_data_cubit.dart';
 import 'package:feature_gate/presentation/wait_for_data/wait_for_data_screen.dart';
@@ -133,8 +134,12 @@ class const _AppPage({
       create: (_) => sl<HomeBloc>()..add(const HomeStarted()),
       child: const HomeScreen(),
     ),
-    VocabularyDetails() => BlocProvider(
-      create: (_) => sl<DetailsBloc>(),
+    NewVocabularyDetails(:final source) => BlocProvider(
+      create: (_) => sl<DetailsBloc>()..add(DetailsNewStarted(source: source)),
+      child: const DetailsScreen(),
+    ),
+    EditVocabularyDetails(:final vocabularyId) => BlocProvider(
+      create: (_) => sl<DetailsBloc>()..add(DetailsEditStarted(vocabularyId: vocabularyId)),
       child: const DetailsScreen(),
     ),
     Settings() => BlocProvider(

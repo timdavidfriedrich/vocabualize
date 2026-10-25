@@ -19,6 +19,18 @@ class const LanguageSelection({
 
 class const Home() extends AppRoute;
 
-class const VocabularyDetails() extends AppRoute;
+class const NewVocabularyDetails({
+  required final String source,
+}) extends AppRoute {
+  @override
+  List<Object?> get props => [source];
+}
+
+class const EditVocabularyDetails({
+  required final String vocabularyId,
+}) extends AppRoute {
+  @override
+  List<Object?> get props => [vocabularyId];
+}
 
 class const Settings() extends AppRoute;

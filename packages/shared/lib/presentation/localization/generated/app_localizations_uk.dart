@@ -596,4 +596,44 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get errorTextToSpeechUnavailable =>
       'На цьому телефоні не встановлено голос для цієї мови.';
+
+  @override
+  String get detailsRetakeImageButton => 'Зробити інше фото';
+
+  @override
+  String errorTranslationQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Ви використали $limit перекладу за останні 24 години. Введіть переклад самостійно або спробуйте пізніше.',
+      many:
+          'Ви використали $limit перекладів за останні 24 години. Введіть переклад самостійно або спробуйте пізніше.',
+      few:
+          'Ви використали $limit переклади за останні 24 години. Введіть переклад самостійно або спробуйте пізніше.',
+      one:
+          'Ви використали $limit переклад за останні 24 години. Введіть переклад самостійно або спробуйте пізніше.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String errorStockImageQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Ви використали $limit пошуку фото за останні 24 години. Зробіть власне фото або спробуйте пізніше.',
+      many:
+          'Ви використали $limit пошуків фото за останні 24 години. Зробіть власне фото або спробуйте пізніше.',
+      few:
+          'Ви використали $limit пошуки фото за останні 24 години. Зробіть власне фото або спробуйте пізніше.',
+      one:
+          'Ви використали $limit пошук фото за останні 24 години. Зробіть власне фото або спробуйте пізніше.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get errorAiUnavailable => 'Автоматичний переклад і пошук фото зараз недоступні.';
 }

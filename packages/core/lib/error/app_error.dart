@@ -22,6 +22,16 @@ class const ClockWrongError() extends AppError;
 
 class const TextToSpeechUnavailableError() extends AppError;
 
+class const TranslationQuotaExceededError(
+  final int limit,
+) extends AppError;
+
+class const StockImageQuotaExceededError(
+  final int limit,
+) extends AppError;
+
+class const AiUnavailableError() extends AppError;
+
 class const UnexpectedError([
   final String? message,
 ]) extends AppError;

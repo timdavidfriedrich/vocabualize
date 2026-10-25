@@ -29,15 +29,15 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
   static const Field<Vocabulary, String> _f$source = Field('source', _$source);
   static String _$target(Vocabulary v) => v.target;
   static const Field<Vocabulary, String> _f$target = Field('target', _$target);
-  static String _$sourceLanguageCode(Vocabulary v) => v.sourceLanguageCode;
-  static const Field<Vocabulary, String> _f$sourceLanguageCode = Field(
-    'sourceLanguageCode',
-    _$sourceLanguageCode,
+  static Language _$sourceLanguage(Vocabulary v) => v.sourceLanguage;
+  static const Field<Vocabulary, Language> _f$sourceLanguage = Field(
+    'sourceLanguage',
+    _$sourceLanguage,
   );
-  static String _$targetLanguageCode(Vocabulary v) => v.targetLanguageCode;
-  static const Field<Vocabulary, String> _f$targetLanguageCode = Field(
-    'targetLanguageCode',
-    _$targetLanguageCode,
+  static Language _$targetLanguage(Vocabulary v) => v.targetLanguage;
+  static const Field<Vocabulary, Language> _f$targetLanguage = Field(
+    'targetLanguage',
+    _$targetLanguage,
   );
   static double _$level(Vocabulary v) => v.level;
   static const Field<Vocabulary, double> _f$level = Field('level', _$level);
@@ -74,8 +74,8 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
     #id: _f$id,
     #source: _f$source,
     #target: _f$target,
-    #sourceLanguageCode: _f$sourceLanguageCode,
-    #targetLanguageCode: _f$targetLanguageCode,
+    #sourceLanguage: _f$sourceLanguage,
+    #targetLanguage: _f$targetLanguage,
     #level: _f$level,
     #isNovice: _f$isNovice,
     #intervalMinutes: _f$intervalMinutes,
@@ -90,8 +90,8 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
       id: data.dec(_f$id),
       source: data.dec(_f$source),
       target: data.dec(_f$target),
-      sourceLanguageCode: data.dec(_f$sourceLanguageCode),
-      targetLanguageCode: data.dec(_f$targetLanguageCode),
+      sourceLanguage: data.dec(_f$sourceLanguage),
+      targetLanguage: data.dec(_f$targetLanguage),
       level: data.dec(_f$level),
       isNovice: data.dec(_f$isNovice),
       intervalMinutes: data.dec(_f$intervalMinutes),
@@ -167,8 +167,8 @@ abstract class VocabularyCopyWith<$R, $In extends Vocabulary, $Out>
     String? id,
     String? source,
     String? target,
-    String? sourceLanguageCode,
-    String? targetLanguageCode,
+    Language? sourceLanguage,
+    Language? targetLanguage,
     double? level,
     bool? isNovice,
     int? intervalMinutes,
@@ -196,8 +196,8 @@ class _VocabularyCopyWithImpl<$R, $Out>
     String? id,
     String? source,
     String? target,
-    String? sourceLanguageCode,
-    String? targetLanguageCode,
+    Language? sourceLanguage,
+    Language? targetLanguage,
     double? level,
     bool? isNovice,
     int? intervalMinutes,
@@ -210,8 +210,8 @@ class _VocabularyCopyWithImpl<$R, $Out>
       if (id != null) #id: id,
       if (source != null) #source: source,
       if (target != null) #target: target,
-      if (sourceLanguageCode != null) #sourceLanguageCode: sourceLanguageCode,
-      if (targetLanguageCode != null) #targetLanguageCode: targetLanguageCode,
+      if (sourceLanguage != null) #sourceLanguage: sourceLanguage,
+      if (targetLanguage != null) #targetLanguage: targetLanguage,
       if (level != null) #level: level,
       if (isNovice != null) #isNovice: isNovice,
       if (intervalMinutes != null) #intervalMinutes: intervalMinutes,
@@ -226,14 +226,8 @@ class _VocabularyCopyWithImpl<$R, $Out>
     id: data.get(#id, or: $value.id),
     source: data.get(#source, or: $value.source),
     target: data.get(#target, or: $value.target),
-    sourceLanguageCode: data.get(
-      #sourceLanguageCode,
-      or: $value.sourceLanguageCode,
-    ),
-    targetLanguageCode: data.get(
-      #targetLanguageCode,
-      or: $value.targetLanguageCode,
-    ),
+    sourceLanguage: data.get(#sourceLanguage, or: $value.sourceLanguage),
+    targetLanguage: data.get(#targetLanguage, or: $value.targetLanguage),
     level: data.get(#level, or: $value.level),
     isNovice: data.get(#isNovice, or: $value.isNovice),
     intervalMinutes: data.get(#intervalMinutes, or: $value.intervalMinutes),

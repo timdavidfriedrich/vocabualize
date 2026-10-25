@@ -1,11 +1,11 @@
 import 'package:core/theme/spacing.dart';
 import 'package:feature_home/presentation/extensions/date_time_extensions.dart';
 import 'package:feature_home/presentation/extensions/int_extensions.dart';
-import 'package:feature_home/presentation/extensions/vocabulary_level_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/vocabulary_level_extensions.dart';
 
 const _shownLevels = [VocabularyLevel.beginner, VocabularyLevel.advanced, VocabularyLevel.expert];
 

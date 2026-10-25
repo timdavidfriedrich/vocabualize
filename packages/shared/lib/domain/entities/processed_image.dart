@@ -8,4 +8,6 @@ part 'processed_image.mapper.dart';
 class const ProcessedImage({
   required final Uint8List fullBytes,
   required final Uint8List thumbnailBytes,
+  required final String? photographer,
+  required final String? photographerUrl,
 }) with ProcessedImageMappable;

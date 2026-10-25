@@ -1,16 +1,15 @@
 import 'package:core/theme/spacing.dart';
-import 'package:feature_home/presentation/widgets/level_indicator.dart';
-import 'package:feature_home/presentation/widgets/vocabulary_thumbnail.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
-import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/vocabulary_tile_leading.dart';
 
 class const VocabularyTile({
   super.key,
   required final Vocabulary _vocabulary,
   required final VoidCallback _onTap,
   required final VoidCallback _onSpeak,
+  required final VoidCallback _onEdit,
   required final VoidCallback _onDelete,
 }) extends StatelessWidget {
   @override
@@ -19,12 +18,22 @@ class const VocabularyTile({
       borderRadius: BorderRadius.circular(Spacing.radiusL),
       child: Dismissible(
         key: ValueKey(_vocabulary.id),
-        direction: DismissDirection.endToStart,
         confirmDismiss: (direction) async {
-          _onDelete();
+          switch (direction) {
+            case DismissDirection.startToEnd:
+              _onEdit();
+            case _:
+              _onDelete();
+          }
           return false;
         },
         background: Container(
+          alignment: AlignmentDirectional.centerStart,
+          padding: const EdgeInsets.symmetric(horizontal: Spacing.m),
+          color: context.c.primary,
+          child: Icon(Icons.edit_rounded, color: context.c.onPrimary),
+        ),
+        secondaryBackground: Container(
           alignment: AlignmentDirectional.centerEnd,
           padding: const EdgeInsets.symmetric(horizontal: Spacing.m),
           color: context.c.error,
@@ -49,26 +58,6 @@ class const VocabularyTile({
           ),
         ),
       ),
-    );
-  }
-}
-
-class const VocabularyTileLeading({
-  super.key,
-  required final Vocabulary _vocabulary,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        LevelIndicator(
-          level: _vocabulary.level.toVocabularyLevel(),
-          margin: const EdgeInsets.symmetric(vertical: Spacing.xs),
-        ),
-        const SizedBox(width: Spacing.s),
-        VocabularyThumbnail(image: _vocabulary.image),
-      ],
     );
   }
 }

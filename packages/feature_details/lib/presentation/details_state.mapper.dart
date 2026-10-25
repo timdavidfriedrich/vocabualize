@@ -15,8 +15,11 @@ class DetailsStateMapper extends ClassMapperBase<DetailsState> {
   static DetailsStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = DetailsStateMapper._());
+      DetailsLoadingMapper.ensureInitialized();
+      DetailsDuplicateFoundMapper.ensureInitialized();
       DetailsEditingMapper.ensureInitialized();
-      DetailsSavedMapper.ensureInitialized();
+      DetailsClosedMapper.ensureInitialized();
+      DetailsFailureMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -55,6 +58,245 @@ abstract class DetailsStateCopyWith<$R, $In extends DetailsState, $Out>
   DetailsStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
+class DetailsLoadingMapper extends ClassMapperBase<DetailsLoading> {
+  DetailsLoadingMapper._();
+
+  static DetailsLoadingMapper? _instance;
+  static DetailsLoadingMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsLoadingMapper._());
+      DetailsStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsLoading';
+
+  @override
+  final MappableFields<DetailsLoading> fields = const {};
+
+  static DetailsLoading _instantiate(DecodingData data) {
+    return DetailsLoading();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsLoading fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsLoading>(map);
+  }
+
+  static DetailsLoading fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsLoading>(json);
+  }
+}
+
+mixin DetailsLoadingMappable {
+  String toJson() {
+    return DetailsLoadingMapper.ensureInitialized().encodeJson<DetailsLoading>(
+      this as DetailsLoading,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsLoadingMapper.ensureInitialized().encodeMap<DetailsLoading>(
+      this as DetailsLoading,
+    );
+  }
+
+  DetailsLoadingCopyWith<DetailsLoading, DetailsLoading, DetailsLoading>
+  get copyWith => _DetailsLoadingCopyWithImpl<DetailsLoading, DetailsLoading>(
+    this as DetailsLoading,
+    $identity,
+    $identity,
+  );
+  @override
+  String toString() {
+    return DetailsLoadingMapper.ensureInitialized().stringifyValue(
+      this as DetailsLoading,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsLoadingMapper.ensureInitialized().equalsValue(
+      this as DetailsLoading,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsLoadingMapper.ensureInitialized().hashValue(
+      this as DetailsLoading,
+    );
+  }
+}
+
+extension DetailsLoadingValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsLoading, $Out> {
+  DetailsLoadingCopyWith<$R, DetailsLoading, $Out> get $asDetailsLoading =>
+      $base.as((v, t, t2) => _DetailsLoadingCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class DetailsLoadingCopyWith<$R, $In extends DetailsLoading, $Out>
+    implements DetailsStateCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  DetailsLoadingCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _DetailsLoadingCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsLoading, $Out>
+    implements DetailsLoadingCopyWith<$R, DetailsLoading, $Out> {
+  _DetailsLoadingCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsLoading> $mapper =
+      DetailsLoadingMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  DetailsLoading $make(CopyWithData data) => DetailsLoading();
+
+  @override
+  DetailsLoadingCopyWith<$R2, DetailsLoading, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _DetailsLoadingCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class DetailsDuplicateFoundMapper
+    extends ClassMapperBase<DetailsDuplicateFound> {
+  DetailsDuplicateFoundMapper._();
+
+  static DetailsDuplicateFoundMapper? _instance;
+  static DetailsDuplicateFoundMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsDuplicateFoundMapper._());
+      DetailsStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsDuplicateFound';
+
+  static String _$source(DetailsDuplicateFound v) => v.source;
+  static const Field<DetailsDuplicateFound, String> _f$source = Field(
+    'source',
+    _$source,
+  );
+
+  @override
+  final MappableFields<DetailsDuplicateFound> fields = const {
+    #source: _f$source,
+  };
+
+  static DetailsDuplicateFound _instantiate(DecodingData data) {
+    return DetailsDuplicateFound(source: data.dec(_f$source));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsDuplicateFound fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsDuplicateFound>(map);
+  }
+
+  static DetailsDuplicateFound fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsDuplicateFound>(json);
+  }
+}
+
+mixin DetailsDuplicateFoundMappable {
+  String toJson() {
+    return DetailsDuplicateFoundMapper.ensureInitialized()
+        .encodeJson<DetailsDuplicateFound>(this as DetailsDuplicateFound);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsDuplicateFoundMapper.ensureInitialized()
+        .encodeMap<DetailsDuplicateFound>(this as DetailsDuplicateFound);
+  }
+
+  DetailsDuplicateFoundCopyWith<
+    DetailsDuplicateFound,
+    DetailsDuplicateFound,
+    DetailsDuplicateFound
+  >
+  get copyWith =>
+      _DetailsDuplicateFoundCopyWithImpl<
+        DetailsDuplicateFound,
+        DetailsDuplicateFound
+      >(this as DetailsDuplicateFound, $identity, $identity);
+  @override
+  String toString() {
+    return DetailsDuplicateFoundMapper.ensureInitialized().stringifyValue(
+      this as DetailsDuplicateFound,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsDuplicateFoundMapper.ensureInitialized().equalsValue(
+      this as DetailsDuplicateFound,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsDuplicateFoundMapper.ensureInitialized().hashValue(
+      this as DetailsDuplicateFound,
+    );
+  }
+}
+
+extension DetailsDuplicateFoundValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsDuplicateFound, $Out> {
+  DetailsDuplicateFoundCopyWith<$R, DetailsDuplicateFound, $Out>
+  get $asDetailsDuplicateFound => $base.as(
+    (v, t, t2) => _DetailsDuplicateFoundCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class DetailsDuplicateFoundCopyWith<
+  $R,
+  $In extends DetailsDuplicateFound,
+  $Out
+>
+    implements DetailsStateCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? source});
+  DetailsDuplicateFoundCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _DetailsDuplicateFoundCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsDuplicateFound, $Out>
+    implements DetailsDuplicateFoundCopyWith<$R, DetailsDuplicateFound, $Out> {
+  _DetailsDuplicateFoundCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsDuplicateFound> $mapper =
+      DetailsDuplicateFoundMapper.ensureInitialized();
+  @override
+  $R call({String? source}) =>
+      $apply(FieldCopyWithData({if (source != null) #source: source}));
+  @override
+  DetailsDuplicateFound $make(CopyWithData data) =>
+      DetailsDuplicateFound(source: data.get(#source, or: $value.source));
+
+  @override
+  DetailsDuplicateFoundCopyWith<$R2, DetailsDuplicateFound, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _DetailsDuplicateFoundCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
 class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
   DetailsEditingMapper._();
 
@@ -63,7 +305,10 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = DetailsEditingMapper._());
       DetailsStateMapper.ensureInitialized();
-      ProcessedImageMapper.ensureInitialized();
+      VocabularyMapper.ensureInitialized();
+      LanguagePairMapper.ensureInitialized();
+      DetailsImageMapper.ensureInitialized();
+      StockImageMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -71,10 +316,50 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
   @override
   final String id = 'DetailsEditing';
 
-  static ProcessedImage? _$image(DetailsEditing v) => v.image;
-  static const Field<DetailsEditing, ProcessedImage> _f$image = Field(
-    'image',
-    _$image,
+  static Vocabulary? _$original(DetailsEditing v) => v.original;
+  static const Field<DetailsEditing, Vocabulary> _f$original = Field(
+    'original',
+    _$original,
+  );
+  static LanguagePair? _$languages(DetailsEditing v) => v.languages;
+  static const Field<DetailsEditing, LanguagePair> _f$languages = Field(
+    'languages',
+    _$languages,
+  );
+  static bool _$canUseAi(DetailsEditing v) => v.canUseAi;
+  static const Field<DetailsEditing, bool> _f$canUseAi = Field(
+    'canUseAi',
+    _$canUseAi,
+  );
+  static String _$source(DetailsEditing v) => v.source;
+  static const Field<DetailsEditing, String> _f$source = Field(
+    'source',
+    _$source,
+  );
+  static String _$target(DetailsEditing v) => v.target;
+  static const Field<DetailsEditing, String> _f$target = Field(
+    'target',
+    _$target,
+  );
+  static DetailsImage _$selectedImage(DetailsEditing v) => v.selectedImage;
+  static const Field<DetailsEditing, DetailsImage> _f$selectedImage = Field(
+    'selectedImage',
+    _$selectedImage,
+  );
+  static DetailsImage? _$ownPhoto(DetailsEditing v) => v.ownPhoto;
+  static const Field<DetailsEditing, DetailsImage> _f$ownPhoto = Field(
+    'ownPhoto',
+    _$ownPhoto,
+  );
+  static List<StockImage> _$stockImages(DetailsEditing v) => v.stockImages;
+  static const Field<DetailsEditing, List<StockImage>> _f$stockImages = Field(
+    'stockImages',
+    _$stockImages,
+  );
+  static int _$stockPage(DetailsEditing v) => v.stockPage;
+  static const Field<DetailsEditing, int> _f$stockPage = Field(
+    'stockPage',
+    _$stockPage,
   );
   static bool _$isBusy(DetailsEditing v) => v.isBusy;
   static const Field<DetailsEditing, bool> _f$isBusy = Field(
@@ -89,14 +374,30 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
 
   @override
   final MappableFields<DetailsEditing> fields = const {
-    #image: _f$image,
+    #original: _f$original,
+    #languages: _f$languages,
+    #canUseAi: _f$canUseAi,
+    #source: _f$source,
+    #target: _f$target,
+    #selectedImage: _f$selectedImage,
+    #ownPhoto: _f$ownPhoto,
+    #stockImages: _f$stockImages,
+    #stockPage: _f$stockPage,
     #isBusy: _f$isBusy,
     #error: _f$error,
   };
 
   static DetailsEditing _instantiate(DecodingData data) {
     return DetailsEditing(
-      image: data.dec(_f$image),
+      original: data.dec(_f$original),
+      languages: data.dec(_f$languages),
+      canUseAi: data.dec(_f$canUseAi),
+      source: data.dec(_f$source),
+      target: data.dec(_f$target),
+      selectedImage: data.dec(_f$selectedImage),
+      ownPhoto: data.dec(_f$ownPhoto),
+      stockImages: data.dec(_f$stockImages),
+      stockPage: data.dec(_f$stockPage),
       isBusy: data.dec(_f$isBusy),
       error: data.dec(_f$error),
     );
@@ -164,9 +465,26 @@ extension DetailsEditingValueCopy<$R, $Out>
 
 abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
     implements DetailsStateCopyWith<$R, $In, $Out> {
-  ProcessedImageCopyWith<$R, ProcessedImage, ProcessedImage>? get image;
+  VocabularyCopyWith<$R, Vocabulary, Vocabulary>? get original;
+  LanguagePairCopyWith<$R, LanguagePair, LanguagePair>? get languages;
+  DetailsImageCopyWith<$R, DetailsImage, DetailsImage> get selectedImage;
+  DetailsImageCopyWith<$R, DetailsImage, DetailsImage>? get ownPhoto;
+  ListCopyWith<$R, StockImage, StockImageCopyWith<$R, StockImage, StockImage>>
+  get stockImages;
   @override
-  $R call({ProcessedImage? image, bool? isBusy, AppError? error});
+  $R call({
+    Vocabulary? original,
+    LanguagePair? languages,
+    bool? canUseAi,
+    String? source,
+    String? target,
+    DetailsImage? selectedImage,
+    DetailsImage? ownPhoto,
+    List<StockImage>? stockImages,
+    int? stockPage,
+    bool? isBusy,
+    AppError? error,
+  });
   DetailsEditingCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -181,20 +499,63 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
   late final ClassMapperBase<DetailsEditing> $mapper =
       DetailsEditingMapper.ensureInitialized();
   @override
-  ProcessedImageCopyWith<$R, ProcessedImage, ProcessedImage>? get image =>
-      $value.image?.copyWith.$chain((v) => call(image: v));
+  VocabularyCopyWith<$R, Vocabulary, Vocabulary>? get original =>
+      $value.original?.copyWith.$chain((v) => call(original: v));
   @override
-  $R call({Object? image = $none, bool? isBusy, Object? error = $none}) =>
-      $apply(
-        FieldCopyWithData({
-          if (image != $none) #image: image,
-          if (isBusy != null) #isBusy: isBusy,
-          if (error != $none) #error: error,
-        }),
-      );
+  LanguagePairCopyWith<$R, LanguagePair, LanguagePair>? get languages =>
+      $value.languages?.copyWith.$chain((v) => call(languages: v));
+  @override
+  DetailsImageCopyWith<$R, DetailsImage, DetailsImage> get selectedImage =>
+      $value.selectedImage.copyWith.$chain((v) => call(selectedImage: v));
+  @override
+  DetailsImageCopyWith<$R, DetailsImage, DetailsImage>? get ownPhoto =>
+      $value.ownPhoto?.copyWith.$chain((v) => call(ownPhoto: v));
+  @override
+  ListCopyWith<$R, StockImage, StockImageCopyWith<$R, StockImage, StockImage>>
+  get stockImages => ListCopyWith(
+    $value.stockImages,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(stockImages: v),
+  );
+  @override
+  $R call({
+    Object? original = $none,
+    Object? languages = $none,
+    bool? canUseAi,
+    String? source,
+    String? target,
+    DetailsImage? selectedImage,
+    Object? ownPhoto = $none,
+    List<StockImage>? stockImages,
+    int? stockPage,
+    bool? isBusy,
+    Object? error = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (original != $none) #original: original,
+      if (languages != $none) #languages: languages,
+      if (canUseAi != null) #canUseAi: canUseAi,
+      if (source != null) #source: source,
+      if (target != null) #target: target,
+      if (selectedImage != null) #selectedImage: selectedImage,
+      if (ownPhoto != $none) #ownPhoto: ownPhoto,
+      if (stockImages != null) #stockImages: stockImages,
+      if (stockPage != null) #stockPage: stockPage,
+      if (isBusy != null) #isBusy: isBusy,
+      if (error != $none) #error: error,
+    }),
+  );
   @override
   DetailsEditing $make(CopyWithData data) => DetailsEditing(
-    image: data.get(#image, or: $value.image),
+    original: data.get(#original, or: $value.original),
+    languages: data.get(#languages, or: $value.languages),
+    canUseAi: data.get(#canUseAi, or: $value.canUseAi),
+    source: data.get(#source, or: $value.source),
+    target: data.get(#target, or: $value.target),
+    selectedImage: data.get(#selectedImage, or: $value.selectedImage),
+    ownPhoto: data.get(#ownPhoto, or: $value.ownPhoto),
+    stockImages: data.get(#stockImages, or: $value.stockImages),
+    stockPage: data.get(#stockPage, or: $value.stockPage),
     isBusy: data.get(#isBusy, or: $value.isBusy),
     error: data.get(#error, or: $value.error),
   );
@@ -205,111 +566,775 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
   ) => _DetailsEditingCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
-class DetailsSavedMapper extends ClassMapperBase<DetailsSaved> {
-  DetailsSavedMapper._();
+class DetailsImageMapper extends ClassMapperBase<DetailsImage> {
+  DetailsImageMapper._();
 
-  static DetailsSavedMapper? _instance;
-  static DetailsSavedMapper ensureInitialized() {
+  static DetailsImageMapper? _instance;
+  static DetailsImageMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = DetailsSavedMapper._());
+      MapperContainer.globals.use(_instance = DetailsImageMapper._());
+      DetailsNoImageMapper.ensureInitialized();
+      DetailsNewPhotoMapper.ensureInitialized();
+      DetailsStockPhotoMapper.ensureInitialized();
+      DetailsSavedImageMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsImage';
+
+  @override
+  final MappableFields<DetailsImage> fields = const {};
+
+  static DetailsImage _instantiate(DecodingData data) {
+    throw MapperException.missingConstructor('DetailsImage');
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsImage fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsImage>(map);
+  }
+
+  static DetailsImage fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsImage>(json);
+  }
+}
+
+mixin DetailsImageMappable {
+  String toJson();
+  Map<String, dynamic> toMap();
+  DetailsImageCopyWith<DetailsImage, DetailsImage, DetailsImage> get copyWith;
+}
+
+abstract class DetailsImageCopyWith<$R, $In extends DetailsImage, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call();
+  DetailsImageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class DetailsClosedMapper extends ClassMapperBase<DetailsClosed> {
+  DetailsClosedMapper._();
+
+  static DetailsClosedMapper? _instance;
+  static DetailsClosedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsClosedMapper._());
       DetailsStateMapper.ensureInitialized();
     }
     return _instance!;
   }
 
   @override
-  final String id = 'DetailsSaved';
+  final String id = 'DetailsClosed';
 
   @override
-  final MappableFields<DetailsSaved> fields = const {};
+  final MappableFields<DetailsClosed> fields = const {};
 
-  static DetailsSaved _instantiate(DecodingData data) {
-    return DetailsSaved();
+  static DetailsClosed _instantiate(DecodingData data) {
+    return DetailsClosed();
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static DetailsSaved fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<DetailsSaved>(map);
+  static DetailsClosed fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsClosed>(map);
   }
 
-  static DetailsSaved fromJson(String json) {
-    return ensureInitialized().decodeJson<DetailsSaved>(json);
+  static DetailsClosed fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsClosed>(json);
   }
 }
 
-mixin DetailsSavedMappable {
+mixin DetailsClosedMappable {
   String toJson() {
-    return DetailsSavedMapper.ensureInitialized().encodeJson<DetailsSaved>(
-      this as DetailsSaved,
+    return DetailsClosedMapper.ensureInitialized().encodeJson<DetailsClosed>(
+      this as DetailsClosed,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return DetailsSavedMapper.ensureInitialized().encodeMap<DetailsSaved>(
-      this as DetailsSaved,
+    return DetailsClosedMapper.ensureInitialized().encodeMap<DetailsClosed>(
+      this as DetailsClosed,
     );
   }
 
-  DetailsSavedCopyWith<DetailsSaved, DetailsSaved, DetailsSaved> get copyWith =>
-      _DetailsSavedCopyWithImpl<DetailsSaved, DetailsSaved>(
-        this as DetailsSaved,
-        $identity,
-        $identity,
-      );
+  DetailsClosedCopyWith<DetailsClosed, DetailsClosed, DetailsClosed>
+  get copyWith => _DetailsClosedCopyWithImpl<DetailsClosed, DetailsClosed>(
+    this as DetailsClosed,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return DetailsSavedMapper.ensureInitialized().stringifyValue(
-      this as DetailsSaved,
+    return DetailsClosedMapper.ensureInitialized().stringifyValue(
+      this as DetailsClosed,
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return DetailsSavedMapper.ensureInitialized().equalsValue(
-      this as DetailsSaved,
+    return DetailsClosedMapper.ensureInitialized().equalsValue(
+      this as DetailsClosed,
       other,
     );
   }
 
   @override
   int get hashCode {
-    return DetailsSavedMapper.ensureInitialized().hashValue(
-      this as DetailsSaved,
+    return DetailsClosedMapper.ensureInitialized().hashValue(
+      this as DetailsClosed,
     );
   }
 }
 
-extension DetailsSavedValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, DetailsSaved, $Out> {
-  DetailsSavedCopyWith<$R, DetailsSaved, $Out> get $asDetailsSaved =>
-      $base.as((v, t, t2) => _DetailsSavedCopyWithImpl<$R, $Out>(v, t, t2));
+extension DetailsClosedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsClosed, $Out> {
+  DetailsClosedCopyWith<$R, DetailsClosed, $Out> get $asDetailsClosed =>
+      $base.as((v, t, t2) => _DetailsClosedCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class DetailsSavedCopyWith<$R, $In extends DetailsSaved, $Out>
+abstract class DetailsClosedCopyWith<$R, $In extends DetailsClosed, $Out>
     implements DetailsStateCopyWith<$R, $In, $Out> {
   @override
   $R call();
-  DetailsSavedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  DetailsClosedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class _DetailsSavedCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, DetailsSaved, $Out>
-    implements DetailsSavedCopyWith<$R, DetailsSaved, $Out> {
-  _DetailsSavedCopyWithImpl(super.value, super.then, super.then2);
+class _DetailsClosedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsClosed, $Out>
+    implements DetailsClosedCopyWith<$R, DetailsClosed, $Out> {
+  _DetailsClosedCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<DetailsSaved> $mapper =
-      DetailsSavedMapper.ensureInitialized();
+  late final ClassMapperBase<DetailsClosed> $mapper =
+      DetailsClosedMapper.ensureInitialized();
   @override
   $R call() => $apply(FieldCopyWithData({}));
   @override
-  DetailsSaved $make(CopyWithData data) => DetailsSaved();
+  DetailsClosed $make(CopyWithData data) => DetailsClosed();
 
   @override
-  DetailsSavedCopyWith<$R2, DetailsSaved, $Out2> $chain<$R2, $Out2>(
+  DetailsClosedCopyWith<$R2, DetailsClosed, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _DetailsSavedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _DetailsClosedCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class DetailsFailureMapper extends ClassMapperBase<DetailsFailure> {
+  DetailsFailureMapper._();
+
+  static DetailsFailureMapper? _instance;
+  static DetailsFailureMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsFailureMapper._());
+      DetailsStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsFailure';
+
+  static AppError _$error(DetailsFailure v) => v.error;
+  static const Field<DetailsFailure, AppError> _f$error = Field(
+    'error',
+    _$error,
+  );
+
+  @override
+  final MappableFields<DetailsFailure> fields = const {#error: _f$error};
+
+  static DetailsFailure _instantiate(DecodingData data) {
+    return DetailsFailure(error: data.dec(_f$error));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsFailure fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsFailure>(map);
+  }
+
+  static DetailsFailure fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsFailure>(json);
+  }
+}
+
+mixin DetailsFailureMappable {
+  String toJson() {
+    return DetailsFailureMapper.ensureInitialized().encodeJson<DetailsFailure>(
+      this as DetailsFailure,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsFailureMapper.ensureInitialized().encodeMap<DetailsFailure>(
+      this as DetailsFailure,
+    );
+  }
+
+  DetailsFailureCopyWith<DetailsFailure, DetailsFailure, DetailsFailure>
+  get copyWith => _DetailsFailureCopyWithImpl<DetailsFailure, DetailsFailure>(
+    this as DetailsFailure,
+    $identity,
+    $identity,
+  );
+  @override
+  String toString() {
+    return DetailsFailureMapper.ensureInitialized().stringifyValue(
+      this as DetailsFailure,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsFailureMapper.ensureInitialized().equalsValue(
+      this as DetailsFailure,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsFailureMapper.ensureInitialized().hashValue(
+      this as DetailsFailure,
+    );
+  }
+}
+
+extension DetailsFailureValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsFailure, $Out> {
+  DetailsFailureCopyWith<$R, DetailsFailure, $Out> get $asDetailsFailure =>
+      $base.as((v, t, t2) => _DetailsFailureCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class DetailsFailureCopyWith<$R, $In extends DetailsFailure, $Out>
+    implements DetailsStateCopyWith<$R, $In, $Out> {
+  @override
+  $R call({AppError? error});
+  DetailsFailureCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _DetailsFailureCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsFailure, $Out>
+    implements DetailsFailureCopyWith<$R, DetailsFailure, $Out> {
+  _DetailsFailureCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsFailure> $mapper =
+      DetailsFailureMapper.ensureInitialized();
+  @override
+  $R call({AppError? error}) =>
+      $apply(FieldCopyWithData({if (error != null) #error: error}));
+  @override
+  DetailsFailure $make(CopyWithData data) =>
+      DetailsFailure(error: data.get(#error, or: $value.error));
+
+  @override
+  DetailsFailureCopyWith<$R2, DetailsFailure, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _DetailsFailureCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class DetailsNoImageMapper extends ClassMapperBase<DetailsNoImage> {
+  DetailsNoImageMapper._();
+
+  static DetailsNoImageMapper? _instance;
+  static DetailsNoImageMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsNoImageMapper._());
+      DetailsImageMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsNoImage';
+
+  @override
+  final MappableFields<DetailsNoImage> fields = const {};
+
+  static DetailsNoImage _instantiate(DecodingData data) {
+    return DetailsNoImage();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsNoImage fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsNoImage>(map);
+  }
+
+  static DetailsNoImage fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsNoImage>(json);
+  }
+}
+
+mixin DetailsNoImageMappable {
+  String toJson() {
+    return DetailsNoImageMapper.ensureInitialized().encodeJson<DetailsNoImage>(
+      this as DetailsNoImage,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsNoImageMapper.ensureInitialized().encodeMap<DetailsNoImage>(
+      this as DetailsNoImage,
+    );
+  }
+
+  DetailsNoImageCopyWith<DetailsNoImage, DetailsNoImage, DetailsNoImage>
+  get copyWith => _DetailsNoImageCopyWithImpl<DetailsNoImage, DetailsNoImage>(
+    this as DetailsNoImage,
+    $identity,
+    $identity,
+  );
+  @override
+  String toString() {
+    return DetailsNoImageMapper.ensureInitialized().stringifyValue(
+      this as DetailsNoImage,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsNoImageMapper.ensureInitialized().equalsValue(
+      this as DetailsNoImage,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsNoImageMapper.ensureInitialized().hashValue(
+      this as DetailsNoImage,
+    );
+  }
+}
+
+extension DetailsNoImageValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsNoImage, $Out> {
+  DetailsNoImageCopyWith<$R, DetailsNoImage, $Out> get $asDetailsNoImage =>
+      $base.as((v, t, t2) => _DetailsNoImageCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class DetailsNoImageCopyWith<$R, $In extends DetailsNoImage, $Out>
+    implements DetailsImageCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  DetailsNoImageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _DetailsNoImageCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsNoImage, $Out>
+    implements DetailsNoImageCopyWith<$R, DetailsNoImage, $Out> {
+  _DetailsNoImageCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsNoImage> $mapper =
+      DetailsNoImageMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  DetailsNoImage $make(CopyWithData data) => DetailsNoImage();
+
+  @override
+  DetailsNoImageCopyWith<$R2, DetailsNoImage, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _DetailsNoImageCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class DetailsNewPhotoMapper extends ClassMapperBase<DetailsNewPhoto> {
+  DetailsNewPhotoMapper._();
+
+  static DetailsNewPhotoMapper? _instance;
+  static DetailsNewPhotoMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsNewPhotoMapper._());
+      DetailsImageMapper.ensureInitialized();
+      ProcessedImageMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsNewPhoto';
+
+  static ProcessedImage _$image(DetailsNewPhoto v) => v.image;
+  static const Field<DetailsNewPhoto, ProcessedImage> _f$image = Field(
+    'image',
+    _$image,
+  );
+
+  @override
+  final MappableFields<DetailsNewPhoto> fields = const {#image: _f$image};
+
+  static DetailsNewPhoto _instantiate(DecodingData data) {
+    return DetailsNewPhoto(image: data.dec(_f$image));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsNewPhoto fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsNewPhoto>(map);
+  }
+
+  static DetailsNewPhoto fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsNewPhoto>(json);
+  }
+}
+
+mixin DetailsNewPhotoMappable {
+  String toJson() {
+    return DetailsNewPhotoMapper.ensureInitialized()
+        .encodeJson<DetailsNewPhoto>(this as DetailsNewPhoto);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsNewPhotoMapper.ensureInitialized().encodeMap<DetailsNewPhoto>(
+      this as DetailsNewPhoto,
+    );
+  }
+
+  DetailsNewPhotoCopyWith<DetailsNewPhoto, DetailsNewPhoto, DetailsNewPhoto>
+  get copyWith =>
+      _DetailsNewPhotoCopyWithImpl<DetailsNewPhoto, DetailsNewPhoto>(
+        this as DetailsNewPhoto,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return DetailsNewPhotoMapper.ensureInitialized().stringifyValue(
+      this as DetailsNewPhoto,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsNewPhotoMapper.ensureInitialized().equalsValue(
+      this as DetailsNewPhoto,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsNewPhotoMapper.ensureInitialized().hashValue(
+      this as DetailsNewPhoto,
+    );
+  }
+}
+
+extension DetailsNewPhotoValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsNewPhoto, $Out> {
+  DetailsNewPhotoCopyWith<$R, DetailsNewPhoto, $Out> get $asDetailsNewPhoto =>
+      $base.as((v, t, t2) => _DetailsNewPhotoCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class DetailsNewPhotoCopyWith<$R, $In extends DetailsNewPhoto, $Out>
+    implements DetailsImageCopyWith<$R, $In, $Out> {
+  ProcessedImageCopyWith<$R, ProcessedImage, ProcessedImage> get image;
+  @override
+  $R call({ProcessedImage? image});
+  DetailsNewPhotoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _DetailsNewPhotoCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsNewPhoto, $Out>
+    implements DetailsNewPhotoCopyWith<$R, DetailsNewPhoto, $Out> {
+  _DetailsNewPhotoCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsNewPhoto> $mapper =
+      DetailsNewPhotoMapper.ensureInitialized();
+  @override
+  ProcessedImageCopyWith<$R, ProcessedImage, ProcessedImage> get image =>
+      $value.image.copyWith.$chain((v) => call(image: v));
+  @override
+  $R call({ProcessedImage? image}) =>
+      $apply(FieldCopyWithData({if (image != null) #image: image}));
+  @override
+  DetailsNewPhoto $make(CopyWithData data) =>
+      DetailsNewPhoto(image: data.get(#image, or: $value.image));
+
+  @override
+  DetailsNewPhotoCopyWith<$R2, DetailsNewPhoto, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _DetailsNewPhotoCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class DetailsStockPhotoMapper extends ClassMapperBase<DetailsStockPhoto> {
+  DetailsStockPhotoMapper._();
+
+  static DetailsStockPhotoMapper? _instance;
+  static DetailsStockPhotoMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsStockPhotoMapper._());
+      DetailsImageMapper.ensureInitialized();
+      StockImageMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsStockPhoto';
+
+  static StockImage _$image(DetailsStockPhoto v) => v.image;
+  static const Field<DetailsStockPhoto, StockImage> _f$image = Field(
+    'image',
+    _$image,
+  );
+
+  @override
+  final MappableFields<DetailsStockPhoto> fields = const {#image: _f$image};
+
+  static DetailsStockPhoto _instantiate(DecodingData data) {
+    return DetailsStockPhoto(image: data.dec(_f$image));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsStockPhoto fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsStockPhoto>(map);
+  }
+
+  static DetailsStockPhoto fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsStockPhoto>(json);
+  }
+}
+
+mixin DetailsStockPhotoMappable {
+  String toJson() {
+    return DetailsStockPhotoMapper.ensureInitialized()
+        .encodeJson<DetailsStockPhoto>(this as DetailsStockPhoto);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsStockPhotoMapper.ensureInitialized()
+        .encodeMap<DetailsStockPhoto>(this as DetailsStockPhoto);
+  }
+
+  DetailsStockPhotoCopyWith<
+    DetailsStockPhoto,
+    DetailsStockPhoto,
+    DetailsStockPhoto
+  >
+  get copyWith =>
+      _DetailsStockPhotoCopyWithImpl<DetailsStockPhoto, DetailsStockPhoto>(
+        this as DetailsStockPhoto,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return DetailsStockPhotoMapper.ensureInitialized().stringifyValue(
+      this as DetailsStockPhoto,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsStockPhotoMapper.ensureInitialized().equalsValue(
+      this as DetailsStockPhoto,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsStockPhotoMapper.ensureInitialized().hashValue(
+      this as DetailsStockPhoto,
+    );
+  }
+}
+
+extension DetailsStockPhotoValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsStockPhoto, $Out> {
+  DetailsStockPhotoCopyWith<$R, DetailsStockPhoto, $Out>
+  get $asDetailsStockPhoto => $base.as(
+    (v, t, t2) => _DetailsStockPhotoCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class DetailsStockPhotoCopyWith<
+  $R,
+  $In extends DetailsStockPhoto,
+  $Out
+>
+    implements DetailsImageCopyWith<$R, $In, $Out> {
+  StockImageCopyWith<$R, StockImage, StockImage> get image;
+  @override
+  $R call({StockImage? image});
+  DetailsStockPhotoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _DetailsStockPhotoCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsStockPhoto, $Out>
+    implements DetailsStockPhotoCopyWith<$R, DetailsStockPhoto, $Out> {
+  _DetailsStockPhotoCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsStockPhoto> $mapper =
+      DetailsStockPhotoMapper.ensureInitialized();
+  @override
+  StockImageCopyWith<$R, StockImage, StockImage> get image =>
+      $value.image.copyWith.$chain((v) => call(image: v));
+  @override
+  $R call({StockImage? image}) =>
+      $apply(FieldCopyWithData({if (image != null) #image: image}));
+  @override
+  DetailsStockPhoto $make(CopyWithData data) =>
+      DetailsStockPhoto(image: data.get(#image, or: $value.image));
+
+  @override
+  DetailsStockPhotoCopyWith<$R2, DetailsStockPhoto, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _DetailsStockPhotoCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class DetailsSavedImageMapper extends ClassMapperBase<DetailsSavedImage> {
+  DetailsSavedImageMapper._();
+
+  static DetailsSavedImageMapper? _instance;
+  static DetailsSavedImageMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsSavedImageMapper._());
+      DetailsImageMapper.ensureInitialized();
+      VocabularyImageMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsSavedImage';
+
+  static VocabularyImage _$image(DetailsSavedImage v) => v.image;
+  static const Field<DetailsSavedImage, VocabularyImage> _f$image = Field(
+    'image',
+    _$image,
+  );
+
+  @override
+  final MappableFields<DetailsSavedImage> fields = const {#image: _f$image};
+
+  static DetailsSavedImage _instantiate(DecodingData data) {
+    return DetailsSavedImage(image: data.dec(_f$image));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsSavedImage fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsSavedImage>(map);
+  }
+
+  static DetailsSavedImage fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsSavedImage>(json);
+  }
+}
+
+mixin DetailsSavedImageMappable {
+  String toJson() {
+    return DetailsSavedImageMapper.ensureInitialized()
+        .encodeJson<DetailsSavedImage>(this as DetailsSavedImage);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsSavedImageMapper.ensureInitialized()
+        .encodeMap<DetailsSavedImage>(this as DetailsSavedImage);
+  }
+
+  DetailsSavedImageCopyWith<
+    DetailsSavedImage,
+    DetailsSavedImage,
+    DetailsSavedImage
+  >
+  get copyWith =>
+      _DetailsSavedImageCopyWithImpl<DetailsSavedImage, DetailsSavedImage>(
+        this as DetailsSavedImage,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return DetailsSavedImageMapper.ensureInitialized().stringifyValue(
+      this as DetailsSavedImage,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsSavedImageMapper.ensureInitialized().equalsValue(
+      this as DetailsSavedImage,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsSavedImageMapper.ensureInitialized().hashValue(
+      this as DetailsSavedImage,
+    );
+  }
+}
+
+extension DetailsSavedImageValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsSavedImage, $Out> {
+  DetailsSavedImageCopyWith<$R, DetailsSavedImage, $Out>
+  get $asDetailsSavedImage => $base.as(
+    (v, t, t2) => _DetailsSavedImageCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class DetailsSavedImageCopyWith<
+  $R,
+  $In extends DetailsSavedImage,
+  $Out
+>
+    implements DetailsImageCopyWith<$R, $In, $Out> {
+  VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage> get image;
+  @override
+  $R call({VocabularyImage? image});
+  DetailsSavedImageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _DetailsSavedImageCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsSavedImage, $Out>
+    implements DetailsSavedImageCopyWith<$R, DetailsSavedImage, $Out> {
+  _DetailsSavedImageCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsSavedImage> $mapper =
+      DetailsSavedImageMapper.ensureInitialized();
+  @override
+  VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage> get image =>
+      $value.image.copyWith.$chain((v) => call(image: v));
+  @override
+  $R call({VocabularyImage? image}) =>
+      $apply(FieldCopyWithData({if (image != null) #image: image}));
+  @override
+  DetailsSavedImage $make(CopyWithData data) =>
+      DetailsSavedImage(image: data.get(#image, or: $value.image));
+
+  @override
+  DetailsSavedImageCopyWith<$R2, DetailsSavedImage, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _DetailsSavedImageCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

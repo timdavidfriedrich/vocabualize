@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 
 part 'vocabulary.mapper.dart';
@@ -8,8 +9,8 @@ class const Vocabulary({
   required final String id,
   required final String source,
   required final String target,
-  required final String sourceLanguageCode,
-  required final String targetLanguageCode,
+  required final Language sourceLanguage,
+  required final Language targetLanguage,
   required final double level,
   required final bool isNovice,
   required final int intervalMinutes,

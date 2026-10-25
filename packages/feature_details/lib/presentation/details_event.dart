@@ -1,16 +1,43 @@
+import 'package:feature_details/presentation/details_state.dart';
 import 'package:shared/domain/entities/image_pick_source.dart';
 
 sealed class DetailsEvent {
   const DetailsEvent();
 }
 
-class const DetailsImagePickRequested({
+class const DetailsNewStarted({
+  required final String source,
+}) extends DetailsEvent;
+
+class const DetailsEditStarted({
+  required final String vocabularyId,
+}) extends DetailsEvent;
+
+class const DetailsDuplicateResolved({
+  required final bool addsAnyway,
+}) extends DetailsEvent;
+
+class const DetailsSourceChanged({
+  required final String source,
+  required final bool retranslates,
+}) extends DetailsEvent;
+
+class const DetailsTargetChanged({
+  required final String target,
+}) extends DetailsEvent;
+
+class const DetailsPhotoPickRequested({
   required final ImagePickSource source,
 }) extends DetailsEvent;
 
-class const DetailsImageRemoved() extends DetailsEvent;
-
-class const DetailsSaveRequested({
-  required final String source,
-  required final String target,
+class const DetailsImageToggled({
+  required final DetailsImage image,
 }) extends DetailsEvent;
+
+class const DetailsStockPageAdvanced() extends DetailsEvent;
+
+class const DetailsPhotographerLinkOpened() extends DetailsEvent;
+
+class const DetailsSaveRequested() extends DetailsEvent;
+
+class const DetailsDeleteRequested() extends DetailsEvent;

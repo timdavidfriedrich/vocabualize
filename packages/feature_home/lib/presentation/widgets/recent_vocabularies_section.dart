@@ -1,8 +1,8 @@
 import 'package:core/theme/spacing.dart';
-import 'package:feature_home/presentation/widgets/vocabulary_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _cardWidth = Spacing.xxxxl * 2;
 

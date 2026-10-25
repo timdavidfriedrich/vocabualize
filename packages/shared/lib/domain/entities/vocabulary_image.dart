@@ -15,6 +15,8 @@ class const CustomImage({
   required final String imageId,
   required final String? fullPath,
   required final String? thumbnailPath,
+  required final String? photographer,
+  required final String? photographerUrl,
 }) extends VocabularyImage with CustomImageMappable;
 
 @MappableClass()

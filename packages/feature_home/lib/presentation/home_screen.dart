@@ -3,7 +3,6 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_state.dart';
-import 'package:feature_home/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:feature_home/presentation/widgets/recent_vocabularies_section.dart';
 import 'package:feature_home/presentation/widgets/record_fab.dart';
 import 'package:feature_home/presentation/widgets/status_card.dart';
@@ -17,6 +16,7 @@ import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
 import 'package:shared/presentation/widgets/sync_status_icon.dart';
@@ -61,6 +61,7 @@ class const _ContentScreen() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: const RecordFab(),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
@@ -171,6 +172,7 @@ class const _Feed() extends StatelessWidget {
             vocabulary: vocabulary,
             onTap: () => _showInfo(context, vocabulary),
             onSpeak: () => _speak(context, vocabulary),
+            onEdit: () => _edit(context, vocabulary),
             onDelete: () => _confirmDelete(context, vocabulary),
           ),
           null => const _FeedEndLoader(),
@@ -231,6 +233,7 @@ class const _EmptyScreen() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: const RecordFab(),
       body: SafeArea(
         child: Padding(
@@ -281,7 +284,12 @@ void _showInfo(BuildContext context, Vocabulary vocabulary) {
     context,
     vocabulary: vocabulary,
     onSpeak: () => bloc.add(HomeVocabularySpeakRequested(vocabulary: vocabulary)),
+    onEdit: () => _edit(context, vocabulary),
   );
+}
+
+void _edit(BuildContext context, Vocabulary vocabulary) {
+  context.pushEditVocabularyDetails(vocabularyId: vocabulary.id);
 }
 
 void _speak(BuildContext context, Vocabulary vocabulary) {

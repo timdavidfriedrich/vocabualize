@@ -1,10 +1,10 @@
+import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
-import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_overview_mappers.dart';
 import 'package:shared/data/models/local_image_variant.dart';
@@ -12,6 +12,7 @@ import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
+import 'package:shared/domain/entities/vocabulary_image_change.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
@@ -60,8 +61,8 @@ class const VocabularyRepositoryImpl(
         id: const Uuid().v7obj().uuid,
         source: source,
         target: target,
-        sourceLanguageCode: languages.source.toLanguageCode(),
-        targetLanguageCode: languages.target.toLanguageCode(),
+        sourceLanguage: languages.source,
+        targetLanguage: languages.target,
         level: _initialLevel,
         isNovice: true,
         intervalMinutes: _initialIntervalMinutes,
@@ -77,6 +78,71 @@ class const VocabularyRepositoryImpl(
       return Success((await _toVocabularies([inserted])).single);
     } on Object catch (error) {
       if (image != null) _imageFileDataSource.deleteImage(imageId).ignore();
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<Vocabulary>> findVocabulary(String id) async {
+    try {
+      final vocabulary = await _localDataSource.findVocabulary(UuidValue.withValidation(id));
+      if (vocabulary == null) return const Failure(NotFoundError());
+      return Success((await _toVocabularies([vocabulary])).single);
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<bool>> hasVocabularyWithSource(String source) async {
+    try {
+      return Success(await _localDataSource.hasVocabularyWithSource(source));
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<Vocabulary>> updateVocabulary({
+    required String id,
+    required String source,
+    required String target,
+    required VocabularyImageChange image,
+  }) async {
+    final newImageId = const Uuid().v7obj().uuid;
+    try {
+      final stored = await _localDataSource.findVocabulary(UuidValue.withValidation(id));
+      if (stored == null) return const Failure(NotFoundError());
+      final current = (await _toVocabularies([stored])).single;
+      final newImage = switch (image) {
+        KeepImage() => current.image,
+        RemoveImage() => const NoImage(),
+        ReplaceImage(:final image) => await _saveImage(newImageId, image),
+      };
+      final updated = await _localDataSource.updateVocabulary(
+        current.copyWith(source: source, target: target, image: newImage).toLocalVocabulary(),
+        columns: (t) => switch (image) {
+          KeepImage() => [t.source, t.target],
+          RemoveImage() || ReplaceImage() => [
+            t.source,
+            t.target,
+            t.imageKind,
+            t.customImageId,
+            t.customImageUploadedAt,
+            t.stockImageId,
+            t.stockImageUrl,
+            t.stockImageThumbUrl,
+            t.stockPhotographer,
+            t.stockPhotographerUrl,
+          ],
+        },
+      );
+      if ((image, stored.customImageId) case (RemoveImage() || ReplaceImage(), final oldId?)) {
+        await _imageFileDataSource.deleteImage(oldId);
+      }
+      return Success((await _toVocabularies([updated])).single);
+    } on Object catch (error) {
+      if (image is ReplaceImage) _imageFileDataSource.deleteImage(newImageId).ignore();
       return Failure(error.toAppError());
     }
   }
@@ -107,7 +173,13 @@ class const VocabularyRepositoryImpl(
       LocalImageVariant.full,
       image.fullBytes,
     );
-    return CustomImage(imageId: imageId, fullPath: fullPath, thumbnailPath: thumbnailPath);
+    return CustomImage(
+      imageId: imageId,
+      fullPath: fullPath,
+      thumbnailPath: thumbnailPath,
+      photographer: image.photographer,
+      photographerUrl: image.photographerUrl,
+    );
   }
 
   Stream<List<Vocabulary>> _withImages(Stream<List<LocalVocabulary>> vocabularies) {

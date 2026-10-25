@@ -1,3 +1,4 @@
+import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
@@ -14,8 +15,8 @@ extension LocalVocabularyMappers on LocalVocabulary {
       id: id.toString(),
       source: source,
       target: target,
-      sourceLanguageCode: sourceLanguageCode,
-      targetLanguageCode: targetLanguageCode,
+      sourceLanguage: sourceLanguageCode.toLanguage(),
+      targetLanguage: targetLanguageCode.toLanguage(),
       level: level,
       isNovice: isNovice,
       intervalMinutes: intervalMinutes,
@@ -34,6 +35,8 @@ extension LocalVocabularyMappers on LocalVocabulary {
         imageId: imageId,
         fullPath: imagePaths[imageId]?.full,
         thumbnailPath: imagePaths[imageId]?.thumbnail,
+        photographer: stockPhotographer,
+        photographerUrl: stockPhotographerUrl,
       ),
       (_imageKindStock, _, final String id, final String url, final String thumbUrl) => StockImage(
         id: id,
@@ -61,8 +64,8 @@ extension VocabularyMappers on Vocabulary {
       id: UuidValue.withValidation(id),
       source: source,
       target: target,
-      sourceLanguageCode: sourceLanguageCode,
-      targetLanguageCode: targetLanguageCode,
+      sourceLanguageCode: sourceLanguage.toLanguageCode(),
+      targetLanguageCode: targetLanguage.toLanguageCode(),
       level: level,
       isNovice: isNovice,
       intervalMinutes: intervalMinutes,
@@ -74,8 +77,15 @@ extension VocabularyMappers on Vocabulary {
       stockImageId: stockImage?.id,
       stockImageUrl: stockImage?.url,
       stockImageThumbUrl: stockImage?.thumbUrl,
-      stockPhotographer: stockImage?.photographer,
-      stockPhotographerUrl: stockImage?.photographerUrl,
+      stockPhotographer: switch (image) {
+        CustomImage(:final photographer) || StockImage(:final photographer) => photographer,
+        NoImage() => null,
+      },
+      stockPhotographerUrl: switch (image) {
+        CustomImage(:final photographerUrl) ||
+        StockImage(:final photographerUrl) => photographerUrl,
+        NoImage() => null,
+      },
       createdAt: createdAt.toUtc(),
       extras: null,
     );

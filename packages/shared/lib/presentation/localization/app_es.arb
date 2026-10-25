@@ -163,5 +163,9 @@
   "homeNextDueTodayMessage": "Siguiente palabra a las {time}",
   "homeNextDueLaterMessage": "Siguiente palabra el {date}",
   "vocabularySpeakTooltip": "Leer en voz alta",
-  "errorTextToSpeechUnavailable": "No hay ninguna voz instalada para este idioma en este teléfono."
+  "errorTextToSpeechUnavailable": "No hay ninguna voz instalada para este idioma en este teléfono.",
+  "detailsRetakeImageButton": "Tomar otra imagen",
+  "errorTranslationQuotaExceeded": "{limit, plural, one{Ha usado su {limit} traducción de las últimas 24 horas. Escriba la traducción usted mismo o vuelva a intentarlo más tarde.} other{Ha usado sus {limit} traducciones de las últimas 24 horas. Escriba la traducción usted mismo o vuelva a intentarlo más tarde.}}",
+  "errorStockImageQuotaExceeded": "{limit, plural, one{Ha usado su {limit} búsqueda de fotos de las últimas 24 horas. Tome su propia foto o vuelva a intentarlo más tarde.} other{Ha usado sus {limit} búsquedas de fotos de las últimas 24 horas. Tome su propia foto o vuelva a intentarlo más tarde.}}",
+  "errorAiUnavailable": "La traducción automática y la búsqueda de fotos no están disponibles en este momento."
 }

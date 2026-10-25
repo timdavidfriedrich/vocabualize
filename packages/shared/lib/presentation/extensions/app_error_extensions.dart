@@ -13,6 +13,9 @@ extension AppErrorExtensions on AppError {
     InvalidBackupError() => context.s.errorInvalidBackup,
     ClockWrongError() => context.s.errorClockWrong,
     TextToSpeechUnavailableError() => context.s.errorTextToSpeechUnavailable,
+    TranslationQuotaExceededError(:final limit) => context.s.errorTranslationQuotaExceeded(limit),
+    StockImageQuotaExceededError(:final limit) => context.s.errorStockImageQuotaExceeded(limit),
+    AiUnavailableError() => context.s.errorAiUnavailable,
     UnexpectedError() => context.s.errorUnexpected,
   };
 }

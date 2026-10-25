@@ -1,7 +1,7 @@
 import 'package:core/theme/spacing.dart';
-import 'package:feature_home/presentation/extensions/vocabulary_level_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
+import 'package:shared/presentation/extensions/vocabulary_level_extensions.dart';
 
 class const LevelIndicator({
   super.key,

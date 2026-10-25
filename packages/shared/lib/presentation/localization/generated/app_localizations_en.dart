@@ -578,4 +578,37 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorTextToSpeechUnavailable =>
       'No voice for this language is installed on this phone.';
+
+  @override
+  String get detailsRetakeImageButton => 'Retake image';
+
+  @override
+  String errorTranslationQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'You\'ve used your $limit translations for the last 24 hours. Type the translation yourself or try again later.',
+      one:
+          'You\'ve used your $limit translation for the last 24 hours. Type the translation yourself or try again later.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String errorStockImageQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'You\'ve used your $limit photo searches for the last 24 hours. Take your own photo or try again later.',
+      one:
+          'You\'ve used your $limit photo search for the last 24 hours. Take your own photo or try again later.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get errorAiUnavailable =>
+      'Automatic translation and photo search aren\'t available right now.';
 }

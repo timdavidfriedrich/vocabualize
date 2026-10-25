@@ -584,4 +584,37 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get errorTextToSpeechUnavailable =>
       'No hay ninguna voz instalada para este idioma en este teléfono.';
+
+  @override
+  String get detailsRetakeImageButton => 'Tomar otra imagen';
+
+  @override
+  String errorTranslationQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Ha usado sus $limit traducciones de las últimas 24 horas. Escriba la traducción usted mismo o vuelva a intentarlo más tarde.',
+      one:
+          'Ha usado su $limit traducción de las últimas 24 horas. Escriba la traducción usted mismo o vuelva a intentarlo más tarde.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String errorStockImageQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Ha usado sus $limit búsquedas de fotos de las últimas 24 horas. Tome su propia foto o vuelva a intentarlo más tarde.',
+      one:
+          'Ha usado su $limit búsqueda de fotos de las últimas 24 horas. Tome su propia foto o vuelva a intentarlo más tarde.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get errorAiUnavailable =>
+      'La traducción automática y la búsqueda de fotos no están disponibles en este momento.';
 }
