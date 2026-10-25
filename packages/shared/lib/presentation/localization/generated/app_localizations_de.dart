@@ -577,4 +577,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsSignInAgainButton => 'Erneut anmelden';
+
+  @override
+  String loadingProgressLabel(int current, int total) {
+    return '$current / $total';
+  }
 }

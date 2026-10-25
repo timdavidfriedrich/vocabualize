@@ -267,5 +267,16 @@
         "type": "String"
       }
     }
+  },
+  "loadingProgressLabel": "{current} / {total}",
+  "@loadingProgressLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
   }
 }

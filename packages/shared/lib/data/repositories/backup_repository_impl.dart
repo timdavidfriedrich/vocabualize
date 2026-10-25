@@ -16,6 +16,7 @@ import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/models/local_backup.dart';
 import 'package:shared/data/models/local_image_variant.dart';
 import 'package:shared/data/models/local_snapshot.dart';
+import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/repositories/backup_repository.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
@@ -84,26 +85,43 @@ class const BackupRepositoryImpl(
   }
 
   @override
-  Future<AppResult<int?>> importBackup() async {
+  Stream<AppResult<BackupImportStatus>> importBackup() async* {
     final String? archivePath;
     try {
       archivePath = await _fileDataSource.pickArchive();
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      yield Failure(UnexpectedError(error.toString()));
+      return;
     }
-    if (archivePath == null) return const Success(null);
+    if (archivePath == null) {
+      yield const Success(BackupImportCancelled());
+      return;
+    }
     LocalBackupArchive? archive;
     final writtenImageIds = <String>[];
     try {
-      archive = await _archiveDataSource.readArchive(archivePath);
-      final snapshot = await _toSnapshot(archive, writtenImageIds);
+      final openedArchive = await _archiveDataSource.readArchive(archivePath);
+      archive = openedArchive;
+      final customImages = [
+        for (final item in openedArchive.contents.vocabularies)
+          if (item.image?.customImagePath case final imagePath?) (item.id, imagePath),
+      ];
+      final images = <String, VocabularyImage>{};
+      yield Success(BackupImportRunning(processedImages: 0, totalImages: customImages.length));
+      for (final (index, (vocabularyId, imagePath)) in customImages.indexed) {
+        images[vocabularyId] = await _importCustomImage(openedArchive, imagePath, writtenImageIds);
+        yield Success(
+          BackupImportRunning(processedImages: index + 1, totalImages: customImages.length),
+        );
+      }
+      final snapshot = _toSnapshot(openedArchive, images);
       await _importDataSource.importSnapshot(snapshot);
-      return Success(snapshot.vocabularies.length);
+      yield Success(BackupImportCompleted(importedCount: snapshot.vocabularies.length));
     } on Object catch (error) {
       for (final imageId in writtenImageIds) {
         _imageFileDataSource.deleteImage(imageId).ignore();
       }
-      return Failure(
+      yield Failure(
         error is FormatException ? const InvalidBackupError() : UnexpectedError(error.toString()),
       );
     } finally {
@@ -112,10 +130,7 @@ class const BackupRepositoryImpl(
     }
   }
 
-  Future<LocalSnapshot> _toSnapshot(
-    LocalBackupArchive archive,
-    List<String> writtenImageIds,
-  ) async {
+  LocalSnapshot _toSnapshot(LocalBackupArchive archive, Map<String, VocabularyImage> images) {
     final contents = archive.contents;
     final now = DateTime.now().toUtc();
     final tagsById = {for (final tag in contents.tags) tag.id: tag};
@@ -124,7 +139,7 @@ class const BackupRepositoryImpl(
     final vocabularyTags = <LocalVocabularyTag>[];
     for (final item in contents.vocabularies) {
       final vocabularyId = _newId();
-      final image = await _importImage(archive, item.image, writtenImageIds);
+      final image = images[item.id] ?? item.image?.toVocabularyImage() ?? const NoImage();
       vocabularies.add(item.toVocabulary(id: vocabularyId.uuid, image: image).toLocalVocabulary());
       for (final tagId in item.tagIds.toSet()) {
         if (tagIds[tagId] case final localTagId?) {
@@ -153,15 +168,12 @@ class const BackupRepositoryImpl(
     );
   }
 
-  Future<VocabularyImage> _importImage(
+  Future<VocabularyImage> _importCustomImage(
     LocalBackupArchive archive,
-    LocalBackupImage? image,
+    String imagePath,
     List<String> writtenImageIds,
   ) async {
-    if (image == null) return const NoImage();
-    final customImagePath = image.customImagePath;
-    if (customImagePath == null) return image.toVocabularyImage();
-    final sourcePath = await _archiveDataSource.findImageFile(archive, customImagePath);
+    final sourcePath = await _archiveDataSource.findImageFile(archive, imagePath);
     if (sourcePath == null) return const NoImage();
     final ({Uint8List full, Uint8List thumbnail}) processed;
     try {

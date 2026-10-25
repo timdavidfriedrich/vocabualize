@@ -160,5 +160,6 @@
   "accountConflictKeepButton": "Stattdessen {previous} verwenden",
   "accountConflictSwitchButton": "Daten von {previous} löschen und {next} verwenden",
   "accountConflictUnknownAccount": "unbekanntes Konto",
-  "settingsSignInAgainButton": "Erneut anmelden"
+  "settingsSignInAgainButton": "Erneut anmelden",
+  "loadingProgressLabel": "{current} / {total}"
 }

@@ -581,4 +581,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingsSignInAgainButton => 'Se reconnecter';
+
+  @override
+  String loadingProgressLabel(int current, int total) {
+    return '$current / $total';
+  }
 }

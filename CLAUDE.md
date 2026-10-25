@@ -37,7 +37,7 @@ The spike's findings are in `docs/spike_serverpod_sync.md` and are binding for t
 
 ## Loading and empty states
 An empty state may only ever mean "there is no data".
-1. **Data readiness gates the app.** `SyncRepository.watchDataReadiness()` is `DataReady`, `DataDownloading` or `DataUnavailable(reason)`. A signed-in device without the `user_<id>.synced` marker runs `syncOnce` before the continuous sync. The router shows `Loading` while it runs and `WaitForData` (offline, sign in again, update) when it can't finish; connectivity and resume events retry it. Local-only use is always ready.
+1. **Data readiness gates the app.** `SyncRepository.watchDataReadiness()` is `DataReady`, `DataDownloading` or `DataUnavailable(reason)`. A signed-in device whose `user_<id>.json` metadata lacks `hasCompletedInitialSync` runs `syncOnce` before the continuous sync. The same file stores the account's name and email (for the account-switch prompt) and marks sign-outs, so a failed deletion is finished on the next start. The router shows `Loading` while it runs and `WaitForData` (offline, sign in again, update) when it can't finish; connectivity and resume events retry it. Local-only use is always ready.
 2. **Screens read the local database only after the gate.** Their states are sealed `Loading | Loaded(data) | Failure`. Empty UI is built only from `Loaded` with empty data, never from a missing first result.
 3. **Every loading state has an exit.** Local queries always emit; `syncOnce` and endpoint calls end in a result or an error within Serverpod's client timeouts (20 s connect, 40 s stream idle). Never add timers to end a spinner.
 

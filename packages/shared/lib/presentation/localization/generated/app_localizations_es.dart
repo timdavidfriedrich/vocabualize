@@ -575,4 +575,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsSignInAgainButton => 'Iniciar sesión de nuevo';
+
+  @override
+  String loadingProgressLabel(int current, int total) {
+    return '$current / $total';
+  }
 }

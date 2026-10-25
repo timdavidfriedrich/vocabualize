@@ -590,4 +590,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get settingsSignInAgainButton => 'Увійти знову';
+
+  @override
+  String loadingProgressLabel(int current, int total) {
+    return '$current / $total';
+  }
 }

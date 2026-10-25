@@ -5,6 +5,7 @@ import 'package:feature_settings/presentation/settings_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/auth_status.dart';
+import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/backup_repository.dart';
@@ -35,6 +36,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           isBusy: false,
           isSignOutBlocked: false,
           importedCount: null,
+          importProgress: null,
           accountConflict: null,
           error: null,
         ),
@@ -95,15 +97,38 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) async {
     if (state case final SettingsLoaded loaded) {
-      emit(loaded.copyWith(isBusy: true, importedCount: null, accountConflict: null, error: null));
+      emit(
+        loaded.copyWith(
+          isBusy: true,
+          importedCount: null,
+          importProgress: null,
+          accountConflict: null,
+          error: null,
+        ),
+      );
     }
-    final result = await _backupRepository.importBackup();
-    if (state case final SettingsLoaded loaded) {
-      emit(switch (result) {
-        Success(:final data) => loaded.copyWith(isBusy: false, importedCount: data),
-        Failure(:final error) => loaded.copyWith(isBusy: false, error: error),
-      });
-    }
+    await emit.forEach(
+      _backupRepository.importBackup(),
+      onData: (result) => switch ((result, state)) {
+        (Success(data: final BackupImportRunning running), final SettingsLoaded loaded) =>
+          loaded.copyWith(importProgress: running),
+        (
+          Success(data: BackupImportCompleted(:final importedCount)),
+          final SettingsLoaded loaded,
+        ) =>
+          loaded.copyWith(isBusy: false, importProgress: null, importedCount: importedCount),
+        (Success(data: BackupImportCancelled()), final SettingsLoaded loaded) => loaded.copyWith(
+          isBusy: false,
+          importProgress: null,
+        ),
+        (Failure(:final error), final SettingsLoaded loaded) => loaded.copyWith(
+          isBusy: false,
+          importProgress: null,
+          error: error,
+        ),
+        _ => state,
+      },
+    );
   }
 
   Future<void> _runBusy<T>(

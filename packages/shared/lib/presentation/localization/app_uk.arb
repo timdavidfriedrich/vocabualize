@@ -160,5 +160,6 @@
   "accountConflictKeepButton": "Використати {previous}",
   "accountConflictSwitchButton": "Видалити дані {previous} і використати {next}",
   "accountConflictUnknownAccount": "невідомий обліковий запис",
-  "settingsSignInAgainButton": "Увійти знову"
+  "settingsSignInAgainButton": "Увійти знову",
+  "loadingProgressLabel": "{current} / {total}"
 }

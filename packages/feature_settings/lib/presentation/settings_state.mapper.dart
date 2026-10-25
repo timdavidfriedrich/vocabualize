@@ -175,6 +175,7 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
       MapperContainer.globals.use(_instance = SettingsLoadedMapper._());
       SettingsStateMapper.ensureInitialized();
       AccountMapper.ensureInitialized();
+      BackupImportRunningMapper.ensureInitialized();
       AccountConflictMapper.ensureInitialized();
     }
     return _instance!;
@@ -203,6 +204,10 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
     'importedCount',
     _$importedCount,
   );
+  static BackupImportRunning? _$importProgress(SettingsLoaded v) =>
+      v.importProgress;
+  static const Field<SettingsLoaded, BackupImportRunning> _f$importProgress =
+      Field('importProgress', _$importProgress);
   static AccountConflict? _$accountConflict(SettingsLoaded v) =>
       v.accountConflict;
   static const Field<SettingsLoaded, AccountConflict> _f$accountConflict =
@@ -219,6 +224,7 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
     #isBusy: _f$isBusy,
     #isSignOutBlocked: _f$isSignOutBlocked,
     #importedCount: _f$importedCount,
+    #importProgress: _f$importProgress,
     #accountConflict: _f$accountConflict,
     #error: _f$error,
   };
@@ -229,6 +235,7 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
       isBusy: data.dec(_f$isBusy),
       isSignOutBlocked: data.dec(_f$isSignOutBlocked),
       importedCount: data.dec(_f$importedCount),
+      importProgress: data.dec(_f$importProgress),
       accountConflict: data.dec(_f$accountConflict),
       error: data.dec(_f$error),
     );
@@ -297,6 +304,8 @@ extension SettingsLoadedValueCopy<$R, $Out>
 abstract class SettingsLoadedCopyWith<$R, $In extends SettingsLoaded, $Out>
     implements SettingsStateCopyWith<$R, $In, $Out> {
   AccountCopyWith<$R, Account, Account> get account;
+  BackupImportRunningCopyWith<$R, BackupImportRunning, BackupImportRunning>?
+  get importProgress;
   AccountConflictCopyWith<$R, AccountConflict, AccountConflict>?
   get accountConflict;
   @override
@@ -305,6 +314,7 @@ abstract class SettingsLoadedCopyWith<$R, $In extends SettingsLoaded, $Out>
     bool? isBusy,
     bool? isSignOutBlocked,
     int? importedCount,
+    BackupImportRunning? importProgress,
     AccountConflict? accountConflict,
     AppError? error,
   });
@@ -325,6 +335,10 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
   AccountCopyWith<$R, Account, Account> get account =>
       $value.account.copyWith.$chain((v) => call(account: v));
   @override
+  BackupImportRunningCopyWith<$R, BackupImportRunning, BackupImportRunning>?
+  get importProgress =>
+      $value.importProgress?.copyWith.$chain((v) => call(importProgress: v));
+  @override
   AccountConflictCopyWith<$R, AccountConflict, AccountConflict>?
   get accountConflict =>
       $value.accountConflict?.copyWith.$chain((v) => call(accountConflict: v));
@@ -334,6 +348,7 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
     bool? isBusy,
     bool? isSignOutBlocked,
     Object? importedCount = $none,
+    Object? importProgress = $none,
     Object? accountConflict = $none,
     Object? error = $none,
   }) => $apply(
@@ -342,6 +357,7 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
       if (isBusy != null) #isBusy: isBusy,
       if (isSignOutBlocked != null) #isSignOutBlocked: isSignOutBlocked,
       if (importedCount != $none) #importedCount: importedCount,
+      if (importProgress != $none) #importProgress: importProgress,
       if (accountConflict != $none) #accountConflict: accountConflict,
       if (error != $none) #error: error,
     }),
@@ -352,6 +368,7 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
     isBusy: data.get(#isBusy, or: $value.isBusy),
     isSignOutBlocked: data.get(#isSignOutBlocked, or: $value.isSignOutBlocked),
     importedCount: data.get(#importedCount, or: $value.importedCount),
+    importProgress: data.get(#importProgress, or: $value.importProgress),
     accountConflict: data.get(#accountConflict, or: $value.accountConflict),
     error: data.get(#error, or: $value.error),
   );

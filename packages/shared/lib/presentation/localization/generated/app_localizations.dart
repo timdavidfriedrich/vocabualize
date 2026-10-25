@@ -1067,6 +1067,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in again'**
   String get settingsSignInAgainButton;
+
+  /// No description provided for @loadingProgressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} / {total}'**
+  String loadingProgressLabel(int current, int total);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
