@@ -29,6 +29,11 @@ const _levelBeginner = Color(0xFFF44336);
 const _levelAdvanced = Color(0xFFFF9800);
 const _levelExpert = Color(0xFF4CAF50);
 
+const _splash = Color(0x80002844);
+const _pressedOpacity = 0.6;
+const _dialogElevation = 8.0;
+const _dimmedStates = {WidgetState.disabled, WidgetState.pressed, WidgetState.hovered};
+
 const _buttonPadding = EdgeInsets.symmetric(horizontal: Spacing.xxl, vertical: Spacing.s);
 const _inputPadding = EdgeInsets.symmetric(horizontal: Spacing.l, vertical: Spacing.xs);
 
@@ -81,6 +86,8 @@ abstract final class AppTheme {
       fontFamily: _fontFamily,
       textTheme: textTheme,
       scaffoldBackgroundColor: _surface,
+      hintColor: _outline,
+      splashColor: _splash,
       extensions: const [
         StatusColors(success: _success, warning: _warning),
         LevelColors(
@@ -104,20 +111,30 @@ abstract final class AppTheme {
         ),
       ),
       dialogTheme: const DialogThemeData(
+        elevation: _dialogElevation,
         backgroundColor: _surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(Spacing.radiusXxl)),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: _primary,
-          foregroundColor: _onPrimary,
-          disabledBackgroundColor: _outline,
-          elevation: 0,
-          padding: _buttonPadding,
-          shape: roundedButtonShape,
-          textStyle: textTheme.labelLarge,
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (states) => states.any(_dimmedStates.contains)
+                ? _onPrimary.withValues(alpha: _pressedOpacity)
+                : _onPrimary,
+          ),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.disabled)
+                ? _outline
+                : states.any(_dimmedStates.contains)
+                ? _primary.withValues(alpha: _pressedOpacity)
+                : _primary,
+          ),
+          padding: const WidgetStatePropertyAll(_buttonPadding),
+          textStyle: WidgetStatePropertyAll(textTheme.labelLarge),
+          elevation: const WidgetStatePropertyAll(0),
+          shape: const WidgetStatePropertyAll(roundedButtonShape),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -128,13 +145,24 @@ abstract final class AppTheme {
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: _onSurface,
-          padding: _buttonPadding,
-          shape: roundedButtonShape,
-          textStyle: textTheme.labelLarge,
-          side: const BorderSide(color: _primary, width: Spacing.borderWidthMedium),
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.disabled) ? _outline : _onSurface,
+          ),
+          padding: const WidgetStatePropertyAll(_buttonPadding),
+          textStyle: WidgetStatePropertyAll(textTheme.labelLarge),
+          elevation: const WidgetStatePropertyAll(0),
+          shape: const WidgetStatePropertyAll(roundedButtonShape),
+          side: WidgetStateProperty.resolveWith(
+            (states) => BorderSide(
+              color: states.contains(WidgetState.disabled) ? _outline : _primary,
+              width: Spacing.borderWidthMedium,
+            ),
+          ),
         ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(foregroundColor: _onSurface),
       ),
       switchTheme: SwitchThemeData(
         trackColor: WidgetStateProperty.resolveWith(
