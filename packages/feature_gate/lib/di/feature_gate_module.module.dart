@@ -15,6 +15,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
 import 'package:shared/domain/repositories/app_config_repository.dart' as _i541;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
+import 'package:shared/domain/repositories/clock_repository.dart' as _i946;
 import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
 
 class FeatureGatePackageModule extends _i526.MicroPackageModule {
@@ -32,6 +33,7 @@ class FeatureGatePackageModule extends _i526.MicroPackageModule {
         ));
     gh.factory<_i357.GateCubit>(() => _i357.GateCubit(
           gh<_i460.WatchGateStatusUseCase>(),
+          gh<_i946.ClockRepository>(),
           gh<_i541.AppConfigRepository>(),
           gh<_i328.AppInfoRepository>(),
         ));

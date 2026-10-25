@@ -17,6 +17,7 @@ class GateStatusMapper extends ClassMapperBase<GateStatus> {
       MapperContainer.globals.use(_instance = GateStatusMapper._());
       GateOpenMapper.ensureInitialized();
       GateUpdateRequiredMapper.ensureInitialized();
+      GateClockWrongMapper.ensureInitialized();
       GateMaintenanceMapper.ensureInitialized();
     }
     return _instance!;
@@ -276,6 +277,116 @@ class _GateUpdateRequiredCopyWithImpl<$R, $Out>
   GateUpdateRequiredCopyWith<$R2, GateUpdateRequired, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _GateUpdateRequiredCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class GateClockWrongMapper extends ClassMapperBase<GateClockWrong> {
+  GateClockWrongMapper._();
+
+  static GateClockWrongMapper? _instance;
+  static GateClockWrongMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = GateClockWrongMapper._());
+      GateStatusMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'GateClockWrong';
+
+  @override
+  final MappableFields<GateClockWrong> fields = const {};
+
+  static GateClockWrong _instantiate(DecodingData data) {
+    return GateClockWrong();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static GateClockWrong fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<GateClockWrong>(map);
+  }
+
+  static GateClockWrong fromJson(String json) {
+    return ensureInitialized().decodeJson<GateClockWrong>(json);
+  }
+}
+
+mixin GateClockWrongMappable {
+  String toJson() {
+    return GateClockWrongMapper.ensureInitialized().encodeJson<GateClockWrong>(
+      this as GateClockWrong,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return GateClockWrongMapper.ensureInitialized().encodeMap<GateClockWrong>(
+      this as GateClockWrong,
+    );
+  }
+
+  GateClockWrongCopyWith<GateClockWrong, GateClockWrong, GateClockWrong>
+  get copyWith => _GateClockWrongCopyWithImpl<GateClockWrong, GateClockWrong>(
+    this as GateClockWrong,
+    $identity,
+    $identity,
+  );
+  @override
+  String toString() {
+    return GateClockWrongMapper.ensureInitialized().stringifyValue(
+      this as GateClockWrong,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return GateClockWrongMapper.ensureInitialized().equalsValue(
+      this as GateClockWrong,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return GateClockWrongMapper.ensureInitialized().hashValue(
+      this as GateClockWrong,
+    );
+  }
+}
+
+extension GateClockWrongValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, GateClockWrong, $Out> {
+  GateClockWrongCopyWith<$R, GateClockWrong, $Out> get $asGateClockWrong =>
+      $base.as((v, t, t2) => _GateClockWrongCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class GateClockWrongCopyWith<$R, $In extends GateClockWrong, $Out>
+    implements GateStatusCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  GateClockWrongCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _GateClockWrongCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, GateClockWrong, $Out>
+    implements GateClockWrongCopyWith<$R, GateClockWrong, $Out> {
+  _GateClockWrongCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<GateClockWrong> $mapper =
+      GateClockWrongMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  GateClockWrong $make(CopyWithData data) => GateClockWrong();
+
+  @override
+  GateClockWrongCopyWith<$R2, GateClockWrong, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _GateClockWrongCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class GateMaintenanceMapper extends ClassMapperBase<GateMaintenance> {

@@ -1,7 +1,6 @@
 import 'package:core/theme/spacing.dart';
 import 'package:feature_gate/presentation/wait_for_data/wait_for_data_cubit.dart';
 import 'package:feature_gate/presentation/wait_for_data/wait_for_data_state.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/data_readiness.dart';
@@ -79,18 +78,6 @@ class const WaitForDataScreen({
                     label: context.s.gateUpdateButton,
                     onPressed: state.isBusy ? null : cubit.openStore,
                   ),
-                ),
-                DataUnavailableReason.clockWrong => _Content(
-                  pose: MascotPose.idle,
-                  title: context.s.dataClockWrongTitle,
-                  message: context.s.dataClockWrongMessage,
-                  action: switch (defaultTargetPlatform) {
-                    TargetPlatform.android => (
-                      label: context.s.dataOpenTimeSettingsButton,
-                      onPressed: state.isBusy ? null : cubit.openDateSettings,
-                    ),
-                    _ => null,
-                  },
                 ),
                 DataUnavailableReason.syncFailed => _Content(
                   pose: MascotPose.idle,

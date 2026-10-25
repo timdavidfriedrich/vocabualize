@@ -10,6 +10,7 @@ import 'package:shared/data/data_sources/image_sync_data_source.dart';
 import 'package:shared/data/data_sources/local_import_data_source.dart';
 import 'package:shared/data/data_sources/setting_local_data_source.dart';
 import 'package:shared/data/data_sources/sync_data_source.dart';
+import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/mappers/account_mappers.dart';
 import 'package:shared/data/models/local_account_metadata.dart';
 import 'package:shared/data/models/local_snapshot.dart';
@@ -52,7 +53,7 @@ class AccountRepositoryImpl(
       return Success(_status);
     } on Object catch (error) {
       _emit(const AuthUnauthenticated());
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -61,7 +62,7 @@ class AccountRepositoryImpl(
     try {
       return Success(await _openLocal());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -88,7 +89,7 @@ class AccountRepositoryImpl(
         Failure(:final error) => Failure(error),
       };
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -109,7 +110,7 @@ class AccountRepositoryImpl(
       }
       return await _openRemote(pendingSignIn);
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -204,7 +205,7 @@ class AccountRepositoryImpl(
       await _sessions.deleteLocal();
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 

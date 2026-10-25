@@ -67,7 +67,7 @@ class const SettingLocalDataSourceImpl(
 
   @override
   Future<void> insertSetting(LocalSetting setting) async {
-    await LocalSetting.db.insertRow(_requireSession(), setting);
+    await LocalSetting.db.insertRow(_sessions.requireWritableSession(), setting);
   }
 
   @override

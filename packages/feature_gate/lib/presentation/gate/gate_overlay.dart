@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:core/theme/spacing.dart';
 import 'package:feature_gate/presentation/gate/gate_cubit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -28,6 +29,18 @@ class const GateOverlay({
             onPressed: context.read<GateCubit>().openStore,
             child: Text(context.s.gateUpdateButton),
           ),
+        ),
+        GateClockWrong() => _GateScreen(
+          icon: Icons.schedule_rounded,
+          title: context.s.gateClockWrongTitle,
+          message: context.s.gateClockWrongMessage,
+          action: switch (defaultTargetPlatform) {
+            TargetPlatform.android => FilledButton(
+              onPressed: context.read<GateCubit>().openDateSettings,
+              child: Text(context.s.gateOpenTimeSettingsButton),
+            ),
+            _ => null,
+          },
         ),
         GateMaintenance(:final message) => _GateScreen(
           icon: Icons.construction_rounded,

@@ -13,8 +13,7 @@ class const LocalImportDataSourceImpl(
 ) implements LocalImportDataSource {
   @override
   Future<void> importSnapshot(LocalSnapshot snapshot) async {
-    final session = _sessions.currentSession;
-    if (session == null) throw StateError("No database is open to import into.");
+    final session = _sessions.requireWritableSession();
     final vocabularyIds = {
       for (final vocabulary in snapshot.vocabularies) ?vocabulary.id: _newId(),
     };

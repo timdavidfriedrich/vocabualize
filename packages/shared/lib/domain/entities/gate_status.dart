@@ -14,6 +14,9 @@ class const GateOpen() extends GateStatus with GateOpenMappable;
 class const GateUpdateRequired() extends GateStatus with GateUpdateRequiredMappable;
 
 @MappableClass()
+class const GateClockWrong() extends GateStatus with GateClockWrongMappable;
+
+@MappableClass()
 class const GateMaintenance({
   required final String? message,
 }) extends GateStatus with GateMaintenanceMappable;

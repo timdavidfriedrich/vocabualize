@@ -542,14 +542,14 @@ class AppLocalizationsFr extends AppLocalizations {
       'Le serveur de Vocabualize est injoignable pour le moment. Vos mots sont en sécurité sur ce téléphone.';
 
   @override
-  String get dataClockWrongTitle => 'L\'horloge de votre téléphone est décalée';
+  String get gateClockWrongTitle => 'L\'horloge de votre téléphone est décalée';
 
   @override
-  String get dataClockWrongMessage =>
+  String get gateClockWrongMessage =>
       'La synchronisation a besoin de l\'heure exacte. Activez la date et l\'heure automatiques, puis revenez.';
 
   @override
-  String get dataOpenTimeSettingsButton => 'Ouvrir les réglages de l\'heure';
+  String get gateOpenTimeSettingsButton => 'Ouvrir les réglages de l\'heure';
 
   @override
   String get dataSyncFailedTitle => 'La synchronisation a échoué';
@@ -586,4 +586,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String loadingProgressLabel(int current, int total) {
     return '$current / $total';
   }
+
+  @override
+  String get errorClockWrong =>
+      'L\'horloge de votre téléphone est décalée. Activez la date et l\'heure automatiques, puis réessayez.';
 }

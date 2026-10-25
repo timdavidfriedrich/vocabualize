@@ -31,9 +31,7 @@ extension RemoteDataReadinessMappers on RemoteDataReadiness {
     RemoteDataReadiness.updateRequired => const DataUnavailable(
       reason: DataUnavailableReason.updateRequired,
     ),
-    RemoteDataReadiness.clockDrift => const DataUnavailable(
-      reason: DataUnavailableReason.clockWrong,
-    ),
+    RemoteDataReadiness.clockDrift ||
     RemoteDataReadiness.failed => const DataUnavailable(reason: DataUnavailableReason.syncFailed),
   };
 }

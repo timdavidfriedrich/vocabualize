@@ -150,9 +150,9 @@
   "syncStatusFailed": "La synchronisation a échoué. Vos mots sont en sécurité sur ce téléphone.",
   "dataServerUnreachableTitle": "Serveur injoignable",
   "dataServerUnreachableMessage": "Le serveur de Vocabualize est injoignable pour le moment. Vos mots sont en sécurité sur ce téléphone.",
-  "dataClockWrongTitle": "L'horloge de votre téléphone est décalée",
-  "dataClockWrongMessage": "La synchronisation a besoin de l'heure exacte. Activez la date et l'heure automatiques, puis revenez.",
-  "dataOpenTimeSettingsButton": "Ouvrir les réglages de l'heure",
+  "gateClockWrongTitle": "L'horloge de votre téléphone est décalée",
+  "gateClockWrongMessage": "La synchronisation a besoin de l'heure exacte. Activez la date et l'heure automatiques, puis revenez.",
+  "gateOpenTimeSettingsButton": "Ouvrir les réglages de l'heure",
   "dataSyncFailedTitle": "La synchronisation a échoué",
   "dataSyncFailedMessage": "Un problème est survenu pendant la synchronisation. Vos mots sont en sécurité sur ce téléphone.",
   "accountConflictTitle": "Changer de compte ?",
@@ -161,5 +161,6 @@
   "accountConflictSwitchButton": "Supprimer les données de {previous} et utiliser {next}",
   "accountConflictUnknownAccount": "compte inconnu",
   "settingsSignInAgainButton": "Se reconnecter",
-  "loadingProgressLabel": "{current} / {total}"
+  "loadingProgressLabel": "{current} / {total}",
+  "errorClockWrong": "L'horloge de votre téléphone est décalée. Activez la date et l'heure automatiques, puis réessayez."
 }

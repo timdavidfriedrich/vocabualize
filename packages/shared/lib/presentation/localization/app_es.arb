@@ -150,9 +150,9 @@
   "syncStatusFailed": "La sincronización falló. Sus palabras están seguras en este teléfono.",
   "dataServerUnreachableTitle": "Servidor no disponible",
   "dataServerUnreachableMessage": "No se puede acceder al servidor de Vocabualize en este momento. Sus palabras están seguras en este teléfono.",
-  "dataClockWrongTitle": "El reloj de su teléfono no es correcto",
-  "dataClockWrongMessage": "La sincronización necesita la hora correcta. Active la fecha y hora automáticas y luego vuelva.",
-  "dataOpenTimeSettingsButton": "Abrir ajustes de hora",
+  "gateClockWrongTitle": "El reloj de su teléfono no es correcto",
+  "gateClockWrongMessage": "La sincronización necesita la hora correcta. Active la fecha y hora automáticas y luego vuelva.",
+  "gateOpenTimeSettingsButton": "Abrir ajustes de hora",
   "dataSyncFailedTitle": "La sincronización falló",
   "dataSyncFailedMessage": "Algo salió mal al sincronizar. Sus palabras están seguras en este teléfono.",
   "accountConflictTitle": "¿Cambiar de cuenta?",
@@ -161,5 +161,6 @@
   "accountConflictSwitchButton": "Borrar los datos de {previous} y usar {next}",
   "accountConflictUnknownAccount": "cuenta desconocida",
   "settingsSignInAgainButton": "Iniciar sesión de nuevo",
-  "loadingProgressLabel": "{current} / {total}"
+  "loadingProgressLabel": "{current} / {total}",
+  "errorClockWrong": "El reloj de su teléfono no es correcto. Active la fecha y hora automáticas e inténtelo de nuevo."
 }

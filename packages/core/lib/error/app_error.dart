@@ -18,6 +18,8 @@ class const SyncPendingError() extends AppError;
 
 class const InvalidBackupError() extends AppError;
 
+class const ClockWrongError() extends AppError;
+
 class const UnexpectedError([
   final String? message,
 ]) extends AppError;

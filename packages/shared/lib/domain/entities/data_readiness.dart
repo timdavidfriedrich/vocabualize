@@ -7,7 +7,6 @@ enum DataUnavailableReason {
   serverUnreachable,
   signInRequired,
   updateRequired,
-  clockWrong,
   syncFailed,
 }
 

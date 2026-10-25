@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:serverpod_database/serverpod_database.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
+import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/image_transfer_data_source.dart';
 import 'package:shared/data/data_sources/sync_data_source.dart';
@@ -22,6 +23,7 @@ abstract class ImageSyncDataSource {
 @LazySingleton(as: ImageSyncDataSource)
 class ImageSyncDataSourceImpl(
   final SyncDataSource _syncDataSource,
+  final DatabaseSessionDataSource _sessions,
   final ImageFileDataSource _imageFileDataSource,
   final ImageTransferDataSource _imageTransferDataSource,
 ) implements ImageSyncDataSource {
@@ -135,7 +137,7 @@ class ImageSyncDataSourceImpl(
         continue;
       }
       await LocalVocabulary.db.updateRow(
-        session,
+        _sessions.requireWritableSession(),
         vocabulary.copyWith(customImageUploadedAt: DateTime.now().toUtc()),
         columns: (t) => [t.customImageUploadedAt],
       );

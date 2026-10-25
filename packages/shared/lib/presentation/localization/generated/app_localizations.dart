@@ -1002,23 +1002,23 @@ abstract class AppLocalizations {
   /// **'Vocabualize\'s server can\'t be reached right now. Your words are safe on this phone.'**
   String get dataServerUnreachableMessage;
 
-  /// No description provided for @dataClockWrongTitle.
+  /// No description provided for @gateClockWrongTitle.
   ///
   /// In en, this message translates to:
   /// **'Your phone\'s clock is off'**
-  String get dataClockWrongTitle;
+  String get gateClockWrongTitle;
 
-  /// No description provided for @dataClockWrongMessage.
+  /// No description provided for @gateClockWrongMessage.
   ///
   /// In en, this message translates to:
   /// **'Syncing needs the correct time. Turn on automatic date and time, then come back.'**
-  String get dataClockWrongMessage;
+  String get gateClockWrongMessage;
 
-  /// No description provided for @dataOpenTimeSettingsButton.
+  /// No description provided for @gateOpenTimeSettingsButton.
   ///
   /// In en, this message translates to:
   /// **'Open time settings'**
-  String get dataOpenTimeSettingsButton;
+  String get gateOpenTimeSettingsButton;
 
   /// No description provided for @dataSyncFailedTitle.
   ///
@@ -1073,6 +1073,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{current} / {total}'**
   String loadingProgressLabel(int current, int total);
+
+  /// No description provided for @errorClockWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone\'s clock is off. Turn on automatic date and time, then try again.'**
+  String get errorClockWrong;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

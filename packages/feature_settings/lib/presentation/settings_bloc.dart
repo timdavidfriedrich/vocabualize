@@ -8,26 +8,22 @@ import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
-import 'package:shared/domain/repositories/app_info_repository.dart';
 import 'package:shared/domain/repositories/backup_repository.dart';
 
 @injectable
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  SettingsBloc(this._accountRepository, this._backupRepository, this._appInfoRepository)
-    : super(const SettingsLoading()) {
+  SettingsBloc(this._accountRepository, this._backupRepository) : super(const SettingsLoading()) {
     on<SettingsStarted>(_onStarted);
     on<SettingsGoogleSignInRequested>(_onGoogleSignInRequested);
     on<SettingsSignOutRequested>(_onSignOutRequested);
     on<SettingsSignOutDismissed>(_onSignOutDismissed);
     on<SettingsAccountConflictResolved>(_onAccountConflictResolved);
-    on<SettingsDateSettingsRequested>(_onDateSettingsRequested);
     on<SettingsBackupExportRequested>(_onBackupExportRequested);
     on<SettingsBackupImportRequested>(_onBackupImportRequested);
   }
 
   final AccountRepository _accountRepository;
   final BackupRepository _backupRepository;
-  final AppInfoRepository _appInfoRepository;
 
   Future<void> _onStarted(SettingsStarted event, Emitter<SettingsState> emit) {
     return emit.forEach(
@@ -66,15 +62,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         ),
         Failure(:final error) => loaded.copyWith(isBusy: false, error: error),
       });
-    }
-  }
-
-  Future<void> _onDateSettingsRequested(
-    SettingsDateSettingsRequested event,
-    Emitter<SettingsState> emit,
-  ) async {
-    if (await _appInfoRepository.openDateSettings() case Failure(:final error)) {
-      if (state case final SettingsLoaded loaded) emit(loaded.copyWith(error: error));
     }
   }
 

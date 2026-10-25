@@ -34,7 +34,7 @@ The spike's findings are in `docs/spike_serverpod_sync.md` and are binding for t
 - Updates to synced rows are always column-scoped (`updateRow(..., columns:)`).
 - The synced schema is frozen before release. A synced-table change breaks sync for older clients until they update.
 - Lists read pages through `watch(limit:)` and numbers come from `count()`. Never load every row into the UI.
-- The sync module rejects clocks more than 1 minute apart (`_maxDrift` in its `hlc.dart`). A phone that is ahead fails on the server, which only closes the stream, so the app compares its clock with `config.serverTime()` whenever a sync fails without a typed reason.
+- The sync module rejects clocks more than 1 minute apart (`_maxDrift` in its `hlc.dart`); a phone that is ahead fails on the server, which only closes the stream. `ClockDataSource` compares the phone clock with `config.serverTime()` on start, resume, network back and after a failed sync. Only a server-confirmed drift closes the gate (`GateClockWrong`) or blocks a write (`requireWritableSession()`); when unsure, nothing is blocked. The monotonic reference is dropped whenever the app leaves the foreground, because Android's monotonic clock pauses during sleep.
 - An immediate reconnect needs a fresh event (start, network back, app resumed) or a connection that has carried data. A connection that dies right after its handshake never reconnects in a loop.
 
 ## Loading and empty states

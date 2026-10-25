@@ -11,6 +11,7 @@ extension AppErrorExtensions on AppError {
     NotFoundError() => context.s.errorNotFound,
     SyncPendingError() => context.s.errorSyncPending,
     InvalidBackupError() => context.s.errorInvalidBackup,
+    ClockWrongError() => context.s.errorClockWrong,
     UnexpectedError() => context.s.errorUnexpected,
   };
 }

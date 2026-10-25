@@ -5,13 +5,14 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
+import 'package:shared/data/data_sources/clock_data_source.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
+import 'package:shared/data/models/remote_clock_state.dart';
 import 'package:shared/data/models/remote_data_readiness.dart';
 import 'package:shared/data/models/remote_sync_state.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
 const _firstGatewayErrorCode = 502;
-const _maxClockDrift = Duration(minutes: 1);
 
 abstract class SyncDataSource {
   Stream<RemoteSyncState> watchState();
@@ -36,6 +37,7 @@ class SyncDataSourceImpl(
   final Client _client,
   final ConnectivityMonitor _connectivityMonitor,
   final DatabaseSessionDataSource _sessions,
+  final ClockDataSource _clock,
 ) implements SyncDataSource {
   final _stateChanges = StreamController<RemoteSyncState>.broadcast();
   final _readinessChanges = StreamController<RemoteDataReadiness>.broadcast();
@@ -136,7 +138,7 @@ class SyncDataSourceImpl(
       _setReadiness(RemoteDataReadiness.ready);
       _connect(session);
     } on Object catch (error) {
-      final state = await _failureState(error);
+      final state = await _failureState(error, canRetryImmediately: false);
       if (generation != _generation) return;
       _setState(state);
       _setReadiness(switch (state) {
@@ -228,8 +230,18 @@ class SyncDataSourceImpl(
 
     unawaited(
       subscription.done.then(
-        (_) async => finish(await _untypedFailureState(isConnectionError: true)),
-        onError: (Object error) async => finish(await _failureState(error)),
+        (_) async => finish(
+          await _untypedFailureState(
+            isConnectionError: true,
+            canRetryImmediately: hasBeenLive && _mayReconnectImmediately,
+          ),
+        ),
+        onError: (Object error) async => finish(
+          await _failureState(
+            error,
+            canRetryImmediately: hasBeenLive && _mayReconnectImmediately,
+          ),
+        ),
       ),
     );
   }
@@ -245,7 +257,10 @@ class SyncDataSourceImpl(
     RemoteDataReadiness.updateRequired => false,
   };
 
-  Future<RemoteSyncState> _failureState(Object error) async => switch (error) {
+  Future<RemoteSyncState> _failureState(
+    Object error, {
+    required bool canRetryImmediately,
+  }) async => switch (error) {
     OfflineSyncTablesHashMismatchException() => RemoteSyncState.updateRequired,
     ServerpodClientUnauthorized() => RemoteSyncState.unauthorized,
     OpenMethodStreamException(responseType: OpenMethodStreamResponseType.authenticationFailed) =>
@@ -257,25 +272,26 @@ class SyncDataSourceImpl(
     OfflineSyncStreamClosedException() ||
     SocketException() ||
     HttpException() ||
-    TimeoutException() => await _untypedFailureState(isConnectionError: true),
+    TimeoutException() => await _untypedFailureState(
+      isConnectionError: true,
+      canRetryImmediately: canRetryImmediately,
+    ),
     ServerpodClientHttpException(:final statusCode) when statusCode >= _firstGatewayErrorCode =>
-      await _untypedFailureState(isConnectionError: true),
-    _ => await _untypedFailureState(isConnectionError: false),
+      await _untypedFailureState(isConnectionError: true, canRetryImmediately: canRetryImmediately),
+    _ => await _untypedFailureState(isConnectionError: false, canRetryImmediately: false),
   };
 
-  Future<RemoteSyncState> _untypedFailureState({required bool isConnectionError}) async {
-    if (await _isClockOff()) return RemoteSyncState.clockDrift;
-    return isConnectionError ? _connectionLossState() : RemoteSyncState.failed;
-  }
-
-  Future<bool> _isClockOff() async {
-    try {
-      final serverTime = await _client.config.serverTime();
-      return DateTime.now().toUtc().difference(serverTime.toUtc()).abs() > _maxClockDrift;
-    } on Object {
-      return false;
-    }
-  }
+  Future<RemoteSyncState> _untypedFailureState({
+    required bool isConnectionError,
+    required bool canRetryImmediately,
+  }) async => switch (await _clock.checkWithServer()) {
+    RemoteClockState.wrong => RemoteSyncState.clockDrift,
+    RemoteClockState.correct when isConnectionError && canRetryImmediately =>
+      RemoteSyncState.serverUnreachable,
+    RemoteClockState.correct => RemoteSyncState.failed,
+    RemoteClockState.unknown when isConnectionError => await _connectionLossState(),
+    RemoteClockState.unknown => RemoteSyncState.failed,
+  };
 
   Future<RemoteSyncState> _connectionLossState() async {
     final connections = await Connectivity().checkConnectivity();

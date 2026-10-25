@@ -1,8 +1,8 @@
-import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/app_info_data_source.dart';
 import 'package:shared/data/data_sources/setting_local_data_source.dart';
+import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/domain/entities/language.dart';
@@ -27,7 +27,7 @@ class const SettingsRepositoryImpl(
     try {
       return Success((await _dataSource.readLanguagePair())?.toLanguagePair());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -42,7 +42,7 @@ class const SettingsRepositoryImpl(
       );
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -51,7 +51,7 @@ class const SettingsRepositoryImpl(
     try {
       return Success(_appInfoDataSource.deviceLanguageCode().toLanguage());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 }

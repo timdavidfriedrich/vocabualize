@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
+import 'package:shared/data/data_sources/clock_data_source.dart';
 import 'package:shared/data/models/local_account_metadata.dart';
 import 'package:shared/data/models/local_snapshot.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
@@ -22,6 +23,8 @@ const _localImagesDirectoryName = "local";
 
 abstract class DatabaseSessionDataSource {
   OfflineSyncDatabaseSession? get currentSession;
+
+  OfflineSyncDatabaseSession requireWritableSession();
 
   Stream<OfflineSyncDatabaseSession?> watchSession();
 
@@ -63,6 +66,7 @@ abstract class DatabaseSessionDataSource {
 @LazySingleton(as: DatabaseSessionDataSource)
 class DatabaseSessionDataSourceImpl(
   final Client _client,
+  final ClockDataSource _clock,
 ) implements DatabaseSessionDataSource {
   final _sessionChanges = StreamController<OfflineSyncDatabaseSession?>.broadcast();
   OfflineSyncDatabaseSession? _session;
@@ -71,6 +75,14 @@ class DatabaseSessionDataSourceImpl(
 
   @override
   OfflineSyncDatabaseSession? get currentSession => _session;
+
+  @override
+  OfflineSyncDatabaseSession requireWritableSession() {
+    final session = _session;
+    if (session == null) throw StateError("No database is open.");
+    if (_clock.isWriteBlocked()) throw const ClockWrongException();
+    return session;
+  }
 
   @override
   String? get currentImageDirectoryPath => _imageDirectoryPath;

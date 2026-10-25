@@ -150,9 +150,9 @@
   "syncStatusFailed": "Не вдалося синхронізувати. Ваші слова збережено на цьому телефоні.",
   "dataServerUnreachableTitle": "Сервер недоступний",
   "dataServerUnreachableMessage": "Сервер Vocabualize зараз недоступний. Ваші слова збережено на цьому телефоні.",
-  "dataClockWrongTitle": "Неправильний час на телефоні",
-  "dataClockWrongMessage": "Для синхронізації потрібен правильний час. Увімкніть автоматичні дату й час і поверніться.",
-  "dataOpenTimeSettingsButton": "Відкрити налаштування часу",
+  "gateClockWrongTitle": "Неправильний час на телефоні",
+  "gateClockWrongMessage": "Для синхронізації потрібен правильний час. Увімкніть автоматичні дату й час і поверніться.",
+  "gateOpenTimeSettingsButton": "Відкрити налаштування часу",
   "dataSyncFailedTitle": "Не вдалося синхронізувати",
   "dataSyncFailedMessage": "Під час синхронізації сталася помилка. Ваші слова збережено на цьому телефоні.",
   "accountConflictTitle": "Змінити обліковий запис?",
@@ -161,5 +161,6 @@
   "accountConflictSwitchButton": "Видалити дані {previous} і використати {next}",
   "accountConflictUnknownAccount": "невідомий обліковий запис",
   "settingsSignInAgainButton": "Увійти знову",
-  "loadingProgressLabel": "{current} / {total}"
+  "loadingProgressLabel": "{current} / {total}",
+  "errorClockWrong": "Годинник вашого телефона показує неправильний час. Увімкніть автоматичні дату й час і спробуйте ще раз."
 }

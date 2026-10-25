@@ -230,9 +230,9 @@
   "syncStatusFailed": "Syncing failed. Your words are safe on this phone.",
   "dataServerUnreachableTitle": "Server not reachable",
   "dataServerUnreachableMessage": "Vocabualize's server can't be reached right now. Your words are safe on this phone.",
-  "dataClockWrongTitle": "Your phone's clock is off",
-  "dataClockWrongMessage": "Syncing needs the correct time. Turn on automatic date and time, then come back.",
-  "dataOpenTimeSettingsButton": "Open time settings",
+  "gateClockWrongTitle": "Your phone's clock is off",
+  "gateClockWrongMessage": "Syncing needs the correct time. Turn on automatic date and time, then come back.",
+  "gateOpenTimeSettingsButton": "Open time settings",
   "dataSyncFailedTitle": "Syncing failed",
   "dataSyncFailedMessage": "Something went wrong while syncing. Your words are safe on this phone.",
   "accountConflictTitle": "Switch account?",
@@ -278,5 +278,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "errorClockWrong": "Your phone's clock is off. Turn on automatic date and time, then try again."
 }

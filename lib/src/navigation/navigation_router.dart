@@ -105,9 +105,6 @@ class NavigationRouter(
     DataUnavailableReason.updateRequired => const WaitForData(
       reason: DataUnavailableReason.updateRequired,
     ),
-    DataUnavailableReason.clockWrong => const WaitForData(
-      reason: DataUnavailableReason.clockWrong,
-    ),
     DataUnavailableReason.syncFailed => const WaitForData(
       reason: DataUnavailableReason.syncFailed,
     ),

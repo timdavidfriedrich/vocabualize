@@ -1,8 +1,8 @@
-import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart';
+import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
@@ -70,7 +70,7 @@ class const VocabularyRepositoryImpl(
       return Success((await _toVocabularies([inserted])).single);
     } on Object catch (error) {
       if (image != null) _imageFileDataSource.deleteImage(imageId).ignore();
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -85,7 +85,7 @@ class const VocabularyRepositoryImpl(
       }
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 

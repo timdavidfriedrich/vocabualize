@@ -531,14 +531,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Vocabualize\'s server can\'t be reached right now. Your words are safe on this phone.';
 
   @override
-  String get dataClockWrongTitle => 'Your phone\'s clock is off';
+  String get gateClockWrongTitle => 'Your phone\'s clock is off';
 
   @override
-  String get dataClockWrongMessage =>
+  String get gateClockWrongMessage =>
       'Syncing needs the correct time. Turn on automatic date and time, then come back.';
 
   @override
-  String get dataOpenTimeSettingsButton => 'Open time settings';
+  String get gateOpenTimeSettingsButton => 'Open time settings';
 
   @override
   String get dataSyncFailedTitle => 'Syncing failed';
@@ -575,4 +575,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String loadingProgressLabel(int current, int total) {
     return '$current / $total';
   }
+
+  @override
+  String get errorClockWrong =>
+      'Your phone\'s clock is off. Turn on automatic date and time, then try again.';
 }

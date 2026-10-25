@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:serverpod_database/serverpod_database.dart';
-import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
@@ -41,17 +40,14 @@ class const VocabularyLocalDataSourceImpl(
 
   @override
   Future<LocalVocabulary> insertVocabulary(LocalVocabulary vocabulary) {
-    return LocalVocabulary.db.insertRow(_requireSession(), vocabulary);
+    return LocalVocabulary.db.insertRow(_sessions.requireWritableSession(), vocabulary);
   }
 
   @override
   Future<List<LocalVocabulary>> deleteVocabulary(UuidValue id) {
-    return LocalVocabulary.db.deleteWhere(_requireSession(), where: (t) => t.id.equals(id));
-  }
-
-  OfflineSyncDatabaseSession _requireSession() {
-    final session = _sessions.currentSession;
-    if (session == null) throw StateError("No database is open.");
-    return session;
+    return LocalVocabulary.db.deleteWhere(
+      _sessions.requireWritableSession(),
+      where: (t) => t.id.equals(id),
+    );
   }
 }
