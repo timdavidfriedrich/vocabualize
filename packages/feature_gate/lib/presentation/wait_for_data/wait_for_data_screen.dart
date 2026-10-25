@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/data_readiness.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
 
 const _mascotScreenHeightFactor = 0.4;
@@ -18,11 +19,25 @@ class const WaitForDataScreen({
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<WaitForDataCubit>();
-    return BlocListener<WaitForDataCubit, WaitForDataState>(
-      listenWhen: (previous, current) => previous.error == null && current.error != null,
-      listener: (context, state) {
-        if (state.error case final error?) context.showToast(error.toMessage(context));
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<WaitForDataCubit, WaitForDataState>(
+          listenWhen: (previous, current) => previous.error == null && current.error != null,
+          listener: (context, state) {
+            if (state.error case final error?) context.showToast(error.toMessage(context));
+          },
+        ),
+        BlocListener<WaitForDataCubit, WaitForDataState>(
+          listenWhen: (previous, current) =>
+              previous.accountConflict == null && current.accountConflict != null,
+          listener: (context, state) async {
+            if (state.accountConflict case final conflict?) {
+              final switchesAccount = await confirmsAccountSwitch(context, conflict);
+              await cubit.resolveAccountConflict(keepsPreviousAccount: !switchesAccount);
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         body: SafeArea(
           child: Padding(

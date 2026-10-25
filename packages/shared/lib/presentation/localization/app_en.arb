@@ -234,5 +234,38 @@
   "dataClockWrongMessage": "Syncing needs the correct time. Turn on automatic date and time, then come back.",
   "dataOpenTimeSettingsButton": "Open time settings",
   "dataSyncFailedTitle": "Syncing failed",
-  "dataSyncFailedMessage": "Something went wrong while syncing. Your words are safe on this phone."
+  "dataSyncFailedMessage": "Something went wrong while syncing. Your words are safe on this phone.",
+  "accountConflictTitle": "Switch account?",
+  "accountConflictMessage": "You were signed in on this phone as {previous}. Changes that weren't uploaded yet belong to that account. They are lost if you switch to {next}.",
+  "accountConflictKeepButton": "Use {previous} instead",
+  "accountConflictSwitchButton": "Delete data of {previous} and use {next}",
+  "accountConflictUnknownAccount": "an unknown account",
+  "settingsSignInAgainButton": "Sign in again",
+  "@accountConflictMessage": {
+    "placeholders": {
+      "previous": {
+        "type": "String"
+      },
+      "next": {
+        "type": "String"
+      }
+    }
+  },
+  "@accountConflictKeepButton": {
+    "placeholders": {
+      "previous": {
+        "type": "String"
+      }
+    }
+  },
+  "@accountConflictSwitchButton": {
+    "placeholders": {
+      "previous": {
+        "type": "String"
+      },
+      "next": {
+        "type": "String"
+      }
+    }
+  }
 }

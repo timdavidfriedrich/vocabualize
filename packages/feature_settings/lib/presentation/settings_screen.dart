@@ -14,6 +14,7 @@ import 'package:shared/presentation/extensions/sync_status_extensions.dart';
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
+import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 
 class const SettingsScreen({
   super.key,
@@ -40,6 +41,19 @@ class const SettingsScreen({
             _ => false,
           },
           listener: (context, state) => _showSignOutBlockedDialog(context),
+        ),
+        BlocListener<SettingsBloc, SettingsState>(
+          listenWhen: (previous, current) => switch ((previous, current)) {
+            (SettingsLoaded(accountConflict: null), SettingsLoaded(accountConflict: _?)) => true,
+            _ => false,
+          },
+          listener: (context, state) async {
+            if (state case SettingsLoaded(accountConflict: final conflict?)) {
+              final bloc = context.read<SettingsBloc>();
+              final switchesAccount = await confirmsAccountSwitch(context, conflict);
+              bloc.add(SettingsAccountConflictResolved(keepsPreviousAccount: !switchesAccount));
+            }
+          },
         ),
         BlocListener<SettingsBloc, SettingsState>(
           listenWhen: (previous, current) => switch ((previous, current)) {
@@ -213,6 +227,20 @@ class const _GoogleAccountSection({
               ),
             ),
             null => const SizedBox.shrink(),
+          },
+        ),
+        BlocBuilder<SyncStatusCubit, SyncStatus>(
+          builder: (context, status) => switch (status) {
+            SyncStatus.signInRequired => Padding(
+              padding: const EdgeInsets.only(top: Spacing.s),
+              child: FilledButton(
+                onPressed: _isBusy
+                    ? null
+                    : () => context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
+                child: Text(context.s.settingsSignInAgainButton),
+              ),
+            ),
+            _ => const SizedBox.shrink(),
           },
         ),
         const SizedBox(height: Spacing.s),

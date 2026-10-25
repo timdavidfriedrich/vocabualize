@@ -6,6 +6,7 @@ import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
 const _languagePairKey = "languagePair";
+const _adoptedLocalSpaceKey = "adoptedLocalSpace";
 
 abstract class SettingLocalDataSource {
   Stream<LocalSetting?> watchLanguagePair();
@@ -18,6 +19,13 @@ abstract class SettingLocalDataSource {
   });
 
   Future<void> insertSetting(LocalSetting setting);
+
+  LocalSetting createAdoptionRecord({
+    required UuidValue localOwnerId,
+    required DateTime adoptedAt,
+  });
+
+  Future<bool> hasAdoptionRecord(UuidValue localOwnerId);
 }
 
 @Injectable(as: SettingLocalDataSource)
@@ -60,6 +68,27 @@ class const SettingLocalDataSourceImpl(
   @override
   Future<void> insertSetting(LocalSetting setting) async {
     await LocalSetting.db.insertRow(_requireSession(), setting);
+  }
+
+  @override
+  LocalSetting createAdoptionRecord({
+    required UuidValue localOwnerId,
+    required DateTime adoptedAt,
+  }) {
+    return LocalSetting(
+      key: _adoptedLocalSpaceKey,
+      value: localOwnerId.uuid,
+      changedAt: adoptedAt.toUtc(),
+    );
+  }
+
+  @override
+  Future<bool> hasAdoptionRecord(UuidValue localOwnerId) async {
+    final record = await LocalSetting.db.findFirstRow(
+      _requireSession(),
+      where: (t) => t.key.equals(_adoptedLocalSpaceKey) & t.value.equals(localOwnerId.uuid),
+    );
+    return record != null;
   }
 
   OfflineSyncDatabaseSession _requireSession() {

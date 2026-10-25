@@ -15,6 +15,7 @@ class WaitForDataStateMapper extends ClassMapperBase<WaitForDataState> {
   static WaitForDataStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = WaitForDataStateMapper._());
+      AccountConflictMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -27,6 +28,10 @@ class WaitForDataStateMapper extends ClassMapperBase<WaitForDataState> {
     'isBusy',
     _$isBusy,
   );
+  static AccountConflict? _$accountConflict(WaitForDataState v) =>
+      v.accountConflict;
+  static const Field<WaitForDataState, AccountConflict> _f$accountConflict =
+      Field('accountConflict', _$accountConflict);
   static AppError? _$error(WaitForDataState v) => v.error;
   static const Field<WaitForDataState, AppError> _f$error = Field(
     'error',
@@ -36,12 +41,14 @@ class WaitForDataStateMapper extends ClassMapperBase<WaitForDataState> {
   @override
   final MappableFields<WaitForDataState> fields = const {
     #isBusy: _f$isBusy,
+    #accountConflict: _f$accountConflict,
     #error: _f$error,
   };
 
   static WaitForDataState _instantiate(DecodingData data) {
     return WaitForDataState(
       isBusy: data.dec(_f$isBusy),
+      accountConflict: data.dec(_f$accountConflict),
       error: data.dec(_f$error),
     );
   }
@@ -108,7 +115,9 @@ extension WaitForDataStateValueCopy<$R, $Out>
 
 abstract class WaitForDataStateCopyWith<$R, $In extends WaitForDataState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({bool? isBusy, AppError? error});
+  AccountConflictCopyWith<$R, AccountConflict, AccountConflict>?
+  get accountConflict;
+  $R call({bool? isBusy, AccountConflict? accountConflict, AppError? error});
   WaitForDataStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -123,15 +132,25 @@ class _WaitForDataStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<WaitForDataState> $mapper =
       WaitForDataStateMapper.ensureInitialized();
   @override
-  $R call({bool? isBusy, Object? error = $none}) => $apply(
+  AccountConflictCopyWith<$R, AccountConflict, AccountConflict>?
+  get accountConflict =>
+      $value.accountConflict?.copyWith.$chain((v) => call(accountConflict: v));
+  @override
+  $R call({
+    bool? isBusy,
+    Object? accountConflict = $none,
+    Object? error = $none,
+  }) => $apply(
     FieldCopyWithData({
       if (isBusy != null) #isBusy: isBusy,
+      if (accountConflict != $none) #accountConflict: accountConflict,
       if (error != $none) #error: error,
     }),
   );
   @override
   WaitForDataState $make(CopyWithData data) => WaitForDataState(
     isBusy: data.get(#isBusy, or: $value.isBusy),
+    accountConflict: data.get(#accountConflict, or: $value.accountConflict),
     error: data.get(#error, or: $value.error),
   );
 

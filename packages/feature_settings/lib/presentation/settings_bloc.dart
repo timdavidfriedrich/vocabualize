@@ -5,6 +5,7 @@ import 'package:feature_settings/presentation/settings_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/auth_status.dart';
+import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/backup_repository.dart';
 
@@ -15,6 +16,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsGoogleSignInRequested>(_onGoogleSignInRequested);
     on<SettingsSignOutRequested>(_onSignOutRequested);
     on<SettingsSignOutDismissed>(_onSignOutDismissed);
+    on<SettingsAccountConflictResolved>(_onAccountConflictResolved);
     on<SettingsBackupExportRequested>(_onBackupExportRequested);
     on<SettingsBackupImportRequested>(_onBackupImportRequested);
   }
@@ -33,6 +35,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           isBusy: false,
           isSignOutBlocked: false,
           importedCount: null,
+          accountConflict: null,
           error: null,
         ),
         _ => state,
@@ -43,7 +46,32 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<void> _onGoogleSignInRequested(
     SettingsGoogleSignInRequested event,
     Emitter<SettingsState> emit,
-  ) => _runBusy(emit, _accountRepository.signInWithGoogle);
+  ) async {
+    if (state case final SettingsLoaded loaded) {
+      emit(loaded.copyWith(isBusy: true, accountConflict: null, error: null));
+    }
+    final result = await _accountRepository.signInWithGoogle();
+    if (state case final SettingsLoaded loaded) {
+      emit(switch (result) {
+        Success(data: SignedIn()) => loaded.copyWith(isBusy: false),
+        Success(data: final AccountConflict conflict) => loaded.copyWith(
+          isBusy: false,
+          accountConflict: conflict,
+        ),
+        Failure(:final error) => loaded.copyWith(isBusy: false, error: error),
+      });
+    }
+  }
+
+  Future<void> _onAccountConflictResolved(
+    SettingsAccountConflictResolved event,
+    Emitter<SettingsState> emit,
+  ) => _runBusy(
+    emit,
+    () => _accountRepository.resolveAccountConflict(
+      keepsPreviousAccount: event.keepsPreviousAccount,
+    ),
+  );
 
   Future<void> _onSignOutRequested(
     SettingsSignOutRequested event,
@@ -67,7 +95,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) async {
     if (state case final SettingsLoaded loaded) {
-      emit(loaded.copyWith(isBusy: true, importedCount: null, error: null));
+      emit(loaded.copyWith(isBusy: true, importedCount: null, accountConflict: null, error: null));
     }
     final result = await _backupRepository.importBackup();
     if (state case final SettingsLoaded loaded) {
@@ -84,7 +112,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   ) async {
     if (state case final SettingsLoaded loaded) {
       emit(
-        loaded.copyWith(isBusy: true, isSignOutBlocked: false, importedCount: null, error: null),
+        loaded.copyWith(
+          isBusy: true,
+          isSignOutBlocked: false,
+          importedCount: null,
+          accountConflict: null,
+          error: null,
+        ),
       );
     }
     final result = await action();

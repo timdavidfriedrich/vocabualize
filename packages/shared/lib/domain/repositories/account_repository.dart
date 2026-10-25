@@ -1,6 +1,7 @@
 import 'package:core/error/app_result.dart';
 import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/auth_status.dart';
+import 'package:shared/domain/entities/sign_in_result.dart';
 
 abstract class AccountRepository {
   Stream<AppResult<AuthStatus>> watchAuthStatus();
@@ -9,7 +10,9 @@ abstract class AccountRepository {
 
   Future<AppResult<Account>> continueWithoutAccount();
 
-  Future<AppResult<Account>> signInWithGoogle();
+  Future<AppResult<SignInResult>> signInWithGoogle();
+
+  Future<AppResult<Account?>> resolveAccountConflict({required bool keepsPreviousAccount});
 
   Future<AppResult<()>> signOut({required bool discardUnsyncedChanges});
 }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
 
 class const WelcomeScreen({
@@ -14,15 +15,29 @@ class const WelcomeScreen({
   @override
   Widget build(BuildContext context) {
     return BlocListener<WelcomeBloc, WelcomeState>(
-      listener: (context, state) {
-        if (state case WelcomeFailure(:final error)) context.showToast(error.toMessage(context));
+      listener: (context, state) async {
+        switch (state) {
+          case WelcomeFailure(:final error):
+            context.showToast(error.toMessage(context));
+          case WelcomeAccountConflict(:final conflict):
+            final bloc = context.read<WelcomeBloc>();
+            final switchesAccount = await confirmsAccountSwitch(context, conflict);
+            bloc.add(WelcomeAccountConflictResolved(keepsPreviousAccount: !switchesAccount));
+          case WelcomeIdle() || WelcomeBusy():
+            break;
+        }
       },
       child: Scaffold(
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(Spacing.xl),
             child: BlocBuilder<WelcomeBloc, WelcomeState>(
-              builder: (context, state) => _Content(isBusy: state is WelcomeBusy),
+              builder: (context, state) => _Content(
+                isBusy: switch (state) {
+                  WelcomeBusy() || WelcomeAccountConflict() => true,
+                  WelcomeIdle() || WelcomeFailure() => false,
+                },
+              ),
             ),
           ),
         ),

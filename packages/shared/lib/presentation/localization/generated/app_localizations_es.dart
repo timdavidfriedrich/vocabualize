@@ -551,4 +551,28 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get dataSyncFailedMessage =>
       'Algo salió mal al sincronizar. Sus palabras están seguras en este teléfono.';
+
+  @override
+  String get accountConflictTitle => '¿Cambiar de cuenta?';
+
+  @override
+  String accountConflictMessage(String previous, String next) {
+    return 'En este teléfono había iniciado sesión como $previous. Los cambios que aún no se subieron pertenecen a esa cuenta. Se perderán si cambia a $next.';
+  }
+
+  @override
+  String accountConflictKeepButton(String previous) {
+    return 'Usar $previous en su lugar';
+  }
+
+  @override
+  String accountConflictSwitchButton(String previous, String next) {
+    return 'Borrar los datos de $previous y usar $next';
+  }
+
+  @override
+  String get accountConflictUnknownAccount => 'cuenta desconocida';
+
+  @override
+  String get settingsSignInAgainButton => 'Iniciar sesión de nuevo';
 }

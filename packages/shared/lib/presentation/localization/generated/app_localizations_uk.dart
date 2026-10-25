@@ -566,4 +566,28 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get dataSyncFailedMessage =>
       'Під час синхронізації сталася помилка. Ваші слова збережено на цьому телефоні.';
+
+  @override
+  String get accountConflictTitle => 'Змінити обліковий запис?';
+
+  @override
+  String accountConflictMessage(String previous, String next) {
+    return 'На цьому телефоні ви входили як $previous. Ще не завантажені зміни належать цьому обліковому запису. Вони будуть втрачені, якщо ви перейдете на $next.';
+  }
+
+  @override
+  String accountConflictKeepButton(String previous) {
+    return 'Використати $previous';
+  }
+
+  @override
+  String accountConflictSwitchButton(String previous, String next) {
+    return 'Видалити дані $previous і використати $next';
+  }
+
+  @override
+  String get accountConflictUnknownAccount => 'невідомий обліковий запис';
+
+  @override
+  String get settingsSignInAgainButton => 'Увійти знову';
 }

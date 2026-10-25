@@ -1031,6 +1031,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong while syncing. Your words are safe on this phone.'**
   String get dataSyncFailedMessage;
+
+  /// No description provided for @accountConflictTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch account?'**
+  String get accountConflictTitle;
+
+  /// No description provided for @accountConflictMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You were signed in on this phone as {previous}. Changes that weren\'t uploaded yet belong to that account. They are lost if you switch to {next}.'**
+  String accountConflictMessage(String previous, String next);
+
+  /// No description provided for @accountConflictKeepButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Use {previous} instead'**
+  String accountConflictKeepButton(String previous);
+
+  /// No description provided for @accountConflictSwitchButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete data of {previous} and use {next}'**
+  String accountConflictSwitchButton(String previous, String next);
+
+  /// No description provided for @accountConflictUnknownAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'an unknown account'**
+  String get accountConflictUnknownAccount;
+
+  /// No description provided for @settingsSignInAgainButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again'**
+  String get settingsSignInAgainButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

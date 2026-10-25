@@ -155,6 +155,7 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i535.AuthDataSource>(),
           gh<_i862.DatabaseSessionDataSource>(),
           gh<_i843.LocalImportDataSource>(),
+          gh<_i555.SettingLocalDataSource>(),
           gh<_i1034.SyncDataSource>(),
           gh<_i61.ImageSyncDataSource>(),
         ));

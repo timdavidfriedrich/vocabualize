@@ -154,5 +154,11 @@
   "dataClockWrongMessage": "Для синхронізації потрібен правильний час. Увімкніть автоматичні дату й час і поверніться.",
   "dataOpenTimeSettingsButton": "Відкрити налаштування часу",
   "dataSyncFailedTitle": "Не вдалося синхронізувати",
-  "dataSyncFailedMessage": "Під час синхронізації сталася помилка. Ваші слова збережено на цьому телефоні."
+  "dataSyncFailedMessage": "Під час синхронізації сталася помилка. Ваші слова збережено на цьому телефоні.",
+  "accountConflictTitle": "Змінити обліковий запис?",
+  "accountConflictMessage": "На цьому телефоні ви входили як {previous}. Ще не завантажені зміни належать цьому обліковому запису. Вони будуть втрачені, якщо ви перейдете на {next}.",
+  "accountConflictKeepButton": "Використати {previous}",
+  "accountConflictSwitchButton": "Видалити дані {previous} і використати {next}",
+  "accountConflictUnknownAccount": "невідомий обліковий запис",
+  "settingsSignInAgainButton": "Увійти знову"
 }

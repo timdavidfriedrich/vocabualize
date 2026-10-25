@@ -154,5 +154,11 @@
   "dataClockWrongMessage": "La sincronización necesita la hora correcta. Active la fecha y hora automáticas y luego vuelva.",
   "dataOpenTimeSettingsButton": "Abrir ajustes de hora",
   "dataSyncFailedTitle": "La sincronización falló",
-  "dataSyncFailedMessage": "Algo salió mal al sincronizar. Sus palabras están seguras en este teléfono."
+  "dataSyncFailedMessage": "Algo salió mal al sincronizar. Sus palabras están seguras en este teléfono.",
+  "accountConflictTitle": "¿Cambiar de cuenta?",
+  "accountConflictMessage": "En este teléfono había iniciado sesión como {previous}. Los cambios que aún no se subieron pertenecen a esa cuenta. Se perderán si cambia a {next}.",
+  "accountConflictKeepButton": "Usar {previous} en su lugar",
+  "accountConflictSwitchButton": "Borrar los datos de {previous} y usar {next}",
+  "accountConflictUnknownAccount": "cuenta desconocida",
+  "settingsSignInAgainButton": "Iniciar sesión de nuevo"
 }

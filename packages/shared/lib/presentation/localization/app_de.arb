@@ -154,5 +154,11 @@
   "dataClockWrongMessage": "Zum Synchronisieren braucht es die richtige Zeit. Aktiviere Datum und Uhrzeit automatisch und komm dann zurück.",
   "dataOpenTimeSettingsButton": "Zeiteinstellungen öffnen",
   "dataSyncFailedTitle": "Synchronisierung fehlgeschlagen",
-  "dataSyncFailedMessage": "Beim Synchronisieren ist etwas schiefgelaufen. Deine Wörter sind auf diesem Handy sicher."
+  "dataSyncFailedMessage": "Beim Synchronisieren ist etwas schiefgelaufen. Deine Wörter sind auf diesem Handy sicher.",
+  "accountConflictTitle": "Konto wechseln?",
+  "accountConflictMessage": "Auf diesem Handy warst du als {previous} angemeldet. Noch nicht hochgeladene Änderungen gehören zu diesem Konto. Sie gehen verloren, wenn du zu {next} wechselst.",
+  "accountConflictKeepButton": "Stattdessen {previous} verwenden",
+  "accountConflictSwitchButton": "Daten von {previous} löschen und {next} verwenden",
+  "accountConflictUnknownAccount": "unbekanntes Konto",
+  "settingsSignInAgainButton": "Erneut anmelden"
 }

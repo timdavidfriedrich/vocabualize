@@ -17,6 +17,7 @@ class WelcomeStateMapper extends ClassMapperBase<WelcomeState> {
       MapperContainer.globals.use(_instance = WelcomeStateMapper._());
       WelcomeIdleMapper.ensureInitialized();
       WelcomeBusyMapper.ensureInitialized();
+      WelcomeAccountConflictMapper.ensureInitialized();
       WelcomeFailureMapper.ensureInitialized();
     }
     return _instance!;
@@ -266,6 +267,140 @@ class _WelcomeBusyCopyWithImpl<$R, $Out>
   WelcomeBusyCopyWith<$R2, WelcomeBusy, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _WelcomeBusyCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class WelcomeAccountConflictMapper
+    extends ClassMapperBase<WelcomeAccountConflict> {
+  WelcomeAccountConflictMapper._();
+
+  static WelcomeAccountConflictMapper? _instance;
+  static WelcomeAccountConflictMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = WelcomeAccountConflictMapper._());
+      WelcomeStateMapper.ensureInitialized();
+      AccountConflictMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'WelcomeAccountConflict';
+
+  static AccountConflict _$conflict(WelcomeAccountConflict v) => v.conflict;
+  static const Field<WelcomeAccountConflict, AccountConflict> _f$conflict =
+      Field('conflict', _$conflict);
+
+  @override
+  final MappableFields<WelcomeAccountConflict> fields = const {
+    #conflict: _f$conflict,
+  };
+
+  static WelcomeAccountConflict _instantiate(DecodingData data) {
+    return WelcomeAccountConflict(conflict: data.dec(_f$conflict));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static WelcomeAccountConflict fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WelcomeAccountConflict>(map);
+  }
+
+  static WelcomeAccountConflict fromJson(String json) {
+    return ensureInitialized().decodeJson<WelcomeAccountConflict>(json);
+  }
+}
+
+mixin WelcomeAccountConflictMappable {
+  String toJson() {
+    return WelcomeAccountConflictMapper.ensureInitialized()
+        .encodeJson<WelcomeAccountConflict>(this as WelcomeAccountConflict);
+  }
+
+  Map<String, dynamic> toMap() {
+    return WelcomeAccountConflictMapper.ensureInitialized()
+        .encodeMap<WelcomeAccountConflict>(this as WelcomeAccountConflict);
+  }
+
+  WelcomeAccountConflictCopyWith<
+    WelcomeAccountConflict,
+    WelcomeAccountConflict,
+    WelcomeAccountConflict
+  >
+  get copyWith =>
+      _WelcomeAccountConflictCopyWithImpl<
+        WelcomeAccountConflict,
+        WelcomeAccountConflict
+      >(this as WelcomeAccountConflict, $identity, $identity);
+  @override
+  String toString() {
+    return WelcomeAccountConflictMapper.ensureInitialized().stringifyValue(
+      this as WelcomeAccountConflict,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return WelcomeAccountConflictMapper.ensureInitialized().equalsValue(
+      this as WelcomeAccountConflict,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return WelcomeAccountConflictMapper.ensureInitialized().hashValue(
+      this as WelcomeAccountConflict,
+    );
+  }
+}
+
+extension WelcomeAccountConflictValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, WelcomeAccountConflict, $Out> {
+  WelcomeAccountConflictCopyWith<$R, WelcomeAccountConflict, $Out>
+  get $asWelcomeAccountConflict => $base.as(
+    (v, t, t2) => _WelcomeAccountConflictCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class WelcomeAccountConflictCopyWith<
+  $R,
+  $In extends WelcomeAccountConflict,
+  $Out
+>
+    implements WelcomeStateCopyWith<$R, $In, $Out> {
+  AccountConflictCopyWith<$R, AccountConflict, AccountConflict> get conflict;
+  @override
+  $R call({AccountConflict? conflict});
+  WelcomeAccountConflictCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _WelcomeAccountConflictCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, WelcomeAccountConflict, $Out>
+    implements
+        WelcomeAccountConflictCopyWith<$R, WelcomeAccountConflict, $Out> {
+  _WelcomeAccountConflictCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<WelcomeAccountConflict> $mapper =
+      WelcomeAccountConflictMapper.ensureInitialized();
+  @override
+  AccountConflictCopyWith<$R, AccountConflict, AccountConflict> get conflict =>
+      $value.conflict.copyWith.$chain((v) => call(conflict: v));
+  @override
+  $R call({AccountConflict? conflict}) =>
+      $apply(FieldCopyWithData({if (conflict != null) #conflict: conflict}));
+  @override
+  WelcomeAccountConflict $make(CopyWithData data) => WelcomeAccountConflict(
+    conflict: data.get(#conflict, or: $value.conflict),
+  );
+
+  @override
+  WelcomeAccountConflictCopyWith<$R2, WelcomeAccountConflict, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _WelcomeAccountConflictCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class WelcomeFailureMapper extends ClassMapperBase<WelcomeFailure> {

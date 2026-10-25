@@ -154,5 +154,11 @@
   "dataClockWrongMessage": "La synchronisation a besoin de l'heure exacte. Activez la date et l'heure automatiques, puis revenez.",
   "dataOpenTimeSettingsButton": "Ouvrir les réglages de l'heure",
   "dataSyncFailedTitle": "La synchronisation a échoué",
-  "dataSyncFailedMessage": "Un problème est survenu pendant la synchronisation. Vos mots sont en sécurité sur ce téléphone."
+  "dataSyncFailedMessage": "Un problème est survenu pendant la synchronisation. Vos mots sont en sécurité sur ce téléphone.",
+  "accountConflictTitle": "Changer de compte ?",
+  "accountConflictMessage": "Sur ce téléphone, vous étiez connecté en tant que {previous}. Les modifications pas encore envoyées appartiennent à ce compte. Elles seront perdues si vous passez à {next}.",
+  "accountConflictKeepButton": "Utiliser {previous} à la place",
+  "accountConflictSwitchButton": "Supprimer les données de {previous} et utiliser {next}",
+  "accountConflictUnknownAccount": "compte inconnu",
+  "settingsSignInAgainButton": "Se reconnecter"
 }

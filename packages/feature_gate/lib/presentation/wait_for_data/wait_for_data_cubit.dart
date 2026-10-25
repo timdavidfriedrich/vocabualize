@@ -2,6 +2,7 @@ import 'package:core/error/app_result.dart';
 import 'package:feature_gate/presentation/wait_for_data/wait_for_data_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/app_info_repository.dart';
 import 'package:shared/domain/repositories/sync_repository.dart';
@@ -9,7 +10,7 @@ import 'package:shared/domain/repositories/sync_repository.dart';
 @injectable
 class WaitForDataCubit extends Cubit<WaitForDataState> {
   WaitForDataCubit(this._syncRepository, this._accountRepository, this._appInfoRepository)
-    : super(const WaitForDataState(isBusy: false, error: null));
+    : super(const WaitForDataState(isBusy: false, accountConflict: null, error: null));
 
   final SyncRepository _syncRepository;
   final AccountRepository _accountRepository;
@@ -23,8 +24,23 @@ class WaitForDataCubit extends Cubit<WaitForDataState> {
 
   Future<void> signIn() async {
     if (state.isBusy) return;
-    emit(state.copyWith(isBusy: true, error: null));
+    emit(state.copyWith(isBusy: true, accountConflict: null, error: null));
     final result = await _accountRepository.signInWithGoogle();
+    emit(switch (result) {
+      Success(data: SignedIn()) => state.copyWith(isBusy: false),
+      Success(data: final AccountConflict conflict) => state.copyWith(
+        isBusy: false,
+        accountConflict: conflict,
+      ),
+      Failure(:final error) => state.copyWith(isBusy: false, error: error),
+    });
+  }
+
+  Future<void> resolveAccountConflict({required bool keepsPreviousAccount}) async {
+    emit(state.copyWith(isBusy: true, accountConflict: null, error: null));
+    final result = await _accountRepository.resolveAccountConflict(
+      keepsPreviousAccount: keepsPreviousAccount,
+    );
     emit(switch (result) {
       Success() => state.copyWith(isBusy: false),
       Failure(:final error) => state.copyWith(isBusy: false, error: error),

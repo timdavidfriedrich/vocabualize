@@ -557,4 +557,28 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get dataSyncFailedMessage =>
       'Un problème est survenu pendant la synchronisation. Vos mots sont en sécurité sur ce téléphone.';
+
+  @override
+  String get accountConflictTitle => 'Changer de compte ?';
+
+  @override
+  String accountConflictMessage(String previous, String next) {
+    return 'Sur ce téléphone, vous étiez connecté en tant que $previous. Les modifications pas encore envoyées appartiennent à ce compte. Elles seront perdues si vous passez à $next.';
+  }
+
+  @override
+  String accountConflictKeepButton(String previous) {
+    return 'Utiliser $previous à la place';
+  }
+
+  @override
+  String accountConflictSwitchButton(String previous, String next) {
+    return 'Supprimer les données de $previous et utiliser $next';
+  }
+
+  @override
+  String get accountConflictUnknownAccount => 'compte inconnu';
+
+  @override
+  String get settingsSignInAgainButton => 'Se reconnecter';
 }

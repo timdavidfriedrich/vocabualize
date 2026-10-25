@@ -12,6 +12,10 @@ class const SettingsSignOutRequested({
 
 class const SettingsSignOutDismissed() extends SettingsEvent;
 
+class const SettingsAccountConflictResolved({
+  required final bool keepsPreviousAccount,
+}) extends SettingsEvent;
+
 class const SettingsBackupExportRequested() extends SettingsEvent;
 
 class const SettingsBackupImportRequested() extends SettingsEvent;
