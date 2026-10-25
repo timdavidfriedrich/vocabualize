@@ -156,6 +156,15 @@ class Endpoints extends _is.EndpointDispatch {
                 Map<String, dynamic> params,
               ) async => (endpoints['config'] as _i74a5xur.ConfigEndpoint).fetch(session),
         ),
+        'serverTime': _is.MethodConnector(
+          name: 'serverTime',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['config'] as _i74a5xur.ConfigEndpoint).serverTime(session),
+        ),
       },
     );
     connectors['image'] = _is.EndpointConnector(

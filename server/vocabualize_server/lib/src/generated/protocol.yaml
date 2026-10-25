@@ -6,6 +6,7 @@ jwtRefresh:
   - refreshAccessToken:
 config:
   - fetch:
+  - serverTime:
 image:
   - createUpload:
   - verifyUpload:

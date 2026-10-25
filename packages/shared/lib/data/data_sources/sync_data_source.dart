@@ -11,6 +11,7 @@ import 'package:shared/data/models/remote_sync_state.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
 const _firstGatewayErrorCode = 502;
+const _maxClockDrift = Duration(minutes: 1);
 
 abstract class SyncDataSource {
   Stream<RemoteSyncState> watchState();
@@ -46,6 +47,7 @@ class SyncDataSourceImpl(
   AppLifecycleListener? _lifecycleListener;
   Future<void> _initialSyncs = Future<void>.value();
   bool _isInitialSyncRunning = false;
+  bool _mayReconnectImmediately = true;
   int _generation = 0;
 
   @override
@@ -71,6 +73,7 @@ class SyncDataSourceImpl(
     unawaited(_cancelSubscription());
     _session = session;
     _userId = userId;
+    _mayReconnectImmediately = true;
     _connectivityMonitor.removeListener(_onConnectivityChanged);
     _connectivityMonitor.addListener(_onConnectivityChanged);
     _lifecycleListener ??= AppLifecycleListener(onResume: _resume);
@@ -164,6 +167,7 @@ class SyncDataSourceImpl(
   void _resume() {
     final session = _session;
     if (session == null) return;
+    _mayReconnectImmediately = true;
     switch (_readiness) {
       case RemoteDataReadiness.ready when _subscription == null:
         _connect(session);
@@ -177,13 +181,30 @@ class SyncDataSourceImpl(
   void _connect(OfflineSyncDatabaseSession session) {
     _setState(RemoteSyncState.connecting);
     var hasBeenLive = false;
+    var hasUnconfirmedChanges = false;
     final syncClient = OfflineSyncClient(
       ({required changes, required once}) => _client.modules.offline_sync.offlineSync
-          .sync(changes: changes, once: once)
+          .sync(
+            changes: changes.map((event) {
+              if (event is OfflineSyncMergeChunk) hasUnconfirmedChanges = true;
+              return event;
+            }),
+            once: once,
+          )
           .map((event) {
-            if (event is OfflineSyncEndOfBatch && identical(_session, session)) {
-              hasBeenLive = true;
-              _setState(RemoteSyncState.live);
+            if (!identical(_session, session)) return event;
+            switch (event) {
+              case OfflineSyncMergeChunk():
+                _mayReconnectImmediately = true;
+              case OfflineSyncEndOfBatch():
+                hasBeenLive = true;
+                if (hasUnconfirmedChanges) {
+                  hasUnconfirmedChanges = false;
+                  _mayReconnectImmediately = true;
+                }
+                _setState(RemoteSyncState.live);
+              default:
+                break;
             }
             return event;
           }),
@@ -196,12 +217,18 @@ class SyncDataSourceImpl(
       _setState(state);
       final isConnectionLoss =
           state == RemoteSyncState.offline || state == RemoteSyncState.serverUnreachable;
-      if (hasBeenLive && isConnectionLoss && identical(_session, session)) _connect(session);
+      if (hasBeenLive &&
+          isConnectionLoss &&
+          _mayReconnectImmediately &&
+          identical(_session, session)) {
+        _mayReconnectImmediately = false;
+        _connect(session);
+      }
     }
 
     unawaited(
       subscription.done.then(
-        (_) async => finish(await _connectionLossState()),
+        (_) async => finish(await _untypedFailureState(isConnectionError: true)),
         onError: (Object error) async => finish(await _failureState(error)),
       ),
     );
@@ -230,11 +257,25 @@ class SyncDataSourceImpl(
     OfflineSyncStreamClosedException() ||
     SocketException() ||
     HttpException() ||
-    TimeoutException() => await _connectionLossState(),
+    TimeoutException() => await _untypedFailureState(isConnectionError: true),
     ServerpodClientHttpException(:final statusCode) when statusCode >= _firstGatewayErrorCode =>
-      await _connectionLossState(),
-    _ => RemoteSyncState.failed,
+      await _untypedFailureState(isConnectionError: true),
+    _ => await _untypedFailureState(isConnectionError: false),
   };
+
+  Future<RemoteSyncState> _untypedFailureState({required bool isConnectionError}) async {
+    if (await _isClockOff()) return RemoteSyncState.clockDrift;
+    return isConnectionError ? _connectionLossState() : RemoteSyncState.failed;
+  }
+
+  Future<bool> _isClockOff() async {
+    try {
+      final serverTime = await _client.config.serverTime();
+      return DateTime.now().toUtc().difference(serverTime.toUtc()).abs() > _maxClockDrift;
+    } on Object {
+      return false;
+    }
+  }
 
   Future<RemoteSyncState> _connectionLossState() async {
     final connections = await Connectivity().checkConnectivity();

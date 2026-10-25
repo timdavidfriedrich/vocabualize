@@ -10,4 +10,6 @@ class ConfigEndpoint extends Endpoint {
   bool get requireLogin => false;
 
   Future<RemoteAppConfig> fetch(Session session) async => _config.read().client;
+
+  Future<DateTime> serverTime(Session session) async => DateTime.now().toUtc();
 }

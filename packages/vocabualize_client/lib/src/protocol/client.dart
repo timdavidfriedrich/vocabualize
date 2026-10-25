@@ -135,6 +135,12 @@ class EndpointConfig extends _isc.EndpointRef {
         'fetch',
         {},
       );
+
+  _ida.Future<DateTime> serverTime() => caller.callServerEndpoint<DateTime>(
+    'config',
+    'serverTime',
+    {},
+  );
 }
 
 /// {@category Endpoint}

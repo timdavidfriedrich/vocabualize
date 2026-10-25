@@ -34,6 +34,8 @@ The spike's findings are in `docs/spike_serverpod_sync.md` and are binding for t
 - Updates to synced rows are always column-scoped (`updateRow(..., columns:)`).
 - The synced schema is frozen before release. A synced-table change breaks sync for older clients until they update.
 - Lists read pages through `watch(limit:)` and numbers come from `count()`. Never load every row into the UI.
+- The sync module rejects clocks more than 1 minute apart (`_maxDrift` in its `hlc.dart`). A phone that is ahead fails on the server, which only closes the stream, so the app compares its clock with `config.serverTime()` whenever a sync fails without a typed reason.
+- An immediate reconnect needs a fresh event (start, network back, app resumed) or a connection that has carried data. A connection that dies right after its handshake never reconnects in a loop.
 
 ## Loading and empty states
 An empty state may only ever mean "there is no data".
