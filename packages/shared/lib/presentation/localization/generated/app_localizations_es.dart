@@ -515,4 +515,40 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get dataSignInButton => 'Iniciar sesión';
+
+  @override
+  String get syncStatusServerUnreachable =>
+      'No se puede acceder al servidor. Los cambios se sincronizarán cuando vuelva.';
+
+  @override
+  String get syncStatusClockWrong =>
+      'El reloj de su teléfono no es correcto. Active la hora automática para seguir sincronizando.';
+
+  @override
+  String get syncStatusFailed =>
+      'La sincronización falló. Sus palabras están seguras en este teléfono.';
+
+  @override
+  String get dataServerUnreachableTitle => 'Servidor no disponible';
+
+  @override
+  String get dataServerUnreachableMessage =>
+      'No se puede acceder al servidor de Vocabualize en este momento. Sus palabras están seguras en este teléfono.';
+
+  @override
+  String get dataClockWrongTitle => 'El reloj de su teléfono no es correcto';
+
+  @override
+  String get dataClockWrongMessage =>
+      'La sincronización necesita la hora correcta. Active la fecha y hora automáticas y luego vuelva.';
+
+  @override
+  String get dataOpenTimeSettingsButton => 'Abrir ajustes de hora';
+
+  @override
+  String get dataSyncFailedTitle => 'La sincronización falló';
+
+  @override
+  String get dataSyncFailedMessage =>
+      'Algo salió mal al sincronizar. Sus palabras están seguras en este teléfono.';
 }

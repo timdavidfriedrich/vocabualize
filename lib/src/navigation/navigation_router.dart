@@ -96,11 +96,20 @@ class NavigationRouter(
 
   WaitForData _waitForData(DataUnavailableReason reason) => switch (reason) {
     DataUnavailableReason.offline => const WaitForData(reason: DataUnavailableReason.offline),
+    DataUnavailableReason.serverUnreachable => const WaitForData(
+      reason: DataUnavailableReason.serverUnreachable,
+    ),
     DataUnavailableReason.signInRequired => const WaitForData(
       reason: DataUnavailableReason.signInRequired,
     ),
     DataUnavailableReason.updateRequired => const WaitForData(
       reason: DataUnavailableReason.updateRequired,
+    ),
+    DataUnavailableReason.clockWrong => const WaitForData(
+      reason: DataUnavailableReason.clockWrong,
+    ),
+    DataUnavailableReason.syncFailed => const WaitForData(
+      reason: DataUnavailableReason.syncFailed,
     ),
   };
 }

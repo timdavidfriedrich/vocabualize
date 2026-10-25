@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
@@ -7,6 +9,8 @@ import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/models/remote_data_readiness.dart';
 import 'package:shared/data/models/remote_sync_state.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
+
+const _firstGatewayErrorCode = 502;
 
 abstract class SyncDataSource {
   Stream<RemoteSyncState> watchState();
@@ -97,7 +101,7 @@ class SyncDataSourceImpl(
     final session = _session;
     final userId = _userId;
     if (session == null || userId == null || _isInitialSyncRunning) return;
-    if (_readiness != RemoteDataReadiness.offline) return;
+    if (!_isRetryable(_readiness)) return;
     _runInitialSync(session, userId, _generation);
   }
 
@@ -129,13 +133,19 @@ class SyncDataSourceImpl(
       _setReadiness(RemoteDataReadiness.ready);
       _connect(session);
     } on Object catch (error) {
+      final state = await _failureState(error);
       if (generation != _generation) return;
-      final state = _failureState(error);
       _setState(state);
       _setReadiness(switch (state) {
-        RemoteSyncState.updateRequired => RemoteDataReadiness.updateRequired,
+        RemoteSyncState.offline => RemoteDataReadiness.offline,
+        RemoteSyncState.serverUnreachable => RemoteDataReadiness.serverUnreachable,
         RemoteSyncState.unauthorized => RemoteDataReadiness.unauthorized,
-        _ => RemoteDataReadiness.offline,
+        RemoteSyncState.updateRequired => RemoteDataReadiness.updateRequired,
+        RemoteSyncState.clockDrift => RemoteDataReadiness.clockDrift,
+        RemoteSyncState.failed ||
+        RemoteSyncState.inactive ||
+        RemoteSyncState.connecting ||
+        RemoteSyncState.live => RemoteDataReadiness.failed,
       });
     } finally {
       if (generation == _generation) _isInitialSyncRunning = false;
@@ -147,7 +157,7 @@ class SyncDataSourceImpl(
       _resume();
     } else if (_session != null && _readiness == RemoteDataReadiness.ready) {
       unawaited(_cancelSubscription());
-      _setState(RemoteSyncState.unreachable);
+      _setState(RemoteSyncState.offline);
     }
   }
 
@@ -155,14 +165,11 @@ class SyncDataSourceImpl(
     final session = _session;
     if (session == null) return;
     switch (_readiness) {
-      case RemoteDataReadiness.offline:
-        retryInitialSync();
       case RemoteDataReadiness.ready when _subscription == null:
         _connect(session);
-      case RemoteDataReadiness.ready ||
-          RemoteDataReadiness.downloading ||
-          RemoteDataReadiness.unauthorized ||
-          RemoteDataReadiness.updateRequired:
+      case final readiness when _isRetryable(readiness):
+        retryInitialSync();
+      case _:
         break;
     }
   }
@@ -187,24 +194,53 @@ class SyncDataSourceImpl(
       if (!identical(_subscription, subscription)) return;
       _subscription = null;
       _setState(state);
-      if (hasBeenLive && state == RemoteSyncState.unreachable && identical(_session, session)) {
-        _connect(session);
-      }
+      final isConnectionLoss =
+          state == RemoteSyncState.offline || state == RemoteSyncState.serverUnreachable;
+      if (hasBeenLive && isConnectionLoss && identical(_session, session)) _connect(session);
     }
 
     unawaited(
       subscription.done.then(
-        (_) => finish(RemoteSyncState.unreachable),
-        onError: (Object error) => finish(_failureState(error)),
+        (_) async => finish(await _connectionLossState()),
+        onError: (Object error) async => finish(await _failureState(error)),
       ),
     );
   }
 
-  RemoteSyncState _failureState(Object error) => switch (error) {
+  bool _isRetryable(RemoteDataReadiness readiness) => switch (readiness) {
+    RemoteDataReadiness.offline ||
+    RemoteDataReadiness.serverUnreachable ||
+    RemoteDataReadiness.clockDrift ||
+    RemoteDataReadiness.failed => true,
+    RemoteDataReadiness.ready ||
+    RemoteDataReadiness.downloading ||
+    RemoteDataReadiness.unauthorized ||
+    RemoteDataReadiness.updateRequired => false,
+  };
+
+  Future<RemoteSyncState> _failureState(Object error) async => switch (error) {
     OfflineSyncTablesHashMismatchException() => RemoteSyncState.updateRequired,
     ServerpodClientUnauthorized() => RemoteSyncState.unauthorized,
-    _ => RemoteSyncState.unreachable,
+    OpenMethodStreamException(responseType: OpenMethodStreamResponseType.authenticationFailed) =>
+      RemoteSyncState.unauthorized,
+    ClockDriftException() => RemoteSyncState.clockDrift,
+    OpenMethodStreamException() => RemoteSyncState.failed,
+    MethodStreamException() ||
+    ServerpodClientNetworkException() ||
+    OfflineSyncStreamClosedException() ||
+    SocketException() ||
+    HttpException() ||
+    TimeoutException() => await _connectionLossState(),
+    ServerpodClientHttpException(:final statusCode) when statusCode >= _firstGatewayErrorCode =>
+      await _connectionLossState(),
+    _ => RemoteSyncState.failed,
   };
+
+  Future<RemoteSyncState> _connectionLossState() async {
+    final connections = await Connectivity().checkConnectivity();
+    final hasNetwork = connections.any((connection) => connection != ConnectivityResult.none);
+    return hasNetwork ? RemoteSyncState.serverUnreachable : RemoteSyncState.offline;
+  }
 
   Future<void> _cancelSubscription() async {
     final subscription = _subscription;

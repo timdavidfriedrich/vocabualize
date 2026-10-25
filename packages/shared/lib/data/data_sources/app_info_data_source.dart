@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,6 +15,8 @@ abstract class AppInfoDataSource {
   Future<bool> openStoreListing();
 
   String deviceLanguageCode();
+
+  Future<void> openDateSettings();
 }
 
 @Injectable(as: AppInfoDataSource)
@@ -32,4 +35,7 @@ class const AppInfoDataSourceImpl() implements AppInfoDataSource {
 
   @override
   String deviceLanguageCode() => PlatformDispatcher.instance.locale.languageCode;
+
+  @override
+  Future<void> openDateSettings() => AppSettings.openAppSettings(type: AppSettingsType.date);
 }

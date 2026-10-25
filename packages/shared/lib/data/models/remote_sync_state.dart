@@ -1,1 +1,11 @@
-enum RemoteSyncState { inactive, connecting, live, unreachable, updateRequired, unauthorized }
+enum RemoteSyncState {
+  inactive,
+  connecting,
+  live,
+  offline,
+  serverUnreachable,
+  unauthorized,
+  updateRequired,
+  clockDrift,
+  failed,
+}

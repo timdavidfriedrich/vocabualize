@@ -971,6 +971,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in'**
   String get dataSignInButton;
+
+  /// No description provided for @syncStatusServerUnreachable.
+  ///
+  /// In en, this message translates to:
+  /// **'The server can\'t be reached. Changes sync as soon as it\'s back.'**
+  String get syncStatusServerUnreachable;
+
+  /// No description provided for @syncStatusClockWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone\'s clock is off. Turn on automatic time to keep syncing.'**
+  String get syncStatusClockWrong;
+
+  /// No description provided for @syncStatusFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing failed. Your words are safe on this phone.'**
+  String get syncStatusFailed;
+
+  /// No description provided for @dataServerUnreachableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Server not reachable'**
+  String get dataServerUnreachableTitle;
+
+  /// No description provided for @dataServerUnreachableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Vocabualize\'s server can\'t be reached right now. Your words are safe on this phone.'**
+  String get dataServerUnreachableMessage;
+
+  /// No description provided for @dataClockWrongTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone\'s clock is off'**
+  String get dataClockWrongTitle;
+
+  /// No description provided for @dataClockWrongMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing needs the correct time. Turn on automatic date and time, then come back.'**
+  String get dataClockWrongMessage;
+
+  /// No description provided for @dataOpenTimeSettingsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open time settings'**
+  String get dataOpenTimeSettingsButton;
+
+  /// No description provided for @dataSyncFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing failed'**
+  String get dataSyncFailedTitle;
+
+  /// No description provided for @dataSyncFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while syncing. Your words are safe on this phone.'**
+  String get dataSyncFailedMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

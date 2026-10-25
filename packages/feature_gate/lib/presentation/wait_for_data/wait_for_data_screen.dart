@@ -1,6 +1,7 @@
 import 'package:core/theme/spacing.dart';
 import 'package:feature_gate/presentation/wait_for_data/wait_for_data_cubit.dart';
 import 'package:feature_gate/presentation/wait_for_data/wait_for_data_state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/data_readiness.dart';
@@ -32,22 +33,58 @@ class const WaitForDataScreen({
                   pose: MascotPose.offline,
                   title: context.s.dataOfflineTitle,
                   message: context.s.dataOfflineMessage,
-                  actionLabel: context.s.dataRetryButton,
-                  onAction: state.isBusy ? null : cubit.retry,
+                  action: (
+                    label: context.s.dataRetryButton,
+                    onPressed: state.isBusy ? null : cubit.retry,
+                  ),
+                ),
+                DataUnavailableReason.serverUnreachable => _Content(
+                  pose: MascotPose.offline,
+                  title: context.s.dataServerUnreachableTitle,
+                  message: context.s.dataServerUnreachableMessage,
+                  action: (
+                    label: context.s.dataRetryButton,
+                    onPressed: state.isBusy ? null : cubit.retry,
+                  ),
                 ),
                 DataUnavailableReason.signInRequired => _Content(
                   pose: MascotPose.idle,
                   title: context.s.dataSignInRequiredTitle,
                   message: context.s.dataSignInRequiredMessage,
-                  actionLabel: context.s.dataSignInButton,
-                  onAction: state.isBusy ? null : cubit.signIn,
+                  action: (
+                    label: context.s.dataSignInButton,
+                    onPressed: state.isBusy ? null : cubit.signIn,
+                  ),
                 ),
                 DataUnavailableReason.updateRequired => _Content(
                   pose: MascotPose.idle,
                   title: context.s.gateUpdateTitle,
                   message: context.s.gateUpdateMessage,
-                  actionLabel: context.s.gateUpdateButton,
-                  onAction: state.isBusy ? null : cubit.openStore,
+                  action: (
+                    label: context.s.gateUpdateButton,
+                    onPressed: state.isBusy ? null : cubit.openStore,
+                  ),
+                ),
+                DataUnavailableReason.clockWrong => _Content(
+                  pose: MascotPose.idle,
+                  title: context.s.dataClockWrongTitle,
+                  message: context.s.dataClockWrongMessage,
+                  action: switch (defaultTargetPlatform) {
+                    TargetPlatform.android => (
+                      label: context.s.dataOpenTimeSettingsButton,
+                      onPressed: state.isBusy ? null : cubit.openDateSettings,
+                    ),
+                    _ => null,
+                  },
+                ),
+                DataUnavailableReason.syncFailed => _Content(
+                  pose: MascotPose.idle,
+                  title: context.s.dataSyncFailedTitle,
+                  message: context.s.dataSyncFailedMessage,
+                  action: (
+                    label: context.s.dataRetryButton,
+                    onPressed: state.isBusy ? null : cubit.retry,
+                  ),
                 ),
               },
             ),
@@ -58,12 +95,13 @@ class const WaitForDataScreen({
   }
 }
 
+typedef _Action = ({String label, VoidCallback? onPressed});
+
 class const _Content({
   required final MascotPose _pose,
   required final String _title,
   required final String _message,
-  required final String _actionLabel,
-  required final VoidCallback? _onAction,
+  required final _Action? _action,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -83,8 +121,10 @@ class const _Content({
           style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: Spacing.xl),
-        FilledButton(onPressed: _onAction, child: Text(_actionLabel)),
+        if (_action case (:final label, :final onPressed)) ...[
+          const SizedBox(height: Spacing.xl),
+          FilledButton(onPressed: onPressed, child: Text(label)),
+        ],
       ],
     );
   }

@@ -31,6 +31,12 @@ class WaitForDataCubit extends Cubit<WaitForDataState> {
     });
   }
 
+  Future<void> openDateSettings() async {
+    if (await _appInfoRepository.openDateSettings() case Failure(:final error)) {
+      emit(state.copyWith(error: error));
+    }
+  }
+
   Future<void> openStore() async {
     if (await _appInfoRepository.openStoreListing() case Failure(:final error)) {
       emit(state.copyWith(error: error));

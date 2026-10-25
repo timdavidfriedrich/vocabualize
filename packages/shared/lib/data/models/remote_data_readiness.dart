@@ -1,1 +1,10 @@
-enum RemoteDataReadiness { ready, downloading, offline, unauthorized, updateRequired }
+enum RemoteDataReadiness {
+  ready,
+  downloading,
+  offline,
+  serverUnreachable,
+  unauthorized,
+  updateRequired,
+  clockDrift,
+  failed,
+}

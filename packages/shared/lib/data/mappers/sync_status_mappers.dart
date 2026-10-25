@@ -8,9 +8,12 @@ extension RemoteSyncStateMappers on RemoteSyncState {
     RemoteSyncState.inactive => SyncStatus.disabled,
     RemoteSyncState.connecting => SyncStatus.connecting,
     RemoteSyncState.live => SyncStatus.synced,
-    RemoteSyncState.unreachable => SyncStatus.offline,
-    RemoteSyncState.updateRequired => SyncStatus.updateRequired,
+    RemoteSyncState.offline => SyncStatus.offline,
+    RemoteSyncState.serverUnreachable => SyncStatus.serverUnreachable,
     RemoteSyncState.unauthorized => SyncStatus.signInRequired,
+    RemoteSyncState.updateRequired => SyncStatus.updateRequired,
+    RemoteSyncState.clockDrift => SyncStatus.clockWrong,
+    RemoteSyncState.failed => SyncStatus.failed,
   };
 }
 
@@ -19,11 +22,18 @@ extension RemoteDataReadinessMappers on RemoteDataReadiness {
     RemoteDataReadiness.ready => const DataReady(),
     RemoteDataReadiness.downloading => const DataDownloading(),
     RemoteDataReadiness.offline => const DataUnavailable(reason: DataUnavailableReason.offline),
+    RemoteDataReadiness.serverUnreachable => const DataUnavailable(
+      reason: DataUnavailableReason.serverUnreachable,
+    ),
     RemoteDataReadiness.unauthorized => const DataUnavailable(
       reason: DataUnavailableReason.signInRequired,
     ),
     RemoteDataReadiness.updateRequired => const DataUnavailable(
       reason: DataUnavailableReason.updateRequired,
     ),
+    RemoteDataReadiness.clockDrift => const DataUnavailable(
+      reason: DataUnavailableReason.clockWrong,
+    ),
+    RemoteDataReadiness.failed => const DataUnavailable(reason: DataUnavailableReason.syncFailed),
   };
 }

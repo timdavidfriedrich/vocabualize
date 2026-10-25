@@ -144,5 +144,15 @@
   "dataRetryButton": "Réessayer",
   "dataSignInRequiredTitle": "Reconnectez-vous",
   "dataSignInRequiredMessage": "Votre session a expiré. Connectez-vous pour charger vos mots.",
-  "dataSignInButton": "Se connecter"
+  "dataSignInButton": "Se connecter",
+  "syncStatusServerUnreachable": "Le serveur est injoignable. Les modifications seront synchronisées dès son retour.",
+  "syncStatusClockWrong": "L'horloge de votre téléphone est décalée. Activez l'heure automatique pour continuer la synchronisation.",
+  "syncStatusFailed": "La synchronisation a échoué. Vos mots sont en sécurité sur ce téléphone.",
+  "dataServerUnreachableTitle": "Serveur injoignable",
+  "dataServerUnreachableMessage": "Le serveur de Vocabualize est injoignable pour le moment. Vos mots sont en sécurité sur ce téléphone.",
+  "dataClockWrongTitle": "L'horloge de votre téléphone est décalée",
+  "dataClockWrongMessage": "La synchronisation a besoin de l'heure exacte. Activez la date et l'heure automatiques, puis revenez.",
+  "dataOpenTimeSettingsButton": "Ouvrir les réglages de l'heure",
+  "dataSyncFailedTitle": "La synchronisation a échoué",
+  "dataSyncFailedMessage": "Un problème est survenu pendant la synchronisation. Vos mots sont en sécurité sur ce téléphone."
 }

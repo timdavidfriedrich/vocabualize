@@ -144,5 +144,15 @@
   "dataRetryButton": "Reintentar",
   "dataSignInRequiredTitle": "Inicie sesión de nuevo",
   "dataSignInRequiredMessage": "Su sesión ha caducado. Inicie sesión para cargar sus palabras.",
-  "dataSignInButton": "Iniciar sesión"
+  "dataSignInButton": "Iniciar sesión",
+  "syncStatusServerUnreachable": "No se puede acceder al servidor. Los cambios se sincronizarán cuando vuelva.",
+  "syncStatusClockWrong": "El reloj de su teléfono no es correcto. Active la hora automática para seguir sincronizando.",
+  "syncStatusFailed": "La sincronización falló. Sus palabras están seguras en este teléfono.",
+  "dataServerUnreachableTitle": "Servidor no disponible",
+  "dataServerUnreachableMessage": "No se puede acceder al servidor de Vocabualize en este momento. Sus palabras están seguras en este teléfono.",
+  "dataClockWrongTitle": "El reloj de su teléfono no es correcto",
+  "dataClockWrongMessage": "La sincronización necesita la hora correcta. Active la fecha y hora automáticas y luego vuelva.",
+  "dataOpenTimeSettingsButton": "Abrir ajustes de hora",
+  "dataSyncFailedTitle": "La sincronización falló",
+  "dataSyncFailedMessage": "Algo salió mal al sincronizar. Sus palabras están seguras en este teléfono."
 }

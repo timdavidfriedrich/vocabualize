@@ -511,4 +511,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataSignInButton => 'Sign in';
+
+  @override
+  String get syncStatusServerUnreachable =>
+      'The server can\'t be reached. Changes sync as soon as it\'s back.';
+
+  @override
+  String get syncStatusClockWrong =>
+      'Your phone\'s clock is off. Turn on automatic time to keep syncing.';
+
+  @override
+  String get syncStatusFailed => 'Syncing failed. Your words are safe on this phone.';
+
+  @override
+  String get dataServerUnreachableTitle => 'Server not reachable';
+
+  @override
+  String get dataServerUnreachableMessage =>
+      'Vocabualize\'s server can\'t be reached right now. Your words are safe on this phone.';
+
+  @override
+  String get dataClockWrongTitle => 'Your phone\'s clock is off';
+
+  @override
+  String get dataClockWrongMessage =>
+      'Syncing needs the correct time. Turn on automatic date and time, then come back.';
+
+  @override
+  String get dataOpenTimeSettingsButton => 'Open time settings';
+
+  @override
+  String get dataSyncFailedTitle => 'Syncing failed';
+
+  @override
+  String get dataSyncFailedMessage =>
+      'Something went wrong while syncing. Your words are safe on this phone.';
 }

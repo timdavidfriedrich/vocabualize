@@ -2,7 +2,14 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 part 'data_readiness.mapper.dart';
 
-enum DataUnavailableReason { offline, signInRequired, updateRequired }
+enum DataUnavailableReason {
+  offline,
+  serverUnreachable,
+  signInRequired,
+  updateRequired,
+  clockWrong,
+  syncFailed,
+}
 
 @MappableClass()
 sealed class DataReadiness with DataReadinessMappable {

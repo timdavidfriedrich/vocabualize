@@ -224,5 +224,15 @@
   "dataRetryButton": "Try again",
   "dataSignInRequiredTitle": "Sign in again",
   "dataSignInRequiredMessage": "Your session has expired. Sign in to load your words.",
-  "dataSignInButton": "Sign in"
+  "dataSignInButton": "Sign in",
+  "syncStatusServerUnreachable": "The server can't be reached. Changes sync as soon as it's back.",
+  "syncStatusClockWrong": "Your phone's clock is off. Turn on automatic time to keep syncing.",
+  "syncStatusFailed": "Syncing failed. Your words are safe on this phone.",
+  "dataServerUnreachableTitle": "Server not reachable",
+  "dataServerUnreachableMessage": "Vocabualize's server can't be reached right now. Your words are safe on this phone.",
+  "dataClockWrongTitle": "Your phone's clock is off",
+  "dataClockWrongMessage": "Syncing needs the correct time. Turn on automatic date and time, then come back.",
+  "dataOpenTimeSettingsButton": "Open time settings",
+  "dataSyncFailedTitle": "Syncing failed",
+  "dataSyncFailedMessage": "Something went wrong while syncing. Your words are safe on this phone."
 }

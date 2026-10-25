@@ -144,5 +144,15 @@
   "dataRetryButton": "Спробувати ще раз",
   "dataSignInRequiredTitle": "Увійдіть знову",
   "dataSignInRequiredMessage": "Ваш сеанс завершився. Увійдіть, щоб завантажити свої слова.",
-  "dataSignInButton": "Увійти"
+  "dataSignInButton": "Увійти",
+  "syncStatusServerUnreachable": "Сервер недоступний. Зміни синхронізуються, щойно він знову працюватиме.",
+  "syncStatusClockWrong": "Годинник вашого телефона показує неправильний час. Увімкніть автоматичний час, щоб продовжити синхронізацію.",
+  "syncStatusFailed": "Не вдалося синхронізувати. Ваші слова збережено на цьому телефоні.",
+  "dataServerUnreachableTitle": "Сервер недоступний",
+  "dataServerUnreachableMessage": "Сервер Vocabualize зараз недоступний. Ваші слова збережено на цьому телефоні.",
+  "dataClockWrongTitle": "Неправильний час на телефоні",
+  "dataClockWrongMessage": "Для синхронізації потрібен правильний час. Увімкніть автоматичні дату й час і поверніться.",
+  "dataOpenTimeSettingsButton": "Відкрити налаштування часу",
+  "dataSyncFailedTitle": "Не вдалося синхронізувати",
+  "dataSyncFailedMessage": "Під час синхронізації сталася помилка. Ваші слова збережено на цьому телефоні."
 }

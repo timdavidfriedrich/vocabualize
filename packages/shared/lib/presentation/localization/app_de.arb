@@ -144,5 +144,15 @@
   "dataRetryButton": "Erneut versuchen",
   "dataSignInRequiredTitle": "Erneut anmelden",
   "dataSignInRequiredMessage": "Deine Sitzung ist abgelaufen. Melde dich an, um deine Wörter zu laden.",
-  "dataSignInButton": "Anmelden"
+  "dataSignInButton": "Anmelden",
+  "syncStatusServerUnreachable": "Der Server ist nicht erreichbar. Änderungen werden synchronisiert, sobald er wieder da ist.",
+  "syncStatusClockWrong": "Die Uhr deines Handys geht falsch. Aktiviere die automatische Zeit, um weiter zu synchronisieren.",
+  "syncStatusFailed": "Synchronisierung fehlgeschlagen. Deine Wörter sind auf diesem Handy sicher.",
+  "dataServerUnreachableTitle": "Server nicht erreichbar",
+  "dataServerUnreachableMessage": "Der Server von Vocabualize ist gerade nicht erreichbar. Deine Wörter sind auf diesem Handy sicher.",
+  "dataClockWrongTitle": "Die Uhr deines Handys geht falsch",
+  "dataClockWrongMessage": "Zum Synchronisieren braucht es die richtige Zeit. Aktiviere Datum und Uhrzeit automatisch und komm dann zurück.",
+  "dataOpenTimeSettingsButton": "Zeiteinstellungen öffnen",
+  "dataSyncFailedTitle": "Synchronisierung fehlgeschlagen",
+  "dataSyncFailedMessage": "Beim Synchronisieren ist etwas schiefgelaufen. Deine Wörter sind auf diesem Handy sicher."
 }

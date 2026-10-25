@@ -530,4 +530,40 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get dataSignInButton => 'Увійти';
+
+  @override
+  String get syncStatusServerUnreachable =>
+      'Сервер недоступний. Зміни синхронізуються, щойно він знову працюватиме.';
+
+  @override
+  String get syncStatusClockWrong =>
+      'Годинник вашого телефона показує неправильний час. Увімкніть автоматичний час, щоб продовжити синхронізацію.';
+
+  @override
+  String get syncStatusFailed =>
+      'Не вдалося синхронізувати. Ваші слова збережено на цьому телефоні.';
+
+  @override
+  String get dataServerUnreachableTitle => 'Сервер недоступний';
+
+  @override
+  String get dataServerUnreachableMessage =>
+      'Сервер Vocabualize зараз недоступний. Ваші слова збережено на цьому телефоні.';
+
+  @override
+  String get dataClockWrongTitle => 'Неправильний час на телефоні';
+
+  @override
+  String get dataClockWrongMessage =>
+      'Для синхронізації потрібен правильний час. Увімкніть автоматичні дату й час і поверніться.';
+
+  @override
+  String get dataOpenTimeSettingsButton => 'Відкрити налаштування часу';
+
+  @override
+  String get dataSyncFailedTitle => 'Не вдалося синхронізувати';
+
+  @override
+  String get dataSyncFailedMessage =>
+      'Під час синхронізації сталася помилка. Ваші слова збережено на цьому телефоні.';
 }

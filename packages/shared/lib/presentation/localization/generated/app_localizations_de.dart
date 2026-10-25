@@ -517,4 +517,40 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dataSignInButton => 'Anmelden';
+
+  @override
+  String get syncStatusServerUnreachable =>
+      'Der Server ist nicht erreichbar. Änderungen werden synchronisiert, sobald er wieder da ist.';
+
+  @override
+  String get syncStatusClockWrong =>
+      'Die Uhr deines Handys geht falsch. Aktiviere die automatische Zeit, um weiter zu synchronisieren.';
+
+  @override
+  String get syncStatusFailed =>
+      'Synchronisierung fehlgeschlagen. Deine Wörter sind auf diesem Handy sicher.';
+
+  @override
+  String get dataServerUnreachableTitle => 'Server nicht erreichbar';
+
+  @override
+  String get dataServerUnreachableMessage =>
+      'Der Server von Vocabualize ist gerade nicht erreichbar. Deine Wörter sind auf diesem Handy sicher.';
+
+  @override
+  String get dataClockWrongTitle => 'Die Uhr deines Handys geht falsch';
+
+  @override
+  String get dataClockWrongMessage =>
+      'Zum Synchronisieren braucht es die richtige Zeit. Aktiviere Datum und Uhrzeit automatisch und komm dann zurück.';
+
+  @override
+  String get dataOpenTimeSettingsButton => 'Zeiteinstellungen öffnen';
+
+  @override
+  String get dataSyncFailedTitle => 'Synchronisierung fehlgeschlagen';
+
+  @override
+  String get dataSyncFailedMessage =>
+      'Beim Synchronisieren ist etwas schiefgelaufen. Deine Wörter sind auf diesem Handy sicher.';
 }

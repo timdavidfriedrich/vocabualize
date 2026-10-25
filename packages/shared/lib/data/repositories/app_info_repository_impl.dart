@@ -27,4 +27,14 @@ class const AppInfoRepositoryImpl(
       return Failure(UnexpectedError(error.toString()));
     }
   }
+
+  @override
+  Future<AppResult<()>> openDateSettings() async {
+    try {
+      await _dataSource.openDateSettings();
+      return const Success(());
+    } on Object catch (error) {
+      return Failure(UnexpectedError(error.toString()));
+    }
+  }
 }

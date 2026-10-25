@@ -521,4 +521,40 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dataSignInButton => 'Se connecter';
+
+  @override
+  String get syncStatusServerUnreachable =>
+      'Le serveur est injoignable. Les modifications seront synchronisées dès son retour.';
+
+  @override
+  String get syncStatusClockWrong =>
+      'L\'horloge de votre téléphone est décalée. Activez l\'heure automatique pour continuer la synchronisation.';
+
+  @override
+  String get syncStatusFailed =>
+      'La synchronisation a échoué. Vos mots sont en sécurité sur ce téléphone.';
+
+  @override
+  String get dataServerUnreachableTitle => 'Serveur injoignable';
+
+  @override
+  String get dataServerUnreachableMessage =>
+      'Le serveur de Vocabualize est injoignable pour le moment. Vos mots sont en sécurité sur ce téléphone.';
+
+  @override
+  String get dataClockWrongTitle => 'L\'horloge de votre téléphone est décalée';
+
+  @override
+  String get dataClockWrongMessage =>
+      'La synchronisation a besoin de l\'heure exacte. Activez la date et l\'heure automatiques, puis revenez.';
+
+  @override
+  String get dataOpenTimeSettingsButton => 'Ouvrir les réglages de l\'heure';
+
+  @override
+  String get dataSyncFailedTitle => 'La synchronisation a échoué';
+
+  @override
+  String get dataSyncFailedMessage =>
+      'Un problème est survenu pendant la synchronisation. Vos mots sont en sécurité sur ce téléphone.';
 }
