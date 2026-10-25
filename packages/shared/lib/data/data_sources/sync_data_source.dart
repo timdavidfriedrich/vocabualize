@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
 import 'package:shared/data/data_sources/clock_data_source.dart';
-import 'package:shared/data/data_sources/database_session_data_source.dart';
+import 'package:shared/data/data_sources/space_storage_data_source.dart';
 import 'package:shared/data/models/remote_clock_state.dart';
 import 'package:shared/data/models/remote_data_readiness.dart';
 import 'package:shared/data/models/remote_sync_state.dart';
@@ -36,7 +36,7 @@ abstract class SyncDataSource {
 class SyncDataSourceImpl(
   final Client _client,
   final ConnectivityMonitor _connectivityMonitor,
-  final DatabaseSessionDataSource _sessions,
+  final SpaceStorageDataSource _storage,
   final ClockDataSource _clock,
 ) implements SyncDataSource {
   final _stateChanges = StreamController<RemoteSyncState>.broadcast();
@@ -133,7 +133,7 @@ class SyncDataSourceImpl(
     try {
       await _client.offlineSync.syncOnce(session);
       if (generation != _generation) return;
-      await _sessions.markInitialSyncCompleted(userId);
+      await _storage.markInitialSyncCompleted(userId);
       if (generation != _generation) return;
       _setReadiness(RemoteDataReadiness.ready);
       _connect(session);

@@ -34,6 +34,8 @@ import 'package:shared/data/data_sources/local_import_data_source.dart'
     as _i843;
 import 'package:shared/data/data_sources/setting_local_data_source.dart'
     as _i555;
+import 'package:shared/data/data_sources/space_storage_data_source.dart'
+    as _i753;
 import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
 import 'package:shared/data/data_sources/text_to_speech_data_source.dart'
     as _i820;
@@ -91,6 +93,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => _i49.AppConfigLocalDataSourceImpl());
     gh.lazySingleton<_i820.TextToSpeechDataSource>(
         () => _i820.TextToSpeechDataSourceImpl());
+    gh.factory<_i753.SpaceStorageDataSource>(
+        () => const _i753.SpaceStorageDataSourceImpl());
     gh.lazySingleton<_i1040.Client>(() => serverpodClientModule.client(
           gh<_i90.FlutterAuthSessionManager>(),
           gh<_i90.ConnectivityMonitor>(),
@@ -122,27 +126,42 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i223.AppConfigRemoteDataSource>(),
           gh<_i49.AppConfigLocalDataSource>(),
         ));
+    gh.factory<_i946.ClockRepository>(
+        () => _i314.ClockRepositoryImpl(gh<_i44.ClockDataSource>()));
+    gh.lazySingleton<_i1034.SyncDataSource>(() => _i1034.SyncDataSourceImpl(
+          gh<_i1040.Client>(),
+          gh<_i654.ConnectivityMonitor>(),
+          gh<_i753.SpaceStorageDataSource>(),
+          gh<_i44.ClockDataSource>(),
+        ));
     gh.lazySingleton<_i862.DatabaseSessionDataSource>(
         () => _i862.DatabaseSessionDataSourceImpl(
               gh<_i1040.Client>(),
               gh<_i44.ClockDataSource>(),
+              gh<_i753.SpaceStorageDataSource>(),
             ));
+    gh.factory<_i523.SyncRepository>(
+        () => _i368.SyncRepositoryImpl(gh<_i1034.SyncDataSource>()));
     gh.factory<_i397.VocabularyLocalDataSource>(() =>
         _i397.VocabularyLocalDataSourceImpl(
             gh<_i862.DatabaseSessionDataSource>()));
-    gh.factory<_i946.ClockRepository>(
-        () => _i314.ClockRepositoryImpl(gh<_i44.ClockDataSource>()));
+    gh.factory<_i765.SyncStatusCubit>(
+        () => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
     gh.factory<_i555.SettingLocalDataSource>(() =>
         _i555.SettingLocalDataSourceImpl(
             gh<_i862.DatabaseSessionDataSource>()));
-    gh.lazySingleton<_i532.ImageFileDataSource>(() =>
-        _i532.ImageFileDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
-    gh.lazySingleton<_i1034.SyncDataSource>(() => _i1034.SyncDataSourceImpl(
-          gh<_i1040.Client>(),
-          gh<_i654.ConnectivityMonitor>(),
-          gh<_i862.DatabaseSessionDataSource>(),
-          gh<_i44.ClockDataSource>(),
-        ));
+    gh.lazySingleton<_i532.ImageFileDataSource>(
+        () => _i532.ImageFileDataSourceImpl(
+              gh<_i862.DatabaseSessionDataSource>(),
+              gh<_i753.SpaceStorageDataSource>(),
+            ));
+    gh.lazySingleton<_i61.ImageSyncDataSource>(
+        () => _i61.ImageSyncDataSourceImpl(
+              gh<_i1034.SyncDataSource>(),
+              gh<_i862.DatabaseSessionDataSource>(),
+              gh<_i532.ImageFileDataSource>(),
+              gh<_i28.ImageTransferDataSource>(),
+            ));
     gh.factory<_i208.VocabularyRepository>(() => _i22.VocabularyRepositoryImpl(
           gh<_i397.VocabularyLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
@@ -155,10 +174,16 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         ));
     gh.factory<_i650.LanguagePairCubit>(
         () => _i650.LanguagePairCubit(gh<_i0.SettingsRepository>()));
-    gh.factory<_i523.SyncRepository>(
-        () => _i368.SyncRepositoryImpl(gh<_i1034.SyncDataSource>()));
-    gh.factory<_i765.SyncStatusCubit>(
-        () => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
+    gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
+          gh<_i535.AuthDataSource>(),
+          gh<_i862.DatabaseSessionDataSource>(),
+          gh<_i753.SpaceStorageDataSource>(),
+          gh<_i532.ImageFileDataSource>(),
+          gh<_i843.LocalImportDataSource>(),
+          gh<_i555.SettingLocalDataSource>(),
+          gh<_i1034.SyncDataSource>(),
+          gh<_i61.ImageSyncDataSource>(),
+        ));
     gh.factory<_i152.BackupRepository>(() => _i237.BackupRepositoryImpl(
           gh<_i862.DatabaseSessionDataSource>(),
           gh<_i843.LocalImportDataSource>(),
@@ -167,21 +192,6 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i100.BackupArchiveDataSource>(),
           gh<_i460.BackupFileDataSource>(),
           gh<_i555.SettingLocalDataSource>(),
-        ));
-    gh.lazySingleton<_i61.ImageSyncDataSource>(
-        () => _i61.ImageSyncDataSourceImpl(
-              gh<_i1034.SyncDataSource>(),
-              gh<_i862.DatabaseSessionDataSource>(),
-              gh<_i532.ImageFileDataSource>(),
-              gh<_i28.ImageTransferDataSource>(),
-            ));
-    gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
-          gh<_i535.AuthDataSource>(),
-          gh<_i862.DatabaseSessionDataSource>(),
-          gh<_i843.LocalImportDataSource>(),
-          gh<_i555.SettingLocalDataSource>(),
-          gh<_i1034.SyncDataSource>(),
-          gh<_i61.ImageSyncDataSource>(),
         ));
   }
 }

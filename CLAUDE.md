@@ -39,7 +39,7 @@ The spike's findings are in `docs/spike_serverpod_sync.md` and are binding for t
 
 ## Loading and empty states
 An empty state may only ever mean "there is no data".
-1. **Data readiness gates the app.** `SyncRepository.watchDataReadiness()` is `DataReady`, `DataDownloading` or `DataUnavailable(reason)`. A signed-in device whose `user_<id>.json` metadata lacks `hasCompletedInitialSync` runs `syncOnce` before the continuous sync. The same file stores the account's name and email (for the account-switch prompt) and marks sign-outs, so a failed deletion is finished on the next start. The router shows `Loading` while it runs and `WaitForData` (offline, sign in again, update) when it can't finish; connectivity and resume events retry it. Local-only use is always ready.
+1. **Data readiness gates the app.** `SyncRepository.watchDataReadiness()` is `DataReady`, `DataDownloading` or `DataUnavailable(reason)`. A signed-in device whose `account.json` lacks `hasCompletedInitialSync` runs `syncOnce` before the continuous sync. The same file stores the account's name and email (for the account-switch prompt). The router shows `Loading` while it runs and `WaitForData` (offline, sign in again, update) when it can't finish; connectivity and resume events retry it. Local-only use is always ready.
 2. **Screens read the local database only after the gate.** Their states are sealed `Loading | Loaded(data) | Failure`. Empty UI is built only from `Loaded` with empty data, never from a missing first result.
 3. **Every loading state has an exit.** Local queries always emit; `syncOnce` and endpoint calls end in a result or an error within Serverpod's client timeouts (20 s connect, 40 s stream idle). Never add timers to end a spinner.
 
@@ -49,6 +49,13 @@ An empty state may only ever mean "there is no data".
 - Start the local backend from `server/vocabualize_server` (see `server/AGENTS.md`).
 - On each Android device or emulator, run `adb -s <device> reverse tcp:8180 tcp:8180` once per connection, so the device's `localhost:8180` reaches this Mac.
 - Run with `fvm flutter run -d <device> --dart-define-from-file=dart_defines.json`.
+
+## Storage spaces and sign-out
+Each account, and the local-only use, is one storage space with one folder: `spaces/<userId>/` or `spaces/local/`, holding `database.db`, `images/` and `account.json` (or `owner_id` for local).
+1. **Disk: one folder per space.** Only `SpaceStorageDataSource` knows the layout. Removing a space renames its folder to `<name>.deleting` (atomic), then deletes it; every start deletes leftover `*.deleting` folders. Never add per-account files outside the space folder.
+2. **Memory: components reset themselves.** Anything that keeps per-space state in memory keys it to the open session (`DatabaseSessionDataSource.currentSession`/`watchSession`), like the image index in `ImageFileDataSource`. Sign-out never calls such components.
+3. **Order: one orchestrator.** `AccountRepositoryImpl` alone decides the order. Sign-out: stop sync → upload barrier (unless discarded) → leave the account in the UI → close the session → mark the space for deletion → clear the auth tokens → delete marked spaces. An account switch and the adoption of the local space reuse `_removeSpace`.
+4. **All photo files go through `ImageFileDataSource`**, including the move from the local space into an account space, so its index can't go stale.
 
 ## Commits
 

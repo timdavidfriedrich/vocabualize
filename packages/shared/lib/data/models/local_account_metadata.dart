@@ -8,5 +8,4 @@ class const LocalAccountMetadata({
   required final String? name,
   required final String? email,
   required final bool hasCompletedInitialSync,
-  required final bool isSignedOut,
 }) with LocalAccountMetadataMappable;

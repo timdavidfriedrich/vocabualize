@@ -15,7 +15,6 @@ extension RemoteAccountMappers on RemoteAccount {
       name: fullName ?? stored?.name,
       email: email ?? stored?.email,
       hasCompletedInitialSync: stored?.hasCompletedInitialSync ?? false,
-      isSignedOut: false,
     );
   }
 }

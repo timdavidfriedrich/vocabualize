@@ -41,11 +41,6 @@ class LocalAccountMetadataMapper extends ClassMapperBase<LocalAccountMetadata> {
       v.hasCompletedInitialSync;
   static const Field<LocalAccountMetadata, bool> _f$hasCompletedInitialSync =
       Field('hasCompletedInitialSync', _$hasCompletedInitialSync);
-  static bool _$isSignedOut(LocalAccountMetadata v) => v.isSignedOut;
-  static const Field<LocalAccountMetadata, bool> _f$isSignedOut = Field(
-    'isSignedOut',
-    _$isSignedOut,
-  );
 
   @override
   final MappableFields<LocalAccountMetadata> fields = const {
@@ -53,7 +48,6 @@ class LocalAccountMetadataMapper extends ClassMapperBase<LocalAccountMetadata> {
     #name: _f$name,
     #email: _f$email,
     #hasCompletedInitialSync: _f$hasCompletedInitialSync,
-    #isSignedOut: _f$isSignedOut,
   };
 
   static LocalAccountMetadata _instantiate(DecodingData data) {
@@ -62,7 +56,6 @@ class LocalAccountMetadataMapper extends ClassMapperBase<LocalAccountMetadata> {
       name: data.dec(_f$name),
       email: data.dec(_f$email),
       hasCompletedInitialSync: data.dec(_f$hasCompletedInitialSync),
-      isSignedOut: data.dec(_f$isSignedOut),
     );
   }
 
@@ -141,7 +134,6 @@ abstract class LocalAccountMetadataCopyWith<
     String? name,
     String? email,
     bool? hasCompletedInitialSync,
-    bool? isSignedOut,
   });
   LocalAccountMetadataCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -162,7 +154,6 @@ class _LocalAccountMetadataCopyWithImpl<$R, $Out>
     Object? name = $none,
     Object? email = $none,
     bool? hasCompletedInitialSync,
-    bool? isSignedOut,
   }) => $apply(
     FieldCopyWithData({
       if (accountId != null) #accountId: accountId,
@@ -170,7 +161,6 @@ class _LocalAccountMetadataCopyWithImpl<$R, $Out>
       if (email != $none) #email: email,
       if (hasCompletedInitialSync != null)
         #hasCompletedInitialSync: hasCompletedInitialSync,
-      if (isSignedOut != null) #isSignedOut: isSignedOut,
     }),
   );
   @override
@@ -182,7 +172,6 @@ class _LocalAccountMetadataCopyWithImpl<$R, $Out>
       #hasCompletedInitialSync,
       or: $value.hasCompletedInitialSync,
     ),
-    isSignedOut: data.get(#isSignedOut, or: $value.isSignedOut),
   );
 
   @override
