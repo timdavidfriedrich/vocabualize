@@ -189,6 +189,8 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     'dueBy',
     _$dueBy,
   );
+  static String? _$tagId(PracticeActive v) => v.tagId;
+  static const Field<PracticeActive, String> _f$tagId = Field('tagId', _$tagId);
   static int _$totalCount(PracticeActive v) => v.totalCount;
   static const Field<PracticeActive, int> _f$totalCount = Field(
     'totalCount',
@@ -238,6 +240,7 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
   @override
   final MappableFields<PracticeActive> fields = const {
     #dueBy: _f$dueBy,
+    #tagId: _f$tagId,
     #totalCount: _f$totalCount,
     #doneCount: _f$doneCount,
     #queue: _f$queue,
@@ -252,6 +255,7 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
   static PracticeActive _instantiate(DecodingData data) {
     return PracticeActive(
       dueBy: data.dec(_f$dueBy),
+      tagId: data.dec(_f$tagId),
       totalCount: data.dec(_f$totalCount),
       doneCount: data.dec(_f$doneCount),
       queue: data.dec(_f$queue),
@@ -331,6 +335,7 @@ abstract class PracticeActiveCopyWith<$R, $In extends PracticeActive, $Out>
   @override
   $R call({
     DateTime? dueBy,
+    String? tagId,
     int? totalCount,
     int? doneCount,
     List<Vocabulary>? queue,
@@ -364,6 +369,7 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
   @override
   $R call({
     DateTime? dueBy,
+    Object? tagId = $none,
     int? totalCount,
     int? doneCount,
     List<Vocabulary>? queue,
@@ -376,6 +382,7 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (dueBy != null) #dueBy: dueBy,
+      if (tagId != $none) #tagId: tagId,
       if (totalCount != null) #totalCount: totalCount,
       if (doneCount != null) #doneCount: doneCount,
       if (queue != null) #queue: queue,
@@ -390,6 +397,7 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
   @override
   PracticeActive $make(CopyWithData data) => PracticeActive(
     dueBy: data.get(#dueBy, or: $value.dueBy),
+    tagId: data.get(#tagId, or: $value.tagId),
     totalCount: data.get(#totalCount, or: $value.totalCount),
     doneCount: data.get(#doneCount, or: $value.doneCount),
     queue: data.get(#queue, or: $value.queue),

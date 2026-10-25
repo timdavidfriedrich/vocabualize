@@ -15,7 +15,9 @@ extension NavigationExtension on BuildContext {
 
   Future<void> pushSettings() => appRouter.push(const Settings());
 
-  Future<void> pushPractice() => appRouter.push(const Practice());
+  Future<void> pushPractice({String? tagId}) => appRouter.push(Practice(tagId: tagId));
+
+  Future<void> pushCollection({required String tagId}) => appRouter.push(Collection(tagId: tagId));
 
   Future<void> pushLanguageSelection() =>
       appRouter.push(const LanguageSelection(isOnboarding: false));

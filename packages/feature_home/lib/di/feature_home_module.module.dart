@@ -8,6 +8,7 @@ import 'dart:async' as _i687;
 
 import 'package:feature_home/presentation/home_bloc.dart' as _i748;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:shared/domain/repositories/tag_repository.dart' as _i836;
 import 'package:shared/domain/repositories/text_to_speech_repository.dart'
     as _i839;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
@@ -18,6 +19,7 @@ class FeatureHomePackageModule extends _i526.MicroPackageModule {
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
     gh.factory<_i748.HomeBloc>(() => _i748.HomeBloc(
           gh<_i208.VocabularyRepository>(),
+          gh<_i836.TagRepository>(),
           gh<_i839.TextToSpeechRepository>(),
         ));
   }

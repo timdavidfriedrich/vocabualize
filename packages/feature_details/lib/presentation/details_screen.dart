@@ -6,6 +6,7 @@ import 'package:feature_details/presentation/details_state.dart';
 import 'package:feature_details/presentation/widgets/duplicate_dialog.dart';
 import 'package:feature_details/presentation/widgets/image_chooser.dart';
 import 'package:feature_details/presentation/widgets/source_to_target.dart';
+import 'package:feature_details/presentation/widgets/tag_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
@@ -86,9 +87,12 @@ class const _EditingScreen() extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: Spacing.xs),
                     ImageChooser(),
+                    SizedBox(height: Spacing.m),
+                    TagWrap(),
                   ],
                 ),
               ),

@@ -636,4 +636,13 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorAiUnavailable => 'Автоматичний переклад і пошук фото зараз недоступні.';
+
+  @override
+  String get collectionsDeleteButton => 'Видалити колекцію';
+
+  @override
+  String get collectionsDeleteTitle => 'Видалити колекцію?';
+
+  @override
+  String get collectionsDeleteMessage => 'Слова залишаться. Буде видалено лише колекцію.';
 }

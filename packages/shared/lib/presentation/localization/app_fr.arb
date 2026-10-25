@@ -167,5 +167,8 @@
   "detailsRetakeImageButton": "Reprendre l'image",
   "errorTranslationQuotaExceeded": "{limit, plural, one{Vous avez utilisé votre {limit} traduction des dernières 24 heures. Saisissez la traduction vous-même ou réessayez plus tard.} other{Vous avez utilisé vos {limit} traductions des dernières 24 heures. Saisissez la traduction vous-même ou réessayez plus tard.}}",
   "errorStockImageQuotaExceeded": "{limit, plural, one{Vous avez utilisé votre {limit} recherche de photos des dernières 24 heures. Prenez votre propre photo ou réessayez plus tard.} other{Vous avez utilisé vos {limit} recherches de photos des dernières 24 heures. Prenez votre propre photo ou réessayez plus tard.}}",
-  "errorAiUnavailable": "La traduction automatique et la recherche de photos ne sont pas disponibles pour le moment."
+  "errorAiUnavailable": "La traduction automatique et la recherche de photos ne sont pas disponibles pour le moment.",
+  "collectionsDeleteButton": "Supprimer la collection",
+  "collectionsDeleteTitle": "Supprimer la collection ?",
+  "collectionsDeleteMessage": "Les mots restent. Seule la collection est supprimée."
 }

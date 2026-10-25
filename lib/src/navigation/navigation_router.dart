@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:core/error/app_result.dart';
+import 'package:feature_collections/presentation/collection_bloc.dart';
+import 'package:feature_collections/presentation/collection_event.dart';
+import 'package:feature_collections/presentation/collection_screen.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_screen.dart';
@@ -144,9 +147,13 @@ class const _AppPage({
       create: (_) => sl<DetailsBloc>()..add(DetailsEditStarted(vocabularyId: vocabularyId)),
       child: const DetailsScreen(),
     ),
-    Practice() => BlocProvider(
-      create: (_) => sl<PracticeBloc>()..add(const PracticeStarted()),
+    Practice(:final tagId) => BlocProvider(
+      create: (_) => sl<PracticeBloc>()..add(PracticeStarted(tagId: tagId)),
       child: const PracticeScreen(),
+    ),
+    Collection(:final tagId) => BlocProvider(
+      create: (_) => sl<CollectionBloc>()..add(CollectionStarted(tagId: tagId)),
+      child: const CollectionScreen(),
     ),
     Settings() => BlocProvider(
       create: (_) => sl<SettingsBloc>()..add(const SettingsStarted()),

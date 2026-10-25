@@ -9,6 +9,7 @@ import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
+import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/entities/vocabulary_image_change.dart';
@@ -17,6 +18,7 @@ import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/stock_image_repository.dart';
+import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/translation_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 
@@ -31,6 +33,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     this._translationRepository,
     this._stockImageRepository,
     this._imageRepository,
+    this._tagRepository,
     this._externalLinkRepository,
     this._pickImage,
   ) : super(const DetailsLoading()) {
@@ -42,6 +45,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     on<DetailsPhotoPickRequested>(_onPhotoPickRequested);
     on<DetailsImageToggled>(_onImageToggled);
     on<DetailsStockPageAdvanced>(_onStockPageAdvanced);
+    on<DetailsTagToggled>(_onTagToggled);
+    on<DetailsTagCreated>(_onTagCreated);
     on<DetailsPhotographerLinkOpened>(_onPhotographerLinkOpened);
     on<DetailsSaveRequested>(_onSaveRequested);
     on<DetailsDeleteRequested>(_onDeleteRequested);
@@ -53,6 +58,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final TranslationRepository _translationRepository;
   final StockImageRepository _stockImageRepository;
   final ImageRepository _imageRepository;
+  final TagRepository _tagRepository;
   final ExternalLinkRepository _externalLinkRepository;
   final PickImageUseCase _pickImage;
 
@@ -153,6 +159,35 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     }
   }
 
+  void _onTagToggled(DetailsTagToggled event, Emitter<DetailsState> emit) {
+    if (state case final DetailsEditing editing when !editing.isBusy) {
+      final selected = editing.selectedTagIds;
+      emit(
+        editing.copyWith(
+          selectedTagIds: selected.contains(event.tagId)
+              ? selected.difference({event.tagId})
+              : {...selected, event.tagId},
+        ),
+      );
+    }
+  }
+
+  Future<void> _onTagCreated(DetailsTagCreated event, Emitter<DetailsState> emit) async {
+    if (state case final DetailsEditing editing when !editing.isBusy) {
+      final busy = editing.copyWith(isBusy: true, error: null);
+      emit(busy);
+      final result = await _tagRepository.createTag(event.name.trim());
+      emit(switch (result) {
+        Success(:final data) => busy.copyWith(
+          tags: [...busy.tags, data],
+          selectedTagIds: {...busy.selectedTagIds, data.id},
+          isBusy: false,
+        ),
+        Failure(:final error) => busy.copyWith(isBusy: false, error: error),
+      });
+    }
+  }
+
   Future<void> _onPhotographerLinkOpened(
     DetailsPhotographerLinkOpened event,
     Emitter<DetailsState> emit,
@@ -225,6 +260,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           (DetailsSavedImage(), null) => const KeepImage(),
           (_, null) => const RemoveImage(),
         },
+        tagIds: editing.selectedTagIds,
       );
     }
     final languages = editing.languages;
@@ -234,6 +270,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       target: editing.target,
       languages: languages,
       image: newImage,
+      tagIds: editing.selectedTagIds,
     );
   }
 
@@ -244,6 +281,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     };
     final canUseAi = await _canUseAi();
     final lookup = canUseAi && languages != null ? await _lookUp(source, languages) : null;
+    final tags = await _tags();
     return DetailsEditing(
       original: null,
       languages: languages,
@@ -254,6 +292,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       ownPhoto: null,
       stockImages: lookup?.stockImages ?? const [],
       stockPage: 0,
+      tags: tags,
+      selectedTagIds: const {},
       isBusy: false,
       error: lookup?.error,
     );
@@ -268,6 +308,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     final stockSearch = canUseAi
         ? await _stockImageRepository.search(query: vocabulary.source, language: languages.source)
         : null;
+    final tags = await _tags();
     return DetailsEditing(
       original: vocabulary,
       languages: languages,
@@ -287,6 +328,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         Failure() || null => const [],
       },
       stockPage: 0,
+      tags: tags,
+      selectedTagIds: vocabulary.tagIds,
       isBusy: false,
       error: switch (stockSearch) {
         Failure(:final error) => error,
@@ -314,6 +357,13 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         _ => null,
       },
     );
+  }
+
+  Future<List<Tag>> _tags() async {
+    return switch (await _tagRepository.watchTags().first) {
+      Success(:final data) => data,
+      Failure() => const [],
+    };
   }
 
   Future<bool> _canUseAi() async {

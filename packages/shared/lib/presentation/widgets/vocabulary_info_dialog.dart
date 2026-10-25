@@ -1,10 +1,11 @@
 import 'package:core/theme/spacing.dart';
-import 'package:feature_home/presentation/extensions/date_time_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/date_time_extensions.dart';
 import 'package:shared/presentation/widgets/level_indicator.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
@@ -15,6 +16,7 @@ const _editBackgroundOpacity = 0.3;
 Future<void> showVocabularyInfoDialog(
   BuildContext context, {
   required Vocabulary vocabulary,
+  required List<Tag> tags,
   required VoidCallback onSpeak,
   required VoidCallback onEdit,
 }) {
@@ -22,6 +24,10 @@ Future<void> showVocabularyInfoDialog(
     context: context,
     builder: (dialogContext) => _VocabularyInfoDialog(
       vocabulary: vocabulary,
+      tags: [
+        for (final tag in tags)
+          if (vocabulary.tagIds.contains(tag.id)) tag,
+      ],
       onSpeak: onSpeak,
       onEdit: onEdit,
     ),
@@ -30,6 +36,7 @@ Future<void> showVocabularyInfoDialog(
 
 class const _VocabularyInfoDialog({
   required final Vocabulary _vocabulary,
+  required final List<Tag> _tags,
   required final VoidCallback _onSpeak,
   required final VoidCallback _onEdit,
 }) extends StatelessWidget {
@@ -89,6 +96,14 @@ class const _VocabularyInfoDialog({
                 ),
               ),
             ),
+          if (_tags.isNotEmpty) ...[
+            const SizedBox(height: Spacing.m),
+            Wrap(
+              spacing: Spacing.xs,
+              runSpacing: -Spacing.xs,
+              children: [for (final tag in _tags) Chip(label: Text(tag.name))],
+            ),
+          ],
           const SizedBox(height: Spacing.m),
           _DatesInformationRow(vocabulary: _vocabulary),
         ],

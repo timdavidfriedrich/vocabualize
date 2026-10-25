@@ -16,6 +16,7 @@ class const PracticeLoading() extends PracticeState with PracticeLoadingMappable
 @MappableClass()
 class const PracticeActive({
   required final DateTime dueBy,
+  required final String? tagId,
   required final int totalCount,
   required final int doneCount,
   required final List<Vocabulary> queue,

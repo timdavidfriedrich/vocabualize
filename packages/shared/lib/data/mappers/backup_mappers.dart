@@ -79,6 +79,7 @@ extension LocalBackupVocabularyMappers on LocalBackupVocabulary {
       ease: ease,
       nextReviewAt: nextReviewAt.toUtc(),
       image: image,
+      tagIds: const {},
       createdAt: createdAt.toUtc(),
     );
   }

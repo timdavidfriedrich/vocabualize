@@ -31,8 +31,12 @@ class const VocabularyRepositoryImpl(
   final ImageFileDataSource _imageFileDataSource,
 ) implements VocabularyRepository {
   @override
-  Stream<AppResult<List<Vocabulary>>> watchVocabularies({required int limit}) =>
-      _withImages(_localDataSource.watchVocabularies(limit: limit)).toAppResult();
+  Stream<AppResult<List<Vocabulary>>> watchVocabularies({
+    required int limit,
+    String? tagId,
+  }) => _withImages(
+    _localDataSource.watchVocabularies(limit: limit, tagId: _uuidOrNull(tagId)),
+  ).toAppResult();
 
   @override
   Stream<AppResult<List<Vocabulary>>> watchRecentVocabularies({
@@ -43,9 +47,12 @@ class const VocabularyRepositoryImpl(
   ).toAppResult();
 
   @override
-  Stream<AppResult<VocabularyOverview>> watchVocabularyOverview() {
+  Stream<AppResult<VocabularyOverview>> watchVocabularyOverview({String? tagId}) {
     return _localDataSource
-        .watchOverview(levelFloors: [for (final level in VocabularyLevel.values) level.floor])
+        .watchOverview(
+          levelFloors: [for (final level in VocabularyLevel.values) level.floor],
+          tagId: _uuidOrNull(tagId),
+        )
         .map((overview) => overview.toVocabularyOverview())
         .toAppResult();
   }
@@ -56,6 +63,7 @@ class const VocabularyRepositoryImpl(
     required String target,
     required LanguagePair languages,
     required ProcessedImage? image,
+    required Set<String> tagIds,
   }) async {
     final now = DateTime.now().toUtc();
     final imageId = const Uuid().v7obj().uuid;
@@ -75,11 +83,13 @@ class const VocabularyRepositoryImpl(
           final image? => await _saveImage(imageId, image),
           null => const NoImage(),
         },
+        tagIds: tagIds,
         createdAt: now,
       );
       final inserted = await _localDataSource.insertVocabulary(
         vocabulary.toLocalVocabulary(),
         activity: _activity(ActivityType.add),
+        tagIds: _uuids(tagIds),
       );
       return Success((await _toVocabularies([inserted])).single);
     } on Object catch (error) {
@@ -100,9 +110,14 @@ class const VocabularyRepositoryImpl(
   }
 
   @override
-  Future<AppResult<int>> countDueVocabularies(DateTime dueBy) async {
+  Future<AppResult<int>> countDueVocabularies({
+    required DateTime dueBy,
+    String? tagId,
+  }) async {
     try {
-      return Success(await _localDataSource.countDueVocabularies(dueBy));
+      return Success(
+        await _localDataSource.countDueVocabularies(dueBy: dueBy, tagId: _uuidOrNull(tagId)),
+      );
     } on Object catch (error) {
       return Failure(error.toAppError());
     }
@@ -112,9 +127,14 @@ class const VocabularyRepositoryImpl(
   Future<AppResult<List<Vocabulary>>> findDueVocabularies({
     required DateTime dueBy,
     required int limit,
+    String? tagId,
   }) async {
     try {
-      final vocabularies = await _localDataSource.findDueVocabularies(dueBy: dueBy, limit: limit);
+      final vocabularies = await _localDataSource.findDueVocabularies(
+        dueBy: dueBy,
+        limit: limit,
+        tagId: _uuidOrNull(tagId),
+      );
       return Success(await _toVocabularies(vocabularies));
     } on Object catch (error) {
       return Failure(error.toAppError());
@@ -125,6 +145,7 @@ class const VocabularyRepositoryImpl(
   Future<AppResult<bool>> hasDueVocabulariesOutside({
     required DateTime dueBy,
     required LanguagePair languages,
+    String? tagId,
   }) async {
     try {
       return Success(
@@ -132,6 +153,7 @@ class const VocabularyRepositoryImpl(
           dueBy: dueBy,
           sourceLanguageCode: languages.source.toLanguageCode(),
           targetLanguageCode: languages.target.toLanguageCode(),
+          tagId: _uuidOrNull(tagId),
         ),
       );
     } on Object catch (error) {
@@ -167,6 +189,7 @@ class const VocabularyRepositoryImpl(
     required String source,
     required String target,
     required VocabularyImageChange image,
+    required Set<String> tagIds,
   }) async {
     final newImageId = const Uuid().v7obj().uuid;
     try {
@@ -195,6 +218,7 @@ class const VocabularyRepositoryImpl(
             t.stockPhotographerUrl,
           ],
         },
+        tagIds: _uuids(tagIds),
       );
       if ((image, stored.customImageId) case (RemoveImage() || ReplaceImage(), final oldId?)) {
         await _imageFileDataSource.deleteImage(oldId);
@@ -263,8 +287,23 @@ class const VocabularyRepositoryImpl(
     final imagePaths = await _imageFileDataSource.findImagePaths([
       for (final vocabulary in vocabularies) ?vocabulary.customImageId,
     ]);
+    final links = await _localDataSource.findTagLinks({
+      for (final vocabulary in vocabularies) ?vocabulary.id,
+    });
+    final tagIds = <UuidValue, Set<String>>{};
+    for (final link in links) {
+      tagIds.putIfAbsent(link.vocabularyId, () => {}).add(link.tagId.uuid);
+    }
     return [
-      for (final vocabulary in vocabularies) vocabulary.toVocabulary(imagePaths: imagePaths),
+      for (final vocabulary in vocabularies)
+        vocabulary.toVocabulary(
+          imagePaths: imagePaths,
+          tagIds: tagIds[vocabulary.id] ?? const {},
+        ),
     ];
   }
+
+  UuidValue? _uuidOrNull(String? id) => id == null ? null : UuidValue.withValidation(id);
+
+  Set<UuidValue> _uuids(Set<String> ids) => {for (final id in ids) UuidValue.withValidation(id)};
 }

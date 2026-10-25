@@ -13,7 +13,10 @@ typedef _TimedResult<T> = ({T value, DateTime? validUntil});
 typedef _TimedQuery<T> = Future<_TimedResult<T>> Function(DatabaseSession session, DateTime now);
 
 abstract class VocabularyLocalDataSource {
-  Stream<List<LocalVocabulary>> watchVocabularies({required int limit});
+  Stream<List<LocalVocabulary>> watchVocabularies({
+    required int limit,
+    required UuidValue? tagId,
+  });
 
   Stream<List<LocalVocabulary>> watchRecentVocabularies({
     required Duration maxAge,
@@ -21,28 +24,39 @@ abstract class VocabularyLocalDataSource {
   });
 
   // * levelFloors ascend; a level counts from its floor up to the next floor, the lowest level also counts everything below its floor
-  Stream<LocalVocabularyOverview> watchOverview({required List<double> levelFloors});
+  Stream<LocalVocabularyOverview> watchOverview({
+    required List<double> levelFloors,
+    required UuidValue? tagId,
+  });
 
   Future<LocalVocabulary?> findVocabulary(UuidValue id);
 
+  Future<List<LocalVocabularyTag>> findTagLinks(Set<UuidValue> vocabularyIds);
+
   Future<bool> hasVocabularyWithSource(String source);
 
-  Future<int> countDueVocabularies(DateTime dueBy);
+  Future<int> countDueVocabularies({
+    required DateTime dueBy,
+    required UuidValue? tagId,
+  });
 
   Future<List<LocalVocabulary>> findDueVocabularies({
     required DateTime dueBy,
     required int limit,
+    required UuidValue? tagId,
   });
 
   Future<bool> hasDueVocabulariesOutsidePair({
     required DateTime dueBy,
     required String sourceLanguageCode,
     required String targetLanguageCode,
+    required UuidValue? tagId,
   });
 
   Future<LocalVocabulary> insertVocabulary(
     LocalVocabulary vocabulary, {
     required LocalActivity activity,
+    required Set<UuidValue> tagIds,
   });
 
   Future<void> saveReview(
@@ -53,6 +67,7 @@ abstract class VocabularyLocalDataSource {
   Future<LocalVocabulary> updateVocabulary(
     LocalVocabulary vocabulary, {
     required ColumnSelections<LocalVocabularyTable> columns,
+    required Set<UuidValue> tagIds,
   });
 
   Future<List<LocalVocabulary>> deleteVocabulary(UuidValue id);
@@ -63,11 +78,22 @@ class const VocabularyLocalDataSourceImpl(
   final DatabaseSessionDataSource _sessions,
 ) implements VocabularyLocalDataSource {
   @override
-  Stream<List<LocalVocabulary>> watchVocabularies({required int limit}) {
-    return _sessions.watchSession().switchMap(
-      (session) => session == null
-          ? Stream.value(const <LocalVocabulary>[])
-          : LocalVocabulary.db.watch(session, orderBy: (t) => t.createdAt.desc(), limit: limit),
+  Stream<List<LocalVocabulary>> watchVocabularies({
+    required int limit,
+    required UuidValue? tagId,
+  }) {
+    return _watchTimed(
+      empty: const <LocalVocabulary>[],
+      query: (session, now) async {
+        final scope = await _scope(session, tagId);
+        final vocabularies = await LocalVocabulary.db.find(
+          session,
+          where: _onlyIn(scope),
+          orderBy: (t) => t.createdAt.desc(),
+          limit: limit,
+        );
+        return (value: vocabularies, validUntil: null);
+      },
     );
   }
 
@@ -91,7 +117,10 @@ class const VocabularyLocalDataSourceImpl(
   }
 
   @override
-  Stream<LocalVocabularyOverview> watchOverview({required List<double> levelFloors}) {
+  Stream<LocalVocabularyOverview> watchOverview({
+    required List<double> levelFloors,
+    required UuidValue? tagId,
+  }) {
     return _watchTimed(
       empty: LocalVocabularyOverview(
         totalCount: 0,
@@ -100,22 +129,31 @@ class const VocabularyLocalDataSourceImpl(
         countsByLevelFloor: {for (final floor in levelFloors) floor: 0},
       ),
       query: (session, now) async {
+        final scope = await _scope(session, tagId);
         final nextDue = await LocalVocabulary.db.findFirstRow(
           session,
-          where: (t) => t.nextReviewAt > now,
+          where: (t) => _within(t, t.nextReviewAt > now, scope),
           orderBy: (t) => t.nextReviewAt.asc(),
         );
         final overview = LocalVocabularyOverview(
-          totalCount: await LocalVocabulary.db.count(session),
-          dueCount: await LocalVocabulary.db.count(session, where: (t) => t.nextReviewAt <= now),
+          totalCount: await LocalVocabulary.db.count(session, where: _onlyIn(scope)),
+          dueCount: await LocalVocabulary.db.count(
+            session,
+            where: (t) => _within(t, t.nextReviewAt <= now, scope),
+          ),
           nextDueAt: nextDue?.nextReviewAt,
           countsByLevelFloor: {
             for (final (index, floor) in levelFloors.indexed)
               floor: await LocalVocabulary.db.count(
                 session,
-                where: _levelBetween(
-                  index == 0 ? null : floor,
-                  levelFloors.elementAtOrNull(index + 1),
+                where: (t) => _within(
+                  t,
+                  _levelBetween(
+                    t,
+                    index == 0 ? null : floor,
+                    levelFloors.elementAtOrNull(index + 1),
+                  ),
+                  scope,
                 ),
               ),
           },
@@ -131,6 +169,15 @@ class const VocabularyLocalDataSourceImpl(
   }
 
   @override
+  Future<List<LocalVocabularyTag>> findTagLinks(Set<UuidValue> vocabularyIds) async {
+    if (vocabularyIds.isEmpty) return const [];
+    return LocalVocabularyTag.db.find(
+      _requireSession(),
+      where: (t) => t.vocabularyId.inSet(vocabularyIds),
+    );
+  }
+
+  @override
   Future<bool> hasVocabularyWithSource(String source) async {
     final count = await LocalVocabulary.db.count(
       _requireSession(),
@@ -141,18 +188,29 @@ class const VocabularyLocalDataSourceImpl(
   }
 
   @override
-  Future<int> countDueVocabularies(DateTime dueBy) {
-    return LocalVocabulary.db.count(_requireSession(), where: (t) => t.nextReviewAt <= dueBy);
+  Future<int> countDueVocabularies({
+    required DateTime dueBy,
+    required UuidValue? tagId,
+  }) async {
+    final session = _requireSession();
+    final scope = await _scope(session, tagId);
+    return LocalVocabulary.db.count(
+      session,
+      where: (t) => _within(t, t.nextReviewAt <= dueBy, scope),
+    );
   }
 
   @override
   Future<List<LocalVocabulary>> findDueVocabularies({
     required DateTime dueBy,
     required int limit,
-  }) {
+    required UuidValue? tagId,
+  }) async {
+    final session = _requireSession();
+    final scope = await _scope(session, tagId);
     return LocalVocabulary.db.find(
-      _requireSession(),
-      where: (t) => t.nextReviewAt <= dueBy,
+      session,
+      where: (t) => _within(t, t.nextReviewAt <= dueBy, scope),
       orderBy: (t) => t.nextReviewAt.asc(),
       limit: limit,
     );
@@ -163,13 +221,19 @@ class const VocabularyLocalDataSourceImpl(
     required DateTime dueBy,
     required String sourceLanguageCode,
     required String targetLanguageCode,
+    required UuidValue? tagId,
   }) async {
+    final session = _requireSession();
+    final scope = await _scope(session, tagId);
     final count = await LocalVocabulary.db.count(
-      _requireSession(),
-      where: (t) =>
-          (t.nextReviewAt <= dueBy) &
-          (t.sourceLanguageCode.notEquals(sourceLanguageCode) |
-              t.targetLanguageCode.notEquals(targetLanguageCode)),
+      session,
+      where: (t) => _within(
+        t,
+        (t.nextReviewAt <= dueBy) &
+            (t.sourceLanguageCode.notEquals(sourceLanguageCode) |
+                t.targetLanguageCode.notEquals(targetLanguageCode)),
+        scope,
+      ),
       limit: 1,
     );
     return count > 0;
@@ -179,6 +243,7 @@ class const VocabularyLocalDataSourceImpl(
   Future<LocalVocabulary> insertVocabulary(
     LocalVocabulary vocabulary, {
     required LocalActivity activity,
+    required Set<UuidValue> tagIds,
   }) {
     final session = _sessions.requireWritableSession();
     return session.db.transaction((transaction) async {
@@ -187,6 +252,7 @@ class const VocabularyLocalDataSourceImpl(
         vocabulary,
         transaction: transaction,
       );
+      if (inserted.id case final id?) await _replaceTagLinks(session, id, tagIds, transaction);
       await _recordActivity(session, activity, transaction);
       return inserted;
     });
@@ -213,12 +279,19 @@ class const VocabularyLocalDataSourceImpl(
   Future<LocalVocabulary> updateVocabulary(
     LocalVocabulary vocabulary, {
     required ColumnSelections<LocalVocabularyTable> columns,
+    required Set<UuidValue> tagIds,
   }) {
-    return LocalVocabulary.db.updateRow(
-      _sessions.requireWritableSession(),
-      vocabulary,
-      columns: columns,
-    );
+    final session = _sessions.requireWritableSession();
+    return session.db.transaction((transaction) async {
+      final updated = await LocalVocabulary.db.updateRow(
+        session,
+        vocabulary,
+        columns: columns,
+        transaction: transaction,
+      );
+      if (updated.id case final id?) await _replaceTagLinks(session, id, tagIds, transaction);
+      return updated;
+    });
   }
 
   @override
@@ -227,6 +300,38 @@ class const VocabularyLocalDataSourceImpl(
       _sessions.requireWritableSession(),
       where: (t) => t.id.equals(id),
     );
+  }
+
+  Future<void> _replaceTagLinks(
+    DatabaseSession session,
+    UuidValue vocabularyId,
+    Set<UuidValue> tagIds,
+    Transaction transaction,
+  ) async {
+    final existing = await LocalVocabularyTag.db.find(
+      session,
+      where: (t) => t.vocabularyId.equals(vocabularyId),
+      transaction: transaction,
+    );
+    final existingTagIds = {for (final link in existing) link.tagId};
+    final removedLinkIds = {
+      for (final link in existing)
+        if (!tagIds.contains(link.tagId)) ?link.id,
+    };
+    if (removedLinkIds.isNotEmpty) {
+      await LocalVocabularyTag.db.deleteWhere(
+        session,
+        where: (t) => t.id.inSet(removedLinkIds),
+        transaction: transaction,
+      );
+    }
+    final addedLinks = [
+      for (final tagId in tagIds.difference(existingTagIds))
+        LocalVocabularyTag(id: const Uuid().v7obj(), vocabularyId: vocabularyId, tagId: tagId),
+    ];
+    if (addedLinks.isNotEmpty) {
+      await LocalVocabularyTag.db.insert(session, addedLinks, transaction: transaction);
+    }
   }
 
   Future<void> _recordActivity(
@@ -245,18 +350,39 @@ class const VocabularyLocalDataSourceImpl(
     }
   }
 
+  Future<Set<UuidValue>?> _scope(DatabaseSession session, UuidValue? tagId) async {
+    if (tagId == null) return null;
+    final links = await LocalVocabularyTag.db.find(
+      session,
+      where: (t) => t.tagId.equals(tagId),
+    );
+    return {for (final link in links) link.vocabularyId};
+  }
+
+  Expression<dynamic> _within(
+    LocalVocabularyTable t,
+    Expression<dynamic> condition,
+    Set<UuidValue>? scope,
+  ) {
+    return scope == null ? condition : condition & t.id.inSet(scope);
+  }
+
+  WhereExpressionBuilder<LocalVocabularyTable>? _onlyIn(Set<UuidValue>? scope) {
+    return scope == null ? null : (t) => t.id.inSet(scope);
+  }
+
   DatabaseSession _requireSession() {
     final session = _sessions.currentSession;
     if (session == null) throw StateError("No database is open.");
     return session;
   }
 
-  WhereExpressionBuilder<LocalVocabularyTable>? _levelBetween(double? from, double? until) {
+  Expression<dynamic> _levelBetween(LocalVocabularyTable t, double? from, double? until) {
     return switch ((from, until)) {
-      (null, null) => null,
-      (final from?, null) => (t) => t.level >= from,
-      (null, final until?) => (t) => t.level < until,
-      (final from?, final until?) => (t) => (t.level >= from) & (t.level < until),
+      (null, null) => t.level.notEquals(null),
+      (final from?, null) => t.level >= from,
+      (null, final until?) => t.level < until,
+      (final from?, final until?) => (t.level >= from) & (t.level < until),
     };
   }
 
@@ -278,7 +404,11 @@ class const VocabularyLocalDataSourceImpl(
     triggers = StreamController<void>(
       onListen: () {
         changeSubscription = LocalVocabulary.db
-            .watch(session, limit: 1)
+            .watch(
+              session,
+              limit: 1,
+              alsoTriggerOnTables: [LocalVocabularyTag.t, LocalTag.t],
+            )
             .listen((_) => triggers.add(null), onError: triggers.addError);
         lifecycleListener = AppLifecycleListener(onResume: () => triggers.add(null));
       },

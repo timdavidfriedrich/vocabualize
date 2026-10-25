@@ -2,6 +2,7 @@ import 'package:core/error/app_error.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
+import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 
@@ -33,6 +34,8 @@ class const DetailsEditing({
   required final DetailsImage? ownPhoto,
   required final List<StockImage> stockImages,
   required final int stockPage,
+  required final List<Tag> tags,
+  required final Set<String> selectedTagIds,
   required final bool isBusy,
   required final AppError? error,
 }) extends DetailsState with DetailsEditingMappable;

@@ -10,6 +10,7 @@ const _imageKindStock = "stock";
 extension LocalVocabularyMappers on LocalVocabulary {
   Vocabulary toVocabulary({
     required Map<String, ({String? full, String? thumbnail})> imagePaths,
+    required Set<String> tagIds,
   }) {
     return Vocabulary(
       id: id.toString(),
@@ -23,6 +24,7 @@ extension LocalVocabularyMappers on LocalVocabulary {
       ease: ease,
       nextReviewAt: nextReviewAt.toUtc(),
       image: _toVocabularyImage(imagePaths),
+      tagIds: tagIds,
       createdAt: createdAt.toUtc(),
     );
   }

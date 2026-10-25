@@ -5,8 +5,10 @@ import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
+import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 
@@ -16,11 +18,12 @@ const _recentLimit = 10;
 
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc(this._vocabularyRepository, this._textToSpeechRepository)
+  HomeBloc(this._vocabularyRepository, this._tagRepository, this._textToSpeechRepository)
     : super(
         const HomeLoading(
           overview: null,
           recentVocabularies: null,
+          collections: null,
           vocabularies: null,
           feedLimit: 0,
         ),
@@ -32,6 +35,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   final VocabularyRepository _vocabularyRepository;
+  final TagRepository _tagRepository;
   final TextToSpeechRepository _textToSpeechRepository;
 
   Future<void> _onStarted(HomeStarted event, Emitter<HomeState> emit) async {
@@ -48,6 +52,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _vocabularyRepository.watchRecentVocabularies(maxAge: _recentMaxAge, limit: _recentLimit),
         onData: (result) => switch (result) {
           Success(:final data) => _merged(recentVocabularies: data),
+          Failure(:final error) => HomeFailure(error: error),
+        },
+      ),
+      emit.forEach(
+        _tagRepository.watchCollectionPreviews(),
+        onData: (result) => switch (result) {
+          Success(:final data) => _merged(collections: data),
           Failure(:final error) => HomeFailure(error: error),
         },
       ),
@@ -97,6 +108,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeState _merged({
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
+    List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
     int? feedLimit,
   }) {
@@ -104,6 +116,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final HomeLoaded loaded => loaded.copyWith(
         overview: overview,
         recentVocabularies: recentVocabularies,
+        collections: collections,
         vocabularies: vocabularies,
         feedLimit: feedLimit,
       ),
@@ -111,6 +124,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         HomeLoading(
           overview: overview ?? loading.overview,
           recentVocabularies: recentVocabularies ?? loading.recentVocabularies,
+          collections: collections ?? loading.collections,
           vocabularies: vocabularies ?? loading.vocabularies,
           feedLimit: feedLimit ?? loading.feedLimit,
         ),
@@ -124,12 +138,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       HomeLoading(
         overview: final overview?,
         recentVocabularies: final recentVocabularies?,
+        collections: final collections?,
         vocabularies: final vocabularies?,
         :final feedLimit,
       ) =>
         HomeLoaded(
           overview: overview,
           recentVocabularies: recentVocabularies,
+          collections: collections,
           vocabularies: vocabularies,
           feedLimit: feedLimit,
           error: null,

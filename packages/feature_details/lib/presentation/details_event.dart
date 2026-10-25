@@ -36,6 +36,14 @@ class const DetailsImageToggled({
 
 class const DetailsStockPageAdvanced() extends DetailsEvent;
 
+class const DetailsTagToggled({
+  required final String tagId,
+}) extends DetailsEvent;
+
+class const DetailsTagCreated({
+  required final String name,
+}) extends DetailsEvent;
+
 class const DetailsPhotographerLinkOpened() extends DetailsEvent;
 
 class const DetailsSaveRequested() extends DetailsEvent;

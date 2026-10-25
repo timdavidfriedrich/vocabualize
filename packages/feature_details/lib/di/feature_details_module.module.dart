@@ -23,6 +23,7 @@ import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/stock_image_repository.dart'
     as _i934;
+import 'package:shared/domain/repositories/tag_repository.dart' as _i836;
 import 'package:shared/domain/repositories/translation_repository.dart'
     as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
@@ -46,6 +47,7 @@ class FeatureDetailsPackageModule extends _i526.MicroPackageModule {
           gh<_i582.TranslationRepository>(),
           gh<_i934.StockImageRepository>(),
           gh<_i204.ImageRepository>(),
+          gh<_i836.TagRepository>(),
           gh<_i711.ExternalLinkRepository>(),
           gh<_i831.PickImageUseCase>(),
         ));

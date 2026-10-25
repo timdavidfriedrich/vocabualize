@@ -63,6 +63,11 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
     'image',
     _$image,
   );
+  static Set<String> _$tagIds(Vocabulary v) => v.tagIds;
+  static const Field<Vocabulary, Set<String>> _f$tagIds = Field(
+    'tagIds',
+    _$tagIds,
+  );
   static DateTime _$createdAt(Vocabulary v) => v.createdAt;
   static const Field<Vocabulary, DateTime> _f$createdAt = Field(
     'createdAt',
@@ -82,6 +87,7 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
     #ease: _f$ease,
     #nextReviewAt: _f$nextReviewAt,
     #image: _f$image,
+    #tagIds: _f$tagIds,
     #createdAt: _f$createdAt,
   };
 
@@ -98,6 +104,7 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
       ease: data.dec(_f$ease),
       nextReviewAt: data.dec(_f$nextReviewAt),
       image: data.dec(_f$image),
+      tagIds: data.dec(_f$tagIds),
       createdAt: data.dec(_f$createdAt),
     );
   }
@@ -175,6 +182,7 @@ abstract class VocabularyCopyWith<$R, $In extends Vocabulary, $Out>
     double? ease,
     DateTime? nextReviewAt,
     VocabularyImage? image,
+    Set<String>? tagIds,
     DateTime? createdAt,
   });
   VocabularyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -204,6 +212,7 @@ class _VocabularyCopyWithImpl<$R, $Out>
     double? ease,
     DateTime? nextReviewAt,
     VocabularyImage? image,
+    Set<String>? tagIds,
     DateTime? createdAt,
   }) => $apply(
     FieldCopyWithData({
@@ -218,6 +227,7 @@ class _VocabularyCopyWithImpl<$R, $Out>
       if (ease != null) #ease: ease,
       if (nextReviewAt != null) #nextReviewAt: nextReviewAt,
       if (image != null) #image: image,
+      if (tagIds != null) #tagIds: tagIds,
       if (createdAt != null) #createdAt: createdAt,
     }),
   );
@@ -234,6 +244,7 @@ class _VocabularyCopyWithImpl<$R, $Out>
     ease: data.get(#ease, or: $value.ease),
     nextReviewAt: data.get(#nextReviewAt, or: $value.nextReviewAt),
     image: data.get(#image, or: $value.image),
+    tagIds: data.get(#tagIds, or: $value.tagIds),
     createdAt: data.get(#createdAt, or: $value.createdAt),
   );
 

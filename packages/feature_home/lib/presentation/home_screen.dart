@@ -3,14 +3,14 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_state.dart';
+import 'package:feature_home/presentation/widgets/collections_section.dart';
 import 'package:feature_home/presentation/widgets/recent_vocabularies_section.dart';
 import 'package:feature_home/presentation/widgets/record_fab.dart';
 import 'package:feature_home/presentation/widgets/status_card.dart';
-import 'package:feature_home/presentation/widgets/vocabulary_info_dialog.dart';
-import 'package:feature_home/presentation/widgets/vocabulary_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
@@ -20,6 +20,8 @@ import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
 import 'package:shared/presentation/widgets/sync_status_icon.dart';
+import 'package:shared/presentation/widgets/vocabulary_info_dialog.dart';
+import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.xxl);
 const _scrollEndSpacing = Spacing.xxxxl * 2;
@@ -94,6 +96,7 @@ class const _ContentScreen() extends StatelessWidget {
                   ),
                 ),
                 const _RecentSection(),
+                const _CollectionsRow(),
                 SliverPadding(
                   padding: _pagePadding,
                   sliver: SliverMainAxisGroup(
@@ -117,6 +120,34 @@ class const _ContentScreen() extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class const _CollectionsRow() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, List<CollectionPreview>>(
+      selector: (state) => switch (state) {
+        HomeLoaded(:final collections) => collections,
+        _ => const [],
+      },
+      builder: (context, collections) => SliverToBoxAdapter(
+        child: collections.isEmpty
+            ? null
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: Spacing.xxl),
+                  Padding(
+                    padding: _pagePadding,
+                    child: _SectionTitle(title: context.s.homeCollectionsTitle),
+                  ),
+                  const SizedBox(height: Spacing.m),
+                  CollectionsSection(collections: collections),
+                ],
+              ),
       ),
     );
   }
@@ -283,6 +314,10 @@ void _showInfo(BuildContext context, Vocabulary vocabulary) {
   showVocabularyInfoDialog(
     context,
     vocabulary: vocabulary,
+    tags: switch (bloc.state) {
+      HomeLoaded(:final collections) => [for (final collection in collections) collection.tag],
+      _ => const [],
+    },
     onSpeak: () => bloc.add(HomeVocabularySpeakRequested(vocabulary: vocabulary)),
     onEdit: () => _edit(context, vocabulary),
   );

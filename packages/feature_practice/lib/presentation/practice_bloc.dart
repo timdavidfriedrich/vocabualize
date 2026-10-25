@@ -36,8 +36,12 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
   Future<void> _onStarted(PracticeStarted event, Emitter<PracticeState> emit) async {
     final dueBy = DateTime.now().toUtc();
     final (count, batch) = await (
-      _vocabularyRepository.countDueVocabularies(dueBy),
-      _vocabularyRepository.findDueVocabularies(dueBy: dueBy, limit: _batchSize),
+      _vocabularyRepository.countDueVocabularies(dueBy: dueBy, tagId: event.tagId),
+      _vocabularyRepository.findDueVocabularies(
+        dueBy: dueBy,
+        limit: _batchSize,
+        tagId: event.tagId,
+      ),
     ).wait;
     switch ((count, batch)) {
       case (Failure(:final error), _) || (_, Failure(:final error)):
@@ -49,10 +53,12 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
         final showsLanguages = await _vocabularyRepository.hasDueVocabulariesOutside(
           dueBy: dueBy,
           languages: LanguagePair(source: first.sourceLanguage, target: first.targetLanguage),
+          tagId: event.tagId,
         );
         emit(
           PracticeActive(
             dueBy: dueBy,
+            tagId: event.tagId,
             totalCount: max(total, queue.length),
             doneCount: 0,
             queue: queue,
@@ -105,7 +111,11 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
     final remaining = active.queue.skip(1).toList();
     final next = remaining.isNotEmpty
         ? Success(remaining)
-        : await _vocabularyRepository.findDueVocabularies(dueBy: active.dueBy, limit: _batchSize);
+        : await _vocabularyRepository.findDueVocabularies(
+            dueBy: active.dueBy,
+            limit: _batchSize,
+            tagId: active.tagId,
+          );
     switch (next) {
       case Failure(:final error):
         emit(PracticeFailure(error: error));

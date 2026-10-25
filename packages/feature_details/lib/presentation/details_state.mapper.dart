@@ -309,6 +309,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       LanguagePairMapper.ensureInitialized();
       DetailsImageMapper.ensureInitialized();
       StockImageMapper.ensureInitialized();
+      TagMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -361,6 +362,13 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     'stockPage',
     _$stockPage,
   );
+  static List<Tag> _$tags(DetailsEditing v) => v.tags;
+  static const Field<DetailsEditing, List<Tag>> _f$tags = Field('tags', _$tags);
+  static Set<String> _$selectedTagIds(DetailsEditing v) => v.selectedTagIds;
+  static const Field<DetailsEditing, Set<String>> _f$selectedTagIds = Field(
+    'selectedTagIds',
+    _$selectedTagIds,
+  );
   static bool _$isBusy(DetailsEditing v) => v.isBusy;
   static const Field<DetailsEditing, bool> _f$isBusy = Field(
     'isBusy',
@@ -383,6 +391,8 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     #ownPhoto: _f$ownPhoto,
     #stockImages: _f$stockImages,
     #stockPage: _f$stockPage,
+    #tags: _f$tags,
+    #selectedTagIds: _f$selectedTagIds,
     #isBusy: _f$isBusy,
     #error: _f$error,
   };
@@ -398,6 +408,8 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       ownPhoto: data.dec(_f$ownPhoto),
       stockImages: data.dec(_f$stockImages),
       stockPage: data.dec(_f$stockPage),
+      tags: data.dec(_f$tags),
+      selectedTagIds: data.dec(_f$selectedTagIds),
       isBusy: data.dec(_f$isBusy),
       error: data.dec(_f$error),
     );
@@ -471,6 +483,7 @@ abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
   DetailsImageCopyWith<$R, DetailsImage, DetailsImage>? get ownPhoto;
   ListCopyWith<$R, StockImage, StockImageCopyWith<$R, StockImage, StockImage>>
   get stockImages;
+  ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get tags;
   @override
   $R call({
     Vocabulary? original,
@@ -482,6 +495,8 @@ abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
     DetailsImage? ownPhoto,
     List<StockImage>? stockImages,
     int? stockPage,
+    List<Tag>? tags,
+    Set<String>? selectedTagIds,
     bool? isBusy,
     AppError? error,
   });
@@ -518,6 +533,12 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     (v) => call(stockImages: v),
   );
   @override
+  ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get tags => ListCopyWith(
+    $value.tags,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(tags: v),
+  );
+  @override
   $R call({
     Object? original = $none,
     Object? languages = $none,
@@ -528,6 +549,8 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     Object? ownPhoto = $none,
     List<StockImage>? stockImages,
     int? stockPage,
+    List<Tag>? tags,
+    Set<String>? selectedTagIds,
     bool? isBusy,
     Object? error = $none,
   }) => $apply(
@@ -541,6 +564,8 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
       if (ownPhoto != $none) #ownPhoto: ownPhoto,
       if (stockImages != null) #stockImages: stockImages,
       if (stockPage != null) #stockPage: stockPage,
+      if (tags != null) #tags: tags,
+      if (selectedTagIds != null) #selectedTagIds: selectedTagIds,
       if (isBusy != null) #isBusy: isBusy,
       if (error != $none) #error: error,
     }),
@@ -556,6 +581,8 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     ownPhoto: data.get(#ownPhoto, or: $value.ownPhoto),
     stockImages: data.get(#stockImages, or: $value.stockImages),
     stockPage: data.get(#stockPage, or: $value.stockPage),
+    tags: data.get(#tags, or: $value.tags),
+    selectedTagIds: data.get(#selectedTagIds, or: $value.selectedTagIds),
     isBusy: data.get(#isBusy, or: $value.isBusy),
     error: data.get(#error, or: $value.error),
   );

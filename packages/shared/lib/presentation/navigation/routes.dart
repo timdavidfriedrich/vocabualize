@@ -33,6 +33,18 @@ class const EditVocabularyDetails({
   List<Object?> get props => [vocabularyId];
 }
 
-class const Practice() extends AppRoute;
+class const Practice({
+  final String? tagId,
+}) extends AppRoute {
+  @override
+  List<Object?> get props => [tagId];
+}
+
+class const Collection({
+  required final String tagId,
+}) extends AppRoute {
+  @override
+  List<Object?> get props => [tagId];
+}
 
 class const Settings() extends AppRoute;

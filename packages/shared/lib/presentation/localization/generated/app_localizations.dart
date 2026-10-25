@@ -1109,6 +1109,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Automatic translation and photo search aren\'t available right now.'**
   String get errorAiUnavailable;
+
+  /// No description provided for @collectionsDeleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete collection'**
+  String get collectionsDeleteButton;
+
+  /// No description provided for @collectionsDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete collection?'**
+  String get collectionsDeleteTitle;
+
+  /// No description provided for @collectionsDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The words stay. Only the collection is deleted.'**
+  String get collectionsDeleteMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

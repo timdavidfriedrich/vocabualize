@@ -617,4 +617,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get errorAiUnavailable =>
       'Automatische Übersetzung und Fotosuche sind gerade nicht verfügbar.';
+
+  @override
+  String get collectionsDeleteButton => 'Sammlung löschen';
+
+  @override
+  String get collectionsDeleteTitle => 'Sammlung löschen?';
+
+  @override
+  String get collectionsDeleteMessage => 'Die Wörter bleiben. Nur die Sammlung wird gelöscht.';
 }

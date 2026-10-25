@@ -66,6 +66,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
       HomeStateMapper.ensureInitialized();
       VocabularyOverviewMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
+      CollectionPreviewMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -82,6 +83,9 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
       v.recentVocabularies;
   static const Field<HomeLoading, List<Vocabulary>> _f$recentVocabularies =
       Field('recentVocabularies', _$recentVocabularies);
+  static List<CollectionPreview>? _$collections(HomeLoading v) => v.collections;
+  static const Field<HomeLoading, List<CollectionPreview>> _f$collections =
+      Field('collections', _$collections);
   static List<Vocabulary>? _$vocabularies(HomeLoading v) => v.vocabularies;
   static const Field<HomeLoading, List<Vocabulary>> _f$vocabularies = Field(
     'vocabularies',
@@ -97,6 +101,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
   final MappableFields<HomeLoading> fields = const {
     #overview: _f$overview,
     #recentVocabularies: _f$recentVocabularies,
+    #collections: _f$collections,
     #vocabularies: _f$vocabularies,
     #feedLimit: _f$feedLimit,
   };
@@ -105,6 +110,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
     return HomeLoading(
       overview: data.dec(_f$overview),
       recentVocabularies: data.dec(_f$recentVocabularies),
+      collections: data.dec(_f$collections),
       vocabularies: data.dec(_f$vocabularies),
       feedLimit: data.dec(_f$feedLimit),
     );
@@ -174,12 +180,19 @@ abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
   get overview;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
   get recentVocabularies;
+  ListCopyWith<
+    $R,
+    CollectionPreview,
+    CollectionPreviewCopyWith<$R, CollectionPreview, CollectionPreview>
+  >?
+  get collections;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
   get vocabularies;
   @override
   $R call({
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
+    List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
     int? feedLimit,
   });
@@ -207,6 +220,19 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
         )
       : null;
   @override
+  ListCopyWith<
+    $R,
+    CollectionPreview,
+    CollectionPreviewCopyWith<$R, CollectionPreview, CollectionPreview>
+  >?
+  get collections => $value.collections != null
+      ? ListCopyWith(
+          $value.collections!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(collections: v),
+        )
+      : null;
+  @override
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
   get vocabularies => $value.vocabularies != null
       ? ListCopyWith(
@@ -219,12 +245,14 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   $R call({
     Object? overview = $none,
     Object? recentVocabularies = $none,
+    Object? collections = $none,
     Object? vocabularies = $none,
     int? feedLimit,
   }) => $apply(
     FieldCopyWithData({
       if (overview != $none) #overview: overview,
       if (recentVocabularies != $none) #recentVocabularies: recentVocabularies,
+      if (collections != $none) #collections: collections,
       if (vocabularies != $none) #vocabularies: vocabularies,
       if (feedLimit != null) #feedLimit: feedLimit,
     }),
@@ -236,6 +264,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
       #recentVocabularies,
       or: $value.recentVocabularies,
     ),
+    collections: data.get(#collections, or: $value.collections),
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),
     feedLimit: data.get(#feedLimit, or: $value.feedLimit),
   );
@@ -256,6 +285,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
       HomeStateMapper.ensureInitialized();
       VocabularyOverviewMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
+      CollectionPreviewMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -272,6 +302,9 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
       v.recentVocabularies;
   static const Field<HomeLoaded, List<Vocabulary>> _f$recentVocabularies =
       Field('recentVocabularies', _$recentVocabularies);
+  static List<CollectionPreview> _$collections(HomeLoaded v) => v.collections;
+  static const Field<HomeLoaded, List<CollectionPreview>> _f$collections =
+      Field('collections', _$collections);
   static List<Vocabulary> _$vocabularies(HomeLoaded v) => v.vocabularies;
   static const Field<HomeLoaded, List<Vocabulary>> _f$vocabularies = Field(
     'vocabularies',
@@ -289,6 +322,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
   final MappableFields<HomeLoaded> fields = const {
     #overview: _f$overview,
     #recentVocabularies: _f$recentVocabularies,
+    #collections: _f$collections,
     #vocabularies: _f$vocabularies,
     #feedLimit: _f$feedLimit,
     #error: _f$error,
@@ -298,6 +332,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
     return HomeLoaded(
       overview: data.dec(_f$overview),
       recentVocabularies: data.dec(_f$recentVocabularies),
+      collections: data.dec(_f$collections),
       vocabularies: data.dec(_f$vocabularies),
       feedLimit: data.dec(_f$feedLimit),
       error: data.dec(_f$error),
@@ -368,12 +403,19 @@ abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
   get overview;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
   get recentVocabularies;
+  ListCopyWith<
+    $R,
+    CollectionPreview,
+    CollectionPreviewCopyWith<$R, CollectionPreview, CollectionPreview>
+  >
+  get collections;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
   get vocabularies;
   @override
   $R call({
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
+    List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
     int? feedLimit,
     AppError? error,
@@ -400,6 +442,17 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
     (v) => call(recentVocabularies: v),
   );
   @override
+  ListCopyWith<
+    $R,
+    CollectionPreview,
+    CollectionPreviewCopyWith<$R, CollectionPreview, CollectionPreview>
+  >
+  get collections => ListCopyWith(
+    $value.collections,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(collections: v),
+  );
+  @override
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
   get vocabularies => ListCopyWith(
     $value.vocabularies,
@@ -410,6 +463,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   $R call({
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
+    List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
     int? feedLimit,
     Object? error = $none,
@@ -417,6 +471,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (overview != null) #overview: overview,
       if (recentVocabularies != null) #recentVocabularies: recentVocabularies,
+      if (collections != null) #collections: collections,
       if (vocabularies != null) #vocabularies: vocabularies,
       if (feedLimit != null) #feedLimit: feedLimit,
       if (error != $none) #error: error,
@@ -429,6 +484,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
       #recentVocabularies,
       or: $value.recentVocabularies,
     ),
+    collections: data.get(#collections, or: $value.collections),
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),
     feedLimit: data.get(#feedLimit, or: $value.feedLimit),
     error: data.get(#error, or: $value.error),

@@ -305,5 +305,8 @@
         "type": "int"
       }
     }
-  }
+  },
+  "collectionsDeleteButton": "Delete collection",
+  "collectionsDeleteTitle": "Delete collection?",
+  "collectionsDeleteMessage": "The words stay. Only the collection is deleted."
 }

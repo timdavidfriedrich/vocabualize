@@ -4,7 +4,9 @@ sealed class PracticeEvent {
   const PracticeEvent();
 }
 
-class const PracticeStarted() extends PracticeEvent;
+class const PracticeStarted({
+  required final String? tagId,
+}) extends PracticeEvent;
 
 class const PracticeAnswerTyped({
   required final String text,

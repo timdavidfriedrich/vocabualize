@@ -17,5 +17,6 @@ class const Vocabulary({
   required final double ease,
   required final DateTime nextReviewAt,
   required final VocabularyImage image,
+  required final Set<String> tagIds,
   required final DateTime createdAt,
 }) with VocabularyMappable;

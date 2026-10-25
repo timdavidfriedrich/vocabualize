@@ -40,6 +40,7 @@ import 'package:shared/data/data_sources/setting_local_data_source.dart'
 import 'package:shared/data/data_sources/space_storage_data_source.dart'
     as _i753;
 import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
+import 'package:shared/data/data_sources/tag_local_data_source.dart' as _i452;
 import 'package:shared/data/data_sources/text_to_speech_data_source.dart'
     as _i820;
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart'
@@ -59,6 +60,7 @@ import 'package:shared/data/repositories/settings_repository_impl.dart'
 import 'package:shared/data/repositories/stock_image_repository_impl.dart'
     as _i645;
 import 'package:shared/data/repositories/sync_repository_impl.dart' as _i368;
+import 'package:shared/data/repositories/tag_repository_impl.dart' as _i453;
 import 'package:shared/data/repositories/text_to_speech_repository_impl.dart'
     as _i905;
 import 'package:shared/data/repositories/translation_repository_impl.dart'
@@ -78,6 +80,7 @@ import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/stock_image_repository.dart'
     as _i934;
 import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
+import 'package:shared/domain/repositories/tag_repository.dart' as _i836;
 import 'package:shared/domain/repositories/text_to_speech_repository.dart'
     as _i839;
 import 'package:shared/domain/repositories/translation_repository.dart'
@@ -167,6 +170,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
               gh<_i44.ClockDataSource>(),
               gh<_i753.SpaceStorageDataSource>(),
             ));
+    gh.factory<_i452.TagLocalDataSource>(() =>
+        _i452.TagLocalDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i523.SyncRepository>(
         () => _i368.SyncRepositoryImpl(gh<_i1034.SyncDataSource>()));
     gh.factory<_i397.VocabularyLocalDataSource>(() =>
@@ -198,6 +203,10 @@ class SharedPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i0.SettingsRepository>(() => _i921.SettingsRepositoryImpl(
           gh<_i555.SettingLocalDataSource>(),
           gh<_i394.AppInfoDataSource>(),
+        ));
+    gh.factory<_i836.TagRepository>(() => _i453.TagRepositoryImpl(
+          gh<_i452.TagLocalDataSource>(),
+          gh<_i532.ImageFileDataSource>(),
         ));
     gh.factory<_i650.LanguagePairCubit>(
         () => _i650.LanguagePairCubit(gh<_i0.SettingsRepository>()));

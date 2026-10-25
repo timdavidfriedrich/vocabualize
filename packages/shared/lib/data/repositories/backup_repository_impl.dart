@@ -47,7 +47,10 @@ class const BackupRepositoryImpl(
       final missingImages = <String>[];
       final vocabularies = <LocalBackupVocabulary>[];
       for (final row in snapshot.vocabularies) {
-        final vocabulary = row.toVocabulary(imagePaths: imagePaths);
+        final vocabulary = row.toVocabulary(
+          imagePaths: imagePaths,
+          tagIds: {...?tagIds[row.id]},
+        );
         String? imageEntryPath;
         switch (vocabulary.image) {
           case CustomImage(fullPath: final fullPath?):
