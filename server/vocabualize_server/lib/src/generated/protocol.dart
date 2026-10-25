@@ -16,7 +16,13 @@ import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart' as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _iais;
 import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart' as _izehhkf5;
+import 'package:vocabualize_server/src/generated/ai/remote_stock_image.dart' as _ietk8xz1;
 import 'package:vocabualize_server/src/generated/images/remote_image_download.dart' as _ixx56s9r;
+import 'ai/ai_quota_exceeded_exception.dart' as _ituros2n;
+import 'ai/ai_unavailable_exception.dart' as _iid9nodj;
+import 'ai/ai_usage.dart' as _i5bl2z48;
+import 'ai/remote_stock_image.dart' as _iwo8lv3v;
+import 'config/ai_config.dart' as _i3xic8o1;
 import 'config/image_storage_config.dart' as _il54hkej;
 import 'config/remote_app_config.dart' as _ia9g9wp9;
 import 'config/runtime_config.dart' as _iadewe5j;
@@ -27,6 +33,11 @@ import 'sync/local_setting.dart' as _ij5ultnt;
 import 'sync/local_tag.dart' as _ia93wqla;
 import 'sync/local_vocabulary.dart' as _ifmbxptn;
 import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
+export 'ai/ai_quota_exceeded_exception.dart';
+export 'ai/ai_unavailable_exception.dart';
+export 'ai/ai_usage.dart';
+export 'ai/remote_stock_image.dart';
+export 'config/ai_config.dart';
 export 'config/image_storage_config.dart';
 export 'config/remote_app_config.dart';
 export 'config/runtime_config.dart';
@@ -51,6 +62,11 @@ class Protocol extends _is.DatabaseSerializationManager
   _is.ProtocolDeserialization get deserializationMetadata => _is.ProtocolDeserialization.cached(
     this,
     types: const [
+      _is.getType<_ituros2n.AiQuotaExceededException>,
+      _is.getType<_iid9nodj.AiUnavailableException>,
+      _is.getType<_i5bl2z48.AiUsage>,
+      _is.getType<_iwo8lv3v.RemoteStockImage>,
+      _is.getType<_i3xic8o1.AiConfig>,
       _is.getType<_il54hkej.ImageStorageConfig>,
       _is.getType<_ia9g9wp9.RemoteAppConfig>,
       _is.getType<_iadewe5j.RuntimeConfig>,
@@ -61,6 +77,11 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_ia93wqla.LocalTag>,
       _is.getType<_ifmbxptn.LocalVocabulary>,
       _is.getType<_iagtk9m4.LocalVocabularyTag>,
+      _is.getType<_ituros2n.AiQuotaExceededException?>,
+      _is.getType<_iid9nodj.AiUnavailableException?>,
+      _is.getType<_i5bl2z48.AiUsage?>,
+      _is.getType<_iwo8lv3v.RemoteStockImage?>,
+      _is.getType<_i3xic8o1.AiConfig?>,
       _is.getType<_il54hkej.ImageStorageConfig?>,
       _is.getType<_ia9g9wp9.RemoteAppConfig?>,
       _is.getType<_iadewe5j.RuntimeConfig?>,
@@ -71,6 +92,7 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_ia93wqla.LocalTag?>,
       _is.getType<_ifmbxptn.LocalVocabulary?>,
       _is.getType<_iagtk9m4.LocalVocabularyTag?>,
+      _is.getType<List<_ietk8xz1.RemoteStockImage>>,
       _is.getType<List<String>>,
       _is.getType<List<_ixx56s9r.RemoteImageDownload>>,
     ],
@@ -147,6 +169,70 @@ class Protocol extends _is.DatabaseSerializationManager
             _isp.IndexElementDefinition(
               type: _isp.IndexElementDefinitionType.column,
               definition: 'localDate',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'ai_usage',
+      dartName: 'AiUsage',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'authUserId',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _isp.ColumnDefinition(
+          name: 'kind',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'status',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'ai_usage_owner_kind_created_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'authUserId',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'kind',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'createdAt',
             ),
           ],
           type: 'btree',
@@ -640,6 +726,21 @@ class Protocol extends _is.DatabaseSerializationManager
       }
     }
 
+    if (t == _ituros2n.AiQuotaExceededException) {
+      return _ituros2n.AiQuotaExceededException.fromJson(data) as T;
+    }
+    if (t == _iid9nodj.AiUnavailableException) {
+      return _iid9nodj.AiUnavailableException.fromJson(data) as T;
+    }
+    if (t == _i5bl2z48.AiUsage) {
+      return _i5bl2z48.AiUsage.fromJson(data) as T;
+    }
+    if (t == _iwo8lv3v.RemoteStockImage) {
+      return _iwo8lv3v.RemoteStockImage.fromJson(data) as T;
+    }
+    if (t == _i3xic8o1.AiConfig) {
+      return _i3xic8o1.AiConfig.fromJson(data) as T;
+    }
     if (t == _il54hkej.ImageStorageConfig) {
       return _il54hkej.ImageStorageConfig.fromJson(data) as T;
     }
@@ -669,6 +770,21 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (t == _iagtk9m4.LocalVocabularyTag) {
       return _iagtk9m4.LocalVocabularyTag.fromJson(data) as T;
+    }
+    if (t == _is.getType<_ituros2n.AiQuotaExceededException?>()) {
+      return (data != null ? _ituros2n.AiQuotaExceededException.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_iid9nodj.AiUnavailableException?>()) {
+      return (data != null ? _iid9nodj.AiUnavailableException.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i5bl2z48.AiUsage?>()) {
+      return (data != null ? _i5bl2z48.AiUsage.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_iwo8lv3v.RemoteStockImage?>()) {
+      return (data != null ? _iwo8lv3v.RemoteStockImage.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i3xic8o1.AiConfig?>()) {
+      return (data != null ? _i3xic8o1.AiConfig.fromJson(data) : null) as T;
     }
     if (t == _is.getType<_il54hkej.ImageStorageConfig?>()) {
       return (data != null ? _il54hkej.ImageStorageConfig.fromJson(data) : null) as T;
@@ -700,6 +816,9 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _is.getType<_iagtk9m4.LocalVocabularyTag?>()) {
       return (data != null ? _iagtk9m4.LocalVocabularyTag.fromJson(data) : null) as T;
     }
+    if (t == List<_ietk8xz1.RemoteStockImage>) {
+      return (data as List).map((e) => deserialize<_ietk8xz1.RemoteStockImage>(e)).toList() as T;
+    }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
@@ -720,6 +839,11 @@ class Protocol extends _is.DatabaseSerializationManager
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
+      _ituros2n.AiQuotaExceededException => 'AiQuotaExceededException',
+      _iid9nodj.AiUnavailableException => 'AiUnavailableException',
+      _i5bl2z48.AiUsage => 'AiUsage',
+      _iwo8lv3v.RemoteStockImage => 'RemoteStockImage',
+      _i3xic8o1.AiConfig => 'AiConfig',
       _il54hkej.ImageStorageConfig => 'ImageStorageConfig',
       _ia9g9wp9.RemoteAppConfig => 'RemoteAppConfig',
       _iadewe5j.RuntimeConfig => 'RuntimeConfig',
@@ -744,6 +868,16 @@ class Protocol extends _is.DatabaseSerializationManager
     }
 
     switch (data) {
+      case _ituros2n.AiQuotaExceededException():
+        return 'AiQuotaExceededException';
+      case _iid9nodj.AiUnavailableException():
+        return 'AiUnavailableException';
+      case _i5bl2z48.AiUsage():
+        return 'AiUsage';
+      case _iwo8lv3v.RemoteStockImage():
+        return 'RemoteStockImage';
+      case _i3xic8o1.AiConfig():
+        return 'AiConfig';
       case _il54hkej.ImageStorageConfig():
         return 'ImageStorageConfig';
       case _ia9g9wp9.RemoteAppConfig():
@@ -789,6 +923,21 @@ class Protocol extends _is.DatabaseSerializationManager
     var dataClassName = data['className'];
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'AiQuotaExceededException') {
+      return deserialize<_ituros2n.AiQuotaExceededException>(data['data']);
+    }
+    if (dataClassName == 'AiUnavailableException') {
+      return deserialize<_iid9nodj.AiUnavailableException>(data['data']);
+    }
+    if (dataClassName == 'AiUsage') {
+      return deserialize<_i5bl2z48.AiUsage>(data['data']);
+    }
+    if (dataClassName == 'RemoteStockImage') {
+      return deserialize<_iwo8lv3v.RemoteStockImage>(data['data']);
+    }
+    if (dataClassName == 'AiConfig') {
+      return deserialize<_i3xic8o1.AiConfig>(data['data']);
     }
     if (dataClassName == 'ImageStorageConfig') {
       return deserialize<_il54hkej.ImageStorageConfig>(data['data']);
@@ -872,6 +1021,8 @@ class Protocol extends _is.DatabaseSerializationManager
       }
     }
     switch (t) {
+      case _i5bl2z48.AiUsage:
+        return _i5bl2z48.AiUsage.t;
       case _i3kglx6m.StoredImage:
         return _i3kglx6m.StoredImage.t;
       case _ilpzzhur.LocalActivity:

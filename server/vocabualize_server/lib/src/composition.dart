@@ -1,17 +1,52 @@
+import 'package:http/http.dart' as http;
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_cloud_storage_s3_compat/serverpod_cloud_storage_s3_compat.dart';
 
 import 'adapters/public_link_s3_client.dart';
+import 'adapters/stock_images/echo_stock_image_provider.dart';
+import 'adapters/stock_images/pexels_stock_image_provider.dart';
+import 'adapters/stock_images/stock_image_provider.dart';
+import 'adapters/translation/deepl_translation_provider.dart';
+import 'adapters/translation/echo_translation_provider.dart';
+import 'adapters/translation/translation_provider.dart';
 import 'domain/config_source.dart';
 import 'generated/protocol.dart';
 
 const imageStorageId = "images";
+
+const _deeplProvider = "deepl";
+const _pexelsProvider = "pexels";
+const _echoProvider = "echo";
+
+final _httpClient = http.Client();
 
 const _garageProvider = "garage";
 const _databaseProvider = "database";
 const _garageServiceName = "Garage";
 
 class const Composition() {
+  TranslationProvider translationProvider() {
+    final ai = const ConfigSource().read().ai;
+    return switch (ai.translationProvider) {
+      _deeplProvider => DeeplTranslationProvider(
+        _httpClient,
+        _password("deeplApiKey"),
+        ai.englishTarget,
+      ),
+      _echoProvider => const EchoTranslationProvider(),
+      final name => throw StateError("Unknown ai.translationProvider \"$name\" in app_config.yaml"),
+    };
+  }
+
+  StockImageProvider stockImageProvider() {
+    final ai = const ConfigSource().read().ai;
+    return switch (ai.stockImageProvider) {
+      _pexelsProvider => PexelsStockImageProvider(_httpClient, _password("pexelsApiKey")),
+      _echoProvider => const EchoStockImageProvider(),
+      final name => throw StateError("Unknown ai.stockImageProvider \"$name\" in app_config.yaml"),
+    };
+  }
+
   CloudStorage imageStorage() {
     final images = const ConfigSource().read().images;
     return switch (images.provider) {

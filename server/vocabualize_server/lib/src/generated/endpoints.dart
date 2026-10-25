@@ -16,6 +16,7 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _ia
 import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart' as _izehhkf5;
 import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
+import '../endpoints/ai_endpoint.dart' as _igsjf4zh;
 import '../endpoints/config_endpoint.dart' as _i74a5xur;
 import '../endpoints/image_endpoint.dart' as _iu0td00j;
 
@@ -33,6 +34,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'jwtRefresh',
+          null,
+        ),
+      'ai': _igsjf4zh.AiEndpoint()
+        ..initialize(
+          server,
+          'ai',
           null,
         ),
       'config': _i74a5xur.ConfigEndpoint()
@@ -140,6 +147,66 @@ class Endpoints extends _is.EndpointDispatch {
                     session,
                     refreshToken: params['refreshToken'],
                   ),
+        ),
+      },
+    );
+    connectors['ai'] = _is.EndpointConnector(
+      name: 'ai',
+      endpoint: endpoints['ai']!,
+      methodConnectors: {
+        'translate': _is.MethodConnector(
+          name: 'translate',
+          params: {
+            'text': _is.ParameterDescription(
+              name: 'text',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'sourceLanguage': _is.ParameterDescription(
+              name: 'sourceLanguage',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'targetLanguage': _is.ParameterDescription(
+              name: 'targetLanguage',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['ai'] as _igsjf4zh.AiEndpoint).translate(
+                session,
+                params['text'],
+                params['sourceLanguage'],
+                params['targetLanguage'],
+              ),
+        ),
+        'searchStockImages': _is.MethodConnector(
+          name: 'searchStockImages',
+          params: {
+            'query': _is.ParameterDescription(
+              name: 'query',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'language': _is.ParameterDescription(
+              name: 'language',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['ai'] as _igsjf4zh.AiEndpoint).searchStockImages(
+                session,
+                params['query'],
+                params['language'],
+              ),
         ),
       },
     );

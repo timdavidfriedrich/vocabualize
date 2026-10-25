@@ -1,0 +1,13 @@
+class: AiUsage
+table: ai_usage
+serverOnly: true
+
+fields:
+  authUserId: UuidValue
+  kind: String
+  status: String
+  createdAt: DateTime
+
+indexes:
+  ai_usage_owner_kind_created_idx:
+    fields: authUserId, kind, createdAt

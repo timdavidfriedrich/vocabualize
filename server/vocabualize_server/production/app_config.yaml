@@ -11,3 +11,12 @@ images:
   region: garage
   endpoint: http://garage:3900
   publicEndpoint: https://vocabualize-files.timdavidfriedrich.de
+
+ai:
+  enabled: true
+  translationProvider: deepl
+  stockImageProvider: pexels
+  translationsPerDay: 100
+  stockSearchesPerDay: 100
+  maxTextLength: 100
+  englishTarget: EN-US

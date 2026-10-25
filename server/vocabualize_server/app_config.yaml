@@ -11,3 +11,12 @@ images:
   region: garage
   endpoint: http://localhost:3900
   publicEndpoint: http://localhost:3900
+
+ai:
+  enabled: true
+  translationProvider: deepl
+  stockImageProvider: pexels
+  translationsPerDay: 100
+  stockSearchesPerDay: 100
+  maxTextLength: 100
+  englishTarget: EN-US

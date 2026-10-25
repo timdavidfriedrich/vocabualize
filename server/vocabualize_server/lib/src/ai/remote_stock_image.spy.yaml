@@ -1,0 +1,8 @@
+class: RemoteStockImage
+
+fields:
+  id: String
+  url: String
+  thumbUrl: String
+  photographer: String?
+  photographerUrl: String?

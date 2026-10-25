@@ -5,3 +5,4 @@ fields:
   version: int
   client: RemoteAppConfig
   images: ImageStorageConfig
+  ai: AiConfig

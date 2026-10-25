@@ -1,0 +1,11 @@
+class: AiConfig
+serverOnly: true
+
+fields:
+  enabled: bool
+  translationProvider: String
+  stockImageProvider: String
+  translationsPerDay: int
+  stockSearchesPerDay: int
+  maxTextLength: int
+  englishTarget: String

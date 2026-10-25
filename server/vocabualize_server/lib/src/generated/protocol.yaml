@@ -4,6 +4,9 @@ googleIdp:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
+ai:
+  - translate:
+  - searchStockImages:
 config:
   - fetch:
   - serverTime:

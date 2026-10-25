@@ -20,6 +20,8 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 import 'package:serverpod_database/serverpod_database.dart' as _isd;
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart'
     as _ipulbpi2;
+import 'package:vocabualize_client/src/protocol/ai/remote_stock_image.dart'
+    as _i11dp5nn;
 import 'package:vocabualize_client/src/protocol/config/remote_app_config.dart'
     as _iregoumn;
 import 'package:vocabualize_client/src/protocol/images/remote_image_download.dart'
@@ -120,6 +122,40 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
         {'refreshToken': refreshToken},
         authenticated: false,
       );
+}
+
+/// {@category Endpoint}
+class EndpointAi extends _isc.EndpointRef {
+  EndpointAi(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'ai';
+
+  _ida.Future<String> translate(
+    String text,
+    String sourceLanguage,
+    String targetLanguage,
+  ) => caller.callServerEndpoint<String>(
+    'ai',
+    'translate',
+    {
+      'text': text,
+      'sourceLanguage': sourceLanguage,
+      'targetLanguage': targetLanguage,
+    },
+  );
+
+  _ida.Future<List<_i11dp5nn.RemoteStockImage>> searchStockImages(
+    String query,
+    String language,
+  ) => caller.callServerEndpoint<List<_i11dp5nn.RemoteStockImage>>(
+    'ai',
+    'searchStockImages',
+    {
+      'query': query,
+      'language': language,
+    },
+  );
 }
 
 /// {@category Endpoint}
@@ -244,6 +280,7 @@ class Client extends _isc.ServerpodClientShared {
        ) {
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
+    ai = EndpointAi(this);
     config = EndpointConfig(this);
     image = EndpointImage(this);
     modules = Modules(this);
@@ -252,6 +289,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointGoogleIdp googleIdp;
 
   late final EndpointJwtRefresh jwtRefresh;
+
+  late final EndpointAi ai;
 
   late final EndpointConfig config;
 
@@ -263,6 +302,7 @@ class Client extends _isc.ServerpodClientShared {
   Map<String, _isc.EndpointRef> get endpointRefLookup => {
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
+    'ai': ai,
     'config': config,
     'image': image,
   };

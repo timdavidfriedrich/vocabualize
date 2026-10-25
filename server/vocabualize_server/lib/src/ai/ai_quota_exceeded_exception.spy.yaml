@@ -1,0 +1,5 @@
+exception: AiQuotaExceededException
+
+fields:
+  kind: String
+  limit: int

@@ -19,8 +19,13 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 import 'package:serverpod_database/serverpod_database.dart' as _isd;
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart'
     as _ipulbpi2;
+import 'package:vocabualize_client/src/protocol/ai/remote_stock_image.dart'
+    as _i11dp5nn;
 import 'package:vocabualize_client/src/protocol/images/remote_image_download.dart'
     as _ixnafqut;
+import 'ai/ai_quota_exceeded_exception.dart' as _ituros2n;
+import 'ai/ai_unavailable_exception.dart' as _iid9nodj;
+import 'ai/remote_stock_image.dart' as _iwo8lv3v;
 import 'config/remote_app_config.dart' as _ia9g9wp9;
 import 'images/remote_image_download.dart' as _i35otcr0;
 import 'sync/local_activity.dart' as _ilpzzhur;
@@ -28,6 +33,9 @@ import 'sync/local_setting.dart' as _ij5ultnt;
 import 'sync/local_tag.dart' as _ia93wqla;
 import 'sync/local_vocabulary.dart' as _ifmbxptn;
 import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
+export 'ai/ai_quota_exceeded_exception.dart';
+export 'ai/ai_unavailable_exception.dart';
+export 'ai/remote_stock_image.dart';
 export 'config/remote_app_config.dart';
 export 'images/remote_image_download.dart';
 export 'sync/local_activity.dart';
@@ -51,6 +59,9 @@ class Protocol extends _isd.DatabaseSerializationManager
       _isc.ProtocolDeserialization.cached(
         this,
         types: const [
+          _isc.getType<_ituros2n.AiQuotaExceededException>,
+          _isc.getType<_iid9nodj.AiUnavailableException>,
+          _isc.getType<_iwo8lv3v.RemoteStockImage>,
           _isc.getType<_ia9g9wp9.RemoteAppConfig>,
           _isc.getType<_i35otcr0.RemoteImageDownload>,
           _isc.getType<_ilpzzhur.LocalActivity>,
@@ -58,6 +69,9 @@ class Protocol extends _isd.DatabaseSerializationManager
           _isc.getType<_ia93wqla.LocalTag>,
           _isc.getType<_ifmbxptn.LocalVocabulary>,
           _isc.getType<_iagtk9m4.LocalVocabularyTag>,
+          _isc.getType<_ituros2n.AiQuotaExceededException?>,
+          _isc.getType<_iid9nodj.AiUnavailableException?>,
+          _isc.getType<_iwo8lv3v.RemoteStockImage?>,
           _isc.getType<_ia9g9wp9.RemoteAppConfig?>,
           _isc.getType<_i35otcr0.RemoteImageDownload?>,
           _isc.getType<_ilpzzhur.LocalActivity?>,
@@ -65,6 +79,7 @@ class Protocol extends _isd.DatabaseSerializationManager
           _isc.getType<_ia93wqla.LocalTag?>,
           _isc.getType<_ifmbxptn.LocalVocabulary?>,
           _isc.getType<_iagtk9m4.LocalVocabularyTag?>,
+          _isc.getType<List<_i11dp5nn.RemoteStockImage>>,
           _isc.getType<List<String>>,
           _isc.getType<List<_ixnafqut.RemoteImageDownload>>,
         ],
@@ -571,6 +586,15 @@ class Protocol extends _isd.DatabaseSerializationManager
       }
     }
 
+    if (t == _ituros2n.AiQuotaExceededException) {
+      return _ituros2n.AiQuotaExceededException.fromJson(data) as T;
+    }
+    if (t == _iid9nodj.AiUnavailableException) {
+      return _iid9nodj.AiUnavailableException.fromJson(data) as T;
+    }
+    if (t == _iwo8lv3v.RemoteStockImage) {
+      return _iwo8lv3v.RemoteStockImage.fromJson(data) as T;
+    }
     if (t == _ia9g9wp9.RemoteAppConfig) {
       return _ia9g9wp9.RemoteAppConfig.fromJson(data) as T;
     }
@@ -591,6 +615,22 @@ class Protocol extends _isd.DatabaseSerializationManager
     }
     if (t == _iagtk9m4.LocalVocabularyTag) {
       return _iagtk9m4.LocalVocabularyTag.fromJson(data) as T;
+    }
+    if (t == _isc.getType<_ituros2n.AiQuotaExceededException?>()) {
+      return (data != null
+              ? _ituros2n.AiQuotaExceededException.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_iid9nodj.AiUnavailableException?>()) {
+      return (data != null
+              ? _iid9nodj.AiUnavailableException.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_iwo8lv3v.RemoteStockImage?>()) {
+      return (data != null ? _iwo8lv3v.RemoteStockImage.fromJson(data) : null)
+          as T;
     }
     if (t == _isc.getType<_ia9g9wp9.RemoteAppConfig?>()) {
       return (data != null ? _ia9g9wp9.RemoteAppConfig.fromJson(data) : null)
@@ -620,6 +660,12 @@ class Protocol extends _isd.DatabaseSerializationManager
       return (data != null ? _iagtk9m4.LocalVocabularyTag.fromJson(data) : null)
           as T;
     }
+    if (t == List<_i11dp5nn.RemoteStockImage>) {
+      return (data as List)
+              .map((e) => deserialize<_i11dp5nn.RemoteStockImage>(e))
+              .toList()
+          as T;
+    }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
@@ -643,6 +689,9 @@ class Protocol extends _isd.DatabaseSerializationManager
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
+      _ituros2n.AiQuotaExceededException => 'AiQuotaExceededException',
+      _iid9nodj.AiUnavailableException => 'AiUnavailableException',
+      _iwo8lv3v.RemoteStockImage => 'RemoteStockImage',
       _ia9g9wp9.RemoteAppConfig => 'RemoteAppConfig',
       _i35otcr0.RemoteImageDownload => 'RemoteImageDownload',
       _ilpzzhur.LocalActivity => 'LocalActivity',
@@ -664,6 +713,12 @@ class Protocol extends _isd.DatabaseSerializationManager
     }
 
     switch (data) {
+      case _ituros2n.AiQuotaExceededException():
+        return 'AiQuotaExceededException';
+      case _iid9nodj.AiUnavailableException():
+        return 'AiUnavailableException';
+      case _iwo8lv3v.RemoteStockImage():
+        return 'RemoteStockImage';
       case _ia9g9wp9.RemoteAppConfig():
         return 'RemoteAppConfig';
       case _i35otcr0.RemoteImageDownload():
@@ -705,6 +760,15 @@ class Protocol extends _isd.DatabaseSerializationManager
     var dataClassName = data['className'];
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'AiQuotaExceededException') {
+      return deserialize<_ituros2n.AiQuotaExceededException>(data['data']);
+    }
+    if (dataClassName == 'AiUnavailableException') {
+      return deserialize<_iid9nodj.AiUnavailableException>(data['data']);
+    }
+    if (dataClassName == 'RemoteStockImage') {
+      return deserialize<_iwo8lv3v.RemoteStockImage>(data['data']);
     }
     if (dataClassName == 'RemoteAppConfig') {
       return deserialize<_ia9g9wp9.RemoteAppConfig>(data['data']);

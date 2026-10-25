@@ -33,6 +33,7 @@ RuntimeConfig _parse(String source) {
   final version = _intAt(root["version"], "version");
   final client = _mapAt(root["client"], "client");
   final images = _mapAt(root["images"], "images");
+  final ai = _mapAt(root["ai"], "ai");
   return RuntimeConfig(
     version: version,
     client: RemoteAppConfig(
@@ -50,6 +51,15 @@ RuntimeConfig _parse(String source) {
       region: _stringAt(images["region"], "images.region"),
       endpoint: _stringAt(images["endpoint"], "images.endpoint"),
       publicEndpoint: _stringAt(images["publicEndpoint"], "images.publicEndpoint"),
+    ),
+    ai: AiConfig(
+      enabled: _boolAt(ai["enabled"], "ai.enabled"),
+      translationProvider: _stringAt(ai["translationProvider"], "ai.translationProvider"),
+      stockImageProvider: _stringAt(ai["stockImageProvider"], "ai.stockImageProvider"),
+      translationsPerDay: _intAt(ai["translationsPerDay"], "ai.translationsPerDay"),
+      stockSearchesPerDay: _intAt(ai["stockSearchesPerDay"], "ai.stockSearchesPerDay"),
+      maxTextLength: _intAt(ai["maxTextLength"], "ai.maxTextLength"),
+      englishTarget: _stringAt(ai["englishTarget"], "ai.englishTarget"),
     ),
   );
 }

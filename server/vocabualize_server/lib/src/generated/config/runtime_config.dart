@@ -12,6 +12,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:vocabualize_server/src/generated/protocol.dart' as _i935iz7n;
+import '../config/ai_config.dart' as _i6mey862;
 import '../config/image_storage_config.dart' as _iillbwio;
 import '../config/remote_app_config.dart' as _ig8hny3m;
 
@@ -20,12 +21,14 @@ abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSeria
     required this.version,
     required this.client,
     required this.images,
+    required this.ai,
   });
 
   factory RuntimeConfig({
     required int version,
     required _ig8hny3m.RemoteAppConfig client,
     required _iillbwio.ImageStorageConfig images,
+    required _i6mey862.AiConfig ai,
   }) = _RuntimeConfigImpl;
 
   factory RuntimeConfig.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -37,6 +40,7 @@ abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSeria
       images: _i935iz7n.Protocol().deserialize<_iillbwio.ImageStorageConfig>(
         jsonSerialization['images'],
       ),
+      ai: _i935iz7n.Protocol().deserialize<_i6mey862.AiConfig>(jsonSerialization['ai']),
     );
   }
 
@@ -46,6 +50,8 @@ abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSeria
 
   _iillbwio.ImageStorageConfig images;
 
+  _i6mey862.AiConfig ai;
+
   /// Returns a shallow copy of this [RuntimeConfig]
   /// with some or all fields replaced by the given arguments.
   @_is.useResult
@@ -53,6 +59,7 @@ abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSeria
     int? version,
     _ig8hny3m.RemoteAppConfig? client,
     _iillbwio.ImageStorageConfig? images,
+    _i6mey862.AiConfig? ai,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -61,6 +68,7 @@ abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSeria
       'version': version,
       'client': client.toJson(),
       'images': images.toJson(),
+      'ai': ai.toJson(),
     };
   }
 
@@ -80,10 +88,12 @@ class _RuntimeConfigImpl extends RuntimeConfig {
     required int version,
     required _ig8hny3m.RemoteAppConfig client,
     required _iillbwio.ImageStorageConfig images,
+    required _i6mey862.AiConfig ai,
   }) : super._(
          version: version,
          client: client,
          images: images,
+         ai: ai,
        );
 
   /// Returns a shallow copy of this [RuntimeConfig]
@@ -94,11 +104,13 @@ class _RuntimeConfigImpl extends RuntimeConfig {
     int? version,
     _ig8hny3m.RemoteAppConfig? client,
     _iillbwio.ImageStorageConfig? images,
+    _i6mey862.AiConfig? ai,
   }) {
     return RuntimeConfig(
       version: version ?? this.version,
       client: client ?? this.client.copyWith(),
       images: images ?? this.images.copyWith(),
+      ai: ai ?? this.ai.copyWith(),
     );
   }
 }

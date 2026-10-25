@@ -1,0 +1,4 @@
+exception: AiUnavailableException
+
+fields:
+  reason: String
