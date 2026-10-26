@@ -5,6 +5,7 @@ import 'package:vocabualize_client/vocabualize_client.dart';
 const _translationKind = "translation";
 const _stockSearchKind = "stockSearch";
 const _imageLabelingKind = "imageLabeling";
+const _reportLimited = "limited";
 
 extension ErrorExtensions on Object {
   AppError toAppError() => switch (this) {
@@ -19,6 +20,8 @@ extension ErrorExtensions on Object {
       ImageLabelingQuotaExceededError(limit),
     AiQuotaExceededException() || AiUnavailableException() => const AiUnavailableError(),
     ServerpodClientNetworkException() => const ConnectionError(),
+    ReportRejectedException(reason: _reportLimited) => const ReportLimitError(),
+    ReportRejectedException() => const ReportUnavailableError(),
     _ => UnexpectedError(toString()),
   };
 

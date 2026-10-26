@@ -108,6 +108,17 @@ class const ImageStorage() {
 
   bool isKnownVariant(String variant) => _variantSuffixes.containsKey(variant);
 
+  Future<void> deleteFiles(Session session, List<StoredImage> images) async {
+    for (final image in images) {
+      final key = _key(image.authUserId, image.imageId, image.variant);
+      try {
+        await session.storage.deleteFile(storageId: imageStorageId, path: key);
+      } on Object catch (error) {
+        session.log("Deleting image $key failed: $error", level: LogLevel.warning);
+      }
+    }
+  }
+
   String _key(UuidValue authUserId, UuidValue imageId, String variant) =>
       "$_userPrefix/${authUserId.uuid}/${imageId.uuid}${_variantSuffixes[variant]}$_imageExtension";
 }

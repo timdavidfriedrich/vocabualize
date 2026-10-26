@@ -231,9 +231,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aucun objet n\'a pu être reconnu. Veuillez réessayer plus tard.';
 
   @override
-  String get reportBugTitle => 'Signaler un bug';
-
-  @override
   String get reportTranslationTitle => 'Traduction erronée';
 
   @override
@@ -281,11 +278,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsTargetLanguageHint => 'La langue que vous apprenez';
 
   @override
-  String get settingsNotificationsTitle => 'Activer/désactiver les notifications';
-
-  @override
-  String get settingsNotificationsHint =>
-      'Ouvrir les paramètres système de l\'application pour gérer';
+  String get settingsNotificationsTitle => 'Notifications';
 
   @override
   String vocabularyReappearsInMinutes(int count) {
@@ -332,9 +325,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get detailsReplaceButton => 'Remplacer';
-
-  @override
-  String get reportBugDescriptionHint => 'Décrivez le bug...';
 
   @override
   String get settingsAccountTitle => 'Compte';
@@ -683,4 +673,108 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get settingsSignOutOfflineMessage =>
       'La déconnexion nécessite une connexion internet, afin que vos dernières modifications soient d\'abord envoyées.';
+
+  @override
+  String get settingsLearningTitle => 'Apprentissage';
+
+  @override
+  String get settingsPracticeReminderTitle => 'Rappel d\'entraînement';
+
+  @override
+  String get settingsPracticeReminderHint => 'Seulement les jours où des mots sont à réviser';
+
+  @override
+  String get settingsReminderTimeTitle => 'Heure';
+
+  @override
+  String get settingsNotificationsBlockedMessage =>
+      'Les notifications de Vocabualize sont désactivées.';
+
+  @override
+  String get settingsOpenNotificationSettingsButton => 'Ouvrir les réglages';
+
+  @override
+  String get reminderPracticeTitle => 'C\'est l\'heure de réviser';
+
+  @override
+  String get reminderPracticeBody =>
+      'Vos mots vous attendent. Quelques minutes suffisent pour les garder en tête.';
+
+  @override
+  String get reminderPracticeChannel => 'Rappels d\'entraînement';
+
+  @override
+  String get errorReportLimit =>
+      'Vous avez envoyé plusieurs signalements récemment. Réessayez plus tard.';
+
+  @override
+  String get errorReportUnavailable =>
+      'Les signalements ne peuvent pas être envoyés pour le moment. Réessayez plus tard.';
+
+  @override
+  String get reportFeedbackTitle => 'Avis et bugs';
+
+  @override
+  String get reportFeedbackMessage =>
+      'Dites-nous ce qui vous plaît, ce qui manque ou ce qui n\'a pas fonctionné.';
+
+  @override
+  String get reportFeedbackFieldHint => 'Votre message...';
+
+  @override
+  String get reportFeedbackContextHint =>
+      'Envoyé avec : version de l\'app, version d\'Android, langue de l\'app et votre paire de langues.';
+
+  @override
+  String get reportSendButton => 'Envoyer';
+
+  @override
+  String get reportFeedbackSentMessage => 'Merci ! Votre message a été envoyé.';
+
+  @override
+  String get reportTranslationSentMessage => 'Merci ! La traduction a été signalée.';
+
+  @override
+  String get reportOfflineMessage => 'L\'envoi nécessite une connexion internet.';
+
+  @override
+  String get settingsFeedbackButton => 'Avis et bugs';
+
+  @override
+  String get settingsFeedbackHint => 'Idées, problèmes ou questions';
+
+  @override
+  String get settingsDeleteAccountButton => 'Supprimer le compte';
+
+  @override
+  String get settingsDeleteDataButton => 'Supprimer toutes les données';
+
+  @override
+  String get settingsDeleteAccountTitle => 'Supprimer le compte ?';
+
+  @override
+  String get settingsDeleteAccountMessage =>
+      'Cela supprime définitivement votre compte et tout son contenu sur tous vos appareils : mots, photos, collections et progression. Cette action est irréversible.';
+
+  @override
+  String get settingsDeleteDataTitle => 'Supprimer toutes les données ?';
+
+  @override
+  String get settingsDeleteDataMessage =>
+      'Cela supprime définitivement tous les mots, photos, collections et la progression sur ce téléphone. Cette action est irréversible.';
+
+  @override
+  String get settingsDeleteConfirmWord => 'SUPPRIMER';
+
+  @override
+  String settingsDeleteConfirmHint(String word) {
+    return 'Saisissez $word pour confirmer';
+  }
+
+  @override
+  String get settingsDeleteConfirmButton => 'Supprimer';
+
+  @override
+  String get settingsDeleteAccountOfflineMessage =>
+      'La suppression de votre compte nécessite une connexion internet.';
 }

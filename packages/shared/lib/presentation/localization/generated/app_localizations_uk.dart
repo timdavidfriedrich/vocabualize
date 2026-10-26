@@ -231,9 +231,6 @@ class AppLocalizationsUk extends AppLocalizations {
       'Жодних об\'єктів не розпізнано. Будь ласка, спробуйте пізніше.';
 
   @override
-  String get reportBugTitle => 'Повідомити про помилку';
-
-  @override
   String get reportTranslationTitle => 'Невірний переклад';
 
   @override
@@ -280,10 +277,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsTargetLanguageHint => 'Мова, яку ви вивчаєте';
 
   @override
-  String get settingsNotificationsTitle => 'Перемикання сповіщень';
-
-  @override
-  String get settingsNotificationsHint => 'Відкрийте налаштування системи для керування';
+  String get settingsNotificationsTitle => 'Сповіщення';
 
   @override
   String vocabularyReappearsInMinutes(int count) {
@@ -336,9 +330,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get detailsReplaceButton => 'Замінити';
-
-  @override
-  String get reportBugDescriptionHint => 'Опишіть помилку...';
 
   @override
   String get settingsAccountTitle => 'Обліковий запис';
@@ -699,4 +690,104 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get settingsSignOutOfflineMessage =>
       'Для виходу потрібне підключення до інтернету, щоб спершу завантажити ваші останні зміни.';
+
+  @override
+  String get settingsLearningTitle => 'Навчання';
+
+  @override
+  String get settingsPracticeReminderTitle => 'Нагадування про практику';
+
+  @override
+  String get settingsPracticeReminderHint => 'Лише в дні, коли є слова для практики';
+
+  @override
+  String get settingsReminderTimeTitle => 'Час';
+
+  @override
+  String get settingsNotificationsBlockedMessage => 'Сповіщення для Vocabualize вимкнено.';
+
+  @override
+  String get settingsOpenNotificationSettingsButton => 'Відкрити налаштування';
+
+  @override
+  String get reminderPracticeTitle => 'Час практикуватися';
+
+  @override
+  String get reminderPracticeBody => 'Ваші слова чекають. Кілька хвилин допоможуть їх не забути.';
+
+  @override
+  String get reminderPracticeChannel => 'Нагадування про практику';
+
+  @override
+  String get errorReportLimit => 'Ви нещодавно надіслали кілька звітів. Спробуйте пізніше.';
+
+  @override
+  String get errorReportUnavailable => 'Звіти зараз неможливо надіслати. Спробуйте пізніше.';
+
+  @override
+  String get reportFeedbackTitle => 'Відгуки та помилки';
+
+  @override
+  String get reportFeedbackMessage =>
+      'Розкажіть, що вам подобається, чого бракує або що пішло не так.';
+
+  @override
+  String get reportFeedbackFieldHint => 'Ваше повідомлення...';
+
+  @override
+  String get reportFeedbackContextHint =>
+      'Також надсилаються: версія застосунку, версія Android, мова застосунку та ваша мовна пара.';
+
+  @override
+  String get reportSendButton => 'Надіслати';
+
+  @override
+  String get reportFeedbackSentMessage => 'Дякуємо! Ваше повідомлення надіслано.';
+
+  @override
+  String get reportTranslationSentMessage => 'Дякуємо! Про переклад повідомлено.';
+
+  @override
+  String get reportOfflineMessage => 'Для надсилання потрібне підключення до інтернету.';
+
+  @override
+  String get settingsFeedbackButton => 'Відгуки та помилки';
+
+  @override
+  String get settingsFeedbackHint => 'Ідеї, проблеми або запитання';
+
+  @override
+  String get settingsDeleteAccountButton => 'Видалити обліковий запис';
+
+  @override
+  String get settingsDeleteDataButton => 'Видалити всі дані';
+
+  @override
+  String get settingsDeleteAccountTitle => 'Видалити обліковий запис?';
+
+  @override
+  String get settingsDeleteAccountMessage =>
+      'Це назавжди видалить ваш обліковий запис і все в ньому на всіх ваших пристроях: слова, фото, колекції та прогрес. Цю дію не можна скасувати.';
+
+  @override
+  String get settingsDeleteDataTitle => 'Видалити всі дані?';
+
+  @override
+  String get settingsDeleteDataMessage =>
+      'Це назавжди видалить усі слова, фото, колекції та прогрес на цьому телефоні. Цю дію не можна скасувати.';
+
+  @override
+  String get settingsDeleteConfirmWord => 'ВИДАЛИТИ';
+
+  @override
+  String settingsDeleteConfirmHint(String word) {
+    return 'Введіть $word, щоб підтвердити';
+  }
+
+  @override
+  String get settingsDeleteConfirmButton => 'Видалити';
+
+  @override
+  String get settingsDeleteAccountOfflineMessage =>
+      'Для видалення облікового запису потрібне підключення до інтернету.';
 }

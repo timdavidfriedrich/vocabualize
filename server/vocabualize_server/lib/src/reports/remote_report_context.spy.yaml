@@ -1,0 +1,7 @@
+class: RemoteReportContext
+
+fields:
+  appVersion: String
+  platform: String
+  appLanguage: String
+  languagePair: String

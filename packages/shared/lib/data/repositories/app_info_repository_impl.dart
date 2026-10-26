@@ -49,6 +49,16 @@ class const AppInfoRepositoryImpl(
   }
 
   @override
+  Future<AppResult<()>> openNotificationSettings() async {
+    try {
+      await _dataSource.openNotificationSettings();
+      return const Success(());
+    } on Object catch (error) {
+      return Failure(UnexpectedError(error.toString()));
+    }
+  }
+
+  @override
   Future<AppResult<()>> openInternetSettings() async {
     try {
       await _dataSource.openInternetSettings();

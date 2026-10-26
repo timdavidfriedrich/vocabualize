@@ -24,3 +24,10 @@ ai:
   maxTextLength: 100
   maxLabelingImageBytes: 150000
   englishTarget: EN-US
+
+reports:
+  enabled: true
+  perIpPerHour: 5
+  perIpPerDay: 20
+  perDay: 300
+  maxMessageLength: 2000

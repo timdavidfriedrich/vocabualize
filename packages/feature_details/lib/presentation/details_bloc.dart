@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/entities/language_pair.dart';
+import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
@@ -17,6 +18,7 @@ import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/connectivity_repository.dart';
 import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
+import 'package:shared/domain/repositories/report_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/stock_image_repository.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
@@ -43,10 +45,12 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     this._externalLinkRepository,
     this._pickImage,
     this._connectivityRepository,
+    this._reportRepository,
   ) : super(const DetailsLoading()) {
     on<DetailsNewStarted>(_onNewStarted);
     on<DetailsEditStarted>(_onEditStarted);
     on<DetailsConnectionRestored>(_onConnectionRestored);
+    on<DetailsTranslationReported>(_onTranslationReported);
     on<DetailsDuplicateResolved>(_onDuplicateResolved);
     on<DetailsSourceChanged>(_onSourceChanged);
     on<DetailsTargetChanged>(_onTargetChanged);
@@ -70,6 +74,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final ExternalLinkRepository _externalLinkRepository;
   final PickImageUseCase _pickImage;
   final ConnectivityRepository _connectivityRepository;
+  final ReportRepository _reportRepository;
 
   Future<void> _onNewStarted(DetailsNewStarted event, Emitter<DetailsState> emit) async {
     switch (await _vocabularyRepository.hasVocabularyWithSource(event.source)) {
@@ -117,6 +122,29 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           error: lookup.error,
         ),
       );
+    }
+  }
+
+  Future<void> _onTranslationReported(
+    DetailsTranslationReported event,
+    Emitter<DetailsState> emit,
+  ) async {
+    if (state case DetailsEditing(:final languages?, isBusy: false) && final editing) {
+      final busy = editing.copyWith(isBusy: true, error: null);
+      emit(busy);
+      final result = await _reportRepository.sendTranslationReport(
+        source: editing.source,
+        target: editing.target,
+        languages: languages,
+        note: event.note,
+      );
+      switch (result) {
+        case Success():
+          emit(busy.copyWith(isBusy: false, notice: DetailsNotice.translationReported));
+          emit(busy.copyWith(isBusy: false, notice: null));
+        case Failure(:final error):
+          emit(busy.copyWith(isBusy: false, error: error));
+      }
     }
   }
 
@@ -352,6 +380,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       selectedTagIds: const {},
       pendingLookup: lookup?.pending,
       isBusy: false,
+      notice: null,
       error: lookup?.error,
     );
   }
@@ -386,6 +415,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       selectedTagIds: vocabulary.tagIds,
       pendingLookup: lookup?.pending,
       isBusy: false,
+      notice: null,
       error: lookup?.error,
     );
   }
@@ -395,6 +425,10 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     LanguagePair languages, {
     required DetailsPendingLookup pending,
   }) async {
+    final searchesPhotos = !await _areImagesHidden();
+    if (pending == DetailsPendingLookup.photos && !searchesPhotos) {
+      return (translation: null, stockImages: const <StockImage>[], error: null, pending: null);
+    }
     if (!await _isConnected()) {
       return (translation: null, stockImages: const <StockImage>[], error: null, pending: pending);
     }
@@ -406,7 +440,9 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         ),
         DetailsPendingLookup.photos => Future<AppResult<String>?>.value(),
       },
-      _stockImageRepository.search(query: text, language: languages.source),
+      searchesPhotos
+          ? _stockImageRepository.search(query: text, language: languages.source)
+          : Future<AppResult<List<StockImage>>?>.value(),
     ).wait;
     final error = switch ((translation, stockImages)) {
       (Failure(:final error), _) || (_, Failure(:final error)) => error,
@@ -420,7 +456,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       },
       stockImages: switch (stockImages) {
         Success(:final data) => data,
-        Failure() => const <StockImage>[],
+        Failure() || null => const <StockImage>[],
       },
       error: isOffline ? null : error,
       pending: isOffline ? pending : null,
@@ -435,6 +471,11 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       },
     );
   }
+
+  Future<bool> _areImagesHidden() async => switch (await _settingsRepository.readPreferences()) {
+    Success(data: Preferences(:final areImagesHidden)) => areImagesHidden,
+    Failure() => false,
+  };
 
   Future<bool> _isConnected() async => switch (await _connectivityRepository.isConnected()) {
     Success(:final data) => data,

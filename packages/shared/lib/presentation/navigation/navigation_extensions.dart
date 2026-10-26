@@ -20,6 +20,8 @@ extension NavigationExtension on BuildContext {
 
   Future<void> pushSettings() => appRouter.push(const Settings());
 
+  Future<void> pushFeedback() => appRouter.push(const FeedbackForm());
+
   Future<void> pushPractice({String? tagId}) => appRouter.push(Practice(tagId: tagId));
 
   Future<void> pushCollection({required String tagId}) => appRouter.push(Collection(tagId: tagId));

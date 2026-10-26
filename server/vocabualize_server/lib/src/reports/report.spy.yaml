@@ -1,0 +1,24 @@
+class: Report
+table: report
+serverOnly: true
+
+fields:
+  kind: String
+  message: String
+  source: String?
+  target: String?
+  sourceLanguage: String?
+  targetLanguage: String?
+  appVersion: String
+  platform: String
+  appLanguage: String
+  languagePair: String
+  authUserId: UuidValue?
+  ipHash: String
+  createdAt: DateTime
+
+indexes:
+  report_ip_hash_created_idx:
+    fields: ipHash, createdAt
+  report_created_idx:
+    fields: createdAt

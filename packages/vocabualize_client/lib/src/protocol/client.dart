@@ -27,6 +27,8 @@ import 'package:vocabualize_client/src/protocol/config/remote_app_config.dart'
     as _iregoumn;
 import 'package:vocabualize_client/src/protocol/images/remote_image_download.dart'
     as _ixnafqut;
+import 'package:vocabualize_client/src/protocol/reports/remote_report_context.dart'
+    as _il7vcscz;
 import 'protocol.dart' as _il2as5qe;
 import 'sync_tables.dart' as _ii3f3u05;
 import 'package:vocabualize_client/migrations/migration_registry.dart';
@@ -123,6 +125,20 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
         {'refreshToken': refreshToken},
         authenticated: false,
       );
+}
+
+/// {@category Endpoint}
+class EndpointAccount extends _isc.EndpointRef {
+  EndpointAccount(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'account';
+
+  _ida.Future<void> delete() => caller.callServerEndpoint<void>(
+    'account',
+    'delete',
+    {},
+  );
 }
 
 /// {@category Endpoint}
@@ -250,6 +266,46 @@ class EndpointImage extends _isc.EndpointRef {
   );
 }
 
+/// {@category Endpoint}
+class EndpointReport extends _isc.EndpointRef {
+  EndpointReport(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'report';
+
+  _ida.Future<void> sendFeedback(
+    String message,
+    _il7vcscz.RemoteReportContext context,
+  ) => caller.callServerEndpoint<void>(
+    'report',
+    'sendFeedback',
+    {
+      'message': message,
+      'context': context,
+    },
+  );
+
+  _ida.Future<void> sendTranslationReport(
+    String source,
+    String target,
+    String sourceLanguage,
+    String targetLanguage,
+    String note,
+    _il7vcscz.RemoteReportContext context,
+  ) => caller.callServerEndpoint<void>(
+    'report',
+    'sendTranslationReport',
+    {
+      'source': source,
+      'target': target,
+      'sourceLanguage': sourceLanguage,
+      'targetLanguage': targetLanguage,
+      'note': note,
+      'context': context,
+    },
+  );
+}
+
 class Modules {
   Modules(Client client) {
     serverpod_auth_idp = _iaic.Caller(client);
@@ -293,9 +349,11 @@ class Client extends _isc.ServerpodClientShared {
        ) {
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
+    account = EndpointAccount(this);
     ai = EndpointAi(this);
     config = EndpointConfig(this);
     image = EndpointImage(this);
+    report = EndpointReport(this);
     modules = Modules(this);
   }
 
@@ -303,11 +361,15 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointJwtRefresh jwtRefresh;
 
+  late final EndpointAccount account;
+
   late final EndpointAi ai;
 
   late final EndpointConfig config;
 
   late final EndpointImage image;
+
+  late final EndpointReport report;
 
   late final Modules modules;
 
@@ -315,9 +377,11 @@ class Client extends _isc.ServerpodClientShared {
   Map<String, _isc.EndpointRef> get endpointRefLookup => {
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
+    'account': account,
     'ai': ai,
     'config': config,
     'image': image,
+    'report': report,
   };
 
   @override

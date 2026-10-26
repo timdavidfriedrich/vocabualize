@@ -6,24 +6,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
+import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
+import 'package:shared/domain/repositories/app_info_repository.dart';
 import 'package:shared/domain/repositories/backup_repository.dart';
+import 'package:shared/domain/repositories/reminder_repository.dart';
+import 'package:shared/domain/repositories/settings_repository.dart';
 
 @injectable
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  SettingsBloc(this._accountRepository, this._backupRepository) : super(const SettingsLoading()) {
+  SettingsBloc(
+    this._accountRepository,
+    this._backupRepository,
+    this._settingsRepository,
+    this._reminderRepository,
+    this._appInfoRepository,
+  ) : super(const SettingsLoading()) {
     on<SettingsStarted>(_onStarted);
     on<SettingsGoogleSignInRequested>(_onGoogleSignInRequested);
     on<SettingsSignOutRequested>(_onSignOutRequested);
     on<SettingsSignOutDismissed>(_onSignOutDismissed);
     on<SettingsAccountConflictResolved>(_onAccountConflictResolved);
+    on<SettingsTypeAnswerDisabledChanged>(_onTypeAnswerDisabledChanged);
+    on<SettingsImagesHiddenChanged>(_onImagesHiddenChanged);
+    on<SettingsPracticeReminderToggled>(_onPracticeReminderToggled);
+    on<SettingsPracticeReminderTimeChanged>(_onPracticeReminderTimeChanged);
+    on<SettingsNotificationSettingsOpened>(_onNotificationSettingsOpened);
+    on<SettingsDeletionRequested>(_onDeletionRequested);
     on<SettingsBackupExportRequested>(_onBackupExportRequested);
     on<SettingsBackupImportRequested>(_onBackupImportRequested);
   }
 
   final AccountRepository _accountRepository;
   final BackupRepository _backupRepository;
+  final SettingsRepository _settingsRepository;
+  final ReminderRepository _reminderRepository;
+  final AppInfoRepository _appInfoRepository;
 
   Future<void> _onStarted(SettingsStarted event, Emitter<SettingsState> emit) {
     return emit.forEach(
@@ -86,6 +105,67 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   void _onSignOutDismissed(SettingsSignOutDismissed event, Emitter<SettingsState> emit) {
     if (state case final SettingsLoaded loaded) emit(loaded.copyWith(isSignOutBlocked: false));
   }
+
+  Future<void> _onTypeAnswerDisabledChanged(
+    SettingsTypeAnswerDisabledChanged event,
+    Emitter<SettingsState> emit,
+  ) => _savePreference(emit, () => _settingsRepository.setTypeAnswerDisabled(event.isDisabled));
+
+  Future<void> _onImagesHiddenChanged(
+    SettingsImagesHiddenChanged event,
+    Emitter<SettingsState> emit,
+  ) => _savePreference(emit, () => _settingsRepository.setImagesHidden(event.areHidden));
+
+  Future<void> _onPracticeReminderToggled(
+    SettingsPracticeReminderToggled event,
+    Emitter<SettingsState> emit,
+  ) async {
+    if (event.isEnabled) await _reminderRepository.requestNotificationPermission();
+    final reminder = await _currentPracticeReminder();
+    await _savePreference(
+      emit,
+      () => _settingsRepository.setPracticeReminder(reminder.copyWith(isEnabled: event.isEnabled)),
+    );
+  }
+
+  Future<void> _onPracticeReminderTimeChanged(
+    SettingsPracticeReminderTimeChanged event,
+    Emitter<SettingsState> emit,
+  ) async {
+    final reminder = await _currentPracticeReminder();
+    await _savePreference(
+      emit,
+      () => _settingsRepository.setPracticeReminder(
+        reminder.copyWith(hour: event.hour, minute: event.minute),
+      ),
+    );
+  }
+
+  Future<void> _onNotificationSettingsOpened(
+    SettingsNotificationSettingsOpened event,
+    Emitter<SettingsState> emit,
+  ) => _savePreference(emit, _appInfoRepository.openNotificationSettings);
+
+  Future<PracticeReminder> _currentPracticeReminder() async {
+    return switch (await _settingsRepository.readPreferences()) {
+      Success(:final data) => data.practiceReminder,
+      Failure() => defaultPreferences.practiceReminder,
+    };
+  }
+
+  Future<void> _savePreference(
+    Emitter<SettingsState> emit,
+    Future<AppResult<()>> Function() save,
+  ) async {
+    if (await save() case Failure(:final error)) {
+      if (state case final SettingsLoaded loaded) emit(loaded.copyWith(error: error));
+    }
+  }
+
+  Future<void> _onDeletionRequested(
+    SettingsDeletionRequested event,
+    Emitter<SettingsState> emit,
+  ) => _runBusy(emit, _accountRepository.deleteAccount);
 
   Future<void> _onBackupExportRequested(
     SettingsBackupExportRequested event,

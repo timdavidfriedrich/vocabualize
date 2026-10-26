@@ -22,6 +22,7 @@ import 'package:shared/domain/repositories/connectivity_repository.dart'
 import 'package:shared/domain/repositories/external_link_repository.dart'
     as _i711;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
+import 'package:shared/domain/repositories/report_repository.dart' as _i522;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/stock_image_repository.dart'
     as _i934;
@@ -53,6 +54,7 @@ class FeatureDetailsPackageModule extends _i526.MicroPackageModule {
           gh<_i711.ExternalLinkRepository>(),
           gh<_i831.PickImageUseCase>(),
           gh<_i689.ConnectivityRepository>(),
+          gh<_i522.ReportRepository>(),
         ));
   }
 }

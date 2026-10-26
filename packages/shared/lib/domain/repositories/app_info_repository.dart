@@ -10,4 +10,6 @@ abstract class AppInfoRepository {
   Future<AppResult<()>> openAppSettings();
 
   Future<AppResult<()>> openInternetSettings();
+
+  Future<AppResult<()>> openNotificationSettings();
 }

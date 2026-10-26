@@ -33,7 +33,8 @@ vocabualize project, internal network: postgres · garage · serverpod · migrat
 
 6. **Start:** `docker compose -f docker-compose.prod.yaml up -d --build`. `migrate` runs first and exits; the server starts only when migrate succeeds.
 
-7. **Caddy.** Append `caddy-snippet.conf` to `~/workspaces/global-gateway/Caddyfile`, then run `docker compose -f ~/workspaces/global-gateway/docker-compose.yml restart caddy`.
+7. **Caddy.** Append `caddy-snippet.conf` to `~/workspaces/global-gateway/Caddyfile`. Merge `caddy-global-options.conf` into the Caddyfile's global options block (the first `{ … }` block; create it at the very top if there is none). Then run `docker compose -f ~/workspaces/global-gateway/docker-compose.yml restart caddy`.
+   - The global options trust only Cloudflare's ranges (from https://www.cloudflare.com/ips/), so `{client_ip}` is the visitor's real IP behind Cloudflare and the connecting IP for anyone who bypasses it. The API block then overwrites `X-Client-IP` with it, which the report limits rely on.
 
 8. **Verify.** This should answer with the `RemoteAppConfig`:
    ```bash

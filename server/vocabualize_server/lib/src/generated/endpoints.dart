@@ -15,11 +15,14 @@ import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart' as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _iais;
 import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart' as _izehhkf5;
+import 'package:vocabualize_server/src/generated/reports/remote_report_context.dart' as _ivmefvxj;
 import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
+import '../endpoints/account_endpoint.dart' as _iaho7ul5;
 import '../endpoints/ai_endpoint.dart' as _igsjf4zh;
 import '../endpoints/config_endpoint.dart' as _i74a5xur;
 import '../endpoints/image_endpoint.dart' as _iu0td00j;
+import '../endpoints/report_endpoint.dart' as _i90z2r7i;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -35,6 +38,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'jwtRefresh',
+          null,
+        ),
+      'account': _iaho7ul5.AccountEndpoint()
+        ..initialize(
+          server,
+          'account',
           null,
         ),
       'ai': _igsjf4zh.AiEndpoint()
@@ -53,6 +62,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'image',
+          null,
+        ),
+      'report': _i90z2r7i.ReportEndpoint()
+        ..initialize(
+          server,
+          'report',
           null,
         ),
     };
@@ -148,6 +163,21 @@ class Endpoints extends _is.EndpointDispatch {
                     session,
                     refreshToken: params['refreshToken'],
                   ),
+        ),
+      },
+    );
+    connectors['account'] = _is.EndpointConnector(
+      name: 'account',
+      endpoint: endpoints['account']!,
+      methodConnectors: {
+        'delete': _is.MethodConnector(
+          name: 'delete',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['account'] as _iaho7ul5.AccountEndpoint).delete(session),
         ),
       },
     );
@@ -363,6 +393,84 @@ class Endpoints extends _is.EndpointDispatch {
                 session,
                 params['imageIds'],
                 params['variant'],
+              ),
+        ),
+      },
+    );
+    connectors['report'] = _is.EndpointConnector(
+      name: 'report',
+      endpoint: endpoints['report']!,
+      methodConnectors: {
+        'sendFeedback': _is.MethodConnector(
+          name: 'sendFeedback',
+          params: {
+            'message': _is.ParameterDescription(
+              name: 'message',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'context': _is.ParameterDescription(
+              name: 'context',
+              type: _is.getType<_ivmefvxj.RemoteReportContext>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['report'] as _i90z2r7i.ReportEndpoint).sendFeedback(
+                session,
+                params['message'],
+                params['context'],
+              ),
+        ),
+        'sendTranslationReport': _is.MethodConnector(
+          name: 'sendTranslationReport',
+          params: {
+            'source': _is.ParameterDescription(
+              name: 'source',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'target': _is.ParameterDescription(
+              name: 'target',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'sourceLanguage': _is.ParameterDescription(
+              name: 'sourceLanguage',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'targetLanguage': _is.ParameterDescription(
+              name: 'targetLanguage',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'note': _is.ParameterDescription(
+              name: 'note',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'context': _is.ParameterDescription(
+              name: 'context',
+              type: _is.getType<_ivmefvxj.RemoteReportContext>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['report'] as _i90z2r7i.ReportEndpoint).sendTranslationReport(
+                session,
+                params['source'],
+                params['target'],
+                params['sourceLanguage'],
+                params['targetLanguage'],
+                params['note'],
+                params['context'],
               ),
         ),
       },

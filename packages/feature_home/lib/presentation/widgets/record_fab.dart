@@ -1,9 +1,12 @@
 import 'package:core/theme/spacing.dart';
 import 'package:feature_home/presentation/widgets/write_word_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/preferences/preferences_cubit.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 const _overlayOpacity = 0.5;
@@ -61,13 +64,19 @@ class const RecordFab({
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          _RecordFabItem(
-                            onPressed: () {
-                              toggle();
-                              context.pushScan();
+                          BlocSelector<PreferencesCubit, Preferences, bool>(
+                            selector: (preferences) => preferences.areImagesHidden,
+                            builder: (context, areImagesHidden) => switch (areImagesHidden) {
+                              true => const SizedBox.shrink(),
+                              false => _RecordFabItem(
+                                onPressed: () {
+                                  toggle();
+                                  context.pushScan();
+                                },
+                                icon: Icons.camera_alt_rounded,
+                                label: context.s.homeScanButton,
+                              ),
                             },
-                            icon: Icons.camera_alt_rounded,
-                            label: context.s.homeScanButton,
                           ),
                           _RecordFabItem(
                             onPressed: () {

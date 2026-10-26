@@ -1,0 +1,9 @@
+class: ReportsConfig
+serverOnly: true
+
+fields:
+  enabled: bool
+  perIpPerHour: int
+  perIpPerDay: int
+  perDay: int
+  maxMessageLength: int

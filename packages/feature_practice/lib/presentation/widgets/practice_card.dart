@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
+import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
+import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _solutionOpacity = 0.75;
@@ -49,54 +51,73 @@ class const PracticeCard({
       },
       builder: (context, card) => switch (card) {
         null => const SizedBox.shrink(),
-        final card => Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (card.showsLanguages)
-              Text(
-                LanguagePair(
-                  source: card.vocabulary.sourceLanguage,
-                  target: card.vocabulary.targetLanguage,
-                ).toLabel(context),
-                style: context.t.bodyLarge?.copyWith(color: context.c.outline),
-                textAlign: TextAlign.center,
-              ),
-            const SizedBox(height: Spacing.s),
-            Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(Spacing.radiusXxl),
-                    child: VocabularyImageView(
-                      image: card.vocabulary.image,
-                      variant: VocabularyImageVariant.full,
-                      displayWidth: MediaQuery.sizeOf(context).width,
-                    ),
-                  ),
-                ),
-                if (card.isSolutionShown)
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: _Solution(
-                      solution: card.vocabulary.target,
-                      typedAnswer: card.typedAnswer,
-                      grade: card.grade,
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(height: Spacing.xxl),
-            Text(
-              card.vocabulary.source,
-              style: context.t.bodyLarge,
-              maxLines: _sourceMaxLines,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
-          ],
+        final card => BlocSelector<PreferencesCubit, Preferences, bool>(
+          selector: (preferences) => preferences.areImagesHidden,
+          builder: (context, areImagesHidden) => _CardContent(
+            card: card,
+            areImagesHidden: areImagesHidden,
+          ),
         ),
       },
+    );
+  }
+}
+
+class const _CardContent({
+  required final _Card _card,
+  required final bool _areImagesHidden,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final card = _card;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (_areImagesHidden) const SizedBox(height: Spacing.xxxxl),
+        if (card.showsLanguages)
+          Text(
+            LanguagePair(
+              source: card.vocabulary.sourceLanguage,
+              target: card.vocabulary.targetLanguage,
+            ).toLabel(context),
+            style: context.t.bodyLarge?.copyWith(color: context.c.outline),
+            textAlign: TextAlign.center,
+          ),
+        const SizedBox(height: Spacing.s),
+        Stack(
+          children: [
+            if (!_areImagesHidden)
+              AspectRatio(
+                aspectRatio: 1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(Spacing.radiusXxl),
+                  child: VocabularyImageView(
+                    image: card.vocabulary.image,
+                    variant: VocabularyImageVariant.full,
+                    displayWidth: MediaQuery.sizeOf(context).width,
+                  ),
+                ),
+              ),
+            if (card.isSolutionShown)
+              AspectRatio(
+                aspectRatio: 1,
+                child: _Solution(
+                  solution: card.vocabulary.target,
+                  typedAnswer: card.typedAnswer,
+                  grade: card.grade,
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: Spacing.xxl),
+        Text(
+          card.vocabulary.source,
+          style: context.t.bodyLarge,
+          maxLines: _sourceMaxLines,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }

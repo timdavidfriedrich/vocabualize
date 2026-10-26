@@ -20,6 +20,8 @@ extension AppErrorExtensions on AppError {
     ),
     AiUnavailableError() => context.s.errorAiUnavailable,
     CameraPermissionError() => context.s.errorCameraPermission,
+    ReportLimitError() => context.s.errorReportLimit,
+    ReportUnavailableError() => context.s.errorReportUnavailable,
     CameraUnavailableError() => context.s.errorCameraUnavailable,
     UnexpectedError() => context.s.errorUnexpected,
   };

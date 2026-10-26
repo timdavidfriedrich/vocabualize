@@ -15,4 +15,6 @@ abstract class AccountRepository {
   Future<AppResult<Account?>> resolveAccountConflict({required bool keepsPreviousAccount});
 
   Future<AppResult<()>> signOut({required bool discardUnsyncedChanges});
+
+  Future<AppResult<()>> deleteAccount();
 }

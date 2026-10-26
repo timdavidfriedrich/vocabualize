@@ -230,9 +230,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Es konnten keine Objekte erkannt werden. Versuche es später erneut.';
 
   @override
-  String get reportBugTitle => 'Fehler melden';
-
-  @override
   String get reportTranslationTitle => 'Fehlerhafte Übersetzung';
 
   @override
@@ -278,10 +275,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsTargetLanguageHint => 'Die Sprache, die du lernst';
 
   @override
-  String get settingsNotificationsTitle => 'Mitteilungen (de-)aktivieren';
-
-  @override
-  String get settingsNotificationsHint => 'Öffne System-Einstellungen der App zum Verwalten';
+  String get settingsNotificationsTitle => 'Benachrichtigungen';
 
   @override
   String vocabularyReappearsInMinutes(int count) {
@@ -328,9 +322,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get detailsReplaceButton => 'Ersetzen';
-
-  @override
-  String get reportBugDescriptionHint => 'Beschreibe den Fehler...';
 
   @override
   String get settingsAccountTitle => 'Konto';
@@ -677,4 +668,107 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsSignOutOfflineMessage =>
       'Zum Abmelden brauchst du eine Internetverbindung, damit deine letzten Änderungen vorher hochgeladen werden.';
+
+  @override
+  String get settingsLearningTitle => 'Lernen';
+
+  @override
+  String get settingsPracticeReminderTitle => 'Erinnerung zum Üben';
+
+  @override
+  String get settingsPracticeReminderHint => 'Nur an Tagen, an denen Wörter zum Üben anstehen';
+
+  @override
+  String get settingsReminderTimeTitle => 'Uhrzeit';
+
+  @override
+  String get settingsNotificationsBlockedMessage =>
+      'Benachrichtigungen sind für Vocabualize ausgeschaltet.';
+
+  @override
+  String get settingsOpenNotificationSettingsButton => 'Einstellungen öffnen';
+
+  @override
+  String get reminderPracticeTitle => 'Zeit zum Üben';
+
+  @override
+  String get reminderPracticeBody => 'Deine Wörter warten. Ein paar Minuten halten sie frisch.';
+
+  @override
+  String get reminderPracticeChannel => 'Erinnerungen zum Üben';
+
+  @override
+  String get errorReportLimit =>
+      'Du hast in letzter Zeit mehrere Meldungen gesendet. Versuche es später erneut.';
+
+  @override
+  String get errorReportUnavailable =>
+      'Meldungen können gerade nicht gesendet werden. Versuche es später erneut.';
+
+  @override
+  String get reportFeedbackTitle => 'Feedback & Fehler';
+
+  @override
+  String get reportFeedbackMessage =>
+      'Erzähl uns, was dir gefällt, was fehlt oder was schiefgelaufen ist.';
+
+  @override
+  String get reportFeedbackFieldHint => 'Deine Nachricht...';
+
+  @override
+  String get reportFeedbackContextHint =>
+      'Mitgesendet: App-Version, Android-Version, App-Sprache und dein Sprachpaar.';
+
+  @override
+  String get reportSendButton => 'Senden';
+
+  @override
+  String get reportFeedbackSentMessage => 'Danke! Deine Nachricht wurde gesendet.';
+
+  @override
+  String get reportTranslationSentMessage => 'Danke! Die Übersetzung wurde gemeldet.';
+
+  @override
+  String get reportOfflineMessage => 'Zum Senden brauchst du eine Internetverbindung.';
+
+  @override
+  String get settingsFeedbackButton => 'Feedback & Fehler';
+
+  @override
+  String get settingsFeedbackHint => 'Ideen, Probleme oder Fragen';
+
+  @override
+  String get settingsDeleteAccountButton => 'Konto löschen';
+
+  @override
+  String get settingsDeleteDataButton => 'Alle Daten löschen';
+
+  @override
+  String get settingsDeleteAccountTitle => 'Konto löschen?';
+
+  @override
+  String get settingsDeleteAccountMessage =>
+      'Dadurch werden dein Konto und alles darin auf allen deinen Geräten endgültig gelöscht: Wörter, Fotos, Sammlungen und Fortschritt. Das kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get settingsDeleteDataTitle => 'Alle Daten löschen?';
+
+  @override
+  String get settingsDeleteDataMessage =>
+      'Dadurch werden alle Wörter, Fotos, Sammlungen und dein Fortschritt auf diesem Handy endgültig gelöscht. Das kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get settingsDeleteConfirmWord => 'LÖSCHEN';
+
+  @override
+  String settingsDeleteConfirmHint(String word) {
+    return 'Gib $word ein, um zu bestätigen';
+  }
+
+  @override
+  String get settingsDeleteConfirmButton => 'Löschen';
+
+  @override
+  String get settingsDeleteAccountOfflineMessage =>
+      'Zum Löschen deines Kontos brauchst du eine Internetverbindung.';
 }

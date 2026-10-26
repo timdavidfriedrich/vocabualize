@@ -9,10 +9,12 @@ import 'package:feature_details/presentation/widgets/source_to_target.dart';
 import 'package:feature_details/presentation/widgets/tag_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 
@@ -28,6 +30,17 @@ class const DetailsScreen({
         BlocListener<DetailsBloc, DetailsState>(
           listenWhen: (previous, current) => current is DetailsClosed,
           listener: (context, state) => context.closeScreen(),
+        ),
+        BlocListener<DetailsBloc, DetailsState>(
+          listenWhen: (previous, current) => switch ((previous, current)) {
+            (DetailsEditing(notice: null), DetailsEditing(notice: DetailsNotice())) => true,
+            _ => false,
+          },
+          listener: (context, state) {
+            if (state case DetailsEditing(notice: DetailsNotice.translationReported)) {
+              context.showToast(context.s.reportTranslationSentMessage);
+            }
+          },
         ),
         BlocListener<DetailsBloc, DetailsState>(
           listenWhen: (previous, current) => current is DetailsAdded,
@@ -97,8 +110,7 @@ class const _EditingScreen() extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: Spacing.xs),
-                    ImageChooser(),
-                    SizedBox(height: Spacing.m),
+                    _ImageSection(),
                     TagWrap(),
                   ],
                 ),
@@ -184,6 +196,25 @@ class const _FailureScreen({
           child: Text(_error.toMessage(context), textAlign: TextAlign.center),
         ),
       ),
+    );
+  }
+}
+
+class const _ImageSection() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<PreferencesCubit, Preferences, bool>(
+      selector: (preferences) => preferences.areImagesHidden,
+      builder: (context, areImagesHidden) => switch (areImagesHidden) {
+        true => const SizedBox.shrink(),
+        false => const Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ImageChooser(),
+            SizedBox(height: Spacing.m),
+          ],
+        ),
+      },
     );
   }
 }

@@ -1,0 +1,4 @@
+exception: ReportRejectedException
+
+fields:
+  reason: String

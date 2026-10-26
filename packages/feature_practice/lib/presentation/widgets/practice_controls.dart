@@ -9,9 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
+import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/preferences/preferences_cubit.dart';
 
 typedef _Controls = ({
   Vocabulary vocabulary,
@@ -43,24 +45,29 @@ class const PracticeControls({
             const Spacer(),
             if (controls.isSolutionShown) _RateButtons(controls: controls),
             const SizedBox(height: Spacing.m),
-            switch (controls) {
-              (isSolutionShown: false, :final vocabulary, isBusy: _, grade: _)
-                  when vocabulary.level.toVocabularyLevel() != VocabularyLevel.novice =>
-                _AnswerField(key: ValueKey(vocabulary.id), vocabulary: vocabulary),
-              (isSolutionShown: false, vocabulary: _, isBusy: _, grade: _) => ElevatedButton(
-                onPressed: () =>
-                    context.read<PracticeBloc>().add(const PracticeSolutionRequested()),
-                child: Text(context.s.practiceSolutionButton),
-              ),
-              (isSolutionShown: true, :final grade, :final isBusy, vocabulary: _) => OutlinedButton(
-                onPressed: !isBusy && grade.allows(PracticeAnswer.forgot)
-                    ? () => context.read<PracticeBloc>().add(
-                        const PracticeAnswered(answer: PracticeAnswer.forgot),
-                      )
-                    : null,
-                child: Text(context.s.practiceForgotButton),
-              ),
-            },
+            BlocSelector<PreferencesCubit, Preferences, bool>(
+              selector: (preferences) => preferences.isTypeAnswerDisabled,
+              builder: (context, isTypeAnswerDisabled) => switch (controls) {
+                (isSolutionShown: false, :final vocabulary, isBusy: _, grade: _)
+                    when !isTypeAnswerDisabled &&
+                        vocabulary.level.toVocabularyLevel() != VocabularyLevel.novice =>
+                  _AnswerField(key: ValueKey(vocabulary.id), vocabulary: vocabulary),
+                (isSolutionShown: false, vocabulary: _, isBusy: _, grade: _) => ElevatedButton(
+                  onPressed: () =>
+                      context.read<PracticeBloc>().add(const PracticeSolutionRequested()),
+                  child: Text(context.s.practiceSolutionButton),
+                ),
+                (isSolutionShown: true, :final grade, :final isBusy, vocabulary: _) =>
+                  OutlinedButton(
+                    onPressed: !isBusy && grade.allows(PracticeAnswer.forgot)
+                        ? () => context.read<PracticeBloc>().add(
+                            const PracticeAnswered(answer: PracticeAnswer.forgot),
+                          )
+                        : null,
+                    child: Text(context.s.practiceForgotButton),
+                  ),
+              },
+            ),
             const SizedBox(height: Spacing.xxxxl),
           ],
         ),

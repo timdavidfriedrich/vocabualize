@@ -13,6 +13,8 @@ abstract class AuthDataSource {
   Future<RemoteAccount> signInWithGoogle();
 
   Future<void> signOut();
+
+  Future<void> deleteAccount();
 }
 
 @Injectable(as: AuthDataSource)
@@ -71,6 +73,9 @@ class const AuthDataSourceImpl(
       email: profile.email,
     );
   }
+
+  @override
+  Future<void> deleteAccount() => _client.account.delete();
 }
 
 class const _SignInIncompleteException() implements Exception;

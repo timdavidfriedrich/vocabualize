@@ -1,11 +1,14 @@
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/date_time_extensions.dart';
+import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/level_indicator.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
@@ -78,35 +81,38 @@ class const _VocabularyInfoDialog({
           ],
         ),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (_vocabulary.image case CustomImage() || StockImage())
-            Flexible(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(Spacing.radiusL),
-                  child: VocabularyImageView(
-                    image: _vocabulary.image,
-                    variant: VocabularyImageVariant.full,
-                    displayWidth: MediaQuery.sizeOf(context).width,
+      content: BlocSelector<PreferencesCubit, Preferences, bool>(
+        selector: (preferences) => preferences.areImagesHidden,
+        builder: (context, areImagesHidden) => Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (_vocabulary.image case CustomImage() || StockImage() when !areImagesHidden)
+              Flexible(
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(Spacing.radiusL),
+                    child: VocabularyImageView(
+                      image: _vocabulary.image,
+                      variant: VocabularyImageVariant.full,
+                      displayWidth: MediaQuery.sizeOf(context).width,
+                    ),
                   ),
                 ),
               ),
-            ),
-          if (_tags.isNotEmpty) ...[
+            if (_tags.isNotEmpty) ...[
+              const SizedBox(height: Spacing.m),
+              Wrap(
+                spacing: Spacing.xs,
+                runSpacing: -Spacing.xs,
+                children: [for (final tag in _tags) Chip(label: Text(tag.name))],
+              ),
+            ],
             const SizedBox(height: Spacing.m),
-            Wrap(
-              spacing: Spacing.xs,
-              runSpacing: -Spacing.xs,
-              children: [for (final tag in _tags) Chip(label: Text(tag.name))],
-            ),
+            _DatesInformationRow(vocabulary: _vocabulary),
           ],
-          const SizedBox(height: Spacing.m),
-          _DatesInformationRow(vocabulary: _vocabulary),
-        ],
+        ),
       ),
       actions: [
         Row(

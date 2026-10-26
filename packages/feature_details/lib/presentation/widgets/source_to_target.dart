@@ -4,6 +4,7 @@ import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:feature_details/presentation/widgets/edit_text_dialog.dart';
 import 'package:feature_details/presentation/widgets/replace_dialog.dart';
+import 'package:feature_details/presentation/widgets/report_translation_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
@@ -103,7 +104,14 @@ class const _TargetButton({
       context,
       text: _target,
       label: context.s.detailsTargetLabel,
+      onReportRequested: _target.isEmpty ? null : () => _report(context),
     );
     if (target != null) bloc.add(DetailsTargetChanged(target: target));
+  }
+
+  Future<void> _report(BuildContext context) async {
+    final bloc = context.read<DetailsBloc>();
+    final note = await requestsTranslationReportNote(context);
+    if (note != null) bloc.add(DetailsTranslationReported(note: note));
   }
 }

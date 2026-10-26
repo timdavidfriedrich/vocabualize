@@ -34,6 +34,7 @@ RuntimeConfig _parse(String source) {
   final client = _mapAt(root["client"], "client");
   final images = _mapAt(root["images"], "images");
   final ai = _mapAt(root["ai"], "ai");
+  final reports = _mapAt(root["reports"], "reports");
   return RuntimeConfig(
     version: version,
     client: RemoteAppConfig(
@@ -64,6 +65,13 @@ RuntimeConfig _parse(String source) {
       maxTextLength: _intAt(ai["maxTextLength"], "ai.maxTextLength"),
       maxLabelingImageBytes: _intAt(ai["maxLabelingImageBytes"], "ai.maxLabelingImageBytes"),
       englishTarget: _stringAt(ai["englishTarget"], "ai.englishTarget"),
+    ),
+    reports: ReportsConfig(
+      enabled: _boolAt(reports["enabled"], "reports.enabled"),
+      perIpPerHour: _intAt(reports["perIpPerHour"], "reports.perIpPerHour"),
+      perIpPerDay: _intAt(reports["perIpPerDay"], "reports.perIpPerDay"),
+      perDay: _intAt(reports["perDay"], "reports.perDay"),
+      maxMessageLength: _intAt(reports["maxMessageLength"], "reports.maxMessageLength"),
     ),
   );
 }

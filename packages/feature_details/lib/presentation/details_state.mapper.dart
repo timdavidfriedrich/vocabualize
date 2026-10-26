@@ -55,6 +55,48 @@ extension DetailsPendingLookupMapperExtension on DetailsPendingLookup {
   }
 }
 
+class DetailsNoticeMapper extends EnumMapper<DetailsNotice> {
+  DetailsNoticeMapper._();
+
+  static DetailsNoticeMapper? _instance;
+  static DetailsNoticeMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsNoticeMapper._());
+    }
+    return _instance!;
+  }
+
+  static DetailsNotice fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  DetailsNotice decode(dynamic value) {
+    switch (value) {
+      case r'translationReported':
+        return DetailsNotice.translationReported;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(DetailsNotice self) {
+    switch (self) {
+      case DetailsNotice.translationReported:
+        return r'translationReported';
+    }
+  }
+}
+
+extension DetailsNoticeMapperExtension on DetailsNotice {
+  String toValue() {
+    DetailsNoticeMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<DetailsNotice>(this) as String;
+  }
+}
+
 class DetailsStateMapper extends ClassMapperBase<DetailsState> {
   DetailsStateMapper._();
 
@@ -379,6 +421,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       StockImageMapper.ensureInitialized();
       TagMapper.ensureInitialized();
       DetailsPendingLookupMapper.ensureInitialized();
+      DetailsNoticeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -447,6 +490,11 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     'isBusy',
     _$isBusy,
   );
+  static DetailsNotice? _$notice(DetailsEditing v) => v.notice;
+  static const Field<DetailsEditing, DetailsNotice> _f$notice = Field(
+    'notice',
+    _$notice,
+  );
   static AppError? _$error(DetailsEditing v) => v.error;
   static const Field<DetailsEditing, AppError> _f$error = Field(
     'error',
@@ -468,6 +516,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     #selectedTagIds: _f$selectedTagIds,
     #pendingLookup: _f$pendingLookup,
     #isBusy: _f$isBusy,
+    #notice: _f$notice,
     #error: _f$error,
   };
 
@@ -486,6 +535,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       selectedTagIds: data.dec(_f$selectedTagIds),
       pendingLookup: data.dec(_f$pendingLookup),
       isBusy: data.dec(_f$isBusy),
+      notice: data.dec(_f$notice),
       error: data.dec(_f$error),
     );
   }
@@ -574,6 +624,7 @@ abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
     Set<String>? selectedTagIds,
     DetailsPendingLookup? pendingLookup,
     bool? isBusy,
+    DetailsNotice? notice,
     AppError? error,
   });
   DetailsEditingCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -629,6 +680,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     Set<String>? selectedTagIds,
     Object? pendingLookup = $none,
     bool? isBusy,
+    Object? notice = $none,
     Object? error = $none,
   }) => $apply(
     FieldCopyWithData({
@@ -645,6 +697,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
       if (selectedTagIds != null) #selectedTagIds: selectedTagIds,
       if (pendingLookup != $none) #pendingLookup: pendingLookup,
       if (isBusy != null) #isBusy: isBusy,
+      if (notice != $none) #notice: notice,
       if (error != $none) #error: error,
     }),
   );
@@ -663,6 +716,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     selectedTagIds: data.get(#selectedTagIds, or: $value.selectedTagIds),
     pendingLookup: data.get(#pendingLookup, or: $value.pendingLookup),
     isBusy: data.get(#isBusy, or: $value.isBusy),
+    notice: data.get(#notice, or: $value.notice),
     error: data.get(#error, or: $value.error),
   );
 

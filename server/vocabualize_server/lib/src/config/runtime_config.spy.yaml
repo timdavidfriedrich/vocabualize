@@ -6,3 +6,4 @@ fields:
   client: RemoteAppConfig
   images: ImageStorageConfig
   ai: AiConfig
+  reports: ReportsConfig

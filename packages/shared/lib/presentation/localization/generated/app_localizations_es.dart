@@ -230,9 +230,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudieron reconocer objetos. Por favor, inténtalo de nuevo más tarde.';
 
   @override
-  String get reportBugTitle => 'Informar de error';
-
-  @override
   String get reportTranslationTitle => 'Traducción incorrecta';
 
   @override
@@ -278,10 +275,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsTargetLanguageHint => 'La lengua que aprendes';
 
   @override
-  String get settingsNotificationsTitle => 'Activar/desactivar notificaciones';
-
-  @override
-  String get settingsNotificationsHint => 'Abrir la configuración del sistema para gestionar';
+  String get settingsNotificationsTitle => 'Notificaciones';
 
   @override
   String vocabularyReappearsInMinutes(int count) {
@@ -328,9 +322,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get detailsReplaceButton => 'Reemplazar';
-
-  @override
-  String get reportBugDescriptionHint => 'Describe el error...';
 
   @override
   String get settingsAccountTitle => 'Cuenta';
@@ -677,4 +668,106 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get settingsSignOutOfflineMessage =>
       'Para cerrar sesión necesita conexión a internet, así sus últimos cambios se suben antes.';
+
+  @override
+  String get settingsLearningTitle => 'Aprendizaje';
+
+  @override
+  String get settingsPracticeReminderTitle => 'Recordatorio de práctica';
+
+  @override
+  String get settingsPracticeReminderHint => 'Solo los días con palabras para practicar';
+
+  @override
+  String get settingsReminderTimeTitle => 'Hora';
+
+  @override
+  String get settingsNotificationsBlockedMessage =>
+      'Las notificaciones de Vocabualize están desactivadas.';
+
+  @override
+  String get settingsOpenNotificationSettingsButton => 'Abrir ajustes';
+
+  @override
+  String get reminderPracticeTitle => 'Hora de practicar';
+
+  @override
+  String get reminderPracticeBody => 'Tus palabras te esperan. Unos minutos las mantienen frescas.';
+
+  @override
+  String get reminderPracticeChannel => 'Recordatorios de práctica';
+
+  @override
+  String get errorReportLimit =>
+      'Ha enviado varios informes recientemente. Vuelva a intentarlo más tarde.';
+
+  @override
+  String get errorReportUnavailable =>
+      'No se pueden enviar informes en este momento. Vuelva a intentarlo más tarde.';
+
+  @override
+  String get reportFeedbackTitle => 'Comentarios y errores';
+
+  @override
+  String get reportFeedbackMessage => 'Cuéntanos qué te gusta, qué falta o qué ha fallado.';
+
+  @override
+  String get reportFeedbackFieldHint => 'Tu mensaje...';
+
+  @override
+  String get reportFeedbackContextHint =>
+      'Se envía también: versión de la app, versión de Android, idioma de la app y tu par de idiomas.';
+
+  @override
+  String get reportSendButton => 'Enviar';
+
+  @override
+  String get reportFeedbackSentMessage => '¡Gracias! Tu mensaje se ha enviado.';
+
+  @override
+  String get reportTranslationSentMessage => '¡Gracias! La traducción se ha notificado.';
+
+  @override
+  String get reportOfflineMessage => 'Para enviar se necesita conexión a internet.';
+
+  @override
+  String get settingsFeedbackButton => 'Comentarios y errores';
+
+  @override
+  String get settingsFeedbackHint => 'Ideas, problemas o preguntas';
+
+  @override
+  String get settingsDeleteAccountButton => 'Eliminar cuenta';
+
+  @override
+  String get settingsDeleteDataButton => 'Eliminar todos los datos';
+
+  @override
+  String get settingsDeleteAccountTitle => '¿Eliminar cuenta?';
+
+  @override
+  String get settingsDeleteAccountMessage =>
+      'Esto elimina para siempre su cuenta y todo su contenido en todos sus dispositivos: palabras, fotos, colecciones y progreso. No se puede deshacer.';
+
+  @override
+  String get settingsDeleteDataTitle => '¿Eliminar todos los datos?';
+
+  @override
+  String get settingsDeleteDataMessage =>
+      'Esto elimina para siempre todas las palabras, fotos, colecciones y el progreso de este teléfono. No se puede deshacer.';
+
+  @override
+  String get settingsDeleteConfirmWord => 'ELIMINAR';
+
+  @override
+  String settingsDeleteConfirmHint(String word) {
+    return 'Escriba $word para confirmar';
+  }
+
+  @override
+  String get settingsDeleteConfirmButton => 'Eliminar';
+
+  @override
+  String get settingsDeleteAccountOfflineMessage =>
+      'Para eliminar su cuenta necesita conexión a internet.';
 }

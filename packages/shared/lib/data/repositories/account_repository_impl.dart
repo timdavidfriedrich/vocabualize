@@ -132,14 +132,41 @@ class AccountRepositoryImpl(
         await _startSync(session, userId);
         return const Failure(SyncPendingError());
       }
-      _emit(const AuthUnauthenticated());
-      await _attempt(() => _closeIfOpen(space));
-      await _attempt(() => _storage.markForDeletion(space));
-      await _attempt(_authDataSource.signOut);
-      await _attempt(_storage.deleteMarkedSpaces);
+      await _removeSignedOutSpace(space, signsOut: true);
       return const Success(());
     }
     return const Failure(AuthError());
+  }
+
+  @override
+  Future<AppResult<()>> deleteAccount() async {
+    switch (_status) {
+      case AuthAuthenticated(account: GoogleAccount(:final id)):
+        final userId = UuidValue.withValidation(id);
+        final session = _sessions.currentSession;
+        await _stopSync();
+        try {
+          await _authDataSource.deleteAccount();
+        } on Object catch (error) {
+          if (session != null) await _startSync(session, userId);
+          return Failure(error.toAppError());
+        }
+        await _removeSignedOutSpace(AccountSpace(userId: userId), signsOut: true);
+        return const Success(());
+      case AuthAuthenticated(account: LocalAccount()):
+        await _removeSignedOutSpace(const LocalOnlySpace(), signsOut: false);
+        return const Success(());
+      case AuthUnknown() || AuthUnauthenticated():
+        return const Failure(AuthError());
+    }
+  }
+
+  Future<void> _removeSignedOutSpace(StorageSpace space, {required bool signsOut}) async {
+    _emit(const AuthUnauthenticated());
+    await _attempt(() => _closeIfOpen(space));
+    await _attempt(() => _storage.markForDeletion(space));
+    if (signsOut) await _attempt(_authDataSource.signOut);
+    await _attempt(_storage.deleteMarkedSpaces);
   }
 
   Future<Account> _openLocal() async {

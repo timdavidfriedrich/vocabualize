@@ -37,6 +37,10 @@ import 'package:shared/data/data_sources/image_transfer_data_source.dart'
     as _i28;
 import 'package:shared/data/data_sources/local_import_data_source.dart'
     as _i843;
+import 'package:shared/data/data_sources/notification_data_source.dart'
+    as _i877;
+import 'package:shared/data/data_sources/report_remote_data_source.dart'
+    as _i320;
 import 'package:shared/data/data_sources/setting_local_data_source.dart'
     as _i555;
 import 'package:shared/data/data_sources/space_storage_data_source.dart'
@@ -59,6 +63,9 @@ import 'package:shared/data/repositories/connectivity_repository_impl.dart'
 import 'package:shared/data/repositories/external_link_repository_impl.dart'
     as _i22;
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
+import 'package:shared/data/repositories/reminder_repository_impl.dart'
+    as _i899;
+import 'package:shared/data/repositories/report_repository_impl.dart' as _i296;
 import 'package:shared/data/repositories/settings_repository_impl.dart'
     as _i921;
 import 'package:shared/data/repositories/stock_image_repository_impl.dart'
@@ -82,6 +89,8 @@ import 'package:shared/domain/repositories/connectivity_repository.dart'
 import 'package:shared/domain/repositories/external_link_repository.dart'
     as _i711;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
+import 'package:shared/domain/repositories/reminder_repository.dart' as _i821;
+import 'package:shared/domain/repositories/report_repository.dart' as _i522;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/stock_image_repository.dart'
     as _i934;
@@ -96,6 +105,10 @@ import 'package:shared/presentation/connectivity/connectivity_cubit.dart'
     as _i855;
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart'
     as _i650;
+import 'package:shared/presentation/preferences/preferences_cubit.dart'
+    as _i218;
+import 'package:shared/presentation/reminders/practice_reminder_cubit.dart'
+    as _i439;
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart'
     as _i765;
 import 'package:vocabualize_client/vocabualize_client.dart' as _i1040;
@@ -113,10 +126,14 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => const _i100.BackupArchiveDataSourceImpl());
     gh.factory<_i394.AppInfoDataSource>(
         () => const _i394.AppInfoDataSourceImpl());
+    gh.lazySingleton<_i877.NotificationDataSource>(
+        () => _i877.NotificationDataSourceImpl());
     gh.factory<_i179.ImageProcessingDataSource>(
         () => const _i179.ImageProcessingDataSourceImpl());
     gh.lazySingleton<_i49.AppConfigLocalDataSource>(
         () => _i49.AppConfigLocalDataSourceImpl());
+    gh.factory<_i821.ReminderRepository>(
+        () => _i899.ReminderRepositoryImpl(gh<_i877.NotificationDataSource>()));
     gh.lazySingleton<_i820.TextToSpeechDataSource>(
         () => _i820.TextToSpeechDataSourceImpl());
     gh.factory<_i753.SpaceStorageDataSource>(
@@ -140,6 +157,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => const _i460.BackupFileDataSourceImpl());
     gh.factory<_i154.ConnectivityDataSource>(
         () => const _i154.ConnectivityDataSourceImpl());
+    gh.factory<_i320.ReportRemoteDataSource>(
+        () => _i320.ReportRemoteDataSourceImpl(gh<_i1040.Client>()));
     gh.factory<_i223.AppConfigRemoteDataSource>(
         () => _i223.AppConfigRemoteDataSourceImpl(gh<_i1040.Client>()));
     gh.factory<_i204.ImageRepository>(() => _i816.ImageRepositoryImpl(
@@ -198,6 +217,11 @@ class SharedPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i555.SettingLocalDataSource>(() =>
         _i555.SettingLocalDataSourceImpl(
             gh<_i862.DatabaseSessionDataSource>()));
+    gh.factory<_i522.ReportRepository>(() => _i296.ReportRepositoryImpl(
+          gh<_i320.ReportRemoteDataSource>(),
+          gh<_i394.AppInfoDataSource>(),
+          gh<_i555.SettingLocalDataSource>(),
+        ));
     gh.lazySingleton<_i532.ImageFileDataSource>(
         () => _i532.ImageFileDataSourceImpl(
               gh<_i862.DatabaseSessionDataSource>(),
@@ -224,8 +248,15 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i452.TagLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
         ));
+    gh.factory<_i439.PracticeReminderCubit>(() => _i439.PracticeReminderCubit(
+          gh<_i821.ReminderRepository>(),
+          gh<_i0.SettingsRepository>(),
+          gh<_i208.VocabularyRepository>(),
+        ));
     gh.factory<_i650.LanguagePairCubit>(
         () => _i650.LanguagePairCubit(gh<_i0.SettingsRepository>()));
+    gh.factory<_i218.PreferencesCubit>(
+        () => _i218.PreferencesCubit(gh<_i0.SettingsRepository>()));
     gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
           gh<_i535.AuthDataSource>(),
           gh<_i862.DatabaseSessionDataSource>(),

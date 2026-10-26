@@ -52,3 +52,5 @@ class const Collection({
 }
 
 class const Settings() extends AppRoute;
+
+class const FeedbackForm() extends AppRoute;

@@ -25,9 +25,13 @@ import 'ai/remote_stock_image.dart' as _iwo8lv3v;
 import 'config/ai_config.dart' as _i3xic8o1;
 import 'config/image_storage_config.dart' as _il54hkej;
 import 'config/remote_app_config.dart' as _ia9g9wp9;
+import 'config/reports_config.dart' as _ifa12ii1;
 import 'config/runtime_config.dart' as _iadewe5j;
 import 'images/remote_image_download.dart' as _i35otcr0;
 import 'images/stored_image.dart' as _i3kglx6m;
+import 'reports/remote_report_context.dart' as _ikiv91es;
+import 'reports/report.dart' as _ihpzd5k3;
+import 'reports/report_rejected_exception.dart' as _ipfy84dl;
 import 'sync/local_activity.dart' as _ilpzzhur;
 import 'sync/local_setting.dart' as _ij5ultnt;
 import 'sync/local_tag.dart' as _ia93wqla;
@@ -40,9 +44,13 @@ export 'ai/remote_stock_image.dart';
 export 'config/ai_config.dart';
 export 'config/image_storage_config.dart';
 export 'config/remote_app_config.dart';
+export 'config/reports_config.dart';
 export 'config/runtime_config.dart';
 export 'images/remote_image_download.dart';
 export 'images/stored_image.dart';
+export 'reports/remote_report_context.dart';
+export 'reports/report.dart';
+export 'reports/report_rejected_exception.dart';
 export 'sync/local_activity.dart';
 export 'sync/local_setting.dart';
 export 'sync/local_tag.dart';
@@ -69,9 +77,13 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_i3xic8o1.AiConfig>,
       _is.getType<_il54hkej.ImageStorageConfig>,
       _is.getType<_ia9g9wp9.RemoteAppConfig>,
+      _is.getType<_ifa12ii1.ReportsConfig>,
       _is.getType<_iadewe5j.RuntimeConfig>,
       _is.getType<_i35otcr0.RemoteImageDownload>,
       _is.getType<_i3kglx6m.StoredImage>,
+      _is.getType<_ikiv91es.RemoteReportContext>,
+      _is.getType<_ihpzd5k3.Report>,
+      _is.getType<_ipfy84dl.ReportRejectedException>,
       _is.getType<_ilpzzhur.LocalActivity>,
       _is.getType<_ij5ultnt.LocalSetting>,
       _is.getType<_ia93wqla.LocalTag>,
@@ -84,9 +96,13 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_i3xic8o1.AiConfig?>,
       _is.getType<_il54hkej.ImageStorageConfig?>,
       _is.getType<_ia9g9wp9.RemoteAppConfig?>,
+      _is.getType<_ifa12ii1.ReportsConfig?>,
       _is.getType<_iadewe5j.RuntimeConfig?>,
       _is.getType<_i35otcr0.RemoteImageDownload?>,
       _is.getType<_i3kglx6m.StoredImage?>,
+      _is.getType<_ikiv91es.RemoteReportContext?>,
+      _is.getType<_ihpzd5k3.Report?>,
+      _is.getType<_ipfy84dl.ReportRejectedException?>,
       _is.getType<_ilpzzhur.LocalActivity?>,
       _is.getType<_ij5ultnt.LocalSetting?>,
       _is.getType<_ia93wqla.LocalTag?>,
@@ -230,6 +246,133 @@ class Protocol extends _is.DatabaseSerializationManager
               type: _isp.IndexElementDefinitionType.column,
               definition: 'kind',
             ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'createdAt',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'report',
+      dartName: 'Report',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'kind',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'message',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'source',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'target',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'sourceLanguage',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'targetLanguage',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'appVersion',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'platform',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'appLanguage',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'languagePair',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'authUserId',
+          columnType: _isp.ColumnType.uuid,
+          isNullable: true,
+          dartType: 'UuidValue?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'ipHash',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'report_ip_hash_created_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'ipHash',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'createdAt',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _isp.IndexDefinition(
+          indexName: 'report_created_idx',
+          tableSpace: null,
+          elements: [
             _isp.IndexElementDefinition(
               type: _isp.IndexElementDefinitionType.column,
               definition: 'createdAt',
@@ -747,6 +890,9 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _ia9g9wp9.RemoteAppConfig) {
       return _ia9g9wp9.RemoteAppConfig.fromJson(data) as T;
     }
+    if (t == _ifa12ii1.ReportsConfig) {
+      return _ifa12ii1.ReportsConfig.fromJson(data) as T;
+    }
     if (t == _iadewe5j.RuntimeConfig) {
       return _iadewe5j.RuntimeConfig.fromJson(data) as T;
     }
@@ -755,6 +901,15 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (t == _i3kglx6m.StoredImage) {
       return _i3kglx6m.StoredImage.fromJson(data) as T;
+    }
+    if (t == _ikiv91es.RemoteReportContext) {
+      return _ikiv91es.RemoteReportContext.fromJson(data) as T;
+    }
+    if (t == _ihpzd5k3.Report) {
+      return _ihpzd5k3.Report.fromJson(data) as T;
+    }
+    if (t == _ipfy84dl.ReportRejectedException) {
+      return _ipfy84dl.ReportRejectedException.fromJson(data) as T;
     }
     if (t == _ilpzzhur.LocalActivity) {
       return _ilpzzhur.LocalActivity.fromJson(data) as T;
@@ -792,6 +947,9 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _is.getType<_ia9g9wp9.RemoteAppConfig?>()) {
       return (data != null ? _ia9g9wp9.RemoteAppConfig.fromJson(data) : null) as T;
     }
+    if (t == _is.getType<_ifa12ii1.ReportsConfig?>()) {
+      return (data != null ? _ifa12ii1.ReportsConfig.fromJson(data) : null) as T;
+    }
     if (t == _is.getType<_iadewe5j.RuntimeConfig?>()) {
       return (data != null ? _iadewe5j.RuntimeConfig.fromJson(data) : null) as T;
     }
@@ -800,6 +958,15 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (t == _is.getType<_i3kglx6m.StoredImage?>()) {
       return (data != null ? _i3kglx6m.StoredImage.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ikiv91es.RemoteReportContext?>()) {
+      return (data != null ? _ikiv91es.RemoteReportContext.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ihpzd5k3.Report?>()) {
+      return (data != null ? _ihpzd5k3.Report.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ipfy84dl.ReportRejectedException?>()) {
+      return (data != null ? _ipfy84dl.ReportRejectedException.fromJson(data) : null) as T;
     }
     if (t == _is.getType<_ilpzzhur.LocalActivity?>()) {
       return (data != null ? _ilpzzhur.LocalActivity.fromJson(data) : null) as T;
@@ -846,9 +1013,13 @@ class Protocol extends _is.DatabaseSerializationManager
       _i3xic8o1.AiConfig => 'AiConfig',
       _il54hkej.ImageStorageConfig => 'ImageStorageConfig',
       _ia9g9wp9.RemoteAppConfig => 'RemoteAppConfig',
+      _ifa12ii1.ReportsConfig => 'ReportsConfig',
       _iadewe5j.RuntimeConfig => 'RuntimeConfig',
       _i35otcr0.RemoteImageDownload => 'RemoteImageDownload',
       _i3kglx6m.StoredImage => 'StoredImage',
+      _ikiv91es.RemoteReportContext => 'RemoteReportContext',
+      _ihpzd5k3.Report => 'Report',
+      _ipfy84dl.ReportRejectedException => 'ReportRejectedException',
       _ilpzzhur.LocalActivity => 'LocalActivity',
       _ij5ultnt.LocalSetting => 'LocalSetting',
       _ia93wqla.LocalTag => 'LocalTag',
@@ -882,12 +1053,20 @@ class Protocol extends _is.DatabaseSerializationManager
         return 'ImageStorageConfig';
       case _ia9g9wp9.RemoteAppConfig():
         return 'RemoteAppConfig';
+      case _ifa12ii1.ReportsConfig():
+        return 'ReportsConfig';
       case _iadewe5j.RuntimeConfig():
         return 'RuntimeConfig';
       case _i35otcr0.RemoteImageDownload():
         return 'RemoteImageDownload';
       case _i3kglx6m.StoredImage():
         return 'StoredImage';
+      case _ikiv91es.RemoteReportContext():
+        return 'RemoteReportContext';
+      case _ihpzd5k3.Report():
+        return 'Report';
+      case _ipfy84dl.ReportRejectedException():
+        return 'ReportRejectedException';
       case _ilpzzhur.LocalActivity():
         return 'LocalActivity';
       case _ij5ultnt.LocalSetting():
@@ -945,6 +1124,9 @@ class Protocol extends _is.DatabaseSerializationManager
     if (dataClassName == 'RemoteAppConfig') {
       return deserialize<_ia9g9wp9.RemoteAppConfig>(data['data']);
     }
+    if (dataClassName == 'ReportsConfig') {
+      return deserialize<_ifa12ii1.ReportsConfig>(data['data']);
+    }
     if (dataClassName == 'RuntimeConfig') {
       return deserialize<_iadewe5j.RuntimeConfig>(data['data']);
     }
@@ -953,6 +1135,15 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (dataClassName == 'StoredImage') {
       return deserialize<_i3kglx6m.StoredImage>(data['data']);
+    }
+    if (dataClassName == 'RemoteReportContext') {
+      return deserialize<_ikiv91es.RemoteReportContext>(data['data']);
+    }
+    if (dataClassName == 'Report') {
+      return deserialize<_ihpzd5k3.Report>(data['data']);
+    }
+    if (dataClassName == 'ReportRejectedException') {
+      return deserialize<_ipfy84dl.ReportRejectedException>(data['data']);
     }
     if (dataClassName == 'LocalActivity') {
       return deserialize<_ilpzzhur.LocalActivity>(data['data']);
@@ -1025,6 +1216,8 @@ class Protocol extends _is.DatabaseSerializationManager
         return _i5bl2z48.AiUsage.t;
       case _i3kglx6m.StoredImage:
         return _i3kglx6m.StoredImage.t;
+      case _ihpzd5k3.Report:
+        return _ihpzd5k3.Report.t;
       case _ilpzzhur.LocalActivity:
         return _ilpzzhur.LocalActivity.t;
       case _ij5ultnt.LocalSetting:

@@ -9,7 +9,10 @@ import 'dart:async' as _i687;
 import 'package:feature_settings/presentation/settings_bloc.dart' as _i242;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
+import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/backup_repository.dart' as _i152;
+import 'package:shared/domain/repositories/reminder_repository.dart' as _i821;
+import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 
 class FeatureSettingsPackageModule extends _i526.MicroPackageModule {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -18,6 +21,9 @@ class FeatureSettingsPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i242.SettingsBloc>(() => _i242.SettingsBloc(
           gh<_i923.AccountRepository>(),
           gh<_i152.BackupRepository>(),
+          gh<_i0.SettingsRepository>(),
+          gh<_i821.ReminderRepository>(),
+          gh<_i328.AppInfoRepository>(),
         ));
   }
 }

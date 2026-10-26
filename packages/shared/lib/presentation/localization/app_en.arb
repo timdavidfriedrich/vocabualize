@@ -79,7 +79,6 @@
   "scanAddButton": "Add",
   "scanSuggestionsTitle": "Suggestions",
   "scanNoSuggestionsMessage": "No objects could be recognized. Please try again later.",
-  "reportBugTitle": "Report bug",
   "reportTranslationTitle": "Faulty translation",
   "reportTranslationNoteHint": "Note (optional)",
   "settingsTitle": "Settings",
@@ -95,8 +94,7 @@
   "settingsSourceLanguageHint": "A language you know well",
   "settingsTargetLanguageTitle": "Target language",
   "settingsTargetLanguageHint": "The language you learn",
-  "settingsNotificationsTitle": "Toggle notifications",
-  "settingsNotificationsHint": "Open app system settings to manage",
+  "settingsNotificationsTitle": "Notifications",
   "vocabularyReappearsInMinutes": "{count, plural, one{In {count} minute} other{In {count} minutes}}",
   "@vocabularyReappearsInMinutes": {
     "placeholders": {
@@ -138,7 +136,6 @@
     }
   },
   "detailsReplaceButton": "Replace",
-  "reportBugDescriptionHint": "Describe the bug...",
   "settingsAccountTitle": "Account",
   "errorSyncPending": "Your latest changes haven't been uploaded yet.",
   "settingsSignOutButton": "Sign out",
@@ -327,5 +324,43 @@
   "detailsOfflineMessage": "Translation and photo search need an internet connection.",
   "welcomeOfflineMessage": "Signing in with Google needs an internet connection.",
   "settingsSignInOfflineMessage": "Signing in needs an internet connection.",
-  "settingsSignOutOfflineMessage": "Signing out needs an internet connection, so your latest changes can be uploaded first."
+  "settingsSignOutOfflineMessage": "Signing out needs an internet connection, so your latest changes can be uploaded first.",
+  "settingsLearningTitle": "Learning",
+  "settingsPracticeReminderTitle": "Practice reminder",
+  "settingsPracticeReminderHint": "Only on days with words to practice",
+  "settingsReminderTimeTitle": "Time",
+  "settingsNotificationsBlockedMessage": "Notifications are turned off for Vocabualize.",
+  "settingsOpenNotificationSettingsButton": "Open settings",
+  "reminderPracticeTitle": "Time to practice",
+  "reminderPracticeBody": "Your words are ready. A few minutes keep them fresh.",
+  "reminderPracticeChannel": "Practice reminders",
+  "errorReportLimit": "You've sent several reports recently. Please try again later.",
+  "errorReportUnavailable": "Reports can't be sent right now. Please try again later.",
+  "reportFeedbackTitle": "Feedback & bugs",
+  "reportFeedbackMessage": "Tell us what you like, what's missing or what went wrong.",
+  "reportFeedbackFieldHint": "Your message...",
+  "reportFeedbackContextHint": "Sent along: app version, Android version, app language and your language pair.",
+  "reportSendButton": "Send",
+  "reportFeedbackSentMessage": "Thank you! Your message was sent.",
+  "reportTranslationSentMessage": "Thank you! The translation was reported.",
+  "reportOfflineMessage": "Sending needs an internet connection.",
+  "settingsFeedbackButton": "Feedback & bugs",
+  "settingsFeedbackHint": "Ideas, problems or questions",
+  "settingsDeleteAccountButton": "Delete account",
+  "settingsDeleteDataButton": "Delete all data",
+  "settingsDeleteAccountTitle": "Delete account?",
+  "settingsDeleteAccountMessage": "This permanently deletes your account and everything in it on all your devices: words, photos, collections and progress. This can't be undone.",
+  "settingsDeleteDataTitle": "Delete all data?",
+  "settingsDeleteDataMessage": "This permanently deletes all words, photos, collections and progress on this phone. This can't be undone.",
+  "settingsDeleteConfirmWord": "DELETE",
+  "settingsDeleteConfirmHint": "Type {word} to confirm",
+  "@settingsDeleteConfirmHint": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsDeleteConfirmButton": "Delete",
+  "settingsDeleteAccountOfflineMessage": "Deleting your account needs an internet connection."
 }

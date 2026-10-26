@@ -28,6 +28,8 @@ import 'ai/ai_unavailable_exception.dart' as _iid9nodj;
 import 'ai/remote_stock_image.dart' as _iwo8lv3v;
 import 'config/remote_app_config.dart' as _ia9g9wp9;
 import 'images/remote_image_download.dart' as _i35otcr0;
+import 'reports/remote_report_context.dart' as _ikiv91es;
+import 'reports/report_rejected_exception.dart' as _ipfy84dl;
 import 'sync/local_activity.dart' as _ilpzzhur;
 import 'sync/local_setting.dart' as _ij5ultnt;
 import 'sync/local_tag.dart' as _ia93wqla;
@@ -38,6 +40,8 @@ export 'ai/ai_unavailable_exception.dart';
 export 'ai/remote_stock_image.dart';
 export 'config/remote_app_config.dart';
 export 'images/remote_image_download.dart';
+export 'reports/remote_report_context.dart';
+export 'reports/report_rejected_exception.dart';
 export 'sync/local_activity.dart';
 export 'sync/local_setting.dart';
 export 'sync/local_tag.dart';
@@ -64,6 +68,8 @@ class Protocol extends _isd.DatabaseSerializationManager
           _isc.getType<_iwo8lv3v.RemoteStockImage>,
           _isc.getType<_ia9g9wp9.RemoteAppConfig>,
           _isc.getType<_i35otcr0.RemoteImageDownload>,
+          _isc.getType<_ikiv91es.RemoteReportContext>,
+          _isc.getType<_ipfy84dl.ReportRejectedException>,
           _isc.getType<_ilpzzhur.LocalActivity>,
           _isc.getType<_ij5ultnt.LocalSetting>,
           _isc.getType<_ia93wqla.LocalTag>,
@@ -74,6 +80,8 @@ class Protocol extends _isd.DatabaseSerializationManager
           _isc.getType<_iwo8lv3v.RemoteStockImage?>,
           _isc.getType<_ia9g9wp9.RemoteAppConfig?>,
           _isc.getType<_i35otcr0.RemoteImageDownload?>,
+          _isc.getType<_ikiv91es.RemoteReportContext?>,
+          _isc.getType<_ipfy84dl.ReportRejectedException?>,
           _isc.getType<_ilpzzhur.LocalActivity?>,
           _isc.getType<_ij5ultnt.LocalSetting?>,
           _isc.getType<_ia93wqla.LocalTag?>,
@@ -601,6 +609,12 @@ class Protocol extends _isd.DatabaseSerializationManager
     if (t == _i35otcr0.RemoteImageDownload) {
       return _i35otcr0.RemoteImageDownload.fromJson(data) as T;
     }
+    if (t == _ikiv91es.RemoteReportContext) {
+      return _ikiv91es.RemoteReportContext.fromJson(data) as T;
+    }
+    if (t == _ipfy84dl.ReportRejectedException) {
+      return _ipfy84dl.ReportRejectedException.fromJson(data) as T;
+    }
     if (t == _ilpzzhur.LocalActivity) {
       return _ilpzzhur.LocalActivity.fromJson(data) as T;
     }
@@ -639,6 +653,18 @@ class Protocol extends _isd.DatabaseSerializationManager
     if (t == _isc.getType<_i35otcr0.RemoteImageDownload?>()) {
       return (data != null
               ? _i35otcr0.RemoteImageDownload.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_ikiv91es.RemoteReportContext?>()) {
+      return (data != null
+              ? _ikiv91es.RemoteReportContext.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_ipfy84dl.ReportRejectedException?>()) {
+      return (data != null
+              ? _ipfy84dl.ReportRejectedException.fromJson(data)
               : null)
           as T;
     }
@@ -694,6 +720,8 @@ class Protocol extends _isd.DatabaseSerializationManager
       _iwo8lv3v.RemoteStockImage => 'RemoteStockImage',
       _ia9g9wp9.RemoteAppConfig => 'RemoteAppConfig',
       _i35otcr0.RemoteImageDownload => 'RemoteImageDownload',
+      _ikiv91es.RemoteReportContext => 'RemoteReportContext',
+      _ipfy84dl.ReportRejectedException => 'ReportRejectedException',
       _ilpzzhur.LocalActivity => 'LocalActivity',
       _ij5ultnt.LocalSetting => 'LocalSetting',
       _ia93wqla.LocalTag => 'LocalTag',
@@ -723,6 +751,10 @@ class Protocol extends _isd.DatabaseSerializationManager
         return 'RemoteAppConfig';
       case _i35otcr0.RemoteImageDownload():
         return 'RemoteImageDownload';
+      case _ikiv91es.RemoteReportContext():
+        return 'RemoteReportContext';
+      case _ipfy84dl.ReportRejectedException():
+        return 'ReportRejectedException';
       case _ilpzzhur.LocalActivity():
         return 'LocalActivity';
       case _ij5ultnt.LocalSetting():
@@ -775,6 +807,12 @@ class Protocol extends _isd.DatabaseSerializationManager
     }
     if (dataClassName == 'RemoteImageDownload') {
       return deserialize<_i35otcr0.RemoteImageDownload>(data['data']);
+    }
+    if (dataClassName == 'RemoteReportContext') {
+      return deserialize<_ikiv91es.RemoteReportContext>(data['data']);
+    }
+    if (dataClassName == 'ReportRejectedException') {
+      return deserialize<_ipfy84dl.ReportRejectedException>(data['data']);
     }
     if (dataClassName == 'LocalActivity') {
       return deserialize<_ilpzzhur.LocalActivity>(data['data']);

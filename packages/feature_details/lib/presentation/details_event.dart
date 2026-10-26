@@ -17,6 +17,10 @@ class const DetailsEditStarted({
 
 class const DetailsConnectionRestored() extends DetailsEvent;
 
+class const DetailsTranslationReported({
+  required final String note,
+}) extends DetailsEvent;
+
 class const DetailsDuplicateResolved({
   required final bool addsAnyway,
 }) extends DetailsEvent;

@@ -38,6 +38,10 @@ class const AiUnavailableError() extends AppError;
 
 class const CameraPermissionError() extends AppError;
 
+class const ReportLimitError() extends AppError;
+
+class const ReportUnavailableError() extends AppError;
+
 class const CameraUnavailableError() extends AppError;
 
 class const UnexpectedError([

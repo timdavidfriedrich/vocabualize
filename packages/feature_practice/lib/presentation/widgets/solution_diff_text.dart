@@ -1,7 +1,7 @@
-import 'package:diacritic/diacritic.dart';
 import 'package:diff_match_patch/diff_match_patch.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/string_extensions.dart';
 
 const _strikeThickness = 2.0;
 
@@ -74,7 +74,7 @@ class const SolutionDiffText({
     final mapping = <int>[];
     final normalized = StringBuffer();
     for (var index = 0; index < text.length; index++) {
-      final character = removeDiacritics(text[index]).toLowerCase();
+      final character = text[index].toFolded();
       for (var part = 0; part < character.length; part++) {
         mapping.add(index);
         normalized.write(character[part]);

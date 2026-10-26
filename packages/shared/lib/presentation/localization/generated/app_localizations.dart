@@ -534,12 +534,6 @@ abstract class AppLocalizations {
   /// **'No objects could be recognized. Please try again later.'**
   String get scanNoSuggestionsMessage;
 
-  /// No description provided for @reportBugTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Report bug'**
-  String get reportBugTitle;
-
   /// No description provided for @reportTranslationTitle.
   ///
   /// In en, this message translates to:
@@ -633,14 +627,8 @@ abstract class AppLocalizations {
   /// No description provided for @settingsNotificationsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Toggle notifications'**
+  /// **'Notifications'**
   String get settingsNotificationsTitle;
-
-  /// No description provided for @settingsNotificationsHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Open app system settings to manage'**
-  String get settingsNotificationsHint;
 
   /// No description provided for @vocabularyReappearsInMinutes.
   ///
@@ -677,12 +665,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replace'**
   String get detailsReplaceButton;
-
-  /// No description provided for @reportBugDescriptionHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Describe the bug...'**
-  String get reportBugDescriptionHint;
 
   /// No description provided for @settingsAccountTitle.
   ///
@@ -1199,6 +1181,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signing out needs an internet connection, so your latest changes can be uploaded first.'**
   String get settingsSignOutOfflineMessage;
+
+  /// No description provided for @settingsLearningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning'**
+  String get settingsLearningTitle;
+
+  /// No description provided for @settingsPracticeReminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice reminder'**
+  String get settingsPracticeReminderTitle;
+
+  /// No description provided for @settingsPracticeReminderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only on days with words to practice'**
+  String get settingsPracticeReminderHint;
+
+  /// No description provided for @settingsReminderTimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get settingsReminderTimeTitle;
+
+  /// No description provided for @settingsNotificationsBlockedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are turned off for Vocabualize.'**
+  String get settingsNotificationsBlockedMessage;
+
+  /// No description provided for @settingsOpenNotificationSettingsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get settingsOpenNotificationSettingsButton;
+
+  /// No description provided for @reminderPracticeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to practice'**
+  String get reminderPracticeTitle;
+
+  /// No description provided for @reminderPracticeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your words are ready. A few minutes keep them fresh.'**
+  String get reminderPracticeBody;
+
+  /// No description provided for @reminderPracticeChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice reminders'**
+  String get reminderPracticeChannel;
+
+  /// No description provided for @errorReportLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve sent several reports recently. Please try again later.'**
+  String get errorReportLimit;
+
+  /// No description provided for @errorReportUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports can\'t be sent right now. Please try again later.'**
+  String get errorReportUnavailable;
+
+  /// No description provided for @reportFeedbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback & bugs'**
+  String get reportFeedbackTitle;
+
+  /// No description provided for @reportFeedbackMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what you like, what\'s missing or what went wrong.'**
+  String get reportFeedbackMessage;
+
+  /// No description provided for @reportFeedbackFieldHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your message...'**
+  String get reportFeedbackFieldHint;
+
+  /// No description provided for @reportFeedbackContextHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent along: app version, Android version, app language and your language pair.'**
+  String get reportFeedbackContextHint;
+
+  /// No description provided for @reportSendButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get reportSendButton;
+
+  /// No description provided for @reportFeedbackSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you! Your message was sent.'**
+  String get reportFeedbackSentMessage;
+
+  /// No description provided for @reportTranslationSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you! The translation was reported.'**
+  String get reportTranslationSentMessage;
+
+  /// No description provided for @reportOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending needs an internet connection.'**
+  String get reportOfflineMessage;
+
+  /// No description provided for @settingsFeedbackButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback & bugs'**
+  String get settingsFeedbackButton;
+
+  /// No description provided for @settingsFeedbackHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ideas, problems or questions'**
+  String get settingsFeedbackHint;
+
+  /// No description provided for @settingsDeleteAccountButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get settingsDeleteAccountButton;
+
+  /// No description provided for @settingsDeleteDataButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data'**
+  String get settingsDeleteDataButton;
+
+  /// No description provided for @settingsDeleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account?'**
+  String get settingsDeleteAccountTitle;
+
+  /// No description provided for @settingsDeleteAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your account and everything in it on all your devices: words, photos, collections and progress. This can\'t be undone.'**
+  String get settingsDeleteAccountMessage;
+
+  /// No description provided for @settingsDeleteDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data?'**
+  String get settingsDeleteDataTitle;
+
+  /// No description provided for @settingsDeleteDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes all words, photos, collections and progress on this phone. This can\'t be undone.'**
+  String get settingsDeleteDataMessage;
+
+  /// No description provided for @settingsDeleteConfirmWord.
+  ///
+  /// In en, this message translates to:
+  /// **'DELETE'**
+  String get settingsDeleteConfirmWord;
+
+  /// No description provided for @settingsDeleteConfirmHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type {word} to confirm'**
+  String settingsDeleteConfirmHint(String word);
+
+  /// No description provided for @settingsDeleteConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get settingsDeleteConfirmButton;
+
+  /// No description provided for @settingsDeleteAccountOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account needs an internet connection.'**
+  String get settingsDeleteAccountOfflineMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

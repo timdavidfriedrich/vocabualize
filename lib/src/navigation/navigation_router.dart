@@ -15,6 +15,8 @@ import 'package:feature_home/presentation/home_screen.dart';
 import 'package:feature_practice/presentation/practice_bloc.dart';
 import 'package:feature_practice/presentation/practice_event.dart';
 import 'package:feature_practice/presentation/practice_screen.dart';
+import 'package:feature_report/presentation/feedback_bloc.dart';
+import 'package:feature_report/presentation/feedback_screen.dart';
 import 'package:feature_scan/presentation/scan_bloc.dart';
 import 'package:feature_scan/presentation/scan_event.dart';
 import 'package:feature_scan/presentation/scan_screen.dart';
@@ -161,6 +163,10 @@ class const _AppPage({
     Collection(:final tagId) => BlocProvider(
       create: (_) => sl<CollectionBloc>()..add(CollectionStarted(tagId: tagId)),
       child: const CollectionScreen(),
+    ),
+    FeedbackForm() => BlocProvider(
+      create: (_) => sl<FeedbackBloc>(),
+      child: const FeedbackScreen(),
     ),
     Settings() => BlocProvider(
       create: (_) => sl<SettingsBloc>()..add(const SettingsStarted()),
