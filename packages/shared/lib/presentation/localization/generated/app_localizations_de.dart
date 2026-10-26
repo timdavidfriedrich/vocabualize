@@ -28,7 +28,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get error => 'Fehler';
 
   @override
-  String get errorConnection => 'Keine Internetverbindung.';
+  String get errorConnection =>
+      'Der Server ist nicht erreichbar. Prüfe deine Internetverbindung und versuche es erneut.';
 
   @override
   String errorApi(String message) {
@@ -653,4 +654,27 @@ class AppLocalizationsDe extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get connectToInternet => 'Mit Internet verbinden';
+
+  @override
+  String get scanOfflineMessage =>
+      'Für Vorschläge brauchst du eine Internetverbindung. Du kannst das Wort auch selbst eingeben.';
+
+  @override
+  String get detailsOfflineMessage =>
+      'Für Übersetzung und Fotosuche brauchst du eine Internetverbindung.';
+
+  @override
+  String get welcomeOfflineMessage =>
+      'Für die Anmeldung mit Google brauchst du eine Internetverbindung.';
+
+  @override
+  String get settingsSignInOfflineMessage =>
+      'Für die Anmeldung brauchst du eine Internetverbindung.';
+
+  @override
+  String get settingsSignOutOfflineMessage =>
+      'Zum Abmelden brauchst du eine Internetverbindung, damit deine letzten Änderungen vorher hochgeladen werden.';
 }

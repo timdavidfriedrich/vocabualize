@@ -10,6 +10,9 @@ part 'details_state.mapper.dart';
 
 const stockImagesPerPage = 7;
 
+@MappableEnum()
+enum DetailsPendingLookup { translationAndPhotos, photos }
+
 @MappableClass()
 sealed class DetailsState with DetailsStateMappable {
   const DetailsState();
@@ -37,6 +40,7 @@ class const DetailsEditing({
   required final int stockPage,
   required final List<Tag> tags,
   required final Set<String> selectedTagIds,
+  required final DetailsPendingLookup? pendingLookup,
   required final bool isBusy,
   required final AppError? error,
 }) extends DetailsState with DetailsEditingMappable;

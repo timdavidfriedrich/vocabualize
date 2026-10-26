@@ -8,6 +8,7 @@ import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/sync_status.dart';
+import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
@@ -16,6 +17,7 @@ import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
+import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 
 class const SettingsScreen({
@@ -199,11 +201,14 @@ class const _LocalAccountSection({
       children: [
         Text(context.s.settingsSignInHint, style: context.t.bodyMedium),
         const SizedBox(height: Spacing.s),
-        FilledButton(
-          onPressed: _isBusy
-              ? null
-              : () => context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
-          child: _isBusy ? const _ButtonProgress() : Text(context.s.settingsSignInButton),
+        ConnectionRequiredNotice(message: context.s.settingsSignInOfflineMessage),
+        BlocBuilder<ConnectivityCubit, bool>(
+          builder: (context, isConnected) => FilledButton(
+            onPressed: _isBusy || !isConnected
+                ? null
+                : () => context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
+            child: _isBusy ? const _ButtonProgress() : Text(context.s.settingsSignInButton),
+          ),
         ),
       ],
     );
@@ -241,17 +246,21 @@ class const _GoogleAccountSection({
           builder: (context, status) => switch (status) {
             SyncStatus.signInRequired => Padding(
               padding: const EdgeInsets.only(top: Spacing.s),
-              child: FilledButton(
-                onPressed: _isBusy
-                    ? null
-                    : () => context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
-                child: Text(context.s.settingsSignInAgainButton),
+              child: BlocBuilder<ConnectivityCubit, bool>(
+                builder: (context, isConnected) => FilledButton(
+                  onPressed: _isBusy || !isConnected
+                      ? null
+                      : () =>
+                            context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
+                  child: Text(context.s.settingsSignInAgainButton),
+                ),
               ),
             ),
             _ => const SizedBox.shrink(),
           },
         ),
         const SizedBox(height: Spacing.s),
+        ConnectionRequiredNotice(message: context.s.settingsSignOutOfflineMessage),
         OutlinedButton(
           onPressed: _isBusy
               ? null

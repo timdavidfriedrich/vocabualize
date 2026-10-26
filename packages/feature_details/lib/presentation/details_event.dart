@@ -15,6 +15,8 @@ class const DetailsEditStarted({
   required final String vocabularyId,
 }) extends DetailsEvent;
 
+class const DetailsConnectionRestored() extends DetailsEvent;
+
 class const DetailsDuplicateResolved({
   required final bool addsAnyway,
 }) extends DetailsEvent;

@@ -28,7 +28,8 @@ class AppLocalizationsUk extends AppLocalizations {
   String get error => 'Помилка';
 
   @override
-  String get errorConnection => 'Немає підключення до інтернету.';
+  String get errorConnection =>
+      'Не вдалося з\'єднатися із сервером. Перевірте підключення до інтернету й спробуйте ще раз.';
 
   @override
   String errorApi(String message) {
@@ -677,4 +678,25 @@ class AppLocalizationsUk extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get connectToInternet => 'Під\'єднатися до інтернету';
+
+  @override
+  String get scanOfflineMessage =>
+      'Для пропозицій потрібне підключення до інтернету. Ви також можете ввести слово самостійно.';
+
+  @override
+  String get detailsOfflineMessage =>
+      'Для перекладу й пошуку фото потрібне підключення до інтернету.';
+
+  @override
+  String get welcomeOfflineMessage => 'Для входу через Google потрібне підключення до інтернету.';
+
+  @override
+  String get settingsSignInOfflineMessage => 'Для входу потрібне підключення до інтернету.';
+
+  @override
+  String get settingsSignOutOfflineMessage =>
+      'Для виходу потрібне підключення до інтернету, щоб спершу завантажити ваші останні зміни.';
 }

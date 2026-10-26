@@ -10,6 +10,7 @@ import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/app_info_repository.dart';
+import 'package:shared/domain/repositories/connectivity_repository.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 
@@ -21,7 +22,10 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
     this._accountRepository,
     this._settingsRepository,
     this._appInfoRepository,
+    this._connectivityRepository,
   ) : super(const ScanCapturing(isProcessing: false, error: null)) {
+    on<ScanStarted>(_onStarted);
+    on<ScanConnectionRestored>(_onConnectionRestored);
     on<ScanPhotoTaken>(_onPhotoTaken);
     on<ScanRetakeRequested>(_onRetakeRequested);
     on<ScanSettingsOpened>(_onSettingsOpened);
@@ -32,6 +36,25 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
   final AccountRepository _accountRepository;
   final SettingsRepository _settingsRepository;
   final AppInfoRepository _appInfoRepository;
+  final ConnectivityRepository _connectivityRepository;
+
+  Future<void> _onStarted(ScanStarted event, Emitter<ScanState> emit) {
+    return emit.onEach(
+      _connectivityRepository.watchIsConnected(),
+      onData: (result) {
+        if (result case Success(data: true)) add(const ScanConnectionRestored());
+      },
+    );
+  }
+
+  Future<void> _onConnectionRestored(
+    ScanConnectionRestored event,
+    Emitter<ScanState> emit,
+  ) async {
+    if (state case ScanReviewing(:final photo, suggestions: ScanSuggestionsOffline())) {
+      await _suggest(photo, emit);
+    }
+  }
 
   Future<void> _onPhotoTaken(ScanPhotoTaken event, Emitter<ScanState> emit) async {
     if (state case ScanCapturing(isProcessing: true) || ScanReviewing()) {
@@ -44,16 +67,10 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
     switch (processed) {
       case Failure(:final error):
         emit(ScanCapturing(isProcessing: false, error: error));
+      case Success(data: final photo) when !await _canUseAi():
+        emit(ScanReviewing(photo: photo, suggestions: const ScanSuggestionsSignInRequired()));
       case Success(data: final photo):
-        if (!await _canUseAi()) {
-          emit(ScanReviewing(photo: photo, suggestions: const ScanSuggestionsSignInRequired()));
-          return;
-        }
-        emit(ScanReviewing(photo: photo, suggestions: const ScanSuggestionsLoading()));
-        final suggestions = await _suggestionsFor(photo);
-        if (state case ScanReviewing(photo: final current) when identical(current, photo)) {
-          emit(ScanReviewing(photo: photo, suggestions: suggestions));
-        }
+        await _suggest(photo, emit);
     }
   }
 
@@ -64,6 +81,22 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
   Future<void> _onSettingsOpened(ScanSettingsOpened event, Emitter<ScanState> emit) async {
     if (await _appInfoRepository.openAppSettings() case Failure(:final error)) {
       if (state case final ScanCapturing capturing) emit(capturing.copyWith(error: error));
+    }
+  }
+
+  Future<void> _suggest(ProcessedImage photo, Emitter<ScanState> emit) async {
+    if (!await _isConnected()) {
+      emit(ScanReviewing(photo: photo, suggestions: const ScanSuggestionsOffline()));
+      return;
+    }
+    emit(ScanReviewing(photo: photo, suggestions: const ScanSuggestionsLoading()));
+    final suggestions = switch (await _suggestionsFor(photo)) {
+      ScanSuggestionsFailed(error: ConnectionError()) when !await _isConnected() =>
+        const ScanSuggestionsOffline(),
+      final suggestions => suggestions,
+    };
+    if (state case ScanReviewing(photo: final current) when identical(current, photo)) {
+      emit(ScanReviewing(photo: photo, suggestions: suggestions));
     }
   }
 
@@ -80,6 +113,11 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
       Failure(:final error) => ScanSuggestionsFailed(error: error),
     };
   }
+
+  Future<bool> _isConnected() async => switch (await _connectivityRepository.isConnected()) {
+    Success(:final data) => data,
+    Failure() => true,
+  };
 
   Future<bool> _canUseAi() async {
     final status = await _accountRepository.watchAuthStatus().first;

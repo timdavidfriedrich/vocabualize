@@ -28,7 +28,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error => 'Error';
 
   @override
-  String get errorConnection => 'No internet connection.';
+  String get errorConnection =>
+      'Couldn\'t reach the server. Check your internet connection and try again.';
 
   @override
   String errorApi(String message) {
@@ -647,4 +648,24 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get connectToInternet => 'Connect to internet';
+
+  @override
+  String get scanOfflineMessage =>
+      'Suggestions need an internet connection. You can also type the word yourself.';
+
+  @override
+  String get detailsOfflineMessage => 'Translation and photo search need an internet connection.';
+
+  @override
+  String get welcomeOfflineMessage => 'Signing in with Google needs an internet connection.';
+
+  @override
+  String get settingsSignInOfflineMessage => 'Signing in needs an internet connection.';
+
+  @override
+  String get settingsSignOutOfflineMessage =>
+      'Signing out needs an internet connection, so your latest changes can be uploaded first.';
 }

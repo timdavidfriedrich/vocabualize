@@ -342,6 +342,7 @@ class ScanSuggestionsMapper extends ClassMapperBase<ScanSuggestions> {
       ScanSuggestionsLoadingMapper.ensureInitialized();
       ScanSuggestionsLoadedMapper.ensureInitialized();
       ScanSuggestionsSignInRequiredMapper.ensureInitialized();
+      ScanSuggestionsOfflineMapper.ensureInitialized();
       ScanSuggestionsFailedMapper.ensureInitialized();
     }
     return _instance!;
@@ -778,6 +779,126 @@ class _ScanSuggestionsSignInRequiredCopyWithImpl<$R, $Out>
   >
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _ScanSuggestionsSignInRequiredCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class ScanSuggestionsOfflineMapper
+    extends ClassMapperBase<ScanSuggestionsOffline> {
+  ScanSuggestionsOfflineMapper._();
+
+  static ScanSuggestionsOfflineMapper? _instance;
+  static ScanSuggestionsOfflineMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ScanSuggestionsOfflineMapper._());
+      ScanSuggestionsMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ScanSuggestionsOffline';
+
+  @override
+  final MappableFields<ScanSuggestionsOffline> fields = const {};
+
+  static ScanSuggestionsOffline _instantiate(DecodingData data) {
+    return ScanSuggestionsOffline();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ScanSuggestionsOffline fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ScanSuggestionsOffline>(map);
+  }
+
+  static ScanSuggestionsOffline fromJson(String json) {
+    return ensureInitialized().decodeJson<ScanSuggestionsOffline>(json);
+  }
+}
+
+mixin ScanSuggestionsOfflineMappable {
+  String toJson() {
+    return ScanSuggestionsOfflineMapper.ensureInitialized()
+        .encodeJson<ScanSuggestionsOffline>(this as ScanSuggestionsOffline);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ScanSuggestionsOfflineMapper.ensureInitialized()
+        .encodeMap<ScanSuggestionsOffline>(this as ScanSuggestionsOffline);
+  }
+
+  ScanSuggestionsOfflineCopyWith<
+    ScanSuggestionsOffline,
+    ScanSuggestionsOffline,
+    ScanSuggestionsOffline
+  >
+  get copyWith =>
+      _ScanSuggestionsOfflineCopyWithImpl<
+        ScanSuggestionsOffline,
+        ScanSuggestionsOffline
+      >(this as ScanSuggestionsOffline, $identity, $identity);
+  @override
+  String toString() {
+    return ScanSuggestionsOfflineMapper.ensureInitialized().stringifyValue(
+      this as ScanSuggestionsOffline,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ScanSuggestionsOfflineMapper.ensureInitialized().equalsValue(
+      this as ScanSuggestionsOffline,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return ScanSuggestionsOfflineMapper.ensureInitialized().hashValue(
+      this as ScanSuggestionsOffline,
+    );
+  }
+}
+
+extension ScanSuggestionsOfflineValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ScanSuggestionsOffline, $Out> {
+  ScanSuggestionsOfflineCopyWith<$R, ScanSuggestionsOffline, $Out>
+  get $asScanSuggestionsOffline => $base.as(
+    (v, t, t2) => _ScanSuggestionsOfflineCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class ScanSuggestionsOfflineCopyWith<
+  $R,
+  $In extends ScanSuggestionsOffline,
+  $Out
+>
+    implements ScanSuggestionsCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  ScanSuggestionsOfflineCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _ScanSuggestionsOfflineCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ScanSuggestionsOffline, $Out>
+    implements
+        ScanSuggestionsOfflineCopyWith<$R, ScanSuggestionsOffline, $Out> {
+  _ScanSuggestionsOfflineCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ScanSuggestionsOffline> $mapper =
+      ScanSuggestionsOfflineMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  ScanSuggestionsOffline $make(CopyWithData data) => ScanSuggestionsOffline();
+
+  @override
+  ScanSuggestionsOfflineCopyWith<$R2, ScanSuggestionsOffline, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _ScanSuggestionsOfflineCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ScanSuggestionsFailedMapper

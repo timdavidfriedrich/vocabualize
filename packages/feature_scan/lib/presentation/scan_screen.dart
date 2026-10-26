@@ -12,6 +12,7 @@ import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/widgets/connection_required_notice.dart';
 
 class const ScanScreen({
   super.key,
@@ -104,6 +105,9 @@ class const _ReviewView({
             ],
           ),
           ScanSuggestionsSignInRequired() => _SuggestionsHint(message: context.s.scanSignInMessage),
+          ScanSuggestionsOffline() => ConnectionRequiredNotice(
+            message: context.s.scanOfflineMessage,
+          ),
           ScanSuggestionsFailed(:final error) => _SuggestionsHint(
             message: error.toMessage(context),
           ),

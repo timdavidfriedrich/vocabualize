@@ -6,7 +6,7 @@
   "back": "Atrás",
   "tryAgain": "Intentar de nuevo",
   "error": "Error",
-  "errorConnection": "Sin conexión a internet.",
+  "errorConnection": "No se pudo conectar con el servidor. Compruebe su conexión a internet e inténtelo de nuevo.",
   "errorApi": "Error al comunicarse con el servidor: {message}.",
   "errorAuth": "No has iniciado sesión.",
   "errorValidation": "Los datos recibidos no son válidos.",
@@ -176,5 +176,11 @@
   "scanOpenSettingsButton": "Abrir ajustes",
   "errorCameraPermission": "Permita el acceso a la cámara para hacer fotos.",
   "errorCameraUnavailable": "La cámara no se puede usar en este momento.",
-  "errorImageLabelingQuotaExceeded": "{limit, plural, one{Ha usado su {limit} escaneo de las últimas 24 horas. Escriba la palabra usted mismo o vuelva a intentarlo más tarde.} other{Ha usado sus {limit} escaneos de las últimas 24 horas. Escriba la palabra usted mismo o vuelva a intentarlo más tarde.}}"
+  "errorImageLabelingQuotaExceeded": "{limit, plural, one{Ha usado su {limit} escaneo de las últimas 24 horas. Escriba la palabra usted mismo o vuelva a intentarlo más tarde.} other{Ha usado sus {limit} escaneos de las últimas 24 horas. Escriba la palabra usted mismo o vuelva a intentarlo más tarde.}}",
+  "connectToInternet": "Conectarse a internet",
+  "scanOfflineMessage": "Las sugerencias necesitan conexión a internet. También puedes escribir la palabra tú mismo.",
+  "detailsOfflineMessage": "La traducción y la búsqueda de fotos necesitan conexión a internet.",
+  "welcomeOfflineMessage": "Para iniciar sesión con Google necesita conexión a internet.",
+  "settingsSignInOfflineMessage": "Para iniciar sesión necesita conexión a internet.",
+  "settingsSignOutOfflineMessage": "Para cerrar sesión necesita conexión a internet, así sus últimos cambios se suben antes."
 }

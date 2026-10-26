@@ -47,4 +47,14 @@ class const AppInfoRepositoryImpl(
       return Failure(UnexpectedError(error.toString()));
     }
   }
+
+  @override
+  Future<AppResult<()>> openInternetSettings() async {
+    try {
+      await _dataSource.openInternetSettings();
+      return const Success(());
+    } on Object catch (error) {
+      return Failure(UnexpectedError(error.toString()));
+    }
+  }
 }

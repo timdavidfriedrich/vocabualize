@@ -4,9 +4,11 @@ import 'package:feature_welcome/presentation/welcome/welcome_event.dart';
 import 'package:feature_welcome/presentation/welcome/welcome_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
+import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
 
 class const WelcomeScreen({
@@ -64,9 +66,14 @@ class const _Content({
           const Center(child: CircularProgressIndicator()),
           const SizedBox(height: Spacing.xl),
         ],
-        FilledButton(
-          onPressed: _isBusy ? null : () => bloc.add(const WelcomeGoogleSignInChosen()),
-          child: Text(context.s.welcomeGoogleSignInButton),
+        ConnectionRequiredNotice(message: context.s.welcomeOfflineMessage, isCentered: true),
+        BlocBuilder<ConnectivityCubit, bool>(
+          builder: (context, isConnected) => FilledButton(
+            onPressed: _isBusy || !isConnected
+                ? null
+                : () => bloc.add(const WelcomeGoogleSignInChosen()),
+            child: Text(context.s.welcomeGoogleSignInButton),
+          ),
         ),
         const SizedBox(height: Spacing.s),
         OutlinedButton(

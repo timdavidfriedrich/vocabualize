@@ -40,6 +40,9 @@ class const ScanSuggestionsSignInRequired()
     with ScanSuggestionsSignInRequiredMappable;
 
 @MappableClass()
+class const ScanSuggestionsOffline() extends ScanSuggestions with ScanSuggestionsOfflineMappable;
+
+@MappableClass()
 class const ScanSuggestionsFailed({
   required final AppError error,
 }) extends ScanSuggestions with ScanSuggestionsFailedMappable;

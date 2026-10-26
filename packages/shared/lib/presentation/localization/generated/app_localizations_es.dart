@@ -28,7 +28,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get error => 'Error';
 
   @override
-  String get errorConnection => 'Sin conexión a internet.';
+  String get errorConnection =>
+      'No se pudo conectar con el servidor. Compruebe su conexión a internet e inténtelo de nuevo.';
 
   @override
   String errorApi(String message) {
@@ -654,4 +655,26 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get connectToInternet => 'Conectarse a internet';
+
+  @override
+  String get scanOfflineMessage =>
+      'Las sugerencias necesitan conexión a internet. También puedes escribir la palabra tú mismo.';
+
+  @override
+  String get detailsOfflineMessage =>
+      'La traducción y la búsqueda de fotos necesitan conexión a internet.';
+
+  @override
+  String get welcomeOfflineMessage =>
+      'Para iniciar sesión con Google necesita conexión a internet.';
+
+  @override
+  String get settingsSignInOfflineMessage => 'Para iniciar sesión necesita conexión a internet.';
+
+  @override
+  String get settingsSignOutOfflineMessage =>
+      'Para cerrar sesión necesita conexión a internet, así sus últimos cambios se suben antes.';
 }

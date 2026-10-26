@@ -8,4 +8,6 @@ abstract class AppInfoRepository {
   Future<AppResult<()>> openDateSettings();
 
   Future<AppResult<()>> openAppSettings();
+
+  Future<AppResult<()>> openInternetSettings();
 }

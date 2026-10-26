@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/connection_required_notice.dart';
 
 const _gridColumns = 4;
 const _overlayOpacity = 0.5;
@@ -18,6 +19,7 @@ typedef _ImageChoice = ({
   DetailsImage? ownPhoto,
   List<StockImage> pageImages,
   bool hasStockImages,
+  bool isWaitingForConnection,
   bool isBusy,
 });
 
@@ -33,6 +35,7 @@ class const ImageChooser({
           :final ownPhoto,
           :final stockImages,
           :final stockPage,
+          :final pendingLookup,
           :final isBusy,
         ) =>
           (
@@ -43,6 +46,7 @@ class const ImageChooser({
                 .take(stockImagesPerPage)
                 .toList(),
             hasStockImages: stockImages.isNotEmpty,
+            isWaitingForConnection: pendingLookup != null,
             isBusy: isBusy,
           ),
         _ => null,
@@ -79,6 +83,10 @@ class const ImageChooser({
                 ),
               },
             ),
+            if (choice.isWaitingForConnection) ...[
+              const SizedBox(height: Spacing.m),
+              ConnectionRequiredNotice(message: context.s.detailsOfflineMessage),
+            ],
           ],
         ),
       },

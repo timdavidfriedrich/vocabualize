@@ -17,6 +17,8 @@ import 'package:shared/data/data_sources/image_processing_data_source.dart'
     as _i179;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
+import 'package:shared/domain/repositories/connectivity_repository.dart'
+    as _i689;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 
@@ -35,6 +37,7 @@ class FeatureScanPackageModule extends _i526.MicroPackageModule {
           gh<_i923.AccountRepository>(),
           gh<_i0.SettingsRepository>(),
           gh<_i328.AppInfoRepository>(),
+          gh<_i689.ConnectivityRepository>(),
         ));
   }
 }

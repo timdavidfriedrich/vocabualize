@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
+import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
 import 'package:shared/presentation/localization/generated/app_localizations.dart';
@@ -32,6 +33,7 @@ class const App({
         BlocProvider(create: (_) => sl<SyncStatusCubit>()..start()),
         BlocProvider(create: (_) => sl<GateCubit>()..start()),
         BlocProvider(create: (_) => sl<LanguagePairCubit>()..start()),
+        BlocProvider(create: (_) => sl<ConnectivityCubit>()..start()),
       ],
       child: MaterialApp.router(
         routerConfig: sl<NavigationRouter>().config,

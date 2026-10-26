@@ -141,7 +141,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorConnection.
   ///
   /// In en, this message translates to:
-  /// **'No internet connection.'**
+  /// **'Couldn\'t reach the server. Check your internet connection and try again.'**
   String get errorConnection;
 
   /// No description provided for @errorApi.
@@ -1163,6 +1163,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{limit, plural, one{You\'ve used your {limit} scan for the last 24 hours. Type the word yourself or try again later.} other{You\'ve used your {limit} scans for the last 24 hours. Type the word yourself or try again later.}}'**
   String errorImageLabelingQuotaExceeded(int limit);
+
+  /// No description provided for @connectToInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to internet'**
+  String get connectToInternet;
+
+  /// No description provided for @scanOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions need an internet connection. You can also type the word yourself.'**
+  String get scanOfflineMessage;
+
+  /// No description provided for @detailsOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation and photo search need an internet connection.'**
+  String get detailsOfflineMessage;
+
+  /// No description provided for @welcomeOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in with Google needs an internet connection.'**
+  String get welcomeOfflineMessage;
+
+  /// No description provided for @settingsSignInOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in needs an internet connection.'**
+  String get settingsSignInOfflineMessage;
+
+  /// No description provided for @settingsSignOutOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing out needs an internet connection, so your latest changes can be uploaded first.'**
+  String get settingsSignOutOfflineMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

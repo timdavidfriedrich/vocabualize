@@ -6,7 +6,7 @@
   "back": "Zurück",
   "tryAgain": "Erneut versuchen",
   "error": "Fehler",
-  "errorConnection": "Keine Internetverbindung.",
+  "errorConnection": "Der Server ist nicht erreichbar. Prüfe deine Internetverbindung und versuche es erneut.",
   "errorApi": "Fehler bei der Kommunikation mit dem Server: {message}.",
   "errorAuth": "Du bist nicht angemeldet.",
   "errorValidation": "Die empfangenen Daten sind ungültig.",
@@ -176,5 +176,11 @@
   "scanOpenSettingsButton": "Einstellungen öffnen",
   "errorCameraPermission": "Erlaube den Zugriff auf die Kamera, um Fotos aufzunehmen.",
   "errorCameraUnavailable": "Die Kamera kann gerade nicht verwendet werden.",
-  "errorImageLabelingQuotaExceeded": "{limit, plural, one{Du hast deinen {limit} Scan der letzten 24 Stunden verbraucht. Gib das Wort selbst ein oder versuche es später erneut.} other{Du hast deine {limit} Scans der letzten 24 Stunden verbraucht. Gib das Wort selbst ein oder versuche es später erneut.}}"
+  "errorImageLabelingQuotaExceeded": "{limit, plural, one{Du hast deinen {limit} Scan der letzten 24 Stunden verbraucht. Gib das Wort selbst ein oder versuche es später erneut.} other{Du hast deine {limit} Scans der letzten 24 Stunden verbraucht. Gib das Wort selbst ein oder versuche es später erneut.}}",
+  "connectToInternet": "Mit Internet verbinden",
+  "scanOfflineMessage": "Für Vorschläge brauchst du eine Internetverbindung. Du kannst das Wort auch selbst eingeben.",
+  "detailsOfflineMessage": "Für Übersetzung und Fotosuche brauchst du eine Internetverbindung.",
+  "welcomeOfflineMessage": "Für die Anmeldung mit Google brauchst du eine Internetverbindung.",
+  "settingsSignInOfflineMessage": "Für die Anmeldung brauchst du eine Internetverbindung.",
+  "settingsSignOutOfflineMessage": "Zum Abmelden brauchst du eine Internetverbindung, damit deine letzten Änderungen vorher hochgeladen werden."
 }

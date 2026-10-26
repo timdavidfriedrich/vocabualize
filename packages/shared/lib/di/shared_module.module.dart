@@ -23,6 +23,8 @@ import 'package:shared/data/data_sources/backup_archive_data_source.dart'
     as _i100;
 import 'package:shared/data/data_sources/backup_file_data_source.dart' as _i460;
 import 'package:shared/data/data_sources/clock_data_source.dart' as _i44;
+import 'package:shared/data/data_sources/connectivity_data_source.dart'
+    as _i154;
 import 'package:shared/data/data_sources/database_session_data_source.dart'
     as _i862;
 import 'package:shared/data/data_sources/external_link_data_source.dart'
@@ -52,6 +54,8 @@ import 'package:shared/data/repositories/app_info_repository_impl.dart'
     as _i1026;
 import 'package:shared/data/repositories/backup_repository_impl.dart' as _i237;
 import 'package:shared/data/repositories/clock_repository_impl.dart' as _i314;
+import 'package:shared/data/repositories/connectivity_repository_impl.dart'
+    as _i951;
 import 'package:shared/data/repositories/external_link_repository_impl.dart'
     as _i22;
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
@@ -73,6 +77,8 @@ import 'package:shared/domain/repositories/app_config_repository.dart' as _i541;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/backup_repository.dart' as _i152;
 import 'package:shared/domain/repositories/clock_repository.dart' as _i946;
+import 'package:shared/domain/repositories/connectivity_repository.dart'
+    as _i689;
 import 'package:shared/domain/repositories/external_link_repository.dart'
     as _i711;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
@@ -86,6 +92,8 @@ import 'package:shared/domain/repositories/text_to_speech_repository.dart'
 import 'package:shared/domain/repositories/translation_repository.dart'
     as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
+import 'package:shared/presentation/connectivity/connectivity_cubit.dart'
+    as _i855;
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart'
     as _i650;
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart'
@@ -130,6 +138,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
             ));
     gh.factory<_i460.BackupFileDataSource>(
         () => const _i460.BackupFileDataSourceImpl());
+    gh.factory<_i154.ConnectivityDataSource>(
+        () => const _i154.ConnectivityDataSourceImpl());
     gh.factory<_i223.AppConfigRemoteDataSource>(
         () => _i223.AppConfigRemoteDataSourceImpl(gh<_i1040.Client>()));
     gh.factory<_i204.ImageRepository>(() => _i816.ImageRepositoryImpl(
@@ -140,6 +150,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => _i395.AiRemoteDataSourceImpl(gh<_i1040.Client>()));
     gh.factory<_i934.StockImageRepository>(
         () => _i645.StockImageRepositoryImpl(gh<_i395.AiRemoteDataSource>()));
+    gh.factory<_i689.ConnectivityRepository>(() =>
+        _i951.ConnectivityRepositoryImpl(gh<_i154.ConnectivityDataSource>()));
     gh.lazySingleton<_i44.ClockDataSource>(() => _i44.ClockDataSourceImpl(
           gh<_i1040.Client>(),
           gh<_i1040.ConnectivityMonitor>(),
@@ -153,6 +165,10 @@ class SharedPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i541.AppConfigRepository>(() => _i509.AppConfigRepositoryImpl(
           gh<_i223.AppConfigRemoteDataSource>(),
           gh<_i49.AppConfigLocalDataSource>(),
+        ));
+    gh.factory<_i855.ConnectivityCubit>(() => _i855.ConnectivityCubit(
+          gh<_i689.ConnectivityRepository>(),
+          gh<_i328.AppInfoRepository>(),
         ));
     gh.factory<_i946.ClockRepository>(
         () => _i314.ClockRepositoryImpl(gh<_i44.ClockDataSource>()));

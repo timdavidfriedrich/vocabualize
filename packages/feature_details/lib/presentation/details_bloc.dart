@@ -14,6 +14,7 @@ import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/entities/vocabulary_image_change.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
+import 'package:shared/domain/repositories/connectivity_repository.dart';
 import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
@@ -22,7 +23,12 @@ import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/translation_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 
-typedef _Lookup = ({String? translation, List<StockImage> stockImages, AppError? error});
+typedef _Lookup = ({
+  String? translation,
+  List<StockImage> stockImages,
+  AppError? error,
+  DetailsPendingLookup? pending,
+});
 
 @injectable
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
@@ -36,9 +42,11 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     this._tagRepository,
     this._externalLinkRepository,
     this._pickImage,
+    this._connectivityRepository,
   ) : super(const DetailsLoading()) {
     on<DetailsNewStarted>(_onNewStarted);
     on<DetailsEditStarted>(_onEditStarted);
+    on<DetailsConnectionRestored>(_onConnectionRestored);
     on<DetailsDuplicateResolved>(_onDuplicateResolved);
     on<DetailsSourceChanged>(_onSourceChanged);
     on<DetailsTargetChanged>(_onTargetChanged);
@@ -61,6 +69,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final TagRepository _tagRepository;
   final ExternalLinkRepository _externalLinkRepository;
   final PickImageUseCase _pickImage;
+  final ConnectivityRepository _connectivityRepository;
 
   Future<void> _onNewStarted(DetailsNewStarted event, Emitter<DetailsState> emit) async {
     switch (await _vocabularyRepository.hasVocabularyWithSource(event.source)) {
@@ -71,6 +80,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       case Failure(:final error):
         emit(DetailsFailure(error: error));
     }
+    await _watchConnectivity(emit);
   }
 
   Future<void> _onEditStarted(DetailsEditStarted event, Emitter<DetailsState> emit) async {
@@ -79,6 +89,34 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         emit(await _existingWord(data));
       case Failure(:final error):
         emit(DetailsFailure(error: error));
+    }
+    await _watchConnectivity(emit);
+  }
+
+  Future<void> _onConnectionRestored(
+    DetailsConnectionRestored event,
+    Emitter<DetailsState> emit,
+  ) async {
+    if (state
+        case DetailsEditing(
+              :final pendingLookup?,
+              :final languages?,
+              isBusy: false,
+            ) &&
+            final editing) {
+      final busy = editing.copyWith(isBusy: true, error: null);
+      emit(busy);
+      final lookup = await _lookUp(editing.source, languages, pending: pendingLookup);
+      emit(
+        busy.copyWith(
+          target: lookup.translation ?? busy.target,
+          stockImages: lookup.stockImages,
+          stockPage: 0,
+          pendingLookup: lookup.pending,
+          isBusy: false,
+          error: lookup.error,
+        ),
+      );
     }
   }
 
@@ -101,12 +139,17 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       }
       final busy = editing.copyWith(source: source, isBusy: true, error: null);
       emit(busy);
-      final lookup = await _lookUp(source, languages);
+      final lookup = await _lookUp(
+        source,
+        languages,
+        pending: DetailsPendingLookup.translationAndPhotos,
+      );
       emit(
         busy.copyWith(
           target: lookup.translation ?? busy.target,
           stockImages: lookup.stockImages,
           stockPage: 0,
+          pendingLookup: lookup.pending,
           isBusy: false,
           error: lookup.error,
         ),
@@ -116,7 +159,16 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   void _onTargetChanged(DetailsTargetChanged event, Emitter<DetailsState> emit) {
     if (state case final DetailsEditing editing when !editing.isBusy) {
-      emit(editing.copyWith(target: event.target.trim(), error: null));
+      emit(
+        editing.copyWith(
+          target: event.target.trim(),
+          pendingLookup: switch (editing.pendingLookup) {
+            null => null,
+            DetailsPendingLookup() => DetailsPendingLookup.photos,
+          },
+          error: null,
+        ),
+      );
     }
   }
 
@@ -281,7 +333,9 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       Failure() => null,
     };
     final canUseAi = await _canUseAi();
-    final lookup = canUseAi && languages != null ? await _lookUp(source, languages) : null;
+    final lookup = canUseAi && languages != null
+        ? await _lookUp(source, languages, pending: DetailsPendingLookup.translationAndPhotos)
+        : null;
     final tags = await _tags();
     final ownPhoto = photo == null ? null : DetailsNewPhoto(image: photo);
     return DetailsEditing(
@@ -296,6 +350,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       stockPage: 0,
       tags: tags,
       selectedTagIds: const {},
+      pendingLookup: lookup?.pending,
       isBusy: false,
       error: lookup?.error,
     );
@@ -307,8 +362,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       target: vocabulary.targetLanguage,
     );
     final canUseAi = await _canUseAi();
-    final stockSearch = canUseAi
-        ? await _stockImageRepository.search(query: vocabulary.source, language: languages.source)
+    final lookup = canUseAi
+        ? await _lookUp(vocabulary.source, languages, pending: DetailsPendingLookup.photos)
         : null;
     final tags = await _tags();
     return DetailsEditing(
@@ -325,41 +380,66 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         final CustomImage image => DetailsSavedImage(image: image),
         NoImage() || StockImage() => null,
       },
-      stockImages: switch (stockSearch) {
-        Success(:final data) => data,
-        Failure() || null => const [],
-      },
+      stockImages: lookup?.stockImages ?? const [],
       stockPage: 0,
       tags: tags,
       selectedTagIds: vocabulary.tagIds,
+      pendingLookup: lookup?.pending,
       isBusy: false,
-      error: switch (stockSearch) {
-        Failure(:final error) => error,
-        Success() || null => null,
-      },
+      error: lookup?.error,
     );
   }
 
-  Future<_Lookup> _lookUp(String text, LanguagePair languages) async {
+  Future<_Lookup> _lookUp(
+    String text,
+    LanguagePair languages, {
+    required DetailsPendingLookup pending,
+  }) async {
+    if (!await _isConnected()) {
+      return (translation: null, stockImages: const <StockImage>[], error: null, pending: pending);
+    }
     final (translation, stockImages) = await (
-      _translationRepository.translate(text: text, languages: languages),
+      switch (pending) {
+        DetailsPendingLookup.translationAndPhotos => _translationRepository.translate(
+          text: text,
+          languages: languages,
+        ),
+        DetailsPendingLookup.photos => Future<AppResult<String>?>.value(),
+      },
       _stockImageRepository.search(query: text, language: languages.source),
     ).wait;
+    final error = switch ((translation, stockImages)) {
+      (Failure(:final error), _) || (_, Failure(:final error)) => error,
+      _ => null,
+    };
+    final isOffline = error is ConnectionError && !await _isConnected();
     return (
       translation: switch (translation) {
         Success(:final data) => data,
-        Failure() => null,
+        Failure() || null => null,
       },
       stockImages: switch (stockImages) {
         Success(:final data) => data,
         Failure() => const <StockImage>[],
       },
-      error: switch ((translation, stockImages)) {
-        (Failure(:final error), _) || (_, Failure(:final error)) => error,
-        _ => null,
+      error: isOffline ? null : error,
+      pending: isOffline ? pending : null,
+    );
+  }
+
+  Future<void> _watchConnectivity(Emitter<DetailsState> emit) {
+    return emit.onEach(
+      _connectivityRepository.watchIsConnected(),
+      onData: (result) {
+        if (result case Success(data: true)) add(const DetailsConnectionRestored());
       },
     );
   }
+
+  Future<bool> _isConnected() async => switch (await _connectivityRepository.isConnected()) {
+    Success(:final data) => data,
+    Failure() => true,
+  };
 
   Future<List<Tag>> _tags() async {
     return switch (await _tagRepository.watchTags().first) {

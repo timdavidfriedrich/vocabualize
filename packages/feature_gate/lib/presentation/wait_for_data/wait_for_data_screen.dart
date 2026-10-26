@@ -4,6 +4,7 @@ import 'package:feature_gate/presentation/wait_for_data/wait_for_data_state.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/data_readiness.dart';
+import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
@@ -48,8 +49,8 @@ class const WaitForDataScreen({
                   title: context.s.dataOfflineTitle,
                   message: context.s.dataOfflineMessage,
                   action: (
-                    label: context.s.dataRetryButton,
-                    onPressed: state.isBusy ? null : cubit.retry,
+                    label: context.s.connectToInternet,
+                    onPressed: context.read<ConnectivityCubit>().openInternetSettings,
                   ),
                 ),
                 DataUnavailableReason.serverUnreachable => _Content(

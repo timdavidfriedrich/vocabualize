@@ -6,7 +6,7 @@
   "back": "Back",
   "tryAgain": "Try again",
   "error": "Error",
-  "errorConnection": "No internet connection.",
+  "errorConnection": "Couldn't reach the server. Check your internet connection and try again.",
   "errorApi": "Error while communicating with the server: {message}.",
   "@errorApi": {
     "placeholders": {
@@ -321,5 +321,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "connectToInternet": "Connect to internet",
+  "scanOfflineMessage": "Suggestions need an internet connection. You can also type the word yourself.",
+  "detailsOfflineMessage": "Translation and photo search need an internet connection.",
+  "welcomeOfflineMessage": "Signing in with Google needs an internet connection.",
+  "settingsSignInOfflineMessage": "Signing in needs an internet connection.",
+  "settingsSignOutOfflineMessage": "Signing out needs an internet connection, so your latest changes can be uploaded first."
 }

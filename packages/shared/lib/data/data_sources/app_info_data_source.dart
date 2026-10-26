@@ -19,6 +19,8 @@ abstract class AppInfoDataSource {
   Future<void> openDateSettings();
 
   Future<void> openAppSettings();
+
+  Future<void> openInternetSettings();
 }
 
 @Injectable(as: AppInfoDataSource)
@@ -43,4 +45,8 @@ class const AppInfoDataSourceImpl() implements AppInfoDataSource {
 
   @override
   Future<void> openAppSettings() => AppSettings.openAppSettings();
+
+  @override
+  Future<void> openInternetSettings() =>
+      AppSettings.openAppSettingsPanel(AppSettingsPanelType.internetConnectivity);
 }

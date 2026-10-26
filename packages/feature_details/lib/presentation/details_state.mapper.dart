@@ -8,6 +8,53 @@
 
 part of 'details_state.dart';
 
+class DetailsPendingLookupMapper extends EnumMapper<DetailsPendingLookup> {
+  DetailsPendingLookupMapper._();
+
+  static DetailsPendingLookupMapper? _instance;
+  static DetailsPendingLookupMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsPendingLookupMapper._());
+    }
+    return _instance!;
+  }
+
+  static DetailsPendingLookup fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  DetailsPendingLookup decode(dynamic value) {
+    switch (value) {
+      case r'translationAndPhotos':
+        return DetailsPendingLookup.translationAndPhotos;
+      case r'photos':
+        return DetailsPendingLookup.photos;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(DetailsPendingLookup self) {
+    switch (self) {
+      case DetailsPendingLookup.translationAndPhotos:
+        return r'translationAndPhotos';
+      case DetailsPendingLookup.photos:
+        return r'photos';
+    }
+  }
+}
+
+extension DetailsPendingLookupMapperExtension on DetailsPendingLookup {
+  String toValue() {
+    DetailsPendingLookupMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<DetailsPendingLookup>(this)
+        as String;
+  }
+}
+
 class DetailsStateMapper extends ClassMapperBase<DetailsState> {
   DetailsStateMapper._();
 
@@ -331,6 +378,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       DetailsImageMapper.ensureInitialized();
       StockImageMapper.ensureInitialized();
       TagMapper.ensureInitialized();
+      DetailsPendingLookupMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -390,6 +438,10 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     'selectedTagIds',
     _$selectedTagIds,
   );
+  static DetailsPendingLookup? _$pendingLookup(DetailsEditing v) =>
+      v.pendingLookup;
+  static const Field<DetailsEditing, DetailsPendingLookup> _f$pendingLookup =
+      Field('pendingLookup', _$pendingLookup);
   static bool _$isBusy(DetailsEditing v) => v.isBusy;
   static const Field<DetailsEditing, bool> _f$isBusy = Field(
     'isBusy',
@@ -414,6 +466,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     #stockPage: _f$stockPage,
     #tags: _f$tags,
     #selectedTagIds: _f$selectedTagIds,
+    #pendingLookup: _f$pendingLookup,
     #isBusy: _f$isBusy,
     #error: _f$error,
   };
@@ -431,6 +484,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       stockPage: data.dec(_f$stockPage),
       tags: data.dec(_f$tags),
       selectedTagIds: data.dec(_f$selectedTagIds),
+      pendingLookup: data.dec(_f$pendingLookup),
       isBusy: data.dec(_f$isBusy),
       error: data.dec(_f$error),
     );
@@ -518,6 +572,7 @@ abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
     int? stockPage,
     List<Tag>? tags,
     Set<String>? selectedTagIds,
+    DetailsPendingLookup? pendingLookup,
     bool? isBusy,
     AppError? error,
   });
@@ -572,6 +627,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     int? stockPage,
     List<Tag>? tags,
     Set<String>? selectedTagIds,
+    Object? pendingLookup = $none,
     bool? isBusy,
     Object? error = $none,
   }) => $apply(
@@ -587,6 +643,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
       if (stockPage != null) #stockPage: stockPage,
       if (tags != null) #tags: tags,
       if (selectedTagIds != null) #selectedTagIds: selectedTagIds,
+      if (pendingLookup != $none) #pendingLookup: pendingLookup,
       if (isBusy != null) #isBusy: isBusy,
       if (error != $none) #error: error,
     }),
@@ -604,6 +661,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     stockPage: data.get(#stockPage, or: $value.stockPage),
     tags: data.get(#tags, or: $value.tags),
     selectedTagIds: data.get(#selectedTagIds, or: $value.selectedTagIds),
+    pendingLookup: data.get(#pendingLookup, or: $value.pendingLookup),
     isBusy: data.get(#isBusy, or: $value.isBusy),
     error: data.get(#error, or: $value.error),
   );
