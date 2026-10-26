@@ -69,11 +69,7 @@ class const _SourceButton({
       label: context.s.detailsSourceLabel,
     );
     if (source == null || !context.mounted) return;
-    final canUseAi = switch (bloc.state) {
-      DetailsEditing(:final canUseAi) => canUseAi,
-      _ => false,
-    };
-    final retranslates = canUseAi && await confirmsRetranslation(context);
+    final retranslates = await confirmsRetranslation(context);
     bloc.add(DetailsSourceChanged(source: source, retranslates: retranslates));
   }
 }

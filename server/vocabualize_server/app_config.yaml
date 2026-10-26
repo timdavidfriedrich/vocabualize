@@ -5,25 +5,55 @@ client:
   maintenanceMode: false
   maintenanceMessage: null
 
-images:
+tiers:
+  anonymous:
+    translationsPerDay: 100
+    stockImageSearchesPerDay: 100
+    imageLabelingsPerDay: 10
+    imageLabelingsPerMonth: 40
+  free:
+    translationsPerDay: 100
+    stockImageSearchesPerDay: 100
+    imageLabelingsPerDay: 10
+    imageLabelingsPerMonth: 40
+  premium:
+    translationsPerDay: 100
+    stockImageSearchesPerDay: 100
+    imageLabelingsPerDay: 100
+    imageLabelingsPerMonth: 400
+
+translation:
+  enabled: true
+  provider: deepl
+  maxTextLength: 100
+  englishTarget: EN-US
+  perDay: 1500
+
+stockImages:
+  enabled: true
+  provider: pexels
+  maxQueryLength: 100
+  perDay: 600
+
+imageLabeling:
+  enabled: true
+  provider: gemini
+  model: gemini-3.5-flash-lite
+  maxImageBytes: 150000
+  perDay: 1000
+
+installs:
+  enabled: true
+  perIpPerDay: 5
+  perDay: 500
+
+imageStorage:
   provider: garage
   bucket: vocabualize-images
   region: garage
   endpoint: http://localhost:3900
   publicEndpoint: http://localhost:3900
-
-ai:
-  enabled: true
-  translationProvider: deepl
-  stockImageProvider: pexels
-  imageLabelingProvider: gemini
-  imageLabelingModel: gemini-3.5-flash-lite
-  translationsPerDay: 100
-  stockSearchesPerDay: 100
-  imageLabelingsPerDay: 30
-  maxTextLength: 100
-  maxLabelingImageBytes: 150000
-  englishTarget: EN-US
+  maxPhotosPerAccount: 10000
 
 reports:
   enabled: true

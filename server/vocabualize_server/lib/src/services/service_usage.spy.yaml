@@ -1,0 +1,15 @@
+class: ServiceUsage
+table: service_usage
+serverOnly: true
+
+fields:
+  ownerId: UuidValue
+  kind: String
+  status: String
+  createdAt: DateTime
+
+indexes:
+  service_usage_owner_kind_created_idx:
+    fields: ownerId, kind, createdAt
+  service_usage_kind_created_idx:
+    fields: kind, createdAt

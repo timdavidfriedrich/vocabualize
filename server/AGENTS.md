@@ -49,7 +49,7 @@ Run these against `docker compose exec -T garage /garage …`:
 4. `key create vocabualize-dev`. Put its key ID and secret into `config/passwords.yaml` as `garageAccessKey` and `garageSecretKey`, and never print the secret.
 5. `bucket allow --read --write --owner vocabualize-images --key vocabualize-dev`.
 
-`app_config.yaml` → `images.provider: garage` uses it; `database` keeps images in Postgres instead. The app stores only image keys, never URLs, so the provider can change without touching any data.
+`app_config.yaml` → `imageStorage.provider: garage` uses it; `database` keeps images in Postgres instead. The app stores only image keys, never URLs, so the provider can change without touching any data.
 
 The app is run with `fvm flutter run` from the repository root, never with `serverpod start`.
 

@@ -7,3 +7,4 @@ fields:
   region: String
   endpoint: String
   publicEndpoint: String
+  maxPhotosPerAccount: int

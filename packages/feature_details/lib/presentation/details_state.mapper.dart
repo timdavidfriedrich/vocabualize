@@ -439,11 +439,6 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     'languages',
     _$languages,
   );
-  static bool _$canUseAi(DetailsEditing v) => v.canUseAi;
-  static const Field<DetailsEditing, bool> _f$canUseAi = Field(
-    'canUseAi',
-    _$canUseAi,
-  );
   static String _$source(DetailsEditing v) => v.source;
   static const Field<DetailsEditing, String> _f$source = Field(
     'source',
@@ -505,7 +500,6 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
   final MappableFields<DetailsEditing> fields = const {
     #original: _f$original,
     #languages: _f$languages,
-    #canUseAi: _f$canUseAi,
     #source: _f$source,
     #target: _f$target,
     #selectedImage: _f$selectedImage,
@@ -524,7 +518,6 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     return DetailsEditing(
       original: data.dec(_f$original),
       languages: data.dec(_f$languages),
-      canUseAi: data.dec(_f$canUseAi),
       source: data.dec(_f$source),
       target: data.dec(_f$target),
       selectedImage: data.dec(_f$selectedImage),
@@ -613,7 +606,6 @@ abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
   $R call({
     Vocabulary? original,
     LanguagePair? languages,
-    bool? canUseAi,
     String? source,
     String? target,
     DetailsImage? selectedImage,
@@ -669,7 +661,6 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
   $R call({
     Object? original = $none,
     Object? languages = $none,
-    bool? canUseAi,
     String? source,
     String? target,
     DetailsImage? selectedImage,
@@ -686,7 +677,6 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (original != $none) #original: original,
       if (languages != $none) #languages: languages,
-      if (canUseAi != null) #canUseAi: canUseAi,
       if (source != null) #source: source,
       if (target != null) #target: target,
       if (selectedImage != null) #selectedImage: selectedImage,
@@ -705,7 +695,6 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
   DetailsEditing $make(CopyWithData data) => DetailsEditing(
     original: data.get(#original, or: $value.original),
     languages: data.get(#languages, or: $value.languages),
-    canUseAi: data.get(#canUseAi, or: $value.canUseAi),
     source: data.get(#source, or: $value.source),
     target: data.get(#target, or: $value.target),
     selectedImage: data.get(#selectedImage, or: $value.selectedImage),

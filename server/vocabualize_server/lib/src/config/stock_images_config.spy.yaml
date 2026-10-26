@@ -1,0 +1,8 @@
+class: StockImagesConfig
+serverOnly: true
+
+fields:
+  enabled: bool
+  provider: String
+  maxQueryLength: int
+  perDay: int

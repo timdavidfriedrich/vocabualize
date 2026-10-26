@@ -627,7 +627,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get errorAiUnavailable => 'Автоматичні пропозиції зараз недоступні.';
+  String get errorServiceUnavailable => 'Автоматичні пропозиції зараз недоступні.';
 
   @override
   String get collectionsDeleteButton => 'Видалити колекцію';
@@ -640,9 +640,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get scanTypeHint => 'Введіть слово...';
-
-  @override
-  String get scanSignInMessage => 'Увійдіть, щоб отримувати пропозиції для свого фото.';
 
   @override
   String get scanOpenSettingsButton => 'Відкрити налаштування';
@@ -668,6 +665,28 @@ class AppLocalizationsUk extends AppLocalizations {
           'Ви використали $limit сканування за останні 24 години. Введіть слово самостійно або спробуйте пізніше.',
     );
     return '$_temp0';
+  }
+
+  @override
+  String errorImageLabelingMonthlyQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Ви використали $limit сканування цього місяця. Введіть слово самостійно або спробуйте наступного місяця.',
+      many:
+          'Ви використали $limit сканувань цього місяця. Введіть слово самостійно або спробуйте наступного місяця.',
+      few:
+          'Ви використали $limit сканування цього місяця. Введіть слово самостійно або спробуйте наступного місяця.',
+      one:
+          'Ви використали $limit сканування цього місяця. Введіть слово самостійно або спробуйте наступного місяця.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String errorQuotaSignInForMore(String message) {
+    return '$message Увійдіть через Google, щоб отримати більше.';
   }
 
   @override

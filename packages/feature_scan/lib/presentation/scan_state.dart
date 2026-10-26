@@ -35,11 +35,6 @@ class const ScanSuggestionsLoaded({
 }) extends ScanSuggestions with ScanSuggestionsLoadedMappable;
 
 @MappableClass()
-class const ScanSuggestionsSignInRequired()
-    extends ScanSuggestions
-    with ScanSuggestionsSignInRequiredMappable;
-
-@MappableClass()
 class const ScanSuggestionsOffline() extends ScanSuggestions with ScanSuggestionsOfflineMappable;
 
 @MappableClass()

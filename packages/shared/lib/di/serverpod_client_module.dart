@@ -12,6 +12,9 @@ abstract class ServerpodClientModule {
   FlutterAuthSessionManager sessionManager() => FlutterAuthSessionManager();
 
   @lazySingleton
+  FlutterSecureStorage secureStorage() => const FlutterSecureStorage();
+
+  @lazySingleton
   ConnectivityMonitor connectivityMonitor() => FlutterConnectivityMonitor();
 
   @lazySingleton

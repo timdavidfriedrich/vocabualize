@@ -1,0 +1,4 @@
+exception: InstallRejectedException
+
+fields:
+  reason: String

@@ -1,7 +1,7 @@
 import 'package:core/error/app_result.dart';
 import 'package:feature_scan/domain/repositories/image_labeling_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared/data/data_sources/ai_remote_data_source.dart';
+import 'package:shared/data/data_sources/image_labeling_remote_data_source.dart';
 import 'package:shared/data/data_sources/image_processing_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
@@ -13,7 +13,7 @@ const _labelingLongEdge = 512;
 @Injectable(as: ImageLabelingRepository)
 class const ImageLabelingRepositoryImpl(
   final ImageProcessingDataSource _processingDataSource,
-  final AiRemoteDataSource _remoteDataSource,
+  final ImageLabelingRemoteDataSource _remoteDataSource,
 ) implements ImageLabelingRepository {
   @override
   Future<AppResult<List<String>>> labelImage({
@@ -26,10 +26,10 @@ class const ImageLabelingRepositoryImpl(
         longEdge: _labelingLongEdge,
       );
       return Success(
-        await _remoteDataSource.labelImage(image: image, language: language.toLanguageCode()),
+        await _remoteDataSource.label(image: image, language: language.toLanguageCode()),
       );
     } on Object catch (error) {
-      return Failure(error.toAiError());
+      return Failure(error.toServiceError());
     }
   }
 }

@@ -25,7 +25,12 @@ class const AccountDeletion() {
         where: (t) => t.ownerSpaceUuid.equals(userId) | t.incomingSpaceUuid.equals(userId),
         transaction: transaction,
       );
-      await AiUsage.db.deleteWhere(
+      await ServiceUsage.db.deleteWhere(
+        session,
+        where: (t) => t.ownerId.equals(userId),
+        transaction: transaction,
+      );
+      await AccountTier.db.deleteWhere(
         session,
         where: (t) => t.authUserId.equals(userId),
         transaction: transaction,

@@ -19,29 +19,33 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 import 'package:serverpod_database/serverpod_database.dart' as _isd;
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart'
     as _ipulbpi2;
-import 'package:vocabualize_client/src/protocol/ai/remote_stock_image.dart'
-    as _i11dp5nn;
 import 'package:vocabualize_client/src/protocol/images/remote_image_download.dart'
     as _ixnafqut;
-import 'ai/ai_quota_exceeded_exception.dart' as _ituros2n;
-import 'ai/ai_unavailable_exception.dart' as _iid9nodj;
-import 'ai/remote_stock_image.dart' as _iwo8lv3v;
+import 'package:vocabualize_client/src/protocol/services/remote_stock_image.dart'
+    as _i57k2oxs;
 import 'config/remote_app_config.dart' as _ia9g9wp9;
 import 'images/remote_image_download.dart' as _i35otcr0;
+import 'installs/install_rejected_exception.dart' as _istbflf6;
+import 'installs/remote_install_key.dart' as _iln4p86h;
 import 'reports/remote_report_context.dart' as _ikiv91es;
 import 'reports/report_rejected_exception.dart' as _ipfy84dl;
+import 'services/quota_exceeded_exception.dart' as _iu27gnfp;
+import 'services/remote_stock_image.dart' as _i04ejohi;
+import 'services/service_unavailable_exception.dart' as _ilti7uc9;
 import 'sync/local_activity.dart' as _ilpzzhur;
 import 'sync/local_setting.dart' as _ij5ultnt;
 import 'sync/local_tag.dart' as _ia93wqla;
 import 'sync/local_vocabulary.dart' as _ifmbxptn;
 import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
-export 'ai/ai_quota_exceeded_exception.dart';
-export 'ai/ai_unavailable_exception.dart';
-export 'ai/remote_stock_image.dart';
 export 'config/remote_app_config.dart';
 export 'images/remote_image_download.dart';
+export 'installs/install_rejected_exception.dart';
+export 'installs/remote_install_key.dart';
 export 'reports/remote_report_context.dart';
 export 'reports/report_rejected_exception.dart';
+export 'services/quota_exceeded_exception.dart';
+export 'services/remote_stock_image.dart';
+export 'services/service_unavailable_exception.dart';
 export 'sync/local_activity.dart';
 export 'sync/local_setting.dart';
 export 'sync/local_tag.dart';
@@ -63,33 +67,37 @@ class Protocol extends _isd.DatabaseSerializationManager
       _isc.ProtocolDeserialization.cached(
         this,
         types: const [
-          _isc.getType<_ituros2n.AiQuotaExceededException>,
-          _isc.getType<_iid9nodj.AiUnavailableException>,
-          _isc.getType<_iwo8lv3v.RemoteStockImage>,
           _isc.getType<_ia9g9wp9.RemoteAppConfig>,
           _isc.getType<_i35otcr0.RemoteImageDownload>,
+          _isc.getType<_istbflf6.InstallRejectedException>,
+          _isc.getType<_iln4p86h.RemoteInstallKey>,
           _isc.getType<_ikiv91es.RemoteReportContext>,
           _isc.getType<_ipfy84dl.ReportRejectedException>,
+          _isc.getType<_iu27gnfp.QuotaExceededException>,
+          _isc.getType<_i04ejohi.RemoteStockImage>,
+          _isc.getType<_ilti7uc9.ServiceUnavailableException>,
           _isc.getType<_ilpzzhur.LocalActivity>,
           _isc.getType<_ij5ultnt.LocalSetting>,
           _isc.getType<_ia93wqla.LocalTag>,
           _isc.getType<_ifmbxptn.LocalVocabulary>,
           _isc.getType<_iagtk9m4.LocalVocabularyTag>,
-          _isc.getType<_ituros2n.AiQuotaExceededException?>,
-          _isc.getType<_iid9nodj.AiUnavailableException?>,
-          _isc.getType<_iwo8lv3v.RemoteStockImage?>,
           _isc.getType<_ia9g9wp9.RemoteAppConfig?>,
           _isc.getType<_i35otcr0.RemoteImageDownload?>,
+          _isc.getType<_istbflf6.InstallRejectedException?>,
+          _isc.getType<_iln4p86h.RemoteInstallKey?>,
           _isc.getType<_ikiv91es.RemoteReportContext?>,
           _isc.getType<_ipfy84dl.ReportRejectedException?>,
+          _isc.getType<_iu27gnfp.QuotaExceededException?>,
+          _isc.getType<_i04ejohi.RemoteStockImage?>,
+          _isc.getType<_ilti7uc9.ServiceUnavailableException?>,
           _isc.getType<_ilpzzhur.LocalActivity?>,
           _isc.getType<_ij5ultnt.LocalSetting?>,
           _isc.getType<_ia93wqla.LocalTag?>,
           _isc.getType<_ifmbxptn.LocalVocabulary?>,
           _isc.getType<_iagtk9m4.LocalVocabularyTag?>,
-          _isc.getType<List<_i11dp5nn.RemoteStockImage>>,
           _isc.getType<List<String>>,
           _isc.getType<List<_ixnafqut.RemoteImageDownload>>,
+          _isc.getType<List<_i57k2oxs.RemoteStockImage>>,
         ],
         modules: const [
           _iaic.Protocol.new,
@@ -594,26 +602,32 @@ class Protocol extends _isd.DatabaseSerializationManager
       }
     }
 
-    if (t == _ituros2n.AiQuotaExceededException) {
-      return _ituros2n.AiQuotaExceededException.fromJson(data) as T;
-    }
-    if (t == _iid9nodj.AiUnavailableException) {
-      return _iid9nodj.AiUnavailableException.fromJson(data) as T;
-    }
-    if (t == _iwo8lv3v.RemoteStockImage) {
-      return _iwo8lv3v.RemoteStockImage.fromJson(data) as T;
-    }
     if (t == _ia9g9wp9.RemoteAppConfig) {
       return _ia9g9wp9.RemoteAppConfig.fromJson(data) as T;
     }
     if (t == _i35otcr0.RemoteImageDownload) {
       return _i35otcr0.RemoteImageDownload.fromJson(data) as T;
     }
+    if (t == _istbflf6.InstallRejectedException) {
+      return _istbflf6.InstallRejectedException.fromJson(data) as T;
+    }
+    if (t == _iln4p86h.RemoteInstallKey) {
+      return _iln4p86h.RemoteInstallKey.fromJson(data) as T;
+    }
     if (t == _ikiv91es.RemoteReportContext) {
       return _ikiv91es.RemoteReportContext.fromJson(data) as T;
     }
     if (t == _ipfy84dl.ReportRejectedException) {
       return _ipfy84dl.ReportRejectedException.fromJson(data) as T;
+    }
+    if (t == _iu27gnfp.QuotaExceededException) {
+      return _iu27gnfp.QuotaExceededException.fromJson(data) as T;
+    }
+    if (t == _i04ejohi.RemoteStockImage) {
+      return _i04ejohi.RemoteStockImage.fromJson(data) as T;
+    }
+    if (t == _ilti7uc9.ServiceUnavailableException) {
+      return _ilti7uc9.ServiceUnavailableException.fromJson(data) as T;
     }
     if (t == _ilpzzhur.LocalActivity) {
       return _ilpzzhur.LocalActivity.fromJson(data) as T;
@@ -630,22 +644,6 @@ class Protocol extends _isd.DatabaseSerializationManager
     if (t == _iagtk9m4.LocalVocabularyTag) {
       return _iagtk9m4.LocalVocabularyTag.fromJson(data) as T;
     }
-    if (t == _isc.getType<_ituros2n.AiQuotaExceededException?>()) {
-      return (data != null
-              ? _ituros2n.AiQuotaExceededException.fromJson(data)
-              : null)
-          as T;
-    }
-    if (t == _isc.getType<_iid9nodj.AiUnavailableException?>()) {
-      return (data != null
-              ? _iid9nodj.AiUnavailableException.fromJson(data)
-              : null)
-          as T;
-    }
-    if (t == _isc.getType<_iwo8lv3v.RemoteStockImage?>()) {
-      return (data != null ? _iwo8lv3v.RemoteStockImage.fromJson(data) : null)
-          as T;
-    }
     if (t == _isc.getType<_ia9g9wp9.RemoteAppConfig?>()) {
       return (data != null ? _ia9g9wp9.RemoteAppConfig.fromJson(data) : null)
           as T;
@@ -654,6 +652,16 @@ class Protocol extends _isd.DatabaseSerializationManager
       return (data != null
               ? _i35otcr0.RemoteImageDownload.fromJson(data)
               : null)
+          as T;
+    }
+    if (t == _isc.getType<_istbflf6.InstallRejectedException?>()) {
+      return (data != null
+              ? _istbflf6.InstallRejectedException.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_iln4p86h.RemoteInstallKey?>()) {
+      return (data != null ? _iln4p86h.RemoteInstallKey.fromJson(data) : null)
           as T;
     }
     if (t == _isc.getType<_ikiv91es.RemoteReportContext?>()) {
@@ -665,6 +673,22 @@ class Protocol extends _isd.DatabaseSerializationManager
     if (t == _isc.getType<_ipfy84dl.ReportRejectedException?>()) {
       return (data != null
               ? _ipfy84dl.ReportRejectedException.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_iu27gnfp.QuotaExceededException?>()) {
+      return (data != null
+              ? _iu27gnfp.QuotaExceededException.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_i04ejohi.RemoteStockImage?>()) {
+      return (data != null ? _i04ejohi.RemoteStockImage.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ilti7uc9.ServiceUnavailableException?>()) {
+      return (data != null
+              ? _ilti7uc9.ServiceUnavailableException.fromJson(data)
               : null)
           as T;
     }
@@ -686,18 +710,18 @@ class Protocol extends _isd.DatabaseSerializationManager
       return (data != null ? _iagtk9m4.LocalVocabularyTag.fromJson(data) : null)
           as T;
     }
-    if (t == List<_i11dp5nn.RemoteStockImage>) {
-      return (data as List)
-              .map((e) => deserialize<_i11dp5nn.RemoteStockImage>(e))
-              .toList()
-          as T;
-    }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
     if (t == List<_ixnafqut.RemoteImageDownload>) {
       return (data as List)
               .map((e) => deserialize<_ixnafqut.RemoteImageDownload>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i57k2oxs.RemoteStockImage>) {
+      return (data as List)
+              .map((e) => deserialize<_i57k2oxs.RemoteStockImage>(e))
               .toList()
           as T;
     }
@@ -715,13 +739,15 @@ class Protocol extends _isd.DatabaseSerializationManager
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
-      _ituros2n.AiQuotaExceededException => 'AiQuotaExceededException',
-      _iid9nodj.AiUnavailableException => 'AiUnavailableException',
-      _iwo8lv3v.RemoteStockImage => 'RemoteStockImage',
       _ia9g9wp9.RemoteAppConfig => 'RemoteAppConfig',
       _i35otcr0.RemoteImageDownload => 'RemoteImageDownload',
+      _istbflf6.InstallRejectedException => 'InstallRejectedException',
+      _iln4p86h.RemoteInstallKey => 'RemoteInstallKey',
       _ikiv91es.RemoteReportContext => 'RemoteReportContext',
       _ipfy84dl.ReportRejectedException => 'ReportRejectedException',
+      _iu27gnfp.QuotaExceededException => 'QuotaExceededException',
+      _i04ejohi.RemoteStockImage => 'RemoteStockImage',
+      _ilti7uc9.ServiceUnavailableException => 'ServiceUnavailableException',
       _ilpzzhur.LocalActivity => 'LocalActivity',
       _ij5ultnt.LocalSetting => 'LocalSetting',
       _ia93wqla.LocalTag => 'LocalTag',
@@ -741,20 +767,24 @@ class Protocol extends _isd.DatabaseSerializationManager
     }
 
     switch (data) {
-      case _ituros2n.AiQuotaExceededException():
-        return 'AiQuotaExceededException';
-      case _iid9nodj.AiUnavailableException():
-        return 'AiUnavailableException';
-      case _iwo8lv3v.RemoteStockImage():
-        return 'RemoteStockImage';
       case _ia9g9wp9.RemoteAppConfig():
         return 'RemoteAppConfig';
       case _i35otcr0.RemoteImageDownload():
         return 'RemoteImageDownload';
+      case _istbflf6.InstallRejectedException():
+        return 'InstallRejectedException';
+      case _iln4p86h.RemoteInstallKey():
+        return 'RemoteInstallKey';
       case _ikiv91es.RemoteReportContext():
         return 'RemoteReportContext';
       case _ipfy84dl.ReportRejectedException():
         return 'ReportRejectedException';
+      case _iu27gnfp.QuotaExceededException():
+        return 'QuotaExceededException';
+      case _i04ejohi.RemoteStockImage():
+        return 'RemoteStockImage';
+      case _ilti7uc9.ServiceUnavailableException():
+        return 'ServiceUnavailableException';
       case _ilpzzhur.LocalActivity():
         return 'LocalActivity';
       case _ij5ultnt.LocalSetting():
@@ -793,26 +823,32 @@ class Protocol extends _isd.DatabaseSerializationManager
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
-    if (dataClassName == 'AiQuotaExceededException') {
-      return deserialize<_ituros2n.AiQuotaExceededException>(data['data']);
-    }
-    if (dataClassName == 'AiUnavailableException') {
-      return deserialize<_iid9nodj.AiUnavailableException>(data['data']);
-    }
-    if (dataClassName == 'RemoteStockImage') {
-      return deserialize<_iwo8lv3v.RemoteStockImage>(data['data']);
-    }
     if (dataClassName == 'RemoteAppConfig') {
       return deserialize<_ia9g9wp9.RemoteAppConfig>(data['data']);
     }
     if (dataClassName == 'RemoteImageDownload') {
       return deserialize<_i35otcr0.RemoteImageDownload>(data['data']);
     }
+    if (dataClassName == 'InstallRejectedException') {
+      return deserialize<_istbflf6.InstallRejectedException>(data['data']);
+    }
+    if (dataClassName == 'RemoteInstallKey') {
+      return deserialize<_iln4p86h.RemoteInstallKey>(data['data']);
+    }
     if (dataClassName == 'RemoteReportContext') {
       return deserialize<_ikiv91es.RemoteReportContext>(data['data']);
     }
     if (dataClassName == 'ReportRejectedException') {
       return deserialize<_ipfy84dl.ReportRejectedException>(data['data']);
+    }
+    if (dataClassName == 'QuotaExceededException') {
+      return deserialize<_iu27gnfp.QuotaExceededException>(data['data']);
+    }
+    if (dataClassName == 'RemoteStockImage') {
+      return deserialize<_i04ejohi.RemoteStockImage>(data['data']);
+    }
+    if (dataClassName == 'ServiceUnavailableException') {
+      return deserialize<_ilti7uc9.ServiceUnavailableException>(data['data']);
     }
     if (dataClassName == 'LocalActivity') {
       return deserialize<_ilpzzhur.LocalActivity>(data['data']);

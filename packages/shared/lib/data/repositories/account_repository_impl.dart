@@ -9,6 +9,7 @@ import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/image_sync_data_source.dart';
 import 'package:shared/data/data_sources/local_import_data_source.dart';
+import 'package:shared/data/data_sources/service_access_data_source.dart';
 import 'package:shared/data/data_sources/setting_local_data_source.dart';
 import 'package:shared/data/data_sources/space_storage_data_source.dart';
 import 'package:shared/data/data_sources/sync_data_source.dart';
@@ -33,6 +34,7 @@ class AccountRepositoryImpl(
   final SettingLocalDataSource _settingDataSource,
   final SyncDataSource _syncDataSource,
   final ImageSyncDataSource _imageSyncDataSource,
+  final ServiceAccessDataSource _serviceAccessDataSource,
 ) implements AccountRepository {
   final _statusChanges = StreamController<AuthStatus>.broadcast();
   AuthStatus _status = const AuthUnknown();
@@ -152,9 +154,11 @@ class AccountRepositoryImpl(
           return Failure(error.toAppError());
         }
         await _removeSignedOutSpace(AccountSpace(userId: userId), signsOut: true);
+        await _attempt(_serviceAccessDataSource.forgetInstall);
         return const Success(());
       case AuthAuthenticated(account: LocalAccount()):
         await _removeSignedOutSpace(const LocalOnlySpace(), signsOut: false);
+        await _attempt(_serviceAccessDataSource.forgetInstall);
         return const Success(());
       case AuthUnknown() || AuthUnauthenticated():
         return const Failure(AuthError());

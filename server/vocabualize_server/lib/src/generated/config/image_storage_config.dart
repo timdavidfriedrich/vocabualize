@@ -19,6 +19,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
     required this.region,
     required this.endpoint,
     required this.publicEndpoint,
+    required this.maxPhotosPerAccount,
   });
 
   factory ImageStorageConfig({
@@ -27,6 +28,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
     required String region,
     required String endpoint,
     required String publicEndpoint,
+    required int maxPhotosPerAccount,
   }) = _ImageStorageConfigImpl;
 
   factory ImageStorageConfig.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -36,6 +38,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
       region: jsonSerialization['region'] as String,
       endpoint: jsonSerialization['endpoint'] as String,
       publicEndpoint: jsonSerialization['publicEndpoint'] as String,
+      maxPhotosPerAccount: jsonSerialization['maxPhotosPerAccount'] as int,
     );
   }
 
@@ -49,6 +52,8 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
 
   String publicEndpoint;
 
+  int maxPhotosPerAccount;
+
   /// Returns a shallow copy of this [ImageStorageConfig]
   /// with some or all fields replaced by the given arguments.
   @_is.useResult
@@ -58,6 +63,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
     String? region,
     String? endpoint,
     String? publicEndpoint,
+    int? maxPhotosPerAccount,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -68,6 +74,7 @@ abstract class ImageStorageConfig implements _is.SerializableModel, _is.Protocol
       'region': region,
       'endpoint': endpoint,
       'publicEndpoint': publicEndpoint,
+      'maxPhotosPerAccount': maxPhotosPerAccount,
     };
   }
 
@@ -89,12 +96,14 @@ class _ImageStorageConfigImpl extends ImageStorageConfig {
     required String region,
     required String endpoint,
     required String publicEndpoint,
+    required int maxPhotosPerAccount,
   }) : super._(
          provider: provider,
          bucket: bucket,
          region: region,
          endpoint: endpoint,
          publicEndpoint: publicEndpoint,
+         maxPhotosPerAccount: maxPhotosPerAccount,
        );
 
   /// Returns a shallow copy of this [ImageStorageConfig]
@@ -107,6 +116,7 @@ class _ImageStorageConfigImpl extends ImageStorageConfig {
     String? region,
     String? endpoint,
     String? publicEndpoint,
+    int? maxPhotosPerAccount,
   }) {
     return ImageStorageConfig(
       provider: provider ?? this.provider,
@@ -114,6 +124,7 @@ class _ImageStorageConfigImpl extends ImageStorageConfig {
       region: region ?? this.region,
       endpoint: endpoint ?? this.endpoint,
       publicEndpoint: publicEndpoint ?? this.publicEndpoint,
+      maxPhotosPerAccount: maxPhotosPerAccount ?? this.maxPhotosPerAccount,
     );
   }
 }

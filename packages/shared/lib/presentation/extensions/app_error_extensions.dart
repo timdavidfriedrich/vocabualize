@@ -13,12 +13,28 @@ extension AppErrorExtensions on AppError {
     InvalidBackupError() => context.s.errorInvalidBackup,
     ClockWrongError() => context.s.errorClockWrong,
     TextToSpeechUnavailableError() => context.s.errorTextToSpeechUnavailable,
-    TranslationQuotaExceededError(:final limit) => context.s.errorTranslationQuotaExceeded(limit),
-    StockImageQuotaExceededError(:final limit) => context.s.errorStockImageQuotaExceeded(limit),
-    ImageLabelingQuotaExceededError(:final limit) => context.s.errorImageLabelingQuotaExceeded(
-      limit,
+    TranslationQuotaExceededError(:final limit, :final canSignInForMore) => _quotaMessage(
+      context,
+      context.s.errorTranslationQuotaExceeded(limit),
+      canSignInForMore: canSignInForMore,
     ),
-    AiUnavailableError() => context.s.errorAiUnavailable,
+    StockImageQuotaExceededError(:final limit, :final canSignInForMore) => _quotaMessage(
+      context,
+      context.s.errorStockImageQuotaExceeded(limit),
+      canSignInForMore: canSignInForMore,
+    ),
+    ImageLabelingQuotaExceededError(:final limit, isMonthly: true, :final canSignInForMore) =>
+      _quotaMessage(
+        context,
+        context.s.errorImageLabelingMonthlyQuotaExceeded(limit),
+        canSignInForMore: canSignInForMore,
+      ),
+    ImageLabelingQuotaExceededError(:final limit, :final canSignInForMore) => _quotaMessage(
+      context,
+      context.s.errorImageLabelingQuotaExceeded(limit),
+      canSignInForMore: canSignInForMore,
+    ),
+    ServiceUnavailableError() => context.s.errorServiceUnavailable,
     CameraPermissionError() => context.s.errorCameraPermission,
     ReportLimitError() => context.s.errorReportLimit,
     ReportUnavailableError() => context.s.errorReportUnavailable,
@@ -26,3 +42,6 @@ extension AppErrorExtensions on AppError {
     UnexpectedError() => context.s.errorUnexpected,
   };
 }
+
+String _quotaMessage(BuildContext context, String message, {required bool canSignInForMore}) =>
+    canSignInForMore ? context.s.errorQuotaSignInForMore(message) : message;

@@ -1,0 +1,13 @@
+class: AccountTier
+table: account_tier
+serverOnly: true
+
+fields:
+  authUserId: UuidValue
+  tier: String
+  grantedAt: DateTime
+
+indexes:
+  account_tier_auth_user_idx:
+    fields: authUserId
+    unique: true

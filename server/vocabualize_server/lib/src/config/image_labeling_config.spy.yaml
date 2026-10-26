@@ -1,0 +1,9 @@
+class: ImageLabelingConfig
+serverOnly: true
+
+fields:
+  enabled: bool
+  provider: String
+  model: String
+  maxImageBytes: int
+  perDay: int

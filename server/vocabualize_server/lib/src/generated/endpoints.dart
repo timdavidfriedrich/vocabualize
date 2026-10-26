@@ -15,14 +15,18 @@ import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart' as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _iais;
 import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart' as _izehhkf5;
+import 'package:vocabualize_server/src/generated/installs/remote_install_key.dart' as _igfchjtu;
 import 'package:vocabualize_server/src/generated/reports/remote_report_context.dart' as _ivmefvxj;
 import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
 import '../endpoints/account_endpoint.dart' as _iaho7ul5;
-import '../endpoints/ai_endpoint.dart' as _igsjf4zh;
 import '../endpoints/config_endpoint.dart' as _i74a5xur;
 import '../endpoints/image_endpoint.dart' as _iu0td00j;
+import '../endpoints/image_labeling_endpoint.dart' as _ixtk3dcw;
+import '../endpoints/install_endpoint.dart' as _i56926ur;
 import '../endpoints/report_endpoint.dart' as _i90z2r7i;
+import '../endpoints/stock_image_endpoint.dart' as _i0xgajvz;
+import '../endpoints/translation_endpoint.dart' as _i8dzvdiu;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -46,12 +50,6 @@ class Endpoints extends _is.EndpointDispatch {
           'account',
           null,
         ),
-      'ai': _igsjf4zh.AiEndpoint()
-        ..initialize(
-          server,
-          'ai',
-          null,
-        ),
       'config': _i74a5xur.ConfigEndpoint()
         ..initialize(
           server,
@@ -64,10 +62,34 @@ class Endpoints extends _is.EndpointDispatch {
           'image',
           null,
         ),
+      'imageLabeling': _ixtk3dcw.ImageLabelingEndpoint()
+        ..initialize(
+          server,
+          'imageLabeling',
+          null,
+        ),
+      'install': _i56926ur.InstallEndpoint()
+        ..initialize(
+          server,
+          'install',
+          null,
+        ),
       'report': _i90z2r7i.ReportEndpoint()
         ..initialize(
           server,
           'report',
+          null,
+        ),
+      'stockImage': _i0xgajvz.StockImageEndpoint()
+        ..initialize(
+          server,
+          'stockImage',
+          null,
+        ),
+      'translation': _i8dzvdiu.TranslationEndpoint()
+        ..initialize(
+          server,
+          'translation',
           null,
         ),
     };
@@ -178,90 +200,6 @@ class Endpoints extends _is.EndpointDispatch {
                 _is.Session session,
                 Map<String, dynamic> params,
               ) async => (endpoints['account'] as _iaho7ul5.AccountEndpoint).delete(session),
-        ),
-      },
-    );
-    connectors['ai'] = _is.EndpointConnector(
-      name: 'ai',
-      endpoint: endpoints['ai']!,
-      methodConnectors: {
-        'translate': _is.MethodConnector(
-          name: 'translate',
-          params: {
-            'text': _is.ParameterDescription(
-              name: 'text',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-            'sourceLanguage': _is.ParameterDescription(
-              name: 'sourceLanguage',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-            'targetLanguage': _is.ParameterDescription(
-              name: 'targetLanguage',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call:
-              (
-                _is.Session session,
-                Map<String, dynamic> params,
-              ) async => (endpoints['ai'] as _igsjf4zh.AiEndpoint).translate(
-                session,
-                params['text'],
-                params['sourceLanguage'],
-                params['targetLanguage'],
-              ),
-        ),
-        'searchStockImages': _is.MethodConnector(
-          name: 'searchStockImages',
-          params: {
-            'query': _is.ParameterDescription(
-              name: 'query',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-            'language': _is.ParameterDescription(
-              name: 'language',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call:
-              (
-                _is.Session session,
-                Map<String, dynamic> params,
-              ) async => (endpoints['ai'] as _igsjf4zh.AiEndpoint).searchStockImages(
-                session,
-                params['query'],
-                params['language'],
-              ),
-        ),
-        'labelImage': _is.MethodConnector(
-          name: 'labelImage',
-          params: {
-            'image': _is.ParameterDescription(
-              name: 'image',
-              type: _is.getType<_idt.ByteData>(),
-              nullable: false,
-            ),
-            'language': _is.ParameterDescription(
-              name: 'language',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call:
-              (
-                _is.Session session,
-                Map<String, dynamic> params,
-              ) async => (endpoints['ai'] as _igsjf4zh.AiEndpoint).labelImage(
-                session,
-                params['image'],
-                params['language'],
-              ),
         ),
       },
     );
@@ -397,6 +335,75 @@ class Endpoints extends _is.EndpointDispatch {
         ),
       },
     );
+    connectors['imageLabeling'] = _is.EndpointConnector(
+      name: 'imageLabeling',
+      endpoint: endpoints['imageLabeling']!,
+      methodConnectors: {
+        'label': _is.MethodConnector(
+          name: 'label',
+          params: {
+            'image': _is.ParameterDescription(
+              name: 'image',
+              type: _is.getType<_idt.ByteData>(),
+              nullable: false,
+            ),
+            'language': _is.ParameterDescription(
+              name: 'language',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'installKey': _is.ParameterDescription(
+              name: 'installKey',
+              type: _is.getType<_igfchjtu.RemoteInstallKey?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['imageLabeling'] as _ixtk3dcw.ImageLabelingEndpoint).label(
+                session,
+                params['image'],
+                params['language'],
+                params['installKey'],
+              ),
+        ),
+      },
+    );
+    connectors['install'] = _is.EndpointConnector(
+      name: 'install',
+      endpoint: endpoints['install']!,
+      methodConnectors: {
+        'register': _is.MethodConnector(
+          name: 'register',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['install'] as _i56926ur.InstallEndpoint).register(session),
+        ),
+        'delete': _is.MethodConnector(
+          name: 'delete',
+          params: {
+            'installKey': _is.ParameterDescription(
+              name: 'installKey',
+              type: _is.getType<_igfchjtu.RemoteInstallKey>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['install'] as _i56926ur.InstallEndpoint).delete(
+                session,
+                params['installKey'],
+              ),
+        ),
+      },
+    );
     connectors['report'] = _is.EndpointConnector(
       name: 'report',
       endpoint: endpoints['report']!,
@@ -471,6 +478,84 @@ class Endpoints extends _is.EndpointDispatch {
                 params['targetLanguage'],
                 params['note'],
                 params['context'],
+              ),
+        ),
+      },
+    );
+    connectors['stockImage'] = _is.EndpointConnector(
+      name: 'stockImage',
+      endpoint: endpoints['stockImage']!,
+      methodConnectors: {
+        'search': _is.MethodConnector(
+          name: 'search',
+          params: {
+            'query': _is.ParameterDescription(
+              name: 'query',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'language': _is.ParameterDescription(
+              name: 'language',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'installKey': _is.ParameterDescription(
+              name: 'installKey',
+              type: _is.getType<_igfchjtu.RemoteInstallKey?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['stockImage'] as _i0xgajvz.StockImageEndpoint).search(
+                session,
+                params['query'],
+                params['language'],
+                params['installKey'],
+              ),
+        ),
+      },
+    );
+    connectors['translation'] = _is.EndpointConnector(
+      name: 'translation',
+      endpoint: endpoints['translation']!,
+      methodConnectors: {
+        'translate': _is.MethodConnector(
+          name: 'translate',
+          params: {
+            'text': _is.ParameterDescription(
+              name: 'text',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'sourceLanguage': _is.ParameterDescription(
+              name: 'sourceLanguage',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'targetLanguage': _is.ParameterDescription(
+              name: 'targetLanguage',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'installKey': _is.ParameterDescription(
+              name: 'installKey',
+              type: _is.getType<_igfchjtu.RemoteInstallKey?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['translation'] as _i8dzvdiu.TranslationEndpoint).translate(
+                session,
+                params['text'],
+                params['sourceLanguage'],
+                params['targetLanguage'],
+                params['installKey'],
               ),
         ),
       },

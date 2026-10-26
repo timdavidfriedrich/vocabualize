@@ -4,6 +4,10 @@ serverOnly: true
 fields:
   version: int
   client: RemoteAppConfig
-  images: ImageStorageConfig
-  ai: AiConfig
+  tiers: TiersConfig
+  translation: TranslationConfig
+  stockImages: StockImagesConfig
+  imageLabeling: ImageLabelingConfig
+  installs: InstallsConfig
+  imageStorage: ImageStorageConfig
   reports: ReportsConfig

@@ -12,25 +12,37 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:vocabualize_server/src/generated/protocol.dart' as _i935iz7n;
-import '../config/ai_config.dart' as _i6mey862;
+import '../config/image_labeling_config.dart' as _iio7eier;
 import '../config/image_storage_config.dart' as _iillbwio;
+import '../config/installs_config.dart' as _ilrwrlkh;
 import '../config/remote_app_config.dart' as _ig8hny3m;
 import '../config/reports_config.dart' as _icpywvfb;
+import '../config/stock_images_config.dart' as _i1k1w2wj;
+import '../config/tiers_config.dart' as _iajahbyi;
+import '../config/translation_config.dart' as _ifwelo8b;
 
 abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSerialization {
   RuntimeConfig._({
     required this.version,
     required this.client,
-    required this.images,
-    required this.ai,
+    required this.tiers,
+    required this.translation,
+    required this.stockImages,
+    required this.imageLabeling,
+    required this.installs,
+    required this.imageStorage,
     required this.reports,
   });
 
   factory RuntimeConfig({
     required int version,
     required _ig8hny3m.RemoteAppConfig client,
-    required _iillbwio.ImageStorageConfig images,
-    required _i6mey862.AiConfig ai,
+    required _iajahbyi.TiersConfig tiers,
+    required _ifwelo8b.TranslationConfig translation,
+    required _i1k1w2wj.StockImagesConfig stockImages,
+    required _iio7eier.ImageLabelingConfig imageLabeling,
+    required _ilrwrlkh.InstallsConfig installs,
+    required _iillbwio.ImageStorageConfig imageStorage,
     required _icpywvfb.ReportsConfig reports,
   }) = _RuntimeConfigImpl;
 
@@ -40,10 +52,22 @@ abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSeria
       client: _i935iz7n.Protocol().deserialize<_ig8hny3m.RemoteAppConfig>(
         jsonSerialization['client'],
       ),
-      images: _i935iz7n.Protocol().deserialize<_iillbwio.ImageStorageConfig>(
-        jsonSerialization['images'],
+      tiers: _i935iz7n.Protocol().deserialize<_iajahbyi.TiersConfig>(jsonSerialization['tiers']),
+      translation: _i935iz7n.Protocol().deserialize<_ifwelo8b.TranslationConfig>(
+        jsonSerialization['translation'],
       ),
-      ai: _i935iz7n.Protocol().deserialize<_i6mey862.AiConfig>(jsonSerialization['ai']),
+      stockImages: _i935iz7n.Protocol().deserialize<_i1k1w2wj.StockImagesConfig>(
+        jsonSerialization['stockImages'],
+      ),
+      imageLabeling: _i935iz7n.Protocol().deserialize<_iio7eier.ImageLabelingConfig>(
+        jsonSerialization['imageLabeling'],
+      ),
+      installs: _i935iz7n.Protocol().deserialize<_ilrwrlkh.InstallsConfig>(
+        jsonSerialization['installs'],
+      ),
+      imageStorage: _i935iz7n.Protocol().deserialize<_iillbwio.ImageStorageConfig>(
+        jsonSerialization['imageStorage'],
+      ),
       reports: _i935iz7n.Protocol().deserialize<_icpywvfb.ReportsConfig>(
         jsonSerialization['reports'],
       ),
@@ -54,9 +78,17 @@ abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSeria
 
   _ig8hny3m.RemoteAppConfig client;
 
-  _iillbwio.ImageStorageConfig images;
+  _iajahbyi.TiersConfig tiers;
 
-  _i6mey862.AiConfig ai;
+  _ifwelo8b.TranslationConfig translation;
+
+  _i1k1w2wj.StockImagesConfig stockImages;
+
+  _iio7eier.ImageLabelingConfig imageLabeling;
+
+  _ilrwrlkh.InstallsConfig installs;
+
+  _iillbwio.ImageStorageConfig imageStorage;
 
   _icpywvfb.ReportsConfig reports;
 
@@ -66,8 +98,12 @@ abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSeria
   RuntimeConfig copyWith({
     int? version,
     _ig8hny3m.RemoteAppConfig? client,
-    _iillbwio.ImageStorageConfig? images,
-    _i6mey862.AiConfig? ai,
+    _iajahbyi.TiersConfig? tiers,
+    _ifwelo8b.TranslationConfig? translation,
+    _i1k1w2wj.StockImagesConfig? stockImages,
+    _iio7eier.ImageLabelingConfig? imageLabeling,
+    _ilrwrlkh.InstallsConfig? installs,
+    _iillbwio.ImageStorageConfig? imageStorage,
     _icpywvfb.ReportsConfig? reports,
   });
   @override
@@ -76,8 +112,12 @@ abstract class RuntimeConfig implements _is.SerializableModel, _is.ProtocolSeria
       '__className__': 'RuntimeConfig',
       'version': version,
       'client': client.toJson(),
-      'images': images.toJson(),
-      'ai': ai.toJson(),
+      'tiers': tiers.toJson(),
+      'translation': translation.toJson(),
+      'stockImages': stockImages.toJson(),
+      'imageLabeling': imageLabeling.toJson(),
+      'installs': installs.toJson(),
+      'imageStorage': imageStorage.toJson(),
       'reports': reports.toJson(),
     };
   }
@@ -97,14 +137,22 @@ class _RuntimeConfigImpl extends RuntimeConfig {
   _RuntimeConfigImpl({
     required int version,
     required _ig8hny3m.RemoteAppConfig client,
-    required _iillbwio.ImageStorageConfig images,
-    required _i6mey862.AiConfig ai,
+    required _iajahbyi.TiersConfig tiers,
+    required _ifwelo8b.TranslationConfig translation,
+    required _i1k1w2wj.StockImagesConfig stockImages,
+    required _iio7eier.ImageLabelingConfig imageLabeling,
+    required _ilrwrlkh.InstallsConfig installs,
+    required _iillbwio.ImageStorageConfig imageStorage,
     required _icpywvfb.ReportsConfig reports,
   }) : super._(
          version: version,
          client: client,
-         images: images,
-         ai: ai,
+         tiers: tiers,
+         translation: translation,
+         stockImages: stockImages,
+         imageLabeling: imageLabeling,
+         installs: installs,
+         imageStorage: imageStorage,
          reports: reports,
        );
 
@@ -115,15 +163,23 @@ class _RuntimeConfigImpl extends RuntimeConfig {
   RuntimeConfig copyWith({
     int? version,
     _ig8hny3m.RemoteAppConfig? client,
-    _iillbwio.ImageStorageConfig? images,
-    _i6mey862.AiConfig? ai,
+    _iajahbyi.TiersConfig? tiers,
+    _ifwelo8b.TranslationConfig? translation,
+    _i1k1w2wj.StockImagesConfig? stockImages,
+    _iio7eier.ImageLabelingConfig? imageLabeling,
+    _ilrwrlkh.InstallsConfig? installs,
+    _iillbwio.ImageStorageConfig? imageStorage,
     _icpywvfb.ReportsConfig? reports,
   }) {
     return RuntimeConfig(
       version: version ?? this.version,
       client: client ?? this.client.copyWith(),
-      images: images ?? this.images.copyWith(),
-      ai: ai ?? this.ai.copyWith(),
+      tiers: tiers ?? this.tiers.copyWith(),
+      translation: translation ?? this.translation.copyWith(),
+      stockImages: stockImages ?? this.stockImages.copyWith(),
+      imageLabeling: imageLabeling ?? this.imageLabeling.copyWith(),
+      installs: installs ?? this.installs.copyWith(),
+      imageStorage: imageStorage ?? this.imageStorage.copyWith(),
       reports: reports ?? this.reports.copyWith(),
     );
   }

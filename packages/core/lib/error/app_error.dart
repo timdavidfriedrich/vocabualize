@@ -22,19 +22,23 @@ class const ClockWrongError() extends AppError;
 
 class const TextToSpeechUnavailableError() extends AppError;
 
-class const TranslationQuotaExceededError(
-  final int limit,
-) extends AppError;
+class const TranslationQuotaExceededError({
+  required final int limit,
+  required final bool canSignInForMore,
+}) extends AppError;
 
-class const StockImageQuotaExceededError(
-  final int limit,
-) extends AppError;
+class const StockImageQuotaExceededError({
+  required final int limit,
+  required final bool canSignInForMore,
+}) extends AppError;
 
-class const ImageLabelingQuotaExceededError(
-  final int limit,
-) extends AppError;
+class const ImageLabelingQuotaExceededError({
+  required final int limit,
+  required final bool isMonthly,
+  required final bool canSignInForMore,
+}) extends AppError;
 
-class const AiUnavailableError() extends AppError;
+class const ServiceUnavailableError() extends AppError;
 
 class const CameraPermissionError() extends AppError;
 

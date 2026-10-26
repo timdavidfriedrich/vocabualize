@@ -21,14 +21,16 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 import 'package:serverpod_database/serverpod_database.dart' as _isd;
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart'
     as _ipulbpi2;
-import 'package:vocabualize_client/src/protocol/ai/remote_stock_image.dart'
-    as _i11dp5nn;
 import 'package:vocabualize_client/src/protocol/config/remote_app_config.dart'
     as _iregoumn;
 import 'package:vocabualize_client/src/protocol/images/remote_image_download.dart'
     as _ixnafqut;
+import 'package:vocabualize_client/src/protocol/installs/remote_install_key.dart'
+    as _ithfgry0;
 import 'package:vocabualize_client/src/protocol/reports/remote_report_context.dart'
     as _il7vcscz;
+import 'package:vocabualize_client/src/protocol/services/remote_stock_image.dart'
+    as _i57k2oxs;
 import 'protocol.dart' as _il2as5qe;
 import 'sync_tables.dart' as _ii3f3u05;
 import 'package:vocabualize_client/migrations/migration_registry.dart';
@@ -142,52 +144,6 @@ class EndpointAccount extends _isc.EndpointRef {
 }
 
 /// {@category Endpoint}
-class EndpointAi extends _isc.EndpointRef {
-  EndpointAi(_isc.EndpointCaller caller) : super(caller);
-
-  @override
-  String get name => 'ai';
-
-  _ida.Future<String> translate(
-    String text,
-    String sourceLanguage,
-    String targetLanguage,
-  ) => caller.callServerEndpoint<String>(
-    'ai',
-    'translate',
-    {
-      'text': text,
-      'sourceLanguage': sourceLanguage,
-      'targetLanguage': targetLanguage,
-    },
-  );
-
-  _ida.Future<List<_i11dp5nn.RemoteStockImage>> searchStockImages(
-    String query,
-    String language,
-  ) => caller.callServerEndpoint<List<_i11dp5nn.RemoteStockImage>>(
-    'ai',
-    'searchStockImages',
-    {
-      'query': query,
-      'language': language,
-    },
-  );
-
-  _ida.Future<List<String>> labelImage(
-    _idt.ByteData image,
-    String language,
-  ) => caller.callServerEndpoint<List<String>>(
-    'ai',
-    'labelImage',
-    {
-      'image': image,
-      'language': language,
-    },
-  );
-}
-
-/// {@category Endpoint}
 class EndpointConfig extends _isc.EndpointRef {
   EndpointConfig(_isc.EndpointCaller caller) : super(caller);
 
@@ -267,6 +223,50 @@ class EndpointImage extends _isc.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointImageLabeling extends _isc.EndpointRef {
+  EndpointImageLabeling(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'imageLabeling';
+
+  _ida.Future<List<String>> label(
+    _idt.ByteData image,
+    String language,
+    _ithfgry0.RemoteInstallKey? installKey,
+  ) => caller.callServerEndpoint<List<String>>(
+    'imageLabeling',
+    'label',
+    {
+      'image': image,
+      'language': language,
+      'installKey': installKey,
+    },
+  );
+}
+
+/// {@category Endpoint}
+class EndpointInstall extends _isc.EndpointRef {
+  EndpointInstall(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'install';
+
+  _ida.Future<_ithfgry0.RemoteInstallKey> register() =>
+      caller.callServerEndpoint<_ithfgry0.RemoteInstallKey>(
+        'install',
+        'register',
+        {},
+      );
+
+  _ida.Future<void> delete(_ithfgry0.RemoteInstallKey installKey) =>
+      caller.callServerEndpoint<void>(
+        'install',
+        'delete',
+        {'installKey': installKey},
+      );
+}
+
+/// {@category Endpoint}
 class EndpointReport extends _isc.EndpointRef {
   EndpointReport(_isc.EndpointCaller caller) : super(caller);
 
@@ -302,6 +302,52 @@ class EndpointReport extends _isc.EndpointRef {
       'targetLanguage': targetLanguage,
       'note': note,
       'context': context,
+    },
+  );
+}
+
+/// {@category Endpoint}
+class EndpointStockImage extends _isc.EndpointRef {
+  EndpointStockImage(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'stockImage';
+
+  _ida.Future<List<_i57k2oxs.RemoteStockImage>> search(
+    String query,
+    String language,
+    _ithfgry0.RemoteInstallKey? installKey,
+  ) => caller.callServerEndpoint<List<_i57k2oxs.RemoteStockImage>>(
+    'stockImage',
+    'search',
+    {
+      'query': query,
+      'language': language,
+      'installKey': installKey,
+    },
+  );
+}
+
+/// {@category Endpoint}
+class EndpointTranslation extends _isc.EndpointRef {
+  EndpointTranslation(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'translation';
+
+  _ida.Future<String> translate(
+    String text,
+    String sourceLanguage,
+    String targetLanguage,
+    _ithfgry0.RemoteInstallKey? installKey,
+  ) => caller.callServerEndpoint<String>(
+    'translation',
+    'translate',
+    {
+      'text': text,
+      'sourceLanguage': sourceLanguage,
+      'targetLanguage': targetLanguage,
+      'installKey': installKey,
     },
   );
 }
@@ -350,10 +396,13 @@ class Client extends _isc.ServerpodClientShared {
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
     account = EndpointAccount(this);
-    ai = EndpointAi(this);
     config = EndpointConfig(this);
     image = EndpointImage(this);
+    imageLabeling = EndpointImageLabeling(this);
+    install = EndpointInstall(this);
     report = EndpointReport(this);
+    stockImage = EndpointStockImage(this);
+    translation = EndpointTranslation(this);
     modules = Modules(this);
   }
 
@@ -363,13 +412,19 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointAccount account;
 
-  late final EndpointAi ai;
-
   late final EndpointConfig config;
 
   late final EndpointImage image;
 
+  late final EndpointImageLabeling imageLabeling;
+
+  late final EndpointInstall install;
+
   late final EndpointReport report;
+
+  late final EndpointStockImage stockImage;
+
+  late final EndpointTranslation translation;
 
   late final Modules modules;
 
@@ -378,10 +433,13 @@ class Client extends _isc.ServerpodClientShared {
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
     'account': account,
-    'ai': ai,
     'config': config,
     'image': image,
+    'imageLabeling': imageLabeling,
+    'install': install,
     'report': report,
+    'stockImage': stockImage,
+    'translation': translation,
   };
 
   @override

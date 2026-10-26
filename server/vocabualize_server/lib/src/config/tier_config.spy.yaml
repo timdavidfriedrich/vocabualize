@@ -1,0 +1,8 @@
+class: TierConfig
+serverOnly: true
+
+fields:
+  translationsPerDay: int
+  stockImageSearchesPerDay: int
+  imageLabelingsPerDay: int
+  imageLabelingsPerMonth: int

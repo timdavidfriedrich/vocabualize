@@ -1,0 +1,7 @@
+class: InstallsConfig
+serverOnly: true
+
+fields:
+  enabled: bool
+  perIpPerDay: int
+  perDay: int

@@ -1,0 +1,7 @@
+class: TiersConfig
+serverOnly: true
+
+fields:
+  anonymous: TierConfig
+  free: TierConfig
+  premium: TierConfig

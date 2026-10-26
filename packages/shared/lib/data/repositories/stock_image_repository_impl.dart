@@ -1,6 +1,6 @@
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared/data/data_sources/ai_remote_data_source.dart';
+import 'package:shared/data/data_sources/stock_image_remote_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/stock_image_mappers.dart';
@@ -10,7 +10,7 @@ import 'package:shared/domain/repositories/stock_image_repository.dart';
 
 @Injectable(as: StockImageRepository)
 class const StockImageRepositoryImpl(
-  final AiRemoteDataSource _remoteDataSource,
+  final StockImageRemoteDataSource _remoteDataSource,
 ) implements StockImageRepository {
   @override
   Future<AppResult<List<StockImage>>> search({
@@ -18,13 +18,13 @@ class const StockImageRepositoryImpl(
     required Language language,
   }) async {
     try {
-      final images = await _remoteDataSource.searchStockImages(
+      final images = await _remoteDataSource.search(
         query: query,
         language: language.toLanguageCode(),
       );
       return Success([for (final image in images) image.toStockImage()]);
     } on Object catch (error) {
-      return Failure(error.toAiError());
+      return Failure(error.toServiceError());
     }
   }
 }

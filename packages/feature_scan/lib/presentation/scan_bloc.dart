@@ -5,10 +5,7 @@ import 'package:feature_scan/presentation/scan_event.dart';
 import 'package:feature_scan/presentation/scan_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared/domain/entities/account.dart';
-import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/entities/processed_image.dart';
-import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/app_info_repository.dart';
 import 'package:shared/domain/repositories/connectivity_repository.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
@@ -19,7 +16,6 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
   ScanBloc(
     this._imageRepository,
     this._imageLabelingRepository,
-    this._accountRepository,
     this._settingsRepository,
     this._appInfoRepository,
     this._connectivityRepository,
@@ -33,7 +29,6 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
 
   final ImageRepository _imageRepository;
   final ImageLabelingRepository _imageLabelingRepository;
-  final AccountRepository _accountRepository;
   final SettingsRepository _settingsRepository;
   final AppInfoRepository _appInfoRepository;
   final ConnectivityRepository _connectivityRepository;
@@ -67,8 +62,6 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
     switch (processed) {
       case Failure(:final error):
         emit(ScanCapturing(isProcessing: false, error: error));
-      case Success(data: final photo) when !await _canUseAi():
-        emit(ScanReviewing(photo: photo, suggestions: const ScanSuggestionsSignInRequired()));
       case Success(data: final photo):
         await _suggest(photo, emit);
     }
@@ -118,12 +111,4 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
     Success(:final data) => data,
     Failure() => true,
   };
-
-  Future<bool> _canUseAi() async {
-    final status = await _accountRepository.watchAuthStatus().first;
-    return switch (status) {
-      Success(data: AuthAuthenticated(account: GoogleAccount())) => true,
-      _ => false,
-    };
-  }
 }

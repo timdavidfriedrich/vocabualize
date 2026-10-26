@@ -1,6 +1,6 @@
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared/data/data_sources/ai_remote_data_source.dart';
+import 'package:shared/data/data_sources/translation_remote_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/domain/entities/language_pair.dart';
@@ -8,7 +8,7 @@ import 'package:shared/domain/repositories/translation_repository.dart';
 
 @Injectable(as: TranslationRepository)
 class const TranslationRepositoryImpl(
-  final AiRemoteDataSource _remoteDataSource,
+  final TranslationRemoteDataSource _remoteDataSource,
 ) implements TranslationRepository {
   @override
   Future<AppResult<String>> translate({
@@ -24,7 +24,7 @@ class const TranslationRepositoryImpl(
         ),
       );
     } on Object catch (error) {
-      return Failure(error.toAiError());
+      return Failure(error.toServiceError());
     }
   }
 }

@@ -52,6 +52,6 @@ Deploy the server before releasing an app build that needs it. A change to a syn
 
 ## Rules
 
-- `vocabualize_server/production/app_config.yaml` is read on every request, so edits apply immediately. Its folder is mounted, not the file, so editors and `sed -i` that replace the file work too. `images.*` is the exception: it is read at boot and needs a restart. Commit every edit back to the repository.
+- `vocabualize_server/production/app_config.yaml` is read on every request, so edits apply immediately. Its folder is mounted, not the file, so editors and `sed -i` that replace the file work too. The storage connection in `imageStorage.*` is the exception: it is read at boot and needs a restart (`imageStorage.maxPhotosPerAccount` applies immediately). Commit every edit back to the repository.
 - Insights (8081) stays out of Caddy. Reach it over Tailscale.
 - Never run `docker compose down -v`: it deletes the database and image volumes.

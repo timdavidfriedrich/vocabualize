@@ -2,6 +2,7 @@ import 'package:serverpod/serverpod.dart';
 
 import '../composition.dart';
 import '../generated/protocol.dart';
+import 'config_source.dart';
 
 const imageVariantFull = "full";
 const imageVariantThumbnail = "thumbnail";
@@ -11,13 +12,14 @@ const _imageExtension = ".webp";
 const _userPrefix = "u";
 
 class const ImageStorage() {
-  Future<String> createUpload(
+  Future<String?> createUpload(
     Session session,
     UuidValue authUserId,
     UuidValue imageId,
     String variant,
     int byteSize,
-  ) {
+  ) async {
+    if (!await _hasRoomFor(session, authUserId, imageId)) return null;
     return session.storage.createUploadDescription(
       storageId: imageStorageId,
       path: _key(authUserId, imageId, variant),
@@ -117,6 +119,19 @@ class const ImageStorage() {
         session.log("Deleting image $key failed: $error", level: LogLevel.warning);
       }
     }
+  }
+
+  Future<bool> _hasRoomFor(Session session, UuidValue authUserId, UuidValue imageId) async {
+    final storedVariants = await StoredImage.db.count(
+      session,
+      where: (t) => t.authUserId.equals(authUserId) & t.imageId.equals(imageId),
+    );
+    if (storedVariants > 0) return true;
+    final storedPhotos = await StoredImage.db.count(
+      session,
+      where: (t) => t.authUserId.equals(authUserId) & t.variant.equals(imageVariantFull),
+    );
+    return storedPhotos < const ConfigSource().read().imageStorage.maxPhotosPerAccount;
   }
 
   String _key(UuidValue authUserId, UuidValue imageId, String variant) =>

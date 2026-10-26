@@ -45,7 +45,7 @@ class const ImageRepositoryImpl(
         ),
       );
     } on Object catch (error) {
-      return Failure(error.toAiError());
+      return Failure(error.toServiceError());
     }
   }
 

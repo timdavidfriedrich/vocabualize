@@ -288,7 +288,7 @@
   "detailsRetakeImageButton": "Retake image",
   "errorTranslationQuotaExceeded": "{limit, plural, one{You've used your {limit} translation for the last 24 hours. Type the translation yourself or try again later.} other{You've used your {limit} translations for the last 24 hours. Type the translation yourself or try again later.}}",
   "errorStockImageQuotaExceeded": "{limit, plural, one{You've used your {limit} photo search for the last 24 hours. Take your own photo or try again later.} other{You've used your {limit} photo searches for the last 24 hours. Take your own photo or try again later.}}",
-  "errorAiUnavailable": "Automatic suggestions aren't available right now.",
+  "errorServiceUnavailable": "Automatic suggestions aren't available right now.",
   "@errorTranslationQuotaExceeded": {
     "placeholders": {
       "limit": {
@@ -307,7 +307,6 @@
   "collectionsDeleteTitle": "Delete collection?",
   "collectionsDeleteMessage": "The words stay. Only the collection is deleted.",
   "scanTypeHint": "Type in word...",
-  "scanSignInMessage": "Sign in to get suggestions for your photo.",
   "scanOpenSettingsButton": "Open settings",
   "errorCameraPermission": "Allow camera access to take photos.",
   "errorCameraUnavailable": "The camera can't be used right now.",
@@ -316,6 +315,22 @@
     "placeholders": {
       "limit": {
         "type": "int"
+      }
+    }
+  },
+  "errorImageLabelingMonthlyQuotaExceeded": "{limit, plural, one{You've used your {limit} scan for this month. Type the word yourself or try again next month.} other{You've used your {limit} scans for this month. Type the word yourself or try again next month.}}",
+  "@errorImageLabelingMonthlyQuotaExceeded": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "errorQuotaSignInForMore": "{message} Sign in with Google for more.",
+  "@errorQuotaSignInForMore": {
+    "placeholders": {
+      "message": {
+        "type": "String"
       }
     }
   },

@@ -104,7 +104,6 @@ class const _ReviewView({
                 ),
             ],
           ),
-          ScanSuggestionsSignInRequired() => _SuggestionsHint(message: context.s.scanSignInMessage),
           ScanSuggestionsOffline() => ConnectionRequiredNotice(
             message: context.s.scanOfflineMessage,
           ),

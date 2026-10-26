@@ -30,48 +30,48 @@ const _garageServiceName = "Garage";
 
 class const Composition() {
   TranslationProvider translationProvider() {
-    final ai = const ConfigSource().read().ai;
-    return switch (ai.translationProvider) {
+    final translation = const ConfigSource().read().translation;
+    return switch (translation.provider) {
       _deeplProvider => DeeplTranslationProvider(
         _httpClient,
         _password("deeplApiKey"),
-        ai.englishTarget,
+        translation.englishTarget,
       ),
       _echoProvider => const EchoTranslationProvider(),
-      final name => throw StateError("Unknown ai.translationProvider \"$name\" in app_config.yaml"),
+      final name => throw StateError("Unknown translation.provider \"$name\" in app_config.yaml"),
     };
   }
 
   StockImageProvider stockImageProvider() {
-    final ai = const ConfigSource().read().ai;
-    return switch (ai.stockImageProvider) {
+    final stockImages = const ConfigSource().read().stockImages;
+    return switch (stockImages.provider) {
       _pexelsProvider => PexelsStockImageProvider(_httpClient, _password("pexelsApiKey")),
       _echoProvider => const EchoStockImageProvider(),
-      final name => throw StateError("Unknown ai.stockImageProvider \"$name\" in app_config.yaml"),
+      final name => throw StateError("Unknown stockImages.provider \"$name\" in app_config.yaml"),
     };
   }
 
   ImageLabelingProvider imageLabelingProvider() {
-    final ai = const ConfigSource().read().ai;
-    return switch (ai.imageLabelingProvider) {
+    final imageLabeling = const ConfigSource().read().imageLabeling;
+    return switch (imageLabeling.provider) {
       _geminiProvider => GeminiImageLabelingProvider(
         _httpClient,
         _password("geminiApiKey"),
-        ai.imageLabelingModel,
+        imageLabeling.model,
       ),
       _echoProvider => const EchoImageLabelingProvider(),
       final name => throw StateError(
-        "Unknown ai.imageLabelingProvider \"$name\" in app_config.yaml",
+        "Unknown imageLabeling.provider \"$name\" in app_config.yaml",
       ),
     };
   }
 
   CloudStorage imageStorage() {
-    final images = const ConfigSource().read().images;
+    final images = const ConfigSource().read().imageStorage;
     return switch (images.provider) {
       _garageProvider => _garageStorage(images),
       _databaseProvider => DatabaseCloudStorage(imageStorageId),
-      _ => throw StateError("Unknown images.provider \"${images.provider}\" in app_config.yaml"),
+      final name => throw StateError("Unknown imageStorage.provider \"$name\" in app_config.yaml"),
     };
   }
 

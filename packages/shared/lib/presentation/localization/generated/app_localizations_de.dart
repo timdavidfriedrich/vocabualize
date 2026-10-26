@@ -607,7 +607,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get errorAiUnavailable => 'Automatische Vorschläge sind gerade nicht verfügbar.';
+  String get errorServiceUnavailable => 'Automatische Vorschläge sind gerade nicht verfügbar.';
 
   @override
   String get collectionsDeleteButton => 'Sammlung löschen';
@@ -620,9 +620,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get scanTypeHint => 'Wort eingeben...';
-
-  @override
-  String get scanSignInMessage => 'Melde dich an, um Vorschläge für dein Foto zu bekommen.';
 
   @override
   String get scanOpenSettingsButton => 'Einstellungen öffnen';
@@ -644,6 +641,24 @@ class AppLocalizationsDe extends AppLocalizations {
           'Du hast deinen $limit Scan der letzten 24 Stunden verbraucht. Gib das Wort selbst ein oder versuche es später erneut.',
     );
     return '$_temp0';
+  }
+
+  @override
+  String errorImageLabelingMonthlyQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Du hast deine $limit Scans für diesen Monat verbraucht. Gib das Wort selbst ein oder versuche es nächsten Monat erneut.',
+      one:
+          'Du hast deinen $limit Scan für diesen Monat verbraucht. Gib das Wort selbst ein oder versuche es nächsten Monat erneut.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String errorQuotaSignInForMore(String message) {
+    return '$message Melde dich mit Google an, um mehr zu bekommen.';
   }
 
   @override

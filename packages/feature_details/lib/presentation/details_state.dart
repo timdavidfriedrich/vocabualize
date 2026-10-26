@@ -34,7 +34,6 @@ class const DetailsDuplicateFound({
 class const DetailsEditing({
   required final Vocabulary? original,
   required final LanguagePair? languages,
-  required final bool canUseAi,
   required final String source,
   required final String target,
   required final DetailsImage selectedImage,

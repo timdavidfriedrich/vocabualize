@@ -1,0 +1,16 @@
+class: Install
+table: install
+serverOnly: true
+
+fields:
+  id: UuidValue?, defaultPersist=random
+  secretHash: String
+  ipHash: String
+  createdAt: DateTime
+  lastUsedAt: DateTime
+
+indexes:
+  install_ip_hash_created_idx:
+    fields: ipHash, createdAt
+  install_created_idx:
+    fields: createdAt

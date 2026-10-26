@@ -1,0 +1,7 @@
+exception: QuotaExceededException
+
+fields:
+  kind: String
+  period: String
+  limit: int
+  upgradeTier: String?

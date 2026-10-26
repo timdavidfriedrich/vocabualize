@@ -611,7 +611,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get errorAiUnavailable =>
+  String get errorServiceUnavailable =>
       'Les suggestions automatiques ne sont pas disponibles pour le moment.';
 
   @override
@@ -625,9 +625,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get scanTypeHint => 'Saisissez un mot...';
-
-  @override
-  String get scanSignInMessage => 'Connectez-vous pour obtenir des suggestions pour votre photo.';
 
   @override
   String get scanOpenSettingsButton => 'Ouvrir les réglages';
@@ -650,6 +647,24 @@ class AppLocalizationsFr extends AppLocalizations {
           'Vous avez utilisé votre $limit scan des dernières 24 heures. Saisissez le mot vous-même ou réessayez plus tard.',
     );
     return '$_temp0';
+  }
+
+  @override
+  String errorImageLabelingMonthlyQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Vous avez utilisé vos $limit scans de ce mois-ci. Saisissez le mot vous-même ou réessayez le mois prochain.',
+      one:
+          'Vous avez utilisé votre $limit scan de ce mois-ci. Saisissez le mot vous-même ou réessayez le mois prochain.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String errorQuotaSignInForMore(String message) {
+    return '$message Connectez-vous avec Google pour en obtenir davantage.';
   }
 
   @override

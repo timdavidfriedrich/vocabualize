@@ -1086,11 +1086,11 @@ abstract class AppLocalizations {
   /// **'{limit, plural, one{You\'ve used your {limit} photo search for the last 24 hours. Take your own photo or try again later.} other{You\'ve used your {limit} photo searches for the last 24 hours. Take your own photo or try again later.}}'**
   String errorStockImageQuotaExceeded(int limit);
 
-  /// No description provided for @errorAiUnavailable.
+  /// No description provided for @errorServiceUnavailable.
   ///
   /// In en, this message translates to:
   /// **'Automatic suggestions aren\'t available right now.'**
-  String get errorAiUnavailable;
+  String get errorServiceUnavailable;
 
   /// No description provided for @collectionsDeleteButton.
   ///
@@ -1116,12 +1116,6 @@ abstract class AppLocalizations {
   /// **'Type in word...'**
   String get scanTypeHint;
 
-  /// No description provided for @scanSignInMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in to get suggestions for your photo.'**
-  String get scanSignInMessage;
-
   /// No description provided for @scanOpenSettingsButton.
   ///
   /// In en, this message translates to:
@@ -1145,6 +1139,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{limit, plural, one{You\'ve used your {limit} scan for the last 24 hours. Type the word yourself or try again later.} other{You\'ve used your {limit} scans for the last 24 hours. Type the word yourself or try again later.}}'**
   String errorImageLabelingQuotaExceeded(int limit);
+
+  /// No description provided for @errorImageLabelingMonthlyQuotaExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'{limit, plural, one{You\'ve used your {limit} scan for this month. Type the word yourself or try again next month.} other{You\'ve used your {limit} scans for this month. Type the word yourself or try again next month.}}'**
+  String errorImageLabelingMonthlyQuotaExceeded(int limit);
+
+  /// No description provided for @errorQuotaSignInForMore.
+  ///
+  /// In en, this message translates to:
+  /// **'{message} Sign in with Google for more.'**
+  String errorQuotaSignInForMore(String message);
 
   /// No description provided for @connectToInternet.
   ///
