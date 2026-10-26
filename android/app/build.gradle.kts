@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId = "de.timdavidfriedrich.vocabualize"
-        minSdk = flutter.minSdkVersion
+        minSdk = 29
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
