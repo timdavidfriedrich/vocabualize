@@ -11,6 +11,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
+import 'dart:typed_data' as _idt;
 import 'package:http/http.dart' as _i85jenna;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
@@ -153,6 +154,18 @@ class EndpointAi extends _isc.EndpointRef {
     'searchStockImages',
     {
       'query': query,
+      'language': language,
+    },
+  );
+
+  _ida.Future<List<String>> labelImage(
+    _idt.ByteData image,
+    String language,
+  ) => caller.callServerEndpoint<List<String>>(
+    'ai',
+    'labelImage',
+    {
+      'image': image,
       'language': language,
     },
   );

@@ -15,7 +15,12 @@ extension AppErrorExtensions on AppError {
     TextToSpeechUnavailableError() => context.s.errorTextToSpeechUnavailable,
     TranslationQuotaExceededError(:final limit) => context.s.errorTranslationQuotaExceeded(limit),
     StockImageQuotaExceededError(:final limit) => context.s.errorStockImageQuotaExceeded(limit),
+    ImageLabelingQuotaExceededError(:final limit) => context.s.errorImageLabelingQuotaExceeded(
+      limit,
+    ),
     AiUnavailableError() => context.s.errorAiUnavailable,
+    CameraPermissionError() => context.s.errorCameraPermission,
+    CameraUnavailableError() => context.s.errorCameraUnavailable,
     UnexpectedError() => context.s.errorUnexpected,
   };
 }

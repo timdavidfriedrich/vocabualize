@@ -65,9 +65,9 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   Future<void> _onNewStarted(DetailsNewStarted event, Emitter<DetailsState> emit) async {
     switch (await _vocabularyRepository.hasVocabularyWithSource(event.source)) {
       case Success(data: true):
-        emit(DetailsDuplicateFound(source: event.source));
+        emit(DetailsDuplicateFound(source: event.source, photo: event.photo));
       case Success(data: false):
-        emit(await _newWord(event.source));
+        emit(await _newWord(event.source, photo: event.photo));
       case Failure(:final error):
         emit(DetailsFailure(error: error));
     }
@@ -86,8 +86,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     DetailsDuplicateResolved event,
     Emitter<DetailsState> emit,
   ) async {
-    if (state case DetailsDuplicateFound(:final source)) {
-      emit(event.addsAnyway ? await _newWord(source) : const DetailsClosed());
+    if (state case DetailsDuplicateFound(:final source, :final photo)) {
+      emit(event.addsAnyway ? await _newWord(source, photo: photo) : const DetailsClosed());
     }
   }
 
@@ -218,6 +218,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     emit(busy);
     final result = await _save(editing);
     emit(switch (result) {
+      Success() when editing.original == null => const DetailsAdded(),
       Success() => const DetailsClosed(),
       Failure(:final error) => busy.copyWith(isBusy: false, error: error),
     });
@@ -274,7 +275,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     );
   }
 
-  Future<DetailsEditing> _newWord(String source) async {
+  Future<DetailsEditing> _newWord(String source, {required ProcessedImage? photo}) async {
     final languages = switch (await _settingsRepository.readLanguagePair()) {
       Success(:final data) => data,
       Failure() => null,
@@ -282,14 +283,15 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     final canUseAi = await _canUseAi();
     final lookup = canUseAi && languages != null ? await _lookUp(source, languages) : null;
     final tags = await _tags();
+    final ownPhoto = photo == null ? null : DetailsNewPhoto(image: photo);
     return DetailsEditing(
       original: null,
       languages: languages,
       canUseAi: canUseAi,
       source: source.trim(),
       target: lookup?.translation ?? "",
-      selectedImage: const DetailsNoImage(),
-      ownPhoto: null,
+      selectedImage: ownPhoto ?? const DetailsNoImage(),
+      ownPhoto: ownPhoto,
       stockImages: lookup?.stockImages ?? const [],
       stockPage: 0,
       tags: tags,

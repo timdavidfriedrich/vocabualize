@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:serverpod/serverpod.dart';
 
 import '../composition.dart';
@@ -9,6 +11,7 @@ const _invalidRequest = "invalidRequest";
 final _ai = AiService(
   const Composition().translationProvider,
   const Composition().stockImageProvider,
+  const Composition().imageLabelingProvider,
 );
 
 class AiEndpoint extends Endpoint {
@@ -47,6 +50,22 @@ class AiEndpoint extends Endpoint {
       throw AiUnavailableException(reason: _invalidRequest);
     }
     return _ai.searchStockImages(session, _owner(session), query: trimmed, language: language);
+  }
+
+  Future<List<String>> labelImage(
+    Session session,
+    ByteData image,
+    String language,
+  ) {
+    if (image.lengthInBytes == 0 || !supportedLanguageCodes.contains(language)) {
+      throw AiUnavailableException(reason: _invalidRequest);
+    }
+    return _ai.labelImage(
+      session,
+      _owner(session),
+      image: image.buffer.asUint8List(image.offsetInBytes, image.lengthInBytes),
+      language: language,
+    );
   }
 
   UuidValue _owner(Session session) {

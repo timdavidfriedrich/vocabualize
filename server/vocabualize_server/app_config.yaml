@@ -16,7 +16,11 @@ ai:
   enabled: true
   translationProvider: deepl
   stockImageProvider: pexels
+  imageLabelingProvider: gemini
+  imageLabelingModel: gemini-3.5-flash-lite
   translationsPerDay: 100
   stockSearchesPerDay: 100
+  imageLabelingsPerDay: 30
   maxTextLength: 100
+  maxLabelingImageBytes: 150000
   englishTarget: EN-US

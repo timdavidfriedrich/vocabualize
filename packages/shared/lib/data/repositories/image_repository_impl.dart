@@ -48,4 +48,14 @@ class const ImageRepositoryImpl(
       return Failure(error.toAiError());
     }
   }
+
+  @override
+  Future<AppResult<()>> discardSourceImage(String sourcePath) async {
+    try {
+      await _processingDataSource.deleteSourceImage(sourcePath);
+      return const Success(());
+    } on Object catch (error) {
+      return Failure(UnexpectedError(error.toString()));
+    }
+  }
 }

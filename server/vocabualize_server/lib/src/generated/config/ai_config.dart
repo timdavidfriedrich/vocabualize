@@ -17,9 +17,13 @@ abstract class AiConfig implements _is.SerializableModel, _is.ProtocolSerializat
     required this.enabled,
     required this.translationProvider,
     required this.stockImageProvider,
+    required this.imageLabelingProvider,
+    required this.imageLabelingModel,
     required this.translationsPerDay,
     required this.stockSearchesPerDay,
+    required this.imageLabelingsPerDay,
     required this.maxTextLength,
+    required this.maxLabelingImageBytes,
     required this.englishTarget,
   });
 
@@ -27,9 +31,13 @@ abstract class AiConfig implements _is.SerializableModel, _is.ProtocolSerializat
     required bool enabled,
     required String translationProvider,
     required String stockImageProvider,
+    required String imageLabelingProvider,
+    required String imageLabelingModel,
     required int translationsPerDay,
     required int stockSearchesPerDay,
+    required int imageLabelingsPerDay,
     required int maxTextLength,
+    required int maxLabelingImageBytes,
     required String englishTarget,
   }) = _AiConfigImpl;
 
@@ -38,9 +46,13 @@ abstract class AiConfig implements _is.SerializableModel, _is.ProtocolSerializat
       enabled: _is.BoolJsonExtension.fromJson(jsonSerialization['enabled']),
       translationProvider: jsonSerialization['translationProvider'] as String,
       stockImageProvider: jsonSerialization['stockImageProvider'] as String,
+      imageLabelingProvider: jsonSerialization['imageLabelingProvider'] as String,
+      imageLabelingModel: jsonSerialization['imageLabelingModel'] as String,
       translationsPerDay: jsonSerialization['translationsPerDay'] as int,
       stockSearchesPerDay: jsonSerialization['stockSearchesPerDay'] as int,
+      imageLabelingsPerDay: jsonSerialization['imageLabelingsPerDay'] as int,
       maxTextLength: jsonSerialization['maxTextLength'] as int,
+      maxLabelingImageBytes: jsonSerialization['maxLabelingImageBytes'] as int,
       englishTarget: jsonSerialization['englishTarget'] as String,
     );
   }
@@ -51,11 +63,19 @@ abstract class AiConfig implements _is.SerializableModel, _is.ProtocolSerializat
 
   String stockImageProvider;
 
+  String imageLabelingProvider;
+
+  String imageLabelingModel;
+
   int translationsPerDay;
 
   int stockSearchesPerDay;
 
+  int imageLabelingsPerDay;
+
   int maxTextLength;
+
+  int maxLabelingImageBytes;
 
   String englishTarget;
 
@@ -66,9 +86,13 @@ abstract class AiConfig implements _is.SerializableModel, _is.ProtocolSerializat
     bool? enabled,
     String? translationProvider,
     String? stockImageProvider,
+    String? imageLabelingProvider,
+    String? imageLabelingModel,
     int? translationsPerDay,
     int? stockSearchesPerDay,
+    int? imageLabelingsPerDay,
     int? maxTextLength,
+    int? maxLabelingImageBytes,
     String? englishTarget,
   });
   @override
@@ -78,9 +102,13 @@ abstract class AiConfig implements _is.SerializableModel, _is.ProtocolSerializat
       'enabled': enabled,
       'translationProvider': translationProvider,
       'stockImageProvider': stockImageProvider,
+      'imageLabelingProvider': imageLabelingProvider,
+      'imageLabelingModel': imageLabelingModel,
       'translationsPerDay': translationsPerDay,
       'stockSearchesPerDay': stockSearchesPerDay,
+      'imageLabelingsPerDay': imageLabelingsPerDay,
       'maxTextLength': maxTextLength,
+      'maxLabelingImageBytes': maxLabelingImageBytes,
       'englishTarget': englishTarget,
     };
   }
@@ -101,17 +129,25 @@ class _AiConfigImpl extends AiConfig {
     required bool enabled,
     required String translationProvider,
     required String stockImageProvider,
+    required String imageLabelingProvider,
+    required String imageLabelingModel,
     required int translationsPerDay,
     required int stockSearchesPerDay,
+    required int imageLabelingsPerDay,
     required int maxTextLength,
+    required int maxLabelingImageBytes,
     required String englishTarget,
   }) : super._(
          enabled: enabled,
          translationProvider: translationProvider,
          stockImageProvider: stockImageProvider,
+         imageLabelingProvider: imageLabelingProvider,
+         imageLabelingModel: imageLabelingModel,
          translationsPerDay: translationsPerDay,
          stockSearchesPerDay: stockSearchesPerDay,
+         imageLabelingsPerDay: imageLabelingsPerDay,
          maxTextLength: maxTextLength,
+         maxLabelingImageBytes: maxLabelingImageBytes,
          englishTarget: englishTarget,
        );
 
@@ -123,18 +159,26 @@ class _AiConfigImpl extends AiConfig {
     bool? enabled,
     String? translationProvider,
     String? stockImageProvider,
+    String? imageLabelingProvider,
+    String? imageLabelingModel,
     int? translationsPerDay,
     int? stockSearchesPerDay,
+    int? imageLabelingsPerDay,
     int? maxTextLength,
+    int? maxLabelingImageBytes,
     String? englishTarget,
   }) {
     return AiConfig(
       enabled: enabled ?? this.enabled,
       translationProvider: translationProvider ?? this.translationProvider,
       stockImageProvider: stockImageProvider ?? this.stockImageProvider,
+      imageLabelingProvider: imageLabelingProvider ?? this.imageLabelingProvider,
+      imageLabelingModel: imageLabelingModel ?? this.imageLabelingModel,
       translationsPerDay: translationsPerDay ?? this.translationsPerDay,
       stockSearchesPerDay: stockSearchesPerDay ?? this.stockSearchesPerDay,
+      imageLabelingsPerDay: imageLabelingsPerDay ?? this.imageLabelingsPerDay,
       maxTextLength: maxTextLength ?? this.maxTextLength,
+      maxLabelingImageBytes: maxLabelingImageBytes ?? this.maxLabelingImageBytes,
       englishTarget: englishTarget ?? this.englishTarget,
     );
   }

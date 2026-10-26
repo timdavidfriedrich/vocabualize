@@ -10,6 +10,7 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:typed_data' as _idt;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart' as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _iais;
@@ -205,6 +206,30 @@ class Endpoints extends _is.EndpointDispatch {
               ) async => (endpoints['ai'] as _igsjf4zh.AiEndpoint).searchStockImages(
                 session,
                 params['query'],
+                params['language'],
+              ),
+        ),
+        'labelImage': _is.MethodConnector(
+          name: 'labelImage',
+          params: {
+            'image': _is.ParameterDescription(
+              name: 'image',
+              type: _is.getType<_idt.ByteData>(),
+              nullable: false,
+            ),
+            'language': _is.ParameterDescription(
+              name: 'language',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['ai'] as _igsjf4zh.AiEndpoint).labelImage(
+                session,
+                params['image'],
                 params['language'],
               ),
         ),

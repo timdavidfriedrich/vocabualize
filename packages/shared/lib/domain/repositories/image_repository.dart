@@ -6,4 +6,6 @@ abstract class ImageRepository {
   Future<AppResult<ProcessedImage>> processImage(String sourcePath);
 
   Future<AppResult<ProcessedImage>> processStockImage(StockImage image);
+
+  Future<AppResult<()>> discardSourceImage(String sourcePath);
 }

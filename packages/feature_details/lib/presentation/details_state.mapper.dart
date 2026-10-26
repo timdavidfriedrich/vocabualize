@@ -18,6 +18,7 @@ class DetailsStateMapper extends ClassMapperBase<DetailsState> {
       DetailsLoadingMapper.ensureInitialized();
       DetailsDuplicateFoundMapper.ensureInitialized();
       DetailsEditingMapper.ensureInitialized();
+      DetailsAddedMapper.ensureInitialized();
       DetailsClosedMapper.ensureInitialized();
       DetailsFailureMapper.ensureInitialized();
     }
@@ -177,6 +178,7 @@ class DetailsDuplicateFoundMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = DetailsDuplicateFoundMapper._());
       DetailsStateMapper.ensureInitialized();
+      ProcessedImageMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -189,14 +191,23 @@ class DetailsDuplicateFoundMapper
     'source',
     _$source,
   );
+  static ProcessedImage? _$photo(DetailsDuplicateFound v) => v.photo;
+  static const Field<DetailsDuplicateFound, ProcessedImage> _f$photo = Field(
+    'photo',
+    _$photo,
+  );
 
   @override
   final MappableFields<DetailsDuplicateFound> fields = const {
     #source: _f$source,
+    #photo: _f$photo,
   };
 
   static DetailsDuplicateFound _instantiate(DecodingData data) {
-    return DetailsDuplicateFound(source: data.dec(_f$source));
+    return DetailsDuplicateFound(
+      source: data.dec(_f$source),
+      photo: data.dec(_f$photo),
+    );
   }
 
   @override
@@ -269,8 +280,9 @@ abstract class DetailsDuplicateFoundCopyWith<
   $Out
 >
     implements DetailsStateCopyWith<$R, $In, $Out> {
+  ProcessedImageCopyWith<$R, ProcessedImage, ProcessedImage>? get photo;
   @override
-  $R call({String? source});
+  $R call({String? source, ProcessedImage? photo});
   DetailsDuplicateFoundCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -285,11 +297,20 @@ class _DetailsDuplicateFoundCopyWithImpl<$R, $Out>
   late final ClassMapperBase<DetailsDuplicateFound> $mapper =
       DetailsDuplicateFoundMapper.ensureInitialized();
   @override
-  $R call({String? source}) =>
-      $apply(FieldCopyWithData({if (source != null) #source: source}));
+  ProcessedImageCopyWith<$R, ProcessedImage, ProcessedImage>? get photo =>
+      $value.photo?.copyWith.$chain((v) => call(photo: v));
   @override
-  DetailsDuplicateFound $make(CopyWithData data) =>
-      DetailsDuplicateFound(source: data.get(#source, or: $value.source));
+  $R call({String? source, Object? photo = $none}) => $apply(
+    FieldCopyWithData({
+      if (source != null) #source: source,
+      if (photo != $none) #photo: photo,
+    }),
+  );
+  @override
+  DetailsDuplicateFound $make(CopyWithData data) => DetailsDuplicateFound(
+    source: data.get(#source, or: $value.source),
+    photo: data.get(#photo, or: $value.photo),
+  );
 
   @override
   DetailsDuplicateFoundCopyWith<$R2, DetailsDuplicateFound, $Out2>
@@ -640,6 +661,114 @@ abstract class DetailsImageCopyWith<$R, $In extends DetailsImage, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call();
   DetailsImageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class DetailsAddedMapper extends ClassMapperBase<DetailsAdded> {
+  DetailsAddedMapper._();
+
+  static DetailsAddedMapper? _instance;
+  static DetailsAddedMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsAddedMapper._());
+      DetailsStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsAdded';
+
+  @override
+  final MappableFields<DetailsAdded> fields = const {};
+
+  static DetailsAdded _instantiate(DecodingData data) {
+    return DetailsAdded();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsAdded fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsAdded>(map);
+  }
+
+  static DetailsAdded fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsAdded>(json);
+  }
+}
+
+mixin DetailsAddedMappable {
+  String toJson() {
+    return DetailsAddedMapper.ensureInitialized().encodeJson<DetailsAdded>(
+      this as DetailsAdded,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsAddedMapper.ensureInitialized().encodeMap<DetailsAdded>(
+      this as DetailsAdded,
+    );
+  }
+
+  DetailsAddedCopyWith<DetailsAdded, DetailsAdded, DetailsAdded> get copyWith =>
+      _DetailsAddedCopyWithImpl<DetailsAdded, DetailsAdded>(
+        this as DetailsAdded,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return DetailsAddedMapper.ensureInitialized().stringifyValue(
+      this as DetailsAdded,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsAddedMapper.ensureInitialized().equalsValue(
+      this as DetailsAdded,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsAddedMapper.ensureInitialized().hashValue(
+      this as DetailsAdded,
+    );
+  }
+}
+
+extension DetailsAddedValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsAdded, $Out> {
+  DetailsAddedCopyWith<$R, DetailsAdded, $Out> get $asDetailsAdded =>
+      $base.as((v, t, t2) => _DetailsAddedCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class DetailsAddedCopyWith<$R, $In extends DetailsAdded, $Out>
+    implements DetailsStateCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  DetailsAddedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _DetailsAddedCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsAdded, $Out>
+    implements DetailsAddedCopyWith<$R, DetailsAdded, $Out> {
+  _DetailsAddedCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsAdded> $mapper =
+      DetailsAddedMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  DetailsAdded $make(CopyWithData data) => DetailsAdded();
+
+  @override
+  DetailsAddedCopyWith<$R2, DetailsAdded, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _DetailsAddedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DetailsClosedMapper extends ClassMapperBase<DetailsClosed> {

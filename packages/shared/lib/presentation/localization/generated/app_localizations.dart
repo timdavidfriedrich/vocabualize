@@ -1107,7 +1107,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorAiUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Automatic translation and photo search aren\'t available right now.'**
+  /// **'Automatic suggestions aren\'t available right now.'**
   String get errorAiUnavailable;
 
   /// No description provided for @collectionsDeleteButton.
@@ -1127,6 +1127,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The words stay. Only the collection is deleted.'**
   String get collectionsDeleteMessage;
+
+  /// No description provided for @scanTypeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type in word...'**
+  String get scanTypeHint;
+
+  /// No description provided for @scanSignInMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to get suggestions for your photo.'**
+  String get scanSignInMessage;
+
+  /// No description provided for @scanOpenSettingsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get scanOpenSettingsButton;
+
+  /// No description provided for @errorCameraPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow camera access to take photos.'**
+  String get errorCameraPermission;
+
+  /// No description provided for @errorCameraUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera can\'t be used right now.'**
+  String get errorCameraUnavailable;
+
+  /// No description provided for @errorImageLabelingQuotaExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'{limit, plural, one{You\'ve used your {limit} scan for the last 24 hours. Type the word yourself or try again later.} other{You\'ve used your {limit} scans for the last 24 hours. Type the word yourself or try again later.}}'**
+  String errorImageLabelingQuotaExceeded(int limit);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

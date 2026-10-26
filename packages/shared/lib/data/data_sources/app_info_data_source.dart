@@ -17,6 +17,8 @@ abstract class AppInfoDataSource {
   String deviceLanguageCode();
 
   Future<void> openDateSettings();
+
+  Future<void> openAppSettings();
 }
 
 @Injectable(as: AppInfoDataSource)
@@ -38,4 +40,7 @@ class const AppInfoDataSourceImpl() implements AppInfoDataSource {
 
   @override
   Future<void> openDateSettings() => AppSettings.openAppSettings(type: AppSettingsType.date);
+
+  @override
+  Future<void> openAppSettings() => AppSettings.openAppSettings();
 }

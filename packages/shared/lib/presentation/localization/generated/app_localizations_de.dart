@@ -615,8 +615,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get errorAiUnavailable =>
-      'Automatische Übersetzung und Fotosuche sind gerade nicht verfügbar.';
+  String get errorAiUnavailable => 'Automatische Vorschläge sind gerade nicht verfügbar.';
 
   @override
   String get collectionsDeleteButton => 'Sammlung löschen';
@@ -626,4 +625,32 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get collectionsDeleteMessage => 'Die Wörter bleiben. Nur die Sammlung wird gelöscht.';
+
+  @override
+  String get scanTypeHint => 'Wort eingeben...';
+
+  @override
+  String get scanSignInMessage => 'Melde dich an, um Vorschläge für dein Foto zu bekommen.';
+
+  @override
+  String get scanOpenSettingsButton => 'Einstellungen öffnen';
+
+  @override
+  String get errorCameraPermission => 'Erlaube den Zugriff auf die Kamera, um Fotos aufzunehmen.';
+
+  @override
+  String get errorCameraUnavailable => 'Die Kamera kann gerade nicht verwendet werden.';
+
+  @override
+  String errorImageLabelingQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Du hast deine $limit Scans der letzten 24 Stunden verbraucht. Gib das Wort selbst ein oder versuche es später erneut.',
+      one:
+          'Du hast deinen $limit Scan der letzten 24 Stunden verbraucht. Gib das Wort selbst ein oder versuche es später erneut.',
+    );
+    return '$_temp0';
+  }
 }

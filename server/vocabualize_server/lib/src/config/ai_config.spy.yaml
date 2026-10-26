@@ -5,7 +5,11 @@ fields:
   enabled: bool
   translationProvider: String
   stockImageProvider: String
+  imageLabelingProvider: String
+  imageLabelingModel: String
   translationsPerDay: int
   stockSearchesPerDay: int
+  imageLabelingsPerDay: int
   maxTextLength: int
+  maxLabelingImageBytes: int
   englishTarget: String

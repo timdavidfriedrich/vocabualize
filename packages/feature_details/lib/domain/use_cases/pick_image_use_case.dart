@@ -18,7 +18,7 @@ class const PickImageUseCase(
         return const Success(null);
       case Success(data: final String sourcePath):
         final processed = await _imageRepository.processImage(sourcePath);
-        await _imagePickerRepository.discardImage(sourcePath);
+        await _imageRepository.discardSourceImage(sourcePath);
         return processed;
     }
   }

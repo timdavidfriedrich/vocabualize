@@ -21,6 +21,7 @@ class const DetailsLoading() extends DetailsState with DetailsLoadingMappable;
 @MappableClass()
 class const DetailsDuplicateFound({
   required final String source,
+  required final ProcessedImage? photo,
 }) extends DetailsState with DetailsDuplicateFoundMappable;
 
 @MappableClass()
@@ -39,6 +40,9 @@ class const DetailsEditing({
   required final bool isBusy,
   required final AppError? error,
 }) extends DetailsState with DetailsEditingMappable;
+
+@MappableClass()
+class const DetailsAdded() extends DetailsState with DetailsAddedMappable;
 
 @MappableClass()
 class const DetailsClosed() extends DetailsState with DetailsClosedMappable;

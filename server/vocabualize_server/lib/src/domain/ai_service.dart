@@ -1,5 +1,6 @@
 import 'package:serverpod/serverpod.dart';
 
+import '../adapters/image_labeling/image_labeling_provider.dart';
 import '../adapters/stock_images/stock_image_provider.dart';
 import '../adapters/translation/translation_provider.dart';
 import '../generated/protocol.dart';
@@ -17,6 +18,7 @@ const _providerTimeout = Duration(seconds: 20);
 class const AiService(
   final TranslationProvider Function() _translationProvider,
   final StockImageProvider Function() _stockImageProvider,
+  final ImageLabelingProvider Function() _imageLabelingProvider,
 ) {
   Future<String> translate(
     Session session,
@@ -61,6 +63,30 @@ class const AiService(
       isEnabled: config.enabled,
       request: () => _stockImageProvider().search(query: query, language: language),
     );
+  }
+
+  Future<List<String>> labelImage(
+    Session session,
+    UuidValue ownerId, {
+    required List<int> image,
+    required String language,
+  }) async {
+    final config = const ConfigSource().read().ai;
+    if (image.length > config.maxLabelingImageBytes) {
+      throw AiUnavailableException(reason: _invalidRequest);
+    }
+    final labeled = await _run(
+      session,
+      ownerId,
+      kind: aiImageLabeling,
+      limit: config.imageLabelingsPerDay,
+      isEnabled: config.enabled,
+      request: () => _imageLabelingProvider().label(image: image, language: language),
+    );
+    session.log(
+      "AI $aiImageLabeling used ${labeled.inputTokens} input and ${labeled.outputTokens} output tokens",
+    );
+    return labeled.labels;
   }
 
   Future<T> _run<T>(

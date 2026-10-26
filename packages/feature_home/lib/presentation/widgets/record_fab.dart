@@ -64,6 +64,14 @@ class const RecordFab({
                           _RecordFabItem(
                             onPressed: () {
                               toggle();
+                              context.pushScan();
+                            },
+                            icon: Icons.camera_alt_rounded,
+                            label: context.s.homeScanButton,
+                          ),
+                          _RecordFabItem(
+                            onPressed: () {
+                              toggle();
                               _write(context);
                             },
                             icon: Icons.edit_rounded,

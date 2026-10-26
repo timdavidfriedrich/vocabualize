@@ -17,6 +17,7 @@ abstract final class Spacing {
   static const double radiusL = 16;
   static const double radiusXl = 20;
   static const double radiusXxl = 24;
+  static const double radiusXxxl = 32;
   static const double radiusFull = 999;
 
   static const double borderWidthThin = 1;

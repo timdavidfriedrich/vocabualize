@@ -635,7 +635,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get errorAiUnavailable => 'Автоматичний переклад і пошук фото зараз недоступні.';
+  String get errorAiUnavailable => 'Автоматичні пропозиції зараз недоступні.';
 
   @override
   String get collectionsDeleteButton => 'Видалити колекцію';
@@ -645,4 +645,36 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get collectionsDeleteMessage => 'Слова залишаться. Буде видалено лише колекцію.';
+
+  @override
+  String get scanTypeHint => 'Введіть слово...';
+
+  @override
+  String get scanSignInMessage => 'Увійдіть, щоб отримувати пропозиції для свого фото.';
+
+  @override
+  String get scanOpenSettingsButton => 'Відкрити налаштування';
+
+  @override
+  String get errorCameraPermission => 'Дозвольте доступ до камери, щоб фотографувати.';
+
+  @override
+  String get errorCameraUnavailable => 'Камерою зараз неможливо скористатися.';
+
+  @override
+  String errorImageLabelingQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'Ви використали $limit сканування за останні 24 години. Введіть слово самостійно або спробуйте пізніше.',
+      many:
+          'Ви використали $limit сканувань за останні 24 години. Введіть слово самостійно або спробуйте пізніше.',
+      few:
+          'Ви використали $limit сканування за останні 24 години. Введіть слово самостійно або спробуйте пізніше.',
+      one:
+          'Ви використали $limit сканування за останні 24 години. Введіть слово самостійно або спробуйте пізніше.',
+    );
+    return '$_temp0';
+  }
 }

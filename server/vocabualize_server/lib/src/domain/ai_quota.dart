@@ -5,6 +5,7 @@ import 'owner_lock.dart';
 
 const aiTranslation = "translation";
 const aiStockSearch = "stockSearch";
+const aiImageLabeling = "imageLabeling";
 
 const _reserved = "reserved";
 const _completed = "completed";

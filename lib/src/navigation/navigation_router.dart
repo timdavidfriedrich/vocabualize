@@ -15,6 +15,8 @@ import 'package:feature_home/presentation/home_screen.dart';
 import 'package:feature_practice/presentation/practice_bloc.dart';
 import 'package:feature_practice/presentation/practice_event.dart';
 import 'package:feature_practice/presentation/practice_screen.dart';
+import 'package:feature_scan/presentation/scan_bloc.dart';
+import 'package:feature_scan/presentation/scan_screen.dart';
 import 'package:feature_settings/presentation/settings_bloc.dart';
 import 'package:feature_settings/presentation/settings_event.dart';
 import 'package:feature_settings/presentation/settings_screen.dart';
@@ -139,9 +141,13 @@ class const _AppPage({
       create: (_) => sl<HomeBloc>()..add(const HomeStarted()),
       child: const HomeScreen(),
     ),
-    NewVocabularyDetails(:final source) => BlocProvider(
-      create: (_) => sl<DetailsBloc>()..add(DetailsNewStarted(source: source)),
+    NewVocabularyDetails(:final source, :final photo) => BlocProvider(
+      create: (_) => sl<DetailsBloc>()..add(DetailsNewStarted(source: source, photo: photo)),
       child: const DetailsScreen(),
+    ),
+    Scan() => BlocProvider(
+      create: (_) => sl<ScanBloc>(),
+      child: const ScanScreen(),
     ),
     EditVocabularyDetails(:final vocabularyId) => BlocProvider(
       create: (_) => sl<DetailsBloc>()..add(DetailsEditStarted(vocabularyId: vocabularyId)),

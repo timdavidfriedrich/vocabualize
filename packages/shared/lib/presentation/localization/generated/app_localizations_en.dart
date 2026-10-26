@@ -609,8 +609,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get errorAiUnavailable =>
-      'Automatic translation and photo search aren\'t available right now.';
+  String get errorAiUnavailable => 'Automatic suggestions aren\'t available right now.';
 
   @override
   String get collectionsDeleteButton => 'Delete collection';
@@ -620,4 +619,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get collectionsDeleteMessage => 'The words stay. Only the collection is deleted.';
+
+  @override
+  String get scanTypeHint => 'Type in word...';
+
+  @override
+  String get scanSignInMessage => 'Sign in to get suggestions for your photo.';
+
+  @override
+  String get scanOpenSettingsButton => 'Open settings';
+
+  @override
+  String get errorCameraPermission => 'Allow camera access to take photos.';
+
+  @override
+  String get errorCameraUnavailable => 'The camera can\'t be used right now.';
+
+  @override
+  String errorImageLabelingQuotaExceeded(int limit) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limit,
+      locale: localeName,
+      other:
+          'You\'ve used your $limit scans for the last 24 hours. Type the word yourself or try again later.',
+      one:
+          'You\'ve used your $limit scan for the last 24 hours. Type the word yourself or try again later.',
+    );
+    return '$_temp0';
+  }
 }

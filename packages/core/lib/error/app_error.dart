@@ -30,7 +30,15 @@ class const StockImageQuotaExceededError(
   final int limit,
 ) extends AppError;
 
+class const ImageLabelingQuotaExceededError(
+  final int limit,
+) extends AppError;
+
 class const AiUnavailableError() extends AppError;
+
+class const CameraPermissionError() extends AppError;
+
+class const CameraUnavailableError() extends AppError;
 
 class const UnexpectedError([
   final String? message,

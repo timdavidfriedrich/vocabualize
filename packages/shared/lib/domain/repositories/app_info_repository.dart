@@ -6,4 +6,6 @@ abstract class AppInfoRepository {
   Future<AppResult<()>> openStoreListing();
 
   Future<AppResult<()>> openDateSettings();
+
+  Future<AppResult<()>> openAppSettings();
 }

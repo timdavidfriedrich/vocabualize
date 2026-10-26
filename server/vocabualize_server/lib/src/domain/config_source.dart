@@ -56,9 +56,13 @@ RuntimeConfig _parse(String source) {
       enabled: _boolAt(ai["enabled"], "ai.enabled"),
       translationProvider: _stringAt(ai["translationProvider"], "ai.translationProvider"),
       stockImageProvider: _stringAt(ai["stockImageProvider"], "ai.stockImageProvider"),
+      imageLabelingProvider: _stringAt(ai["imageLabelingProvider"], "ai.imageLabelingProvider"),
+      imageLabelingModel: _stringAt(ai["imageLabelingModel"], "ai.imageLabelingModel"),
       translationsPerDay: _intAt(ai["translationsPerDay"], "ai.translationsPerDay"),
       stockSearchesPerDay: _intAt(ai["stockSearchesPerDay"], "ai.stockSearchesPerDay"),
+      imageLabelingsPerDay: _intAt(ai["imageLabelingsPerDay"], "ai.imageLabelingsPerDay"),
       maxTextLength: _intAt(ai["maxTextLength"], "ai.maxTextLength"),
+      maxLabelingImageBytes: _intAt(ai["maxLabelingImageBytes"], "ai.maxLabelingImageBytes"),
       englishTarget: _stringAt(ai["englishTarget"], "ai.englishTarget"),
     ),
   );

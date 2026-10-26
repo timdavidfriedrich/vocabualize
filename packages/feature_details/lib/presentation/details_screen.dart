@@ -30,6 +30,10 @@ class const DetailsScreen({
           listener: (context, state) => context.closeScreen(),
         ),
         BlocListener<DetailsBloc, DetailsState>(
+          listenWhen: (previous, current) => current is DetailsAdded,
+          listener: (context, state) => context.closeToHome(),
+        ),
+        BlocListener<DetailsBloc, DetailsState>(
           listenWhen: (previous, current) => current is DetailsDuplicateFound,
           listener: (context, state) async {
             if (state case DetailsDuplicateFound(:final source)) {
@@ -56,7 +60,10 @@ class const DetailsScreen({
       child: BlocBuilder<DetailsBloc, DetailsState>(
         buildWhen: (previous, current) => previous.runtimeType != current.runtimeType,
         builder: (context, state) => switch (state) {
-          DetailsLoading() || DetailsDuplicateFound() || DetailsClosed() => const LoadingScreen(),
+          DetailsLoading() ||
+          DetailsDuplicateFound() ||
+          DetailsAdded() ||
+          DetailsClosed() => const LoadingScreen(),
           DetailsFailure(:final error) => _FailureScreen(error: error),
           DetailsEditing() => const _EditingScreen(),
         },

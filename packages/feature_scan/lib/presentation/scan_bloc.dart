@@ -1,0 +1,91 @@
+import 'package:core/error/app_error.dart';
+import 'package:core/error/app_result.dart';
+import 'package:feature_scan/domain/repositories/image_labeling_repository.dart';
+import 'package:feature_scan/presentation/scan_event.dart';
+import 'package:feature_scan/presentation/scan_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import 'package:shared/domain/entities/account.dart';
+import 'package:shared/domain/entities/auth_status.dart';
+import 'package:shared/domain/entities/processed_image.dart';
+import 'package:shared/domain/repositories/account_repository.dart';
+import 'package:shared/domain/repositories/app_info_repository.dart';
+import 'package:shared/domain/repositories/image_repository.dart';
+import 'package:shared/domain/repositories/settings_repository.dart';
+
+@injectable
+class ScanBloc extends Bloc<ScanEvent, ScanState> {
+  ScanBloc(
+    this._imageRepository,
+    this._imageLabelingRepository,
+    this._accountRepository,
+    this._settingsRepository,
+    this._appInfoRepository,
+  ) : super(const ScanCapturing(isProcessing: false, error: null)) {
+    on<ScanPhotoTaken>(_onPhotoTaken);
+    on<ScanRetakeRequested>(_onRetakeRequested);
+    on<ScanSettingsOpened>(_onSettingsOpened);
+  }
+
+  final ImageRepository _imageRepository;
+  final ImageLabelingRepository _imageLabelingRepository;
+  final AccountRepository _accountRepository;
+  final SettingsRepository _settingsRepository;
+  final AppInfoRepository _appInfoRepository;
+
+  Future<void> _onPhotoTaken(ScanPhotoTaken event, Emitter<ScanState> emit) async {
+    if (state case ScanCapturing(isProcessing: true) || ScanReviewing()) {
+      await _imageRepository.discardSourceImage(event.path);
+      return;
+    }
+    emit(const ScanCapturing(isProcessing: true, error: null));
+    final processed = await _imageRepository.processImage(event.path);
+    await _imageRepository.discardSourceImage(event.path);
+    switch (processed) {
+      case Failure(:final error):
+        emit(ScanCapturing(isProcessing: false, error: error));
+      case Success(data: final photo):
+        if (!await _canUseAi()) {
+          emit(ScanReviewing(photo: photo, suggestions: const ScanSuggestionsSignInRequired()));
+          return;
+        }
+        emit(ScanReviewing(photo: photo, suggestions: const ScanSuggestionsLoading()));
+        final suggestions = await _suggestionsFor(photo);
+        if (state case ScanReviewing(photo: final current) when identical(current, photo)) {
+          emit(ScanReviewing(photo: photo, suggestions: suggestions));
+        }
+    }
+  }
+
+  void _onRetakeRequested(ScanRetakeRequested event, Emitter<ScanState> emit) {
+    if (state is ScanReviewing) emit(const ScanCapturing(isProcessing: false, error: null));
+  }
+
+  Future<void> _onSettingsOpened(ScanSettingsOpened event, Emitter<ScanState> emit) async {
+    if (await _appInfoRepository.openAppSettings() case Failure(:final error)) {
+      if (state case final ScanCapturing capturing) emit(capturing.copyWith(error: error));
+    }
+  }
+
+  Future<ScanSuggestions> _suggestionsFor(ProcessedImage photo) async {
+    return switch (await _settingsRepository.readLanguagePair()) {
+      Success(data: final languages?) => switch (await _imageLabelingRepository.labelImage(
+        photo: photo,
+        language: languages.source,
+      )) {
+        Success(:final data) => ScanSuggestionsLoaded(labels: data),
+        Failure(:final error) => ScanSuggestionsFailed(error: error),
+      },
+      Success(data: null) => const ScanSuggestionsFailed(error: ValidationError()),
+      Failure(:final error) => ScanSuggestionsFailed(error: error),
+    };
+  }
+
+  Future<bool> _canUseAi() async {
+    final status = await _accountRepository.watchAuthStatus().first;
+    return switch (status) {
+      Success(data: AuthAuthenticated(account: GoogleAccount())) => true,
+      _ => false,
+    };
+  }
+}

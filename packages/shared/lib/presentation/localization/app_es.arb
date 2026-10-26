@@ -167,8 +167,14 @@
   "detailsRetakeImageButton": "Tomar otra imagen",
   "errorTranslationQuotaExceeded": "{limit, plural, one{Ha usado su {limit} traducción de las últimas 24 horas. Escriba la traducción usted mismo o vuelva a intentarlo más tarde.} other{Ha usado sus {limit} traducciones de las últimas 24 horas. Escriba la traducción usted mismo o vuelva a intentarlo más tarde.}}",
   "errorStockImageQuotaExceeded": "{limit, plural, one{Ha usado su {limit} búsqueda de fotos de las últimas 24 horas. Tome su propia foto o vuelva a intentarlo más tarde.} other{Ha usado sus {limit} búsquedas de fotos de las últimas 24 horas. Tome su propia foto o vuelva a intentarlo más tarde.}}",
-  "errorAiUnavailable": "La traducción automática y la búsqueda de fotos no están disponibles en este momento.",
+  "errorAiUnavailable": "Las sugerencias automáticas no están disponibles en este momento.",
   "collectionsDeleteButton": "Borrar colección",
   "collectionsDeleteTitle": "¿Borrar la colección?",
-  "collectionsDeleteMessage": "Las palabras se quedan. Solo se borra la colección."
+  "collectionsDeleteMessage": "Las palabras se quedan. Solo se borra la colección.",
+  "scanTypeHint": "Entrar palabra...",
+  "scanSignInMessage": "Inicia sesión para recibir sugerencias para tu foto.",
+  "scanOpenSettingsButton": "Abrir ajustes",
+  "errorCameraPermission": "Permita el acceso a la cámara para hacer fotos.",
+  "errorCameraUnavailable": "La cámara no se puede usar en este momento.",
+  "errorImageLabelingQuotaExceeded": "{limit, plural, one{Ha usado su {limit} escaneo de las últimas 24 horas. Escriba la palabra usted mismo o vuelva a intentarlo más tarde.} other{Ha usado sus {limit} escaneos de las últimas 24 horas. Escriba la palabra usted mismo o vuelva a intentarlo más tarde.}}"
 }

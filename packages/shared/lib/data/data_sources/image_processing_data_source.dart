@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -16,6 +17,8 @@ abstract class ImageProcessingDataSource {
   Future<({Uint8List full, Uint8List thumbnail})> processBytes(Uint8List bytes);
 
   Future<Uint8List> createLabelingImage(Uint8List fullBytes, {required int longEdge});
+
+  Future<void> deleteSourceImage(String sourcePath);
 }
 
 @Injectable(as: ImageProcessingDataSource)
@@ -58,6 +61,12 @@ class const ImageProcessingDataSourceImpl() implements ImageProcessingDataSource
   @override
   Future<Uint8List> createLabelingImage(Uint8List fullBytes, {required int longEdge}) {
     return _compressBytes(fullBytes, longEdge, _labelingQuality, CompressFormat.jpeg);
+  }
+
+  @override
+  Future<void> deleteSourceImage(String sourcePath) async {
+    final file = File(sourcePath);
+    if (await file.exists()) await file.delete();
   }
 
   Future<Uint8List> _compressBytes(

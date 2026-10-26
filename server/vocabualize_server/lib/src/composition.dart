@@ -2,6 +2,9 @@ import 'package:http/http.dart' as http;
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_cloud_storage_s3_compat/serverpod_cloud_storage_s3_compat.dart';
 
+import 'adapters/image_labeling/echo_image_labeling_provider.dart';
+import 'adapters/image_labeling/gemini_image_labeling_provider.dart';
+import 'adapters/image_labeling/image_labeling_provider.dart';
 import 'adapters/public_link_s3_client.dart';
 import 'adapters/stock_images/echo_stock_image_provider.dart';
 import 'adapters/stock_images/pexels_stock_image_provider.dart';
@@ -16,6 +19,7 @@ const imageStorageId = "images";
 
 const _deeplProvider = "deepl";
 const _pexelsProvider = "pexels";
+const _geminiProvider = "gemini";
 const _echoProvider = "echo";
 
 final _httpClient = http.Client();
@@ -44,6 +48,21 @@ class const Composition() {
       _pexelsProvider => PexelsStockImageProvider(_httpClient, _password("pexelsApiKey")),
       _echoProvider => const EchoStockImageProvider(),
       final name => throw StateError("Unknown ai.stockImageProvider \"$name\" in app_config.yaml"),
+    };
+  }
+
+  ImageLabelingProvider imageLabelingProvider() {
+    final ai = const ConfigSource().read().ai;
+    return switch (ai.imageLabelingProvider) {
+      _geminiProvider => GeminiImageLabelingProvider(
+        _httpClient,
+        _password("geminiApiKey"),
+        ai.imageLabelingModel,
+      ),
+      _echoProvider => const EchoImageLabelingProvider(),
+      final name => throw StateError(
+        "Unknown ai.imageLabelingProvider \"$name\" in app_config.yaml",
+      ),
     };
   }
 

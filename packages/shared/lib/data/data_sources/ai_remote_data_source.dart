@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:injectable/injectable.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -10,6 +12,11 @@ abstract class AiRemoteDataSource {
 
   Future<List<RemoteStockImage>> searchStockImages({
     required String query,
+    required String language,
+  });
+
+  Future<List<String>> labelImage({
+    required Uint8List image,
     required String language,
   });
 }
@@ -30,4 +37,10 @@ class const AiRemoteDataSourceImpl(
     required String query,
     required String language,
   }) => _client.ai.searchStockImages(query, language);
+
+  @override
+  Future<List<String>> labelImage({
+    required Uint8List image,
+    required String language,
+  }) => _client.ai.labelImage(ByteData.sublistView(image), language);
 }

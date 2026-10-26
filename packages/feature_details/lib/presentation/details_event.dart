@@ -1,5 +1,6 @@
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:shared/domain/entities/image_pick_source.dart';
+import 'package:shared/domain/entities/processed_image.dart';
 
 sealed class DetailsEvent {
   const DetailsEvent();
@@ -7,6 +8,7 @@ sealed class DetailsEvent {
 
 class const DetailsNewStarted({
   required final String source,
+  required final ProcessedImage? photo,
 }) extends DetailsEvent;
 
 class const DetailsEditStarted({
