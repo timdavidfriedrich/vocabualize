@@ -986,22 +986,22 @@ class LocalBackupActivityMapper extends ClassMapperBase<LocalBackupActivity> {
     'localDate',
     _$localDate,
   );
-  static String _$type(LocalBackupActivity v) => v.type;
-  static const Field<LocalBackupActivity, String> _f$type = Field(
-    'type',
-    _$type,
+  static int? _$practicedCount(LocalBackupActivity v) => v.practicedCount;
+  static const Field<LocalBackupActivity, int> _f$practicedCount = Field(
+    'practicedCount',
+    _$practicedCount,
   );
 
   @override
   final MappableFields<LocalBackupActivity> fields = const {
     #localDate: _f$localDate,
-    #type: _f$type,
+    #practicedCount: _f$practicedCount,
   };
 
   static LocalBackupActivity _instantiate(DecodingData data) {
     return LocalBackupActivity(
       localDate: data.dec(_f$localDate),
-      type: data.dec(_f$type),
+      practicedCount: data.dec(_f$practicedCount),
     );
   }
 
@@ -1075,7 +1075,7 @@ abstract class LocalBackupActivityCopyWith<
   $Out
 >
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? localDate, String? type});
+  $R call({String? localDate, int? practicedCount});
   LocalBackupActivityCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -1090,16 +1090,16 @@ class _LocalBackupActivityCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LocalBackupActivity> $mapper =
       LocalBackupActivityMapper.ensureInitialized();
   @override
-  $R call({String? localDate, String? type}) => $apply(
+  $R call({String? localDate, Object? practicedCount = $none}) => $apply(
     FieldCopyWithData({
       if (localDate != null) #localDate: localDate,
-      if (type != null) #type: type,
+      if (practicedCount != $none) #practicedCount: practicedCount,
     }),
   );
   @override
   LocalBackupActivity $make(CopyWithData data) => LocalBackupActivity(
     localDate: data.get(#localDate, or: $value.localDate),
-    type: data.get(#type, or: $value.type),
+    practicedCount: data.get(#practicedCount, or: $value.practicedCount),
   );
 
   @override

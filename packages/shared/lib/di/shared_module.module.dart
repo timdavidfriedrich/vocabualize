@@ -12,6 +12,8 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart'
     as _i90;
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart'
     as _i654;
+import 'package:shared/data/data_sources/activity_local_data_source.dart'
+    as _i347;
 import 'package:shared/data/data_sources/app_config_local_data_source.dart'
     as _i49;
 import 'package:shared/data/data_sources/app_config_remote_data_source.dart'
@@ -21,11 +23,13 @@ import 'package:shared/data/data_sources/auth_data_source.dart' as _i535;
 import 'package:shared/data/data_sources/backup_archive_data_source.dart'
     as _i100;
 import 'package:shared/data/data_sources/backup_file_data_source.dart' as _i460;
+import 'package:shared/data/data_sources/calendar_data_source.dart' as _i4;
 import 'package:shared/data/data_sources/clock_data_source.dart' as _i44;
 import 'package:shared/data/data_sources/connectivity_data_source.dart'
     as _i154;
 import 'package:shared/data/data_sources/database_session_data_source.dart'
     as _i862;
+import 'package:shared/data/data_sources/device_data_source.dart' as _i931;
 import 'package:shared/data/data_sources/external_link_data_source.dart'
     as _i515;
 import 'package:shared/data/data_sources/image_file_data_source.dart' as _i532;
@@ -57,6 +61,8 @@ import 'package:shared/data/data_sources/translation_remote_data_source.dart'
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart'
     as _i397;
 import 'package:shared/data/repositories/account_repository_impl.dart' as _i631;
+import 'package:shared/data/repositories/activity_repository_impl.dart'
+    as _i351;
 import 'package:shared/data/repositories/app_config_repository_impl.dart'
     as _i509;
 import 'package:shared/data/repositories/app_info_repository_impl.dart'
@@ -85,6 +91,7 @@ import 'package:shared/data/repositories/vocabulary_repository_impl.dart'
     as _i23;
 import 'package:shared/di/serverpod_client_module.dart' as _i74;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
+import 'package:shared/domain/repositories/activity_repository.dart' as _i503;
 import 'package:shared/domain/repositories/app_config_repository.dart' as _i541;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/backup_repository.dart' as _i152;
@@ -106,14 +113,14 @@ import 'package:shared/domain/repositories/text_to_speech_repository.dart'
 import 'package:shared/domain/repositories/translation_repository.dart'
     as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
+import 'package:shared/domain/use_cases/watch_streak_use_case.dart' as _i76;
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart'
     as _i855;
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart'
     as _i650;
 import 'package:shared/presentation/preferences/preferences_cubit.dart'
     as _i218;
-import 'package:shared/presentation/reminders/practice_reminder_cubit.dart'
-    as _i439;
+import 'package:shared/presentation/reminders/reminder_cubit.dart' as _i902;
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart'
     as _i765;
 import 'package:vocabualize_client/vocabualize_client.dart' as _i1040;
@@ -129,6 +136,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => serverpodClientModule.secureStorage());
     gh.lazySingleton<_i90.ConnectivityMonitor>(
         () => serverpodClientModule.connectivityMonitor());
+    gh.lazySingleton<_i931.DeviceDataSource>(
+        () => _i931.DeviceDataSourceImpl());
     gh.factory<_i100.BackupArchiveDataSource>(
         () => const _i100.BackupArchiveDataSourceImpl());
     gh.factory<_i394.AppInfoDataSource>(
@@ -137,6 +146,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => _i877.NotificationDataSourceImpl());
     gh.factory<_i179.ImageProcessingDataSource>(
         () => const _i179.ImageProcessingDataSourceImpl());
+    gh.factory<_i4.CalendarDataSource>(
+        () => const _i4.CalendarDataSourceImpl());
     gh.lazySingleton<_i49.AppConfigLocalDataSource>(
         () => _i49.AppConfigLocalDataSourceImpl());
     gh.factory<_i821.ReminderRepository>(
@@ -236,6 +247,9 @@ class SharedPackageModule extends _i526.MicroPackageModule {
             gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i765.SyncStatusCubit>(
         () => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
+    gh.factory<_i347.ActivityLocalDataSource>(() =>
+        _i347.ActivityLocalDataSourceImpl(
+            gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i555.SettingLocalDataSource>(() =>
         _i555.SettingLocalDataSourceImpl(
             gh<_i862.DatabaseSessionDataSource>()));
@@ -243,6 +257,10 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i320.ReportRemoteDataSource>(),
           gh<_i394.AppInfoDataSource>(),
           gh<_i555.SettingLocalDataSource>(),
+        ));
+    gh.factory<_i503.ActivityRepository>(() => _i351.ActivityRepositoryImpl(
+          gh<_i347.ActivityLocalDataSource>(),
+          gh<_i4.CalendarDataSource>(),
         ));
     gh.lazySingleton<_i532.ImageFileDataSource>(
         () => _i532.ImageFileDataSourceImpl(
@@ -256,35 +274,20 @@ class SharedPackageModule extends _i526.MicroPackageModule {
               gh<_i532.ImageFileDataSource>(),
               gh<_i28.ImageTransferDataSource>(),
             ));
+    gh.factory<_i843.LocalImportDataSource>(() =>
+        _i843.LocalImportDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i208.VocabularyRepository>(() => _i23.VocabularyRepositoryImpl(
           gh<_i397.VocabularyLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
+          gh<_i931.DeviceDataSource>(),
         ));
-    gh.factory<_i843.LocalImportDataSource>(() =>
-        _i843.LocalImportDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i0.SettingsRepository>(() => _i921.SettingsRepositoryImpl(
           gh<_i555.SettingLocalDataSource>(),
           gh<_i394.AppInfoDataSource>(),
         ));
-    gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
-          gh<_i535.AuthDataSource>(),
-          gh<_i862.DatabaseSessionDataSource>(),
-          gh<_i753.SpaceStorageDataSource>(),
-          gh<_i532.ImageFileDataSource>(),
-          gh<_i843.LocalImportDataSource>(),
-          gh<_i555.SettingLocalDataSource>(),
-          gh<_i1034.SyncDataSource>(),
-          gh<_i61.ImageSyncDataSource>(),
-          gh<_i228.ServiceAccessDataSource>(),
-        ));
     gh.factory<_i836.TagRepository>(() => _i453.TagRepositoryImpl(
           gh<_i452.TagLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
-        ));
-    gh.factory<_i439.PracticeReminderCubit>(() => _i439.PracticeReminderCubit(
-          gh<_i821.ReminderRepository>(),
-          gh<_i0.SettingsRepository>(),
-          gh<_i208.VocabularyRepository>(),
         ));
     gh.factory<_i650.LanguagePairCubit>(
         () => _i650.LanguagePairCubit(gh<_i0.SettingsRepository>()));
@@ -298,6 +301,26 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i100.BackupArchiveDataSource>(),
           gh<_i460.BackupFileDataSource>(),
           gh<_i555.SettingLocalDataSource>(),
+        ));
+    gh.factory<_i76.WatchStreakUseCase>(
+        () => _i76.WatchStreakUseCase(gh<_i503.ActivityRepository>()));
+    gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
+          gh<_i535.AuthDataSource>(),
+          gh<_i862.DatabaseSessionDataSource>(),
+          gh<_i753.SpaceStorageDataSource>(),
+          gh<_i532.ImageFileDataSource>(),
+          gh<_i843.LocalImportDataSource>(),
+          gh<_i555.SettingLocalDataSource>(),
+          gh<_i1034.SyncDataSource>(),
+          gh<_i61.ImageSyncDataSource>(),
+          gh<_i228.ServiceAccessDataSource>(),
+          gh<_i931.DeviceDataSource>(),
+        ));
+    gh.factory<_i902.ReminderCubit>(() => _i902.ReminderCubit(
+          gh<_i821.ReminderRepository>(),
+          gh<_i0.SettingsRepository>(),
+          gh<_i208.VocabularyRepository>(),
+          gh<_i76.WatchStreakUseCase>(),
         ));
   }
 }

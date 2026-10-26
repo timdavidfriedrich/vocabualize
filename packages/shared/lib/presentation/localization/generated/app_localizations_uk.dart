@@ -809,4 +809,141 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get settingsDeleteAccountOfflineMessage =>
       'Для видалення облікового запису потрібне підключення до інтернету.';
+
+  @override
+  String streakTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count дня поспіль',
+      many: '$count днів поспіль',
+      few: '$count дні поспіль',
+      one: '$count день поспіль',
+      zero: 'Ще немає серії',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get streakStartMessage => 'Попрактикуйтеся або додайте слово, щоб почати серію.';
+
+  @override
+  String get streakDoneMessage => 'На сьогодні все. До завтра!';
+
+  @override
+  String get streakPendingMessage =>
+      'Попрактикуйтеся або додайте слово сьогодні, щоб зберегти серію.';
+
+  @override
+  String get streakLongestLabel => 'Найдовша серія';
+
+  @override
+  String streakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count дня',
+      many: '$count днів',
+      few: '$count дні',
+      one: '$count день',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get streakFreezesLabel => 'Заморозки';
+
+  @override
+  String streakFreezesValue(int count, int max) {
+    return '$count з $max';
+  }
+
+  @override
+  String streakFreezeExplanation(int days, int max) {
+    return 'Кожні $days активних днів поспіль ви отримуєте заморозку (макс. $max). Вона зберігає серію в день, який ви пропустили.';
+  }
+
+  @override
+  String get streakDayActive => 'Активний';
+
+  @override
+  String get streakDayFrozen => 'Збережено заморозкою';
+
+  @override
+  String get streakDayPending => 'Ще відкритий';
+
+  @override
+  String get streakDayMissed => 'Пропущено';
+
+  @override
+  String get settingsStreakReminderTitle => 'Нагадування про серію';
+
+  @override
+  String get settingsStreakReminderHint => 'Лише в дні, коли ваша серія під загрозою';
+
+  @override
+  String get reminderStreakChannel => 'Нагадування про серію';
+
+  @override
+  String get reminderStreakKeepTitle => 'Збережіть свою серію';
+
+  @override
+  String reminderStreakKeepBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Попрактикуйте кілька слів сьогодні, щоб зберегти серію в $count дня.',
+      many: 'Попрактикуйте кілька слів сьогодні, щоб зберегти серію в $count днів.',
+      few: 'Попрактикуйте кілька слів сьогодні, щоб зберегти серію в $count дні.',
+      one: 'Попрактикуйте кілька слів сьогодні, щоб зберегти серію в $count день.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakLookAroundTitle => 'Роззирніться';
+
+  @override
+  String get reminderStreakLookAroundBody =>
+      'Бачите щось, чого ще не вмієте назвати? Додайте це як нове слово.';
+
+  @override
+  String get reminderStreakQuickRoundTitle => 'Швидкий раунд?';
+
+  @override
+  String reminderStreakQuickRoundBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Один короткий раунд практики збереже ваші $count дня.',
+      many: 'Один короткий раунд практики збереже ваші $count днів.',
+      few: 'Один короткий раунд практики збереже ваші $count дні.',
+      one: 'Один короткий раунд практики збереже вашу серію.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakNearbyTitle => 'Нове слово поруч?';
+
+  @override
+  String get reminderStreakNearbyBody =>
+      'Виберіть щось навколо себе і дізнайтеся, як воно називається.';
+
+  @override
+  String reminderStreakInARowTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count дня поспіль',
+      many: '$count днів поспіль',
+      few: '$count дні поспіль',
+      one: '$count день поспіль',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakInARowBody =>
+      'Не зупиняйтеся зараз. Попрактикуйтеся або додайте слово сьогодні.';
 }

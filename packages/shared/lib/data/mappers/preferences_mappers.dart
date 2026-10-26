@@ -1,7 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:shared/data/models/local_practice_reminder_setting.dart';
+import 'package:shared/data/models/local_daily_reminder_setting.dart';
 import 'package:shared/data/models/local_preference_key.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/reminder_kind.dart';
 
 const _trueValue = "true";
 const _falseValue = "false";
@@ -11,31 +12,39 @@ extension LocalPreferencesMappers on Map<LocalPreferenceKey, String> {
     return Preferences(
       isTypeAnswerDisabled: this[LocalPreferenceKey.typeAnswerDisabled] == _trueValue,
       areImagesHidden: this[LocalPreferenceKey.imagesHidden] == _trueValue,
-      practiceReminder: switch (this[LocalPreferenceKey.practiceReminder]) {
-        final String json => _practiceReminderFrom(json),
-        null => defaultPreferences.practiceReminder,
-      },
+      practiceReminder: _reminderOf(ReminderKind.practice),
+      streakReminder: _reminderOf(ReminderKind.streak),
     );
   }
 
-  PracticeReminder _practiceReminderFrom(String json) {
+  DailyReminder _reminderOf(ReminderKind kind) {
+    final fallback = defaultPreferences.reminderOf(kind);
+    final json = this[kind.toLocalPreferenceKey()];
+    if (json == null) return fallback;
     try {
-      return LocalPracticeReminderSettingMapper.fromJson(json).toPracticeReminder();
+      return LocalDailyReminderSettingMapper.fromJson(json).toDailyReminder();
     } on MapperException {
-      return defaultPreferences.practiceReminder;
+      return fallback;
     }
   }
 }
 
-extension LocalPracticeReminderSettingMappers on LocalPracticeReminderSetting {
-  PracticeReminder toPracticeReminder() {
-    return PracticeReminder(isEnabled: isEnabled, hour: hour, minute: minute);
+extension ReminderKindPreferenceMappers on ReminderKind {
+  LocalPreferenceKey toLocalPreferenceKey() => switch (this) {
+    ReminderKind.practice => LocalPreferenceKey.practiceReminder,
+    ReminderKind.streak => LocalPreferenceKey.streakReminder,
+  };
+}
+
+extension LocalDailyReminderSettingMappers on LocalDailyReminderSetting {
+  DailyReminder toDailyReminder() {
+    return DailyReminder(isEnabled: isEnabled, hour: hour, minute: minute);
   }
 }
 
-extension PracticeReminderMappers on PracticeReminder {
-  LocalPracticeReminderSetting toLocalPracticeReminderSetting() {
-    return LocalPracticeReminderSetting(isEnabled: isEnabled, hour: hour, minute: minute);
+extension DailyReminderMappers on DailyReminder {
+  LocalDailyReminderSetting toLocalDailyReminderSetting() {
+    return LocalDailyReminderSetting(isEnabled: isEnabled, hour: hour, minute: minute);
   }
 }
 

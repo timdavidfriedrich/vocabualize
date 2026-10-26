@@ -6,11 +6,13 @@ import 'package:feature_home/presentation/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
+import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
+import 'package:shared/domain/use_cases/watch_streak_use_case.dart';
 
 const _feedPageSize = 50;
 const _recentMaxAge = Duration(days: 7);
@@ -18,14 +20,19 @@ const _recentLimit = 10;
 
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc(this._vocabularyRepository, this._tagRepository, this._textToSpeechRepository)
-    : super(
+  HomeBloc(
+    this._vocabularyRepository,
+    this._tagRepository,
+    this._textToSpeechRepository,
+    this._watchStreak,
+  ) : super(
         const HomeLoading(
           overview: null,
           recentVocabularies: null,
           collections: null,
           vocabularies: null,
           feedLimit: 0,
+          streak: null,
         ),
       ) {
     on<HomeStarted>(_onStarted);
@@ -37,6 +44,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final VocabularyRepository _vocabularyRepository;
   final TagRepository _tagRepository;
   final TextToSpeechRepository _textToSpeechRepository;
+  final WatchStreakUseCase _watchStreak;
 
   Future<void> _onStarted(HomeStarted event, Emitter<HomeState> emit) async {
     add(const HomeFeedEndReached());
@@ -60,6 +68,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         onData: (result) => switch (result) {
           Success(:final data) => _merged(collections: data),
           Failure(:final error) => HomeFailure(error: error),
+        },
+      ),
+      emit.forEach(
+        _watchStreak(),
+        onData: (result) => switch (result) {
+          Success(:final data) => _merged(streak: data),
+          Failure() => state,
         },
       ),
     ]);
@@ -111,6 +126,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
     int? feedLimit,
+    Streak? streak,
   }) {
     return switch (state) {
       final HomeLoaded loaded => loaded.copyWith(
@@ -119,6 +135,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         collections: collections,
         vocabularies: vocabularies,
         feedLimit: feedLimit,
+        streak: streak ?? loaded.streak,
       ),
       final HomeLoading loading => _completed(
         HomeLoading(
@@ -127,6 +144,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           collections: collections ?? loading.collections,
           vocabularies: vocabularies ?? loading.vocabularies,
           feedLimit: feedLimit ?? loading.feedLimit,
+          streak: streak ?? loading.streak,
         ),
       ),
       final HomeFailure failure => failure,
@@ -141,6 +159,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         collections: final collections?,
         vocabularies: final vocabularies?,
         :final feedLimit,
+        :final streak,
       ) =>
         HomeLoaded(
           overview: overview,
@@ -148,6 +167,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           collections: collections,
           vocabularies: vocabularies,
           feedLimit: feedLimit,
+          streak: streak,
           error: null,
         ),
       _ => loading,

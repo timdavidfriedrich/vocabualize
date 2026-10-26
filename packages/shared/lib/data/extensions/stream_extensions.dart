@@ -30,6 +30,39 @@ extension StreamExtensions<S> on Stream<S> {
     return controller.stream;
   }
 
+  Stream<R> combineLatest<T, R>(Stream<T> other, R Function(S first, T second) combiner) {
+    StreamSubscription<S>? firstSubscription;
+    StreamSubscription<T>? secondSubscription;
+    late S first;
+    late T second;
+    var hasFirst = false;
+    var hasSecond = false;
+    late final StreamController<R> controller;
+    void emitCombined() {
+      if (hasFirst && hasSecond) controller.add(combiner(first, second));
+    }
+
+    controller = StreamController<R>(
+      onListen: () {
+        firstSubscription = listen((value) {
+          first = value;
+          hasFirst = true;
+          emitCombined();
+        }, onError: controller.addError);
+        secondSubscription = other.listen((value) {
+          second = value;
+          hasSecond = true;
+          emitCombined();
+        }, onError: controller.addError);
+      },
+      onCancel: () async {
+        await firstSubscription?.cancel();
+        await secondSubscription?.cancel();
+      },
+    );
+    return controller.stream;
+  }
+
   Stream<AppResult<S>> toAppResult() {
     return transform(
       StreamTransformer<S, AppResult<S>>.fromHandlers(

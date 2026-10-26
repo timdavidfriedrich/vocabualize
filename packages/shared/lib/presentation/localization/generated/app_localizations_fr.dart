@@ -792,4 +792,131 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get settingsDeleteAccountOfflineMessage =>
       'La suppression de votre compte nécessite une connexion internet.';
+
+  @override
+  String streakTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Série de $count jours',
+      one: 'Série de $count jour',
+      zero: 'Pas encore de série',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get streakStartMessage => 'Révisez ou ajoutez un mot pour commencer une série.';
+
+  @override
+  String get streakDoneMessage => 'C\'est fait pour aujourd\'hui. À demain !';
+
+  @override
+  String get streakPendingMessage =>
+      'Révisez ou ajoutez un mot aujourd\'hui pour garder votre série.';
+
+  @override
+  String get streakLongestLabel => 'Plus longue série';
+
+  @override
+  String streakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jours',
+      one: '$count jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get streakFreezesLabel => 'Gels de série';
+
+  @override
+  String streakFreezesValue(int count, int max) {
+    return '$count sur $max';
+  }
+
+  @override
+  String streakFreezeExplanation(int days, int max) {
+    return 'Tous les $days jours actifs d\'affilée, vous gagnez un gel de série (max. $max). Il protège votre série un jour où vous ne pratiquez pas.';
+  }
+
+  @override
+  String get streakDayActive => 'Actif';
+
+  @override
+  String get streakDayFrozen => 'Sauvé par un gel';
+
+  @override
+  String get streakDayPending => 'Encore ouvert';
+
+  @override
+  String get streakDayMissed => 'Manqué';
+
+  @override
+  String get settingsStreakReminderTitle => 'Rappel de série';
+
+  @override
+  String get settingsStreakReminderHint => 'Seulement les jours où votre série est en danger';
+
+  @override
+  String get reminderStreakChannel => 'Rappels de série';
+
+  @override
+  String get reminderStreakKeepTitle => 'Gardez votre série';
+
+  @override
+  String reminderStreakKeepBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Révisez quelques mots aujourd\'hui pour garder votre série de $count jours.',
+      one: 'Révisez quelques mots aujourd\'hui pour garder votre série de $count jour.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakLookAroundTitle => 'Regardez autour de vous';
+
+  @override
+  String get reminderStreakLookAroundBody =>
+      'Vous voyez quelque chose que vous ne savez pas encore nommer ? Ajoutez-le comme nouveau mot.';
+
+  @override
+  String get reminderStreakQuickRoundTitle => 'Une petite session ?';
+
+  @override
+  String reminderStreakQuickRoundBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Une courte session de révision garde vos $count jours en vie.',
+      one: 'Une courte session de révision garde votre série en vie.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakNearbyTitle => 'Un nouveau mot tout près ?';
+
+  @override
+  String get reminderStreakNearbyBody =>
+      'Choisissez un objet autour de vous et apprenez comment il s\'appelle.';
+
+  @override
+  String reminderStreakInARowTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jours d\'affilée',
+      one: '$count jour d\'affilée',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakInARowBody =>
+      'Ne vous arrêtez pas maintenant. Révisez ou ajoutez un mot aujourd\'hui.';
 }

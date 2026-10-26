@@ -773,4 +773,128 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsDeleteAccountOfflineMessage =>
       'Deleting your account needs an internet connection.';
+
+  @override
+  String streakTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count-day streak',
+      one: '$count-day streak',
+      zero: 'No streak yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get streakStartMessage => 'Practice or add a word to start a streak.';
+
+  @override
+  String get streakDoneMessage => 'You\'re done for today. See you tomorrow!';
+
+  @override
+  String get streakPendingMessage => 'Practice or add a word today to keep your streak.';
+
+  @override
+  String get streakLongestLabel => 'Longest streak';
+
+  @override
+  String streakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '$count day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get streakFreezesLabel => 'Freezes';
+
+  @override
+  String streakFreezesValue(int count, int max) {
+    return '$count of $max';
+  }
+
+  @override
+  String streakFreezeExplanation(int days, int max) {
+    return 'Every $days active days in a row earn a freeze (max. $max). A freeze saves your streak on a day you miss.';
+  }
+
+  @override
+  String get streakDayActive => 'Active';
+
+  @override
+  String get streakDayFrozen => 'Saved by a freeze';
+
+  @override
+  String get streakDayPending => 'Still open';
+
+  @override
+  String get streakDayMissed => 'Missed';
+
+  @override
+  String get settingsStreakReminderTitle => 'Streak reminder';
+
+  @override
+  String get settingsStreakReminderHint => 'Only on days your streak is at risk';
+
+  @override
+  String get reminderStreakChannel => 'Streak reminders';
+
+  @override
+  String get reminderStreakKeepTitle => 'Keep your streak';
+
+  @override
+  String reminderStreakKeepBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Practice a few words today to keep your $count-day streak.',
+      one: 'Practice a few words today to keep your $count-day streak.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakLookAroundTitle => 'Look around';
+
+  @override
+  String get reminderStreakLookAroundBody =>
+      'See something you can\'t name yet? Add it as a new word.';
+
+  @override
+  String get reminderStreakQuickRoundTitle => 'Quick round?';
+
+  @override
+  String reminderStreakQuickRoundBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'One short practice round keeps your $count days going.',
+      one: 'One short practice round keeps your streak going.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakNearbyTitle => 'A new word nearby?';
+
+  @override
+  String get reminderStreakNearbyBody => 'Pick one thing around you and learn what it\'s called.';
+
+  @override
+  String reminderStreakInARowTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days in a row',
+      one: '$count day in a row',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakInARowBody => 'Don\'t stop now. Add or practice a word today.';
 }

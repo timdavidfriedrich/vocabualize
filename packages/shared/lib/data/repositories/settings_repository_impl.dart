@@ -10,6 +10,7 @@ import 'package:shared/data/models/local_preference_key.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 
 @Injectable(as: SettingsRepository)
@@ -86,10 +87,10 @@ class const SettingsRepositoryImpl(
   }
 
   @override
-  Future<AppResult<()>> setPracticeReminder(PracticeReminder reminder) {
+  Future<AppResult<()>> setReminder(ReminderKind kind, DailyReminder reminder) {
     return _savePreference(
-      LocalPreferenceKey.practiceReminder,
-      reminder.toLocalPracticeReminderSetting().toJson(),
+      kind.toLocalPreferenceKey(),
+      reminder.toLocalDailyReminderSetting().toJson(),
     );
   }
 

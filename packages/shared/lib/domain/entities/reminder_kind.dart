@@ -1,0 +1,1 @@
+enum ReminderKind { practice, streak }

@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
 import 'package:shared/data/data_sources/auth_data_source.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
+import 'package:shared/data/data_sources/device_data_source.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/image_sync_data_source.dart';
 import 'package:shared/data/data_sources/local_import_data_source.dart';
@@ -35,6 +36,7 @@ class AccountRepositoryImpl(
   final SyncDataSource _syncDataSource,
   final ImageSyncDataSource _imageSyncDataSource,
   final ServiceAccessDataSource _serviceAccessDataSource,
+  final DeviceDataSource _deviceDataSource,
 ) implements AccountRepository {
   final _statusChanges = StreamController<AuthStatus>.broadcast();
   AuthStatus _status = const AuthUnknown();
@@ -154,15 +156,20 @@ class AccountRepositoryImpl(
           return Failure(error.toAppError());
         }
         await _removeSignedOutSpace(AccountSpace(userId: userId), signsOut: true);
-        await _attempt(_serviceAccessDataSource.forgetInstall);
+        await _forgetDevice();
         return const Success(());
       case AuthAuthenticated(account: LocalAccount()):
         await _removeSignedOutSpace(const LocalOnlySpace(), signsOut: false);
-        await _attempt(_serviceAccessDataSource.forgetInstall);
+        await _forgetDevice();
         return const Success(());
       case AuthUnknown() || AuthUnauthenticated():
         return const Failure(AuthError());
     }
+  }
+
+  Future<void> _forgetDevice() async {
+    await _attempt(_serviceAccessDataSource.forgetInstall);
+    await _attempt(_deviceDataSource.deleteDeviceId);
   }
 
   Future<void> _removeSignedOutSpace(StorageSpace space, {required bool signsOut}) async {

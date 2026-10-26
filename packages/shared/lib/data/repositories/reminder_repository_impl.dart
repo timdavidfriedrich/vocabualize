@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/notification_data_source.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/reminder_notification_mappers.dart';
+import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/reminder_notification.dart';
 import 'package:shared/domain/repositories/reminder_repository.dart';
 
@@ -25,9 +26,12 @@ class const ReminderRepositoryImpl(
   }
 
   @override
-  Future<AppResult<()>> schedulePracticeReminders(List<ReminderNotification> reminders) async {
+  Future<AppResult<()>> scheduleReminders(
+    ReminderKind kind,
+    List<ReminderNotification> reminders,
+  ) async {
     try {
-      await _dataSource.replacePracticeReminders([
+      await _dataSource.replaceReminders(kind.toLocalReminderKind(), [
         for (final reminder in reminders) reminder.toLocalReminderNotification(),
       ]);
       return const Success(());

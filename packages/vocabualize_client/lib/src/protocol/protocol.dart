@@ -127,22 +127,23 @@ class Protocol extends _isd.DatabaseSerializationManager
           dartType: 'int?',
         ),
         _isd.ColumnDefinition(
-          name: 'type',
-          columnType: _isd.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _isd.ColumnDefinition(
           name: 'localDate',
           columnType: _isd.ColumnType.text,
           isNullable: false,
           dartType: 'String',
         ),
         _isd.ColumnDefinition(
-          name: 'occurredAt',
-          columnType: _isd.ColumnType.timestampWithoutTimeZone,
+          name: 'deviceId',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: true,
+          dartType: 'UuidValue?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'practicedCount',
+          columnType: _isd.ColumnType.bigint,
           isNullable: false,
-          dartType: 'DateTime',
+          dartType: 'int',
+          columnDefault: '0',
         ),
         _isd.ColumnDefinition(
           name: 'extras',

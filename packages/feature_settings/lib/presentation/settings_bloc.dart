@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/app_info_repository.dart';
@@ -30,8 +31,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsAccountConflictResolved>(_onAccountConflictResolved);
     on<SettingsTypeAnswerDisabledChanged>(_onTypeAnswerDisabledChanged);
     on<SettingsImagesHiddenChanged>(_onImagesHiddenChanged);
-    on<SettingsPracticeReminderToggled>(_onPracticeReminderToggled);
-    on<SettingsPracticeReminderTimeChanged>(_onPracticeReminderTimeChanged);
+    on<SettingsReminderToggled>(_onReminderToggled);
+    on<SettingsReminderTimeChanged>(_onReminderTimeChanged);
     on<SettingsNotificationSettingsOpened>(_onNotificationSettingsOpened);
     on<SettingsDeletionRequested>(_onDeletionRequested);
     on<SettingsBackupExportRequested>(_onBackupExportRequested);
@@ -116,26 +117,30 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) => _savePreference(emit, () => _settingsRepository.setImagesHidden(event.areHidden));
 
-  Future<void> _onPracticeReminderToggled(
-    SettingsPracticeReminderToggled event,
+  Future<void> _onReminderToggled(
+    SettingsReminderToggled event,
     Emitter<SettingsState> emit,
   ) async {
     if (event.isEnabled) await _reminderRepository.requestNotificationPermission();
-    final reminder = await _currentPracticeReminder();
+    final reminder = await _currentReminder(event.kind);
     await _savePreference(
       emit,
-      () => _settingsRepository.setPracticeReminder(reminder.copyWith(isEnabled: event.isEnabled)),
+      () => _settingsRepository.setReminder(
+        event.kind,
+        reminder.copyWith(isEnabled: event.isEnabled),
+      ),
     );
   }
 
-  Future<void> _onPracticeReminderTimeChanged(
-    SettingsPracticeReminderTimeChanged event,
+  Future<void> _onReminderTimeChanged(
+    SettingsReminderTimeChanged event,
     Emitter<SettingsState> emit,
   ) async {
-    final reminder = await _currentPracticeReminder();
+    final reminder = await _currentReminder(event.kind);
     await _savePreference(
       emit,
-      () => _settingsRepository.setPracticeReminder(
+      () => _settingsRepository.setReminder(
+        event.kind,
         reminder.copyWith(hour: event.hour, minute: event.minute),
       ),
     );
@@ -146,10 +151,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) => _savePreference(emit, _appInfoRepository.openNotificationSettings);
 
-  Future<PracticeReminder> _currentPracticeReminder() async {
+  Future<DailyReminder> _currentReminder(ReminderKind kind) async {
     return switch (await _settingsRepository.readPreferences()) {
-      Success(:final data) => data.practiceReminder,
-      Failure() => defaultPreferences.practiceReminder,
+      Success(:final data) => data.reminderOf(kind),
+      Failure() => defaultPreferences.reminderOf(kind),
     };
   }
 

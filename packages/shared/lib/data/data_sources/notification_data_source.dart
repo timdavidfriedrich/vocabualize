@@ -4,21 +4,23 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared/data/models/local_reminder_kind.dart';
 import 'package:shared/data/models/local_reminder_notification.dart';
 import 'package:timezone/data/latest_10y.dart' as timezone_data;
 import 'package:timezone/timezone.dart' as timezone;
 
 const _icon = "ic_notification";
-const _practiceChannelId = "practice_reminders";
-const _practiceIdStart = 1000;
-const _practiceIdEnd = 2000;
+const _notificationIdsPerKind = 1000;
 
 abstract class NotificationDataSource {
   Stream<bool> watchIsPermitted();
 
   Future<bool> requestPermission();
 
-  Future<void> replacePracticeReminders(List<LocalReminderNotification> reminders);
+  Future<void> replaceReminders(
+    LocalReminderKind kind,
+    List<LocalReminderNotification> reminders,
+  );
 }
 
 @LazySingleton(as: NotificationDataSource)
@@ -52,22 +54,26 @@ class NotificationDataSourceImpl() implements NotificationDataSource {
   }
 
   @override
-  Future<void> replacePracticeReminders(List<LocalReminderNotification> reminders) async {
+  Future<void> replaceReminders(
+    LocalReminderKind kind,
+    List<LocalReminderNotification> reminders,
+  ) async {
     await _initialize();
+    final firstId = kind.firstNotificationId;
     for (final pending in await _plugin.pendingNotificationRequests()) {
-      if (pending.id >= _practiceIdStart && pending.id < _practiceIdEnd) {
+      if (pending.id >= firstId && pending.id < firstId + _notificationIdsPerKind) {
         await _plugin.cancel(id: pending.id);
       }
     }
-    for (final (index, reminder) in reminders.indexed) {
+    for (final (index, reminder) in reminders.take(_notificationIdsPerKind).indexed) {
       await _plugin.zonedSchedule(
-        id: _practiceIdStart + index,
+        id: firstId + index,
         title: reminder.title,
         body: reminder.body,
         scheduledDate: timezone.TZDateTime.from(reminder.at, timezone.local),
         notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
-            _practiceChannelId,
+            kind.channelId,
             reminder.channelName,
             icon: _icon,
           ),

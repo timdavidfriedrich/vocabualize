@@ -15,7 +15,7 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
   static PreferencesMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PreferencesMapper._());
-      PracticeReminderMapper.ensureInitialized();
+      DailyReminderMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -33,11 +33,15 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
     'areImagesHidden',
     _$areImagesHidden,
   );
-  static PracticeReminder _$practiceReminder(Preferences v) =>
-      v.practiceReminder;
-  static const Field<Preferences, PracticeReminder> _f$practiceReminder = Field(
+  static DailyReminder _$practiceReminder(Preferences v) => v.practiceReminder;
+  static const Field<Preferences, DailyReminder> _f$practiceReminder = Field(
     'practiceReminder',
     _$practiceReminder,
+  );
+  static DailyReminder _$streakReminder(Preferences v) => v.streakReminder;
+  static const Field<Preferences, DailyReminder> _f$streakReminder = Field(
+    'streakReminder',
+    _$streakReminder,
   );
 
   @override
@@ -45,6 +49,7 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
     #isTypeAnswerDisabled: _f$isTypeAnswerDisabled,
     #areImagesHidden: _f$areImagesHidden,
     #practiceReminder: _f$practiceReminder,
+    #streakReminder: _f$streakReminder,
   };
 
   static Preferences _instantiate(DecodingData data) {
@@ -52,6 +57,7 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
       isTypeAnswerDisabled: data.dec(_f$isTypeAnswerDisabled),
       areImagesHidden: data.dec(_f$areImagesHidden),
       practiceReminder: data.dec(_f$practiceReminder),
+      streakReminder: data.dec(_f$streakReminder),
     );
   }
 
@@ -115,12 +121,13 @@ extension PreferencesValueCopy<$R, $Out>
 
 abstract class PreferencesCopyWith<$R, $In extends Preferences, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  PracticeReminderCopyWith<$R, PracticeReminder, PracticeReminder>
-  get practiceReminder;
+  DailyReminderCopyWith<$R, DailyReminder, DailyReminder> get practiceReminder;
+  DailyReminderCopyWith<$R, DailyReminder, DailyReminder> get streakReminder;
   $R call({
     bool? isTypeAnswerDisabled,
     bool? areImagesHidden,
-    PracticeReminder? practiceReminder,
+    DailyReminder? practiceReminder,
+    DailyReminder? streakReminder,
   });
   PreferencesCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -134,20 +141,25 @@ class _PreferencesCopyWithImpl<$R, $Out>
   late final ClassMapperBase<Preferences> $mapper =
       PreferencesMapper.ensureInitialized();
   @override
-  PracticeReminderCopyWith<$R, PracticeReminder, PracticeReminder>
+  DailyReminderCopyWith<$R, DailyReminder, DailyReminder>
   get practiceReminder =>
       $value.practiceReminder.copyWith.$chain((v) => call(practiceReminder: v));
+  @override
+  DailyReminderCopyWith<$R, DailyReminder, DailyReminder> get streakReminder =>
+      $value.streakReminder.copyWith.$chain((v) => call(streakReminder: v));
   @override
   $R call({
     bool? isTypeAnswerDisabled,
     bool? areImagesHidden,
-    PracticeReminder? practiceReminder,
+    DailyReminder? practiceReminder,
+    DailyReminder? streakReminder,
   }) => $apply(
     FieldCopyWithData({
       if (isTypeAnswerDisabled != null)
         #isTypeAnswerDisabled: isTypeAnswerDisabled,
       if (areImagesHidden != null) #areImagesHidden: areImagesHidden,
       if (practiceReminder != null) #practiceReminder: practiceReminder,
+      if (streakReminder != null) #streakReminder: streakReminder,
     }),
   );
   @override
@@ -158,6 +170,7 @@ class _PreferencesCopyWithImpl<$R, $Out>
     ),
     areImagesHidden: data.get(#areImagesHidden, or: $value.areImagesHidden),
     practiceReminder: data.get(#practiceReminder, or: $value.practiceReminder),
+    streakReminder: data.get(#streakReminder, or: $value.streakReminder),
   );
 
   @override
@@ -166,42 +179,39 @@ class _PreferencesCopyWithImpl<$R, $Out>
   ) => _PreferencesCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
-class PracticeReminderMapper extends ClassMapperBase<PracticeReminder> {
-  PracticeReminderMapper._();
+class DailyReminderMapper extends ClassMapperBase<DailyReminder> {
+  DailyReminderMapper._();
 
-  static PracticeReminderMapper? _instance;
-  static PracticeReminderMapper ensureInitialized() {
+  static DailyReminderMapper? _instance;
+  static DailyReminderMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = PracticeReminderMapper._());
+      MapperContainer.globals.use(_instance = DailyReminderMapper._());
     }
     return _instance!;
   }
 
   @override
-  final String id = 'PracticeReminder';
+  final String id = 'DailyReminder';
 
-  static bool _$isEnabled(PracticeReminder v) => v.isEnabled;
-  static const Field<PracticeReminder, bool> _f$isEnabled = Field(
+  static bool _$isEnabled(DailyReminder v) => v.isEnabled;
+  static const Field<DailyReminder, bool> _f$isEnabled = Field(
     'isEnabled',
     _$isEnabled,
   );
-  static int _$hour(PracticeReminder v) => v.hour;
-  static const Field<PracticeReminder, int> _f$hour = Field('hour', _$hour);
-  static int _$minute(PracticeReminder v) => v.minute;
-  static const Field<PracticeReminder, int> _f$minute = Field(
-    'minute',
-    _$minute,
-  );
+  static int _$hour(DailyReminder v) => v.hour;
+  static const Field<DailyReminder, int> _f$hour = Field('hour', _$hour);
+  static int _$minute(DailyReminder v) => v.minute;
+  static const Field<DailyReminder, int> _f$minute = Field('minute', _$minute);
 
   @override
-  final MappableFields<PracticeReminder> fields = const {
+  final MappableFields<DailyReminder> fields = const {
     #isEnabled: _f$isEnabled,
     #hour: _f$hour,
     #minute: _f$minute,
   };
 
-  static PracticeReminder _instantiate(DecodingData data) {
-    return PracticeReminder(
+  static DailyReminder _instantiate(DecodingData data) {
+    return DailyReminder(
       isEnabled: data.dec(_f$isEnabled),
       hour: data.dec(_f$hour),
       minute: data.dec(_f$minute),
@@ -211,79 +221,77 @@ class PracticeReminderMapper extends ClassMapperBase<PracticeReminder> {
   @override
   final Function instantiate = _instantiate;
 
-  static PracticeReminder fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<PracticeReminder>(map);
+  static DailyReminder fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DailyReminder>(map);
   }
 
-  static PracticeReminder fromJson(String json) {
-    return ensureInitialized().decodeJson<PracticeReminder>(json);
+  static DailyReminder fromJson(String json) {
+    return ensureInitialized().decodeJson<DailyReminder>(json);
   }
 }
 
-mixin PracticeReminderMappable {
+mixin DailyReminderMappable {
   String toJson() {
-    return PracticeReminderMapper.ensureInitialized()
-        .encodeJson<PracticeReminder>(this as PracticeReminder);
+    return DailyReminderMapper.ensureInitialized().encodeJson<DailyReminder>(
+      this as DailyReminder,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return PracticeReminderMapper.ensureInitialized()
-        .encodeMap<PracticeReminder>(this as PracticeReminder);
+    return DailyReminderMapper.ensureInitialized().encodeMap<DailyReminder>(
+      this as DailyReminder,
+    );
   }
 
-  PracticeReminderCopyWith<PracticeReminder, PracticeReminder, PracticeReminder>
-  get copyWith =>
-      _PracticeReminderCopyWithImpl<PracticeReminder, PracticeReminder>(
-        this as PracticeReminder,
-        $identity,
-        $identity,
-      );
+  DailyReminderCopyWith<DailyReminder, DailyReminder, DailyReminder>
+  get copyWith => _DailyReminderCopyWithImpl<DailyReminder, DailyReminder>(
+    this as DailyReminder,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return PracticeReminderMapper.ensureInitialized().stringifyValue(
-      this as PracticeReminder,
+    return DailyReminderMapper.ensureInitialized().stringifyValue(
+      this as DailyReminder,
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return PracticeReminderMapper.ensureInitialized().equalsValue(
-      this as PracticeReminder,
+    return DailyReminderMapper.ensureInitialized().equalsValue(
+      this as DailyReminder,
       other,
     );
   }
 
   @override
   int get hashCode {
-    return PracticeReminderMapper.ensureInitialized().hashValue(
-      this as PracticeReminder,
+    return DailyReminderMapper.ensureInitialized().hashValue(
+      this as DailyReminder,
     );
   }
 }
 
-extension PracticeReminderValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, PracticeReminder, $Out> {
-  PracticeReminderCopyWith<$R, PracticeReminder, $Out>
-  get $asPracticeReminder =>
-      $base.as((v, t, t2) => _PracticeReminderCopyWithImpl<$R, $Out>(v, t, t2));
+extension DailyReminderValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DailyReminder, $Out> {
+  DailyReminderCopyWith<$R, DailyReminder, $Out> get $asDailyReminder =>
+      $base.as((v, t, t2) => _DailyReminderCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class PracticeReminderCopyWith<$R, $In extends PracticeReminder, $Out>
+abstract class DailyReminderCopyWith<$R, $In extends DailyReminder, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({bool? isEnabled, int? hour, int? minute});
-  PracticeReminderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+  DailyReminderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class _PracticeReminderCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, PracticeReminder, $Out>
-    implements PracticeReminderCopyWith<$R, PracticeReminder, $Out> {
-  _PracticeReminderCopyWithImpl(super.value, super.then, super.then2);
+class _DailyReminderCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DailyReminder, $Out>
+    implements DailyReminderCopyWith<$R, DailyReminder, $Out> {
+  _DailyReminderCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<PracticeReminder> $mapper =
-      PracticeReminderMapper.ensureInitialized();
+  late final ClassMapperBase<DailyReminder> $mapper =
+      DailyReminderMapper.ensureInitialized();
   @override
   $R call({bool? isEnabled, int? hour, int? minute}) => $apply(
     FieldCopyWithData({
@@ -293,15 +301,15 @@ class _PracticeReminderCopyWithImpl<$R, $Out>
     }),
   );
   @override
-  PracticeReminder $make(CopyWithData data) => PracticeReminder(
+  DailyReminder $make(CopyWithData data) => DailyReminder(
     isEnabled: data.get(#isEnabled, or: $value.isEnabled),
     hour: data.get(#hour, or: $value.hour),
     minute: data.get(#minute, or: $value.minute),
   );
 
   @override
-  PracticeReminderCopyWith<$R2, PracticeReminder, $Out2> $chain<$R2, $Out2>(
+  DailyReminderCopyWith<$R2, DailyReminder, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _PracticeReminderCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _DailyReminderCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

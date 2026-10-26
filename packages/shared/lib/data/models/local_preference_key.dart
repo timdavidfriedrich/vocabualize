@@ -1,7 +1,8 @@
 enum LocalPreferenceKey {
   typeAnswerDisabled("typeAnswerDisabled"),
   imagesHidden("imagesHidden"),
-  practiceReminder("practiceReminder");
+  practiceReminder("practiceReminder"),
+  streakReminder("streakReminder");
 
   const LocalPreferenceKey(this.value);
 

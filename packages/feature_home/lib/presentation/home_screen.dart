@@ -7,10 +7,13 @@ import 'package:feature_home/presentation/widgets/collections_section.dart';
 import 'package:feature_home/presentation/widgets/recent_vocabularies_section.dart';
 import 'package:feature_home/presentation/widgets/record_fab.dart';
 import 'package:feature_home/presentation/widgets/status_card.dart';
+import 'package:feature_home/presentation/widgets/streak_chip.dart';
+import 'package:feature_home/presentation/widgets/streak_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
+import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
@@ -241,12 +244,29 @@ class const _TitleRow() extends StatelessWidget {
         ),
         const SizedBox(width: Spacing.m),
         const SyncStatusIcon(),
+        const _StreakButton(),
         IconButton(
           onPressed: context.pushSettings,
           tooltip: context.s.settingsTitle,
           icon: const Icon(Icons.settings_rounded),
         ),
       ],
+    );
+  }
+}
+
+class const _StreakButton() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, Streak?>(
+      selector: (state) => switch (state) {
+        HomeLoading(:final streak) || HomeLoaded(:final streak) => streak,
+        HomeFailure() => null,
+      },
+      builder: (context, streak) => switch (streak) {
+        final streak? => StreakChip(streak: streak, onPressed: () => showStreakSheet(context)),
+        null => const SizedBox.shrink(),
+      },
     );
   }
 }

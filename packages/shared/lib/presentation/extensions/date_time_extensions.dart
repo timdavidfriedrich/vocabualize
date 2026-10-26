@@ -27,5 +27,10 @@ extension DateTimeExtensions on DateTime {
 
   String toDateLabel(BuildContext context) => DateFormat.yMd(_locale(context)).format(toLocal());
 
+  String toDayOfMonthLabel(BuildContext context) => DateFormat.d(_locale(context)).format(this);
+
+  String toWeekdayDateLabel(BuildContext context) =>
+      DateFormat.MMMEd(_locale(context)).format(this);
+
   String _locale(BuildContext context) => Localizations.localeOf(context).toLanguageTag();
 }

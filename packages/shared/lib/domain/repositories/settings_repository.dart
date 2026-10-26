@@ -2,6 +2,7 @@ import 'package:core/error/app_result.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/reminder_kind.dart';
 
 abstract class SettingsRepository {
   Stream<AppResult<LanguagePair?>> watchLanguagePair();
@@ -20,5 +21,5 @@ abstract class SettingsRepository {
 
   Future<AppResult<()>> setImagesHidden(bool areHidden);
 
-  Future<AppResult<()>> setPracticeReminder(PracticeReminder reminder);
+  Future<AppResult<()>> setReminder(ReminderKind kind, DailyReminder reminder);
 }

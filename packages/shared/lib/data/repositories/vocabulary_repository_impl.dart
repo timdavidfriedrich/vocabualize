@@ -1,6 +1,7 @@
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared/data/data_sources/device_data_source.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
@@ -9,8 +10,8 @@ import 'package:shared/data/mappers/activity_mappers.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_overview_mappers.dart';
+import 'package:shared/data/models/local_activity_day.dart';
 import 'package:shared/data/models/local_image_variant.dart';
-import 'package:shared/domain/entities/activity_type.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
@@ -29,6 +30,7 @@ const _initialEase = 2.5;
 class const VocabularyRepositoryImpl(
   final VocabularyLocalDataSource _localDataSource,
   final ImageFileDataSource _imageFileDataSource,
+  final DeviceDataSource _deviceDataSource,
 ) implements VocabularyRepository {
   @override
   Stream<AppResult<List<Vocabulary>>> watchVocabularies({
@@ -88,7 +90,7 @@ class const VocabularyRepositoryImpl(
       );
       final inserted = await _localDataSource.insertVocabulary(
         vocabulary.toLocalVocabulary(),
-        activity: _activity(ActivityType.add),
+        activityDay: await _activityDay(),
         tagIds: _uuids(tagIds),
       );
       return Success((await _toVocabularies([inserted])).single);
@@ -166,7 +168,7 @@ class const VocabularyRepositoryImpl(
     try {
       await _localDataSource.saveReview(
         vocabulary.toLocalVocabulary(),
-        activity: _activity(ActivityType.practice),
+        activityDay: await _activityDay(),
       );
       return const Success(());
     } on Object catch (error) {
@@ -265,15 +267,10 @@ class const VocabularyRepositoryImpl(
     );
   }
 
-  LocalActivity _activity(ActivityType type) {
-    final now = DateTime.now();
-    return LocalActivity(
-      id: const Uuid().v7obj(),
-      type: type.value,
-      localDate: now.toLocalDateString(),
-      occurredAt: now.toUtc(),
-    );
-  }
+  Future<LocalActivityDay> _activityDay() async => LocalActivityDay(
+    localDate: DateTime.now().toLocalDateString(),
+    deviceId: await _deviceDataSource.readOrCreateDeviceId(),
+  );
 
   Stream<List<Vocabulary>> _withImages(Stream<List<LocalVocabulary>> vocabularies) {
     return vocabularies.switchMap(

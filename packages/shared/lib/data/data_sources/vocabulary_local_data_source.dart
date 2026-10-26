@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:serverpod_database/serverpod_database.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
+import 'package:shared/data/models/local_activity_day.dart';
 import 'package:shared/data/models/local_vocabulary_overview.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -55,13 +56,13 @@ abstract class VocabularyLocalDataSource {
 
   Future<LocalVocabulary> insertVocabulary(
     LocalVocabulary vocabulary, {
-    required LocalActivity activity,
+    required LocalActivityDay activityDay,
     required Set<UuidValue> tagIds,
   });
 
   Future<void> saveReview(
     LocalVocabulary vocabulary, {
-    required LocalActivity activity,
+    required LocalActivityDay activityDay,
   });
 
   Future<LocalVocabulary> updateVocabulary(
@@ -242,7 +243,7 @@ class const VocabularyLocalDataSourceImpl(
   @override
   Future<LocalVocabulary> insertVocabulary(
     LocalVocabulary vocabulary, {
-    required LocalActivity activity,
+    required LocalActivityDay activityDay,
     required Set<UuidValue> tagIds,
   }) {
     final session = _sessions.requireWritableSession();
@@ -253,7 +254,7 @@ class const VocabularyLocalDataSourceImpl(
         transaction: transaction,
       );
       if (inserted.id case final id?) await _replaceTagLinks(session, id, tagIds, transaction);
-      await _recordActivity(session, activity, transaction);
+      await _recordActivity(session, activityDay, answers: 0, transaction: transaction);
       return inserted;
     });
   }
@@ -261,7 +262,7 @@ class const VocabularyLocalDataSourceImpl(
   @override
   Future<void> saveReview(
     LocalVocabulary vocabulary, {
-    required LocalActivity activity,
+    required LocalActivityDay activityDay,
   }) {
     final session = _sessions.requireWritableSession();
     return session.db.transaction((transaction) async {
@@ -271,7 +272,7 @@ class const VocabularyLocalDataSourceImpl(
         columns: (t) => [t.level, t.isNovice, t.intervalMinutes, t.ease, t.nextReviewAt],
         transaction: transaction,
       );
-      await _recordActivity(session, activity, transaction);
+      await _recordActivity(session, activityDay, answers: 1, transaction: transaction);
     });
   }
 
@@ -336,17 +337,34 @@ class const VocabularyLocalDataSourceImpl(
 
   Future<void> _recordActivity(
     DatabaseSession session,
-    LocalActivity activity,
-    Transaction transaction,
-  ) async {
-    final existing = await LocalActivity.db.count(
+    LocalActivityDay activityDay, {
+    required int answers,
+    required Transaction transaction,
+  }) async {
+    final existing = await LocalActivity.db.findFirstRow(
       session,
-      where: (t) => t.type.equals(activity.type) & t.localDate.equals(activity.localDate),
-      limit: 1,
+      where: (t) =>
+          t.localDate.equals(activityDay.localDate) & t.deviceId.equals(activityDay.deviceId),
       transaction: transaction,
     );
-    if (existing == 0) {
-      await LocalActivity.db.insertRow(session, activity, transaction: transaction);
+    if (existing == null) {
+      await LocalActivity.db.insertRow(
+        session,
+        LocalActivity(
+          id: const Uuid().v7obj(),
+          localDate: activityDay.localDate,
+          deviceId: activityDay.deviceId,
+          practicedCount: answers,
+        ),
+        transaction: transaction,
+      );
+    } else if (answers > 0) {
+      await LocalActivity.db.updateRow(
+        session,
+        existing.copyWith(practicedCount: existing.practicedCount + answers),
+        columns: (t) => [t.practicedCount],
+        transaction: transaction,
+      );
     }
   }
 

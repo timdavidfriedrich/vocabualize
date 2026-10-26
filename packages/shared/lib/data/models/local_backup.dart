@@ -56,7 +56,7 @@ class const LocalBackupTag({
 @MappableClass()
 class const LocalBackupActivity({
   required final String localDate,
-  required final String type,
+  required final int? practicedCount,
 }) with LocalBackupActivityMappable;
 
 class const LocalBackupContents({

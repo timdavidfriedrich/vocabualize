@@ -1373,6 +1373,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deleting your account needs an internet connection.'**
   String get settingsDeleteAccountOfflineMessage;
+
+  /// No description provided for @streakTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No streak yet} one{{count}-day streak} other{{count}-day streak}}'**
+  String streakTitle(int count);
+
+  /// No description provided for @streakStartMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice or add a word to start a streak.'**
+  String get streakStartMessage;
+
+  /// No description provided for @streakDoneMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re done for today. See you tomorrow!'**
+  String get streakDoneMessage;
+
+  /// No description provided for @streakPendingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice or add a word today to keep your streak.'**
+  String get streakPendingMessage;
+
+  /// No description provided for @streakLongestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest streak'**
+  String get streakLongestLabel;
+
+  /// No description provided for @streakDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} day} other{{count} days}}'**
+  String streakDays(int count);
+
+  /// No description provided for @streakFreezesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Freezes'**
+  String get streakFreezesLabel;
+
+  /// No description provided for @streakFreezesValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {max}'**
+  String streakFreezesValue(int count, int max);
+
+  /// No description provided for @streakFreezeExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {days} active days in a row earn a freeze (max. {max}). A freeze saves your streak on a day you miss.'**
+  String streakFreezeExplanation(int days, int max);
+
+  /// No description provided for @streakDayActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get streakDayActive;
+
+  /// No description provided for @streakDayFrozen.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved by a freeze'**
+  String get streakDayFrozen;
+
+  /// No description provided for @streakDayPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Still open'**
+  String get streakDayPending;
+
+  /// No description provided for @streakDayMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get streakDayMissed;
+
+  /// No description provided for @settingsStreakReminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak reminder'**
+  String get settingsStreakReminderTitle;
+
+  /// No description provided for @settingsStreakReminderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only on days your streak is at risk'**
+  String get settingsStreakReminderHint;
+
+  /// No description provided for @reminderStreakChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak reminders'**
+  String get reminderStreakChannel;
+
+  /// No description provided for @reminderStreakKeepTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your streak'**
+  String get reminderStreakKeepTitle;
+
+  /// No description provided for @reminderStreakKeepBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Practice a few words today to keep your {count}-day streak.} other{Practice a few words today to keep your {count}-day streak.}}'**
+  String reminderStreakKeepBody(int count);
+
+  /// No description provided for @reminderStreakLookAroundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Look around'**
+  String get reminderStreakLookAroundTitle;
+
+  /// No description provided for @reminderStreakLookAroundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'See something you can\'t name yet? Add it as a new word.'**
+  String get reminderStreakLookAroundBody;
+
+  /// No description provided for @reminderStreakQuickRoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick round?'**
+  String get reminderStreakQuickRoundTitle;
+
+  /// No description provided for @reminderStreakQuickRoundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{One short practice round keeps your streak going.} other{One short practice round keeps your {count} days going.}}'**
+  String reminderStreakQuickRoundBody(int count);
+
+  /// No description provided for @reminderStreakNearbyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A new word nearby?'**
+  String get reminderStreakNearbyTitle;
+
+  /// No description provided for @reminderStreakNearbyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick one thing around you and learn what it\'s called.'**
+  String get reminderStreakNearbyBody;
+
+  /// No description provided for @reminderStreakInARowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} day in a row} other{{count} days in a row}}'**
+  String reminderStreakInARowTitle(int count);
+
+  /// No description provided for @reminderStreakInARowBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t stop now. Add or practice a word today.'**
+  String get reminderStreakInARowBody;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

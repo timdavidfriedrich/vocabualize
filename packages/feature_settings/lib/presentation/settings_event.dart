@@ -1,3 +1,5 @@
+import 'package:shared/domain/entities/reminder_kind.dart';
+
 sealed class SettingsEvent {
   const SettingsEvent();
 }
@@ -24,11 +26,13 @@ class const SettingsImagesHiddenChanged({
   required final bool areHidden,
 }) extends SettingsEvent;
 
-class const SettingsPracticeReminderToggled({
+class const SettingsReminderToggled({
+  required final ReminderKind kind,
   required final bool isEnabled,
 }) extends SettingsEvent;
 
-class const SettingsPracticeReminderTimeChanged({
+class const SettingsReminderTimeChanged({
+  required final ReminderKind kind,
   required final int hour,
   required final int minute,
 }) extends SettingsEvent;

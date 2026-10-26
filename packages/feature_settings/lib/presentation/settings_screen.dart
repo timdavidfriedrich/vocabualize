@@ -9,6 +9,7 @@ import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/sync_status.dart';
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
@@ -19,7 +20,7 @@ import 'package:shared/presentation/extensions/sync_status_extensions.dart';
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
-import 'package:shared/presentation/reminders/practice_reminder_cubit.dart';
+import 'package:shared/presentation/reminders/reminder_cubit.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
@@ -188,34 +189,30 @@ class const _LearningSection() extends StatelessWidget {
 class const _NotificationsSection() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<SettingsBloc>();
-    return BlocSelector<PreferencesCubit, Preferences, PracticeReminder>(
-      selector: (preferences) => preferences.practiceReminder,
-      builder: (context, reminder) => BlocBuilder<PracticeReminderCubit, bool>(
-        builder: (context, isPermitted) => Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              secondary: const Icon(Icons.notifications_rounded),
-              title: Text(context.s.settingsPracticeReminderTitle),
-              subtitle: Text(context.s.settingsPracticeReminderHint),
-              value: reminder.isEnabled,
-              onChanged: (isEnabled) =>
-                  bloc.add(SettingsPracticeReminderToggled(isEnabled: isEnabled)),
-            ),
-            if (reminder.isEnabled) ...[
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.schedule_rounded),
-                title: Text(context.s.settingsReminderTimeTitle),
-                trailing: Text(
-                  TimeOfDay(hour: reminder.hour, minute: reminder.minute).format(context),
-                  style: context.t.bodyLarge,
-                ),
-                onTap: () => _pickTime(context, reminder),
+    return BlocSelector<PreferencesCubit, Preferences, (DailyReminder, DailyReminder)>(
+      selector: (preferences) => (preferences.practiceReminder, preferences.streakReminder),
+      builder: (context, reminders) => BlocBuilder<ReminderCubit, bool>(
+        builder: (context, isPermitted) {
+          final (practiceReminder, streakReminder) = reminders;
+          final isAnyEnabled = practiceReminder.isEnabled || streakReminder.isEnabled;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _ReminderSettings(
+                kind: ReminderKind.practice,
+                reminder: practiceReminder,
+                icon: Icons.notifications_rounded,
+                title: context.s.settingsPracticeReminderTitle,
+                hint: context.s.settingsPracticeReminderHint,
               ),
-              if (!isPermitted) ...[
+              _ReminderSettings(
+                kind: ReminderKind.streak,
+                reminder: streakReminder,
+                icon: Icons.local_fire_department_rounded,
+                title: context.s.settingsStreakReminderTitle,
+                hint: context.s.settingsStreakReminderHint,
+              ),
+              if (isAnyEnabled && !isPermitted) ...[
                 Text(
                   context.s.settingsNotificationsBlockedMessage,
                   style: context.t.bodyMedium?.copyWith(color: context.c.error),
@@ -224,26 +221,66 @@ class const _NotificationsSection() extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: TextButton(
                     style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                    onPressed: () => bloc.add(const SettingsNotificationSettingsOpened()),
+                    onPressed: () => context.read<SettingsBloc>().add(
+                      const SettingsNotificationSettingsOpened(),
+                    ),
                     child: Text(context.s.settingsOpenNotificationSettingsButton),
                   ),
                 ),
               ],
             ],
-          ],
-        ),
+          );
+        },
       ),
     );
   }
+}
 
-  Future<void> _pickTime(BuildContext context, PracticeReminder reminder) async {
+class const _ReminderSettings({
+  required final ReminderKind _kind,
+  required final DailyReminder _reminder,
+  required final IconData _icon,
+  required final String _title,
+  required final String _hint,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          secondary: Icon(_icon),
+          title: Text(_title),
+          subtitle: Text(_hint),
+          value: _reminder.isEnabled,
+          onChanged: (isEnabled) => context.read<SettingsBloc>().add(
+            SettingsReminderToggled(kind: _kind, isEnabled: isEnabled),
+          ),
+        ),
+        if (_reminder.isEnabled)
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.schedule_rounded),
+            title: Text(context.s.settingsReminderTimeTitle),
+            trailing: Text(
+              TimeOfDay(hour: _reminder.hour, minute: _reminder.minute).format(context),
+              style: context.t.bodyLarge,
+            ),
+            onTap: () => _pickTime(context),
+          ),
+      ],
+    );
+  }
+
+  Future<void> _pickTime(BuildContext context) async {
     final bloc = context.read<SettingsBloc>();
     final time = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(hour: reminder.hour, minute: reminder.minute),
+      initialTime: TimeOfDay(hour: _reminder.hour, minute: _reminder.minute),
     );
     if (time != null) {
-      bloc.add(SettingsPracticeReminderTimeChanged(hour: time.hour, minute: time.minute));
+      bloc.add(SettingsReminderTimeChanged(kind: _kind, hour: time.hour, minute: time.minute));
     }
   }
 }

@@ -17,18 +17,18 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
   LocalActivity._({
     this.id,
     this.spaceId,
-    required this.type,
     required this.localDate,
-    required this.occurredAt,
+    this.deviceId,
+    int? practicedCount,
     this.extras,
-  });
+  }) : practicedCount = practicedCount ?? 0;
 
   factory LocalActivity({
     _is.UuidValue? id,
     int? spaceId,
-    required String type,
     required String localDate,
-    required DateTime occurredAt,
+    _is.UuidValue? deviceId,
+    int? practicedCount,
     String? extras,
   }) = _LocalActivityImpl;
 
@@ -38,9 +38,11 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
           ? null
           : _is.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
       spaceId: jsonSerialization['spaceId'] as int?,
-      type: jsonSerialization['type'] as String,
       localDate: jsonSerialization['localDate'] as String,
-      occurredAt: _is.DateTimeJsonExtension.fromJson(jsonSerialization['occurredAt']),
+      deviceId: jsonSerialization['deviceId'] == null
+          ? null
+          : _is.UuidValueJsonExtension.fromJson(jsonSerialization['deviceId']),
+      practicedCount: jsonSerialization['practicedCount'] as int?,
       extras: jsonSerialization['extras'] as String?,
     );
   }
@@ -55,11 +57,11 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
   /// The space owning this row. Maintained by the sync engine.
   int? spaceId;
 
-  String type;
-
   String localDate;
 
-  DateTime occurredAt;
+  _is.UuidValue? deviceId;
+
+  int practicedCount;
 
   String? extras;
 
@@ -72,9 +74,9 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
   LocalActivity copyWith({
     _is.UuidValue? id = const _is.$UndefinedUuidValue(),
     int? spaceId,
-    String? type,
     String? localDate,
-    DateTime? occurredAt,
+    _is.UuidValue? deviceId = const _is.$UndefinedUuidValue(),
+    int? practicedCount,
     String? extras,
   });
   @override
@@ -83,9 +85,9 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
       '__className__': 'LocalActivity',
       if (id != null) 'id': id?.toJson(),
       if (spaceId != null) 'spaceId': spaceId,
-      'type': type,
       'localDate': localDate,
-      'occurredAt': occurredAt.toJson(),
+      if (deviceId != null) 'deviceId': deviceId?.toJson(),
+      'practicedCount': practicedCount,
       if (extras != null) 'extras': extras,
     };
   }
@@ -96,9 +98,9 @@ abstract class LocalActivity implements _is.TableRow<_is.UuidValue?>, _is.Protoc
       '__className__': 'LocalActivity',
       if (id != null) 'id': id?.toJson(),
       if (spaceId != null) 'spaceId': spaceId,
-      'type': type,
       'localDate': localDate,
-      'occurredAt': occurredAt.toJson(),
+      if (deviceId != null) 'deviceId': deviceId?.toJson(),
+      'practicedCount': practicedCount,
       if (extras != null) 'extras': extras,
     };
   }
@@ -137,16 +139,16 @@ class _LocalActivityImpl extends LocalActivity {
   _LocalActivityImpl({
     _is.UuidValue? id,
     int? spaceId,
-    required String type,
     required String localDate,
-    required DateTime occurredAt,
+    _is.UuidValue? deviceId,
+    int? practicedCount,
     String? extras,
   }) : super._(
          id: id,
          spaceId: spaceId,
-         type: type,
          localDate: localDate,
-         occurredAt: occurredAt,
+         deviceId: deviceId,
+         practicedCount: practicedCount,
          extras: extras,
        );
 
@@ -157,17 +159,17 @@ class _LocalActivityImpl extends LocalActivity {
   LocalActivity copyWith({
     _is.UuidValue? id = const _is.$UndefinedUuidValue(),
     Object? spaceId = _Undefined,
-    String? type,
     String? localDate,
-    DateTime? occurredAt,
+    _is.UuidValue? deviceId = const _is.$UndefinedUuidValue(),
+    int? practicedCount,
     Object? extras = _Undefined,
   }) {
     return LocalActivity(
       id: id is _is.UndefinedSentinel ? this.id : id,
       spaceId: spaceId is int? ? spaceId : this.spaceId,
-      type: type ?? this.type,
       localDate: localDate ?? this.localDate,
-      occurredAt: occurredAt ?? this.occurredAt,
+      deviceId: deviceId is _is.UndefinedSentinel ? this.deviceId : deviceId,
+      practicedCount: practicedCount ?? this.practicedCount,
       extras: extras is String? ? extras : this.extras,
     );
   }
@@ -181,18 +183,18 @@ class LocalActivityUpdateTable extends _is.UpdateTable<LocalActivityTable> {
     value,
   );
 
-  _is.ColumnValue<String, String> type(String value) => _is.ColumnValue(
-    table.type,
-    value,
-  );
-
   _is.ColumnValue<String, String> localDate(String value) => _is.ColumnValue(
     table.localDate,
     value,
   );
 
-  _is.ColumnValue<DateTime, DateTime> occurredAt(DateTime value) => _is.ColumnValue(
-    table.occurredAt,
+  _is.ColumnValue<_is.UuidValue, _is.UuidValue> deviceId(_is.UuidValue? value) => _is.ColumnValue(
+    table.deviceId,
+    value,
+  );
+
+  _is.ColumnValue<int, int> practicedCount(int value) => _is.ColumnValue(
+    table.practicedCount,
     value,
   );
 
@@ -209,17 +211,18 @@ class LocalActivityTable extends _is.Table<_is.UuidValue?> {
       'spaceId',
       this,
     );
-    type = _is.ColumnString(
-      'type',
-      this,
-    );
     localDate = _is.ColumnString(
       'localDate',
       this,
     );
-    occurredAt = _is.ColumnDateTime(
-      'occurredAt',
+    deviceId = _is.ColumnUuid(
+      'deviceId',
       this,
+    );
+    practicedCount = _is.ColumnInt(
+      'practicedCount',
+      this,
+      hasDefault: true,
     );
     extras = _is.ColumnString(
       'extras',
@@ -232,11 +235,11 @@ class LocalActivityTable extends _is.Table<_is.UuidValue?> {
   /// The space owning this row. Maintained by the sync engine.
   late final _is.ColumnInt spaceId;
 
-  late final _is.ColumnString type;
-
   late final _is.ColumnString localDate;
 
-  late final _is.ColumnDateTime occurredAt;
+  late final _is.ColumnUuid deviceId;
+
+  late final _is.ColumnInt practicedCount;
 
   late final _is.ColumnString extras;
 
@@ -244,9 +247,9 @@ class LocalActivityTable extends _is.Table<_is.UuidValue?> {
   List<_is.Column> get columns => [
     id,
     spaceId,
-    type,
     localDate,
-    occurredAt,
+    deviceId,
+    practicedCount,
     extras,
   ];
 }

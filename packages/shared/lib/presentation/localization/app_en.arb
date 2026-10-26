@@ -377,5 +377,86 @@
     }
   },
   "settingsDeleteConfirmButton": "Delete",
-  "settingsDeleteAccountOfflineMessage": "Deleting your account needs an internet connection."
+  "settingsDeleteAccountOfflineMessage": "Deleting your account needs an internet connection.",
+  "streakTitle": "{count, plural, =0{No streak yet} one{{count}-day streak} other{{count}-day streak}}",
+  "@streakTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "streakStartMessage": "Practice or add a word to start a streak.",
+  "streakDoneMessage": "You're done for today. See you tomorrow!",
+  "streakPendingMessage": "Practice or add a word today to keep your streak.",
+  "streakLongestLabel": "Longest streak",
+  "streakDays": "{count, plural, one{{count} day} other{{count} days}}",
+  "@streakDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "streakFreezesLabel": "Freezes",
+  "streakFreezesValue": "{count} of {max}",
+  "@streakFreezesValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "streakFreezeExplanation": "Every {days} active days in a row earn a freeze (max. {max}). A freeze saves your streak on a day you miss.",
+  "@streakFreezeExplanation": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "streakDayActive": "Active",
+  "streakDayFrozen": "Saved by a freeze",
+  "streakDayPending": "Still open",
+  "streakDayMissed": "Missed",
+  "settingsStreakReminderTitle": "Streak reminder",
+  "settingsStreakReminderHint": "Only on days your streak is at risk",
+  "reminderStreakChannel": "Streak reminders",
+  "reminderStreakKeepTitle": "Keep your streak",
+  "reminderStreakKeepBody": "{count, plural, one{Practice a few words today to keep your {count}-day streak.} other{Practice a few words today to keep your {count}-day streak.}}",
+  "@reminderStreakKeepBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderStreakLookAroundTitle": "Look around",
+  "reminderStreakLookAroundBody": "See something you can't name yet? Add it as a new word.",
+  "reminderStreakQuickRoundTitle": "Quick round?",
+  "reminderStreakQuickRoundBody": "{count, plural, one{One short practice round keeps your streak going.} other{One short practice round keeps your {count} days going.}}",
+  "@reminderStreakQuickRoundBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderStreakNearbyTitle": "A new word nearby?",
+  "reminderStreakNearbyBody": "Pick one thing around you and learn what it's called.",
+  "reminderStreakInARowTitle": "{count, plural, one{{count} day in a row} other{{count} days in a row}}",
+  "@reminderStreakInARowTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderStreakInARowBody": "Don't stop now. Add or practice a word today."
 }

@@ -786,4 +786,130 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsDeleteAccountOfflineMessage =>
       'Zum Löschen deines Kontos brauchst du eine Internetverbindung.';
+
+  @override
+  String streakTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Tage in Folge',
+      one: '$count Tag in Folge',
+      zero: 'Noch keine Serie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get streakStartMessage => 'Übe oder füge ein Wort hinzu, um eine Serie zu starten.';
+
+  @override
+  String get streakDoneMessage => 'Für heute erledigt. Bis morgen!';
+
+  @override
+  String get streakPendingMessage =>
+      'Übe heute oder füge ein Wort hinzu, um deine Serie zu halten.';
+
+  @override
+  String get streakLongestLabel => 'Längste Serie';
+
+  @override
+  String streakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Tage',
+      one: '$count Tag',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get streakFreezesLabel => 'Serienschutz';
+
+  @override
+  String streakFreezesValue(int count, int max) {
+    return '$count von $max';
+  }
+
+  @override
+  String streakFreezeExplanation(int days, int max) {
+    return 'Alle $days aktiven Tage in Folge bekommst du einen Serienschutz (max. $max). Er rettet deine Serie an einem verpassten Tag.';
+  }
+
+  @override
+  String get streakDayActive => 'Aktiv';
+
+  @override
+  String get streakDayFrozen => 'Durch Serienschutz gerettet';
+
+  @override
+  String get streakDayPending => 'Noch offen';
+
+  @override
+  String get streakDayMissed => 'Verpasst';
+
+  @override
+  String get settingsStreakReminderTitle => 'Erinnerung an die Serie';
+
+  @override
+  String get settingsStreakReminderHint => 'Nur an Tagen, an denen deine Serie in Gefahr ist';
+
+  @override
+  String get reminderStreakChannel => 'Erinnerungen an die Serie';
+
+  @override
+  String get reminderStreakKeepTitle => 'Halte deine Serie';
+
+  @override
+  String reminderStreakKeepBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Übe heute ein paar Wörter, um deine Serie von $count Tagen zu halten.',
+      one: 'Übe heute ein paar Wörter, um deine Serie von $count Tag zu halten.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakLookAroundTitle => 'Schau dich um';
+
+  @override
+  String get reminderStreakLookAroundBody =>
+      'Siehst du etwas, das du noch nicht benennen kannst? Füge es als neues Wort hinzu.';
+
+  @override
+  String get reminderStreakQuickRoundTitle => 'Kurze Runde?';
+
+  @override
+  String reminderStreakQuickRoundBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Eine kurze Übungsrunde hält deine $count Tage am Leben.',
+      one: 'Eine kurze Übungsrunde hält deine Serie am Leben.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakNearbyTitle => 'Ein neues Wort in der Nähe?';
+
+  @override
+  String get reminderStreakNearbyBody =>
+      'Such dir etwas in deiner Umgebung aus und lerne, wie es heißt.';
+
+  @override
+  String reminderStreakInARowTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Tage in Folge',
+      one: '$count Tag in Folge',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderStreakInARowBody => 'Hör jetzt nicht auf. Übe heute oder füge ein Wort hinzu.';
 }

@@ -117,7 +117,7 @@ extension LocalBackupTagMappers on LocalBackupTag {
 
 extension LocalActivityBackupMappers on LocalActivity {
   LocalBackupActivity toLocalBackupActivity() =>
-      LocalBackupActivity(localDate: localDate, type: type);
+      LocalBackupActivity(localDate: localDate, practicedCount: practicedCount);
 }
 
 extension LocalBackupActivityMappers on LocalBackupActivity {
@@ -126,9 +126,9 @@ extension LocalBackupActivityMappers on LocalBackupActivity {
   }) {
     return LocalActivity(
       id: id,
-      type: type,
       localDate: localDate,
-      occurredAt: DateTime.parse(localDate).toUtc(),
+      deviceId: null,
+      practicedCount: practicedCount ?? 0,
     );
   }
 }

@@ -11,7 +11,7 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
 import 'package:shared/presentation/localization/generated/app_localizations.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
-import 'package:shared/presentation/reminders/practice_reminder_cubit.dart';
+import 'package:shared/presentation/reminders/reminder_cubit.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 
 import 'package:vocabualize/src/di/service_locator.dart';
@@ -37,7 +37,7 @@ class const App({
         BlocProvider(create: (_) => sl<LanguagePairCubit>()..start()),
         BlocProvider(create: (_) => sl<ConnectivityCubit>()..start()),
         BlocProvider(create: (_) => sl<PreferencesCubit>()..start()),
-        BlocProvider(lazy: false, create: (_) => sl<PracticeReminderCubit>()..start()),
+        BlocProvider(lazy: false, create: (_) => sl<ReminderCubit>()..start()),
       ],
       child: MaterialApp.router(
         routerConfig: sl<NavigationRouter>().config,

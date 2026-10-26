@@ -1,4 +1,5 @@
 import 'package:core/error/app_result.dart';
+import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/reminder_notification.dart';
 
 abstract class ReminderRepository {
@@ -6,5 +7,8 @@ abstract class ReminderRepository {
 
   Future<AppResult<bool>> requestNotificationPermission();
 
-  Future<AppResult<()>> schedulePracticeReminders(List<ReminderNotification> reminders);
+  Future<AppResult<()>> scheduleReminders(
+    ReminderKind kind,
+    List<ReminderNotification> reminders,
+  );
 }
