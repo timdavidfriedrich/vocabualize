@@ -1,7 +1,7 @@
 import 'package:core/error/app_result.dart';
+import 'package:feature_scan/data/data_sources/image_labeling_remote_data_source.dart';
 import 'package:feature_scan/domain/repositories/image_labeling_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared/data/data_sources/image_labeling_remote_data_source.dart';
 import 'package:shared/data/data_sources/image_processing_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/mappers/language_mappers.dart';

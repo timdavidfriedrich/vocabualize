@@ -9,6 +9,7 @@ dependencies:
     sdk: flutter
   core:
   shared:
+  vocabualize_client:
   flutter_bloc: ^9.1.1
   injectable: ^3.0.0
   dart_mappable: ^4.10.0

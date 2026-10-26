@@ -6,30 +6,38 @@
 
 import 'dart:async' as _i687;
 
+import 'package:feature_scan/data/data_sources/image_labeling_remote_data_source.dart'
+    as _i892;
 import 'package:feature_scan/data/repositories/image_labeling_repository_impl.dart'
     as _i345;
 import 'package:feature_scan/domain/repositories/image_labeling_repository.dart'
     as _i901;
 import 'package:feature_scan/presentation/scan_bloc.dart' as _i710;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:shared/data/data_sources/image_labeling_remote_data_source.dart'
-    as _i282;
 import 'package:shared/data/data_sources/image_processing_data_source.dart'
     as _i179;
+import 'package:shared/data/data_sources/service_access_data_source.dart'
+    as _i228;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/connectivity_repository.dart'
     as _i689;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
+import 'package:vocabualize_client/vocabualize_client.dart' as _i1040;
 
 class FeatureScanPackageModule extends _i526.MicroPackageModule {
 // initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
+    gh.factory<_i892.ImageLabelingRemoteDataSource>(
+        () => _i892.ImageLabelingRemoteDataSourceImpl(
+              gh<_i1040.Client>(),
+              gh<_i228.ServiceAccessDataSource>(),
+            ));
     gh.factory<_i901.ImageLabelingRepository>(
         () => _i345.ImageLabelingRepositoryImpl(
               gh<_i179.ImageProcessingDataSource>(),
-              gh<_i282.ImageLabelingRemoteDataSource>(),
+              gh<_i892.ImageLabelingRemoteDataSource>(),
             ));
     gh.factory<_i710.ScanBloc>(() => _i710.ScanBloc(
           gh<_i204.ImageRepository>(),

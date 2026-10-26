@@ -29,8 +29,6 @@ import 'package:shared/data/data_sources/database_session_data_source.dart'
 import 'package:shared/data/data_sources/external_link_data_source.dart'
     as _i515;
 import 'package:shared/data/data_sources/image_file_data_source.dart' as _i532;
-import 'package:shared/data/data_sources/image_labeling_remote_data_source.dart'
-    as _i282;
 import 'package:shared/data/data_sources/image_processing_data_source.dart'
     as _i179;
 import 'package:shared/data/data_sources/image_sync_data_source.dart' as _i61;
@@ -205,11 +203,6 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i689.ConnectivityRepository>(),
           gh<_i328.AppInfoRepository>(),
         ));
-    gh.factory<_i282.ImageLabelingRemoteDataSource>(
-        () => _i282.ImageLabelingRemoteDataSourceImpl(
-              gh<_i1040.Client>(),
-              gh<_i228.ServiceAccessDataSource>(),
-            ));
     gh.factory<_i317.StockImageRemoteDataSource>(
         () => _i317.StockImageRemoteDataSourceImpl(
               gh<_i1040.Client>(),
