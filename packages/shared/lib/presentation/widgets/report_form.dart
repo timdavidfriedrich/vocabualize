@@ -45,6 +45,7 @@ class const ReportForm({
                     textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(hintText: _fieldHint),
                   ),
+                  const SizedBox(height: Spacing.m),
                   Text(
                     context.s.reportFeedbackContextHint,
                     style: context.t.bodySmall?.copyWith(color: context.c.onSurfaceVariant),
