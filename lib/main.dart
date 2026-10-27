@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:feature_gate/presentation/gate/gate_cubit.dart';
 import 'package:feature_gate/presentation/gate/gate_overlay.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
@@ -41,7 +42,10 @@ class const App({
       ],
       child: MaterialApp.router(
         routerConfig: sl<NavigationRouter>().config,
-        builder: (context, child) => GateOverlay(child: child ?? const SizedBox.shrink()),
+        builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light,
+          child: GateOverlay(child: child ?? const SizedBox.shrink()),
+        ),
         onGenerateTitle: (context) => context.s.appTitle,
         theme: AppTheme.dark,
         localizationsDelegates: const [

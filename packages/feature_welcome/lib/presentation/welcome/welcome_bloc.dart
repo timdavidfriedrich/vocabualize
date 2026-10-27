@@ -17,7 +17,7 @@ class WelcomeBloc extends Bloc<WelcomeEvent, WelcomeState> {
   final AccountRepository _accountRepository;
 
   Future<void> _onLocalUseChosen(WelcomeLocalUseChosen event, Emitter<WelcomeState> emit) async {
-    emit(const WelcomeBusy());
+    emit(const WelcomeBusy(isSigningIn: false));
     emit(switch (await _accountRepository.continueWithoutAccount()) {
       Success() => const WelcomeIdle(),
       Failure(:final error) => WelcomeFailure(error: error),
@@ -28,7 +28,7 @@ class WelcomeBloc extends Bloc<WelcomeEvent, WelcomeState> {
     WelcomeGoogleSignInChosen event,
     Emitter<WelcomeState> emit,
   ) async {
-    emit(const WelcomeBusy());
+    emit(const WelcomeBusy(isSigningIn: true));
     emit(switch (await _accountRepository.signInWithGoogle()) {
       Success(data: SignedIn()) => const WelcomeIdle(),
       Success(data: final AccountConflict conflict) => WelcomeAccountConflict(conflict: conflict),
@@ -40,7 +40,7 @@ class WelcomeBloc extends Bloc<WelcomeEvent, WelcomeState> {
     WelcomeAccountConflictResolved event,
     Emitter<WelcomeState> emit,
   ) async {
-    emit(const WelcomeBusy());
+    emit(const WelcomeBusy(isSigningIn: true));
     final result = await _accountRepository.resolveAccountConflict(
       keepsPreviousAccount: event.keepsPreviousAccount,
     );

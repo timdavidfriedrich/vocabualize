@@ -13,7 +13,9 @@ sealed class WelcomeState with WelcomeStateMappable {
 class const WelcomeIdle() extends WelcomeState with WelcomeIdleMappable;
 
 @MappableClass()
-class const WelcomeBusy() extends WelcomeState with WelcomeBusyMappable;
+class const WelcomeBusy({
+  required final bool isSigningIn,
+}) extends WelcomeState with WelcomeBusyMappable;
 
 @MappableClass()
 class const WelcomeAccountConflict({

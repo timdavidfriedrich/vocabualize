@@ -178,11 +178,19 @@ class WelcomeBusyMapper extends ClassMapperBase<WelcomeBusy> {
   @override
   final String id = 'WelcomeBusy';
 
+  static bool _$isSigningIn(WelcomeBusy v) => v.isSigningIn;
+  static const Field<WelcomeBusy, bool> _f$isSigningIn = Field(
+    'isSigningIn',
+    _$isSigningIn,
+  );
+
   @override
-  final MappableFields<WelcomeBusy> fields = const {};
+  final MappableFields<WelcomeBusy> fields = const {
+    #isSigningIn: _f$isSigningIn,
+  };
 
   static WelcomeBusy _instantiate(DecodingData data) {
-    return WelcomeBusy();
+    return WelcomeBusy(isSigningIn: data.dec(_f$isSigningIn));
   }
 
   @override
@@ -246,7 +254,7 @@ extension WelcomeBusyValueCopy<$R, $Out>
 abstract class WelcomeBusyCopyWith<$R, $In extends WelcomeBusy, $Out>
     implements WelcomeStateCopyWith<$R, $In, $Out> {
   @override
-  $R call();
+  $R call({bool? isSigningIn});
   WelcomeBusyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -259,9 +267,12 @@ class _WelcomeBusyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<WelcomeBusy> $mapper =
       WelcomeBusyMapper.ensureInitialized();
   @override
-  $R call() => $apply(FieldCopyWithData({}));
+  $R call({bool? isSigningIn}) => $apply(
+    FieldCopyWithData({if (isSigningIn != null) #isSigningIn: isSigningIn}),
+  );
   @override
-  WelcomeBusy $make(CopyWithData data) => WelcomeBusy();
+  WelcomeBusy $make(CopyWithData data) =>
+      WelcomeBusy(isSigningIn: data.get(#isSigningIn, or: $value.isSigningIn));
 
   @override
   WelcomeBusyCopyWith<$R2, WelcomeBusy, $Out2> $chain<$R2, $Out2>(
