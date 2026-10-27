@@ -1014,11 +1014,41 @@ abstract class AppLocalizations {
   /// **'All done for now'**
   String get homeAllDoneMessage;
 
-  /// No description provided for @homeTotalWordsMessage.
+  /// No description provided for @homeStatusFirstWordMessage.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, one{{count} word in total} other{{count} words in total}}'**
-  String homeTotalWordsMessage(int count);
+  /// **'You added your first word! Add some more and hit “Practice”! :)'**
+  String get homeStatusFirstWordMessage;
+
+  /// No description provided for @homeStatusEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Why don’t you add some new words? :)'**
+  String get homeStatusEmptyMessage;
+
+  /// No description provided for @homeStatusOnlyOneWordMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your collection contains only one word. It’s feeling lonely. Add some more! :)'**
+  String get homeStatusOnlyOneWordMessage;
+
+  /// No description provided for @homeStatusAddedTodayMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Wow, you already added {count} word today. Keep it up!} other{Wow, you already added {count} words today. Keep it up!}}'**
+  String homeStatusAddedTodayMessage(int count);
+
+  /// No description provided for @homeStatusManyWordsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Damn, you added {count} word in total. Not bad!} other{Damn, you added {count} words in total. Not bad!}}'**
+  String homeStatusManyWordsMessage(int count);
+
+  /// No description provided for @homeStatusDefaultMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Your collection contains {count} word.} other{Your collection contains {count} words.}}'**
+  String homeStatusDefaultMessage(int count);
 
   /// No description provided for @homeNextDueTodayMessage.
   ///

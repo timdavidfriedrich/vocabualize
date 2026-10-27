@@ -126,23 +126,32 @@ class const VocabularyLocalDataSourceImpl(
       empty: LocalVocabularyOverview(
         totalCount: 0,
         dueCount: 0,
+        addedTodayCount: 0,
         nextDueAt: null,
         countsByLevelFloor: {for (final floor in levelFloors) floor: 0},
       ),
       query: (session, now) async {
         final scope = await _scope(session, tagId);
+        final today = now.toLocal();
+        final startOfToday = DateTime(today.year, today.month, today.day).toUtc();
+        final startOfTomorrow = DateTime(today.year, today.month, today.day + 1).toUtc();
         final nextDue = await LocalVocabulary.db.findFirstRow(
           session,
           where: (t) => _within(t, t.nextReviewAt > now, scope),
           orderBy: (t) => t.nextReviewAt.asc(),
         );
+        final nextDueAt = nextDue?.nextReviewAt;
         final overview = LocalVocabularyOverview(
           totalCount: await LocalVocabulary.db.count(session, where: _onlyIn(scope)),
           dueCount: await LocalVocabulary.db.count(
             session,
             where: (t) => _within(t, t.nextReviewAt <= now, scope),
           ),
-          nextDueAt: nextDue?.nextReviewAt,
+          addedTodayCount: await LocalVocabulary.db.count(
+            session,
+            where: (t) => _within(t, t.createdAt >= startOfToday, scope),
+          ),
+          nextDueAt: nextDueAt,
           countsByLevelFloor: {
             for (final (index, floor) in levelFloors.indexed)
               floor: await LocalVocabulary.db.count(
@@ -159,7 +168,12 @@ class const VocabularyLocalDataSourceImpl(
               ),
           },
         );
-        return (value: overview, validUntil: nextDue?.nextReviewAt);
+        return (
+          value: overview,
+          validUntil: nextDueAt != null && nextDueAt.isBefore(startOfTomorrow)
+              ? nextDueAt
+              : startOfTomorrow,
+        );
       },
     );
   }

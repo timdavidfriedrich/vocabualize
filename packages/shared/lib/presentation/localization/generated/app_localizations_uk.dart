@@ -548,14 +548,51 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homeAllDoneMessage => 'Поки що все готово';
 
   @override
-  String homeTotalWordsMessage(int count) {
+  String get homeStatusFirstWordMessage =>
+      'Ви додали своє перше слово! Додайте ще й натисніть «Тренуватися»! :)';
+
+  @override
+  String get homeStatusEmptyMessage => 'Чому б не додати кілька нових слів? :)';
+
+  @override
+  String get homeStatusOnlyOneWordMessage =>
+      'Ваша колекція містить лише одне слово. Воно почувається самотнім. Додайте ще! :)';
+
+  @override
+  String homeStatusAddedTodayMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Усього $count слова',
-      many: 'Усього $count слів',
-      few: 'Усього $count слова',
-      one: 'Усього $count слово',
+      other: 'Вау, сьогодні ви вже додали $count слова. Так тримати!',
+      many: 'Вау, сьогодні ви вже додали $count слів. Так тримати!',
+      few: 'Вау, сьогодні ви вже додали $count слова. Так тримати!',
+      one: 'Вау, сьогодні ви вже додали $count слово. Так тримати!',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeStatusManyWordsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Вау, ви додали $count слова загалом. Непогано!',
+      many: 'Вау, ви додали $count слів загалом. Непогано!',
+      few: 'Вау, ви додали $count слова загалом. Непогано!',
+      one: 'Вау, ви додали $count слово загалом. Непогано!',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeStatusDefaultMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ваша колекція містить $count слова.',
+      many: 'Ваша колекція містить $count слів.',
+      few: 'Ваша колекція містить $count слова.',
+      one: 'Ваша колекція містить $count слово.',
     );
     return '$_temp0';
   }

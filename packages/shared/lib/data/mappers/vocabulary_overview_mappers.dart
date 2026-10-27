@@ -7,6 +7,7 @@ extension LocalVocabularyOverviewMappers on LocalVocabularyOverview {
     return VocabularyOverview(
       totalCount: totalCount,
       dueCount: dueCount,
+      addedTodayCount: addedTodayCount,
       nextDueAt: nextDueAt?.toUtc(),
       noviceCount: _countOf(VocabularyLevel.novice),
       beginnerCount: _countOf(VocabularyLevel.beginner),

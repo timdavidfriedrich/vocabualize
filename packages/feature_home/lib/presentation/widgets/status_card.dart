@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
@@ -9,6 +11,8 @@ import 'package:shared/presentation/extensions/vocabulary_level_extensions.dart'
 import 'package:shared/presentation/widgets/practice_button.dart';
 
 const _shownLevels = [VocabularyLevel.beginner, VocabularyLevel.advanced, VocabularyLevel.expert];
+const _manyAddedToday = 3;
+const _manyWordsInTotal = 10;
 
 class const StatusCard({
   super.key,
@@ -25,10 +29,11 @@ class const StatusCard({
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(_cheer(context), style: context.t.bodyLarge),
+          const SizedBox(height: Spacing.xxs),
           Text(
-            _message(context),
-            style: context.t.bodyLarge,
-            textAlign: TextAlign.left,
+            _facts(context),
+            style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
           ),
           const SizedBox(height: Spacing.xl),
           Row(
@@ -43,23 +48,27 @@ class const StatusCard({
     );
   }
 
-  String _message(BuildContext context) {
-    final (:fact, :detail) = switch (_overview) {
-      VocabularyOverview(:final dueCount, :final totalCount) when dueCount > 0 => (
-        fact: context.s.homeDueMessage(dueCount),
-        detail: context.s.homeTotalWordsMessage(totalCount),
-      ),
-      VocabularyOverview(nextDueAt: final nextDueAt?) => (
-        fact: context.s.homeAllDoneMessage,
-        detail: nextDueAt.toNextDueLabel(context),
-      ),
-      VocabularyOverview(:final totalCount) => (
-        fact: context.s.homeAllDoneMessage,
-        detail: context.s.homeTotalWordsMessage(totalCount),
-      ),
-    };
-    return "$fact\n$detail";
+  String _cheer(BuildContext context) {
+    final VocabularyOverview(:totalCount, :addedTodayCount) = _overview;
+    if (totalCount == 0) return context.s.homeStatusEmptyMessage;
+    if (totalCount == 1 && addedTodayCount == 1) return context.s.homeStatusFirstWordMessage;
+    final messages = [
+      if (addedTodayCount >= _manyAddedToday)
+        context.s.homeStatusAddedTodayMessage(addedTodayCount),
+      if (totalCount >= _manyWordsInTotal) context.s.homeStatusManyWordsMessage(totalCount),
+      if (totalCount == 1) context.s.homeStatusOnlyOneWordMessage,
+      context.s.homeStatusDefaultMessage(totalCount),
+    ];
+    final seed = Object.hash(totalCount, addedTodayCount, DateUtils.dateOnly(DateTime.now()));
+    return messages[Random(seed).nextInt(messages.length)];
   }
+
+  String _facts(BuildContext context) => switch (_overview) {
+    VocabularyOverview(:final dueCount) when dueCount > 0 => context.s.homeDueMessage(dueCount),
+    VocabularyOverview(nextDueAt: final nextDueAt?) =>
+      "${context.s.homeAllDoneMessage}\n${nextDueAt.toNextDueLabel(context)}",
+    VocabularyOverview() => context.s.homeAllDoneMessage,
+  };
 }
 
 class const _LevelStatistics({

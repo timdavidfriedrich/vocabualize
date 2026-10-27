@@ -32,6 +32,11 @@ class VocabularyOverviewMapper extends ClassMapperBase<VocabularyOverview> {
     'dueCount',
     _$dueCount,
   );
+  static int _$addedTodayCount(VocabularyOverview v) => v.addedTodayCount;
+  static const Field<VocabularyOverview, int> _f$addedTodayCount = Field(
+    'addedTodayCount',
+    _$addedTodayCount,
+  );
   static DateTime? _$nextDueAt(VocabularyOverview v) => v.nextDueAt;
   static const Field<VocabularyOverview, DateTime> _f$nextDueAt = Field(
     'nextDueAt',
@@ -62,6 +67,7 @@ class VocabularyOverviewMapper extends ClassMapperBase<VocabularyOverview> {
   final MappableFields<VocabularyOverview> fields = const {
     #totalCount: _f$totalCount,
     #dueCount: _f$dueCount,
+    #addedTodayCount: _f$addedTodayCount,
     #nextDueAt: _f$nextDueAt,
     #noviceCount: _f$noviceCount,
     #beginnerCount: _f$beginnerCount,
@@ -73,6 +79,7 @@ class VocabularyOverviewMapper extends ClassMapperBase<VocabularyOverview> {
     return VocabularyOverview(
       totalCount: data.dec(_f$totalCount),
       dueCount: data.dec(_f$dueCount),
+      addedTodayCount: data.dec(_f$addedTodayCount),
       nextDueAt: data.dec(_f$nextDueAt),
       noviceCount: data.dec(_f$noviceCount),
       beginnerCount: data.dec(_f$beginnerCount),
@@ -155,6 +162,7 @@ abstract class VocabularyOverviewCopyWith<
   $R call({
     int? totalCount,
     int? dueCount,
+    int? addedTodayCount,
     DateTime? nextDueAt,
     int? noviceCount,
     int? beginnerCount,
@@ -178,6 +186,7 @@ class _VocabularyOverviewCopyWithImpl<$R, $Out>
   $R call({
     int? totalCount,
     int? dueCount,
+    int? addedTodayCount,
     Object? nextDueAt = $none,
     int? noviceCount,
     int? beginnerCount,
@@ -187,6 +196,7 @@ class _VocabularyOverviewCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (totalCount != null) #totalCount: totalCount,
       if (dueCount != null) #dueCount: dueCount,
+      if (addedTodayCount != null) #addedTodayCount: addedTodayCount,
       if (nextDueAt != $none) #nextDueAt: nextDueAt,
       if (noviceCount != null) #noviceCount: noviceCount,
       if (beginnerCount != null) #beginnerCount: beginnerCount,
@@ -198,6 +208,7 @@ class _VocabularyOverviewCopyWithImpl<$R, $Out>
   VocabularyOverview $make(CopyWithData data) => VocabularyOverview(
     totalCount: data.get(#totalCount, or: $value.totalCount),
     dueCount: data.get(#dueCount, or: $value.dueCount),
+    addedTodayCount: data.get(#addedTodayCount, or: $value.addedTodayCount),
     nextDueAt: data.get(#nextDueAt, or: $value.nextDueAt),
     noviceCount: data.get(#noviceCount, or: $value.noviceCount),
     beginnerCount: data.get(#beginnerCount, or: $value.beginnerCount),

@@ -538,12 +538,45 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeAllDoneMessage => 'Todo listo por ahora';
 
   @override
-  String homeTotalWordsMessage(int count) {
+  String get homeStatusFirstWordMessage =>
+      '¡Has añadido tu primera palabra! Añade algunas más y pulsa «Practicar». :)';
+
+  @override
+  String get homeStatusEmptyMessage => '¿Por qué no añades algunas palabras nuevas? :)';
+
+  @override
+  String get homeStatusOnlyOneWordMessage =>
+      'Tu colección contiene solo una palabra. Se siente sola. ¡Añade alguna más! :)';
+
+  @override
+  String homeStatusAddedTodayMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count palabras en total',
-      one: '$count palabra en total',
+      other: '¡Vaya, hoy ya has añadido $count palabras! ¡Sigue así!',
+      one: '¡Vaya, hoy ya has añadido $count palabra! ¡Sigue así!',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeStatusManyWordsMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '¡Vaya, has añadido $count palabras en total! ¡No está mal!',
+      one: '¡Vaya, has añadido $count palabra en total! ¡No está mal!',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeStatusDefaultMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tu colección contiene $count palabras.',
+      one: 'Tu colección contiene $count palabra.',
     );
     return '$_temp0';
   }
