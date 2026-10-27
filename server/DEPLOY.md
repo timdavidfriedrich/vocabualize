@@ -54,4 +54,5 @@ Deploy the server before releasing an app build that needs it. A change to a syn
 
 - `vocabualize_server/production/app_config.yaml` is read on every request, so edits apply immediately. Its folder is mounted, not the file, so editors and `sed -i` that replace the file work too. The storage connection in `imageStorage.*` is the exception: it is read at boot and needs a restart (`imageStorage.maxPhotosPerAccount` applies immediately). Commit every edit back to the repository.
 - Insights (8081) stays out of Caddy. Reach it over Tailscale.
+- A nightly cleanup runs at 03:00 UTC inside the server (Serverpod future call `nightly-cleanup`, scheduled on every start, never duplicated). It deletes stored photos no word points to that were uploaded more than 30 days ago (file first, row only if the file is gone), anonymous installs unused for more than 31 days with their quota rows, expired quota rows, and reports older than a year. It logs one line: `Nightly cleanup deleted ...`.
 - Never run `docker compose down -v`: it deletes the database and image volumes.

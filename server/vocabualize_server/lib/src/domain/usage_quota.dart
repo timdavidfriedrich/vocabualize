@@ -79,6 +79,14 @@ class const UsageQuota() {
     });
   }
 
+  Future<int> deleteExpired(Session session) async {
+    final deleted = await ServiceUsage.db.deleteWhere(
+      session,
+      where: (t) => t.createdAt < _retainedSince(DateTime.now().toUtc()),
+    );
+    return deleted.length;
+  }
+
   Future<void> complete(Session session, int usageId) => _setStatus(session, usageId, _completed);
 
   Future<void> release(Session session, int usageId) => _setStatus(session, usageId, _failed);

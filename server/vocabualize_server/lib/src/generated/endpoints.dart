@@ -15,6 +15,7 @@ import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart' as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _iais;
 import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart' as _izehhkf5;
+import 'package:vocabualize_server/src/generated/future_calls.dart' as _iis4ehhy;
 import 'package:vocabualize_server/src/generated/installs/remote_install_key.dart' as _igfchjtu;
 import 'package:vocabualize_server/src/generated/reports/remote_report_context.dart' as _ivmefvxj;
 import '../auth/google_idp_endpoint.dart' as _i71axiz0;
@@ -27,6 +28,7 @@ import '../endpoints/install_endpoint.dart' as _i56926ur;
 import '../endpoints/report_endpoint.dart' as _i90z2r7i;
 import '../endpoints/stock_image_endpoint.dart' as _i0xgajvz;
 import '../endpoints/translation_endpoint.dart' as _i8dzvdiu;
+export 'future_calls.dart' show ServerpodFutureCallsGetter;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -563,5 +565,10 @@ class Endpoints extends _is.EndpointDispatch {
     modules['serverpod_auth_idp'] = _iais.Endpoints()..initializeEndpoints(server);
     modules['serverpod_offline_sync'] = _izehhkf5.Endpoints()..initializeEndpoints(server);
     modules['serverpod_auth_core'] = _iacs.Endpoints()..initializeEndpoints(server);
+  }
+
+  @override
+  _is.FutureCallDispatch? get futureCalls {
+    return _iis4ehhy.FutureCalls();
   }
 }

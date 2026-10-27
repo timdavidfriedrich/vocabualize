@@ -112,12 +112,18 @@ class const ImageStorage() {
 
   Future<void> deleteFiles(Session session, List<StoredImage> images) async {
     for (final image in images) {
-      final key = _key(image.authUserId, image.imageId, image.variant);
-      try {
-        await session.storage.deleteFile(storageId: imageStorageId, path: key);
-      } on Object catch (error) {
-        session.log("Deleting image $key failed: $error", level: LogLevel.warning);
-      }
+      await deleteFile(session, image);
+    }
+  }
+
+  Future<bool> deleteFile(Session session, StoredImage image) async {
+    final key = _key(image.authUserId, image.imageId, image.variant);
+    try {
+      await session.storage.deleteFile(storageId: imageStorageId, path: key);
+      return true;
+    } on Object catch (error) {
+      session.log("Deleting image $key failed: $error", level: LogLevel.warning);
+      return false;
     }
   }
 

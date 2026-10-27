@@ -17,6 +17,7 @@ import 'endpoints.dart' as _iavctuc6;
 import 'protocol.dart' as _il2as5qe;
 import 'sync_tables.dart' as _ii3f3u05;
 export 'package:serverpod/serverpod.dart' hide Serverpod;
+export 'future_calls.dart' show ServerpodFutureCallsGetter;
 
 /// The Serverpod server for this project.
 ///

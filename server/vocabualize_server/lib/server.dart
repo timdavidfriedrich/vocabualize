@@ -5,6 +5,10 @@ import 'src/composition.dart';
 import 'src/domain/config_source.dart';
 import 'src/generated/serverpod.dart';
 
+const _nightlyCleanupId = "nightly-cleanup";
+// * 03:00 UTC is the middle of the night in Europe, where the app's users are
+const _nightlyCleanupSchedule = "0 3 * * *";
+
 List<IdentityProviderBuilder> _identityProviders(Serverpod pod) {
   final hasGoogle = pod.getPassword("googleClientSecret") != null;
   if (pod.runMode == ServerpodRunMode.production && !hasGoogle) {
@@ -28,4 +32,14 @@ void run(List<String> args) async {
   pod.addCloudStorage(DatabaseCloudStorage("public"));
   pod.addCloudStorage(DatabaseCloudStorage("private"));
   await pod.start();
+  await _scheduleNightlyCleanup(pod);
+}
+
+Future<void> _scheduleNightlyCleanup(Serverpod pod) async {
+  await pod.futureCalls.cancel(_nightlyCleanupId);
+  await pod.futureCalls
+      .callRecurring(identifier: _nightlyCleanupId)
+      .cron(_nightlyCleanupSchedule)
+      .nightlyCleanup
+      .run();
 }
