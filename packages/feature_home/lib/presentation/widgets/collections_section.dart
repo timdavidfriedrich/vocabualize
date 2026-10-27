@@ -11,7 +11,6 @@ import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 const _cardWidth = Spacing.xxxxl * 2;
 const _secondRowThreshold = 8;
 const _gridColumns = 2;
-const _emptyCellOpacity = 0.4;
 
 class const CollectionsSection({
   super.key,
@@ -104,7 +103,7 @@ class const _CollectionCardContent({
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(Spacing.radiusM),
                 child: ColoredBox(
-                  color: context.c.surface.withValues(alpha: _emptyCellOpacity),
+                  color: context.c.surfaceContainerLowest,
                   child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
