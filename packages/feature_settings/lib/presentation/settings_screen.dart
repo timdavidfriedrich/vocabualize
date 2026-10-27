@@ -27,8 +27,6 @@ import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/google_logo.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 
-const _feedbackBackgroundOpacity = 0.1;
-
 class const SettingsScreen({
   super.key,
 }) extends StatelessWidget {
@@ -169,9 +167,11 @@ class const _FeedbackButton() extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
       style: OutlinedButton.styleFrom(
-        backgroundColor: context.c.onSurface.withValues(alpha: _feedbackBackgroundOpacity),
-        padding: const EdgeInsets.symmetric(horizontal: Spacing.m, vertical: Spacing.xs),
+        foregroundColor: context.c.onSurfaceVariant,
+        side: BorderSide(color: context.c.outlineVariant),
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.s, vertical: Spacing.xxs),
         minimumSize: Size.zero,
+        textStyle: context.t.labelMedium,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(Spacing.radiusS)),
         ),
