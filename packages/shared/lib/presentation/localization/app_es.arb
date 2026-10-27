@@ -237,5 +237,7 @@
   "reminderStreakNearbyTitle": "¿Una palabra nueva cerca?",
   "reminderStreakNearbyBody": "Elige algo a tu alrededor y aprende cómo se llama.",
   "reminderStreakInARowTitle": "{count, plural, one{{count} día seguido} other{{count} días seguidos}}",
-  "reminderStreakInARowBody": "No pares ahora. Practica o añade una palabra hoy."
+  "reminderStreakInARowBody": "No pares ahora. Practica o añade una palabra hoy.",
+  "settingsPrivacyPolicyButton": "Política de privacidad",
+  "scanReportSuggestionButton": "Informar de una sugerencia"
 }

@@ -237,5 +237,7 @@
   "reminderStreakNearbyTitle": "Un nouveau mot tout près ?",
   "reminderStreakNearbyBody": "Choisissez un objet autour de vous et apprenez comment il s'appelle.",
   "reminderStreakInARowTitle": "{count, plural, one{{count} jour d'affilée} other{{count} jours d'affilée}}",
-  "reminderStreakInARowBody": "Ne vous arrêtez pas maintenant. Révisez ou ajoutez un mot aujourd'hui."
+  "reminderStreakInARowBody": "Ne vous arrêtez pas maintenant. Révisez ou ajoutez un mot aujourd'hui.",
+  "settingsPrivacyPolicyButton": "Politique de confidentialité",
+  "scanReportSuggestionButton": "Signaler une suggestion"
 }

@@ -61,3 +61,9 @@ dart_defines*.json
 *.keystore
 *.pem
 key.properties
+
+# Fastlane
+fastlane/play-store-key.json
+fastlane/report.xml
+fastlane/README.md
+release-notes.md

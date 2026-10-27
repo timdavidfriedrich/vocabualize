@@ -919,4 +919,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get reminderStreakInARowBody =>
       'Ne vous arrêtez pas maintenant. Révisez ou ajoutez un mot aujourd\'hui.';
+
+  @override
+  String get settingsPrivacyPolicyButton => 'Politique de confidentialité';
+
+  @override
+  String get scanReportSuggestionButton => 'Signaler une suggestion';
 }

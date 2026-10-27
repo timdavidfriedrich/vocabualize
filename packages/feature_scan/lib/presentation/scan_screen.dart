@@ -89,6 +89,7 @@ class const _ReviewView({
             message: context.s.scanNoSuggestionsMessage,
           ),
           ScanSuggestionsLoaded(:final labels) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               for (final label in labels)
                 Padding(
@@ -102,6 +103,12 @@ class const _ReviewView({
                     onTap: () => _openDetails(context, word: label, photo: _photo),
                   ),
                 ),
+              TextButton.icon(
+                style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                onPressed: context.pushFeedback,
+                icon: const Icon(Icons.flag_rounded),
+                label: Text(context.s.scanReportSuggestionButton),
+              ),
             ],
           ),
           ScanSuggestionsOffline() => ConnectionRequiredNotice(

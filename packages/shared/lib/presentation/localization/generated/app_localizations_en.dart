@@ -897,4 +897,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reminderStreakInARowBody => 'Don\'t stop now. Add or practice a word today.';
+
+  @override
+  String get settingsPrivacyPolicyButton => 'Privacy policy';
+
+  @override
+  String get scanReportSuggestionButton => 'Report a suggestion';
 }

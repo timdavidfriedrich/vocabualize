@@ -1,3 +1,4 @@
+import 'package:core/config/build_config.dart';
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:feature_settings/presentation/settings_event.dart';
@@ -12,8 +13,13 @@ import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/app_info_repository.dart';
 import 'package:shared/domain/repositories/backup_repository.dart';
+import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/reminder_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
+
+const _germanLanguageCode = "de";
+const _privacyPolicyPath = "/privacy/";
+const _germanPrivacyPolicyPath = "/de/datenschutz/";
 
 @injectable
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
@@ -23,6 +29,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     this._settingsRepository,
     this._reminderRepository,
     this._appInfoRepository,
+    this._externalLinkRepository,
   ) : super(const SettingsLoading()) {
     on<SettingsStarted>(_onStarted);
     on<SettingsGoogleSignInRequested>(_onGoogleSignInRequested);
@@ -34,6 +41,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsReminderToggled>(_onReminderToggled);
     on<SettingsReminderTimeChanged>(_onReminderTimeChanged);
     on<SettingsNotificationSettingsOpened>(_onNotificationSettingsOpened);
+    on<SettingsPrivacyPolicyOpened>(_onPrivacyPolicyOpened);
     on<SettingsDeletionRequested>(_onDeletionRequested);
     on<SettingsBackupExportRequested>(_onBackupExportRequested);
     on<SettingsBackupImportRequested>(_onBackupImportRequested);
@@ -44,6 +52,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final SettingsRepository _settingsRepository;
   final ReminderRepository _reminderRepository;
   final AppInfoRepository _appInfoRepository;
+  final ExternalLinkRepository _externalLinkRepository;
 
   Future<void> _onStarted(SettingsStarted event, Emitter<SettingsState> emit) {
     return emit.forEach(
@@ -150,6 +159,16 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     SettingsNotificationSettingsOpened event,
     Emitter<SettingsState> emit,
   ) => _savePreference(emit, _appInfoRepository.openNotificationSettings);
+
+  Future<void> _onPrivacyPolicyOpened(
+    SettingsPrivacyPolicyOpened event,
+    Emitter<SettingsState> emit,
+  ) => _savePreference(
+    emit,
+    () => _externalLinkRepository.open(
+      "$websiteUrl${event.languageCode == _germanLanguageCode ? _germanPrivacyPolicyPath : _privacyPolicyPath}",
+    ),
+  );
 
   Future<DailyReminder> _currentReminder(ReminderKind kind) async {
     return switch (await _settingsRepository.readPreferences()) {

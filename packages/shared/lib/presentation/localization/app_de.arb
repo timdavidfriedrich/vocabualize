@@ -237,5 +237,7 @@
   "reminderStreakNearbyTitle": "Ein neues Wort in der Nähe?",
   "reminderStreakNearbyBody": "Such dir etwas in deiner Umgebung aus und lerne, wie es heißt.",
   "reminderStreakInARowTitle": "{count, plural, one{{count} Tag in Folge} other{{count} Tage in Folge}}",
-  "reminderStreakInARowBody": "Hör jetzt nicht auf. Übe heute oder füge ein Wort hinzu."
+  "reminderStreakInARowBody": "Hör jetzt nicht auf. Übe heute oder füge ein Wort hinzu.",
+  "settingsPrivacyPolicyButton": "Datenschutzerklärung",
+  "scanReportSuggestionButton": "Vorschlag melden"
 }

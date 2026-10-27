@@ -1,0 +1,219 @@
+name: build & release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "server/**"
+      - "website/**"
+      - "docs/**"
+      - "tool/**"
+      - "**/*.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-release
+  cancel-in-progress: false
+
+env:
+  LOCALES: "en-US de-DE es-ES fr-FR uk"
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Read Flutter version
+        id: flutter
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.flutter.outputs.version }}
+          channel: stable
+          cache: true
+      - name: Get dependencies
+        run: flutter pub get
+      - name: Analyze
+        run: flutter analyze lib packages
+
+  version:
+    name: Compute version
+    needs: analyze
+    runs-on: ubuntu-24.04
+    outputs:
+      version_name: ${{ steps.bump.outputs.version_name }}
+      version_code: ${{ steps.bump.outputs.version_code }}
+      tag: ${{ steps.bump.outputs.tag }}
+      should_upload: ${{ steps.bump.outputs.should_upload }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bump version
+        id: bump
+        run: bash scripts/bump-version.sh
+      - name: Upload release notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes
+          path: release-notes.md
+
+  build:
+    name: Build
+    needs: version
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Read Flutter version
+        id: flutter
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.flutter.outputs.version }}
+          channel: stable
+          cache: true
+      - name: Write production configuration
+        env:
+          DART_DEFINES_PRODUCTION: ${{ secrets.DART_DEFINES_PRODUCTION }}
+          SHOULD_UPLOAD: ${{ needs.version.outputs.should_upload }}
+        run: |
+          if [[ -n "$DART_DEFINES_PRODUCTION" ]]; then
+            printf '%s' "$DART_DEFINES_PRODUCTION" > dart_defines.production.json
+          elif [[ "$SHOULD_UPLOAD" == "true" ]]; then
+            echo "::error::A release needs the DART_DEFINES_PRODUCTION secret."
+            exit 1
+          else
+            echo "::warning::No DART_DEFINES_PRODUCTION secret. This build uses dart_defines.example.json and is only a compile check."
+            cp dart_defines.example.json dart_defines.production.json
+          fi
+      - name: Write signing configuration
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          SHOULD_UPLOAD: ${{ needs.version.outputs.should_upload }}
+        run: |
+          if [[ -z "$ANDROID_KEYSTORE_BASE64" ]]; then
+            if [[ "$SHOULD_UPLOAD" == "true" ]]; then
+              echo "::error::A release needs the upload key secrets."
+              exit 1
+            fi
+            echo "::warning::No upload key secrets. This build is signed with the debug key."
+            exit 0
+          fi
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > android/app/upload-keystore.jks
+          {
+            echo "storeFile=upload-keystore.jks"
+            echo "storePassword=$ANDROID_KEYSTORE_PASSWORD"
+            echo "keyAlias=$ANDROID_KEY_ALIAS"
+            echo "keyPassword=$ANDROID_KEY_PASSWORD"
+          } > android/key.properties
+      - name: Get dependencies
+        run: flutter pub get
+      - name: Build app bundle and APK
+        env:
+          VERSION_NAME: ${{ needs.version.outputs.version_name }}
+          VERSION_CODE: ${{ needs.version.outputs.version_code }}
+        run: |
+          for target in appbundle apk; do
+            flutter build "$target" --release \
+              --build-name="$VERSION_NAME" \
+              --build-number="$VERSION_CODE" \
+              --dart-define-from-file=dart_defines.production.json
+          done
+          mkdir -p dist
+          cp build/app/outputs/bundle/release/app-release.aab "dist/vocabualize-${VERSION_NAME}.aab"
+          cp build/app/outputs/flutter-apk/app-release.apk "dist/vocabualize-${VERSION_NAME}.apk"
+      - name: Upload builds
+        uses: actions/upload-artifact@v4
+        with:
+          name: vocabualize-android
+          path: dist/
+
+  deploy-internal:
+    name: Deploy to Google Play (internal)
+    needs: [version, build]
+    if: needs.version.outputs.should_upload == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download builds
+        uses: actions/download-artifact@v4
+        with:
+          name: vocabualize-android
+          path: dist/
+      - name: Download release notes
+        uses: actions/download-artifact@v4
+        with:
+          name: release-notes
+          path: .
+      - name: Prepare changelogs
+        env:
+          VERSION_CODE: ${{ needs.version.outputs.version_code }}
+        run: |
+          set -euo pipefail
+          for locale in $LOCALES; do
+            dir="fastlane/metadata/android/${locale}/changelogs"
+            if [[ -s "${dir}/next.txt" ]]; then
+              cp "${dir}/next.txt" "${dir}/${VERSION_CODE}.txt"
+              : > "${dir}/next.txt"
+            else
+              cp "${dir}/default.txt" "${dir}/${VERSION_CODE}.txt"
+            fi
+          done
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Write Play Store service account key
+        env:
+          GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+        run: printf '%s' "$GOOGLE_PLAY_JSON_KEY" > fastlane/play-store-key.json
+      - name: Upload to the internal track
+        env:
+          AAB_PATH: dist/vocabualize-${{ needs.version.outputs.version_name }}.aab
+          VERSION_CODE: ${{ needs.version.outputs.version_code }}
+        run: bundle exec fastlane internal
+      - name: Archive changelogs
+        env:
+          VERSION_CODE: ${{ needs.version.outputs.version_code }}
+          TAG: ${{ needs.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for locale in $LOCALES; do
+            git add "fastlane/metadata/android/${locale}/changelogs/"
+          done
+          if git diff --cached --quiet; then
+            echo "No changelog changes to commit"
+            exit 0
+          fi
+          git commit -m "[CHANGE] changelog for ${TAG}"
+          git push origin HEAD:main
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.version.outputs.tag }}
+          name: ${{ needs.version.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          body_path: release-notes.md
+          files: dist/*

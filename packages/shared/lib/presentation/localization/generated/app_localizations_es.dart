@@ -909,4 +909,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reminderStreakInARowBody => 'No pares ahora. Practica o añade una palabra hoy.';
+
+  @override
+  String get settingsPrivacyPolicyButton => 'Política de privacidad';
+
+  @override
+  String get scanReportSuggestionButton => 'Informar de una sugerencia';
 }

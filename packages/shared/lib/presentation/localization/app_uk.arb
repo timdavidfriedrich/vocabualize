@@ -237,5 +237,7 @@
   "reminderStreakNearbyTitle": "Нове слово поруч?",
   "reminderStreakNearbyBody": "Виберіть щось навколо себе і дізнайтеся, як воно називається.",
   "reminderStreakInARowTitle": "{count, plural, one{{count} день поспіль} few{{count} дні поспіль} many{{count} днів поспіль} other{{count} дня поспіль}}",
-  "reminderStreakInARowBody": "Не зупиняйтеся зараз. Попрактикуйтеся або додайте слово сьогодні."
+  "reminderStreakInARowBody": "Не зупиняйтеся зараз. Попрактикуйтеся або додайте слово сьогодні.",
+  "settingsPrivacyPolicyButton": "Політика конфіденційності",
+  "scanReportSuggestionButton": "Поскаржитися на пропозицію"
 }

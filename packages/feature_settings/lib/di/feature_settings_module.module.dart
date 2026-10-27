@@ -11,6 +11,8 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/backup_repository.dart' as _i152;
+import 'package:shared/domain/repositories/external_link_repository.dart'
+    as _i711;
 import 'package:shared/domain/repositories/reminder_repository.dart' as _i821;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 
@@ -24,6 +26,7 @@ class FeatureSettingsPackageModule extends _i526.MicroPackageModule {
           gh<_i0.SettingsRepository>(),
           gh<_i821.ReminderRepository>(),
           gh<_i328.AppInfoRepository>(),
+          gh<_i711.ExternalLinkRepository>(),
         ));
   }
 }

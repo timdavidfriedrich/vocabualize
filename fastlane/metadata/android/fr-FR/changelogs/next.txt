@@ -1,0 +1,1 @@
+Le nouveau Vocabualize : fonctionne hors ligne et sans compte, se synchronise avec Google si vous le souhaitez, suggère des mots quand vous scannez et vous motive avec des séries et des rappels.

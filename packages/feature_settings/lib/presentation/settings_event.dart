@@ -39,6 +39,10 @@ class const SettingsReminderTimeChanged({
 
 class const SettingsNotificationSettingsOpened() extends SettingsEvent;
 
+class const SettingsPrivacyPolicyOpened({
+  required final String languageCode,
+}) extends SettingsEvent;
+
 class const SettingsDeletionRequested() extends SettingsEvent;
 
 class const SettingsBackupExportRequested() extends SettingsEvent;

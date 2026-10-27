@@ -1529,6 +1529,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Don\'t stop now. Add or practice a word today.'**
   String get reminderStreakInARowBody;
+
+  /// No description provided for @settingsPrivacyPolicyButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get settingsPrivacyPolicyButton;
+
+  /// No description provided for @scanReportSuggestionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a suggestion'**
+  String get scanReportSuggestionButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

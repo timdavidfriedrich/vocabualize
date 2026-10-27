@@ -1,0 +1,45 @@
+default_platform(:android)
+
+platform :android do
+  desc "Upload the signed AAB and the store listing to the internal testing track as a draft"
+  lane :internal do
+    upload_to_play_store(
+      track: "internal",
+      aab: ENV.fetch("AAB_PATH"),
+      version_code: ENV.fetch("VERSION_CODE").to_i,
+      release_status: "draft",
+      skip_upload_apk: true,
+      skip_upload_metadata: false,
+      skip_upload_changelogs: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+
+  desc "Promote an internal-track build to production"
+  lane :promote_production do
+    upload_to_play_store(
+      track: "internal",
+      track_promote_to: "production",
+      version_code: ENV.fetch("VERSION_CODE").to_i,
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+
+  desc "Update the store listing texts without uploading a build"
+  lane :metadata_only do
+    upload_to_play_store(
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+      skip_upload_metadata: false,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+end

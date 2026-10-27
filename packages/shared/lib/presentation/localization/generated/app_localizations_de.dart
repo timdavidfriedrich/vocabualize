@@ -912,4 +912,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get reminderStreakInARowBody => 'Hör jetzt nicht auf. Übe heute oder füge ein Wort hinzu.';
+
+  @override
+  String get settingsPrivacyPolicyButton => 'Datenschutzerklärung';
+
+  @override
+  String get scanReportSuggestionButton => 'Vorschlag melden';
 }

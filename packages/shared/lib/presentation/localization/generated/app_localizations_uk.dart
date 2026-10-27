@@ -946,4 +946,10 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get reminderStreakInARowBody =>
       'Не зупиняйтеся зараз. Попрактикуйтеся або додайте слово сьогодні.';
+
+  @override
+  String get settingsPrivacyPolicyButton => 'Політика конфіденційності';
+
+  @override
+  String get scanReportSuggestionButton => 'Поскаржитися на пропозицію';
 }

@@ -458,5 +458,7 @@
       }
     }
   },
-  "reminderStreakInARowBody": "Don't stop now. Add or practice a word today."
+  "reminderStreakInARowBody": "Don't stop now. Add or practice a word today.",
+  "settingsPrivacyPolicyButton": "Privacy policy",
+  "scanReportSuggestionButton": "Report a suggestion"
 }

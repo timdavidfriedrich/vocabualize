@@ -132,6 +132,17 @@ class const SettingsScreen({
                   trailing: const Icon(Icons.chevron_right_rounded),
                   onTap: context.pushFeedback,
                 ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.privacy_tip_rounded),
+                  title: Text(context.s.settingsPrivacyPolicyButton),
+                  trailing: const Icon(Icons.open_in_new_rounded),
+                  onTap: () => context.read<SettingsBloc>().add(
+                    SettingsPrivacyPolicyOpened(
+                      languageCode: Localizations.localeOf(context).languageCode,
+                    ),
+                  ),
+                ),
                 const Divider(height: Spacing.xl),
                 _DeleteTile(account: account, isBusy: isBusy),
               ],
