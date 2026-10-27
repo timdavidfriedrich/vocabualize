@@ -20,7 +20,7 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
    - **S**: checked in code
    - **E**: tested on the emulator
    - **P**: tested on your phone (from the progress notes)
-4. **Design** is checked per screen, side by side with screenshots of both apps. The legacy app only runs against the old PocketBase, so this has to happen **before PocketBase is shut down**.
+4. **Design** is checked per screen, side by side with screenshots of both apps (done 2026-10-27, see "Side-by-side pass").
 5. **Open items** go to the list at the end and are resolved one by one.
 
 ## Results (2026-10-27, static pass)
@@ -67,7 +67,7 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Add to collection, create collection | Same | ✅ | P |
 | Duplicate check | Same, for Write and Scan | ✅ | P |
 | Delete word | Same | ✅ | P |
-| — | Report a faulty translation | ➕ | P |
+| Report a faulty translation (full screen, 128 characters) | Same entry point, but a dialog with 2,000 characters | ✅ ❓ design, see open item 9 | E |
 | — | Offline notice with automatic retry | ➕ | P |
 
 ### Practice
@@ -110,10 +110,10 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Source and target language | Language pair | ✅ | P |
 | Disable type-answer mode (experimental) | In "Learning" | ✅ | P |
 | Hide images (experimental) | In "Learning", also hides Scan and stock photos | ✅ | P |
-| Enable collections (experimental, off by default) | none, always on | ❓ see open item 2 | S |
-| Experimental section, copy ID, survey, keep data, onboarding link | none | 🗑 thesis | S |
-| Practice reminder with time | Same, only on days with due words | ✅ | P |
-| "Gather words" reminder with time | Streak reminder, with "look around" messages | ❓ see open item 3 | S |
+| Enable collections (experimental, off by default) | none, always on | ❓ see open item 2 | E |
+| Experimental section, copy ID, survey, keep data, onboarding link | none | 🗑 thesis | E |
+| Practice reminder, always on at 19:00 (the time picker existed only in debug builds) | Switch and time, off by default, only on days with due words | 🔄 | P |
+| "Gather words" reminder, always on at 13:00 (time picker only in debug builds) | Streak reminder, with "look around" messages | ❓ see open item 3 | E |
 | Push notifications (Firebase) | none | 🗑 no telemetry or Firebase | S |
 | Open notification settings | Same, plus a "blocked" hint | ✅ | P |
 | Report bug | Feedback & bugs | ✅ | P |
@@ -140,16 +140,44 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Dark theme and color palette | ✅ same colors |
 | Font Poppins | 🔄 bundled instead of downloaded at runtime (no Google Fonts request) |
 | Text sizes | 🔄 Material defaults (decided during the Home port); legacy used custom sizes (e.g. body 16 instead of 14) |
-| Button styles | ✅ legacy styles in the theme |
+| Button styles | ✅ shape and colors; ❓ labels are 14 bold instead of legacy 16 bold (open item 8) |
+| Slider and switches | ❓ legacy uses the 2024 slider and white switch thumbs (open item 8) |
 | Mascots and launcher icon | ✅ same artwork |
-| Layout of Home, Details, Scan, Practice | ✅ ported 1:1 per the Phase 4 notes; side-by-side screenshots still to do |
+| Layout of Home, Details, Scan, Practice, Collections | ✅ matches in the side-by-side pass |
+| Layout of Welcome, language choice, Settings | ❓ different design (open item 8) |
+
+## Side-by-side pass (2026-10-27)
+
+Both apps ran on the same emulator (Pixel 10 Pro) with the same eight words, photos and practice answers. Legacy ran as a test account without sign-in against the old PocketBase; the new app ran without an account against the local dev server. Legacy screenshots are kept in [`legacy_screenshots/`](legacy_screenshots/) because they cannot be taken again after the shutdown. The full comparison with notes per screen is a private page: https://claude.ai/artifact/UMEBLM1rgzzic21LznimkE
+
+| Screen | Result |
+|---|---|
+| Splash, empty Home, word list, swipes, Write dialog, Details, stock photos, edit dialogs, collection chip, collection screen, done screen | Same |
+| Home status card | One line taller (two facts instead of one message); content below sits about 9 dp lower |
+| Practice, Details, dialogs | Same layout; every button label is smaller |
+| Word info dialog | Date follows the phone locale (10/27/2026) instead of always 27.10.2026; kept, per the date guideline |
+| Scan camera | Zoom slider in the old round style; legacy switched to the 2024 slider in its last commit |
+| Scan labels | Legacy labeling fails now (no working Gemini key); new shows suggestions and "Report a suggestion" |
+| Welcome | Different: legacy has a blue background, the standing mascot, white buttons with logos and a text link |
+| Language choice | Different: legacy has "I speak" / "I want to learn", a tinted background and "Let's start!" at the bottom |
+| Settings | Different: legacy has a left title with a Feedback button and ⋮ menu, a sign-in card, language pill buttons and a collapsible experimental section |
+| Faulty translation | Different: legacy is a full screen with the word pair as header |
+| Feedback / Report bug | Same structure; new adds an intro and the "Sent along" note |
+
+Not captured: legacy "Speak" (opening it crashed the emulator), legacy type-answer mode (it only shows for words past the novice steps), the maintenance gate.
 
 ## Open items
 
-1. **Status card message:** bring back the playful rotating line? Suggestion: show it above the facts, and keep the facts.
-2. **Collections toggle:** keep collections always on (recommended), or bring back the opt-in switch.
-3. **"Gather words" reminder:** the streak reminder's "look around" messages cover it, but only while a streak exists. Keep it that way, or add a separate daily reminder.
-4. **Open-source note:** add "Source code on GitHub" to Settings, or leave it out.
-5. **Stock photo search language:** check results for a few German, Spanish and Polish words against the legacy approach (English search terms).
-6. **Side-by-side screenshots** of all screens in both apps, before PocketBase is shut down.
+1. **Status card message:** decided 2026-10-27: bring back the playful line above the facts.
+2. **Collections toggle:** answered "no" to keeping collections always on, which means the opt-in switch comes back (to confirm).
+3. **"Gather words" reminder:** answered "no", which means no separate reminder; the streak reminder's messages cover it (to confirm).
+4. **Open-source note:** decided 2026-10-27: leave it out.
+5. **Stock photo search language:** decided 2026-10-27: no comparison; keep searching in the source language.
+6. **Side-by-side screenshots:** done 2026-10-27, see the section above.
 7. **Device walkthrough** of every ✅ row still marked only S or E.
+8. **Design fixes from the side-by-side pass**, in this order:
+   1. Theme: button labels 16 bold, the 2024 slider, white switch thumbs.
+   2. Settings in the legacy layout, with the new rows styled like the legacy rows.
+   3. Welcome in the legacy look, with the Google logo on the sign-in button.
+   4. Language choice: keep the chips, bring back the legacy headings, background and bottom button.
+9. **Faulty translation:** bring back the legacy full screen, keeping the "Sent along" note.
