@@ -26,8 +26,9 @@ class const LanguageSelectionScreen({
       listener: (context, state) => switch (state) {
         LanguageSelectionSaved() when !_isOnboarding => context.closeScreen(),
         LanguageSelectionEditing(:final error?) => context.showToast(error.toMessage(context)),
-        LanguageSelectionSaved() || LanguageSelectionEditing() || LanguageSelectionLoading() =>
-          null,
+        LanguageSelectionSaved() ||
+        LanguageSelectionEditing() ||
+        LanguageSelectionLoading() => null,
       },
       child: Scaffold(
         appBar: AppBar(title: Text(context.s.languageSelectionTitle)),
@@ -56,32 +57,47 @@ class const _Content({
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<LanguageSelectionBloc>();
-    return ListView(
-      padding: const EdgeInsets.all(Spacing.xl),
-      children: [
-        _LanguageChoice(
-          title: context.s.settingsSourceLanguageTitle,
-          hint: context.s.settingsSourceLanguageHint,
-          selected: _pair.source,
-          onSelected: (language) => bloc.add(LanguageSelectionSourceChanged(language: language)),
-        ),
-        const SizedBox(height: Spacing.xl),
-        _LanguageChoice(
-          title: context.s.settingsTargetLanguageTitle,
-          hint: context.s.settingsTargetLanguageHint,
-          selected: _pair.target,
-          onSelected: (language) => bloc.add(LanguageSelectionTargetChanged(language: language)),
-        ),
-        const SizedBox(height: Spacing.xxl),
-        FilledButton(
-          onPressed: _isSaving ? null : () => bloc.add(const LanguageSelectionSaveRequested()),
-          child: Text(
-            _isOnboarding
-                ? context.s.languageSelectionContinueButton
-                : context.s.languageSelectionSaveButton,
+    return SafeArea(
+      top: false,
+      minimum: const EdgeInsets.only(bottom: Spacing.xxl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(Spacing.xl),
+              children: [
+                _LanguageChoice(
+                  title: context.s.settingsSourceLanguageTitle,
+                  hint: context.s.settingsSourceLanguageHint,
+                  selected: _pair.source,
+                  onSelected: (language) =>
+                      bloc.add(LanguageSelectionSourceChanged(language: language)),
+                ),
+                const SizedBox(height: Spacing.xl),
+                _LanguageChoice(
+                  title: context.s.settingsTargetLanguageTitle,
+                  hint: context.s.settingsTargetLanguageHint,
+                  selected: _pair.target,
+                  onSelected: (language) =>
+                      bloc.add(LanguageSelectionTargetChanged(language: language)),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Spacing.xl),
+            child: FilledButton(
+              onPressed: _isSaving ? null : () => bloc.add(const LanguageSelectionSaveRequested()),
+              child: Text(
+                _isOnboarding
+                    ? context.s.languageSelectionContinueButton
+                    : context.s.languageSelectionSaveButton,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
