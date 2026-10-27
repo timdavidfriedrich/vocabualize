@@ -17,7 +17,6 @@ class const _DuplicateDialog({
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
       title: Text(context.s.detailsDuplicateTitle),
-      insetPadding: const EdgeInsets.all(Spacing.xxl),
       contentPadding: const EdgeInsets.fromLTRB(Spacing.xl, Spacing.xl, Spacing.xl, 0),
       content: Text(context.s.detailsDuplicateMessage(_source)),
       actionsPadding: const EdgeInsets.all(Spacing.m),

@@ -14,32 +14,28 @@ class const _CameraGalleryDialog() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
-      insetPadding: const EdgeInsets.symmetric(horizontal: Spacing.xxxxl),
       contentPadding: const EdgeInsets.all(Spacing.s),
-      content: SizedBox(
-        width: MediaQuery.sizeOf(context).width,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _SourceButton(
-              source: ImagePickSource.camera,
-              icon: Icons.camera_alt_rounded,
-              label: context.s.detailsTakePictureButton,
-            ),
-            const SizedBox(height: Spacing.s),
-            _SourceButton(
-              source: ImagePickSource.gallery,
-              icon: Icons.photo_library_rounded,
-              label: context.s.detailsOpenGalleryButton,
-            ),
-            const SizedBox(height: Spacing.s),
-            OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(context.s.cancel),
-            ),
-          ],
-        ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _SourceButton(
+            source: ImagePickSource.camera,
+            icon: Icons.camera_alt_rounded,
+            label: context.s.detailsTakePictureButton,
+          ),
+          const SizedBox(height: Spacing.s),
+          _SourceButton(
+            source: ImagePickSource.gallery,
+            icon: Icons.photo_library_rounded,
+            label: context.s.detailsOpenGalleryButton,
+          ),
+          const SizedBox(height: Spacing.s),
+          OutlinedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(context.s.cancel),
+          ),
+        ],
       ),
     );
   }

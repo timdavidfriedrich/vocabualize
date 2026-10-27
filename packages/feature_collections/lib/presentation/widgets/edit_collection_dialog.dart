@@ -42,43 +42,39 @@ class const _EditCollectionDialog({
       hasChanged ? CollectionRename(name: controller.text.trim()) : null,
     );
     return AlertDialog.adaptive(
-      insetPadding: const EdgeInsets.symmetric(horizontal: Spacing.xxl),
       contentPadding: const EdgeInsets.fromLTRB(Spacing.s, Spacing.s, Spacing.xs, Spacing.xs),
-      content: SizedBox(
-        width: MediaQuery.sizeOf(context).width,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    keyboardType: TextInputType.text,
-                    onSubmitted: (_) => submit(),
-                    decoration: InputDecoration(
-                      hintText: _name,
-                      label: Text(context.s.detailsCollectionNameLabel),
-                    ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  keyboardType: TextInputType.text,
+                  onSubmitted: (_) => submit(),
+                  decoration: InputDecoration(
+                    hintText: _name,
+                    label: Text(context.s.detailsCollectionNameLabel),
                   ),
                 ),
-                const SizedBox(width: Spacing.xs),
-                IconButton(
-                  onPressed: submit,
-                  icon: Icon(hasChanged ? Icons.save_rounded : Icons.close_rounded),
-                ),
-              ],
-            ),
-            const SizedBox(height: Spacing.xs),
-            TextButton.icon(
-              onPressed: () => Navigator.of(context).pop(const CollectionDelete()),
-              style: TextButton.styleFrom(foregroundColor: context.c.error),
-              icon: const Icon(Icons.delete_rounded),
-              label: Text(context.s.collectionsDeleteButton),
-            ),
-          ],
-        ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              IconButton(
+                onPressed: submit,
+                icon: Icon(hasChanged ? Icons.save_rounded : Icons.close_rounded),
+              ),
+            ],
+          ),
+          const SizedBox(height: Spacing.xs),
+          TextButton.icon(
+            onPressed: () => Navigator.of(context).pop(const CollectionDelete()),
+            style: TextButton.styleFrom(foregroundColor: context.c.error),
+            icon: const Icon(Icons.delete_rounded),
+            label: Text(context.s.collectionsDeleteButton),
+          ),
+        ],
       ),
     );
   }

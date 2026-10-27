@@ -17,30 +17,26 @@ class const _AddTagDialog() extends HookWidget {
     final hasText = useListenableSelector(controller, () => controller.text.trim().isNotEmpty);
     void submit() => Navigator.of(context).pop(hasText ? controller.text.trim() : null);
     return AlertDialog.adaptive(
-      insetPadding: const EdgeInsets.symmetric(horizontal: Spacing.xxxxl),
       contentPadding: const EdgeInsets.fromLTRB(Spacing.s, Spacing.s, Spacing.xs, Spacing.s),
-      content: SizedBox(
-        width: MediaQuery.sizeOf(context).width,
-        child: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: controller,
-                keyboardType: TextInputType.text,
-                onSubmitted: (_) => submit(),
-                decoration: InputDecoration(
-                  hintText: context.s.detailsCollectionNameHint,
-                  label: Text(context.s.detailsCollectionNameLabel),
-                ),
+      content: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: controller,
+              keyboardType: TextInputType.text,
+              onSubmitted: (_) => submit(),
+              decoration: InputDecoration(
+                hintText: context.s.detailsCollectionNameHint,
+                label: Text(context.s.detailsCollectionNameLabel),
               ),
             ),
-            const SizedBox(width: Spacing.xs),
-            IconButton(
-              onPressed: submit,
-              icon: Icon(hasText ? Icons.save_rounded : Icons.close_rounded),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(width: Spacing.xs),
+          IconButton(
+            onPressed: submit,
+            icon: Icon(hasText ? Icons.save_rounded : Icons.close_rounded),
+          ),
+        ],
       ),
     );
   }

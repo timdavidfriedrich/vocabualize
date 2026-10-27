@@ -32,6 +32,7 @@ const _levelExpert = Color(0xFF4CAF50);
 const _splash = Color(0x80002844);
 const _pressedOpacity = 0.6;
 const _dialogElevation = 8.0;
+const _dialogWidth = 560.0;
 const _dimmedStates = {WidgetState.disabled, WidgetState.pressed, WidgetState.hovered};
 
 const _buttonPadding = EdgeInsets.symmetric(horizontal: Spacing.xxl, vertical: Spacing.s);
@@ -116,6 +117,7 @@ abstract final class AppTheme {
         ),
       ),
       dialogTheme: const DialogThemeData(
+        constraints: BoxConstraints(minWidth: _dialogWidth, maxWidth: _dialogWidth),
         elevation: _dialogElevation,
         backgroundColor: _surface,
         shape: RoundedRectangleBorder(

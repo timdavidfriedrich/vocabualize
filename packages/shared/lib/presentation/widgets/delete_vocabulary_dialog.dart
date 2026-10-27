@@ -18,7 +18,6 @@ class const _DeleteVocabularyDialog({
   @override
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
-      insetPadding: const EdgeInsets.all(Spacing.m),
       contentPadding: const EdgeInsets.fromLTRB(Spacing.xl, Spacing.s, Spacing.xl, 0),
       title: Text(context.s.vocabularyDeleteTitle),
       content: ListTile(

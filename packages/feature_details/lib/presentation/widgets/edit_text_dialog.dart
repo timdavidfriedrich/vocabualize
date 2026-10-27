@@ -34,51 +34,47 @@ class const _EditTextDialog({
       () => controller.text.trim().isNotEmpty && controller.text.trim() != _text,
     );
     return AlertDialog.adaptive(
-      insetPadding: const EdgeInsets.symmetric(horizontal: Spacing.xxl),
       contentPadding: const EdgeInsets.fromLTRB(Spacing.s, Spacing.xs, Spacing.s, Spacing.s),
-      content: SizedBox(
-        width: MediaQuery.sizeOf(context).width,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    keyboardType: TextInputType.text,
-                    minLines: 1,
-                    maxLines: _maxLines,
-                    decoration: InputDecoration(
-                      hintText: _text,
-                      label: Text(_label),
-                    ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  keyboardType: TextInputType.text,
+                  minLines: 1,
+                  maxLines: _maxLines,
+                  decoration: InputDecoration(
+                    hintText: _text,
+                    label: Text(_label),
                   ),
                 ),
-                const SizedBox(width: Spacing.xs),
-                IconButton(
-                  onPressed: () =>
-                      Navigator.of(context).pop(hasChanged ? controller.text.trim() : null),
-                  icon: Icon(hasChanged ? Icons.save_rounded : Icons.close_rounded),
-                ),
-              ],
-            ),
-            if (_onReportRequested case final onReportRequested?) ...[
-              const SizedBox(height: Spacing.xs),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  onReportRequested();
-                },
-                child: Text(
-                  context.s.detailsReportTranslationButton,
-                  style: context.t.bodySmall?.copyWith(color: context.c.outline),
-                ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              IconButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(hasChanged ? controller.text.trim() : null),
+                icon: Icon(hasChanged ? Icons.save_rounded : Icons.close_rounded),
               ),
             ],
+          ),
+          if (_onReportRequested case final onReportRequested?) ...[
+            const SizedBox(height: Spacing.xs),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                onReportRequested();
+              },
+              child: Text(
+                context.s.detailsReportTranslationButton,
+                style: context.t.bodySmall?.copyWith(color: context.c.outline),
+              ),
+            ),
           ],
-        ),
+        ],
       ),
     );
   }
