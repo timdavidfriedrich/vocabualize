@@ -277,9 +277,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsTargetLanguageHint => 'Мова, яку ви вивчаєте';
 
   @override
-  String get settingsNotificationsTitle => 'Сповіщення';
-
-  @override
   String vocabularyReappearsInMinutes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -332,9 +329,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsReplaceButton => 'Замінити';
 
   @override
-  String get settingsAccountTitle => 'Обліковий запис';
-
-  @override
   String get errorSyncPending => 'Ваші останні зміни ще не завантажено.';
 
   @override
@@ -381,9 +375,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get gateMaintenanceMessage => 'Vocabualize оновлюється. Спробуйте пізніше.';
-
-  @override
-  String get settingsBackupTitle => 'Резервна копія';
 
   @override
   String get settingsExportBackupButton => 'Експортувати резервну копію';
@@ -448,9 +439,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get languageSelectionContinueButton => 'Продовжити';
-
-  @override
-  String get settingsLanguagesTitle => 'Мови';
 
   @override
   String get languageSelectionSaveButton => 'Зберегти';
@@ -711,9 +699,6 @@ class AppLocalizationsUk extends AppLocalizations {
       'Для виходу потрібне підключення до інтернету, щоб спершу завантажити ваші останні зміни.';
 
   @override
-  String get settingsLearningTitle => 'Навчання';
-
-  @override
   String get settingsPracticeReminderTitle => 'Нагадування про практику';
 
   @override
@@ -770,10 +755,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get reportOfflineMessage => 'Для надсилання потрібне підключення до інтернету.';
 
   @override
-  String get settingsFeedbackButton => 'Відгуки та помилки';
-
-  @override
-  String get settingsFeedbackHint => 'Ідеї, проблеми або запитання';
+  String get settingsFeedbackButton => 'Відгук';
 
   @override
   String get settingsDeleteAccountButton => 'Видалити обліковий запис';

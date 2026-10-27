@@ -275,9 +275,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsTargetLanguageHint => 'La lengua que aprendes';
 
   @override
-  String get settingsNotificationsTitle => 'Notificaciones';
-
-  @override
   String vocabularyReappearsInMinutes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -322,9 +319,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get detailsReplaceButton => 'Reemplazar';
-
-  @override
-  String get settingsAccountTitle => 'Cuenta';
 
   @override
   String get errorSyncPending => 'Tus últimos cambios aún no se han subido.';
@@ -375,9 +369,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get gateMaintenanceMessage =>
       'Vocabualize se está actualizando. Inténtelo de nuevo más tarde.';
-
-  @override
-  String get settingsBackupTitle => 'Copia de seguridad';
 
   @override
   String get settingsExportBackupButton => 'Exportar copia de seguridad';
@@ -440,9 +431,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get languageSelectionContinueButton => 'Continuar';
-
-  @override
-  String get settingsLanguagesTitle => 'Idiomas';
 
   @override
   String get languageSelectionSaveButton => 'Guardar';
@@ -685,9 +673,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Para cerrar sesión necesita conexión a internet, así sus últimos cambios se suben antes.';
 
   @override
-  String get settingsLearningTitle => 'Aprendizaje';
-
-  @override
   String get settingsPracticeReminderTitle => 'Recordatorio de práctica';
 
   @override
@@ -746,10 +731,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get reportOfflineMessage => 'Para enviar se necesita conexión a internet.';
 
   @override
-  String get settingsFeedbackButton => 'Comentarios y errores';
-
-  @override
-  String get settingsFeedbackHint => 'Ideas, problemas o preguntas';
+  String get settingsFeedbackButton => 'Comentarios';
 
   @override
   String get settingsDeleteAccountButton => 'Eliminar cuenta';

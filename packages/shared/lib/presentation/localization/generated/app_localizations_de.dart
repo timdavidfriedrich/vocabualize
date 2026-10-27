@@ -275,9 +275,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsTargetLanguageHint => 'Die Sprache, die du lernst';
 
   @override
-  String get settingsNotificationsTitle => 'Benachrichtigungen';
-
-  @override
   String vocabularyReappearsInMinutes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -322,9 +319,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get detailsReplaceButton => 'Ersetzen';
-
-  @override
-  String get settingsAccountTitle => 'Konto';
 
   @override
   String get errorSyncPending => 'Deine letzten Änderungen wurden noch nicht hochgeladen.';
@@ -375,9 +369,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get gateMaintenanceMessage =>
       'Vocabualize wird gerade aktualisiert. Bitte versuche es später erneut.';
-
-  @override
-  String get settingsBackupTitle => 'Sicherung';
 
   @override
   String get settingsExportBackupButton => 'Sicherung exportieren';
@@ -440,9 +431,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get languageSelectionContinueButton => 'Weiter';
-
-  @override
-  String get settingsLanguagesTitle => 'Sprachen';
 
   @override
   String get languageSelectionSaveButton => 'Speichern';
@@ -685,9 +673,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Zum Abmelden brauchst du eine Internetverbindung, damit deine letzten Änderungen vorher hochgeladen werden.';
 
   @override
-  String get settingsLearningTitle => 'Lernen';
-
-  @override
   String get settingsPracticeReminderTitle => 'Erinnerung zum Üben';
 
   @override
@@ -747,10 +732,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get reportOfflineMessage => 'Zum Senden brauchst du eine Internetverbindung.';
 
   @override
-  String get settingsFeedbackButton => 'Feedback & Fehler';
-
-  @override
-  String get settingsFeedbackHint => 'Ideen, Probleme oder Fragen';
+  String get settingsFeedbackButton => 'Feedback';
 
   @override
   String get settingsDeleteAccountButton => 'Konto löschen';

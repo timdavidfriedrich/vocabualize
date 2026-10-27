@@ -278,9 +278,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsTargetLanguageHint => 'La langue que vous apprenez';
 
   @override
-  String get settingsNotificationsTitle => 'Notifications';
-
-  @override
   String vocabularyReappearsInMinutes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -325,9 +322,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get detailsReplaceButton => 'Remplacer';
-
-  @override
-  String get settingsAccountTitle => 'Compte';
 
   @override
   String get errorSyncPending => 'Vos dernières modifications n\'ont pas encore été envoyées.';
@@ -379,9 +373,6 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get gateMaintenanceMessage =>
       'Vocabualize est en cours de mise à jour. Veuillez réessayer plus tard.';
-
-  @override
-  String get settingsBackupTitle => 'Sauvegarde';
 
   @override
   String get settingsExportBackupButton => 'Exporter une sauvegarde';
@@ -444,9 +435,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get languageSelectionContinueButton => 'Continuer';
-
-  @override
-  String get settingsLanguagesTitle => 'Langues';
 
   @override
   String get languageSelectionSaveButton => 'Enregistrer';
@@ -690,9 +678,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'La déconnexion nécessite une connexion internet, afin que vos dernières modifications soient d\'abord envoyées.';
 
   @override
-  String get settingsLearningTitle => 'Apprentissage';
-
-  @override
   String get settingsPracticeReminderTitle => 'Rappel d\'entraînement';
 
   @override
@@ -753,10 +738,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get reportOfflineMessage => 'L\'envoi nécessite une connexion internet.';
 
   @override
-  String get settingsFeedbackButton => 'Avis et bugs';
-
-  @override
-  String get settingsFeedbackHint => 'Idées, problèmes ou questions';
+  String get settingsFeedbackButton => 'Avis';
 
   @override
   String get settingsDeleteAccountButton => 'Supprimer le compte';

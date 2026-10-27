@@ -24,7 +24,10 @@ import 'package:shared/presentation/reminders/reminder_cubit.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
+import 'package:shared/presentation/widgets/google_logo.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
+
+const _feedbackBackgroundOpacity = 0.1;
 
 class const SettingsScreen({
   super.key,
@@ -78,7 +81,15 @@ class const SettingsScreen({
         ),
       ],
       child: Scaffold(
-        appBar: AppBar(title: Text(context.s.settingsTitle)),
+        appBar: AppBar(
+          centerTitle: false,
+          titleSpacing: 0,
+          title: Text(context.s.settingsTitle),
+          actions: const [
+            _FeedbackButton(),
+            SizedBox(width: Spacing.xxl),
+          ],
+        ),
         body: BlocBuilder<SettingsBloc, SettingsState>(
           builder: (context, state) => switch (state) {
             SettingsLoading() => const LoadingView(),
@@ -88,64 +99,50 @@ class const SettingsScreen({
               LoadingView(
                 progress: LoadingProgress(current: processedImages, total: totalImages),
               ),
-            SettingsLoaded(:final account, :final isBusy) => ListView(
-              padding: const EdgeInsets.all(Spacing.m),
-              children: [
-                Text(context.s.settingsAccountTitle, style: context.t.titleMedium),
-                const SizedBox(height: Spacing.xs),
-                switch (account) {
-                  LocalAccount() => _LocalAccountSection(isBusy: isBusy),
-                  GoogleAccount(:final name, :final email) => _GoogleAccountSection(
-                    name: name,
-                    email: email,
-                    isBusy: isBusy,
-                  ),
-                },
-                const SizedBox(height: Spacing.xl),
-                Text(context.s.settingsLanguagesTitle, style: context.t.titleMedium),
-                BlocBuilder<LanguagePairCubit, LanguagePair?>(
-                  builder: (context, pair) => ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    enabled: !isBusy,
-                    leading: const Icon(Icons.translate_rounded),
-                    title: Text(pair?.toLabel(context) ?? context.s.unknown),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: context.pushLanguageSelection,
-                  ),
+            SettingsLoaded(:final account, :final isBusy) => ListTileTheme(
+              data: ListTileThemeData(
+                contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.m),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(Spacing.radiusL)),
                 ),
-                const SizedBox(height: Spacing.xl),
-                Text(context.s.settingsLearningTitle, style: context.t.titleMedium),
-                const _LearningSection(),
-                const SizedBox(height: Spacing.xl),
-                Text(context.s.settingsNotificationsTitle, style: context.t.titleMedium),
-                const _NotificationsSection(),
-                const SizedBox(height: Spacing.xl),
-                Text(context.s.settingsBackupTitle, style: context.t.titleMedium),
-                const SizedBox(height: Spacing.xs),
-                _BackupSection(isBusy: isBusy),
-                const SizedBox(height: Spacing.xl),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.feedback_rounded),
-                  title: Text(context.s.settingsFeedbackButton),
-                  subtitle: Text(context.s.settingsFeedbackHint),
-                  trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: context.pushFeedback,
-                ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.privacy_tip_rounded),
-                  title: Text(context.s.settingsPrivacyPolicyButton),
-                  trailing: const Icon(Icons.open_in_new_rounded),
-                  onTap: () => context.read<SettingsBloc>().add(
-                    SettingsPrivacyPolicyOpened(
-                      languageCode: Localizations.localeOf(context).languageCode,
+                subtitleTextStyle: context.t.bodyMedium?.copyWith(color: context.c.outline),
+              ),
+              child: ListView(
+                padding: const EdgeInsets.all(Spacing.m),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Spacing.m),
+                    child: switch (account) {
+                      LocalAccount() => _SignInCard(isBusy: isBusy),
+                      GoogleAccount(:final name, :final email) => _AccountCard(
+                        name: name,
+                        email: email,
+                        isBusy: isBusy,
+                      ),
+                    },
+                  ),
+                  const SizedBox(height: Spacing.xl),
+                  _LanguageTiles(isBusy: isBusy),
+                  const SizedBox(height: Spacing.m),
+                  const _LearningSection(),
+                  const SizedBox(height: Spacing.m),
+                  const _NotificationsSection(),
+                  const SizedBox(height: Spacing.m),
+                  _BackupSection(isBusy: isBusy),
+                  ListTile(
+                    title: Text(context.s.settingsPrivacyPolicyButton),
+                    trailing: const Icon(Icons.open_in_new_rounded),
+                    onTap: () => context.read<SettingsBloc>().add(
+                      SettingsPrivacyPolicyOpened(
+                        languageCode: Localizations.localeOf(context).languageCode,
+                      ),
                     ),
                   ),
-                ),
-                const Divider(height: Spacing.xl),
-                _DeleteTile(account: account, isBusy: isBusy),
-              ],
+                  const SizedBox(height: Spacing.m),
+                  _DeleteTile(account: account, isBusy: isBusy),
+                  const SizedBox(height: Spacing.xxl),
+                ],
+              ),
             ),
           },
         ),
@@ -167,6 +164,62 @@ class const SettingsScreen({
   }
 }
 
+class const _FeedbackButton() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton.icon(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: context.c.onSurface.withValues(alpha: _feedbackBackgroundOpacity),
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.m, vertical: Spacing.xs),
+        minimumSize: Size.zero,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Spacing.radiusS)),
+        ),
+      ),
+      onPressed: context.pushFeedback,
+      icon: const Icon(Icons.feedback_rounded, size: Spacing.iconS),
+      label: Text(context.s.settingsFeedbackButton),
+    );
+  }
+}
+
+class const _LanguageTiles({
+  required final bool _isBusy,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LanguagePairCubit, LanguagePair?>(
+      builder: (context, pair) => Column(
+        children: [
+          ListTile(
+            title: Text(context.s.settingsSourceLanguageTitle),
+            subtitle: Text(context.s.settingsSourceLanguageHint),
+            trailing: _LanguageButton(label: pair?.source.toLabel(context), isBusy: _isBusy),
+          ),
+          ListTile(
+            title: Text(context.s.settingsTargetLanguageTitle),
+            subtitle: Text(context.s.settingsTargetLanguageHint),
+            trailing: _LanguageButton(label: pair?.target.toLabel(context), isBusy: _isBusy),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class const _LanguageButton({
+  required final String? _label,
+  required final bool _isBusy,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: _isBusy ? null : context.pushLanguageSelection,
+      child: Text(_label ?? context.s.unknown),
+    );
+  }
+}
+
 class const _LearningSection() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -175,8 +228,6 @@ class const _LearningSection() extends StatelessWidget {
       builder: (context, preferences) => Column(
         children: [
           SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            secondary: const Icon(Icons.keyboard_rounded),
             title: Text(context.s.settingsTypeAnswerDisabledTitle),
             subtitle: Text(context.s.settingsTypeAnswerDisabledHint),
             value: preferences.isTypeAnswerDisabled,
@@ -184,8 +235,6 @@ class const _LearningSection() extends StatelessWidget {
                 bloc.add(SettingsTypeAnswerDisabledChanged(isDisabled: isDisabled)),
           ),
           SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            secondary: const Icon(Icons.hide_image_rounded),
             title: Text(context.s.settingsImagesHiddenTitle),
             subtitle: Text(context.s.settingsImagesHiddenHint),
             value: preferences.areImagesHidden,
@@ -207,38 +256,31 @@ class const _NotificationsSection() extends StatelessWidget {
           final (practiceReminder, streakReminder) = reminders;
           final isAnyEnabled = practiceReminder.isEnabled || streakReminder.isEnabled;
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _ReminderSettings(
                 kind: ReminderKind.practice,
                 reminder: practiceReminder,
-                icon: Icons.notifications_rounded,
                 title: context.s.settingsPracticeReminderTitle,
                 hint: context.s.settingsPracticeReminderHint,
               ),
               _ReminderSettings(
                 kind: ReminderKind.streak,
                 reminder: streakReminder,
-                icon: Icons.local_fire_department_rounded,
                 title: context.s.settingsStreakReminderTitle,
                 hint: context.s.settingsStreakReminderHint,
               ),
-              if (isAnyEnabled && !isPermitted) ...[
-                Text(
-                  context.s.settingsNotificationsBlockedMessage,
-                  style: context.t.bodyMedium?.copyWith(color: context.c.error),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                    onPressed: () => context.read<SettingsBloc>().add(
-                      const SettingsNotificationSettingsOpened(),
-                    ),
-                    child: Text(context.s.settingsOpenNotificationSettingsButton),
+              if (isAnyEnabled && !isPermitted)
+                ListTile(
+                  title: Text(context.s.settingsOpenNotificationSettingsButton),
+                  subtitle: Text(
+                    context.s.settingsNotificationsBlockedMessage,
+                    style: context.t.bodyMedium?.copyWith(color: context.c.error),
+                  ),
+                  trailing: const Icon(Icons.open_in_new_rounded),
+                  onTap: () => context.read<SettingsBloc>().add(
+                    const SettingsNotificationSettingsOpened(),
                   ),
                 ),
-              ],
             ],
           );
         },
@@ -250,18 +292,14 @@ class const _NotificationsSection() extends StatelessWidget {
 class const _ReminderSettings({
   required final ReminderKind _kind,
   required final DailyReminder _reminder,
-  required final IconData _icon,
   required final String _title,
   required final String _hint,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SwitchListTile(
-          contentPadding: EdgeInsets.zero,
-          secondary: Icon(_icon),
           title: Text(_title),
           subtitle: Text(_hint),
           value: _reminder.isEnabled,
@@ -271,8 +309,6 @@ class const _ReminderSettings({
         ),
         if (_reminder.isEnabled)
           ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.schedule_rounded),
             title: Text(context.s.settingsReminderTimeTitle),
             trailing: Text(
               TimeOfDay(hour: _reminder.hour, minute: _reminder.minute).format(context),
@@ -304,20 +340,17 @@ class const _BackupSection({
     return Column(
       children: [
         ListTile(
-          contentPadding: EdgeInsets.zero,
           enabled: !_isBusy,
-          leading: const Icon(Icons.ios_share_rounded),
           title: Text(context.s.settingsExportBackupButton),
           subtitle: Text(context.s.settingsExportBackupHint),
+          trailing: const Icon(Icons.ios_share_rounded),
           onTap: () => context.read<SettingsBloc>().add(const SettingsBackupExportRequested()),
         ),
         ListTile(
-          contentPadding: EdgeInsets.zero,
           enabled: !_isBusy,
-          leading: const Icon(Icons.download_rounded),
           title: Text(context.s.settingsImportBackupButton),
           subtitle: Text(context.s.settingsImportBackupHint),
-          trailing: _isBusy ? const _ButtonProgress() : null,
+          trailing: _isBusy ? const _ButtonProgress() : const Icon(Icons.download_rounded),
           onTap: () => _confirmImport(context),
         ),
       ],
@@ -354,83 +387,159 @@ class const _ImportBackupDialog() extends StatelessWidget {
   }
 }
 
-class const _LocalAccountSection({
-  required final bool _isBusy,
+class const _Card({
+  required final Widget _child,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(context.s.settingsSignInHint, style: context.t.bodyMedium),
-        const SizedBox(height: Spacing.s),
-        ConnectionRequiredNotice(message: context.s.settingsSignInOfflineMessage),
-        BlocBuilder<ConnectivityCubit, bool>(
-          builder: (context, isConnected) => FilledButton(
-            onPressed: _isBusy || !isConnected
-                ? null
-                : () => context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
-            child: _isBusy ? const _ButtonProgress() : Text(context.s.settingsSignInButton),
-          ),
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(Spacing.m),
+      decoration: BoxDecoration(
+        color: context.c.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(Spacing.radiusL),
+      ),
+      child: _child,
     );
   }
 }
 
-class const _GoogleAccountSection({
+class const _SignInCard({
+  required final bool _isBusy,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(context.s.settingsSignInHint, style: context.t.bodyLarge),
+          const SizedBox(height: Spacing.s),
+          ConnectionRequiredNotice(message: context.s.settingsSignInOfflineMessage),
+          Align(
+            alignment: Alignment.centerRight,
+            child: BlocBuilder<ConnectivityCubit, bool>(
+              builder: (context, isConnected) => ElevatedButton(
+                onPressed: _isBusy || !isConnected
+                    ? null
+                    : () => context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
+                child: _isBusy ? const _ButtonProgress() : Text(context.s.settingsSignInButton),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class const _AccountCard({
   required final String? _name,
   required final String? _email,
   required final bool _isBusy,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              const _Avatar(),
+              const SizedBox(width: Spacing.m),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _name ?? _email ?? context.s.unknown,
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.fade,
+                    ),
+                    if (_name != null && _email != null)
+                      Text(
+                        _email,
+                        maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.fade,
+                        style: context.t.bodySmall,
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              if (_isBusy)
+                const _ButtonProgress()
+              else
+                IconButton(
+                  tooltip: context.s.settingsSignOutButton,
+                  icon: const Icon(Icons.logout_rounded),
+                  onPressed: () => context.read<SettingsBloc>().add(
+                    const SettingsSignOutRequested(discardUnsyncedChanges: false),
+                  ),
+                ),
+            ],
+          ),
+          BlocBuilder<SyncStatusCubit, SyncStatus>(
+            builder: (context, status) => switch (status.toLabel(context)) {
+              final label? => Padding(
+                padding: const EdgeInsets.only(top: Spacing.s),
+                child: Text(
+                  label,
+                  style: context.t.bodyMedium?.copyWith(
+                    color: status.needsAction ? context.c.error : context.c.onSurfaceVariant,
+                  ),
+                ),
+              ),
+              null => const SizedBox.shrink(),
+            },
+          ),
+          BlocBuilder<SyncStatusCubit, SyncStatus>(
+            builder: (context, status) => switch (status) {
+              SyncStatus.signInRequired => Padding(
+                padding: const EdgeInsets.only(top: Spacing.s),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: BlocBuilder<ConnectivityCubit, bool>(
+                    builder: (context, isConnected) => ElevatedButton(
+                      onPressed: _isBusy || !isConnected
+                          ? null
+                          : () => context.read<SettingsBloc>().add(
+                              const SettingsGoogleSignInRequested(),
+                            ),
+                      child: Text(context.s.settingsSignInAgainButton),
+                    ),
+                  ),
+                ),
+              ),
+              _ => const SizedBox.shrink(),
+            },
+          ),
+          ConnectionRequiredNotice(message: context.s.settingsSignOutOfflineMessage),
+        ],
+      ),
+    );
+  }
+}
+
+class const _Avatar() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
       children: [
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: const Icon(Icons.account_circle_rounded),
-          title: Text(_name ?? _email ?? context.s.unknown),
-          subtitle: _name == null || _email == null ? null : Text(_email),
+        CircleAvatar(
+          backgroundColor: context.c.primary,
+          child: Icon(Icons.person_rounded, color: context.c.onPrimary),
         ),
-        BlocBuilder<SyncStatusCubit, SyncStatus>(
-          builder: (context, status) => switch (status.toLabel(context)) {
-            final label? => Text(
-              label,
-              style: context.t.bodyMedium?.copyWith(
-                color: status.needsAction ? context.c.error : context.c.onSurfaceVariant,
-              ),
-            ),
-            null => const SizedBox.shrink(),
-          },
-        ),
-        BlocBuilder<SyncStatusCubit, SyncStatus>(
-          builder: (context, status) => switch (status) {
-            SyncStatus.signInRequired => Padding(
-              padding: const EdgeInsets.only(top: Spacing.s),
-              child: BlocBuilder<ConnectivityCubit, bool>(
-                builder: (context, isConnected) => FilledButton(
-                  onPressed: _isBusy || !isConnected
-                      ? null
-                      : () =>
-                            context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
-                  child: Text(context.s.settingsSignInAgainButton),
-                ),
-              ),
-            ),
-            _ => const SizedBox.shrink(),
-          },
-        ),
-        const SizedBox(height: Spacing.s),
-        ConnectionRequiredNotice(message: context.s.settingsSignOutOfflineMessage),
-        OutlinedButton(
-          onPressed: _isBusy
-              ? null
-              : () => context.read<SettingsBloc>().add(
-                  const SettingsSignOutRequested(discardUnsyncedChanges: false),
-                ),
-          child: _isBusy ? const _ButtonProgress() : Text(context.s.settingsSignOutButton),
+        Positioned(
+          right: 0,
+          bottom: 0,
+          child: CircleAvatar(
+            radius: Spacing.xs,
+            backgroundColor: context.c.secondary,
+            child: const GoogleLogo(size: Spacing.s),
+          ),
         ),
       ],
     );
@@ -475,11 +584,10 @@ class const _DeleteTile({
   Widget build(BuildContext context) {
     final isAccount = _account is GoogleAccount;
     return ListTile(
-      contentPadding: EdgeInsets.zero,
       enabled: !_isBusy,
       iconColor: context.c.error,
       textColor: context.c.error,
-      leading: const Icon(Icons.delete_forever_rounded),
+      trailing: const Icon(Icons.delete_forever_rounded),
       title: Text(
         isAccount ? context.s.settingsDeleteAccountButton : context.s.settingsDeleteDataButton,
       ),

@@ -94,7 +94,6 @@
   "settingsSourceLanguageHint": "A language you know well",
   "settingsTargetLanguageTitle": "Target language",
   "settingsTargetLanguageHint": "The language you learn",
-  "settingsNotificationsTitle": "Notifications",
   "vocabularyReappearsInMinutes": "{count, plural, one{In {count} minute} other{In {count} minutes}}",
   "@vocabularyReappearsInMinutes": {
     "placeholders": {
@@ -136,7 +135,6 @@
     }
   },
   "detailsReplaceButton": "Replace",
-  "settingsAccountTitle": "Account",
   "errorSyncPending": "Your latest changes haven't been uploaded yet.",
   "settingsSignOutButton": "Sign out",
   "settingsSignOutBlockedTitle": "Changes not uploaded",
@@ -152,7 +150,6 @@
   "gateUpdateButton": "Update",
   "gateMaintenanceTitle": "Under maintenance",
   "gateMaintenanceMessage": "Vocabualize is being updated. Please try again later.",
-  "settingsBackupTitle": "Backup",
   "settingsExportBackupButton": "Export backup",
   "settingsExportBackupHint": "Save all words and images as a file",
   "settingsImportBackupButton": "Import backup",
@@ -177,7 +174,6 @@
   "languagePairLabel": "{source} → {target}",
   "languageSelectionTitle": "Your languages",
   "languageSelectionContinueButton": "Continue",
-  "settingsLanguagesTitle": "Languages",
   "@languagePairLabel": {
     "placeholders": {
       "source": {
@@ -340,7 +336,6 @@
   "welcomeOfflineMessage": "Signing in with Google needs an internet connection.",
   "settingsSignInOfflineMessage": "Signing in needs an internet connection.",
   "settingsSignOutOfflineMessage": "Signing out needs an internet connection, so your latest changes can be uploaded first.",
-  "settingsLearningTitle": "Learning",
   "settingsPracticeReminderTitle": "Practice reminder",
   "settingsPracticeReminderHint": "Only on days with words to practice",
   "settingsReminderTimeTitle": "Time",
@@ -359,8 +354,7 @@
   "reportFeedbackSentMessage": "Thank you! Your message was sent.",
   "reportTranslationSentMessage": "Thank you! The translation was reported.",
   "reportOfflineMessage": "Sending needs an internet connection.",
-  "settingsFeedbackButton": "Feedback & bugs",
-  "settingsFeedbackHint": "Ideas, problems or questions",
+  "settingsFeedbackButton": "Feedback",
   "settingsDeleteAccountButton": "Delete account",
   "settingsDeleteDataButton": "Delete all data",
   "settingsDeleteAccountTitle": "Delete account?",

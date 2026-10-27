@@ -624,12 +624,6 @@ abstract class AppLocalizations {
   /// **'The language you learn'**
   String get settingsTargetLanguageHint;
 
-  /// No description provided for @settingsNotificationsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications'**
-  String get settingsNotificationsTitle;
-
   /// No description provided for @vocabularyReappearsInMinutes.
   ///
   /// In en, this message translates to:
@@ -665,12 +659,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replace'**
   String get detailsReplaceButton;
-
-  /// No description provided for @settingsAccountTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Account'**
-  String get settingsAccountTitle;
 
   /// No description provided for @errorSyncPending.
   ///
@@ -761,12 +749,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Vocabualize is being updated. Please try again later.'**
   String get gateMaintenanceMessage;
-
-  /// No description provided for @settingsBackupTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Backup'**
-  String get settingsBackupTitle;
 
   /// No description provided for @settingsExportBackupButton.
   ///
@@ -869,12 +851,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get languageSelectionContinueButton;
-
-  /// No description provided for @settingsLanguagesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Languages'**
-  String get settingsLanguagesTitle;
 
   /// No description provided for @languageSelectionSaveButton.
   ///
@@ -1188,12 +1164,6 @@ abstract class AppLocalizations {
   /// **'Signing out needs an internet connection, so your latest changes can be uploaded first.'**
   String get settingsSignOutOfflineMessage;
 
-  /// No description provided for @settingsLearningTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Learning'**
-  String get settingsLearningTitle;
-
   /// No description provided for @settingsPracticeReminderTitle.
   ///
   /// In en, this message translates to:
@@ -1305,14 +1275,8 @@ abstract class AppLocalizations {
   /// No description provided for @settingsFeedbackButton.
   ///
   /// In en, this message translates to:
-  /// **'Feedback & bugs'**
+  /// **'Feedback'**
   String get settingsFeedbackButton;
-
-  /// No description provided for @settingsFeedbackHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Ideas, problems or questions'**
-  String get settingsFeedbackHint;
 
   /// No description provided for @settingsDeleteAccountButton.
   ///

@@ -274,9 +274,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTargetLanguageHint => 'The language you learn';
 
   @override
-  String get settingsNotificationsTitle => 'Notifications';
-
-  @override
   String vocabularyReappearsInMinutes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -321,9 +318,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get detailsReplaceButton => 'Replace';
-
-  @override
-  String get settingsAccountTitle => 'Account';
 
   @override
   String get errorSyncPending => 'Your latest changes haven\'t been uploaded yet.';
@@ -371,9 +365,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gateMaintenanceMessage => 'Vocabualize is being updated. Please try again later.';
-
-  @override
-  String get settingsBackupTitle => 'Backup';
 
   @override
   String get settingsExportBackupButton => 'Export backup';
@@ -436,9 +427,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageSelectionContinueButton => 'Continue';
-
-  @override
-  String get settingsLanguagesTitle => 'Languages';
 
   @override
   String get languageSelectionSaveButton => 'Save';
@@ -676,9 +664,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Signing out needs an internet connection, so your latest changes can be uploaded first.';
 
   @override
-  String get settingsLearningTitle => 'Learning';
-
-  @override
   String get settingsPracticeReminderTitle => 'Practice reminder';
 
   @override
@@ -734,10 +719,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportOfflineMessage => 'Sending needs an internet connection.';
 
   @override
-  String get settingsFeedbackButton => 'Feedback & bugs';
-
-  @override
-  String get settingsFeedbackHint => 'Ideas, problems or questions';
+  String get settingsFeedbackButton => 'Feedback';
 
   @override
   String get settingsDeleteAccountButton => 'Delete account';
