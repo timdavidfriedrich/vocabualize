@@ -28,7 +28,9 @@ class const SourceToTarget({
           const SizedBox(width: Spacing.xs),
           Icon(Icons.keyboard_double_arrow_right_rounded, color: context.c.primary),
           const SizedBox(width: Spacing.xs),
-          Flexible(child: _TargetButton(target: words.target)),
+          Flexible(
+            child: _TargetButton(source: words.source, target: words.target),
+          ),
         ],
       ),
     );
@@ -75,6 +77,7 @@ class const _SourceButton({
 }
 
 class const _TargetButton({
+  required final String _source,
   required final String _target,
 }) extends StatelessWidget {
   @override
@@ -107,7 +110,7 @@ class const _TargetButton({
 
   Future<void> _report(BuildContext context) async {
     final bloc = context.read<DetailsBloc>();
-    final note = await requestsTranslationReportNote(context);
+    final note = await requestsTranslationReportNote(context, source: _source, target: _target);
     if (note != null) bloc.add(DetailsTranslationReported(note: note));
   }
 }

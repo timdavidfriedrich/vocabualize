@@ -1,57 +1,60 @@
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
-import 'package:shared/presentation/widgets/connection_required_notice.dart';
+import 'package:shared/presentation/widgets/report_form.dart';
 
-const _maxNoteLength = 2000;
 const _minNoteLines = 3;
 
-Future<String?> requestsTranslationReportNote(BuildContext context) {
+Future<String?> requestsTranslationReportNote(
+  BuildContext context, {
+  required String source,
+  required String target,
+}) {
   return showDialog<String>(
     context: context,
-    builder: (dialogContext) => const _ReportTranslationDialog(),
+    useSafeArea: false,
+    builder: (dialogContext) => _ReportTranslationDialog(source: source, target: target),
   );
 }
 
-class const _ReportTranslationDialog() extends HookWidget {
+class const _ReportTranslationDialog({
+  required final String _source,
+  required final String _target,
+}) extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = useTextEditingController();
-    return AlertDialog(
-      title: Text(context.s.reportTranslationTitle),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextField(
-            controller: controller,
-            minLines: _minNoteLines,
-            maxLines: null,
-            maxLength: _maxNoteLength,
-            textCapitalization: TextCapitalization.sentences,
-            decoration: InputDecoration(hintText: context.s.reportTranslationNoteHint),
-          ),
-          Text(
-            context.s.reportFeedbackContextHint,
-            style: context.t.bodySmall?.copyWith(color: context.c.onSurfaceVariant),
-          ),
-          const SizedBox(height: Spacing.s),
-          ConnectionRequiredNotice(message: context.s.reportOfflineMessage),
-        ],
+    return Dialog.fullscreen(
+      child: ReportForm(
+        title: context.s.reportTranslationTitle,
+        header: _WordPair(source: _source, target: _target),
+        controller: controller,
+        fieldHint: context.s.reportTranslationNoteHint,
+        minLines: _minNoteLines,
+        canSend: true,
+        isSending: false,
+        onSend: () => Navigator.of(context).pop(controller.text.trim()),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(context.s.cancel),
-        ),
-        BlocBuilder<ConnectivityCubit, bool>(
-          builder: (context, isConnected) => FilledButton(
-            onPressed: isConnected ? () => Navigator.of(context).pop(controller.text.trim()) : null,
-            child: Text(context.s.reportSendButton),
-          ),
+    );
+  }
+}
+
+class const _WordPair({
+  required final String _source,
+  required final String _target,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(child: Text(_source, style: context.t.bodyLarge)),
+        const SizedBox(width: Spacing.xs),
+        const Icon(Icons.arrow_forward_rounded),
+        const SizedBox(width: Spacing.xs),
+        Flexible(
+          child: Text(_target, style: context.t.bodyLarge?.copyWith(color: context.c.error)),
         ),
       ],
     );
