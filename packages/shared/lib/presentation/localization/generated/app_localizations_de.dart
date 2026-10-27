@@ -524,17 +524,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Uhr deines Handys geht falsch. Aktiviere Datum und Uhrzeit automatisch und versuche es dann erneut.';
 
   @override
-  String homeDueMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count Wörter zum Üben',
-      one: '$count Wort zum Üben',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get homeAllDoneMessage => 'Fürs Erste alles erledigt';
 
   @override

@@ -528,17 +528,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'L\'horloge de votre téléphone est décalée. Activez la date et l\'heure automatiques, puis réessayez.';
 
   @override
-  String homeDueMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count mots à réviser',
-      one: '$count mot à réviser',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get homeAllDoneMessage => 'Tout est fait pour le moment';
 
   @override

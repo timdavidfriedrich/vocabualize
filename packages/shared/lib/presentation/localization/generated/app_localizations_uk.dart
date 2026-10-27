@@ -532,19 +532,6 @@ class AppLocalizationsUk extends AppLocalizations {
       'Годинник вашого телефона показує неправильний час. Увімкніть автоматичні дату й час і спробуйте ще раз.';
 
   @override
-  String homeDueMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count слова для повторення',
-      many: '$count слів для повторення',
-      few: '$count слова для повторення',
-      one: '$count слово для повторення',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get homeAllDoneMessage => 'Поки що все готово';
 
   @override

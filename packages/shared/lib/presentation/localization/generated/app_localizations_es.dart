@@ -524,17 +524,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'El reloj de su teléfono no es correcto. Active la fecha y hora automáticas e inténtelo de nuevo.';
 
   @override
-  String homeDueMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count palabras para practicar',
-      one: '$count palabra para practicar',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get homeAllDoneMessage => 'Todo listo por ahora';
 
   @override

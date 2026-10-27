@@ -518,17 +518,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your phone\'s clock is off. Turn on automatic date and time, then try again.';
 
   @override
-  String homeDueMessage(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count words to practice',
-      one: '$count word to practice',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get homeAllDoneMessage => 'All done for now';
 
   @override

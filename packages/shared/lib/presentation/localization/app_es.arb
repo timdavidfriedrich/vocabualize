@@ -150,7 +150,6 @@
   "settingsSignInAgainButton": "Iniciar sesión de nuevo",
   "loadingProgressLabel": "{current} / {total}",
   "errorClockWrong": "El reloj de su teléfono no es correcto. Active la fecha y hora automáticas e inténtelo de nuevo.",
-  "homeDueMessage": "{count, plural, one{{count} palabra para practicar} other{{count} palabras para practicar}}",
   "homeAllDoneMessage": "Todo listo por ahora",
   "homeStatusFirstWordMessage": "¡Has añadido tu primera palabra! Añade algunas más y pulsa «Practicar». :)",
   "homeStatusEmptyMessage": "¿Por qué no añades algunas palabras nuevas? :)",

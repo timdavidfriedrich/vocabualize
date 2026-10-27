@@ -150,7 +150,6 @@
   "settingsSignInAgainButton": "Увійти знову",
   "loadingProgressLabel": "{current} / {total}",
   "errorClockWrong": "Годинник вашого телефона показує неправильний час. Увімкніть автоматичні дату й час і спробуйте ще раз.",
-  "homeDueMessage": "{count, plural, one{{count} слово для повторення} few{{count} слова для повторення} many{{count} слів для повторення} other{{count} слова для повторення}}",
   "homeAllDoneMessage": "Поки що все готово",
   "homeStatusFirstWordMessage": "Ви додали своє перше слово! Додайте ще й натисніть «Тренуватися»! :)",
   "homeStatusEmptyMessage": "Чому б не додати кілька нових слів? :)",

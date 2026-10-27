@@ -1002,12 +1002,6 @@ abstract class AppLocalizations {
   /// **'Your phone\'s clock is off. Turn on automatic date and time, then try again.'**
   String get errorClockWrong;
 
-  /// No description provided for @homeDueMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{{count} word to practice} other{{count} words to practice}}'**
-  String homeDueMessage(int count);
-
   /// No description provided for @homeAllDoneMessage.
   ///
   /// In en, this message translates to:

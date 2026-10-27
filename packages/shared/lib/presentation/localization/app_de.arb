@@ -150,7 +150,6 @@
   "settingsSignInAgainButton": "Erneut anmelden",
   "loadingProgressLabel": "{current} / {total}",
   "errorClockWrong": "Die Uhr deines Handys geht falsch. Aktiviere Datum und Uhrzeit automatisch und versuche es dann erneut.",
-  "homeDueMessage": "{count, plural, one{{count} Wort zum Üben} other{{count} Wörter zum Üben}}",
   "homeAllDoneMessage": "Fürs Erste alles erledigt",
   "homeStatusFirstWordMessage": "Du hast dein erstes Wort hinzugefügt! Sammle weitere oder tippe auf „Üben“! :)",
   "homeStatusEmptyMessage": "Warum fügst du nicht ein paar Wörter hinzu? :)",

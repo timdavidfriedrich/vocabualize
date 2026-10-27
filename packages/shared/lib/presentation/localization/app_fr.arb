@@ -150,7 +150,6 @@
   "settingsSignInAgainButton": "Se reconnecter",
   "loadingProgressLabel": "{current} / {total}",
   "errorClockWrong": "L'horloge de votre téléphone est décalée. Activez la date et l'heure automatiques, puis réessayez.",
-  "homeDueMessage": "{count, plural, one{{count} mot à réviser} other{{count} mots à réviser}}",
   "homeAllDoneMessage": "Tout est fait pour le moment",
   "homeStatusFirstWordMessage": "Vous avez ajouté votre premier mot ! Ajoutez-en d'autres et appuyez sur « S'exercer » ! :)",
   "homeStatusEmptyMessage": "Pourquoi n'ajoutez-vous pas quelques nouveaux mots ? :)",

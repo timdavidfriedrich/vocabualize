@@ -30,11 +30,13 @@ class const StatusCard({
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(_cheer(context), style: context.t.bodyLarge),
-          const SizedBox(height: Spacing.xxs),
-          Text(
-            _facts(context),
-            style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
-          ),
+          if (_doneMessage(context) case final doneMessage?) ...[
+            const SizedBox(height: Spacing.xxs),
+            Text(
+              doneMessage,
+              style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
+            ),
+          ],
           const SizedBox(height: Spacing.xl),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,8 +65,8 @@ class const StatusCard({
     return messages[Random(seed).nextInt(messages.length)];
   }
 
-  String _facts(BuildContext context) => switch (_overview) {
-    VocabularyOverview(:final dueCount) when dueCount > 0 => context.s.homeDueMessage(dueCount),
+  String? _doneMessage(BuildContext context) => switch (_overview) {
+    VocabularyOverview(:final dueCount) when dueCount > 0 => null,
     VocabularyOverview(nextDueAt: final nextDueAt?) =>
       "${context.s.homeAllDoneMessage}\n${nextDueAt.toNextDueLabel(context)}",
     VocabularyOverview() => context.s.homeAllDoneMessage,

@@ -246,7 +246,6 @@
     }
   },
   "errorClockWrong": "Your phone's clock is off. Turn on automatic date and time, then try again.",
-  "homeDueMessage": "{count, plural, one{{count} word to practice} other{{count} words to practice}}",
   "homeAllDoneMessage": "All done for now",
   "homeStatusFirstWordMessage": "You added your first word! Add some more and hit “Practice”! :)",
   "homeStatusEmptyMessage": "Why don’t you add some new words? :)",
@@ -279,13 +278,6 @@
   "homeNextDueLaterMessage": "Next word on {date}",
   "vocabularySpeakTooltip": "Read out",
   "errorTextToSpeechUnavailable": "No voice for this language is installed on this phone.",
-  "@homeDueMessage": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "@homeNextDueTodayMessage": {
     "placeholders": {
       "time": {
