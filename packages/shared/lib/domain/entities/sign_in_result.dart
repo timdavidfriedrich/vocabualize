@@ -18,3 +18,6 @@ class const AccountConflict({
   required final GoogleAccount previous,
   required final GoogleAccount next,
 }) extends SignInResult with AccountConflictMappable;
+
+@MappableClass()
+class const SignInCancelled() extends SignInResult with SignInCancelledMappable;

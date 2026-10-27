@@ -23,6 +23,7 @@ import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/reminders/reminder_cubit.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
+import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/google_logo.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
@@ -97,7 +98,7 @@ class const SettingsScreen({
               LoadingView(
                 progress: LoadingProgress(current: processedImages, total: totalImages),
               ),
-            SettingsLoaded(:final account, :final isBusy) => ListTileTheme(
+            SettingsLoaded(:final account, :final runningAction) => ListTileTheme(
               data: ListTileThemeData(
                 contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.m),
                 shape: const RoundedRectangleBorder(
@@ -111,22 +112,22 @@ class const SettingsScreen({
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: Spacing.m),
                     child: switch (account) {
-                      LocalAccount() => _SignInCard(isBusy: isBusy),
+                      LocalAccount() => _SignInCard(runningAction: runningAction),
                       GoogleAccount(:final name, :final email) => _AccountCard(
                         name: name,
                         email: email,
-                        isBusy: isBusy,
+                        runningAction: runningAction,
                       ),
                     },
                   ),
                   const SizedBox(height: Spacing.xl),
-                  _LanguageTiles(isBusy: isBusy),
+                  _LanguageTiles(isBusy: runningAction != null),
                   const SizedBox(height: Spacing.m),
                   const _LearningSection(),
                   const SizedBox(height: Spacing.m),
                   const _NotificationsSection(),
                   const SizedBox(height: Spacing.m),
-                  _BackupSection(isBusy: isBusy),
+                  _BackupSection(runningAction: runningAction),
                   ListTile(
                     title: Text(context.s.settingsPrivacyPolicyButton),
                     trailing: const Icon(Icons.open_in_new_rounded),
@@ -137,7 +138,7 @@ class const SettingsScreen({
                     ),
                   ),
                   const SizedBox(height: Spacing.m),
-                  _DeleteTile(account: account, isBusy: isBusy),
+                  _DeleteTile(account: account, runningAction: runningAction),
                   const SizedBox(height: Spacing.xxl),
                 ],
               ),
@@ -333,24 +334,28 @@ class const _ReminderSettings({
 }
 
 class const _BackupSection({
-  required final bool _isBusy,
+  required final SettingsAction? _runningAction,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ListTile(
-          enabled: !_isBusy,
+          enabled: _runningAction == null,
           title: Text(context.s.settingsExportBackupButton),
           subtitle: Text(context.s.settingsExportBackupHint),
-          trailing: const Icon(Icons.ios_share_rounded),
+          trailing: _runningAction == SettingsAction.backupExport
+              ? const ButtonProgress()
+              : const Icon(Icons.ios_share_rounded),
           onTap: () => context.read<SettingsBloc>().add(const SettingsBackupExportRequested()),
         ),
         ListTile(
-          enabled: !_isBusy,
+          enabled: _runningAction == null,
           title: Text(context.s.settingsImportBackupButton),
           subtitle: Text(context.s.settingsImportBackupHint),
-          trailing: _isBusy ? const _ButtonProgress() : const Icon(Icons.download_rounded),
+          trailing: _runningAction == SettingsAction.backupImport
+              ? const ButtonProgress()
+              : const Icon(Icons.download_rounded),
           onTap: () => _confirmImport(context),
         ),
       ],
@@ -404,7 +409,7 @@ class const _Card({
 }
 
 class const _SignInCard({
-  required final bool _isBusy,
+  required final SettingsAction? _runningAction,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -419,10 +424,12 @@ class const _SignInCard({
             alignment: Alignment.centerRight,
             child: BlocBuilder<ConnectivityCubit, bool>(
               builder: (context, isConnected) => ElevatedButton(
-                onPressed: _isBusy || !isConnected
+                onPressed: _runningAction != null || !isConnected
                     ? null
                     : () => context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
-                child: _isBusy ? const _ButtonProgress() : Text(context.s.settingsSignInButton),
+                child: _runningAction == SettingsAction.signIn
+                    ? const ButtonProgress()
+                    : Text(context.s.settingsSignInButton),
               ),
             ),
           ),
@@ -435,7 +442,7 @@ class const _SignInCard({
 class const _AccountCard({
   required final String? _name,
   required final String? _email,
-  required final bool _isBusy,
+  required final SettingsAction? _runningAction,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -469,15 +476,17 @@ class const _AccountCard({
                 ),
               ),
               const SizedBox(width: Spacing.xs),
-              if (_isBusy)
-                const _ButtonProgress()
+              if (_runningAction == SettingsAction.signOut)
+                const ButtonProgress()
               else
                 IconButton(
                   tooltip: context.s.settingsSignOutButton,
                   icon: const Icon(Icons.logout_rounded),
-                  onPressed: () => context.read<SettingsBloc>().add(
-                    const SettingsSignOutRequested(discardUnsyncedChanges: false),
-                  ),
+                  onPressed: _runningAction != null
+                      ? null
+                      : () => context.read<SettingsBloc>().add(
+                          const SettingsSignOutRequested(discardUnsyncedChanges: false),
+                        ),
                 ),
             ],
           ),
@@ -503,12 +512,14 @@ class const _AccountCard({
                   alignment: Alignment.centerRight,
                   child: BlocBuilder<ConnectivityCubit, bool>(
                     builder: (context, isConnected) => ElevatedButton(
-                      onPressed: _isBusy || !isConnected
+                      onPressed: _runningAction != null || !isConnected
                           ? null
                           : () => context.read<SettingsBloc>().add(
                               const SettingsGoogleSignInRequested(),
                             ),
-                      child: Text(context.s.settingsSignInAgainButton),
+                      child: _runningAction == SettingsAction.signIn
+                          ? const ButtonProgress()
+                          : Text(context.s.settingsSignInAgainButton),
                     ),
                   ),
                 ),
@@ -566,28 +577,20 @@ class const _SignOutBlockedDialog() extends StatelessWidget {
   }
 }
 
-class const _ButtonProgress() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox.square(
-      dimension: Spacing.iconS,
-      child: CircularProgressIndicator(strokeWidth: Spacing.borderWidthMedium),
-    );
-  }
-}
-
 class const _DeleteTile({
   required final Account _account,
-  required final bool _isBusy,
+  required final SettingsAction? _runningAction,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isAccount = _account is GoogleAccount;
     return ListTile(
-      enabled: !_isBusy,
+      enabled: _runningAction == null,
       iconColor: context.c.error,
       textColor: context.c.error,
-      trailing: const Icon(Icons.delete_forever_rounded),
+      trailing: _runningAction == SettingsAction.deletion
+          ? const ButtonProgress()
+          : const Icon(Icons.delete_forever_rounded),
       title: Text(
         isAccount ? context.s.settingsDeleteAccountButton : context.s.settingsDeleteDataButton,
       ),

@@ -101,10 +101,10 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         case DetailsEditing(
               :final pendingLookup?,
               :final languages?,
-              isBusy: false,
+              runningAction: null,
             ) &&
             final editing) {
-      final busy = editing.copyWith(isBusy: true, error: null);
+      final busy = editing.copyWith(runningAction: DetailsAction.lookup, error: null);
       emit(busy);
       final lookup = await _lookUp(editing.source, languages, pending: pendingLookup);
       emit(
@@ -113,7 +113,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           stockImages: lookup.stockImages,
           stockPage: 0,
           pendingLookup: lookup.pending,
-          isBusy: false,
+          runningAction: null,
           error: lookup.error,
         ),
       );
@@ -124,8 +124,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     DetailsTranslationReported event,
     Emitter<DetailsState> emit,
   ) async {
-    if (state case DetailsEditing(:final languages?, isBusy: false) && final editing) {
-      final busy = editing.copyWith(isBusy: true, error: null);
+    if (state case DetailsEditing(:final languages?, runningAction: null) && final editing) {
+      final busy = editing.copyWith(runningAction: DetailsAction.report, error: null);
       emit(busy);
       final result = await _reportRepository.sendTranslationReport(
         source: editing.source,
@@ -135,10 +135,10 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       );
       switch (result) {
         case Success():
-          emit(busy.copyWith(isBusy: false, notice: DetailsNotice.translationReported));
-          emit(busy.copyWith(isBusy: false, notice: null));
+          emit(busy.copyWith(runningAction: null, notice: DetailsNotice.translationReported));
+          emit(busy.copyWith(runningAction: null, notice: null));
         case Failure(:final error):
-          emit(busy.copyWith(isBusy: false, error: error));
+          emit(busy.copyWith(runningAction: null, error: error));
       }
     }
   }
@@ -153,14 +153,18 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   Future<void> _onSourceChanged(DetailsSourceChanged event, Emitter<DetailsState> emit) async {
-    if (state case final DetailsEditing editing when !editing.isBusy) {
+    if (state case final DetailsEditing editing when editing.runningAction == null) {
       final source = event.source.trim();
       final languages = editing.languages;
       if (!event.retranslates || languages == null) {
         emit(editing.copyWith(source: source, error: null));
         return;
       }
-      final busy = editing.copyWith(source: source, isBusy: true, error: null);
+      final busy = editing.copyWith(
+        source: source,
+        runningAction: DetailsAction.lookup,
+        error: null,
+      );
       emit(busy);
       final lookup = await _lookUp(
         source,
@@ -173,7 +177,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           stockImages: lookup.stockImages,
           stockPage: 0,
           pendingLookup: lookup.pending,
-          isBusy: false,
+          runningAction: null,
           error: lookup.error,
         ),
       );
@@ -181,7 +185,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   void _onTargetChanged(DetailsTargetChanged event, Emitter<DetailsState> emit) {
-    if (state case final DetailsEditing editing when !editing.isBusy) {
+    if (state case final DetailsEditing editing when editing.runningAction == null) {
       emit(
         editing.copyWith(
           target: event.target.trim(),
@@ -199,24 +203,24 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     DetailsPhotoPickRequested event,
     Emitter<DetailsState> emit,
   ) async {
-    if (state case final DetailsEditing editing when !editing.isBusy) {
-      final busy = editing.copyWith(isBusy: true, error: null);
+    if (state case final DetailsEditing editing when editing.runningAction == null) {
+      final busy = editing.copyWith(runningAction: DetailsAction.photoPick, error: null);
       emit(busy);
       final result = await _pickImage(event.source);
       emit(switch (result) {
         Success(data: final image?) => busy.copyWith(
           selectedImage: DetailsNewPhoto(image: image),
           ownPhoto: DetailsNewPhoto(image: image),
-          isBusy: false,
+          runningAction: null,
         ),
-        Success(data: null) => busy.copyWith(isBusy: false),
-        Failure(:final error) => busy.copyWith(isBusy: false, error: error),
+        Success(data: null) => busy.copyWith(runningAction: null),
+        Failure(:final error) => busy.copyWith(runningAction: null, error: error),
       });
     }
   }
 
   void _onImageToggled(DetailsImageToggled event, Emitter<DetailsState> emit) {
-    if (state case final DetailsEditing editing when !editing.isBusy) {
+    if (state case final DetailsEditing editing when editing.runningAction == null) {
       final isSelected = editing.selectedImage == event.image;
       emit(
         editing.copyWith(
@@ -235,7 +239,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   void _onTagToggled(DetailsTagToggled event, Emitter<DetailsState> emit) {
-    if (state case final DetailsEditing editing when !editing.isBusy) {
+    if (state case final DetailsEditing editing when editing.runningAction == null) {
       final selected = editing.selectedTagIds;
       emit(
         editing.copyWith(
@@ -248,17 +252,17 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   Future<void> _onTagCreated(DetailsTagCreated event, Emitter<DetailsState> emit) async {
-    if (state case final DetailsEditing editing when !editing.isBusy) {
-      final busy = editing.copyWith(isBusy: true, error: null);
+    if (state case final DetailsEditing editing when editing.runningAction == null) {
+      final busy = editing.copyWith(runningAction: DetailsAction.tagCreation, error: null);
       emit(busy);
       final result = await _tagRepository.createTag(event.name.trim());
       emit(switch (result) {
         Success(:final data) => busy.copyWith(
           tags: [...busy.tags, data],
           selectedTagIds: {...busy.selectedTagIds, data.id},
-          isBusy: false,
+          runningAction: null,
         ),
-        Failure(:final error) => busy.copyWith(isBusy: false, error: error),
+        Failure(:final error) => busy.copyWith(runningAction: null, error: error),
       });
     }
   }
@@ -284,29 +288,29 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   Future<void> _onSaveRequested(DetailsSaveRequested event, Emitter<DetailsState> emit) async {
     final editing = state;
-    if (editing is! DetailsEditing || editing.isBusy) return;
+    if (editing is! DetailsEditing || editing.runningAction != null) return;
     if (editing.source.isEmpty || editing.target.isEmpty) {
       emit(editing.copyWith(error: const ValidationError()));
       return;
     }
-    final busy = editing.copyWith(isBusy: true, error: null);
+    final busy = editing.copyWith(runningAction: DetailsAction.save, error: null);
     emit(busy);
     final result = await _save(editing);
     emit(switch (result) {
       Success() when editing.original == null => const DetailsAdded(),
       Success() => const DetailsClosed(),
-      Failure(:final error) => busy.copyWith(isBusy: false, error: error),
+      Failure(:final error) => busy.copyWith(runningAction: null, error: error),
     });
   }
 
   Future<void> _onDeleteRequested(DetailsDeleteRequested event, Emitter<DetailsState> emit) async {
-    if (state case DetailsEditing(:final original?, isBusy: false) && final editing) {
-      final busy = editing.copyWith(isBusy: true, error: null);
+    if (state case DetailsEditing(:final original?, runningAction: null) && final editing) {
+      final busy = editing.copyWith(runningAction: DetailsAction.delete, error: null);
       emit(busy);
       final result = await _vocabularyRepository.deleteVocabulary(original.id);
       emit(switch (result) {
         Success() => const DetailsClosed(),
-        Failure(:final error) => busy.copyWith(isBusy: false, error: error),
+        Failure(:final error) => busy.copyWith(runningAction: null, error: error),
       });
     }
   }
@@ -372,7 +376,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       tags: tags,
       selectedTagIds: const {},
       pendingLookup: lookup?.pending,
-      isBusy: false,
+      runningAction: null,
       notice: null,
       error: lookup?.error,
     );
@@ -407,7 +411,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       tags: tags,
       selectedTagIds: vocabulary.tagIds,
       pendingLookup: lookup.pending,
-      isBusy: false,
+      runningAction: null,
       notice: null,
       error: lookup.error,
     );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
 
 const _maxMessageLength = 2000;
@@ -60,12 +61,7 @@ class const ReportForm({
               child: BlocBuilder<ConnectivityCubit, bool>(
                 builder: (context, isConnected) => ElevatedButton(
                   onPressed: _canSend && !_isSending && isConnected ? _onSend : null,
-                  child: _isSending
-                      ? const SizedBox.square(
-                          dimension: Spacing.iconS,
-                          child: CircularProgressIndicator(strokeWidth: Spacing.borderWidthMedium),
-                        )
-                      : Text(context.s.reportSendButton),
+                  child: _isSending ? const ButtonProgress() : Text(context.s.reportSendButton),
                 ),
               ),
             ),

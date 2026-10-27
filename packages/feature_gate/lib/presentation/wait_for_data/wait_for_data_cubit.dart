@@ -27,7 +27,7 @@ class WaitForDataCubit extends Cubit<WaitForDataState> {
     emit(state.copyWith(isBusy: true, accountConflict: null, error: null));
     final result = await _accountRepository.signInWithGoogle();
     emit(switch (result) {
-      Success(data: SignedIn()) => state.copyWith(isBusy: false),
+      Success(data: SignedIn() || SignInCancelled()) => state.copyWith(isBusy: false),
       Success(data: final AccountConflict conflict) => state.copyWith(
         isBusy: false,
         accountConflict: conflict,

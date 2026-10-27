@@ -79,12 +79,13 @@ class AccountRepositoryImpl(
 
   @override
   Future<AppResult<SignInResult>> signInWithGoogle() async {
-    final RemoteAccount remoteAccount;
+    final RemoteAccount? remoteAccount;
     try {
       remoteAccount = await _authDataSource.signInWithGoogle();
     } on Object {
       return const Failure(AuthError());
     }
+    if (remoteAccount == null) return const Success(SignInCancelled());
     try {
       if (await _findOtherAccount(remoteAccount.id) case final previous?) {
         _pendingSignIn = remoteAccount;

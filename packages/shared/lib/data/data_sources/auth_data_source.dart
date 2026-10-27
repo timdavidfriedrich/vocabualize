@@ -10,7 +10,7 @@ abstract class AuthDataSource {
 
   Future<RemoteAccount?> refreshAccount();
 
-  Future<RemoteAccount> signInWithGoogle();
+  Future<RemoteAccount?> signInWithGoogle();
 
   Future<void> signOut();
 
@@ -38,7 +38,7 @@ class const AuthDataSourceImpl(
   }
 
   @override
-  Future<RemoteAccount> signInWithGoogle() async {
+  Future<RemoteAccount?> signInWithGoogle() async {
     final completer = Completer<void>();
     final controller = GoogleAuthController(
       client: _client,
@@ -51,6 +51,7 @@ class const AuthDataSourceImpl(
     );
     try {
       await controller.signIn();
+      if (!completer.isCompleted) return null;
       await completer.future;
     } finally {
       controller.dispose();

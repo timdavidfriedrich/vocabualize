@@ -15,6 +15,7 @@ import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
+import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 
@@ -127,23 +128,25 @@ class const _Actions() extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DetailsBloc, DetailsState>(
       builder: (context, state) => switch (state) {
-        DetailsEditing(:final original, :final source, :final target, :final isBusy) => Row(
+        DetailsEditing(:final original, :final source, :final target, :final runningAction) => Row(
           children: [
             if (original != null) ...[
-              _DeleteButton(original: original, isBusy: isBusy),
+              _DeleteButton(original: original, runningAction: runningAction),
               const SizedBox(width: Spacing.s),
             ],
             Expanded(
               child: ElevatedButton(
-                onPressed: isBusy || source.isEmpty || target.isEmpty
+                onPressed: runningAction != null || source.isEmpty || target.isEmpty
                     ? null
                     : () => context.read<DetailsBloc>().add(const DetailsSaveRequested()),
-                child: Text(switch (state.selectedImage) {
-                  DetailsNoImage() => context.s.detailsSaveWithoutImageButton,
-                  DetailsNewPhoto() ||
-                  DetailsStockPhoto() ||
-                  DetailsSavedImage() => context.s.detailsSaveButton,
-                }),
+                child: runningAction == DetailsAction.save
+                    ? const ButtonProgress()
+                    : Text(switch (state.selectedImage) {
+                        DetailsNoImage() => context.s.detailsSaveWithoutImageButton,
+                        DetailsNewPhoto() ||
+                        DetailsStockPhoto() ||
+                        DetailsSavedImage() => context.s.detailsSaveButton,
+                      }),
               ),
             ),
           ],
@@ -156,7 +159,7 @@ class const _Actions() extends StatelessWidget {
 
 class const _DeleteButton({
   required final Vocabulary _original,
-  required final bool _isBusy,
+  required final DetailsAction? _runningAction,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -166,8 +169,10 @@ class const _DeleteButton({
         backgroundColor: context.c.error.withValues(alpha: _deleteBackgroundOpacity),
         foregroundColor: context.c.error,
       ),
-      onPressed: _isBusy ? null : () => _delete(context),
-      child: const Icon(Icons.delete_rounded),
+      onPressed: _runningAction != null ? null : () => _delete(context),
+      child: _runningAction == DetailsAction.delete
+          ? const ButtonProgress()
+          : const Icon(Icons.delete_rounded),
     );
   }
 

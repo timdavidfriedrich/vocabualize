@@ -8,6 +8,64 @@
 
 part of 'settings_state.dart';
 
+class SettingsActionMapper extends EnumMapper<SettingsAction> {
+  SettingsActionMapper._();
+
+  static SettingsActionMapper? _instance;
+  static SettingsActionMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = SettingsActionMapper._());
+    }
+    return _instance!;
+  }
+
+  static SettingsAction fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  SettingsAction decode(dynamic value) {
+    switch (value) {
+      case r'signIn':
+        return SettingsAction.signIn;
+      case r'signOut':
+        return SettingsAction.signOut;
+      case r'deletion':
+        return SettingsAction.deletion;
+      case r'backupExport':
+        return SettingsAction.backupExport;
+      case r'backupImport':
+        return SettingsAction.backupImport;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(SettingsAction self) {
+    switch (self) {
+      case SettingsAction.signIn:
+        return r'signIn';
+      case SettingsAction.signOut:
+        return r'signOut';
+      case SettingsAction.deletion:
+        return r'deletion';
+      case SettingsAction.backupExport:
+        return r'backupExport';
+      case SettingsAction.backupImport:
+        return r'backupImport';
+    }
+  }
+}
+
+extension SettingsActionMapperExtension on SettingsAction {
+  String toValue() {
+    SettingsActionMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<SettingsAction>(this) as String;
+  }
+}
+
 class SettingsStateMapper extends ClassMapperBase<SettingsState> {
   SettingsStateMapper._();
 
@@ -175,6 +233,7 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
       MapperContainer.globals.use(_instance = SettingsLoadedMapper._());
       SettingsStateMapper.ensureInitialized();
       AccountMapper.ensureInitialized();
+      SettingsActionMapper.ensureInitialized();
       BackupImportRunningMapper.ensureInitialized();
       AccountConflictMapper.ensureInitialized();
     }
@@ -189,10 +248,10 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
     'account',
     _$account,
   );
-  static bool _$isBusy(SettingsLoaded v) => v.isBusy;
-  static const Field<SettingsLoaded, bool> _f$isBusy = Field(
-    'isBusy',
-    _$isBusy,
+  static SettingsAction? _$runningAction(SettingsLoaded v) => v.runningAction;
+  static const Field<SettingsLoaded, SettingsAction> _f$runningAction = Field(
+    'runningAction',
+    _$runningAction,
   );
   static bool _$isSignOutBlocked(SettingsLoaded v) => v.isSignOutBlocked;
   static const Field<SettingsLoaded, bool> _f$isSignOutBlocked = Field(
@@ -221,7 +280,7 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
   @override
   final MappableFields<SettingsLoaded> fields = const {
     #account: _f$account,
-    #isBusy: _f$isBusy,
+    #runningAction: _f$runningAction,
     #isSignOutBlocked: _f$isSignOutBlocked,
     #importedCount: _f$importedCount,
     #importProgress: _f$importProgress,
@@ -232,7 +291,7 @@ class SettingsLoadedMapper extends ClassMapperBase<SettingsLoaded> {
   static SettingsLoaded _instantiate(DecodingData data) {
     return SettingsLoaded(
       account: data.dec(_f$account),
-      isBusy: data.dec(_f$isBusy),
+      runningAction: data.dec(_f$runningAction),
       isSignOutBlocked: data.dec(_f$isSignOutBlocked),
       importedCount: data.dec(_f$importedCount),
       importProgress: data.dec(_f$importProgress),
@@ -311,7 +370,7 @@ abstract class SettingsLoadedCopyWith<$R, $In extends SettingsLoaded, $Out>
   @override
   $R call({
     Account? account,
-    bool? isBusy,
+    SettingsAction? runningAction,
     bool? isSignOutBlocked,
     int? importedCount,
     BackupImportRunning? importProgress,
@@ -345,7 +404,7 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
   @override
   $R call({
     Account? account,
-    bool? isBusy,
+    Object? runningAction = $none,
     bool? isSignOutBlocked,
     Object? importedCount = $none,
     Object? importProgress = $none,
@@ -354,7 +413,7 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (account != null) #account: account,
-      if (isBusy != null) #isBusy: isBusy,
+      if (runningAction != $none) #runningAction: runningAction,
       if (isSignOutBlocked != null) #isSignOutBlocked: isSignOutBlocked,
       if (importedCount != $none) #importedCount: importedCount,
       if (importProgress != $none) #importProgress: importProgress,
@@ -365,7 +424,7 @@ class _SettingsLoadedCopyWithImpl<$R, $Out>
   @override
   SettingsLoaded $make(CopyWithData data) => SettingsLoaded(
     account: data.get(#account, or: $value.account),
-    isBusy: data.get(#isBusy, or: $value.isBusy),
+    runningAction: data.get(#runningAction, or: $value.runningAction),
     isSignOutBlocked: data.get(#isSignOutBlocked, or: $value.isSignOutBlocked),
     importedCount: data.get(#importedCount, or: $value.importedCount),
     importProgress: data.get(#importProgress, or: $value.importProgress),

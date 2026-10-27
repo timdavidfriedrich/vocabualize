@@ -30,7 +30,7 @@ class WelcomeBloc extends Bloc<WelcomeEvent, WelcomeState> {
   ) async {
     emit(const WelcomeBusy(isSigningIn: true));
     emit(switch (await _accountRepository.signInWithGoogle()) {
-      Success(data: SignedIn()) => const WelcomeIdle(),
+      Success(data: SignedIn() || SignInCancelled()) => const WelcomeIdle(),
       Success(data: final AccountConflict conflict) => WelcomeAccountConflict(conflict: conflict),
       Failure(:final error) => WelcomeFailure(error: error),
     });

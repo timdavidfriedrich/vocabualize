@@ -17,6 +17,7 @@ class SignInResultMapper extends ClassMapperBase<SignInResult> {
       MapperContainer.globals.use(_instance = SignInResultMapper._());
       SignedInMapper.ensureInitialized();
       AccountConflictMapper.ensureInitialized();
+      SignInCancelledMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -313,5 +314,115 @@ class _AccountConflictCopyWithImpl<$R, $Out>
   AccountConflictCopyWith<$R2, AccountConflict, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _AccountConflictCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class SignInCancelledMapper extends ClassMapperBase<SignInCancelled> {
+  SignInCancelledMapper._();
+
+  static SignInCancelledMapper? _instance;
+  static SignInCancelledMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = SignInCancelledMapper._());
+      SignInResultMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'SignInCancelled';
+
+  @override
+  final MappableFields<SignInCancelled> fields = const {};
+
+  static SignInCancelled _instantiate(DecodingData data) {
+    return SignInCancelled();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static SignInCancelled fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<SignInCancelled>(map);
+  }
+
+  static SignInCancelled fromJson(String json) {
+    return ensureInitialized().decodeJson<SignInCancelled>(json);
+  }
+}
+
+mixin SignInCancelledMappable {
+  String toJson() {
+    return SignInCancelledMapper.ensureInitialized()
+        .encodeJson<SignInCancelled>(this as SignInCancelled);
+  }
+
+  Map<String, dynamic> toMap() {
+    return SignInCancelledMapper.ensureInitialized().encodeMap<SignInCancelled>(
+      this as SignInCancelled,
+    );
+  }
+
+  SignInCancelledCopyWith<SignInCancelled, SignInCancelled, SignInCancelled>
+  get copyWith =>
+      _SignInCancelledCopyWithImpl<SignInCancelled, SignInCancelled>(
+        this as SignInCancelled,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return SignInCancelledMapper.ensureInitialized().stringifyValue(
+      this as SignInCancelled,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return SignInCancelledMapper.ensureInitialized().equalsValue(
+      this as SignInCancelled,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return SignInCancelledMapper.ensureInitialized().hashValue(
+      this as SignInCancelled,
+    );
+  }
+}
+
+extension SignInCancelledValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, SignInCancelled, $Out> {
+  SignInCancelledCopyWith<$R, SignInCancelled, $Out> get $asSignInCancelled =>
+      $base.as((v, t, t2) => _SignInCancelledCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class SignInCancelledCopyWith<$R, $In extends SignInCancelled, $Out>
+    implements SignInResultCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  SignInCancelledCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _SignInCancelledCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, SignInCancelled, $Out>
+    implements SignInCancelledCopyWith<$R, SignInCancelled, $Out> {
+  _SignInCancelledCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<SignInCancelled> $mapper =
+      SignInCancelledMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  SignInCancelled $make(CopyWithData data) => SignInCancelled();
+
+  @override
+  SignInCancelledCopyWith<$R2, SignInCancelled, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _SignInCancelledCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

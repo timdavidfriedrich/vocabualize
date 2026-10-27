@@ -6,6 +6,9 @@ import 'package:shared/domain/entities/sign_in_result.dart';
 
 part 'settings_state.mapper.dart';
 
+@MappableEnum()
+enum SettingsAction { signIn, signOut, deletion, backupExport, backupImport }
+
 @MappableClass()
 sealed class SettingsState with SettingsStateMappable {
   const SettingsState();
@@ -17,7 +20,7 @@ class const SettingsLoading() extends SettingsState with SettingsLoadingMappable
 @MappableClass()
 class const SettingsLoaded({
   required final Account account,
-  required final bool isBusy,
+  required final SettingsAction? runningAction,
   required final bool isSignOutBlocked,
   required final int? importedCount,
   required final BackupImportRunning? importProgress,

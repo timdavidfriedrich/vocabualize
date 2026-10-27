@@ -62,7 +62,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           loaded.copyWith(account: account),
         (Success(data: AuthAuthenticated(:final account)), _) => SettingsLoaded(
           account: account,
-          isBusy: false,
+          runningAction: null,
           isSignOutBlocked: false,
           importedCount: null,
           importProgress: null,
@@ -79,17 +79,23 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) async {
     if (state case final SettingsLoaded loaded) {
-      emit(loaded.copyWith(isBusy: true, accountConflict: null, error: null));
+      emit(
+        loaded.copyWith(
+          runningAction: SettingsAction.signIn,
+          accountConflict: null,
+          error: null,
+        ),
+      );
     }
     final result = await _accountRepository.signInWithGoogle();
     if (state case final SettingsLoaded loaded) {
       emit(switch (result) {
-        Success(data: SignedIn()) => loaded.copyWith(isBusy: false),
+        Success(data: SignedIn() || SignInCancelled()) => loaded.copyWith(runningAction: null),
         Success(data: final AccountConflict conflict) => loaded.copyWith(
-          isBusy: false,
+          runningAction: null,
           accountConflict: conflict,
         ),
-        Failure(:final error) => loaded.copyWith(isBusy: false, error: error),
+        Failure(:final error) => loaded.copyWith(runningAction: null, error: error),
       });
     }
   }
@@ -97,8 +103,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<void> _onAccountConflictResolved(
     SettingsAccountConflictResolved event,
     Emitter<SettingsState> emit,
-  ) => _runBusy(
+  ) => _run(
     emit,
+    SettingsAction.signIn,
     () => _accountRepository.resolveAccountConflict(
       keepsPreviousAccount: event.keepsPreviousAccount,
     ),
@@ -107,8 +114,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<void> _onSignOutRequested(
     SettingsSignOutRequested event,
     Emitter<SettingsState> emit,
-  ) => _runBusy(
+  ) => _run(
     emit,
+    SettingsAction.signOut,
     () => _accountRepository.signOut(discardUnsyncedChanges: event.discardUnsyncedChanges),
   );
 
@@ -189,12 +197,12 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<void> _onDeletionRequested(
     SettingsDeletionRequested event,
     Emitter<SettingsState> emit,
-  ) => _runBusy(emit, _accountRepository.deleteAccount);
+  ) => _run(emit, SettingsAction.deletion, _accountRepository.deleteAccount);
 
   Future<void> _onBackupExportRequested(
     SettingsBackupExportRequested event,
     Emitter<SettingsState> emit,
-  ) => _runBusy(emit, _backupRepository.exportBackup);
+  ) => _run(emit, SettingsAction.backupExport, _backupRepository.exportBackup);
 
   Future<void> _onBackupImportRequested(
     SettingsBackupImportRequested event,
@@ -203,7 +211,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     if (state case final SettingsLoaded loaded) {
       emit(
         loaded.copyWith(
-          isBusy: true,
+          runningAction: SettingsAction.backupImport,
           importedCount: null,
           importProgress: null,
           accountConflict: null,
@@ -220,13 +228,17 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           Success(data: BackupImportCompleted(:final importedCount)),
           final SettingsLoaded loaded,
         ) =>
-          loaded.copyWith(isBusy: false, importProgress: null, importedCount: importedCount),
+          loaded.copyWith(
+            runningAction: null,
+            importProgress: null,
+            importedCount: importedCount,
+          ),
         (Success(data: BackupImportCancelled()), final SettingsLoaded loaded) => loaded.copyWith(
-          isBusy: false,
+          runningAction: null,
           importProgress: null,
         ),
         (Failure(:final error), final SettingsLoaded loaded) => loaded.copyWith(
-          isBusy: false,
+          runningAction: null,
           importProgress: null,
           error: error,
         ),
@@ -235,14 +247,15 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
   }
 
-  Future<void> _runBusy<T>(
+  Future<void> _run<T>(
     Emitter<SettingsState> emit,
+    SettingsAction runningAction,
     Future<AppResult<T>> Function() action,
   ) async {
     if (state case final SettingsLoaded loaded) {
       emit(
         loaded.copyWith(
-          isBusy: true,
+          runningAction: runningAction,
           isSignOutBlocked: false,
           importedCount: null,
           accountConflict: null,
@@ -253,12 +266,12 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final result = await action();
     if (state case final SettingsLoaded loaded) {
       emit(switch (result) {
-        Success() => loaded.copyWith(isBusy: false, error: null),
+        Success() => loaded.copyWith(runningAction: null, error: null),
         Failure(error: SyncPendingError()) => loaded.copyWith(
-          isBusy: false,
+          runningAction: null,
           isSignOutBlocked: true,
         ),
-        Failure(:final error) => loaded.copyWith(isBusy: false, error: error),
+        Failure(:final error) => loaded.copyWith(runningAction: null, error: error),
       });
     }
   }

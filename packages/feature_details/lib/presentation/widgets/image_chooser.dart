@@ -21,6 +21,7 @@ typedef _ImageChoice = ({
   bool hasStockImages,
   bool isWaitingForConnection,
   bool isBusy,
+  bool isLoadingImage,
 });
 
 class const ImageChooser({
@@ -36,7 +37,7 @@ class const ImageChooser({
           :final stockImages,
           :final stockPage,
           :final pendingLookup,
-          :final isBusy,
+          :final runningAction,
         ) =>
           (
             selected: selectedImage,
@@ -47,7 +48,9 @@ class const ImageChooser({
                 .toList(),
             hasStockImages: stockImages.isNotEmpty,
             isWaitingForConnection: pendingLookup != null,
-            isBusy: isBusy,
+            isBusy: runningAction != null,
+            isLoadingImage:
+                runningAction == DetailsAction.lookup || runningAction == DetailsAction.photoPick,
           ),
         _ => null,
       },
@@ -58,7 +61,7 @@ class const ImageChooser({
           children: [
             AspectRatio(
               aspectRatio: 1,
-              child: _SelectedImageBox(selected: choice.selected, isBusy: choice.isBusy),
+              child: _SelectedImageBox(selected: choice.selected, isLoading: choice.isLoadingImage),
             ),
             const SizedBox(height: Spacing.m),
             if (choice.hasStockImages) const _ProviderHint(),
@@ -96,7 +99,7 @@ class const ImageChooser({
 
 class const _SelectedImageBox({
   required final DetailsImage _selected,
-  required final bool _isBusy,
+  required final bool _isLoading,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -118,7 +121,7 @@ class const _SelectedImageBox({
           null => null,
         },
       ),
-      child: switch ((_isBusy, _selected)) {
+      child: switch ((_isLoading, _selected)) {
         (true, _) => const Center(child: CircularProgressIndicator()),
         (false, DetailsNoImage() || DetailsSavedImage(image: NoImage())) => const _NoImageMessage(),
         (
