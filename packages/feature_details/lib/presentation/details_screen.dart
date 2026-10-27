@@ -91,12 +91,8 @@ class const _EditingScreen() extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Row(
-          children: [
-            Expanded(child: SourceToTarget()),
-            SizedBox(width: Spacing.xxxl),
-          ],
-        ),
+        title: const SourceToTarget(),
+        actions: const [SizedBox(width: kToolbarHeight)],
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: Spacing.xxxl),

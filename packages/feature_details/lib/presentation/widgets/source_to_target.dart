@@ -22,14 +22,21 @@ class const SourceToTarget({
         _ => (source: "", target: ""),
       },
       builder: (context, words) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Flexible(child: _SourceButton(source: words.source)),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: _SourceButton(source: words.source),
+            ),
+          ),
           const SizedBox(width: Spacing.xs),
           Icon(Icons.keyboard_double_arrow_right_rounded, color: context.c.primary),
           const SizedBox(width: Spacing.xs),
-          Flexible(
-            child: _TargetButton(source: words.source, target: words.target),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: _TargetButton(source: words.source, target: words.target),
+            ),
           ),
         ],
       ),
@@ -42,23 +49,15 @@ class const _SourceButton({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) => TextButton(
-        style: TextButton.styleFrom(padding: EdgeInsets.zero),
-        onPressed: () => _edit(context),
-        child: FittedBox(
-          alignment: Alignment.centerRight,
-          child: SizedBox(
-            width: constraints.maxWidth,
-            child: Text(
-              _source,
-              maxLines: _maxLines,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.right,
-              style: context.t.bodyLarge,
-            ),
-          ),
-        ),
+    return TextButton(
+      style: TextButton.styleFrom(padding: EdgeInsets.zero),
+      onPressed: () => _edit(context),
+      child: Text(
+        _source,
+        maxLines: _maxLines,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.right,
+        style: context.t.bodyLarge,
       ),
     );
   }
