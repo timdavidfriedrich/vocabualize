@@ -50,6 +50,7 @@ class const AccountDeletion() {
         where: (t) => t.authUserId.equals(userId),
         transaction: transaction,
       );
+      await const UserProfiles().deleteProfileForUser(session, userId, transaction: transaction);
       await const AuthUsers().delete(session, authUserId: userId, transaction: transaction);
       return images;
     });
