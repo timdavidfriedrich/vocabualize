@@ -36,7 +36,7 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Thesis notes, accept, "keep data after test phase" | none | 🗑 thesis | S |
 | Choose languages via a full-screen language picker | Language pair as chips (5 languages) | 🔄 bundled language list, chips instead of picker | P |
 | Languages loaded from the server | Bundled constants | 🔄 by design | S |
-| Note that the code is open source (GitHub) | none | ❓ see open item 4 | S |
+| Note that the code is open source (GitHub) | none | 🗑 decided: left out | S |
 
 ### Home
 
@@ -46,9 +46,9 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Streak chip (tap did nothing) | Streak chip opens the streak sheet | ✅ ➕ | P |
 | Alerts from the server on Home | none yet | ⏳ "For later" (banners) | S |
 | Status card: level counts, practice button with due badge | Same | ✅ | P |
-| Status card message: random playful line ("You added your first word!", "Wow, you already added 5 words today", …) | Facts: due count, total, all done, next due time | ❓ see open item 1 | S |
+| Status card message: random playful line ("You added your first word!", "Wow, you already added 5 words today", …) | Same messages (one per day), with the due facts below | ✅ | E |
 | "Recently added" section | Same | ✅ | P |
-| Collections row (only with the experimental toggle) | Always shown when collections exist | 🔄 see open item 2 | P |
+| Collections row (only with the experimental toggle) | Always shown when collections exist | 🔄 decided: always on | P |
 | Word list: tap = info, swipe right = edit, swipe left = delete, read aloud | Same | ✅ | P |
 | "+" menu: Scan, Write, Speak | Scan, Write | 🗑 Speak (voice input) later, by plan | P |
 | Empty state with mascot | Same | ✅ | E |
@@ -59,7 +59,7 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 |---|---|---|---|
 | Edit source and target in dialogs, offer retranslation | Same | ✅ | P |
 | Automatic translation | DeepL through the server, limits per tier | ✅ 🔄 | P |
-| Stock photos: word translated to English, articles removed, then searched | Searched in the source language with Pexels' `locale` | 🔄 see open item 5 | P |
+| Stock photos: word translated to English, articles removed, then searched | Searched in the source language with Pexels' `locale` | 🔄 decided: keep | P |
 | Browse more stock photos | Same | ✅ | P |
 | Own photo from camera or gallery | Same, resized, metadata removed | ✅ | P |
 | Photographer link | Same | ✅ | P |
@@ -67,7 +67,7 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Add to collection, create collection | Same | ✅ | P |
 | Duplicate check | Same, for Write and Scan | ✅ | P |
 | Delete word | Same | ✅ | P |
-| Report a faulty translation (full screen, 128 characters) | Same entry point, but a dialog with 2,000 characters | ✅ ❓ design, see open item 9 | E |
+| Report a faulty translation (full screen, 128 characters) | Full-screen dialog with the word pair, 2,000 characters | ✅ | E |
 | — | Offline notice with automatic retry | ➕ | P |
 
 ### Practice
@@ -110,10 +110,10 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Source and target language | Language pair | ✅ | P |
 | Disable type-answer mode (experimental) | In "Learning" | ✅ | P |
 | Hide images (experimental) | In "Learning", also hides Scan and stock photos | ✅ | P |
-| Enable collections (experimental, off by default) | none, always on | ❓ see open item 2 | E |
+| Enable collections (experimental, off by default) | none, always on | 🔄 decided: no switch | E |
 | Experimental section, copy ID, survey, keep data, onboarding link | none | 🗑 thesis | E |
 | Practice reminder, always on at 19:00 (the time picker existed only in debug builds) | Switch and time, off by default, only on days with due words | 🔄 | P |
-| "Gather words" reminder, always on at 13:00 (time picker only in debug builds) | Streak reminder, with "look around" messages | ❓ see open item 3 | E |
+| "Gather words" reminder, always on at 13:00 (time picker only in debug builds) | Streak reminder, with "look around" messages | 🔄 decided: no separate reminder for now | E |
 | Push notifications (Firebase) | none | 🗑 no telemetry or Firebase | S |
 | Open notification settings | Same, plus a "blocked" hint | ✅ | P |
 | Report bug | Feedback & bugs | ✅ | P |
@@ -140,11 +140,12 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Dark theme and color palette | ✅ same colors |
 | Font Poppins | 🔄 bundled instead of downloaded at runtime (no Google Fonts request) |
 | Text sizes | 🔄 Material defaults (decided during the Home port); legacy used custom sizes (e.g. body 16 instead of 14) |
-| Button styles | ✅ shape and colors; ❓ labels are 14 bold instead of legacy 16 bold (open item 8) |
-| Slider and switches | ❓ legacy uses the 2024 slider and white switch thumbs (open item 8) |
+| Button styles | ✅ shape, colors and the legacy 48 dp height; labels stay 14 bold (decided) |
+| Slider and switches | ✅ 2024 slider like legacy; switches keep the new grey thumbs (decided) |
 | Mascots and launcher icon | ✅ same artwork |
 | Layout of Home, Details, Scan, Practice, Collections | ✅ matches in the side-by-side pass |
-| Layout of Welcome, language choice, Settings | ❓ different design (open item 8) |
+| Layout of Welcome and Settings | ✅ legacy design (Settings with the new rows as rounded rows) |
+| Language choice | 🔄 new chips kept (decided), button at the bottom |
 
 ## Side-by-side pass (2026-10-27)
 
@@ -168,16 +169,14 @@ Not captured: legacy "Speak" (opening it crashed the emulator), legacy type-answ
 
 ## Open items
 
-1. **Status card message:** decided 2026-10-27: bring back the playful line above the facts.
-2. **Collections toggle:** answered "no" to keeping collections always on, which means the opt-in switch comes back (to confirm).
-3. **"Gather words" reminder:** answered "no", which means no separate reminder; the streak reminder's messages cover it (to confirm).
-4. **Open-source note:** decided 2026-10-27: leave it out.
-5. **Stock photo search language:** decided 2026-10-27: no comparison; keep searching in the source language.
-6. **Side-by-side screenshots:** done 2026-10-27, see the section above.
-7. **Device walkthrough** of every ✅ row still marked only S or E.
-8. **Design fixes from the side-by-side pass**, in this order:
-   1. Theme: button labels 16 bold, the 2024 slider, white switch thumbs.
-   2. Settings in the legacy layout, with the new rows styled like the legacy rows.
-   3. Welcome in the legacy look, with the Google logo on the sign-in button.
-   4. Language choice: keep the chips, bring back the legacy headings, background and bottom button.
-9. **Faulty translation:** bring back the legacy full screen, keeping the "Sent along" note.
+1. **Device walkthrough** of every ✅ row still marked only S or E.
+2. **Signed-in Settings card** (avatar, sync status, sign-out): built, not yet seen on a device, because the emulator has no Google account.
+
+## Decided (2026-10-27)
+
+- Playful status line: yes, above the due facts; the card grows with the text.
+- Collections: always on, no switch.
+- "Gather words" reminder: none for now.
+- Open-source note: left out.
+- Stock photo search: keeps the source language.
+- Design: legacy Welcome (without GitHub) and Settings; the new language chips stay with the button at the bottom; reports are full-screen dialogs with the button at the bottom; buttons 48 dp with the current text size; 2024 slider; switches unchanged.
