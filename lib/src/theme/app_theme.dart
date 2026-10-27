@@ -35,6 +35,11 @@ const _dialogElevation = 8.0;
 const _dimmedStates = {WidgetState.disabled, WidgetState.pressed, WidgetState.hovered};
 
 const _buttonPadding = EdgeInsets.symmetric(horizontal: Spacing.xxl, vertical: Spacing.s);
+const _buttonMinimumSize = Size(0, Spacing.xxxl);
+const _sliderTrackHeight = Spacing.m;
+const _sliderTrackGap = Spacing.xxs;
+const _sliderThumbSize = Size(4, 44);
+const _sliderPressedThumbSize = Size(2, 44);
 const _inputPadding = EdgeInsets.symmetric(horizontal: Spacing.l, vertical: Spacing.xs);
 
 abstract final class AppTheme {
@@ -132,6 +137,7 @@ abstract final class AppTheme {
                 : _primary,
           ),
           padding: const WidgetStatePropertyAll(_buttonPadding),
+          minimumSize: const WidgetStatePropertyAll(_buttonMinimumSize),
           textStyle: WidgetStatePropertyAll(textTheme.labelLarge),
           elevation: const WidgetStatePropertyAll(0),
           shape: const WidgetStatePropertyAll(roundedButtonShape),
@@ -140,6 +146,7 @@ abstract final class AppTheme {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           padding: _buttonPadding,
+          minimumSize: _buttonMinimumSize,
           shape: roundedButtonShape,
           textStyle: textTheme.labelLarge,
         ),
@@ -150,6 +157,7 @@ abstract final class AppTheme {
             (states) => states.contains(WidgetState.disabled) ? _outline : _onSurface,
           ),
           padding: const WidgetStatePropertyAll(_buttonPadding),
+          minimumSize: const WidgetStatePropertyAll(_buttonMinimumSize),
           textStyle: WidgetStatePropertyAll(textTheme.labelLarge),
           elevation: const WidgetStatePropertyAll(0),
           shape: const WidgetStatePropertyAll(roundedButtonShape),
@@ -172,9 +180,20 @@ abstract final class AppTheme {
           (states) => states.contains(WidgetState.selected) ? _onPrimary : _onSurfaceVariant,
         ),
       ),
-      sliderTheme: const SliderThemeData(
+      sliderTheme: SliderThemeData(
         activeTrackColor: _primary,
         inactiveTrackColor: _surfaceContainer,
+        trackHeight: _sliderTrackHeight,
+        trackGap: _sliderTrackGap,
+        trackShape: const GappedSliderTrackShape(),
+        thumbShape: const HandleThumbShape(),
+        thumbSize: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.dragged) || states.contains(WidgetState.focused)
+              ? _sliderPressedThumbSize
+              : _sliderThumbSize,
+        ),
+        overlayColor: Colors.transparent,
+        valueIndicatorShape: const RoundedRectSliderValueIndicatorShape(),
       ),
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: _primary,
