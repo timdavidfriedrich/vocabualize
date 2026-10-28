@@ -1,5 +1,6 @@
 name: feature_details
 version: 0.0.1
+publish_to: 'none'
 environment:
   sdk: ^3.13.5
 resolution: workspace
@@ -7,6 +8,10 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
+  adaptive_actions:
+    git:
+      url: https://github.com/timdavidfriedrich/adaptive_actions.git
+      ref: v1.0.0
   core:
   shared:
   flutter_bloc: ^9.1.1

@@ -1,3 +1,5 @@
+import 'package:adaptive_actions/adaptive_actions.dart';
+import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
@@ -16,13 +18,19 @@ class const _ReplaceDialog() extends StatelessWidget {
       title: Text(context.s.detailsReplaceTitle),
       content: Text(context.s.detailsReplaceMessage),
       actions: [
-        OutlinedButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(context.s.no),
-        ),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          child: Text(context.s.detailsReplaceButton),
+        AdaptiveActions(
+          spacing: Spacing.xs,
+          stackedSpacing: Spacing.xxs,
+          children: [
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(context.s.no),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(context.s.detailsReplaceButton),
+            ),
+          ],
         ),
       ],
     );

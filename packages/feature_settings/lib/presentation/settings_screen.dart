@@ -1,3 +1,4 @@
+import 'package:adaptive_actions/adaptive_actions.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:feature_settings/presentation/settings_bloc.dart';
 import 'package:feature_settings/presentation/settings_event.dart';
@@ -379,13 +380,19 @@ class const _ImportBackupDialog() extends StatelessWidget {
       title: Text(context.s.settingsImportBackupConfirmTitle),
       content: Text(context.s.settingsImportBackupConfirmMessage),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(context.s.cancel),
-        ),
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          child: Text(context.s.settingsImportBackupConfirmButton),
+        AdaptiveActions(
+          spacing: Spacing.xs,
+          stackedSpacing: Spacing.xxs,
+          children: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(context.s.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(context.s.settingsImportBackupConfirmButton),
+            ),
+          ],
         ),
       ],
     );
@@ -564,13 +571,19 @@ class const _SignOutBlockedDialog() extends StatelessWidget {
       title: Text(context.s.settingsSignOutBlockedTitle),
       content: Text(context.s.settingsSignOutBlockedMessage),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(context.s.cancel),
-        ),
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          child: Text(context.s.settingsSignOutAnywayButton),
+        AdaptiveActions(
+          spacing: Spacing.xs,
+          stackedSpacing: Spacing.xxs,
+          children: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(context.s.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(context.s.settingsSignOutAnywayButton),
+            ),
+          ],
         ),
       ],
     );
@@ -644,21 +657,27 @@ class const _DeleteDialog({
         ],
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(context.s.cancel),
-        ),
-        BlocBuilder<ConnectivityCubit, bool>(
-          builder: (context, isConnected) => FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: context.c.error,
-              foregroundColor: context.c.onError,
+        AdaptiveActions(
+          spacing: Spacing.xs,
+          stackedSpacing: Spacing.xxs,
+          children: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(context.s.cancel),
             ),
-            onPressed: typed.matchesLoosely(confirmWord) && (isConnected || !_isAccount)
-                ? () => Navigator.of(context).pop(true)
-                : null,
-            child: Text(context.s.settingsDeleteConfirmButton),
-          ),
+            BlocBuilder<ConnectivityCubit, bool>(
+              builder: (context, isConnected) => FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: context.c.error,
+                  foregroundColor: context.c.onError,
+                ),
+                onPressed: typed.matchesLoosely(confirmWord) && (isConnected || !_isAccount)
+                    ? () => Navigator.of(context).pop(true)
+                    : null,
+                child: Text(context.s.settingsDeleteConfirmButton),
+              ),
+            ),
+          ],
         ),
       ],
     );

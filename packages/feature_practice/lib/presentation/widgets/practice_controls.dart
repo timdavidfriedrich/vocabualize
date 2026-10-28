@@ -1,3 +1,4 @@
+import 'package:adaptive_actions/adaptive_actions.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:feature_practice/presentation/extensions/practice_answer_extensions.dart';
 import 'package:feature_practice/presentation/extensions/typed_answer_extensions.dart';
@@ -81,33 +82,27 @@ class const _RateButtons({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return AdaptiveActions.stretched(
+      spacing: Spacing.s,
+      stackedSpacing: Spacing.xxs,
       children: [
-        Expanded(
-          child: _RateButton(
-            controls: _controls,
-            answer: PracticeAnswer.hard,
-            color: context.levels.beginner,
-            label: context.s.practiceHardButton,
-          ),
+        _RateButton(
+          controls: _controls,
+          answer: PracticeAnswer.hard,
+          color: context.levels.beginner,
+          label: context.s.practiceHardButton,
         ),
-        const SizedBox(width: Spacing.s),
-        Expanded(
-          child: _RateButton(
-            controls: _controls,
-            answer: PracticeAnswer.good,
-            color: context.levels.advanced,
-            label: context.s.practiceGoodButton,
-          ),
+        _RateButton(
+          controls: _controls,
+          answer: PracticeAnswer.good,
+          color: context.levels.advanced,
+          label: context.s.practiceGoodButton,
         ),
-        const SizedBox(width: Spacing.s),
-        Expanded(
-          child: _RateButton(
-            controls: _controls,
-            answer: PracticeAnswer.easy,
-            color: context.levels.expert,
-            label: context.s.practiceEasyButton,
-          ),
+        _RateButton(
+          controls: _controls,
+          answer: PracticeAnswer.easy,
+          color: context.levels.expert,
+          label: context.s.practiceEasyButton,
         ),
       ],
     );

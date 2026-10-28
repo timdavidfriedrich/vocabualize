@@ -1,3 +1,4 @@
+import 'package:adaptive_actions/adaptive_actions.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
@@ -21,14 +22,20 @@ class const _DuplicateDialog({
       content: Text(context.s.detailsDuplicateMessage(_source)),
       actionsPadding: const EdgeInsets.all(Spacing.m),
       actions: [
-        OutlinedButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(Spacing.s)),
-          child: Text(context.s.detailsDuplicateAddButton),
-        ),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(context.s.cancel),
+        AdaptiveActions(
+          spacing: Spacing.xs,
+          stackedSpacing: Spacing.xxs,
+          children: [
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(Spacing.s)),
+              child: Text(context.s.detailsDuplicateAddButton),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(context.s.cancel),
+            ),
+          ],
         ),
       ],
     );

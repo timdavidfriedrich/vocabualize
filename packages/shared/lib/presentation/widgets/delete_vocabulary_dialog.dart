@@ -1,3 +1,4 @@
+import 'package:adaptive_actions/adaptive_actions.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
@@ -34,15 +35,21 @@ class const _DeleteVocabularyDialog({
       actionsPadding: const EdgeInsets.all(Spacing.xl),
       actionsAlignment: MainAxisAlignment.end,
       actions: [
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(Spacing.s)),
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(context.s.cancel),
-        ),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          style: ElevatedButton.styleFrom(backgroundColor: context.c.error),
-          child: Text(context.s.delete),
+        AdaptiveActions(
+          spacing: Spacing.xs,
+          stackedSpacing: Spacing.xxs,
+          children: [
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(Spacing.s)),
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(context.s.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(backgroundColor: context.c.error),
+              child: Text(context.s.delete),
+            ),
+          ],
         ),
       ],
     );

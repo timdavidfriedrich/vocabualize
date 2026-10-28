@@ -1,3 +1,5 @@
+import 'package:adaptive_actions/adaptive_actions.dart';
+import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/sign_in_result.dart';
@@ -26,23 +28,29 @@ class const _AccountConflictDialog({
       actionsOverflowDirection: VerticalDirection.down,
       actionsOverflowAlignment: OverflowBarAlignment.center,
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(
-            context.s.accountConflictKeepButton(_emailLabel(context, previous)),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          style: TextButton.styleFrom(foregroundColor: context.c.error),
-          child: Text(
-            context.s.accountConflictSwitchButton(
-              _emailLabel(context, previous),
-              _emailLabel(context, next),
+        AdaptiveActions(
+          spacing: Spacing.xs,
+          stackedSpacing: Spacing.xxs,
+          children: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                context.s.accountConflictKeepButton(_emailLabel(context, previous)),
+                textAlign: TextAlign.center,
+              ),
             ),
-            textAlign: TextAlign.center,
-          ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(foregroundColor: context.c.error),
+              child: Text(
+                context.s.accountConflictSwitchButton(
+                  _emailLabel(context, previous),
+                  _emailLabel(context, next),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ),
       ],
     );
