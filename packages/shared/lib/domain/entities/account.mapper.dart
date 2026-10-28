@@ -184,12 +184,18 @@ class GoogleAccountMapper extends ClassMapperBase<GoogleAccount> {
   static const Field<GoogleAccount, String> _f$name = Field('name', _$name);
   static String? _$email(GoogleAccount v) => v.email;
   static const Field<GoogleAccount, String> _f$email = Field('email', _$email);
+  static String? _$picturePath(GoogleAccount v) => v.picturePath;
+  static const Field<GoogleAccount, String> _f$picturePath = Field(
+    'picturePath',
+    _$picturePath,
+  );
 
   @override
   final MappableFields<GoogleAccount> fields = const {
     #id: _f$id,
     #name: _f$name,
     #email: _f$email,
+    #picturePath: _f$picturePath,
   };
 
   static GoogleAccount _instantiate(DecodingData data) {
@@ -197,6 +203,7 @@ class GoogleAccountMapper extends ClassMapperBase<GoogleAccount> {
       id: data.dec(_f$id),
       name: data.dec(_f$name),
       email: data.dec(_f$email),
+      picturePath: data.dec(_f$picturePath),
     );
   }
 
@@ -263,7 +270,7 @@ extension GoogleAccountValueCopy<$R, $Out>
 abstract class GoogleAccountCopyWith<$R, $In extends GoogleAccount, $Out>
     implements AccountCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? id, String? name, String? email});
+  $R call({String? id, String? name, String? email, String? picturePath});
   GoogleAccountCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -276,11 +283,17 @@ class _GoogleAccountCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GoogleAccount> $mapper =
       GoogleAccountMapper.ensureInitialized();
   @override
-  $R call({String? id, Object? name = $none, Object? email = $none}) => $apply(
+  $R call({
+    String? id,
+    Object? name = $none,
+    Object? email = $none,
+    Object? picturePath = $none,
+  }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (name != $none) #name: name,
       if (email != $none) #email: email,
+      if (picturePath != $none) #picturePath: picturePath,
     }),
   );
   @override
@@ -288,6 +301,7 @@ class _GoogleAccountCopyWithImpl<$R, $Out>
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
     email: data.get(#email, or: $value.email),
+    picturePath: data.get(#picturePath, or: $value.picturePath),
   );
 
   @override

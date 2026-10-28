@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:injectable/injectable.dart';
@@ -14,6 +15,7 @@ const _databaseFileName = "database.db";
 const _imagesDirectoryName = "images";
 const _accountFileName = "account.json";
 const _ownerIdFileName = "owner_id";
+const _profilePicturePrefix = "profile_picture_";
 const _partialSuffix = ".part";
 
 abstract class SpaceStorageDataSource {
@@ -30,6 +32,12 @@ abstract class SpaceStorageDataSource {
   Future<LocalAccountMetadata?> readAccount(UuidValue userId);
 
   Future<void> writeAccount(LocalAccountMetadata account);
+
+  Future<String?> findProfilePicture(LocalAccountMetadata account);
+
+  Future<String> writeProfilePicture(UuidValue userId, Uint8List bytes);
+
+  Future<void> deleteProfilePicture(UuidValue userId, String fileName);
 
   Future<bool> hasCompletedInitialSync(UuidValue userId);
 
@@ -100,6 +108,30 @@ class const SpaceStorageDataSourceImpl() implements SpaceStorageDataSource {
   }
 
   @override
+  Future<String?> findProfilePicture(LocalAccountMetadata account) async {
+    final fileName = account.pictureFileName;
+    if (fileName == null) return null;
+    final file = await _profilePictureFile(UuidValue.withValidation(account.accountId), fileName);
+    return await file.exists() ? file.path : null;
+  }
+
+  @override
+  Future<String> writeProfilePicture(UuidValue userId, Uint8List bytes) async {
+    final fileName = "$_profilePicturePrefix${const Uuid().v7()}";
+    final file = await _profilePictureFile(userId, fileName);
+    final partialFile = File("${file.path}$_partialSuffix");
+    await partialFile.writeAsBytes(bytes, flush: true);
+    await partialFile.rename(file.path);
+    return fileName;
+  }
+
+  @override
+  Future<void> deleteProfilePicture(UuidValue userId, String fileName) async {
+    final file = await _profilePictureFile(userId, fileName);
+    if (await file.exists()) await file.delete();
+  }
+
+  @override
   Future<bool> hasCompletedInitialSync(UuidValue userId) async =>
       (await readAccount(userId))?.hasCompletedInitialSync ?? false;
 
@@ -159,6 +191,9 @@ class const SpaceStorageDataSourceImpl() implements SpaceStorageDataSource {
   Future<File> _accountFile(UuidValue userId) async =>
       File("${(await _spaceDirectory(AccountSpace(userId: userId))).path}/$_accountFileName");
 
+  Future<File> _profilePictureFile(UuidValue userId, String fileName) async =>
+      File("${(await _spaceDirectory(AccountSpace(userId: userId))).path}/$fileName");
+
   Future<File> _ownerIdFile() async =>
       File("${(await _spaceDirectory(const LocalOnlySpace())).path}/$_ownerIdFileName");
 
@@ -166,6 +201,8 @@ class const SpaceStorageDataSourceImpl() implements SpaceStorageDataSource {
     accountId: userId.uuid,
     name: null,
     email: null,
+    pictureUrl: null,
+    pictureFileName: null,
     hasCompletedInitialSync: false,
   );
 }

@@ -4,7 +4,7 @@ import 'package:shared/domain/entities/account.dart';
 
 extension RemoteAccountMappers on RemoteAccount {
   GoogleAccount toGoogleAccount() {
-    return GoogleAccount(id: id, name: fullName, email: email);
+    return GoogleAccount(id: id, name: fullName, email: email, picturePath: null);
   }
 
   LocalAccountMetadata toLocalAccountMetadata({
@@ -14,13 +14,15 @@ extension RemoteAccountMappers on RemoteAccount {
       accountId: id,
       name: fullName ?? stored?.name,
       email: email ?? stored?.email,
+      pictureUrl: stored?.pictureUrl,
+      pictureFileName: stored?.pictureFileName,
       hasCompletedInitialSync: stored?.hasCompletedInitialSync ?? false,
     );
   }
 }
 
 extension LocalAccountMetadataMappers on LocalAccountMetadata {
-  GoogleAccount toGoogleAccount() {
-    return GoogleAccount(id: accountId, name: name, email: email);
+  GoogleAccount toGoogleAccount({required String? picturePath}) {
+    return GoogleAccount(id: accountId, name: name, email: email, picturePath: picturePath);
   }
 }

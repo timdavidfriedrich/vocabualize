@@ -7,5 +7,7 @@ class const LocalAccountMetadata({
   required final String accountId,
   required final String? name,
   required final String? email,
+  required final String? pictureUrl,
+  required final String? pictureFileName,
   required final bool hasCompletedInitialSync,
 }) with LocalAccountMetadataMappable;

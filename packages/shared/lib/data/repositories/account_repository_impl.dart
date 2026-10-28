@@ -9,6 +9,7 @@ import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/data_sources/device_data_source.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/image_sync_data_source.dart';
+import 'package:shared/data/data_sources/image_transfer_data_source.dart';
 import 'package:shared/data/data_sources/local_import_data_source.dart';
 import 'package:shared/data/data_sources/service_access_data_source.dart';
 import 'package:shared/data/data_sources/setting_local_data_source.dart';
@@ -31,6 +32,7 @@ class AccountRepositoryImpl(
   final DatabaseSessionDataSource _sessions,
   final SpaceStorageDataSource _storage,
   final ImageFileDataSource _imageFiles,
+  final ImageTransferDataSource _imageTransfer,
   final LocalImportDataSource _importDataSource,
   final SettingLocalDataSource _settingDataSource,
   final SyncDataSource _syncDataSource,
@@ -91,12 +93,14 @@ class AccountRepositoryImpl(
         _pendingSignIn = remoteAccount;
         return Success(
           AccountConflict(
-            previous: previous.toGoogleAccount(),
+            previous: await _toGoogleAccount(previous),
             next: remoteAccount.toGoogleAccount(),
           ),
         );
       }
-      return switch (await _openRemote(remoteAccount)) {
+      final opened = await _openRemote(remoteAccount);
+      unawaited(_updateProfilePicture(remoteAccount));
+      return switch (opened) {
         Success(:final data) => Success(SignedIn(account: data)),
         Failure(:final error) => Failure(error),
       };
@@ -120,7 +124,9 @@ class AccountRepositoryImpl(
       if (await _findOtherAccount(pendingSignIn.id) case final previous?) {
         await _removeSpace(AccountSpace(userId: UuidValue.withValidation(previous.accountId)));
       }
-      return await _openRemote(pendingSignIn);
+      final opened = await _openRemote(pendingSignIn);
+      unawaited(_updateProfilePicture(pendingSignIn));
+      return opened;
     } on Object catch (error) {
       return Failure(error.toAppError());
     }
@@ -192,10 +198,10 @@ class AccountRepositoryImpl(
   Future<AppResult<Account>> _openRemote(RemoteAccount remoteAccount) async {
     final userId = UuidValue.withValidation(remoteAccount.id);
     final session = await _sessions.open(AccountSpace(userId: userId));
-    await _rememberAccount(remoteAccount);
+    final metadata = await _rememberAccount(remoteAccount);
     final adoption = await _adoptLocalData(userId);
     await _startSync(session, userId);
-    final account = remoteAccount.toGoogleAccount();
+    final account = await _toGoogleAccount(metadata);
     _emit(AuthAuthenticated(account: account));
     return switch (adoption) {
       Success() => Success(account),
@@ -265,17 +271,59 @@ class AccountRepositoryImpl(
     try {
       final remoteAccount = await _authDataSource.refreshAccount();
       if (remoteAccount == null) return;
-      await _rememberAccount(remoteAccount);
-      _emit(AuthAuthenticated(account: remoteAccount.toGoogleAccount()));
+      final metadata = await _rememberAccount(remoteAccount);
+      _emit(AuthAuthenticated(account: await _toGoogleAccount(metadata)));
+      await _updateProfilePicture(remoteAccount);
     } on Object {
       return;
     }
   }
 
-  Future<void> _rememberAccount(RemoteAccount remoteAccount) async {
+  Future<LocalAccountMetadata> _rememberAccount(RemoteAccount remoteAccount) async {
     final stored = await _storage.readAccount(UuidValue.withValidation(remoteAccount.id));
-    await _storage.writeAccount(remoteAccount.toLocalAccountMetadata(stored: stored));
+    final metadata = remoteAccount.toLocalAccountMetadata(stored: stored);
+    await _storage.writeAccount(metadata);
+    return metadata;
   }
+
+  Future<void> _updateProfilePicture(RemoteAccount remoteAccount) async {
+    try {
+      final userId = UuidValue.withValidation(remoteAccount.id);
+      final stored = await _storage.readAccount(userId);
+      if (stored == null || await _hasCurrentPicture(stored, remoteAccount.pictureUrl)) return;
+      final pictureFileName = switch (remoteAccount.pictureUrl) {
+        final pictureUrl? => await _storage.writeProfilePicture(
+          userId,
+          await _imageTransfer.download(pictureUrl),
+        ),
+        null => null,
+      };
+      final latest = await _storage.readAccount(userId);
+      if (latest == null) return;
+      final metadata = latest.copyWith(
+        pictureUrl: remoteAccount.pictureUrl,
+        pictureFileName: pictureFileName,
+      );
+      await _storage.writeAccount(metadata);
+      if (latest.pictureFileName case final previousFileName?) {
+        await _storage.deleteProfilePicture(userId, previousFileName);
+      }
+      if (_status case AuthAuthenticated(account: GoogleAccount(:final id))
+          when id == userId.uuid) {
+        _emit(AuthAuthenticated(account: await _toGoogleAccount(metadata)));
+      }
+    } on Object {
+      return;
+    }
+  }
+
+  Future<bool> _hasCurrentPicture(LocalAccountMetadata stored, String? pictureUrl) async {
+    if (pictureUrl != stored.pictureUrl) return false;
+    return pictureUrl == null || await _storage.findProfilePicture(stored) != null;
+  }
+
+  Future<GoogleAccount> _toGoogleAccount(LocalAccountMetadata metadata) async =>
+      metadata.toGoogleAccount(picturePath: await _storage.findProfilePicture(metadata));
 
   Future<LocalAccountMetadata?> _findOtherAccount(String accountId) async {
     for (final account in await _storage.findAccounts()) {

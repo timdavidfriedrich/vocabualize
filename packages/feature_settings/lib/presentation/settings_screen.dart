@@ -23,6 +23,7 @@ import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/reminders/reminder_cubit.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
+import 'package:shared/presentation/widgets/account_avatar.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
@@ -110,9 +111,10 @@ class const SettingsScreen({
                     padding: const EdgeInsets.symmetric(horizontal: Spacing.m),
                     child: switch (account) {
                       LocalAccount() => _SignInCard(runningAction: runningAction),
-                      GoogleAccount(:final name, :final email) => _AccountCard(
+                      GoogleAccount(:final name, :final email, :final picturePath) => _AccountCard(
                         name: name,
                         email: email,
+                        picturePath: picturePath,
                         runningAction: runningAction,
                       ),
                     },
@@ -429,6 +431,7 @@ class const _SignInCard({
 class const _AccountCard({
   required final String? _name,
   required final String? _email,
+  required final String? _picturePath,
   required final SettingsAction? _runningAction,
 }) extends StatelessWidget {
   @override
@@ -439,7 +442,7 @@ class const _AccountCard({
         children: [
           Row(
             children: [
-              const _Avatar(),
+              _Avatar(picturePath: _picturePath),
               const SizedBox(width: Spacing.m),
               Expanded(
                 child: Column(
@@ -521,15 +524,14 @@ class const _AccountCard({
   }
 }
 
-class const _Avatar() extends StatelessWidget {
+class const _Avatar({
+  required final String? _picturePath,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CircleAvatar(
-          backgroundColor: context.c.primary,
-          child: Icon(Icons.person_rounded, color: context.c.onPrimary),
-        ),
+        AccountAvatar(picturePath: _picturePath),
         Positioned(
           right: 0,
           bottom: 0,

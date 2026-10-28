@@ -293,6 +293,19 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => _i650.LanguagePairCubit(gh<_i0.SettingsRepository>()));
     gh.factory<_i218.PreferencesCubit>(
         () => _i218.PreferencesCubit(gh<_i0.SettingsRepository>()));
+    gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
+          gh<_i535.AuthDataSource>(),
+          gh<_i862.DatabaseSessionDataSource>(),
+          gh<_i753.SpaceStorageDataSource>(),
+          gh<_i532.ImageFileDataSource>(),
+          gh<_i28.ImageTransferDataSource>(),
+          gh<_i843.LocalImportDataSource>(),
+          gh<_i555.SettingLocalDataSource>(),
+          gh<_i1034.SyncDataSource>(),
+          gh<_i61.ImageSyncDataSource>(),
+          gh<_i228.ServiceAccessDataSource>(),
+          gh<_i931.DeviceDataSource>(),
+        ));
     gh.factory<_i152.BackupRepository>(() => _i237.BackupRepositoryImpl(
           gh<_i862.DatabaseSessionDataSource>(),
           gh<_i843.LocalImportDataSource>(),
@@ -304,18 +317,6 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         ));
     gh.factory<_i76.WatchStreakUseCase>(
         () => _i76.WatchStreakUseCase(gh<_i503.ActivityRepository>()));
-    gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
-          gh<_i535.AuthDataSource>(),
-          gh<_i862.DatabaseSessionDataSource>(),
-          gh<_i753.SpaceStorageDataSource>(),
-          gh<_i532.ImageFileDataSource>(),
-          gh<_i843.LocalImportDataSource>(),
-          gh<_i555.SettingLocalDataSource>(),
-          gh<_i1034.SyncDataSource>(),
-          gh<_i61.ImageSyncDataSource>(),
-          gh<_i228.ServiceAccessDataSource>(),
-          gh<_i931.DeviceDataSource>(),
-        ));
     gh.factory<_i902.ReminderCubit>(() => _i902.ReminderCubit(
           gh<_i821.ReminderRepository>(),
           gh<_i0.SettingsRepository>(),

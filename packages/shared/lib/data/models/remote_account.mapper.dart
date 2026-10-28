@@ -31,12 +31,18 @@ class RemoteAccountMapper extends ClassMapperBase<RemoteAccount> {
   );
   static String? _$email(RemoteAccount v) => v.email;
   static const Field<RemoteAccount, String> _f$email = Field('email', _$email);
+  static String? _$pictureUrl(RemoteAccount v) => v.pictureUrl;
+  static const Field<RemoteAccount, String> _f$pictureUrl = Field(
+    'pictureUrl',
+    _$pictureUrl,
+  );
 
   @override
   final MappableFields<RemoteAccount> fields = const {
     #id: _f$id,
     #fullName: _f$fullName,
     #email: _f$email,
+    #pictureUrl: _f$pictureUrl,
   };
 
   static RemoteAccount _instantiate(DecodingData data) {
@@ -44,6 +50,7 @@ class RemoteAccountMapper extends ClassMapperBase<RemoteAccount> {
       id: data.dec(_f$id),
       fullName: data.dec(_f$fullName),
       email: data.dec(_f$email),
+      pictureUrl: data.dec(_f$pictureUrl),
     );
   }
 
@@ -109,7 +116,7 @@ extension RemoteAccountValueCopy<$R, $Out>
 
 abstract class RemoteAccountCopyWith<$R, $In extends RemoteAccount, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? fullName, String? email});
+  $R call({String? id, String? fullName, String? email, String? pictureUrl});
   RemoteAccountCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -122,19 +129,25 @@ class _RemoteAccountCopyWithImpl<$R, $Out>
   late final ClassMapperBase<RemoteAccount> $mapper =
       RemoteAccountMapper.ensureInitialized();
   @override
-  $R call({String? id, Object? fullName = $none, Object? email = $none}) =>
-      $apply(
-        FieldCopyWithData({
-          if (id != null) #id: id,
-          if (fullName != $none) #fullName: fullName,
-          if (email != $none) #email: email,
-        }),
-      );
+  $R call({
+    String? id,
+    Object? fullName = $none,
+    Object? email = $none,
+    Object? pictureUrl = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (fullName != $none) #fullName: fullName,
+      if (email != $none) #email: email,
+      if (pictureUrl != $none) #pictureUrl: pictureUrl,
+    }),
+  );
   @override
   RemoteAccount $make(CopyWithData data) => RemoteAccount(
     id: data.get(#id, or: $value.id),
     fullName: data.get(#fullName, or: $value.fullName),
     email: data.get(#email, or: $value.email),
+    pictureUrl: data.get(#pictureUrl, or: $value.pictureUrl),
   );
 
   @override

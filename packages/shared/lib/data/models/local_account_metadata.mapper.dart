@@ -37,6 +37,16 @@ class LocalAccountMetadataMapper extends ClassMapperBase<LocalAccountMetadata> {
     'email',
     _$email,
   );
+  static String? _$pictureUrl(LocalAccountMetadata v) => v.pictureUrl;
+  static const Field<LocalAccountMetadata, String> _f$pictureUrl = Field(
+    'pictureUrl',
+    _$pictureUrl,
+  );
+  static String? _$pictureFileName(LocalAccountMetadata v) => v.pictureFileName;
+  static const Field<LocalAccountMetadata, String> _f$pictureFileName = Field(
+    'pictureFileName',
+    _$pictureFileName,
+  );
   static bool _$hasCompletedInitialSync(LocalAccountMetadata v) =>
       v.hasCompletedInitialSync;
   static const Field<LocalAccountMetadata, bool> _f$hasCompletedInitialSync =
@@ -47,6 +57,8 @@ class LocalAccountMetadataMapper extends ClassMapperBase<LocalAccountMetadata> {
     #accountId: _f$accountId,
     #name: _f$name,
     #email: _f$email,
+    #pictureUrl: _f$pictureUrl,
+    #pictureFileName: _f$pictureFileName,
     #hasCompletedInitialSync: _f$hasCompletedInitialSync,
   };
 
@@ -55,6 +67,8 @@ class LocalAccountMetadataMapper extends ClassMapperBase<LocalAccountMetadata> {
       accountId: data.dec(_f$accountId),
       name: data.dec(_f$name),
       email: data.dec(_f$email),
+      pictureUrl: data.dec(_f$pictureUrl),
+      pictureFileName: data.dec(_f$pictureFileName),
       hasCompletedInitialSync: data.dec(_f$hasCompletedInitialSync),
     );
   }
@@ -133,6 +147,8 @@ abstract class LocalAccountMetadataCopyWith<
     String? accountId,
     String? name,
     String? email,
+    String? pictureUrl,
+    String? pictureFileName,
     bool? hasCompletedInitialSync,
   });
   LocalAccountMetadataCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -153,12 +169,16 @@ class _LocalAccountMetadataCopyWithImpl<$R, $Out>
     String? accountId,
     Object? name = $none,
     Object? email = $none,
+    Object? pictureUrl = $none,
+    Object? pictureFileName = $none,
     bool? hasCompletedInitialSync,
   }) => $apply(
     FieldCopyWithData({
       if (accountId != null) #accountId: accountId,
       if (name != $none) #name: name,
       if (email != $none) #email: email,
+      if (pictureUrl != $none) #pictureUrl: pictureUrl,
+      if (pictureFileName != $none) #pictureFileName: pictureFileName,
       if (hasCompletedInitialSync != null)
         #hasCompletedInitialSync: hasCompletedInitialSync,
     }),
@@ -168,6 +188,8 @@ class _LocalAccountMetadataCopyWithImpl<$R, $Out>
     accountId: data.get(#accountId, or: $value.accountId),
     name: data.get(#name, or: $value.name),
     email: data.get(#email, or: $value.email),
+    pictureUrl: data.get(#pictureUrl, or: $value.pictureUrl),
+    pictureFileName: data.get(#pictureFileName, or: $value.pictureFileName),
     hasCompletedInitialSync: data.get(
       #hasCompletedInitialSync,
       or: $value.hasCompletedInitialSync,

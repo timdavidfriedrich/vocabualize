@@ -27,7 +27,12 @@ class const AuthDataSourceImpl(
     await _sessionManager.restore();
     final authInfo = _sessionManager.authInfo;
     if (authInfo == null) return null;
-    return RemoteAccount(id: authInfo.authUserId.toString(), fullName: null, email: null);
+    return RemoteAccount(
+      id: authInfo.authUserId.toString(),
+      fullName: null,
+      email: null,
+      pictureUrl: null,
+    );
   }
 
   @override
@@ -72,6 +77,7 @@ class const AuthDataSourceImpl(
       id: authInfo.authUserId.toString(),
       fullName: profile.fullName,
       email: profile.email,
+      pictureUrl: profile.imageUrl?.toString(),
     );
   }
 

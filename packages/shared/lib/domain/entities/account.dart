@@ -15,4 +15,5 @@ class const GoogleAccount({
   required final String id,
   required final String? name,
   required final String? email,
+  required final String? picturePath,
 }) extends Account with GoogleAccountMappable;
