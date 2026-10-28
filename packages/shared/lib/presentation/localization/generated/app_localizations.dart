@@ -702,6 +702,12 @@ abstract class AppLocalizations {
   /// **'Connecting…'**
   String get syncStatusConnecting;
 
+  /// No description provided for @syncStatusSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing…'**
+  String get syncStatusSyncing;
+
   /// No description provided for @syncStatusSynced.
   ///
   /// In en, this message translates to:

@@ -142,6 +142,7 @@
   "settingsSignOutBlockedMessage": "Some changes haven't reached the server yet. Connect to the internet and try again. If you sign out anyway, these changes are lost.",
   "settingsSignOutAnywayButton": "Sign out anyway",
   "syncStatusConnecting": "Connecting…",
+  "syncStatusSyncing": "Syncing…",
   "syncStatusSynced": "All changes synced",
   "syncStatusOffline": "Offline. Changes sync once you're back online.",
   "syncStatusUpdateRequired": "Update the app to keep syncing.",

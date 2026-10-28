@@ -351,6 +351,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get syncStatusConnecting => 'Підключення…';
 
   @override
+  String get syncStatusSyncing => 'Синхронізація…';
+
+  @override
   String get syncStatusSynced => 'Усі зміни синхронізовано';
 
   @override

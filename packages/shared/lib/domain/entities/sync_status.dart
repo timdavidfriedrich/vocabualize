@@ -1,6 +1,7 @@
 enum SyncStatus {
   disabled,
   connecting,
+  syncing,
   synced,
   offline,
   serverUnreachable,

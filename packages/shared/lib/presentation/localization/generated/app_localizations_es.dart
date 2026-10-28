@@ -343,6 +343,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get syncStatusConnecting => 'Conectando…';
 
   @override
+  String get syncStatusSyncing => 'Sincronizando…';
+
+  @override
   String get syncStatusSynced => 'Todos los cambios sincronizados';
 
   @override

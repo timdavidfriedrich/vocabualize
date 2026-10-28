@@ -19,6 +19,8 @@ abstract class SyncDataSource {
 
   Stream<RemoteDataReadiness> watchReadiness();
 
+  Stream<bool> watchTransferring();
+
   void start(
     OfflineSyncDatabaseSession session, {
     required UuidValue userId,
@@ -41,8 +43,10 @@ class SyncDataSourceImpl(
 ) implements SyncDataSource {
   final _stateChanges = StreamController<RemoteSyncState>.broadcast();
   final _readinessChanges = StreamController<RemoteDataReadiness>.broadcast();
+  final _transferringChanges = StreamController<bool>.broadcast();
   RemoteSyncState _state = RemoteSyncState.inactive;
   RemoteDataReadiness _readiness = RemoteDataReadiness.ready;
+  bool _isTransferring = false;
   OfflineSyncDatabaseSession? _session;
   UuidValue? _userId;
   OfflineSyncSubscription? _subscription;
@@ -62,6 +66,12 @@ class SyncDataSourceImpl(
   Stream<RemoteDataReadiness> watchReadiness() async* {
     yield _readiness;
     yield* _readinessChanges.stream;
+  }
+
+  @override
+  Stream<bool> watchTransferring() async* {
+    yield _isTransferring;
+    yield* _transferringChanges.stream;
   }
 
   @override
@@ -188,7 +198,10 @@ class SyncDataSourceImpl(
       ({required changes, required once}) => _client.modules.offline_sync.offlineSync
           .sync(
             changes: changes.map((event) {
-              if (event is OfflineSyncMergeChunk) hasUnconfirmedChanges = true;
+              if (event is OfflineSyncMergeChunk) {
+                hasUnconfirmedChanges = true;
+                _setTransferring(true);
+              }
               return event;
             }),
             once: once,
@@ -198,6 +211,7 @@ class SyncDataSourceImpl(
             switch (event) {
               case OfflineSyncMergeChunk():
                 _mayReconnectImmediately = true;
+                _setTransferring(true);
               case OfflineSyncEndOfBatch():
                 hasBeenLive = true;
                 if (hasUnconfirmedChanges) {
@@ -205,6 +219,7 @@ class SyncDataSourceImpl(
                   _mayReconnectImmediately = true;
                 }
                 _setState(RemoteSyncState.live);
+                _setTransferring(false);
               default:
                 break;
             }
@@ -306,9 +321,16 @@ class SyncDataSourceImpl(
   }
 
   void _setState(RemoteSyncState state) {
+    if (state != RemoteSyncState.live) _setTransferring(false);
     if (state == _state) return;
     _state = state;
     _stateChanges.add(state);
+  }
+
+  void _setTransferring(bool isTransferring) {
+    if (isTransferring == _isTransferring) return;
+    _isTransferring = isTransferring;
+    _transferringChanges.add(isTransferring);
   }
 
   void _setReadiness(RemoteDataReadiness readiness) {

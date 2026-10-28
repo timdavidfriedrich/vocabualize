@@ -4,10 +4,10 @@ import 'package:shared/domain/entities/data_readiness.dart';
 import 'package:shared/domain/entities/sync_status.dart';
 
 extension RemoteSyncStateMappers on RemoteSyncState {
-  SyncStatus toSyncStatus() => switch (this) {
+  SyncStatus toSyncStatus({required bool isTransferring}) => switch (this) {
     RemoteSyncState.inactive => SyncStatus.disabled,
     RemoteSyncState.connecting => SyncStatus.connecting,
-    RemoteSyncState.live => SyncStatus.synced,
+    RemoteSyncState.live => isTransferring ? SyncStatus.syncing : SyncStatus.synced,
     RemoteSyncState.offline => SyncStatus.offline,
     RemoteSyncState.serverUnreachable => SyncStatus.serverUnreachable,
     RemoteSyncState.unauthorized => SyncStatus.signInRequired,

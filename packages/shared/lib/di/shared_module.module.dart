@@ -239,15 +239,11 @@ class SharedPackageModule extends _i526.MicroPackageModule {
             gh<_i906.TranslationRemoteDataSource>()));
     gh.factory<_i452.TagLocalDataSource>(() =>
         _i452.TagLocalDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
-    gh.factory<_i523.SyncRepository>(
-        () => _i368.SyncRepositoryImpl(gh<_i1034.SyncDataSource>()));
     gh.factory<_i934.StockImageRepository>(() =>
         _i645.StockImageRepositoryImpl(gh<_i317.StockImageRemoteDataSource>()));
     gh.factory<_i397.VocabularyLocalDataSource>(() =>
         _i397.VocabularyLocalDataSourceImpl(
             gh<_i862.DatabaseSessionDataSource>()));
-    gh.factory<_i765.SyncStatusCubit>(
-        () => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
     gh.factory<_i347.ActivityLocalDataSource>(() =>
         _i347.ActivityLocalDataSourceImpl(
             gh<_i862.DatabaseSessionDataSource>()));
@@ -294,6 +290,10 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => _i650.LanguagePairCubit(gh<_i0.SettingsRepository>()));
     gh.factory<_i218.PreferencesCubit>(
         () => _i218.PreferencesCubit(gh<_i0.SettingsRepository>()));
+    gh.factory<_i523.SyncRepository>(() => _i368.SyncRepositoryImpl(
+          gh<_i1034.SyncDataSource>(),
+          gh<_i61.ImageSyncDataSource>(),
+        ));
     gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
           gh<_i535.AuthDataSource>(),
           gh<_i862.DatabaseSessionDataSource>(),
@@ -307,6 +307,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i228.ServiceAccessDataSource>(),
           gh<_i931.DeviceDataSource>(),
         ));
+    gh.factory<_i765.SyncStatusCubit>(
+        () => _i765.SyncStatusCubit(gh<_i523.SyncRepository>()));
     gh.factory<_i152.BackupRepository>(() => _i237.BackupRepositoryImpl(
           gh<_i862.DatabaseSessionDataSource>(),
           gh<_i843.LocalImportDataSource>(),

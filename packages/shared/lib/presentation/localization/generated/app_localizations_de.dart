@@ -343,6 +343,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get syncStatusConnecting => 'Verbinde…';
 
   @override
+  String get syncStatusSyncing => 'Wird synchronisiert…';
+
+  @override
   String get syncStatusSynced => 'Alle Änderungen synchronisiert';
 
   @override

@@ -18,6 +18,8 @@ abstract class ImageSyncDataSource {
   Future<void> stop();
 
   Future<bool> uploadPending(OfflineSyncDatabaseSession session);
+
+  Stream<bool> watchTransferring();
 }
 
 @LazySingleton(as: ImageSyncDataSource)
@@ -34,6 +36,14 @@ class ImageSyncDataSourceImpl(
   bool _isUploadRequested = false;
   bool _isDownloadRequested = false;
   bool _isTransferring = false;
+  final _transferringChanges = StreamController<bool>.broadcast();
+  int _activeTransfers = 0;
+
+  @override
+  Stream<bool> watchTransferring() async* {
+    yield _activeTransfers > 0;
+    yield* _transferringChanges.stream;
+  }
 
   @override
   void start(OfflineSyncDatabaseSession session) {
@@ -121,6 +131,11 @@ class ImageSyncDataSourceImpl(
 
   Future<bool> _uploadPending(OfflineSyncDatabaseSession session) async {
     final vocabularies = await LocalVocabulary.db.find(session, where: _isPendingUpload);
+    if (vocabularies.isEmpty) return true;
+    return _tracked(() => _upload(vocabularies));
+  }
+
+  Future<bool> _upload(List<LocalVocabulary> vocabularies) async {
     final notLocalIds = await _imageFileDataSource.findMissingImageIds(
       [for (final vocabulary in vocabularies) ?vocabulary.customImageId],
       LocalImageVariant.full,
@@ -165,6 +180,15 @@ class ImageSyncDataSourceImpl(
     Set<String> imageIds,
     LocalImageVariant variant,
   ) async {
+    if (imageIds.isEmpty) return;
+    await _tracked(() => _downloadAll(session, imageIds, variant));
+  }
+
+  Future<void> _downloadAll(
+    OfflineSyncDatabaseSession session,
+    Set<String> imageIds,
+    LocalImageVariant variant,
+  ) async {
     var remainingIds = imageIds;
     while (remainingIds.isNotEmpty && identical(_session, session)) {
       final downloads = await _imageTransferDataSource.createDownloads(
@@ -187,6 +211,22 @@ class ImageSyncDataSourceImpl(
       if (failedIds.length == downloads.length) return;
       remainingIds = failedIds;
     }
+  }
+
+  Future<T> _tracked<T>(Future<T> Function() transfer) async {
+    _changeActiveTransfers(1);
+    try {
+      return await transfer();
+    } finally {
+      _changeActiveTransfers(-1);
+    }
+  }
+
+  void _changeActiveTransfers(int change) {
+    final wasTransferring = _activeTransfers > 0;
+    _activeTransfers += change;
+    final isTransferring = _activeTransfers > 0;
+    if (isTransferring != wasTransferring) _transferringChanges.add(isTransferring);
   }
 
   Expression<dynamic> _isPendingUpload(LocalVocabularyTable t) =>

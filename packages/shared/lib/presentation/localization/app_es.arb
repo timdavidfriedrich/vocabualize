@@ -100,6 +100,7 @@
   "settingsSignOutBlockedMessage": "Algunos cambios aún no han llegado al servidor. Conéctate a internet e inténtalo de nuevo. Si cierras sesión de todos modos, estos cambios se perderán.",
   "settingsSignOutAnywayButton": "Cerrar sesión de todos modos",
   "syncStatusConnecting": "Conectando…",
+  "syncStatusSyncing": "Sincronizando…",
   "syncStatusSynced": "Todos los cambios sincronizados",
   "syncStatusOffline": "Sin conexión. Los cambios se sincronizarán cuando vuelvas a estar en línea.",
   "syncStatusUpdateRequired": "Actualiza la app para seguir sincronizando.",
