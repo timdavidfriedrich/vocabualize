@@ -20,8 +20,7 @@ database:
 maxRequestSize: 524288
 
 sessionLogs:
-  consoleEnabled: true
-  consoleLogFormat: json
+  consoleEnabled: false
   persistentEnabled: true
   cleanupInterval: 24h
   retentionPeriod: 90d

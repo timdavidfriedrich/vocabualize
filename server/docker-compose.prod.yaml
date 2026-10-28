@@ -1,5 +1,11 @@
 name: vocabualize
 
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
 x-server-image: &server-image
   build:
     context: .
@@ -25,11 +31,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    logging: *logging
 
   garage:
     image: dxflrs/garage:v2.4.1
     restart: unless-stopped
     environment:
+      RUST_LOG: garage=warn
       GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET:?set GARAGE_RPC_SECRET in .env}
       GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN:?set GARAGE_ADMIN_TOKEN in .env}
     volumes:
@@ -40,6 +48,7 @@ services:
       internal:
       global-proxy:
         aliases: [vocabualize-garage]
+    logging: *logging
 
   migrate:
     <<: *server-image
@@ -49,6 +58,7 @@ services:
       postgres:
         condition: service_healthy
     networks: [internal]
+    logging: *logging
 
   serverpod:
     <<: *server-image
@@ -69,6 +79,7 @@ services:
       internal:
       global-proxy:
         aliases: [vocabualize-serverpod]
+    logging: *logging
 
 volumes:
   postgres_data:
