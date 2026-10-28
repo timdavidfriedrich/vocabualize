@@ -366,7 +366,6 @@
   "reportFeedbackSentMessage": "Thank you! Your message was sent.",
   "reportTranslationSentMessage": "Thank you! The translation was reported.",
   "reportOfflineMessage": "Sending needs an internet connection.",
-  "settingsFeedbackButton": "Feedback",
   "settingsDeleteAccountButton": "Delete account",
   "settingsDeleteDataButton": "Delete all data",
   "settingsDeleteAccountTitle": "Delete account?",

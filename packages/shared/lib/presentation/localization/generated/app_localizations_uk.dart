@@ -782,9 +782,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get reportOfflineMessage => 'Для надсилання потрібне підключення до інтернету.';
 
   @override
-  String get settingsFeedbackButton => 'Відгук';
-
-  @override
   String get settingsDeleteAccountButton => 'Видалити обліковий запис';
 
   @override

@@ -85,10 +85,6 @@ class const SettingsScreen({
           centerTitle: false,
           titleSpacing: 0,
           title: Text(context.s.settingsTitle),
-          actions: const [
-            _FeedbackButton(),
-            SizedBox(width: Spacing.xxl),
-          ],
         ),
         body: BlocBuilder<SettingsBloc, SettingsState>(
           builder: (context, state) => switch (state) {
@@ -130,6 +126,11 @@ class const SettingsScreen({
                   const SizedBox(height: Spacing.m),
                   _BackupSection(runningAction: runningAction),
                   ListTile(
+                    title: Text(context.s.reportFeedbackTitle),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: context.pushFeedback,
+                  ),
+                  ListTile(
                     title: Text(context.s.settingsPrivacyPolicyButton),
                     trailing: const Icon(Icons.open_in_new_rounded),
                     onTap: () => context.read<SettingsBloc>().add(
@@ -160,27 +161,6 @@ class const SettingsScreen({
       signOutAnyway == true
           ? const SettingsSignOutRequested(discardUnsyncedChanges: true)
           : const SettingsSignOutDismissed(),
-    );
-  }
-}
-
-class const _FeedbackButton() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: context.c.onSurfaceVariant,
-        side: BorderSide(color: context.c.outlineVariant),
-        padding: const EdgeInsets.symmetric(horizontal: Spacing.s, vertical: Spacing.xxs),
-        minimumSize: Size.zero,
-        textStyle: context.t.labelMedium,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(Spacing.radiusS)),
-        ),
-      ),
-      onPressed: context.pushFeedback,
-      icon: const Icon(Icons.feedback_rounded, size: Spacing.iconS),
-      label: Text(context.s.settingsFeedbackButton),
     );
   }
 }

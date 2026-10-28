@@ -1302,12 +1302,6 @@ abstract class AppLocalizations {
   /// **'Sending needs an internet connection.'**
   String get reportOfflineMessage;
 
-  /// No description provided for @settingsFeedbackButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Feedback'**
-  String get settingsFeedbackButton;
-
   /// No description provided for @settingsDeleteAccountButton.
   ///
   /// In en, this message translates to:

@@ -200,7 +200,6 @@
   "reportFeedbackSentMessage": "Merci ! Votre message a été envoyé.",
   "reportTranslationSentMessage": "Merci ! La traduction a été signalée.",
   "reportOfflineMessage": "L'envoi nécessite une connexion internet.",
-  "settingsFeedbackButton": "Avis",
   "settingsDeleteAccountButton": "Supprimer le compte",
   "settingsDeleteDataButton": "Supprimer toutes les données",
   "settingsDeleteAccountTitle": "Supprimer le compte ?",

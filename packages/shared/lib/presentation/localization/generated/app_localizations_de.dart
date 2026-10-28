@@ -757,9 +757,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get reportOfflineMessage => 'Zum Senden brauchst du eine Internetverbindung.';
 
   @override
-  String get settingsFeedbackButton => 'Feedback';
-
-  @override
   String get settingsDeleteAccountButton => 'Konto löschen';
 
   @override
