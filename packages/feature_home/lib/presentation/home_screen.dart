@@ -12,23 +12,26 @@ import 'package:feature_home/presentation/widgets/streak_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
+import 'package:shared/presentation/account/account_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/widgets/account_status_avatar.dart';
 import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
-import 'package:shared/presentation/widgets/sync_status_icon.dart';
 import 'package:shared/presentation/widgets/vocabulary_info_dialog.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.xxl);
 const _scrollEndSpacing = Spacing.xxxxl * 2;
 const _mascotScreenHeightFactor = 0.4;
+const _avatarRadius = Spacing.m;
 
 class const HomeScreen({
   super.key,
@@ -243,14 +246,30 @@ class const _TitleRow() extends StatelessWidget {
           ),
         ),
         const SizedBox(width: Spacing.m),
-        const SyncStatusIcon(),
         const _StreakButton(),
-        IconButton(
+        const _AccountButton(),
+      ],
+    );
+  }
+}
+
+class const _AccountButton() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountCubit, Account?>(
+      builder: (context, account) => switch (account) {
+        GoogleAccount(:final picturePath) => IconButton(
+          onPressed: context.pushSettings,
+          tooltip: context.s.settingsTitle,
+          padding: const EdgeInsets.all(Spacing.xxxs),
+          icon: AccountStatusAvatar(picturePath: picturePath, radius: _avatarRadius),
+        ),
+        LocalAccount() || null => IconButton(
           onPressed: context.pushSettings,
           tooltip: context.s.settingsTitle,
           icon: const Icon(Icons.settings_rounded),
         ),
-      ],
+      },
     );
   }
 }

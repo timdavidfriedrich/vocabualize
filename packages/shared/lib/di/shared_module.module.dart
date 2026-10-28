@@ -114,6 +114,7 @@ import 'package:shared/domain/repositories/translation_repository.dart'
     as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
 import 'package:shared/domain/use_cases/watch_streak_use_case.dart' as _i76;
+import 'package:shared/presentation/account/account_cubit.dart' as _i346;
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart'
     as _i855;
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart'
@@ -323,6 +324,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i208.VocabularyRepository>(),
           gh<_i76.WatchStreakUseCase>(),
         ));
+    gh.factory<_i346.AccountCubit>(
+        () => _i346.AccountCubit(gh<_i923.AccountRepository>()));
   }
 }
 

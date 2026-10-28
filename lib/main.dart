@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
+import 'package:shared/presentation/account/account_cubit.dart';
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
@@ -33,6 +34,7 @@ class const App({
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (_) => sl<AccountCubit>()..start()),
         BlocProvider(create: (_) => sl<SyncStatusCubit>()..start()),
         BlocProvider(create: (_) => sl<GateCubit>()..start()),
         BlocProvider(create: (_) => sl<LanguagePairCubit>()..start()),

@@ -15,14 +15,13 @@ extension SyncStatusExtensions on SyncStatus {
     SyncStatus.failed => context.s.syncStatusFailed,
   };
 
-  IconData? get icon => switch (this) {
-    SyncStatus.disabled => null,
-    SyncStatus.connecting => Icons.cloud_sync_rounded,
-    SyncStatus.synced => Icons.cloud_done_rounded,
+  IconData? get badgeIcon => switch (this) {
+    SyncStatus.disabled || SyncStatus.connecting || SyncStatus.synced => null,
     SyncStatus.offline || SyncStatus.serverUnreachable => Icons.cloud_off_rounded,
-    SyncStatus.updateRequired => Icons.system_update_rounded,
-    SyncStatus.signInRequired || SyncStatus.failed => Icons.sync_problem_rounded,
-    SyncStatus.clockWrong => Icons.schedule_rounded,
+    SyncStatus.updateRequired ||
+    SyncStatus.signInRequired ||
+    SyncStatus.clockWrong ||
+    SyncStatus.failed => Icons.priority_high_rounded,
   };
 
   bool get needsAction => switch (this) {
