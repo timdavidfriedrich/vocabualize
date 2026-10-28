@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy policy – Vocabualize</title>
+  <meta name="description" content="Which data the Vocabualize app and website process, why, and what your rights are.">
+  <link rel="icon" href="/assets/images/icon.webp" type="image/webp">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="alternate" hreflang="en" href="/privacy/">
+  <link rel="alternate" hreflang="de" href="/de/datenschutz/">
+</head>
+<body>
+  <header>
+    <a class="brand" href="/"><img src="/assets/images/icon.webp" alt="" width="40" height="40">Vocabualize</a>
+    <a href="/de/datenschutz/" hreflang="de" lang="de">Deutsch</a>
+  </header>
+  <main>
+    <h1>Privacy policy</h1>
+    <p class="updated">Last updated: October 28, 2026</p>
+    <p>Vocabualize is a vocabulary app for Android. This policy explains which personal data the app and this website process, why, and which rights you have.</p>
+
+    <h2>1. Who is responsible</h2>
+    <p>{{owner.name}}<br>{{owner.street}}<br>{{owner.postalCode}} {{owner.city}}<br>{{owner.country}}<br>Email: <a href="mailto:{{owner.email}}">{{owner.email}}</a></p>
+
+    <h2>2. In short</h2>
+    <div class="card">
+      <ul>
+        <li>You can use Vocabualize <strong>without an account</strong>. Your words, photos and progress then stay on your phone.</li>
+        <li>If you <strong>sign in with Google</strong>, your data is synced through our own server, so it is available on all your devices.</li>
+        <li>There is <strong>no analytics, no advertising and no tracking</strong>, neither in the app nor on this website.</li>
+        <li>Some features send a small piece of data to a service provider through our server: the word you translate (DeepL), the search term for stock photos (Pexels) and a downscaled photo when you scan (Google Gemini).</li>
+      </ul>
+    </div>
+
+    <h2>3. Using the app without an account</h2>
+    <p>Your words, translations, collections, photos, learning progress, activity days and settings are stored <strong>only on your phone</strong>. Photos are resized (at most 1280 pixels) and stripped of location and other metadata when you add them.</p>
+    <h3>Install key for online features</h3>
+    <p>The first time you use translation, stock photos or scan without an account, the app registers a random install key with our server. The server stores:</p>
+    <ul>
+      <li>a random install ID and a hash of its secret (not the secret itself),</li>
+      <li>a keyed hash of your IP address, used only to limit how many installs can register per day,</li>
+      <li>the registration date and the day it was last used,</li>
+      <li>usage counters (which feature, when) to enforce daily and monthly limits.</li>
+    </ul>
+    <p>This contains no name, email address or device identifier. Install records unused for 31 days are deleted automatically, usage counters once their limit period has ended (at most one calendar month). <strong>Delete all data</strong> in the app removes the key from your phone and from our server.</p>
+    <p>Legal basis: Art. 6(1)(b) GDPR (providing the features you use) and Art. 6(1)(f) GDPR (our legitimate interest in preventing abuse of free features).</p>
+
+    <h2>4. Signing in with Google (optional)</h2>
+    <p>When you sign in, Google tells us your Google account ID, name, email address and profile picture. We store them on our server as your profile. Google's own <a href="https://policies.google.com/privacy">privacy policy</a> applies to the sign-in itself.</p>
+    <p>While you are signed in, our server stores what is needed to sync your devices:</p>
+    <ul>
+      <li>your words, translations, collections, learning progress and settings,</li>
+      <li>your photos (resized, without metadata) in our own storage,</li>
+      <li>activity days for streaks: the date, a random ID per device and the number of answers given that day.</li>
+    </ul>
+    <p>We keep this data until you delete your account (see section 11). Legal basis: Art. 6(1)(b) GDPR.</p>
+
+    <h2>5. Translation (DeepL)</h2>
+    <p>When you add a word, the app can suggest a translation. The word (at most 100 characters) and the two languages are sent from our server to DeepL SE, Cologne, Germany. DeepL only receives our server's address, not yours. See <a href="https://www.deepl.com/privacy">DeepL's privacy policy</a>. Legal basis: Art. 6(1)(b) GDPR.</p>
+
+    <h2>6. Stock photos (Pexels)</h2>
+    <p>To suggest photos, our server sends the word and its language to Pexels. The photo previews and the photo you choose are then loaded <strong>directly from Pexels' servers</strong>, so Pexels receives your IP address and the usual technical request data. See <a href="https://www.pexels.com/privacy-policy/">Pexels' privacy policy</a>. Pexels is operated by Canva Germany GmbH, Pappelallee 78/79, 10437 Berlin, Germany, and also processes data outside the EU, for example in the USA and Australia, based on adequacy decisions of the European Commission and standard contractual clauses. Legal basis: Art. 6(1)(b) GDPR. You can turn off photos in the app's settings.</p>
+
+    <h2>7. Scan (Google Gemini)</h2>
+    <p>When you scan, the app creates a small copy of the photo (at most 512 pixels, JPEG, without location or other metadata) and sends it through our server to Google's Gemini API, which returns word suggestions. We do not store this copy on our server. Google processes it under the <a href="https://ai.google.dev/gemini-api/terms">Gemini API terms</a>. We use the paid tier of the Gemini API, so Google does not use these requests to improve its products. Google may process data in the USA; Google LLC is certified under the EU-U.S. Data Privacy Framework. Legal basis: Art. 6(1)(b) GDPR.</p>
+
+    <h2>8. Feedback and translation reports</h2>
+    <p>If you send feedback or report a wrong translation, we store your message, for reports also the word, its translation, the languages and your note, plus the app version, Android version, app language and language pair. If you are signed in, we store your account ID with it. To limit how many reports can be sent, we store a keyed hash of your IP address, not the address itself.</p>
+    <p>Reports are deleted one year after they were sent. If you delete your account, the link between your reports and your account is removed right away. Legal basis: Art. 6(1)(f) GDPR (handling your report and preventing abuse).</p>
+
+    <h2>9. Notifications and text-to-speech</h2>
+    <p>Reminders are scheduled on your phone; there is no push service. Read-aloud uses your phone's own speech engine.</p>
+
+    <h2>10. Server, network and logs</h2>
+    <p>Our server is a rented virtual server operated by {{hosting.provider}} in {{hosting.country}}. It holds the database and the photo storage.</p>
+    <p>Requests to our server and to this website pass through <strong>Cloudflare</strong> (Cloudflare, Inc.), which delivers and protects them and processes your IP address and technical request data for this. Cloudflare may process data in the USA and is certified under the EU-U.S. Data Privacy Framework. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's privacy policy</a>. Legal basis: Art. 6(1)(f) GDPR (secure and reliable operation).</p>
+    <p>Our server logs technical information about requests: time, called function, duration, errors and, if you are signed in, your account ID. It does not log IP addresses. Logs are deleted automatically after 90 days.</p>
+    <p>This website uses no cookies, no analytics and no external fonts or scripts.</p>
+
+    <h2>11. Deleting your data</h2>
+    <p>In the app: <strong>Settings → Delete account</strong> (signed in) or <strong>Delete all data</strong> (without account). Without the app: see <a href="/delete-account/">Delete account</a>. Deleting your account removes your profile, all synced data, your photos on our server and your usage counters.</p>
+
+    <h2>12. Your rights</h2>
+    <p>You have the right to access your data (Art. 15 GDPR), to correct it (Art. 16), to have it deleted (Art. 17), to restrict its processing (Art. 18), to receive it in a portable format (Art. 20; the app's backup export gives you all your words and photos as a file) and to object to processing based on legitimate interests (Art. 21). To use these rights, write to the email address in section 1.</p>
+    <p>You can also complain to a data protection supervisory authority, in particular in the EU country where you live or work. The authority responsible for us is the {{supervisoryAuthority.name}}, {{supervisoryAuthority.address}}, <a href="{{supervisoryAuthority.website}}">{{supervisoryAuthority.website}}</a>.</p>
+
+    <h2>13. Changes</h2>
+    <p>We update this policy when the app changes. The date at the top shows the latest version.</p>
+  </main>
+  <footer>
+    <a href="/privacy/">Privacy policy</a> <a href="/delete-account/">Delete account</a> <a href="/legal-notice/">Legal notice</a>
+  </footer>
+</body>
+</html>

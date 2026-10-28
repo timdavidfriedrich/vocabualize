@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Legal notice – Vocabualize</title>
+  <meta name="description" content="Legal notice for the Vocabualize website and app.">
+  <link rel="icon" href="/assets/images/icon.webp" type="image/webp">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="alternate" hreflang="en" href="/legal-notice/">
+  <link rel="alternate" hreflang="de" href="/de/impressum/">
+</head>
+<body>
+  <header>
+    <a class="brand" href="/"><img src="/assets/images/icon.webp" alt="" width="40" height="40">Vocabualize</a>
+    <a href="/de/impressum/" hreflang="de" lang="de">Deutsch</a>
+  </header>
+  <main>
+    <h1>Legal notice</h1>
+    <p>Information according to § 5 E-Commerce Act (ECG) and disclosure according to § 25 Media Act (MedienG):</p>
+    <p>{{owner.name}}<br>{{owner.street}}<br>{{owner.postalCode}} {{owner.city}}<br>{{owner.country}}</p>
+    <p>Email: <a href="mailto:{{owner.email}}">{{owner.email}}</a></p>
+    <p>Business purpose: {{owner.businessPurpose}}</p>
+    {{#owner.vatId}}
+    <p>VAT ID: {{owner.vatId}}</p>
+    {{/owner.vatId}}
+    {{#owner.companyRegister}}
+    <p>Company register: {{owner.companyRegister}}</p>
+    {{/owner.companyRegister}}
+    {{#owner.chamber}}
+    <p>Member of: {{owner.chamber}}</p>
+    {{/owner.chamber}}
+    {{#owner.tradeAuthority}}
+    <p>Trade authority: {{owner.tradeAuthority}}</p>
+    {{/owner.tradeAuthority}}
+    {{#owner.tradeRegulations}}
+    <p>Applicable trade regulations: {{owner.tradeRegulations}}</p>
+    {{/owner.tradeRegulations}}
+  </main>
+  <footer>
+    <a href="/privacy/">Privacy policy</a> <a href="/delete-account/">Delete account</a> <a href="/legal-notice/">Legal notice</a>
+  </footer>
+</body>
+</html>

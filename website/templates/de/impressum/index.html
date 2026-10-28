@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Impressum – Vocabualize</title>
+  <meta name="description" content="Impressum der Vocabualize-Website und -App.">
+  <link rel="icon" href="/assets/images/icon.webp" type="image/webp">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="alternate" hreflang="en" href="/legal-notice/">
+  <link rel="alternate" hreflang="de" href="/de/impressum/">
+</head>
+<body>
+  <header>
+    <a class="brand" href="/de/"><img src="/assets/images/icon.webp" alt="" width="40" height="40">Vocabualize</a>
+    <a href="/legal-notice/" hreflang="en" lang="en">English</a>
+  </header>
+  <main>
+    <h1>Impressum</h1>
+    <p>Informationen gemäß § 5 E-Commerce-Gesetz (ECG) und Offenlegung gemäß § 25 Mediengesetz (MedienG):</p>
+    <p>{{owner.name}}<br>{{owner.street}}<br>{{owner.postalCode}} {{owner.city}}<br>{{owner.country}}</p>
+    <p>E-Mail: <a href="mailto:{{owner.email}}">{{owner.email}}</a></p>
+    <p>Unternehmensgegenstand: {{owner.businessPurpose}}</p>
+    {{#owner.vatId}}
+    <p>UID-Nummer: {{owner.vatId}}</p>
+    {{/owner.vatId}}
+    {{#owner.companyRegister}}
+    <p>Firmenbuch: {{owner.companyRegister}}</p>
+    {{/owner.companyRegister}}
+    {{#owner.chamber}}
+    <p>Mitglied der: {{owner.chamber}}</p>
+    {{/owner.chamber}}
+    {{#owner.tradeAuthority}}
+    <p>Gewerbebehörde: {{owner.tradeAuthority}}</p>
+    {{/owner.tradeAuthority}}
+    {{#owner.tradeRegulations}}
+    <p>Berufsrechtliche Vorschriften: {{owner.tradeRegulations}}</p>
+    {{/owner.tradeRegulations}}
+  </main>
+  <footer>
+    <a href="/de/datenschutz/">Datenschutz</a> <a href="/de/konto-loeschen/">Konto löschen</a> <a href="/de/impressum/">Impressum</a>
+  </footer>
+</body>
+</html>

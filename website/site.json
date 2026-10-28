@@ -1,0 +1,40 @@
+{
+  "owner": {
+    "name": "Tim David Friedrich",
+    "street": "Softwarepark 106",
+    "postalCode": "4232",
+    "city": "Hagenberg im Mühlkreis",
+    "country": {
+      "en": "Austria",
+      "de": "Österreich"
+    },
+    "email": "mail@timdavidfriedrich.de",
+    "businessPurpose": {
+      "en": "Development and operation of the Vocabualize app",
+      "de": "Entwicklung und Betrieb der App Vocabualize"
+    },
+    "vatId": "",
+    "companyRegister": "",
+    "chamber": "",
+    "tradeAuthority": "",
+    "tradeRegulations": ""
+  },
+  "hosting": {
+    "provider": "Informaten",
+    "country": {
+      "en": "Germany",
+      "de": "Deutschland"
+    }
+  },
+  "supervisoryAuthority": {
+    "name": {
+      "en": "Austrian Data Protection Authority (Datenschutzbehörde)",
+      "de": "Österreichische Datenschutzbehörde"
+    },
+    "address": {
+      "en": "Barichgasse 40–42, 1030 Vienna, Austria",
+      "de": "Barichgasse 40–42, 1030 Wien, Österreich"
+    },
+    "website": "https://www.dsb.gv.at"
+  }
+}
