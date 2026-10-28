@@ -23,8 +23,8 @@ import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/reminders/reminder_cubit.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
-import 'package:shared/presentation/widgets/account_avatar.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
+import 'package:shared/presentation/widgets/account_status_avatar.dart';
 import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/google_logo.dart';
@@ -529,19 +529,14 @@ class const _Avatar({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AccountAvatar(picturePath: _picturePath),
-        Positioned(
-          right: 0,
-          bottom: 0,
-          child: CircleAvatar(
-            radius: Spacing.xs,
-            backgroundColor: context.c.secondary,
-            child: const GoogleLogo(size: Spacing.s),
-          ),
-        ),
-      ],
+    return AccountStatusAvatar(
+      picturePath: _picturePath,
+      radius: Spacing.l,
+      providerBadge: CircleAvatar(
+        radius: Spacing.xs,
+        backgroundColor: context.c.secondary,
+        child: const GoogleLogo(size: Spacing.s),
+      ),
     );
   }
 }

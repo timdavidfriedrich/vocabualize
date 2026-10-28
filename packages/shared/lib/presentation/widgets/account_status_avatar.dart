@@ -15,6 +15,7 @@ class const AccountStatusAvatar({
   super.key,
   required final String? _picturePath,
   required final double _radius,
+  final Widget? _providerBadge,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,8 @@ class const AccountStatusAvatar({
             clipBehavior: Clip.none,
             children: [
               AccountAvatar(picturePath: _picturePath, radius: _radius),
+              if (_providerBadge case final providerBadge?)
+                Positioned(right: 0, bottom: 0, child: providerBadge),
               if (status == SyncStatus.connecting)
                 SizedBox.square(
                   dimension: ringSize,
