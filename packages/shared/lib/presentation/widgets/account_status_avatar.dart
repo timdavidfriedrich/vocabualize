@@ -29,14 +29,14 @@ class const AccountStatusAvatar({
             alignment: Alignment.center,
             clipBehavior: Clip.none,
             children: [
-              AccountAvatar(picturePath: _picturePath, radius: _radius),
-              if (_providerBadge case final providerBadge?)
-                Positioned(right: 0, bottom: 0, child: providerBadge),
               if (status == SyncStatus.connecting || status == SyncStatus.syncing)
                 SizedBox.square(
                   dimension: ringSize,
                   child: const CircularProgressIndicator(strokeWidth: Spacing.borderWidthMedium),
                 ),
+              AccountAvatar(picturePath: _picturePath, radius: _radius),
+              if (_providerBadge case final providerBadge?)
+                Positioned(right: 0, bottom: 0, child: providerBadge),
               if (status.badgeIcon case final icon?)
                 Positioned(
                   top: -Spacing.xs,
