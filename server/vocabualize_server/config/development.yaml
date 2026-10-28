@@ -23,3 +23,5 @@ sessionLogs:
   persistentEnabled: true
   consoleEnabled: true
   consoleLogFormat: text
+  cleanupInterval: 24h
+  retentionPeriod: 90d
