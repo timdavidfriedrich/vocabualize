@@ -8,8 +8,8 @@ import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 import 'package:shared/presentation/widgets/account_avatar.dart';
 
 const _ringGap = Spacing.xxxs;
-const _badgeRadius = Spacing.xs;
-const _badgeIconSize = Spacing.s;
+const _badgeRadius = Spacing.s;
+const _badgeIconSize = Spacing.m;
 
 class const AccountStatusAvatar({
   super.key,
@@ -39,8 +39,8 @@ class const AccountStatusAvatar({
                 ),
               if (status.badgeIcon case final icon?)
                 Positioned(
-                  top: -Spacing.xxxs,
-                  right: -Spacing.xxxs,
+                  top: -Spacing.xs,
+                  right: -Spacing.xs,
                   child: CircleAvatar(
                     radius: _badgeRadius,
                     backgroundColor: status.needsAction
