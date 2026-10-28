@@ -407,8 +407,17 @@ class const _SignInCard({
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(context.s.settingsSignInHint, style: context.t.bodyLarge),
+          BlocBuilder<ConnectivityCubit, bool>(
+            builder: (context, isConnected) => switch (isConnected) {
+              true => const SizedBox.shrink(),
+              false => _StatusNotice(
+                icon: Icons.cloud_off_rounded,
+                message: context.s.settingsSignInOfflineMessage,
+                action: const _ConnectButton(),
+              ),
+            },
+          ),
           const SizedBox(height: Spacing.s),
-          ConnectionRequiredNotice(message: context.s.settingsSignInOfflineMessage),
           Align(
             alignment: Alignment.centerRight,
             child: BlocBuilder<ConnectivityCubit, bool>(
@@ -481,43 +490,21 @@ class const _AccountCard({
             ],
           ),
           BlocBuilder<SyncStatusCubit, SyncStatus>(
-            builder: (context, status) => switch (status.toLabel(context)) {
-              final label? => Padding(
-                padding: const EdgeInsets.only(top: Spacing.s),
-                child: Text(
-                  label,
-                  style: context.t.bodyMedium?.copyWith(
-                    color: status.needsAction ? context.c.error : context.c.onSurfaceVariant,
-                  ),
-                ),
-              ),
-              null => const SizedBox.shrink(),
-            },
-          ),
-          BlocBuilder<SyncStatusCubit, SyncStatus>(
-            builder: (context, status) => switch (status) {
-              SyncStatus.signInRequired => Padding(
-                padding: const EdgeInsets.only(top: Spacing.s),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: BlocBuilder<ConnectivityCubit, bool>(
-                    builder: (context, isConnected) => ElevatedButton(
-                      onPressed: _runningAction != null || !isConnected
-                          ? null
-                          : () => context.read<SettingsBloc>().add(
-                              const SettingsGoogleSignInRequested(),
-                            ),
-                      child: _runningAction == SettingsAction.signIn
-                          ? const ButtonProgress()
-                          : Text(context.s.settingsSignInAgainButton),
-                    ),
-                  ),
-                ),
+            builder: (context, status) => switch ((status.badgeIcon, status.toLabel(context))) {
+              (final icon?, final message?) => _StatusNotice(
+                icon: icon,
+                message: message,
+                needsAction: status.needsAction,
+                action: switch (status) {
+                  SyncStatus.offline => const _ConnectButton(),
+                  SyncStatus.signInRequired => _SignInAgainButton(runningAction: _runningAction),
+                  SyncStatus.updateRequired => const _UpdateButton(),
+                  _ => null,
+                },
               ),
               _ => const SizedBox.shrink(),
             },
           ),
-          ConnectionRequiredNotice(message: context.s.settingsSignOutOfflineMessage),
         ],
       ),
     );
@@ -537,6 +524,87 @@ class const _Avatar({
         backgroundColor: context.c.secondary,
         child: const GoogleLogo(size: Spacing.s),
       ),
+    );
+  }
+}
+
+class const _StatusNotice({
+  required final IconData _icon,
+  required final String _message,
+  final bool _needsAction = false,
+  final Widget? _action,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: Spacing.m),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.c.surfaceContainerHighest,
+          borderRadius: const BorderRadius.all(Radius.circular(Spacing.radiusM)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(Spacing.s),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    _icon,
+                    size: Spacing.iconS,
+                    color: _needsAction ? context.c.error : context.c.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: Spacing.s),
+                  Expanded(child: Text(_message, style: context.t.bodyMedium)),
+                ],
+              ),
+              if (_action case final action?)
+                Align(alignment: Alignment.centerRight, child: action),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class const _ConnectButton() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: context.read<ConnectivityCubit>().openInternetSettings,
+      icon: const Icon(Icons.wifi_rounded),
+      label: Text(context.s.connectToInternet),
+    );
+  }
+}
+
+class const _SignInAgainButton({
+  required final SettingsAction? _runningAction,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ConnectivityCubit, bool>(
+      builder: (context, isConnected) => TextButton(
+        onPressed: _runningAction != null || !isConnected
+            ? null
+            : () => context.read<SettingsBloc>().add(const SettingsGoogleSignInRequested()),
+        child: _runningAction == SettingsAction.signIn
+            ? const ButtonProgress()
+            : Text(context.s.settingsSignInAgainButton),
+      ),
+    );
+  }
+}
+
+class const _UpdateButton() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => context.read<SettingsBloc>().add(const SettingsStoreListingOpened()),
+      child: Text(context.s.gateUpdateButton),
     );
   }
 }

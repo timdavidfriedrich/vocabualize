@@ -41,6 +41,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsReminderToggled>(_onReminderToggled);
     on<SettingsReminderTimeChanged>(_onReminderTimeChanged);
     on<SettingsNotificationSettingsOpened>(_onNotificationSettingsOpened);
+    on<SettingsStoreListingOpened>(_onStoreListingOpened);
     on<SettingsPrivacyPolicyOpened>(_onPrivacyPolicyOpened);
     on<SettingsDeletionRequested>(_onDeletionRequested);
     on<SettingsBackupExportRequested>(_onBackupExportRequested);
@@ -167,6 +168,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     SettingsNotificationSettingsOpened event,
     Emitter<SettingsState> emit,
   ) => _savePreference(emit, _appInfoRepository.openNotificationSettings);
+
+  Future<void> _onStoreListingOpened(
+    SettingsStoreListingOpened event,
+    Emitter<SettingsState> emit,
+  ) => _savePreference(emit, _appInfoRepository.openStoreListing);
 
   Future<void> _onPrivacyPolicyOpened(
     SettingsPrivacyPolicyOpened event,

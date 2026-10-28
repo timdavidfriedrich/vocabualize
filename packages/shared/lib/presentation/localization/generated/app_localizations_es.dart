@@ -694,10 +694,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsSignInOfflineMessage => 'Para iniciar sesión necesita conexión a internet.';
 
   @override
-  String get settingsSignOutOfflineMessage =>
-      'Para cerrar sesión necesita conexión a internet, así sus últimos cambios se suben antes.';
-
-  @override
   String get settingsPracticeReminderTitle => 'Recordatorio de práctica';
 
   @override

@@ -699,10 +699,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'La connexion à votre compte nécessite une connexion internet.';
 
   @override
-  String get settingsSignOutOfflineMessage =>
-      'La déconnexion nécessite une connexion internet, afin que vos dernières modifications soient d\'abord envoyées.';
-
-  @override
   String get settingsPracticeReminderTitle => 'Rappel d\'entraînement';
 
   @override

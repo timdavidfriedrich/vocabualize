@@ -1188,12 +1188,6 @@ abstract class AppLocalizations {
   /// **'Signing in needs an internet connection.'**
   String get settingsSignInOfflineMessage;
 
-  /// No description provided for @settingsSignOutOfflineMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Signing out needs an internet connection, so your latest changes can be uploaded first.'**
-  String get settingsSignOutOfflineMessage;
-
   /// No description provided for @settingsPracticeReminderTitle.
   ///
   /// In en, this message translates to:

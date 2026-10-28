@@ -181,7 +181,6 @@
   "detailsOfflineMessage": "La traducción y la búsqueda de fotos necesitan conexión a internet.",
   "welcomeOfflineMessage": "Para iniciar sesión con Google necesita conexión a internet.",
   "settingsSignInOfflineMessage": "Para iniciar sesión necesita conexión a internet.",
-  "settingsSignOutOfflineMessage": "Para cerrar sesión necesita conexión a internet, así sus últimos cambios se suben antes.",
   "settingsPracticeReminderTitle": "Recordatorio de práctica",
   "settingsPracticeReminderHint": "Solo los días con palabras para practicar",
   "settingsReminderTimeTitle": "Hora",

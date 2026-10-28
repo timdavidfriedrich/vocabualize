@@ -181,7 +181,6 @@
   "detailsOfflineMessage": "Для перекладу й пошуку фото потрібне підключення до інтернету.",
   "welcomeOfflineMessage": "Для входу через Google потрібне підключення до інтернету.",
   "settingsSignInOfflineMessage": "Для входу потрібне підключення до інтернету.",
-  "settingsSignOutOfflineMessage": "Для виходу потрібне підключення до інтернету, щоб спершу завантажити ваші останні зміни.",
   "settingsPracticeReminderTitle": "Нагадування про практику",
   "settingsPracticeReminderHint": "Лише в дні, коли є слова для практики",
   "settingsReminderTimeTitle": "Час",

@@ -39,6 +39,8 @@ class const SettingsReminderTimeChanged({
 
 class const SettingsNotificationSettingsOpened() extends SettingsEvent;
 
+class const SettingsStoreListingOpened() extends SettingsEvent;
+
 class const SettingsPrivacyPolicyOpened({
   required final String languageCode,
 }) extends SettingsEvent;

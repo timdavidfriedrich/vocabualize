@@ -685,10 +685,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSignInOfflineMessage => 'Signing in needs an internet connection.';
 
   @override
-  String get settingsSignOutOfflineMessage =>
-      'Signing out needs an internet connection, so your latest changes can be uploaded first.';
-
-  @override
   String get settingsPracticeReminderTitle => 'Practice reminder';
 
   @override

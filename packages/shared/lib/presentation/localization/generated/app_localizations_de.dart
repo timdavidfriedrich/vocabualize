@@ -694,10 +694,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Für die Anmeldung brauchst du eine Internetverbindung.';
 
   @override
-  String get settingsSignOutOfflineMessage =>
-      'Zum Abmelden brauchst du eine Internetverbindung, damit deine letzten Änderungen vorher hochgeladen werden.';
-
-  @override
   String get settingsPracticeReminderTitle => 'Erinnerung zum Üben';
 
   @override

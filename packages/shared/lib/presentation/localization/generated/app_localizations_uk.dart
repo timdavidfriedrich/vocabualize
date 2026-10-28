@@ -722,10 +722,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsSignInOfflineMessage => 'Для входу потрібне підключення до інтернету.';
 
   @override
-  String get settingsSignOutOfflineMessage =>
-      'Для виходу потрібне підключення до інтернету, щоб спершу завантажити ваші останні зміни.';
-
-  @override
   String get settingsPracticeReminderTitle => 'Нагадування про практику';
 
   @override

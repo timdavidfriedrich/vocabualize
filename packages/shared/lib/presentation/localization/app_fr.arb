@@ -181,7 +181,6 @@
   "detailsOfflineMessage": "La traduction et la recherche de photos nécessitent une connexion internet.",
   "welcomeOfflineMessage": "La connexion avec Google nécessite une connexion internet.",
   "settingsSignInOfflineMessage": "La connexion à votre compte nécessite une connexion internet.",
-  "settingsSignOutOfflineMessage": "La déconnexion nécessite une connexion internet, afin que vos dernières modifications soient d'abord envoyées.",
   "settingsPracticeReminderTitle": "Rappel d'entraînement",
   "settingsPracticeReminderHint": "Seulement les jours où des mots sont à réviser",
   "settingsReminderTimeTitle": "Heure",

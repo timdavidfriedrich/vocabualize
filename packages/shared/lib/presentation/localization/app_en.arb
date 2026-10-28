@@ -347,7 +347,6 @@
   "detailsOfflineMessage": "Translation and photo search need an internet connection.",
   "welcomeOfflineMessage": "Signing in with Google needs an internet connection.",
   "settingsSignInOfflineMessage": "Signing in needs an internet connection.",
-  "settingsSignOutOfflineMessage": "Signing out needs an internet connection, so your latest changes can be uploaded first.",
   "settingsPracticeReminderTitle": "Practice reminder",
   "settingsPracticeReminderHint": "Only on days with words to practice",
   "settingsReminderTimeTitle": "Time",
