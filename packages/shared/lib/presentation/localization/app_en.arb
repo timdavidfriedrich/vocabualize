@@ -25,6 +25,7 @@
   "okay": "Okay",
   "submit": "Submit",
   "delete": "Delete",
+  "edit": "Edit",
   "languagePickerTitle": "Select language",
   "vocabularyDeleteTitle": "Delete?",
   "vocabularyDeleteMessage": "Do you really want to delete this vocabulary?",

@@ -67,6 +67,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get delete => 'Supprimer';
 
   @override
+  String get edit => 'Modifier';
+
+  @override
   String get languagePickerTitle => 'Sélectionner la langue';
 
   @override

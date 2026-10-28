@@ -17,9 +17,8 @@ import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
+import 'package:shared/presentation/widgets/icon_action_button.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
-
-const _deleteBackgroundOpacity = 0.2;
 
 class const DetailsScreen({
   super.key,
@@ -163,16 +162,13 @@ class const _DeleteButton({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.all(Spacing.s),
-        backgroundColor: context.c.error.withValues(alpha: _deleteBackgroundOpacity),
-        foregroundColor: context.c.error,
-      ),
-      onPressed: _runningAction != null ? null : () => _delete(context),
-      child: _runningAction == DetailsAction.delete
+    return IconActionButton(
+      icon: _runningAction == DetailsAction.delete
           ? const ButtonProgress()
           : const Icon(Icons.delete_rounded),
+      tooltip: context.s.delete,
+      isDestructive: true,
+      onPressed: _runningAction != null ? null : () => _delete(context),
     );
   }
 

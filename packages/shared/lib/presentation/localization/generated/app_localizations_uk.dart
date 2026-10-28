@@ -67,6 +67,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get delete => 'Видалити';
 
   @override
+  String get edit => 'Редагувати';
+
+  @override
   String get languagePickerTitle => 'Вибрати мову';
 
   @override

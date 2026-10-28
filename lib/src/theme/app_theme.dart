@@ -6,10 +6,12 @@ const _fontFamily = "Poppins";
 
 const _primary = Color(0xFF22A2FF);
 const _onPrimary = Color(0xFFFFFFFF);
+const _primaryContainer = Color(0xFF0B3B5F);
 const _secondary = Color(0xFFFFFFFF);
 const _onSecondary = Color(0xFF000000);
 const _error = Color(0xFFF44336);
 const _onError = Color(0xFFFFFFFF);
+const _errorContainer = Color(0xFF2F1921);
 const _surface = Color(0xFF000D1A);
 const _onSurface = Color(0xFFFFFFFF);
 const _onSurfaceVariant = Color(0x99FFFFFF);
@@ -51,10 +53,14 @@ abstract final class AppTheme {
       brightness: Brightness.dark,
       primary: _primary,
       onPrimary: _onPrimary,
+      primaryContainer: _primaryContainer,
+      onPrimaryContainer: _onPrimary,
       secondary: _secondary,
       onSecondary: _onSecondary,
       error: _error,
       onError: _onError,
+      errorContainer: _errorContainer,
+      onErrorContainer: _error,
       surface: _surface,
       onSurface: _onSurface,
       onSurfaceVariant: _onSurfaceVariant,

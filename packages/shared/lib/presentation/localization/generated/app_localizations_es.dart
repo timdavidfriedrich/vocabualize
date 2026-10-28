@@ -67,6 +67,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get delete => 'Borrar';
 
   @override
+  String get edit => 'Editar';
+
+  @override
   String get languagePickerTitle => 'Seleccionar idioma';
 
   @override

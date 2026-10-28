@@ -9,12 +9,12 @@ import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/date_time_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
+import 'package:shared/presentation/widgets/icon_action_button.dart';
 import 'package:shared/presentation/widgets/level_indicator.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _targetMaxLines = 7;
 const _sourceMaxLines = 5;
-const _editBackgroundOpacity = 0.3;
 
 Future<void> showVocabularyInfoDialog(
   BuildContext context, {
@@ -117,16 +117,13 @@ class const _VocabularyInfoDialog({
       actions: [
         Row(
           children: [
-            ElevatedButton(
+            IconActionButton(
+              icon: const Icon(Icons.edit_rounded),
+              tooltip: context.s.edit,
               onPressed: () {
                 Navigator.of(context).pop();
                 _onEdit();
               },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(Spacing.s),
-                backgroundColor: context.c.primary.withValues(alpha: _editBackgroundOpacity),
-              ),
-              child: const Icon(Icons.edit),
             ),
             const SizedBox(width: Spacing.m),
             Expanded(
