@@ -411,7 +411,6 @@ class const _SignInCard({
             builder: (context, isConnected) => switch (isConnected) {
               true => const SizedBox.shrink(),
               false => _StatusNotice(
-                icon: Icons.cloud_off_rounded,
                 message: context.s.settingsSignInOfflineMessage,
                 action: const _ConnectButton(),
               ),
@@ -490,11 +489,9 @@ class const _AccountCard({
             ],
           ),
           BlocBuilder<SyncStatusCubit, SyncStatus>(
-            builder: (context, status) => switch ((status.badgeIcon, status.toLabel(context))) {
-              (final icon?, final message?) => _StatusNotice(
-                icon: icon,
+            builder: (context, status) => switch (status.toLabel(context)) {
+              final message? when status.needsAttention => _StatusNotice(
                 message: message,
-                needsAction: status.needsAction,
                 action: switch (status) {
                   SyncStatus.offline => const _ConnectButton(),
                   SyncStatus.signInRequired => _SignInAgainButton(runningAction: _runningAction),
@@ -529,9 +526,7 @@ class const _Avatar({
 }
 
 class const _StatusNotice({
-  required final IconData _icon,
   required final String _message,
-  final bool _needsAction = false,
   final Widget? _action,
 }) extends StatelessWidget {
   @override
@@ -548,18 +543,7 @@ class const _StatusNotice({
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    _icon,
-                    size: Spacing.iconS,
-                    color: _needsAction ? context.c.error : context.c.onSurfaceVariant,
-                  ),
-                  const SizedBox(width: Spacing.s),
-                  Expanded(child: Text(_message, style: context.t.bodyMedium)),
-                ],
-              ),
+              Text(_message, style: context.t.bodyMedium),
               if (_action case final action?)
                 Align(alignment: Alignment.centerRight, child: action),
             ],

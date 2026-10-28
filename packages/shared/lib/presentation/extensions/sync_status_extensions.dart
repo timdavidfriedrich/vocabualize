@@ -25,6 +25,19 @@ extension SyncStatusExtensions on SyncStatus {
     SyncStatus.failed => Icons.priority_high_rounded,
   };
 
+  bool get needsAttention => switch (this) {
+    SyncStatus.offline ||
+    SyncStatus.serverUnreachable ||
+    SyncStatus.updateRequired ||
+    SyncStatus.signInRequired ||
+    SyncStatus.clockWrong ||
+    SyncStatus.failed => true,
+    SyncStatus.disabled ||
+    SyncStatus.connecting ||
+    SyncStatus.syncing ||
+    SyncStatus.synced => false,
+  };
+
   bool get needsAction => switch (this) {
     SyncStatus.updateRequired ||
     SyncStatus.signInRequired ||
