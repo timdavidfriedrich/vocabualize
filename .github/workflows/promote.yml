@@ -1,0 +1,55 @@
+name: promote
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_code:
+        description: "versionCode of the build to promote (shown in the release run and in Play Console)"
+        required: true
+        type: string
+      from_track:
+        description: "Track the build is on now"
+        required: true
+        type: choice
+        default: alpha
+        options:
+          - internal
+          - alpha
+          - beta
+      to_track:
+        description: "Track to promote it to"
+        required: true
+        type: choice
+        default: production
+        options:
+          - alpha
+          - beta
+          - production
+
+jobs:
+  promote:
+    name: Promote ${{ inputs.version_code }} from ${{ inputs.from_track }} to ${{ inputs.to_track }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Write Play Store service account key
+        env:
+          GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+        run: |
+          if [[ -z "$GOOGLE_PLAY_JSON_KEY" ]]; then
+            echo "::error::An upload needs the GOOGLE_PLAY_JSON_KEY secret, see docs/RELEASING.md."
+            exit 1
+          fi
+          printf '%s' "$GOOGLE_PLAY_JSON_KEY" > fastlane/play-store-key.json
+      - name: Promote
+        env:
+          VERSION_CODE: ${{ inputs.version_code }}
+          FROM_TRACK: ${{ inputs.from_track }}
+          TO_TRACK: ${{ inputs.to_track }}
+        run: bundle exec fastlane promote

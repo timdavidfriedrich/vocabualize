@@ -1,33 +1,54 @@
 default_platform(:android)
 
+def upload_with_fallbacks(options, status_key)
+  upload_to_play_store(options)
+rescue StandardError => error
+  if error.message.include?("draft app") && options[status_key] != "draft"
+    UI.important("Google only accepts drafts until the app has been published once. Uploading as a draft, start the rollout in Play Console.")
+    upload_with_fallbacks(options.merge(status_key => "draft"), status_key)
+  elsif error.message.include?("changesNotSentForReview") && !options[:changes_not_sent_for_review]
+    UI.important("Play Console has other changes waiting for review. Uploading without sending it, click Send for review in Play Console.")
+    upload_with_fallbacks(options.merge(changes_not_sent_for_review: true), status_key)
+  else
+    raise
+  end
+end
+
 platform :android do
-  desc "Upload the signed AAB and the store listing to the internal testing track as a draft"
-  lane :internal do
-    upload_to_play_store(
-      track: "internal",
-      aab: ENV.fetch("AAB_PATH"),
-      version_code: ENV.fetch("VERSION_CODE").to_i,
-      release_status: "draft",
-      skip_upload_apk: true,
-      skip_upload_metadata: false,
-      skip_upload_changelogs: false,
-      skip_upload_images: true,
-      skip_upload_screenshots: true,
+  desc "Upload the signed AAB, the store texts and the changelog to TRACK and send it to review"
+  lane :upload do
+    upload_with_fallbacks(
+      {
+        track: ENV.fetch("TRACK"),
+        aab: ENV.fetch("AAB_PATH"),
+        version_code: ENV.fetch("VERSION_CODE").to_i,
+        release_status: "completed",
+        skip_upload_apk: true,
+        skip_upload_metadata: false,
+        skip_upload_changelogs: false,
+        skip_upload_images: true,
+        skip_upload_screenshots: true,
+      },
+      :release_status,
     )
   end
 
-  desc "Promote an internal-track build to production"
-  lane :promote_production do
-    upload_to_play_store(
-      track: "internal",
-      track_promote_to: "production",
-      version_code: ENV.fetch("VERSION_CODE").to_i,
-      skip_upload_aab: true,
-      skip_upload_apk: true,
-      skip_upload_metadata: true,
-      skip_upload_changelogs: true,
-      skip_upload_images: true,
-      skip_upload_screenshots: true,
+  desc "Promote the build VERSION_CODE from FROM_TRACK to TO_TRACK and send it to review"
+  lane :promote do
+    upload_with_fallbacks(
+      {
+        track: ENV.fetch("FROM_TRACK"),
+        track_promote_to: ENV.fetch("TO_TRACK"),
+        track_promote_release_status: "completed",
+        version_code: ENV.fetch("VERSION_CODE").to_i,
+        skip_upload_aab: true,
+        skip_upload_apk: true,
+        skip_upload_metadata: true,
+        skip_upload_changelogs: true,
+        skip_upload_images: true,
+        skip_upload_screenshots: true,
+      },
+      :track_promote_release_status,
     )
   end
 

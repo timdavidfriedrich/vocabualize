@@ -1,30 +1,41 @@
 # Releasing the Android app
 
-Releases go through GitHub Actions and fastlane, the same setup as schnopsn.
+Releases go through GitHub Actions and fastlane.
 
 ## How a release works
 
 - **Every push to `main`** (except server, website and docs changes) runs `build & release`. It analyzes the app and builds a signed AAB and APK, both available as a workflow download.
-- **A release** happens when a commit since the last `v*` tag contains `[RELEASE]` (minor bump) or `[PATCH]` / `[HOTFIX]` (patch bump). The workflow then:
-  1. uploads the AAB and the store texts from `fastlane/metadata/android/` to the **internal** track, as a draft;
-  2. archives the changelog;
-  3. creates the GitHub release with the AAB and APK.
+- **An upload to Google Play** happens when a commit since the last `v*` tag starts with a track prefix:
 
-  The first release uses the version in `pubspec.yaml` (`1.0.0`). Later releases bump from the last tag. `-test` tags are ignored.
+  | Prefix | Track |
+  |---|---|
+  | `[INTERNAL]` | internal testing (`internal`) |
+  | `[ALPHA]` | closed testing (`alpha`) |
+  | `[BETA]` | open testing (`beta`) |
+
+  Example: `[ALPHA] first closed test with offline use and search`. With several prefixes since the last tag, the newest commit wins. The workflow then:
+  1. uploads the AAB, the store texts and the changelog to that track and sends it to Google's review; after the review, testers get it on their own;
+  2. archives the changelog;
+  3. tags the commit and creates a GitHub pre-release with the AAB and APK.
+
+  Two cases fall back on their own and need one click in Play Console. Until the app has been published once, Google only accepts drafts: start the rollout under the track. When Play Console has other changes waiting for review: click **Send for review** on the Publishing overview. The run's log says which one happened.
+
+  If the upload fails, there is no tag, so the next push to `main` tries again.
+- **Version:** the version in `pubspec.yaml` while it is newer than the last tag, otherwise the last tag with a patch bump. For a new minor or major version, raise it in `pubspec.yaml`. `-test` tags are ignored.
 - **versionCode** is the commit count of `main`, so it always increases.
-- **To production:** test the internal build, then run **promote to production** in the Actions tab with the versionCode shown in the release run.
+- **Production** is never a commit. Test the build, then run **promote** in the Actions tab with the versionCode, the track it is on and the target track. It goes to review the same way.
 
 Run `bash scripts/bump-version.sh` locally to see what the next push would do.
 
 ### Changelogs
 
-`fastlane/metadata/android/<locale>/changelogs/next.txt` is the text for the next release. The release copies it to `<versionCode>.txt` and empties it; with an empty `next.txt`, `default.txt` is used. Keep each one under 500 characters, in all five languages.
+`fastlane/metadata/android/<locale>/changelogs/next.txt` is the text for the next upload. The upload copies it to `<versionCode>.txt` and empties it; with an empty `next.txt`, `default.txt` is used. Keep each one under 500 characters, in all five languages.
 
 ## One-time setup
 
 ### 1. Upload key
 
-Google has to approve the upload key reset first; it usually takes about 2 days after the request. Builds signed with the new key are rejected until then. The new keystore is `vocabualize_upload_keystore.jks` in the repo root, ignored by git.
+The upload key is `vocabualize_upload_keystore.jks` in the repo root, ignored by git. Google confirmed the upload key reset, so Play accepts builds signed with it.
 
 For local release builds, create `android/key.properties` (ignored by git):
 
@@ -37,28 +48,33 @@ keyPassword=…
 
 ### 2. Play service account
 
-1. Google Cloud console: in a project, enable the **Google Play Android Developer API**.
-2. Create a service account and download a **JSON key**.
-3. Play Console → Users and permissions → invite the service account's email with release permissions for Vocabualize.
+fastlane talks to Google Play with a service account: a Google account for programs, with its own email and a JSON key instead of a password. It is not one of the OAuth client IDs (those are for Google sign-in) and not the upload key (that signs the AAB).
+
+1. Google Cloud console, in the same project as the OAuth clients: APIs & Services → Library → enable **Google Play Android Developer API**.
+2. IAM & Admin → Service accounts → **Create service account**, for example `play-upload`. It needs no Cloud roles.
+3. Open it → Keys → Add key → Create new key → **JSON**. Save it as `fastlane/play-store-key.json` (ignored by git).
+4. Play Console → Users and permissions → **Invite new users** → the service account's email → App permissions → Vocabualize with: release to testing tracks, release to production, manage testing tracks, edit store listing.
+5. Check it: `bundle exec fastlane run validate_play_store_json_key json_key:fastlane/play-store-key.json`. A new account can take a few hours before Play accepts it.
 
 ### 3. GitHub secrets
 
-Run these in a terminal in the repo root. The interactive ones prompt for the value, so it never lands in your shell history:
+Run these in the repo root. They read the values from the local files, so nothing lands in your shell history:
 
 ```bash
 base64 -i vocabualize_upload_keystore.jks | gh secret set ANDROID_KEYSTORE_BASE64
-gh secret set ANDROID_KEYSTORE_PASSWORD
-gh secret set ANDROID_KEY_ALIAS
-gh secret set ANDROID_KEY_PASSWORD
+sed -n 's/^storePassword=//p' android/key.properties | tr -d '\r\n' | gh secret set ANDROID_KEYSTORE_PASSWORD
+sed -n 's/^keyAlias=//p' android/key.properties | tr -d '\r\n' | gh secret set ANDROID_KEY_ALIAS
+sed -n 's/^keyPassword=//p' android/key.properties | tr -d '\r\n' | gh secret set ANDROID_KEY_PASSWORD
 gh secret set DART_DEFINES_PRODUCTION < dart_defines.production.json
-gh secret set GOOGLE_PLAY_JSON_KEY < path/to/service-account.json
+gh secret set GOOGLE_PLAY_JSON_KEY < fastlane/play-store-key.json
 ```
 
-Without these secrets, pushes still build (debug-signed, with `dart_defines.example.json`) as a compile check, but a release fails with a clear message.
+Without these secrets, pushes still build (debug-signed, with `dart_defines.example.json`) as a compile check, but an upload fails with a clear message.
 
 ### 4. Play Console
 
-See `docs/PLAY_CONSOLE.md` for the answers to paste: privacy policy and deletion URLs, data safety, content rating, app access and the AI declaration.
+- See `docs/PLAY_CONSOLE.md` for the answers to paste: privacy policy and deletion URLs, data safety, content rating, app access and the AI declaration.
+- Each testing track needs testers (email list or Google Group) and countries before its first rollout.
 
 ## Before each release
 

@@ -68,3 +68,4 @@ Each account, and the local-only use, is one storage space with one folder: `spa
   - `CHANGE`: an existing feature changed, without being strictly added or removed.
 - **Reading:** the message reads as one sentence. If the keyword works as its verb, the one-liner continues in lowercase: `[ADD] this one functionality to this existing feature`. If the keyword can't be part of the sentence, the one-liner starts in uppercase.
 - **Author:** the repository owner alone. Never add co-author, session or "generated with" lines to commits or pull requests.
+- **Uploads:** a commit that starts with `[INTERNAL]`, `[ALPHA]` or `[BETA]` uploads the build to that Google Play track once it is pushed (see `docs/RELEASING.md`). Only use these prefixes when the user asks for an upload.

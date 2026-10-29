@@ -51,6 +51,7 @@ jobs:
       version_name: ${{ steps.bump.outputs.version_name }}
       version_code: ${{ steps.bump.outputs.version_code }}
       tag: ${{ steps.bump.outputs.tag }}
+      track: ${{ steps.bump.outputs.track }}
       should_upload: ${{ steps.bump.outputs.should_upload }}
     steps:
       - name: Checkout
@@ -146,8 +147,8 @@ jobs:
           name: vocabualize-android
           path: dist/
 
-  deploy-internal:
-    name: Deploy to Google Play (internal)
+  deploy:
+    name: Deploy to Google Play (${{ needs.version.outputs.track }})
     needs: [version, build]
     if: needs.version.outputs.should_upload == 'true'
     runs-on: ubuntu-24.04
@@ -186,12 +187,18 @@ jobs:
       - name: Write Play Store service account key
         env:
           GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
-        run: printf '%s' "$GOOGLE_PLAY_JSON_KEY" > fastlane/play-store-key.json
-      - name: Upload to the internal track
+        run: |
+          if [[ -z "$GOOGLE_PLAY_JSON_KEY" ]]; then
+            echo "::error::An upload needs the GOOGLE_PLAY_JSON_KEY secret, see docs/RELEASING.md."
+            exit 1
+          fi
+          printf '%s' "$GOOGLE_PLAY_JSON_KEY" > fastlane/play-store-key.json
+      - name: Upload to the ${{ needs.version.outputs.track }} track
         env:
+          TRACK: ${{ needs.version.outputs.track }}
           AAB_PATH: dist/vocabualize-${{ needs.version.outputs.version_name }}.aab
           VERSION_CODE: ${{ needs.version.outputs.version_code }}
-        run: bundle exec fastlane internal
+        run: bundle exec fastlane upload
       - name: Archive changelogs
         env:
           VERSION_CODE: ${{ needs.version.outputs.version_code }}
@@ -216,4 +223,5 @@ jobs:
           name: ${{ needs.version.outputs.tag }}
           target_commitish: ${{ github.sha }}
           body_path: release-notes.md
+          prerelease: true
           files: dist/*
