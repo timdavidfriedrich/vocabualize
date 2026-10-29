@@ -15,6 +15,9 @@ const _locales = {
   "es": "es-ES",
   "fr": "fr-FR",
   "pl": "pl-PL",
+  "it": "it-IT",
+  "el": "el-GR",
+  "ro": "ro-RO",
 };
 
 class const PexelsStockImageProvider(

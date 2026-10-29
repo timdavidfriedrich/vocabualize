@@ -23,6 +23,9 @@ const _languageNames = {
   "es": "Spanish",
   "fr": "French",
   "pl": "Polish",
+  "it": "Italian",
+  "el": "Greek",
+  "ro": "Romanian",
 };
 
 String _prompt(String languageName) =>

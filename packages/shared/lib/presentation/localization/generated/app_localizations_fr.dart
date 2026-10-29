@@ -432,6 +432,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get languagePolish => 'Polonais';
 
   @override
+  String get languageItalian => 'Italien';
+
+  @override
+  String get languageGreek => 'Grec';
+
+  @override
+  String get languageRomanian => 'Roumain';
+
+  @override
   String languagePairLabel(String source, String target) {
     return '$source → $target';
   }

@@ -436,6 +436,15 @@ class AppLocalizationsUk extends AppLocalizations {
   String get languagePolish => 'Польська';
 
   @override
+  String get languageItalian => 'Італійська';
+
+  @override
+  String get languageGreek => 'Грецька';
+
+  @override
+  String get languageRomanian => 'Румунська';
+
+  @override
   String languagePairLabel(String source, String target) {
     return '$source → $target';
   }

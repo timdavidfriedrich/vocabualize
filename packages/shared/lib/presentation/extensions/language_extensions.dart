@@ -10,6 +10,9 @@ extension LanguageExtensions on Language {
     Language.spanish => context.s.languageSpanish,
     Language.french => context.s.languageFrench,
     Language.polish => context.s.languagePolish,
+    Language.italian => context.s.languageItalian,
+    Language.greek => context.s.languageGreek,
+    Language.romanian => context.s.languageRomanian,
     Language.unknown => context.s.unknown,
   };
 }

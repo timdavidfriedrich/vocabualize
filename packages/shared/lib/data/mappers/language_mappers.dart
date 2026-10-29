@@ -9,6 +9,9 @@ const _codeGerman = "de";
 const _codeSpanish = "es";
 const _codeFrench = "fr";
 const _codePolish = "pl";
+const _codeItalian = "it";
+const _codeGreek = "el";
+const _codeRomanian = "ro";
 const _codeUndetermined = "und";
 
 extension LanguageCodeMappers on String {
@@ -18,6 +21,9 @@ extension LanguageCodeMappers on String {
     _codeSpanish => Language.spanish,
     _codeFrench => Language.french,
     _codePolish => Language.polish,
+    _codeItalian => Language.italian,
+    _codeGreek => Language.greek,
+    _codeRomanian => Language.romanian,
     _ => Language.unknown,
   };
 }
@@ -29,6 +35,9 @@ extension LanguageMappers on Language {
     Language.spanish => _codeSpanish,
     Language.french => _codeFrench,
     Language.polish => _codePolish,
+    Language.italian => _codeItalian,
+    Language.greek => _codeGreek,
+    Language.romanian => _codeRomanian,
     Language.unknown => _codeUndetermined,
   };
 }

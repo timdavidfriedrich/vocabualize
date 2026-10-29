@@ -1,1 +1,1 @@
-const supportedLanguageCodes = {"en", "de", "es", "fr", "pl"};
+const supportedLanguageCodes = {"en", "de", "es", "fr", "pl", "it", "el", "ro"};
