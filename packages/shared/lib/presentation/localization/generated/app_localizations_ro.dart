@@ -274,6 +274,16 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Poate reduce calitatea învățării';
 
   @override
+  String get settingsDefaultGatherTitle => 'Mod implicit de adăugare';
+
+  @override
+  String get settingsDefaultGatherHint =>
+      'Butonul + pornește imediat, o apăsare lungă arată toate opțiunile';
+
+  @override
+  String get settingsDefaultGatherNone => 'Niciunul';
+
+  @override
   String get settingsAppearanceTitle => 'Aspect';
 
   @override

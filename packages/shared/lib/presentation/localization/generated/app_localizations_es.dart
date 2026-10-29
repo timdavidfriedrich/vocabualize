@@ -273,6 +273,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Puede perjudicar el aprendizaje';
 
   @override
+  String get settingsDefaultGatherTitle => 'Forma predeterminada de añadir';
+
+  @override
+  String get settingsDefaultGatherHint =>
+      'El botón + empieza al instante, una pulsación larga muestra todas las opciones';
+
+  @override
+  String get settingsDefaultGatherNone => 'Ninguna';
+
+  @override
   String get settingsAppearanceTitle => 'Apariencia';
 
   @override

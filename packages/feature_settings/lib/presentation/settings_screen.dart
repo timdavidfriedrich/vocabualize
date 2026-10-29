@@ -9,6 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
+import 'package:shared/domain/entities/default_gather_option.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
@@ -17,6 +18,7 @@ import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/appearance_mode_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/default_gather_option_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/string_extensions.dart';
 import 'package:shared/presentation/extensions/sync_status_extensions.dart';
@@ -268,6 +270,19 @@ class const _LearningSection() extends StatelessWidget {
             subtitle: Text(context.s.settingsImagesHiddenHint),
             value: preferences.areImagesHidden,
             onChanged: (areHidden) => bloc.add(SettingsImagesHiddenChanged(areHidden: areHidden)),
+          ),
+          ListTile(
+            title: Text(context.s.settingsDefaultGatherTitle),
+            subtitle: Text(context.s.settingsDefaultGatherHint),
+            trailing: _ChoiceButton(
+              value: preferences.defaultGatherOption.withImagesHidden(preferences.areImagesHidden),
+              options: [
+                for (final option in DefaultGatherOption.values)
+                  if (option.withImagesHidden(preferences.areImagesHidden) == option) option,
+              ],
+              labelOf: (option) => option.toLabel(context),
+              onSelected: (option) => bloc.add(SettingsDefaultGatherOptionChanged(option: option)),
+            ),
           ),
         ],
       ),

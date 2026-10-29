@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:shared/domain/entities/appearance_mode.dart';
+import 'package:shared/domain/entities/default_gather_option.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 
 part 'preferences.mapper.dart';
@@ -14,6 +15,7 @@ const defaultPreferences = Preferences(
   isStrictCorrectionEnabled: false,
   areImagesHidden: false,
   appearanceMode: AppearanceMode.system,
+  defaultGatherOption: DefaultGatherOption.none,
   practiceReminder: DailyReminder(
     isEnabled: false,
     hour: _defaultPracticeReminderHour,
@@ -32,6 +34,7 @@ class const Preferences({
   required final bool isStrictCorrectionEnabled,
   required final bool areImagesHidden,
   required final AppearanceMode appearanceMode,
+  required final DefaultGatherOption defaultGatherOption,
   required final DailyReminder practiceReminder,
   required final DailyReminder streakReminder,
 }) with PreferencesMappable;

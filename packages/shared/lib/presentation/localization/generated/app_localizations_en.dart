@@ -271,6 +271,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Could decrease learning quality';
 
   @override
+  String get settingsDefaultGatherTitle => 'Default way to add words';
+
+  @override
+  String get settingsDefaultGatherHint =>
+      'The + button starts it right away, a long press shows all options';
+
+  @override
+  String get settingsDefaultGatherNone => 'None';
+
+  @override
   String get settingsAppearanceTitle => 'Appearance';
 
   @override

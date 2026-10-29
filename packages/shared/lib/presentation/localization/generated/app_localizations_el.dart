@@ -274,6 +274,16 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Μπορεί να μειώσει την ποιότητα της μάθησης';
 
   @override
+  String get settingsDefaultGatherTitle => 'Προεπιλεγμένος τρόπος προσθήκης';
+
+  @override
+  String get settingsDefaultGatherHint =>
+      'Το κουμπί + ξεκινά αμέσως, το παρατεταμένο πάτημα δείχνει όλες τις επιλογές';
+
+  @override
+  String get settingsDefaultGatherNone => 'Κανένας';
+
+  @override
   String get settingsAppearanceTitle => 'Εμφάνιση';
 
   @override

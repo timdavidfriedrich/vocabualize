@@ -272,6 +272,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Könnte Lernerfolg beeinträchtigen';
 
   @override
+  String get settingsDefaultGatherTitle => 'Standard beim Hinzufügen';
+
+  @override
+  String get settingsDefaultGatherHint =>
+      'Der +-Button startet direkt, langes Drücken zeigt alle Optionen';
+
+  @override
+  String get settingsDefaultGatherNone => 'Keiner';
+
+  @override
   String get settingsAppearanceTitle => 'Erscheinungsbild';
 
   @override

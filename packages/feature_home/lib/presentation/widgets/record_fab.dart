@@ -3,8 +3,10 @@ import 'package:feature_home/presentation/widgets/write_word_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shared/domain/entities/default_gather_option.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/default_gather_option_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 
@@ -20,6 +22,9 @@ class const RecordFab({
   Widget build(BuildContext context) {
     final isOpen = useState(false);
     void toggle() => isOpen.value = !isOpen.value;
+    final defaultOption = context.select<PreferencesCubit, DefaultGatherOption>(
+      (cubit) => cubit.state.defaultGatherOption.withImagesHidden(cubit.state.areImagesHidden),
+    );
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -90,21 +95,37 @@ class const RecordFab({
                       ),
                     ),
                   ),
-                  FloatingActionButton.extended(
-                    heroTag: null,
-                    onPressed: toggle,
-                    isExtended: isOpen.value,
-                    foregroundColor: context.c.onPrimary,
-                    backgroundColor: isOpen.value
-                        ? context.c.primary.withValues(alpha: _openButtonOpacity)
-                        : context.c.primary,
-                    icon: AnimatedRotation(
-                      turns: isOpen.value ? _openIconTurns : 0,
-                      duration: _animationDuration,
-                      curve: Curves.easeOut,
-                      child: const Icon(Icons.add_rounded),
+                  GestureDetector(
+                    onLongPress: isOpen.value
+                        ? null
+                        : () {
+                            Feedback.forLongPress(context);
+                            toggle();
+                          },
+                    child: FloatingActionButton.extended(
+                      heroTag: null,
+                      onPressed: switch ((isOpen.value, defaultOption)) {
+                        (true, _) || (false, DefaultGatherOption.none) => toggle,
+                        (false, DefaultGatherOption.scan) => context.pushScan,
+                        (false, DefaultGatherOption.write) => () => _write(context),
+                      },
+                      isExtended: isOpen.value,
+                      foregroundColor: context.c.onPrimary,
+                      backgroundColor: isOpen.value
+                          ? context.c.primary.withValues(alpha: _openButtonOpacity)
+                          : context.c.primary,
+                      icon: AnimatedRotation(
+                        turns: isOpen.value ? _openIconTurns : 0,
+                        duration: _animationDuration,
+                        curve: Curves.easeOut,
+                        child: Icon(switch ((isOpen.value, defaultOption)) {
+                          (false, DefaultGatherOption.scan) => Icons.camera_alt_rounded,
+                          (false, DefaultGatherOption.write) => Icons.edit_rounded,
+                          _ => Icons.add_rounded,
+                        }),
+                      ),
+                      label: Text(context.s.cancel),
                     ),
-                    label: Text(context.s.cancel),
                   ),
                 ],
               ),

@@ -1,4 +1,5 @@
 import 'package:shared/domain/entities/appearance_mode.dart';
+import 'package:shared/domain/entities/default_gather_option.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 
 sealed class SettingsEvent {
@@ -33,6 +34,10 @@ class const SettingsImagesHiddenChanged({
 
 class const SettingsAppearanceModeChanged({
   required final AppearanceMode mode,
+}) extends SettingsEvent;
+
+class const SettingsDefaultGatherOptionChanged({
+  required final DefaultGatherOption option,
 }) extends SettingsEvent;
 
 class const SettingsReminderToggled({

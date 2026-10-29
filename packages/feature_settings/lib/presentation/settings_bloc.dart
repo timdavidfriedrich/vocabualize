@@ -40,6 +40,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsStrictCorrectionChanged>(_onStrictCorrectionChanged);
     on<SettingsImagesHiddenChanged>(_onImagesHiddenChanged);
     on<SettingsAppearanceModeChanged>(_onAppearanceModeChanged);
+    on<SettingsDefaultGatherOptionChanged>(_onDefaultGatherOptionChanged);
     on<SettingsReminderToggled>(_onReminderToggled);
     on<SettingsReminderTimeChanged>(_onReminderTimeChanged);
     on<SettingsNotificationSettingsOpened>(_onNotificationSettingsOpened);
@@ -149,6 +150,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     SettingsAppearanceModeChanged event,
     Emitter<SettingsState> emit,
   ) => _savePreference(emit, () => _settingsRepository.setAppearanceMode(event.mode));
+
+  Future<void> _onDefaultGatherOptionChanged(
+    SettingsDefaultGatherOptionChanged event,
+    Emitter<SettingsState> emit,
+  ) => _savePreference(emit, () => _settingsRepository.setDefaultGatherOption(event.option));
 
   Future<void> _onReminderToggled(
     SettingsReminderToggled event,

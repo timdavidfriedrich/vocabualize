@@ -274,6 +274,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Potrebbe ridurre la qualità dell\'apprendimento';
 
   @override
+  String get settingsDefaultGatherTitle => 'Aggiunta predefinita';
+
+  @override
+  String get settingsDefaultGatherHint =>
+      'Il pulsante + inizia subito, una pressione prolungata mostra tutte le opzioni';
+
+  @override
+  String get settingsDefaultGatherNone => 'Nessuna';
+
+  @override
   String get settingsAppearanceTitle => 'Aspetto';
 
   @override

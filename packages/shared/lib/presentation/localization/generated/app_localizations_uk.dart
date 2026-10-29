@@ -275,6 +275,16 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Може знизити якість навчання';
 
   @override
+  String get settingsDefaultGatherTitle => 'Спосіб додавання за замовчуванням';
+
+  @override
+  String get settingsDefaultGatherHint =>
+      'Кнопка + запускає одразу, довге натискання показує всі варіанти';
+
+  @override
+  String get settingsDefaultGatherNone => 'Немає';
+
+  @override
   String get settingsAppearanceTitle => 'Оформлення';
 
   @override

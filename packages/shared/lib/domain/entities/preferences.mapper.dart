@@ -44,6 +44,10 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
     'appearanceMode',
     _$appearanceMode,
   );
+  static DefaultGatherOption _$defaultGatherOption(Preferences v) =>
+      v.defaultGatherOption;
+  static const Field<Preferences, DefaultGatherOption> _f$defaultGatherOption =
+      Field('defaultGatherOption', _$defaultGatherOption);
   static DailyReminder _$practiceReminder(Preferences v) => v.practiceReminder;
   static const Field<Preferences, DailyReminder> _f$practiceReminder = Field(
     'practiceReminder',
@@ -61,6 +65,7 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
     #isStrictCorrectionEnabled: _f$isStrictCorrectionEnabled,
     #areImagesHidden: _f$areImagesHidden,
     #appearanceMode: _f$appearanceMode,
+    #defaultGatherOption: _f$defaultGatherOption,
     #practiceReminder: _f$practiceReminder,
     #streakReminder: _f$streakReminder,
   };
@@ -71,6 +76,7 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
       isStrictCorrectionEnabled: data.dec(_f$isStrictCorrectionEnabled),
       areImagesHidden: data.dec(_f$areImagesHidden),
       appearanceMode: data.dec(_f$appearanceMode),
+      defaultGatherOption: data.dec(_f$defaultGatherOption),
       practiceReminder: data.dec(_f$practiceReminder),
       streakReminder: data.dec(_f$streakReminder),
     );
@@ -143,6 +149,7 @@ abstract class PreferencesCopyWith<$R, $In extends Preferences, $Out>
     bool? isStrictCorrectionEnabled,
     bool? areImagesHidden,
     AppearanceMode? appearanceMode,
+    DefaultGatherOption? defaultGatherOption,
     DailyReminder? practiceReminder,
     DailyReminder? streakReminder,
   });
@@ -170,6 +177,7 @@ class _PreferencesCopyWithImpl<$R, $Out>
     bool? isStrictCorrectionEnabled,
     bool? areImagesHidden,
     AppearanceMode? appearanceMode,
+    DefaultGatherOption? defaultGatherOption,
     DailyReminder? practiceReminder,
     DailyReminder? streakReminder,
   }) => $apply(
@@ -180,6 +188,8 @@ class _PreferencesCopyWithImpl<$R, $Out>
         #isStrictCorrectionEnabled: isStrictCorrectionEnabled,
       if (areImagesHidden != null) #areImagesHidden: areImagesHidden,
       if (appearanceMode != null) #appearanceMode: appearanceMode,
+      if (defaultGatherOption != null)
+        #defaultGatherOption: defaultGatherOption,
       if (practiceReminder != null) #practiceReminder: practiceReminder,
       if (streakReminder != null) #streakReminder: streakReminder,
     }),
@@ -196,6 +206,10 @@ class _PreferencesCopyWithImpl<$R, $Out>
     ),
     areImagesHidden: data.get(#areImagesHidden, or: $value.areImagesHidden),
     appearanceMode: data.get(#appearanceMode, or: $value.appearanceMode),
+    defaultGatherOption: data.get(
+      #defaultGatherOption,
+      or: $value.defaultGatherOption,
+    ),
     practiceReminder: data.get(#practiceReminder, or: $value.practiceReminder),
     streakReminder: data.get(#streakReminder, or: $value.streakReminder),
   );

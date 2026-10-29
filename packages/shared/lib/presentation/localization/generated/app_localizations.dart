@@ -624,6 +624,24 @@ abstract class AppLocalizations {
   /// **'Could decrease learning quality'**
   String get settingsImagesHiddenHint;
 
+  /// No description provided for @settingsDefaultGatherTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Default way to add words'**
+  String get settingsDefaultGatherTitle;
+
+  /// No description provided for @settingsDefaultGatherHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The + button starts it right away, a long press shows all options'**
+  String get settingsDefaultGatherHint;
+
+  /// No description provided for @settingsDefaultGatherNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get settingsDefaultGatherNone;
+
   /// No description provided for @settingsAppearanceTitle.
   ///
   /// In en, this message translates to:

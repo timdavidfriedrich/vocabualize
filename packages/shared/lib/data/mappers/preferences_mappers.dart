@@ -2,6 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:shared/data/models/local_daily_reminder_setting.dart';
 import 'package:shared/data/models/local_preference_key.dart';
 import 'package:shared/domain/entities/appearance_mode.dart';
+import 'package:shared/domain/entities/default_gather_option.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 
@@ -10,6 +11,9 @@ const _falseValue = "false";
 const _appearanceSystem = "system";
 const _appearanceLight = "light";
 const _appearanceDark = "dark";
+const _gatherNone = "none";
+const _gatherScan = "scan";
+const _gatherWrite = "write";
 
 extension LocalPreferencesMappers on Map<LocalPreferenceKey, String> {
   Preferences toPreferences() {
@@ -21,6 +25,11 @@ extension LocalPreferencesMappers on Map<LocalPreferenceKey, String> {
         _appearanceLight => AppearanceMode.light,
         _appearanceDark => AppearanceMode.dark,
         _ => AppearanceMode.system,
+      },
+      defaultGatherOption: switch (this[LocalPreferenceKey.defaultGatherOption]) {
+        _gatherScan => DefaultGatherOption.scan,
+        _gatherWrite => DefaultGatherOption.write,
+        _ => DefaultGatherOption.none,
       },
       practiceReminder: _reminderOf(ReminderKind.practice),
       streakReminder: _reminderOf(ReminderKind.streak),
@@ -67,5 +76,13 @@ extension AppearanceModeMappers on AppearanceMode {
     AppearanceMode.system => _appearanceSystem,
     AppearanceMode.light => _appearanceLight,
     AppearanceMode.dark => _appearanceDark,
+  };
+}
+
+extension DefaultGatherOptionMappers on DefaultGatherOption {
+  String toPreferenceValue() => switch (this) {
+    DefaultGatherOption.none => _gatherNone,
+    DefaultGatherOption.scan => _gatherScan,
+    DefaultGatherOption.write => _gatherWrite,
   };
 }
