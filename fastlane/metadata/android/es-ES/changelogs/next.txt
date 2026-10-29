@@ -1,1 +1,3 @@
-El nuevo Vocabualize: funciona sin conexión y sin cuenta, se sincroniza con Google si quieres, sugiere palabras al escanear y te motiva con rachas y recordatorios.
+Muchas mejoras de usabilidad, entre ellas:
+• Ahora funciona sin conexión
+• Ahora puedes buscar y filtrar tu vocabulario

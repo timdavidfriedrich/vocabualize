@@ -1,1 +1,3 @@
-Das neue Vocabualize: funktioniert offline und ohne Konto, synchronisiert auf Wunsch mit Google, schlägt beim Scannen Wörter vor und hält dich mit Serien und Erinnerungen am Ball.
+Viele Quality-of-Life-Verbesserungen, unter anderem:
+• Funktioniert nun offline
+• Vokabeln können nun gesucht und gefiltert werden
