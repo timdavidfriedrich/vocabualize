@@ -165,8 +165,8 @@ class const _GradientOverlay({
           begin: Alignment.bottomCenter,
           end: _overlayFadeEnd,
           colors: [
-            context.c.scrim.withValues(alpha: _overlayOpacity),
-            context.c.scrim.withValues(alpha: 0),
+            context.overlay.scrim.withValues(alpha: _overlayOpacity),
+            context.overlay.scrim.withValues(alpha: 0),
           ],
         ),
       ),
@@ -184,11 +184,11 @@ class const _RetakeButton() extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.replay_rounded, color: context.c.onPrimary, size: Spacing.iconS),
+            Icon(Icons.replay_rounded, color: context.overlay.onScrim, size: Spacing.iconS),
             const SizedBox(width: Spacing.xs),
             Text(
               context.s.detailsRetakeImageButton,
-              style: context.t.bodySmall?.copyWith(color: context.c.onPrimary),
+              style: context.t.bodySmall?.copyWith(color: context.overlay.onScrim),
             ),
           ],
         ),
@@ -212,11 +212,11 @@ class const _PhotographerLink({
             Flexible(
               child: Text(
                 context.s.detailsPhotoByLabel(_photographer ?? context.s.unknown),
-                style: context.t.bodySmall?.copyWith(color: context.c.onPrimary),
+                style: context.t.bodySmall?.copyWith(color: context.overlay.onScrim),
               ),
             ),
             const SizedBox(width: Spacing.xs),
-            Icon(Icons.launch_rounded, size: Spacing.iconS, color: context.c.onPrimary),
+            Icon(Icons.launch_rounded, size: Spacing.iconS, color: context.overlay.onScrim),
             const SizedBox(width: Spacing.xs),
           ],
         ),

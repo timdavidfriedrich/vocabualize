@@ -266,6 +266,21 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Könnte Lernerfolg beeinträchtigen';
 
   @override
+  String get settingsAppearanceTitle => 'Erscheinungsbild';
+
+  @override
+  String get settingsAppearanceHint => 'Hell, dunkel oder wie dein Handy';
+
+  @override
+  String get settingsAppearanceSystem => 'System';
+
+  @override
+  String get settingsAppearanceLight => 'Hell';
+
+  @override
+  String get settingsAppearanceDark => 'Dunkel';
+
+  @override
   String get settingsSourceLanguageTitle => 'Meine Sprache';
 
   @override

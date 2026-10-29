@@ -1,3 +1,4 @@
+import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 
 sealed class SettingsEvent {
@@ -24,6 +25,10 @@ class const SettingsTypeAnswerDisabledChanged({
 
 class const SettingsImagesHiddenChanged({
   required final bool areHidden,
+}) extends SettingsEvent;
+
+class const SettingsAppearanceModeChanged({
+  required final AppearanceMode mode,
 }) extends SettingsEvent;
 
 class const SettingsReminderToggled({

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/account.dart';
+import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/preferences.dart';
@@ -14,6 +15,7 @@ import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/sync_status.dart';
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
+import 'package:shared/presentation/extensions/appearance_mode_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/string_extensions.dart';
@@ -204,6 +206,31 @@ class const _LanguageButton({
   }
 }
 
+class const _ChoiceButton<T>({
+  required final T _value,
+  required final List<T> _options,
+  required final String Function(T option) _labelOf,
+  required final ValueChanged<T> _onSelected,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MenuAnchor(
+      menuChildren: [
+        for (final option in _options)
+          MenuItemButton(
+            onPressed: () => _onSelected(option),
+            trailingIcon: option == _value ? const Icon(Icons.check_rounded) : null,
+            child: Text(_labelOf(option)),
+          ),
+      ],
+      builder: (context, controller, child) => OutlinedButton(
+        onPressed: () => controller.isOpen ? controller.close() : controller.open(),
+        child: Text(_labelOf(_value)),
+      ),
+    );
+  }
+}
+
 class const _LearningSection() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -211,6 +238,16 @@ class const _LearningSection() extends StatelessWidget {
     return BlocBuilder<PreferencesCubit, Preferences>(
       builder: (context, preferences) => Column(
         children: [
+          ListTile(
+            title: Text(context.s.settingsAppearanceTitle),
+            subtitle: Text(context.s.settingsAppearanceHint),
+            trailing: _ChoiceButton(
+              value: preferences.appearanceMode,
+              options: AppearanceMode.values,
+              labelOf: (mode) => mode.toLabel(context),
+              onSelected: (mode) => bloc.add(SettingsAppearanceModeChanged(mode: mode)),
+            ),
+          ),
           SwitchListTile(
             title: Text(context.s.settingsTypeAnswerDisabledTitle),
             subtitle: Text(context.s.settingsTypeAnswerDisabledHint),
@@ -518,7 +555,7 @@ class const _Avatar({
       radius: Spacing.l,
       providerBadge: CircleAvatar(
         radius: Spacing.xs,
-        backgroundColor: context.c.secondary,
+        backgroundColor: context.accountProviders.google,
         child: const GoogleLogo(size: Spacing.s),
       ),
     );

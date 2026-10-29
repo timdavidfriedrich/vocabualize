@@ -46,3 +46,44 @@ class const LevelColors({
     );
   }
 }
+
+class const OverlayColors({
+  required final Color scrim,
+  required final Color onScrim,
+}) extends ThemeExtension<OverlayColors> {
+  @override
+  OverlayColors copyWith({Color? scrim, Color? onScrim}) {
+    return OverlayColors(scrim: scrim ?? this.scrim, onScrim: onScrim ?? this.onScrim);
+  }
+
+  @override
+  OverlayColors lerp(OverlayColors? other, double t) {
+    if (other == null) return this;
+    return OverlayColors(
+      scrim: Color.lerp(scrim, other.scrim, t)!,
+      onScrim: Color.lerp(onScrim, other.onScrim, t)!,
+    );
+  }
+}
+
+class const AccountProviderColors({
+  required final Color google,
+  required final Color onGoogle,
+}) extends ThemeExtension<AccountProviderColors> {
+  @override
+  AccountProviderColors copyWith({Color? google, Color? onGoogle}) {
+    return AccountProviderColors(
+      google: google ?? this.google,
+      onGoogle: onGoogle ?? this.onGoogle,
+    );
+  }
+
+  @override
+  AccountProviderColors lerp(AccountProviderColors? other, double t) {
+    if (other == null) return this;
+    return AccountProviderColors(
+      google: Color.lerp(google, other.google, t)!,
+      onGoogle: Color.lerp(onGoogle, other.onGoogle, t)!,
+    );
+  }
+}

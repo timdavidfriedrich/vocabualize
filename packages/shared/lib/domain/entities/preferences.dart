@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 
 part 'preferences.mapper.dart';
@@ -11,6 +12,7 @@ const _plannedReminderDays = 7;
 const defaultPreferences = Preferences(
   isTypeAnswerDisabled: false,
   areImagesHidden: false,
+  appearanceMode: AppearanceMode.system,
   practiceReminder: DailyReminder(
     isEnabled: false,
     hour: _defaultPracticeReminderHour,
@@ -27,6 +29,7 @@ const defaultPreferences = Preferences(
 class const Preferences({
   required final bool isTypeAnswerDisabled,
   required final bool areImagesHidden,
+  required final AppearanceMode appearanceMode,
   required final DailyReminder practiceReminder,
   required final DailyReminder streakReminder,
 }) with PreferencesMappable;

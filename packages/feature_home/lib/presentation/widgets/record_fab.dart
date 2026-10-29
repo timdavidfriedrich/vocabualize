@@ -94,6 +94,7 @@ class const RecordFab({
                     heroTag: null,
                     onPressed: toggle,
                     isExtended: isOpen.value,
+                    foregroundColor: context.c.onPrimary,
                     backgroundColor: isOpen.value
                         ? context.c.primary.withValues(alpha: _openButtonOpacity)
                         : context.c.primary,

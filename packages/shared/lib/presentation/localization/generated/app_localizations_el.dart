@@ -267,6 +267,21 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Μπορεί να μειώσει την ποιότητα της μάθησης';
 
   @override
+  String get settingsAppearanceTitle => 'Εμφάνιση';
+
+  @override
+  String get settingsAppearanceHint => 'Φωτεινό, σκοτεινό ή όπως το τηλέφωνό σας';
+
+  @override
+  String get settingsAppearanceSystem => 'Σύστημα';
+
+  @override
+  String get settingsAppearanceLight => 'Φωτεινό';
+
+  @override
+  String get settingsAppearanceDark => 'Σκοτεινό';
+
+  @override
   String get settingsSourceLanguageTitle => 'Η γλώσσα μου';
 
   @override

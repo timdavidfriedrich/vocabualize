@@ -38,6 +38,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsAccountConflictResolved>(_onAccountConflictResolved);
     on<SettingsTypeAnswerDisabledChanged>(_onTypeAnswerDisabledChanged);
     on<SettingsImagesHiddenChanged>(_onImagesHiddenChanged);
+    on<SettingsAppearanceModeChanged>(_onAppearanceModeChanged);
     on<SettingsReminderToggled>(_onReminderToggled);
     on<SettingsReminderTimeChanged>(_onReminderTimeChanged);
     on<SettingsNotificationSettingsOpened>(_onNotificationSettingsOpened);
@@ -134,6 +135,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     SettingsImagesHiddenChanged event,
     Emitter<SettingsState> emit,
   ) => _savePreference(emit, () => _settingsRepository.setImagesHidden(event.areHidden));
+
+  Future<void> _onAppearanceModeChanged(
+    SettingsAppearanceModeChanged event,
+    Emitter<SettingsState> emit,
+  ) => _savePreference(emit, () => _settingsRepository.setAppearanceMode(event.mode));
 
   Future<void> _onReminderToggled(
     SettingsReminderToggled event,

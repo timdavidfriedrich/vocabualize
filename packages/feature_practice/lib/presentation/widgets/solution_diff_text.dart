@@ -16,8 +16,12 @@ class const SolutionDiffText({
   @override
   Widget build(BuildContext context) {
     final style = context.t.headlineSmall ?? const TextStyle();
-    final correctionStyle = style.copyWith(backgroundColor: context.c.primary);
+    final correctionStyle = style.copyWith(
+      color: context.c.onPrimary,
+      backgroundColor: context.c.primary,
+    );
     final mistakeStyle = style.copyWith(
+      color: context.c.onError,
       backgroundColor: context.c.error,
       decoration: TextDecoration.lineThrough,
       decorationThickness: _strikeThickness,

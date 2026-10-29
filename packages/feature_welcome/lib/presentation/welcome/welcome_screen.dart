@@ -85,6 +85,7 @@ class const _Content({
         _GoogleSignInButton(isBusy: _isBusy, isSigningIn: _isSigningIn),
         const SizedBox(height: Spacing.m),
         OutlinedButton(
+          style: OutlinedButton.styleFrom(foregroundColor: context.c.onPrimary),
           onPressed: _isBusy
               ? null
               : () => context.read<WelcomeBloc>().add(const WelcomeLocalUseChosen()),
@@ -105,8 +106,8 @@ class const _GoogleSignInButton({
     return BlocBuilder<ConnectivityCubit, bool>(
       builder: (context, isConnected) => ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: context.c.secondary,
-          foregroundColor: context.c.onSecondary,
+          backgroundColor: context.accountProviders.google,
+          foregroundColor: context.accountProviders.onGoogle,
           padding: const EdgeInsets.all(Spacing.m),
         ),
         onPressed: _isBusy || !isConnected

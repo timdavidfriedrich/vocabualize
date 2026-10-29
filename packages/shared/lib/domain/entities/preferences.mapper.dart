@@ -33,6 +33,11 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
     'areImagesHidden',
     _$areImagesHidden,
   );
+  static AppearanceMode _$appearanceMode(Preferences v) => v.appearanceMode;
+  static const Field<Preferences, AppearanceMode> _f$appearanceMode = Field(
+    'appearanceMode',
+    _$appearanceMode,
+  );
   static DailyReminder _$practiceReminder(Preferences v) => v.practiceReminder;
   static const Field<Preferences, DailyReminder> _f$practiceReminder = Field(
     'practiceReminder',
@@ -48,6 +53,7 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
   final MappableFields<Preferences> fields = const {
     #isTypeAnswerDisabled: _f$isTypeAnswerDisabled,
     #areImagesHidden: _f$areImagesHidden,
+    #appearanceMode: _f$appearanceMode,
     #practiceReminder: _f$practiceReminder,
     #streakReminder: _f$streakReminder,
   };
@@ -56,6 +62,7 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
     return Preferences(
       isTypeAnswerDisabled: data.dec(_f$isTypeAnswerDisabled),
       areImagesHidden: data.dec(_f$areImagesHidden),
+      appearanceMode: data.dec(_f$appearanceMode),
       practiceReminder: data.dec(_f$practiceReminder),
       streakReminder: data.dec(_f$streakReminder),
     );
@@ -126,6 +133,7 @@ abstract class PreferencesCopyWith<$R, $In extends Preferences, $Out>
   $R call({
     bool? isTypeAnswerDisabled,
     bool? areImagesHidden,
+    AppearanceMode? appearanceMode,
     DailyReminder? practiceReminder,
     DailyReminder? streakReminder,
   });
@@ -151,6 +159,7 @@ class _PreferencesCopyWithImpl<$R, $Out>
   $R call({
     bool? isTypeAnswerDisabled,
     bool? areImagesHidden,
+    AppearanceMode? appearanceMode,
     DailyReminder? practiceReminder,
     DailyReminder? streakReminder,
   }) => $apply(
@@ -158,6 +167,7 @@ class _PreferencesCopyWithImpl<$R, $Out>
       if (isTypeAnswerDisabled != null)
         #isTypeAnswerDisabled: isTypeAnswerDisabled,
       if (areImagesHidden != null) #areImagesHidden: areImagesHidden,
+      if (appearanceMode != null) #appearanceMode: appearanceMode,
       if (practiceReminder != null) #practiceReminder: practiceReminder,
       if (streakReminder != null) #streakReminder: streakReminder,
     }),
@@ -169,6 +179,7 @@ class _PreferencesCopyWithImpl<$R, $Out>
       or: $value.isTypeAnswerDisabled,
     ),
     areImagesHidden: data.get(#areImagesHidden, or: $value.areImagesHidden),
+    appearanceMode: data.get(#appearanceMode, or: $value.appearanceMode),
     practiceReminder: data.get(#practiceReminder, or: $value.practiceReminder),
     streakReminder: data.get(#streakReminder, or: $value.streakReminder),
   );

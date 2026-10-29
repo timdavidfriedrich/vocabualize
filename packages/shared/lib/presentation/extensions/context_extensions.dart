@@ -13,6 +13,10 @@ extension ContextExtensions on BuildContext {
 
   LevelColors get levels => Theme.of(this).extension<LevelColors>()!;
 
+  OverlayColors get overlay => Theme.of(this).extension<OverlayColors>()!;
+
+  AccountProviderColors get accountProviders => Theme.of(this).extension<AccountProviderColors>()!;
+
   void showToast(String message, {SnackBarAction? action}) {
     ScaffoldMessenger.of(this).showSnackBar(SnackBar(content: Text(message), action: action));
   }

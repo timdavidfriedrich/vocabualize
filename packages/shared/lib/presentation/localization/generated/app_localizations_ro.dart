@@ -267,6 +267,21 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Poate reduce calitatea învățării';
 
   @override
+  String get settingsAppearanceTitle => 'Aspect';
+
+  @override
+  String get settingsAppearanceHint => 'Luminos, întunecat sau ca telefonul dumneavoastră';
+
+  @override
+  String get settingsAppearanceSystem => 'Sistem';
+
+  @override
+  String get settingsAppearanceLight => 'Luminos';
+
+  @override
+  String get settingsAppearanceDark => 'Întunecat';
+
+  @override
   String get settingsSourceLanguageTitle => 'Limba mea';
 
   @override

@@ -269,6 +269,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Cela pourrait diminuer la qualité de l\'apprentissage';
 
   @override
+  String get settingsAppearanceTitle => 'Apparence';
+
+  @override
+  String get settingsAppearanceHint => 'Clair, sombre ou comme votre téléphone';
+
+  @override
+  String get settingsAppearanceSystem => 'Système';
+
+  @override
+  String get settingsAppearanceLight => 'Clair';
+
+  @override
+  String get settingsAppearanceDark => 'Sombre';
+
+  @override
   String get settingsSourceLanguageTitle => 'Langue source';
 
   @override

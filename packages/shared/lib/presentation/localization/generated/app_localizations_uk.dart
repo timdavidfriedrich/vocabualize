@@ -268,6 +268,21 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Може знизити якість навчання';
 
   @override
+  String get settingsAppearanceTitle => 'Оформлення';
+
+  @override
+  String get settingsAppearanceHint => 'Світле, темне або як на телефоні';
+
+  @override
+  String get settingsAppearanceSystem => 'Системне';
+
+  @override
+  String get settingsAppearanceLight => 'Світле';
+
+  @override
+  String get settingsAppearanceDark => 'Темне';
+
+  @override
   String get settingsSourceLanguageTitle => 'Мова оригіналу';
 
   @override

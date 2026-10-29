@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared/domain/entities/appearance_mode.dart';
+import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/presentation/account/account_cubit.dart';
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
+import 'package:shared/presentation/extensions/appearance_mode_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
 import 'package:shared/presentation/localization/generated/app_localizations.dart';
@@ -42,21 +45,29 @@ class const App({
         BlocProvider(create: (_) => sl<PreferencesCubit>()..start()),
         BlocProvider(lazy: false, create: (_) => sl<ReminderCubit>()..start()),
       ],
-      child: MaterialApp.router(
-        routerConfig: sl<NavigationRouter>().config,
-        builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: GateOverlay(child: child ?? const SizedBox.shrink()),
+      child: BlocSelector<PreferencesCubit, Preferences, AppearanceMode>(
+        selector: (preferences) => preferences.appearanceMode,
+        builder: (context, appearanceMode) => MaterialApp.router(
+          routerConfig: sl<NavigationRouter>().config,
+          builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+            value: switch (Theme.of(context).brightness) {
+              Brightness.dark => SystemUiOverlayStyle.light,
+              Brightness.light => SystemUiOverlayStyle.dark,
+            },
+            child: GateOverlay(child: child ?? const SizedBox.shrink()),
+          ),
+          onGenerateTitle: (context) => context.s.appTitle,
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          themeMode: appearanceMode.toThemeMode(),
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
         ),
-        onGenerateTitle: (context) => context.s.appTitle,
-        theme: AppTheme.dark,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
       ),
     );
   }

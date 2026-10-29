@@ -265,6 +265,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsImagesHiddenHint => 'Could decrease learning quality';
 
   @override
+  String get settingsAppearanceTitle => 'Appearance';
+
+  @override
+  String get settingsAppearanceHint => 'Light, dark or like your phone';
+
+  @override
+  String get settingsAppearanceSystem => 'System';
+
+  @override
+  String get settingsAppearanceLight => 'Light';
+
+  @override
+  String get settingsAppearanceDark => 'Dark';
+
+  @override
   String get settingsSourceLanguageTitle => 'Source language';
 
   @override

@@ -7,6 +7,7 @@ import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/preferences_mappers.dart';
 import 'package:shared/data/models/local_preference_key.dart';
+import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/preferences.dart';
@@ -84,6 +85,11 @@ class const SettingsRepositoryImpl(
   @override
   Future<AppResult<()>> setImagesHidden(bool areHidden) {
     return _savePreference(LocalPreferenceKey.imagesHidden, areHidden.toPreferenceValue());
+  }
+
+  @override
+  Future<AppResult<()>> setAppearanceMode(AppearanceMode mode) {
+    return _savePreference(LocalPreferenceKey.appearanceMode, mode.toPreferenceValue());
   }
 
   @override

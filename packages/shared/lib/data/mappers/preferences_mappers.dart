@@ -1,17 +1,26 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:shared/data/models/local_daily_reminder_setting.dart';
 import 'package:shared/data/models/local_preference_key.dart';
+import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 
 const _trueValue = "true";
 const _falseValue = "false";
+const _appearanceSystem = "system";
+const _appearanceLight = "light";
+const _appearanceDark = "dark";
 
 extension LocalPreferencesMappers on Map<LocalPreferenceKey, String> {
   Preferences toPreferences() {
     return Preferences(
       isTypeAnswerDisabled: this[LocalPreferenceKey.typeAnswerDisabled] == _trueValue,
       areImagesHidden: this[LocalPreferenceKey.imagesHidden] == _trueValue,
+      appearanceMode: switch (this[LocalPreferenceKey.appearanceMode]) {
+        _appearanceLight => AppearanceMode.light,
+        _appearanceDark => AppearanceMode.dark,
+        _ => AppearanceMode.system,
+      },
       practiceReminder: _reminderOf(ReminderKind.practice),
       streakReminder: _reminderOf(ReminderKind.streak),
     );
@@ -50,4 +59,12 @@ extension DailyReminderMappers on DailyReminder {
 
 extension PreferenceFlagMappers on bool {
   String toPreferenceValue() => this ? _trueValue : _falseValue;
+}
+
+extension AppearanceModeMappers on AppearanceMode {
+  String toPreferenceValue() => switch (this) {
+    AppearanceMode.system => _appearanceSystem,
+    AppearanceMode.light => _appearanceLight,
+    AppearanceMode.dark => _appearanceDark,
+  };
 }
