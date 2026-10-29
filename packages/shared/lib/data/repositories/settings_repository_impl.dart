@@ -83,6 +83,14 @@ class const SettingsRepositoryImpl(
   }
 
   @override
+  Future<AppResult<()>> setStrictCorrectionEnabled(bool isEnabled) {
+    return _savePreference(
+      LocalPreferenceKey.strictCorrectionEnabled,
+      isEnabled.toPreferenceValue(),
+    );
+  }
+
+  @override
   Future<AppResult<()>> setImagesHidden(bool areHidden) {
     return _savePreference(LocalPreferenceKey.imagesHidden, areHidden.toPreferenceValue());
   }

@@ -8,10 +8,17 @@ const _apostrophe = "'";
 const _goodMistakeLimit = 2;
 
 extension TypedAnswerExtensions on String {
-  PracticeAnswer gradeAgainst(String solution, {required Set<String> articles}) {
+  PracticeAnswer gradeAgainst(
+    String solution, {
+    required Set<String> articles,
+    required bool isStrict,
+  }) {
     final article = leadingArticle(articles) ?? "";
     if (substring(article.length).trim().isEmpty) return PracticeAnswer.forgot;
-    final differences = diff(toFolded(), solution.toFolded());
+    final differences = diff(
+      toComparable(isStrict: isStrict),
+      solution.toComparable(isStrict: isStrict),
+    );
     return switch (_mistakes(differences)) {
       0 => PracticeAnswer.easy,
       <= _goodMistakeLimit => PracticeAnswer.good,

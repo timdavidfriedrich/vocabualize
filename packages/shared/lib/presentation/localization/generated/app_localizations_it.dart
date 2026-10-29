@@ -255,6 +255,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settingsTypeAnswerDisabledHint => 'Usa solo il richiamo a memoria con autovalutazione';
 
   @override
+  String get settingsStrictCorrectionTitle => 'Correzione rigorosa';
+
+  @override
+  String get settingsStrictCorrectionHint =>
+      'Accenti e caratteri speciali devono essere scritti esattamente';
+
+  @override
   String get settingsCollectionsTitle => 'Attiva le raccolte';
 
   @override

@@ -588,6 +588,18 @@ abstract class AppLocalizations {
   /// **'Only use Memory Recall with self-assessment'**
   String get settingsTypeAnswerDisabledHint;
 
+  /// No description provided for @settingsStrictCorrectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Strict correction'**
+  String get settingsStrictCorrectionTitle;
+
+  /// No description provided for @settingsStrictCorrectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Accents and special characters must be typed exactly'**
+  String get settingsStrictCorrectionHint;
+
   /// No description provided for @settingsCollectionsTitle.
   ///
   /// In en, this message translates to:

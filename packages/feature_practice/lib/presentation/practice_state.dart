@@ -21,6 +21,7 @@ class const PracticeActive({
   required final int doneCount,
   required final List<Vocabulary> queue,
   required final bool showsLanguages,
+  required final bool isStrictCorrection,
   required final String? typedAnswer,
   required final PracticeAnswer? grade,
   required final bool isSolutionShown,

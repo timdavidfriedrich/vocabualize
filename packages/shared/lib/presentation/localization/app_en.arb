@@ -87,6 +87,8 @@
   "settingsSignInButton": "Sign in",
   "settingsTypeAnswerDisabledTitle": "Disable Type Answer mode",
   "settingsTypeAnswerDisabledHint": "Only use Memory Recall with self-assessment",
+  "settingsStrictCorrectionTitle": "Strict correction",
+  "settingsStrictCorrectionHint": "Accents and special characters must be typed exactly",
   "settingsCollectionsTitle": "Enable collections",
   "settingsCollectionsHint": "Categorise words in collections",
   "settingsImagesHiddenTitle": "Hide images",

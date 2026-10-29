@@ -20,6 +20,8 @@ abstract class SettingsRepository {
 
   Future<AppResult<()>> setTypeAnswerDisabled(bool isDisabled);
 
+  Future<AppResult<()>> setStrictCorrectionEnabled(bool isEnabled);
+
   Future<AppResult<()>> setImagesHidden(bool areHidden);
 
   Future<AppResult<()>> setAppearanceMode(AppearanceMode mode);

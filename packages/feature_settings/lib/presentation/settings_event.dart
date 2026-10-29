@@ -23,6 +23,10 @@ class const SettingsTypeAnswerDisabledChanged({
   required final bool isDisabled,
 }) extends SettingsEvent;
 
+class const SettingsStrictCorrectionChanged({
+  required final bool isEnabled,
+}) extends SettingsEvent;
+
 class const SettingsImagesHiddenChanged({
   required final bool areHidden,
 }) extends SettingsEvent;

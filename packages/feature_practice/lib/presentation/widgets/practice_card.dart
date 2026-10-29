@@ -21,6 +21,7 @@ const _sourceMaxLines = 4;
 typedef _Card = ({
   Vocabulary vocabulary,
   bool showsLanguages,
+  bool isStrictCorrection,
   bool isSolutionShown,
   String? typedAnswer,
   PracticeAnswer? grade,
@@ -36,6 +37,7 @@ class const PracticeCard({
         PracticeActive(
           :final queue,
           :final showsLanguages,
+          :final isStrictCorrection,
           :final isSolutionShown,
           :final typedAnswer,
           :final grade,
@@ -43,6 +45,7 @@ class const PracticeCard({
           (
             vocabulary: queue.first,
             showsLanguages: showsLanguages,
+            isStrictCorrection: isStrictCorrection,
             isSolutionShown: isSolutionShown,
             typedAnswer: typedAnswer,
             grade: grade,
@@ -105,6 +108,7 @@ class const _CardContent({
                   solution: card.vocabulary.target,
                   typedAnswer: card.typedAnswer,
                   grade: card.grade,
+                  isStrictCorrection: card.isStrictCorrection,
                 ),
               ),
           ],
@@ -126,6 +130,7 @@ class const _Solution({
   required final String _solution,
   required final String? _typedAnswer,
   required final PracticeAnswer? _grade,
+  required final bool _isStrictCorrection,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -152,6 +157,7 @@ class const _Solution({
               child: SolutionDiffText(
                 givenAnswer: _typedAnswer ?? _solution,
                 solution: _solution,
+                isStrict: _isStrictCorrection,
                 maxLines: _solutionMaxLines,
               ),
             ),

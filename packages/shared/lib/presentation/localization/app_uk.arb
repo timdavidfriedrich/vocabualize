@@ -80,6 +80,8 @@
   "settingsSignInButton": "Увійти",
   "settingsTypeAnswerDisabledTitle": "Вимкнути режим введення відповіді",
   "settingsTypeAnswerDisabledHint": "Використовувати лише режим запам'ятовування з самооцінкою",
+  "settingsStrictCorrectionTitle": "Сувора перевірка",
+  "settingsStrictCorrectionHint": "Наголоси та спеціальні символи потрібно вводити точно",
   "settingsCollectionsTitle": "Увімкнути колекції",
   "settingsCollectionsHint": "Групувати слова у колекції",
   "settingsImagesHiddenTitle": "Приховати зображення",

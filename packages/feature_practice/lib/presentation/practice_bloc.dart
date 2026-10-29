@@ -10,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_pair.dart';
+import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 
@@ -21,6 +23,7 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
     this._vocabularyRepository,
     this._textToSpeechRepository,
     this._answerVocabulary,
+    this._settingsRepository,
   ) : super(const PracticeLoading()) {
     on<PracticeStarted>(_onStarted);
     on<PracticeAnswerTyped>(_onAnswerTyped);
@@ -32,6 +35,7 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
   final VocabularyRepository _vocabularyRepository;
   final TextToSpeechRepository _textToSpeechRepository;
   final AnswerVocabularyUseCase _answerVocabulary;
+  final SettingsRepository _settingsRepository;
 
   Future<void> _onStarted(PracticeStarted event, Emitter<PracticeState> emit) async {
     final dueBy = DateTime.now().toUtc();
@@ -50,11 +54,14 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
         emit(const PracticeDone());
       case (Success(data: final total), Success(data: final queue)):
         final first = queue.first;
-        final showsLanguages = await _vocabularyRepository.hasDueVocabulariesOutside(
-          dueBy: dueBy,
-          languages: LanguagePair(source: first.sourceLanguage, target: first.targetLanguage),
-          tagId: event.tagId,
-        );
+        final (showsLanguages, preferences) = await (
+          _vocabularyRepository.hasDueVocabulariesOutside(
+            dueBy: dueBy,
+            languages: LanguagePair(source: first.sourceLanguage, target: first.targetLanguage),
+            tagId: event.tagId,
+          ),
+          _settingsRepository.readPreferences(),
+        ).wait;
         emit(
           PracticeActive(
             dueBy: dueBy,
@@ -64,6 +71,11 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
             queue: queue,
             showsLanguages: switch (showsLanguages) {
               Success(:final data) => data,
+              Failure() => false,
+            },
+            isStrictCorrection: switch (preferences) {
+              Success(data: Preferences(:final isStrictCorrectionEnabled)) =>
+                isStrictCorrectionEnabled,
               Failure() => false,
             },
             typedAnswer: null,
@@ -85,6 +97,7 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
           grade: event.text.gradeAgainst(
             current.target,
             articles: current.targetLanguage.articles,
+            isStrict: active.isStrictCorrection,
           ),
           isSolutionShown: true,
         ),

@@ -11,6 +11,7 @@ const _plannedReminderDays = 7;
 
 const defaultPreferences = Preferences(
   isTypeAnswerDisabled: false,
+  isStrictCorrectionEnabled: false,
   areImagesHidden: false,
   appearanceMode: AppearanceMode.system,
   practiceReminder: DailyReminder(
@@ -28,6 +29,7 @@ const defaultPreferences = Preferences(
 @MappableClass()
 class const Preferences({
   required final bool isTypeAnswerDisabled,
+  required final bool isStrictCorrectionEnabled,
   required final bool areImagesHidden,
   required final AppearanceMode appearanceMode,
   required final DailyReminder practiceReminder,

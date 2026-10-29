@@ -256,6 +256,14 @@ class const _LearningSection() extends StatelessWidget {
                 bloc.add(SettingsTypeAnswerDisabledChanged(isDisabled: isDisabled)),
           ),
           SwitchListTile(
+            title: Text(context.s.settingsStrictCorrectionTitle),
+            subtitle: Text(context.s.settingsStrictCorrectionHint),
+            value: preferences.isStrictCorrectionEnabled,
+            onChanged: preferences.isTypeAnswerDisabled
+                ? null
+                : (isEnabled) => bloc.add(SettingsStrictCorrectionChanged(isEnabled: isEnabled)),
+          ),
+          SwitchListTile(
             title: Text(context.s.settingsImagesHiddenTitle),
             subtitle: Text(context.s.settingsImagesHiddenHint),
             value: preferences.areImagesHidden,

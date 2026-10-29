@@ -80,6 +80,8 @@
   "settingsSignInButton": "Conectați-vă",
   "settingsTypeAnswerDisabledTitle": "Dezactivați răspunsul scris",
   "settingsTypeAnswerDisabledHint": "Folosiți doar reamintirea cu autoevaluare",
+  "settingsStrictCorrectionTitle": "Corectare strictă",
+  "settingsStrictCorrectionHint": "Diacriticele și caracterele speciale trebuie scrise exact",
   "settingsCollectionsTitle": "Activați colecțiile",
   "settingsCollectionsHint": "Organizați cuvintele în colecții",
   "settingsImagesHiddenTitle": "Ascundeți imaginile",

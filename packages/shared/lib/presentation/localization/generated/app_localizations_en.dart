@@ -253,6 +253,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTypeAnswerDisabledHint => 'Only use Memory Recall with self-assessment';
 
   @override
+  String get settingsStrictCorrectionTitle => 'Strict correction';
+
+  @override
+  String get settingsStrictCorrectionHint => 'Accents and special characters must be typed exactly';
+
+  @override
   String get settingsCollectionsTitle => 'Enable collections';
 
   @override

@@ -28,6 +28,12 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
     'isTypeAnswerDisabled',
     _$isTypeAnswerDisabled,
   );
+  static bool _$isStrictCorrectionEnabled(Preferences v) =>
+      v.isStrictCorrectionEnabled;
+  static const Field<Preferences, bool> _f$isStrictCorrectionEnabled = Field(
+    'isStrictCorrectionEnabled',
+    _$isStrictCorrectionEnabled,
+  );
   static bool _$areImagesHidden(Preferences v) => v.areImagesHidden;
   static const Field<Preferences, bool> _f$areImagesHidden = Field(
     'areImagesHidden',
@@ -52,6 +58,7 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
   @override
   final MappableFields<Preferences> fields = const {
     #isTypeAnswerDisabled: _f$isTypeAnswerDisabled,
+    #isStrictCorrectionEnabled: _f$isStrictCorrectionEnabled,
     #areImagesHidden: _f$areImagesHidden,
     #appearanceMode: _f$appearanceMode,
     #practiceReminder: _f$practiceReminder,
@@ -61,6 +68,7 @@ class PreferencesMapper extends ClassMapperBase<Preferences> {
   static Preferences _instantiate(DecodingData data) {
     return Preferences(
       isTypeAnswerDisabled: data.dec(_f$isTypeAnswerDisabled),
+      isStrictCorrectionEnabled: data.dec(_f$isStrictCorrectionEnabled),
       areImagesHidden: data.dec(_f$areImagesHidden),
       appearanceMode: data.dec(_f$appearanceMode),
       practiceReminder: data.dec(_f$practiceReminder),
@@ -132,6 +140,7 @@ abstract class PreferencesCopyWith<$R, $In extends Preferences, $Out>
   DailyReminderCopyWith<$R, DailyReminder, DailyReminder> get streakReminder;
   $R call({
     bool? isTypeAnswerDisabled,
+    bool? isStrictCorrectionEnabled,
     bool? areImagesHidden,
     AppearanceMode? appearanceMode,
     DailyReminder? practiceReminder,
@@ -158,6 +167,7 @@ class _PreferencesCopyWithImpl<$R, $Out>
   @override
   $R call({
     bool? isTypeAnswerDisabled,
+    bool? isStrictCorrectionEnabled,
     bool? areImagesHidden,
     AppearanceMode? appearanceMode,
     DailyReminder? practiceReminder,
@@ -166,6 +176,8 @@ class _PreferencesCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (isTypeAnswerDisabled != null)
         #isTypeAnswerDisabled: isTypeAnswerDisabled,
+      if (isStrictCorrectionEnabled != null)
+        #isStrictCorrectionEnabled: isStrictCorrectionEnabled,
       if (areImagesHidden != null) #areImagesHidden: areImagesHidden,
       if (appearanceMode != null) #appearanceMode: appearanceMode,
       if (practiceReminder != null) #practiceReminder: practiceReminder,
@@ -177,6 +189,10 @@ class _PreferencesCopyWithImpl<$R, $Out>
     isTypeAnswerDisabled: data.get(
       #isTypeAnswerDisabled,
       or: $value.isTypeAnswerDisabled,
+    ),
+    isStrictCorrectionEnabled: data.get(
+      #isStrictCorrectionEnabled,
+      or: $value.isStrictCorrectionEnabled,
     ),
     areImagesHidden: data.get(#areImagesHidden, or: $value.areImagesHidden),
     appearanceMode: data.get(#appearanceMode, or: $value.appearanceMode),

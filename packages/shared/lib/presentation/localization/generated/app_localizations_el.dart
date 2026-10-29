@@ -255,6 +255,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsTypeAnswerDisabledHint => 'Μόνο ανάκληση από μνήμης με αυτοαξιολόγηση';
 
   @override
+  String get settingsStrictCorrectionTitle => 'Αυστηρή διόρθωση';
+
+  @override
+  String get settingsStrictCorrectionHint =>
+      'Οι τόνοι και οι ειδικοί χαρακτήρες πρέπει να γράφονται ακριβώς';
+
+  @override
   String get settingsCollectionsTitle => 'Ενεργοποίηση συλλογών';
 
   @override

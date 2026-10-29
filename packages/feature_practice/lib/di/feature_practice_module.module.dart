@@ -10,6 +10,7 @@ import 'package:feature_practice/domain/use_cases/answer_vocabulary_use_case.dar
     as _i486;
 import 'package:feature_practice/presentation/practice_bloc.dart' as _i214;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/text_to_speech_repository.dart'
     as _i839;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
@@ -24,6 +25,7 @@ class FeaturePracticePackageModule extends _i526.MicroPackageModule {
           gh<_i208.VocabularyRepository>(),
           gh<_i839.TextToSpeechRepository>(),
           gh<_i486.AnswerVocabularyUseCase>(),
+          gh<_i0.SettingsRepository>(),
         ));
   }
 }

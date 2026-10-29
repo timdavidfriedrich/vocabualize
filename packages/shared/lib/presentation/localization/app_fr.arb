@@ -80,6 +80,8 @@
   "settingsSignInButton": "Se connecter",
   "settingsTypeAnswerDisabledTitle": "Désactiver le mode réponse écrite",
   "settingsTypeAnswerDisabledHint": "Utiliser uniquement le rappel de mémoire avec auto-évaluation",
+  "settingsStrictCorrectionTitle": "Correction stricte",
+  "settingsStrictCorrectionHint": "Les accents et caractères spéciaux doivent être saisis exactement",
   "settingsCollectionsTitle": "Activer les collections",
   "settingsCollectionsHint": "Catégoriser les mots en collections",
   "settingsImagesHiddenTitle": "Masquer les images",

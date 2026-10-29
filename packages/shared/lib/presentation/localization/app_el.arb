@@ -80,6 +80,8 @@
   "settingsSignInButton": "Σύνδεση",
   "settingsTypeAnswerDisabledTitle": "Απενεργοποίηση γραπτής απάντησης",
   "settingsTypeAnswerDisabledHint": "Μόνο ανάκληση από μνήμης με αυτοαξιολόγηση",
+  "settingsStrictCorrectionTitle": "Αυστηρή διόρθωση",
+  "settingsStrictCorrectionHint": "Οι τόνοι και οι ειδικοί χαρακτήρες πρέπει να γράφονται ακριβώς",
   "settingsCollectionsTitle": "Ενεργοποίηση συλλογών",
   "settingsCollectionsHint": "Οργανώστε τις λέξεις σε συλλογές",
   "settingsImagesHiddenTitle": "Απόκρυψη εικόνων",

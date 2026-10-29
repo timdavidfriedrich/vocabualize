@@ -37,6 +37,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsSignOutDismissed>(_onSignOutDismissed);
     on<SettingsAccountConflictResolved>(_onAccountConflictResolved);
     on<SettingsTypeAnswerDisabledChanged>(_onTypeAnswerDisabledChanged);
+    on<SettingsStrictCorrectionChanged>(_onStrictCorrectionChanged);
     on<SettingsImagesHiddenChanged>(_onImagesHiddenChanged);
     on<SettingsAppearanceModeChanged>(_onAppearanceModeChanged);
     on<SettingsReminderToggled>(_onReminderToggled);
@@ -130,6 +131,14 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     SettingsTypeAnswerDisabledChanged event,
     Emitter<SettingsState> emit,
   ) => _savePreference(emit, () => _settingsRepository.setTypeAnswerDisabled(event.isDisabled));
+
+  Future<void> _onStrictCorrectionChanged(
+    SettingsStrictCorrectionChanged event,
+    Emitter<SettingsState> emit,
+  ) => _savePreference(
+    emit,
+    () => _settingsRepository.setStrictCorrectionEnabled(event.isEnabled),
+  );
 
   Future<void> _onImagesHiddenChanged(
     SettingsImagesHiddenChanged event,

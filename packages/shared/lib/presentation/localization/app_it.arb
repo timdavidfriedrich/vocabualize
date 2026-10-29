@@ -80,6 +80,8 @@
   "settingsSignInButton": "Accedi",
   "settingsTypeAnswerDisabledTitle": "Disattiva la risposta scritta",
   "settingsTypeAnswerDisabledHint": "Usa solo il richiamo a memoria con autovalutazione",
+  "settingsStrictCorrectionTitle": "Correzione rigorosa",
+  "settingsStrictCorrectionHint": "Accenti e caratteri speciali devono essere scritti esattamente",
   "settingsCollectionsTitle": "Attiva le raccolte",
   "settingsCollectionsHint": "Organizza le parole in raccolte",
   "settingsImagesHiddenTitle": "Nascondi le immagini",

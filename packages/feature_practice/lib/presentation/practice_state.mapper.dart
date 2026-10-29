@@ -211,6 +211,11 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     'showsLanguages',
     _$showsLanguages,
   );
+  static bool _$isStrictCorrection(PracticeActive v) => v.isStrictCorrection;
+  static const Field<PracticeActive, bool> _f$isStrictCorrection = Field(
+    'isStrictCorrection',
+    _$isStrictCorrection,
+  );
   static String? _$typedAnswer(PracticeActive v) => v.typedAnswer;
   static const Field<PracticeActive, String> _f$typedAnswer = Field(
     'typedAnswer',
@@ -245,6 +250,7 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     #doneCount: _f$doneCount,
     #queue: _f$queue,
     #showsLanguages: _f$showsLanguages,
+    #isStrictCorrection: _f$isStrictCorrection,
     #typedAnswer: _f$typedAnswer,
     #grade: _f$grade,
     #isSolutionShown: _f$isSolutionShown,
@@ -260,6 +266,7 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
       doneCount: data.dec(_f$doneCount),
       queue: data.dec(_f$queue),
       showsLanguages: data.dec(_f$showsLanguages),
+      isStrictCorrection: data.dec(_f$isStrictCorrection),
       typedAnswer: data.dec(_f$typedAnswer),
       grade: data.dec(_f$grade),
       isSolutionShown: data.dec(_f$isSolutionShown),
@@ -340,6 +347,7 @@ abstract class PracticeActiveCopyWith<$R, $In extends PracticeActive, $Out>
     int? doneCount,
     List<Vocabulary>? queue,
     bool? showsLanguages,
+    bool? isStrictCorrection,
     String? typedAnswer,
     PracticeAnswer? grade,
     bool? isSolutionShown,
@@ -374,6 +382,7 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
     int? doneCount,
     List<Vocabulary>? queue,
     bool? showsLanguages,
+    bool? isStrictCorrection,
     Object? typedAnswer = $none,
     Object? grade = $none,
     bool? isSolutionShown,
@@ -387,6 +396,7 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
       if (doneCount != null) #doneCount: doneCount,
       if (queue != null) #queue: queue,
       if (showsLanguages != null) #showsLanguages: showsLanguages,
+      if (isStrictCorrection != null) #isStrictCorrection: isStrictCorrection,
       if (typedAnswer != $none) #typedAnswer: typedAnswer,
       if (grade != $none) #grade: grade,
       if (isSolutionShown != null) #isSolutionShown: isSolutionShown,
@@ -402,6 +412,10 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
     doneCount: data.get(#doneCount, or: $value.doneCount),
     queue: data.get(#queue, or: $value.queue),
     showsLanguages: data.get(#showsLanguages, or: $value.showsLanguages),
+    isStrictCorrection: data.get(
+      #isStrictCorrection,
+      or: $value.isStrictCorrection,
+    ),
     typedAnswer: data.get(#typedAnswer, or: $value.typedAnswer),
     grade: data.get(#grade, or: $value.grade),
     isSolutionShown: data.get(#isSolutionShown, or: $value.isSolutionShown),

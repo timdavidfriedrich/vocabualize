@@ -257,6 +257,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Utiliser uniquement le rappel de mémoire avec auto-évaluation';
 
   @override
+  String get settingsStrictCorrectionTitle => 'Correction stricte';
+
+  @override
+  String get settingsStrictCorrectionHint =>
+      'Les accents et caractères spéciaux doivent être saisis exactement';
+
+  @override
   String get settingsCollectionsTitle => 'Activer les collections';
 
   @override

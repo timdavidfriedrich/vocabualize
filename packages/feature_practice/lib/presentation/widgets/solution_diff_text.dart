@@ -11,6 +11,7 @@ class const SolutionDiffText({
   super.key,
   required final String _givenAnswer,
   required final String _solution,
+  required final bool _isStrict,
   required final int _maxLines,
 }) extends StatelessWidget {
   @override
@@ -78,7 +79,7 @@ class const SolutionDiffText({
     final mapping = <int>[];
     final normalized = StringBuffer();
     for (var index = 0; index < text.length; index++) {
-      final character = text[index].toFolded();
+      final character = text[index].toComparable(isStrict: _isStrict);
       for (var part = 0; part < character.length; part++) {
         mapping.add(index);
         normalized.write(character[part]);

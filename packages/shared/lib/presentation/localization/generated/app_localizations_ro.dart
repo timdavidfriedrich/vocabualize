@@ -255,6 +255,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsTypeAnswerDisabledHint => 'Folosiți doar reamintirea cu autoevaluare';
 
   @override
+  String get settingsStrictCorrectionTitle => 'Corectare strictă';
+
+  @override
+  String get settingsStrictCorrectionHint =>
+      'Diacriticele și caracterele speciale trebuie scrise exact';
+
+  @override
   String get settingsCollectionsTitle => 'Activați colecțiile';
 
   @override

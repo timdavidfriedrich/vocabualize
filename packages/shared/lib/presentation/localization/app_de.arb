@@ -80,6 +80,8 @@
   "settingsSignInButton": "Anmelden",
   "settingsTypeAnswerDisabledTitle": "Schreib-Übungsmodus deaktivieren",
   "settingsTypeAnswerDisabledHint": "Nur Abrufübung mit Selbstbeurteilung nutzen",
+  "settingsStrictCorrectionTitle": "Strenge Korrektur",
+  "settingsStrictCorrectionHint": "Akzente und Sonderzeichen müssen genau stimmen",
   "settingsCollectionsTitle": "Sammlungen aktivieren",
   "settingsCollectionsHint": "Kategorisiere Wörter in Sammlungen",
   "settingsImagesHiddenTitle": "Bilder verstecken",

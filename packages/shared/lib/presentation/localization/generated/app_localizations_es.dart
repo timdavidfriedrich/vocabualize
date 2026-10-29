@@ -254,6 +254,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsTypeAnswerDisabledHint => 'Solo usar práctica de recuerdo con autoevaluación';
 
   @override
+  String get settingsStrictCorrectionTitle => 'Corrección estricta';
+
+  @override
+  String get settingsStrictCorrectionHint =>
+      'Los acentos y caracteres especiales deben escribirse exactamente';
+
+  @override
   String get settingsCollectionsTitle => 'Activar colecciones';
 
   @override

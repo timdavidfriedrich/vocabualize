@@ -256,6 +256,13 @@ class AppLocalizationsUk extends AppLocalizations {
       'Використовувати лише режим запам\'ятовування з самооцінкою';
 
   @override
+  String get settingsStrictCorrectionTitle => 'Сувора перевірка';
+
+  @override
+  String get settingsStrictCorrectionHint =>
+      'Наголоси та спеціальні символи потрібно вводити точно';
+
+  @override
   String get settingsCollectionsTitle => 'Увімкнути колекції';
 
   @override

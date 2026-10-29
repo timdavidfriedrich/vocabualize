@@ -15,6 +15,7 @@ extension LocalPreferencesMappers on Map<LocalPreferenceKey, String> {
   Preferences toPreferences() {
     return Preferences(
       isTypeAnswerDisabled: this[LocalPreferenceKey.typeAnswerDisabled] == _trueValue,
+      isStrictCorrectionEnabled: this[LocalPreferenceKey.strictCorrectionEnabled] == _trueValue,
       areImagesHidden: this[LocalPreferenceKey.imagesHidden] == _trueValue,
       appearanceMode: switch (this[LocalPreferenceKey.appearanceMode]) {
         _appearanceLight => AppearanceMode.light,

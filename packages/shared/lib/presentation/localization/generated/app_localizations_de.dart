@@ -254,6 +254,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsTypeAnswerDisabledHint => 'Nur Abrufübung mit Selbstbeurteilung nutzen';
 
   @override
+  String get settingsStrictCorrectionTitle => 'Strenge Korrektur';
+
+  @override
+  String get settingsStrictCorrectionHint => 'Akzente und Sonderzeichen müssen genau stimmen';
+
+  @override
   String get settingsCollectionsTitle => 'Sammlungen aktivieren';
 
   @override

@@ -80,6 +80,8 @@
   "settingsSignInButton": "Iniciar sesión",
   "settingsTypeAnswerDisabledTitle": "Desactivar práctica de respuesta escrita",
   "settingsTypeAnswerDisabledHint": "Solo usar práctica de recuerdo con autoevaluación",
+  "settingsStrictCorrectionTitle": "Corrección estricta",
+  "settingsStrictCorrectionHint": "Los acentos y caracteres especiales deben escribirse exactamente",
   "settingsCollectionsTitle": "Activar colecciones",
   "settingsCollectionsHint": "Categoriza palabras en colecciones",
   "settingsImagesHiddenTitle": "Ocultar imágenes",
