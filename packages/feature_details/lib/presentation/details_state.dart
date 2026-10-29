@@ -46,6 +46,7 @@ class const DetailsEditing({
   required final List<Tag> tags,
   required final Set<String> selectedTagIds,
   required final DetailsPendingLookup? pendingLookup,
+  required final bool isSearchingPhotos,
   required final DetailsAction? runningAction,
   required final DetailsNotice? notice,
   required final AppError? error,

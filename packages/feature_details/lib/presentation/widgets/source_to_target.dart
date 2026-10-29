@@ -8,6 +8,7 @@ import 'package:feature_details/presentation/widgets/report_translation_dialog.d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/button_progress.dart';
 
 const _maxLines = 2;
 
@@ -16,10 +17,18 @@ class const SourceToTarget({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<DetailsBloc, DetailsState, ({String source, String target})>(
+    return BlocSelector<
+      DetailsBloc,
+      DetailsState,
+      ({String source, String target, bool isTranslating})
+    >(
       selector: (state) => switch (state) {
-        DetailsEditing(:final source, :final target) => (source: source, target: target),
-        _ => (source: "", target: ""),
+        DetailsEditing(:final source, :final target, :final runningAction) => (
+          source: source,
+          target: target,
+          isTranslating: runningAction == DetailsAction.lookup,
+        ),
+        _ => (source: "", target: "", isTranslating: false),
       },
       builder: (context, words) => Row(
         children: [
@@ -35,7 +44,9 @@ class const SourceToTarget({
           Expanded(
             child: Align(
               alignment: Alignment.centerLeft,
-              child: _TargetButton(source: words.source, target: words.target),
+              child: words.isTranslating && words.target.isEmpty
+                  ? const ButtonProgress()
+                  : _TargetButton(source: words.source, target: words.target),
             ),
           ),
         ],

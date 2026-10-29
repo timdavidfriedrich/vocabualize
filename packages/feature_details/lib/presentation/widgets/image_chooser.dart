@@ -22,6 +22,7 @@ typedef _ImageChoice = ({
   List<StockImage> pageImages,
   bool hasStockImages,
   bool isWaitingForConnection,
+  bool isSearchingPhotos,
   bool isBusy,
   bool isLoadingImage,
 });
@@ -39,6 +40,7 @@ class const ImageChooser({
           :final stockImages,
           :final stockPage,
           :final pendingLookup,
+          :final isSearchingPhotos,
           :final runningAction,
         ) =>
           (
@@ -50,6 +52,7 @@ class const ImageChooser({
                 .toList(),
             hasStockImages: stockImages.isNotEmpty,
             isWaitingForConnection: pendingLookup != null,
+            isSearchingPhotos: isSearchingPhotos,
             isBusy: runningAction != null,
             isLoadingImage:
                 runningAction == DetailsAction.lookup || runningAction == DetailsAction.photoPick,
@@ -66,7 +69,15 @@ class const ImageChooser({
               child: _SelectedImageBox(selected: choice.selected, isLoading: choice.isLoadingImage),
             ),
             const SizedBox(height: Spacing.m),
-            if (choice.hasStockImages) const _ProviderHint(),
+            if (choice.hasStockImages)
+              const _ProviderHint()
+            else if (choice.isSearchingPhotos) ...[
+              LinearProgressIndicator(
+                borderRadius: BorderRadius.circular(Spacing.radiusS),
+                backgroundColor: context.c.surfaceContainerLow,
+              ),
+              const SizedBox(height: Spacing.m),
+            ],
             GridView.builder(
               shrinkWrap: true,
               padding: EdgeInsets.zero,

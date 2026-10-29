@@ -543,6 +543,11 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       v.pendingLookup;
   static const Field<DetailsEditing, DetailsPendingLookup> _f$pendingLookup =
       Field('pendingLookup', _$pendingLookup);
+  static bool _$isSearchingPhotos(DetailsEditing v) => v.isSearchingPhotos;
+  static const Field<DetailsEditing, bool> _f$isSearchingPhotos = Field(
+    'isSearchingPhotos',
+    _$isSearchingPhotos,
+  );
   static DetailsAction? _$runningAction(DetailsEditing v) => v.runningAction;
   static const Field<DetailsEditing, DetailsAction> _f$runningAction = Field(
     'runningAction',
@@ -572,6 +577,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     #tags: _f$tags,
     #selectedTagIds: _f$selectedTagIds,
     #pendingLookup: _f$pendingLookup,
+    #isSearchingPhotos: _f$isSearchingPhotos,
     #runningAction: _f$runningAction,
     #notice: _f$notice,
     #error: _f$error,
@@ -590,6 +596,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       tags: data.dec(_f$tags),
       selectedTagIds: data.dec(_f$selectedTagIds),
       pendingLookup: data.dec(_f$pendingLookup),
+      isSearchingPhotos: data.dec(_f$isSearchingPhotos),
       runningAction: data.dec(_f$runningAction),
       notice: data.dec(_f$notice),
       error: data.dec(_f$error),
@@ -678,6 +685,7 @@ abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
     List<Tag>? tags,
     Set<String>? selectedTagIds,
     DetailsPendingLookup? pendingLookup,
+    bool? isSearchingPhotos,
     DetailsAction? runningAction,
     DetailsNotice? notice,
     AppError? error,
@@ -733,6 +741,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     List<Tag>? tags,
     Set<String>? selectedTagIds,
     Object? pendingLookup = $none,
+    bool? isSearchingPhotos,
     Object? runningAction = $none,
     Object? notice = $none,
     Object? error = $none,
@@ -749,6 +758,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
       if (tags != null) #tags: tags,
       if (selectedTagIds != null) #selectedTagIds: selectedTagIds,
       if (pendingLookup != $none) #pendingLookup: pendingLookup,
+      if (isSearchingPhotos != null) #isSearchingPhotos: isSearchingPhotos,
       if (runningAction != $none) #runningAction: runningAction,
       if (notice != $none) #notice: notice,
       if (error != $none) #error: error,
@@ -767,6 +777,10 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     tags: data.get(#tags, or: $value.tags),
     selectedTagIds: data.get(#selectedTagIds, or: $value.selectedTagIds),
     pendingLookup: data.get(#pendingLookup, or: $value.pendingLookup),
+    isSearchingPhotos: data.get(
+      #isSearchingPhotos,
+      or: $value.isSearchingPhotos,
+    ),
     runningAction: data.get(#runningAction, or: $value.runningAction),
     notice: data.get(#notice, or: $value.notice),
     error: data.get(#error, or: $value.error),

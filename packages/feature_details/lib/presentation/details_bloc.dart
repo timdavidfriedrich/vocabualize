@@ -80,7 +80,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       case Success(data: true):
         emit(DetailsDuplicateFound(source: event.source, photo: event.photo));
       case Success(data: false):
-        emit(await _newWord(event.source, photo: event.photo));
+        await _startNewWord(emit, event.source, photo: event.photo);
       case Failure(:final error):
         emit(DetailsFailure(error: error));
     }
@@ -90,7 +90,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   Future<void> _onEditStarted(DetailsEditStarted event, Emitter<DetailsState> emit) async {
     switch (await _vocabularyRepository.findVocabulary(event.vocabularyId)) {
       case Success(:final data):
-        emit(await _existingWord(data));
+        await _startExistingWord(emit, data);
       case Failure(:final error):
         emit(DetailsFailure(error: error));
     }
@@ -163,7 +163,11 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     Emitter<DetailsState> emit,
   ) async {
     if (state case DetailsDuplicateFound(:final source, :final photo)) {
-      emit(event.addsAnyway ? await _newWord(source, photo: photo) : const DetailsClosed());
+      if (event.addsAnyway) {
+        await _startNewWord(emit, source, photo: photo);
+      } else {
+        emit(const DetailsClosed());
+      }
     }
   }
 
@@ -369,67 +373,108 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     );
   }
 
-  Future<DetailsEditing> _newWord(String source, {required ProcessedImage? photo}) async {
-    final languages = switch (await _settingsRepository.readLanguagePair()) {
-      Success(:final data) => data,
-      Failure() => null,
-    };
-    final lookup = languages == null
-        ? null
-        : await _lookUp(source, languages, pending: DetailsPendingLookup.translationAndPhotos);
-    final tags = await _tags();
+  Future<void> _startNewWord(
+    Emitter<DetailsState> emit,
+    String source, {
+    required ProcessedImage? photo,
+  }) async {
+    final (languages, tags) = await (_languagePair(), _tags()).wait;
     final ownPhoto = photo == null ? null : DetailsNewPhoto(image: photo);
-    return DetailsEditing(
+    final editing = DetailsEditing(
       original: null,
       languages: languages,
       source: source.trim(),
-      target: lookup?.translation ?? "",
+      target: "",
       selectedImage: ownPhoto ?? const DetailsNoImage(),
       ownPhoto: ownPhoto,
-      stockImages: lookup?.stockImages ?? const [],
+      stockImages: const [],
       stockPage: 0,
       tags: tags,
       selectedTagIds: const {},
-      pendingLookup: lookup?.pending,
-      runningAction: null,
+      pendingLookup: null,
+      isSearchingPhotos: false,
+      runningAction: languages == null ? null : DetailsAction.lookup,
       notice: null,
-      error: lookup?.error,
+      error: null,
     );
+    emit(editing);
+    if (languages == null) return;
+    final lookup = await _lookUp(
+      editing.source,
+      languages,
+      pending: DetailsPendingLookup.translationAndPhotos,
+    );
+    if (state case final DetailsEditing current) {
+      emit(
+        current.copyWith(
+          target: lookup.translation ?? current.target,
+          stockImages: lookup.stockImages,
+          stockPage: 0,
+          pendingLookup: lookup.pending,
+          runningAction: null,
+          error: lookup.error,
+        ),
+      );
+    }
   }
 
-  Future<DetailsEditing> _existingWord(Vocabulary vocabulary) async {
+  Future<void> _startExistingWord(Emitter<DetailsState> emit, Vocabulary vocabulary) async {
     final languages = LanguagePair(
       source: vocabulary.sourceLanguage,
       target: vocabulary.targetLanguage,
+    );
+    emit(
+      DetailsEditing(
+        original: vocabulary,
+        languages: languages,
+        source: vocabulary.source,
+        target: vocabulary.target,
+        selectedImage: switch (vocabulary.image) {
+          NoImage() => const DetailsNoImage(),
+          final image => DetailsSavedImage(image: image),
+        },
+        ownPhoto: switch (vocabulary.image) {
+          final CustomImage image => DetailsSavedImage(image: image),
+          NoImage() || StockImage() => null,
+        },
+        stockImages: const [],
+        stockPage: 0,
+        tags: await _tags(),
+        selectedTagIds: vocabulary.tagIds,
+        pendingLookup: null,
+        isSearchingPhotos: true,
+        runningAction: null,
+        notice: null,
+        error: null,
+      ),
     );
     final lookup = await _lookUp(
       vocabulary.source,
       languages,
       pending: DetailsPendingLookup.photos,
     );
-    final tags = await _tags();
-    return DetailsEditing(
-      original: vocabulary,
-      languages: languages,
-      source: vocabulary.source,
-      target: vocabulary.target,
-      selectedImage: switch (vocabulary.image) {
-        NoImage() => const DetailsNoImage(),
-        final image => DetailsSavedImage(image: image),
-      },
-      ownPhoto: switch (vocabulary.image) {
-        final CustomImage image => DetailsSavedImage(image: image),
-        NoImage() || StockImage() => null,
-      },
-      stockImages: lookup.stockImages,
-      stockPage: 0,
-      tags: tags,
-      selectedTagIds: vocabulary.tagIds,
-      pendingLookup: lookup.pending,
-      runningAction: null,
-      notice: null,
-      error: lookup.error,
-    );
+    if (state case final DetailsEditing current) {
+      final isStillWanted =
+          current.source == vocabulary.source && current.runningAction != DetailsAction.lookup;
+      emit(
+        isStillWanted
+            ? current.copyWith(
+                stockImages: lookup.stockImages,
+                stockPage: 0,
+                pendingLookup: lookup.pending,
+                isSearchingPhotos: false,
+                error: lookup.error ?? current.error,
+              )
+            : current.copyWith(isSearchingPhotos: false),
+      );
+    }
+  }
+
+  Future<LanguagePair?> _languagePair() async {
+    return switch (await _settingsRepository.readLanguagePair()) {
+      Success(:final data) => data,
+      Failure() => null,
+    };
   }
 
   Future<_Lookup> _lookUp(
