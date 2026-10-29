@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
@@ -32,11 +33,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           collections: null,
           vocabularies: null,
           feedLimit: 0,
+          filter: emptyVocabularyFilter,
           streak: null,
         ),
       ) {
     on<HomeStarted>(_onStarted);
-    on<HomeFeedEndReached>(_onFeedEndReached, transformer: restartable());
+    on<HomeFeedEvent>(_onFeedEvent, transformer: restartable());
     on<HomeVocabularySpeakRequested>(_onVocabularySpeakRequested);
     on<HomeVocabularyDeleteRequested>(_onVocabularyDeleteRequested);
   }
@@ -80,16 +82,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ]);
   }
 
-  Future<void> _onFeedEndReached(HomeFeedEndReached event, Emitter<HomeState> emit) async {
-    final limit = switch (state) {
-      HomeLoading(:final feedLimit) || HomeLoaded(:final feedLimit) => feedLimit + _feedPageSize,
-      HomeFailure() => null,
+  Future<void> _onFeedEvent(HomeFeedEvent event, Emitter<HomeState> emit) async {
+    final feed = switch ((state, event)) {
+      (HomeFailure(), _) => null,
+      (HomeLoading(:final feedLimit, :final filter) || HomeLoaded(:final feedLimit, :final filter),
+          HomeFeedEndReached()) =>
+        (limit: feedLimit + _feedPageSize, filter: filter),
+      (_, HomeFilterChanged(:final filter)) => (limit: _feedPageSize, filter: filter),
     };
-    if (limit == null) return;
+    if (feed == null) return;
+    emit(_merged(filter: feed.filter));
     await emit.forEach(
-      _vocabularyRepository.watchVocabularies(limit: limit),
+      _vocabularyRepository.watchVocabularies(limit: feed.limit, filter: feed.filter),
       onData: (result) => switch (result) {
-        Success(:final data) => _merged(vocabularies: data, feedLimit: limit),
+        Success(:final data) => _merged(vocabularies: data, feedLimit: feed.limit),
         Failure(:final error) => HomeFailure(error: error),
       },
     );
@@ -126,6 +132,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
     int? feedLimit,
+    VocabularyFilter? filter,
     Streak? streak,
   }) {
     return switch (state) {
@@ -135,6 +142,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         collections: collections,
         vocabularies: vocabularies,
         feedLimit: feedLimit,
+        filter: filter,
         streak: streak ?? loaded.streak,
       ),
       final HomeLoading loading => _completed(
@@ -144,6 +152,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           collections: collections ?? loading.collections,
           vocabularies: vocabularies ?? loading.vocabularies,
           feedLimit: feedLimit ?? loading.feedLimit,
+          filter: filter ?? loading.filter,
           streak: streak ?? loading.streak,
         ),
       ),
@@ -159,6 +168,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         collections: final collections?,
         vocabularies: final vocabularies?,
         :final feedLimit,
+        :final filter,
         :final streak,
       ) =>
         HomeLoaded(
@@ -167,6 +177,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           collections: collections,
           vocabularies: vocabularies,
           feedLimit: feedLimit,
+          filter: filter,
           streak: streak,
           error: null,
         ),

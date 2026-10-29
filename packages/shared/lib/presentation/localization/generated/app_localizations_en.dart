@@ -593,6 +593,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Read out';
 
   @override
+  String get vocabularySearchTooltip => 'Search';
+
+  @override
+  String get vocabularySearchHint => 'Search vocabulary...';
+
+  @override
+  String get vocabularySearchClearTooltip => 'Clear';
+
+  @override
+  String get vocabularySearchEmptyMessage => 'No vocabulary matches your search.';
+
+  @override
+  String get vocabularyFilterDueLabel => 'Due';
+
+  @override
+  String get vocabularyLevelNovice => 'New';
+
+  @override
+  String get vocabularyLevelBeginner => 'Beginner';
+
+  @override
+  String get vocabularyLevelAdvanced => 'Advanced';
+
+  @override
+  String get vocabularyLevelExpert => 'Expert';
+
+  @override
   String get errorTextToSpeechUnavailable =>
       'No voice for this language is installed on this phone.';
 

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
@@ -15,6 +16,7 @@ import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/practice_button.dart';
 import 'package:shared/presentation/widgets/vocabulary_info_dialog.dart';
+import 'package:shared/presentation/widgets/vocabulary_search_view.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.xxl);
@@ -55,7 +57,59 @@ class const CollectionScreen({
   }
 }
 
-class const _ContentScreen() extends StatelessWidget {
+class const _ContentScreen() extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final isSearching = useState(false);
+    void closeSearch() {
+      isSearching.value = false;
+      context.read<CollectionBloc>().add(
+        const CollectionFilterChanged(filter: emptyVocabularyFilter),
+      );
+    }
+
+    return PopScope(
+      canPop: !isSearching.value,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) closeSearch();
+      },
+      child: Stack(
+        children: [
+          Offstage(
+            offstage: isSearching.value,
+            child: _Overview(onSearchOpened: () => isSearching.value = true),
+          ),
+          if (isSearching.value) Scaffold(body: _SearchView(onClosed: closeSearch)),
+        ],
+      ),
+    );
+  }
+}
+
+class const _SearchView({
+  required final VoidCallback _onClosed,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<CollectionBloc, CollectionState, VocabularyFilter>(
+      selector: (state) => switch (state) {
+        CollectionLoading(:final filter) || CollectionLoaded(:final filter) => filter,
+        CollectionClosed() || CollectionFailure() => emptyVocabularyFilter,
+      },
+      builder: (context, filter) => VocabularySearchView(
+        filter: filter,
+        onFilterChanged: (filter) =>
+            context.read<CollectionBloc>().add(CollectionFilterChanged(filter: filter)),
+        onClosed: _onClosed,
+        results: const _Feed(showsNoResults: true),
+      ),
+    );
+  }
+}
+
+class const _Overview({
+  required final VoidCallback _onSearchOpened,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +122,11 @@ class const _ContentScreen() extends StatelessWidget {
           builder: (context, name) => Text(name, style: context.t.headlineSmall),
         ),
         actions: [
+          IconButton(
+            onPressed: _onSearchOpened,
+            tooltip: context.s.vocabularySearchTooltip,
+            icon: const Icon(Icons.search_rounded),
+          ),
           IconButton(
             onPressed: () => _edit(context),
             icon: const Icon(Icons.edit_rounded),
@@ -105,7 +164,7 @@ class const _ContentScreen() extends StatelessWidget {
                     ],
                   ),
                 ),
-                const _Feed(),
+                const _Feed(showsNoResults: false),
               ],
             ),
           ),
@@ -135,7 +194,9 @@ class const _ContentScreen() extends StatelessWidget {
   }
 }
 
-class const _Feed() extends StatelessWidget {
+class const _Feed({
+  required final bool _showsNoResults,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<
@@ -150,22 +211,27 @@ class const _Feed() extends StatelessWidget {
         ),
         _ => (vocabularies: const [], hasMore: false),
       },
-      builder: (context, feed) => SliverList.builder(
-        itemCount: feed.vocabularies.length + (feed.hasMore ? 1 : 0),
-        itemBuilder: (_, index) => switch (feed.vocabularies.elementAtOrNull(index)) {
-          final vocabulary? => VocabularyTile(
-            key: ValueKey(vocabulary.id),
-            vocabulary: vocabulary,
-            onTap: () => _showInfo(context, vocabulary),
-            onSpeak: () => context.read<CollectionBloc>().add(
-              CollectionVocabularySpeakRequested(vocabulary: vocabulary),
+      builder: (context, feed) => switch (feed) {
+        (vocabularies: [], hasMore: false) when _showsNoResults => const SliverToBoxAdapter(
+          child: VocabularySearchEmpty(),
+        ),
+        _ => SliverList.builder(
+          itemCount: feed.vocabularies.length + (feed.hasMore ? 1 : 0),
+          itemBuilder: (_, index) => switch (feed.vocabularies.elementAtOrNull(index)) {
+            final vocabulary? => VocabularyTile(
+              key: ValueKey(vocabulary.id),
+              vocabulary: vocabulary,
+              onTap: () => _showInfo(context, vocabulary),
+              onSpeak: () => context.read<CollectionBloc>().add(
+                CollectionVocabularySpeakRequested(vocabulary: vocabulary),
+              ),
+              onEdit: () => context.pushEditVocabularyDetails(vocabularyId: vocabulary.id),
+              onDelete: () => _confirmDelete(context, vocabulary),
             ),
-            onEdit: () => context.pushEditVocabularyDetails(vocabularyId: vocabulary.id),
-            onDelete: () => _confirmDelete(context, vocabulary),
-          ),
-          null => const _FeedEndLoader(),
-        },
-      ),
+            null => const _FeedEndLoader(),
+          },
+        ),
+      },
     );
   }
 

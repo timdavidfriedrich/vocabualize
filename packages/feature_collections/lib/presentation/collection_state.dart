@@ -2,6 +2,7 @@ import 'package:core/error/app_error.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_filter.dart';
 
 part 'collection_state.mapper.dart';
 
@@ -17,6 +18,7 @@ class const CollectionLoading({
   required final List<Vocabulary>? vocabularies,
   required final List<Tag>? tags,
   required final int feedLimit,
+  required final VocabularyFilter filter,
 }) extends CollectionState with CollectionLoadingMappable;
 
 @MappableClass()
@@ -26,6 +28,7 @@ class const CollectionLoaded({
   required final List<Vocabulary> vocabularies,
   required final List<Tag> tags,
   required final int feedLimit,
+  required final VocabularyFilter filter,
   required final AppError? error,
 }) extends CollectionState with CollectionLoadedMappable;
 

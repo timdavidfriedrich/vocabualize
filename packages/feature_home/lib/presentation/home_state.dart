@@ -3,6 +3,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 
 part 'home_state.mapper.dart';
@@ -19,6 +20,7 @@ class const HomeLoading({
   required final List<CollectionPreview>? collections,
   required final List<Vocabulary>? vocabularies,
   required final int feedLimit,
+  required final VocabularyFilter filter,
   required final Streak? streak,
 }) extends HomeState with HomeLoadingMappable;
 
@@ -29,6 +31,7 @@ class const HomeLoaded({
   required final List<CollectionPreview> collections,
   required final List<Vocabulary> vocabularies,
   required final int feedLimit,
+  required final VocabularyFilter filter,
   required final Streak? streak,
   required final AppError? error,
 }) extends HomeState with HomeLoadedMappable;

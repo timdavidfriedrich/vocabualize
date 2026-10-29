@@ -599,6 +599,33 @@ class AppLocalizationsDe extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Vorlesen';
 
   @override
+  String get vocabularySearchTooltip => 'Suchen';
+
+  @override
+  String get vocabularySearchHint => 'Vokabeln durchsuchen...';
+
+  @override
+  String get vocabularySearchClearTooltip => 'Leeren';
+
+  @override
+  String get vocabularySearchEmptyMessage => 'Keine Vokabel passt zu deiner Suche.';
+
+  @override
+  String get vocabularyFilterDueLabel => 'Fällig';
+
+  @override
+  String get vocabularyLevelNovice => 'Neu';
+
+  @override
+  String get vocabularyLevelBeginner => 'Anfänger';
+
+  @override
+  String get vocabularyLevelAdvanced => 'Fortgeschritten';
+
+  @override
+  String get vocabularyLevelExpert => 'Experte';
+
+  @override
   String get errorTextToSpeechUnavailable =>
       'Auf diesem Handy ist keine Stimme für diese Sprache installiert.';
 

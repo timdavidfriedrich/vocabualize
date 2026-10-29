@@ -16,6 +16,7 @@ import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/presentation/account/account_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
@@ -26,6 +27,7 @@ import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
 import 'package:shared/presentation/widgets/vocabulary_info_dialog.dart';
+import 'package:shared/presentation/widgets/vocabulary_search_view.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.xxl);
@@ -65,68 +67,129 @@ bool _isEmpty(HomeState state) => switch (state) {
   _ => false,
 };
 
-class const _ContentScreen() extends StatelessWidget {
+class const _ContentScreen() extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      floatingActionButton: const RecordFab(),
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverSafeArea(
-            left: false,
-            right: false,
-            sliver: SliverMainAxisGroup(
-              slivers: [
-                SliverPadding(
-                  padding: _pagePadding,
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: Spacing.xxl),
-                        const _TitleRow(),
-                        const SizedBox(height: Spacing.m),
-                        BlocSelector<HomeBloc, HomeState, VocabularyOverview?>(
-                          selector: (state) => switch (state) {
-                            HomeLoaded(:final overview) => overview,
-                            _ => null,
-                          },
-                          builder: (context, overview) => switch (overview) {
-                            final overview? => StatusCard(overview: overview),
-                            null => const SizedBox.shrink(),
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const _RecentSection(),
-                const _CollectionsRow(),
-                SliverPadding(
-                  padding: _pagePadding,
-                  sliver: SliverMainAxisGroup(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: Spacing.xxl),
-                            _SectionTitle(title: context.s.homeAllWordsTitle),
-                            const SizedBox(height: Spacing.m),
-                          ],
-                        ),
+    final isSearching = useState(false);
+    void closeSearch() {
+      isSearching.value = false;
+      context.read<HomeBloc>().add(const HomeFilterChanged(filter: emptyVocabularyFilter));
+    }
+
+    return PopScope(
+      canPop: !isSearching.value,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) closeSearch();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: isSearching.value,
+        floatingActionButton: isSearching.value ? null : const RecordFab(),
+        body: Stack(
+          children: [
+            Offstage(
+              offstage: isSearching.value,
+              child: _Overview(onSearchOpened: () => isSearching.value = true),
+            ),
+            if (isSearching.value) _SearchView(onClosed: closeSearch),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class const _SearchView({
+  required final VoidCallback _onClosed,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, VocabularyFilter>(
+      selector: (state) => switch (state) {
+        HomeLoading(:final filter) || HomeLoaded(:final filter) => filter,
+        HomeFailure() => emptyVocabularyFilter,
+      },
+      builder: (context, filter) => VocabularySearchView(
+        filter: filter,
+        onFilterChanged: (filter) =>
+            context.read<HomeBloc>().add(HomeFilterChanged(filter: filter)),
+        onClosed: _onClosed,
+        results: const _Feed(showsNoResults: true),
+      ),
+    );
+  }
+}
+
+class const _Overview({
+  required final VoidCallback _onSearchOpened,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        SliverSafeArea(
+          left: false,
+          right: false,
+          sliver: SliverMainAxisGroup(
+            slivers: [
+              SliverPadding(
+                padding: _pagePadding,
+                sliver: SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: Spacing.xxl),
+                      const _TitleRow(),
+                      const SizedBox(height: Spacing.m),
+                      BlocSelector<HomeBloc, HomeState, VocabularyOverview?>(
+                        selector: (state) => switch (state) {
+                          HomeLoaded(:final overview) => overview,
+                          _ => null,
+                        },
+                        builder: (context, overview) => switch (overview) {
+                          final overview? => StatusCard(overview: overview),
+                          null => const SizedBox.shrink(),
+                        },
                       ),
-                      const _Feed(),
                     ],
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: _scrollEndSpacing)),
-              ],
-            ),
+              ),
+              const _RecentSection(),
+              const _CollectionsRow(),
+              SliverPadding(
+                padding: _pagePadding,
+                sliver: SliverMainAxisGroup(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: Spacing.xxl),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _SectionTitle(title: context.s.homeAllWordsTitle),
+                              ),
+                              IconButton(
+                                onPressed: _onSearchOpened,
+                                tooltip: context.s.vocabularySearchTooltip,
+                                icon: const Icon(Icons.search_rounded),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: Spacing.xs),
+                        ],
+                      ),
+                    ),
+                    const _Feed(showsNoResults: false),
+                  ],
+                ),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: _scrollEndSpacing)),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -190,7 +253,9 @@ class const _RecentSection() extends StatelessWidget {
   }
 }
 
-class const _Feed() extends StatelessWidget {
+class const _Feed({
+  required final bool _showsNoResults,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<HomeBloc, HomeState, ({List<Vocabulary> vocabularies, bool hasMore})>(
@@ -201,20 +266,25 @@ class const _Feed() extends StatelessWidget {
         ),
         _ => (vocabularies: const [], hasMore: false),
       },
-      builder: (context, feed) => SliverList.builder(
-        itemCount: feed.vocabularies.length + (feed.hasMore ? 1 : 0),
-        itemBuilder: (_, index) => switch (feed.vocabularies.elementAtOrNull(index)) {
-          final vocabulary? => VocabularyTile(
-            key: ValueKey(vocabulary.id),
-            vocabulary: vocabulary,
-            onTap: () => _showInfo(context, vocabulary),
-            onSpeak: () => _speak(context, vocabulary),
-            onEdit: () => _edit(context, vocabulary),
-            onDelete: () => _confirmDelete(context, vocabulary),
-          ),
-          null => const _FeedEndLoader(),
-        },
-      ),
+      builder: (context, feed) => switch (feed) {
+        (vocabularies: [], hasMore: false) when _showsNoResults => const SliverToBoxAdapter(
+          child: VocabularySearchEmpty(),
+        ),
+        _ => SliverList.builder(
+          itemCount: feed.vocabularies.length + (feed.hasMore ? 1 : 0),
+          itemBuilder: (_, index) => switch (feed.vocabularies.elementAtOrNull(index)) {
+            final vocabulary? => VocabularyTile(
+              key: ValueKey(vocabulary.id),
+              vocabulary: vocabulary,
+              onTap: () => _showInfo(context, vocabulary),
+              onSpeak: () => _speak(context, vocabulary),
+              onEdit: () => _edit(context, vocabulary),
+              onDelete: () => _confirmDelete(context, vocabulary),
+            ),
+            null => const _FeedEndLoader(),
+          },
+        ),
+      },
     );
   }
 }

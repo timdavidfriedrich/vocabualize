@@ -600,6 +600,33 @@ class AppLocalizationsEl extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Ανάγνωση';
 
   @override
+  String get vocabularySearchTooltip => 'Αναζήτηση';
+
+  @override
+  String get vocabularySearchHint => 'Αναζήτηση λέξεων...';
+
+  @override
+  String get vocabularySearchClearTooltip => 'Εκκαθάριση';
+
+  @override
+  String get vocabularySearchEmptyMessage => 'Καμία λέξη δεν ταιριάζει με την αναζήτησή σας.';
+
+  @override
+  String get vocabularyFilterDueLabel => 'Για επανάληψη';
+
+  @override
+  String get vocabularyLevelNovice => 'Νέες';
+
+  @override
+  String get vocabularyLevelBeginner => 'Αρχάριο';
+
+  @override
+  String get vocabularyLevelAdvanced => 'Προχωρημένο';
+
+  @override
+  String get vocabularyLevelExpert => 'Έμπειρο';
+
+  @override
   String get errorTextToSpeechUnavailable =>
       'Δεν υπάρχει εγκατεστημένη φωνή για αυτή τη γλώσσα σε αυτό το τηλέφωνο.';
 

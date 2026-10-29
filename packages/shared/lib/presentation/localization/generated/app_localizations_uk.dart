@@ -613,6 +613,33 @@ class AppLocalizationsUk extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Прочитати вголос';
 
   @override
+  String get vocabularySearchTooltip => 'Пошук';
+
+  @override
+  String get vocabularySearchHint => 'Пошук слів...';
+
+  @override
+  String get vocabularySearchClearTooltip => 'Очистити';
+
+  @override
+  String get vocabularySearchEmptyMessage => 'Жодне слово не відповідає вашому пошуку.';
+
+  @override
+  String get vocabularyFilterDueLabel => 'До повторення';
+
+  @override
+  String get vocabularyLevelNovice => 'Нові';
+
+  @override
+  String get vocabularyLevelBeginner => 'Початковий';
+
+  @override
+  String get vocabularyLevelAdvanced => 'Просунутий';
+
+  @override
+  String get vocabularyLevelExpert => 'Експерт';
+
+  @override
   String get errorTextToSpeechUnavailable =>
       'На цьому телефоні не встановлено голос для цієї мови.';
 

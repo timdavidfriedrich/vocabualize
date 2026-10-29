@@ -1098,6 +1098,60 @@ abstract class AppLocalizations {
   /// **'Read out'**
   String get vocabularySpeakTooltip;
 
+  /// No description provided for @vocabularySearchTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get vocabularySearchTooltip;
+
+  /// No description provided for @vocabularySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search vocabulary...'**
+  String get vocabularySearchHint;
+
+  /// No description provided for @vocabularySearchClearTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get vocabularySearchClearTooltip;
+
+  /// No description provided for @vocabularySearchEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No vocabulary matches your search.'**
+  String get vocabularySearchEmptyMessage;
+
+  /// No description provided for @vocabularyFilterDueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get vocabularyFilterDueLabel;
+
+  /// No description provided for @vocabularyLevelNovice.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get vocabularyLevelNovice;
+
+  /// No description provided for @vocabularyLevelBeginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get vocabularyLevelBeginner;
+
+  /// No description provided for @vocabularyLevelAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get vocabularyLevelAdvanced;
+
+  /// No description provided for @vocabularyLevelExpert.
+  ///
+  /// In en, this message translates to:
+  /// **'Expert'**
+  String get vocabularyLevelExpert;
+
   /// No description provided for @errorTextToSpeechUnavailable.
   ///
   /// In en, this message translates to:

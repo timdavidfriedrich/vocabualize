@@ -70,6 +70,7 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
       CollectionStateMapper.ensureInitialized();
       TagMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
+      VocabularyFilterMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -98,6 +99,11 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
     'feedLimit',
     _$feedLimit,
   );
+  static VocabularyFilter _$filter(CollectionLoading v) => v.filter;
+  static const Field<CollectionLoading, VocabularyFilter> _f$filter = Field(
+    'filter',
+    _$filter,
+  );
 
   @override
   final MappableFields<CollectionLoading> fields = const {
@@ -106,6 +112,7 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
     #vocabularies: _f$vocabularies,
     #tags: _f$tags,
     #feedLimit: _f$feedLimit,
+    #filter: _f$filter,
   };
 
   static CollectionLoading _instantiate(DecodingData data) {
@@ -115,6 +122,7 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
       vocabularies: data.dec(_f$vocabularies),
       tags: data.dec(_f$tags),
       feedLimit: data.dec(_f$feedLimit),
+      filter: data.dec(_f$filter),
     );
   }
 
@@ -193,6 +201,7 @@ abstract class CollectionLoadingCopyWith<
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
   get vocabularies;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>>? get tags;
+  VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter;
   @override
   $R call({
     Tag? tag,
@@ -200,6 +209,7 @@ abstract class CollectionLoadingCopyWith<
     List<Vocabulary>? vocabularies,
     List<Tag>? tags,
     int? feedLimit,
+    VocabularyFilter? filter,
   });
   CollectionLoadingCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -236,12 +246,16 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
         )
       : null;
   @override
+  VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter =>
+      $value.filter.copyWith.$chain((v) => call(filter: v));
+  @override
   $R call({
     Object? tag = $none,
     Object? dueCount = $none,
     Object? vocabularies = $none,
     Object? tags = $none,
     int? feedLimit,
+    VocabularyFilter? filter,
   }) => $apply(
     FieldCopyWithData({
       if (tag != $none) #tag: tag,
@@ -249,6 +263,7 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
       if (vocabularies != $none) #vocabularies: vocabularies,
       if (tags != $none) #tags: tags,
       if (feedLimit != null) #feedLimit: feedLimit,
+      if (filter != null) #filter: filter,
     }),
   );
   @override
@@ -258,6 +273,7 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),
     tags: data.get(#tags, or: $value.tags),
     feedLimit: data.get(#feedLimit, or: $value.feedLimit),
+    filter: data.get(#filter, or: $value.filter),
   );
 
   @override
@@ -276,6 +292,7 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
       CollectionStateMapper.ensureInitialized();
       TagMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
+      VocabularyFilterMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -303,6 +320,11 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
     'feedLimit',
     _$feedLimit,
   );
+  static VocabularyFilter _$filter(CollectionLoaded v) => v.filter;
+  static const Field<CollectionLoaded, VocabularyFilter> _f$filter = Field(
+    'filter',
+    _$filter,
+  );
   static AppError? _$error(CollectionLoaded v) => v.error;
   static const Field<CollectionLoaded, AppError> _f$error = Field(
     'error',
@@ -316,6 +338,7 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
     #vocabularies: _f$vocabularies,
     #tags: _f$tags,
     #feedLimit: _f$feedLimit,
+    #filter: _f$filter,
     #error: _f$error,
   };
 
@@ -326,6 +349,7 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
       vocabularies: data.dec(_f$vocabularies),
       tags: data.dec(_f$tags),
       feedLimit: data.dec(_f$feedLimit),
+      filter: data.dec(_f$filter),
       error: data.dec(_f$error),
     );
   }
@@ -396,6 +420,7 @@ abstract class CollectionLoadedCopyWith<$R, $In extends CollectionLoaded, $Out>
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
   get vocabularies;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get tags;
+  VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter;
   @override
   $R call({
     Tag? tag,
@@ -403,6 +428,7 @@ abstract class CollectionLoadedCopyWith<$R, $In extends CollectionLoaded, $Out>
     List<Vocabulary>? vocabularies,
     List<Tag>? tags,
     int? feedLimit,
+    VocabularyFilter? filter,
     AppError? error,
   });
   CollectionLoadedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -435,12 +461,16 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
     (v) => call(tags: v),
   );
   @override
+  VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter =>
+      $value.filter.copyWith.$chain((v) => call(filter: v));
+  @override
   $R call({
     Tag? tag,
     int? dueCount,
     List<Vocabulary>? vocabularies,
     List<Tag>? tags,
     int? feedLimit,
+    VocabularyFilter? filter,
     Object? error = $none,
   }) => $apply(
     FieldCopyWithData({
@@ -449,6 +479,7 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
       if (vocabularies != null) #vocabularies: vocabularies,
       if (tags != null) #tags: tags,
       if (feedLimit != null) #feedLimit: feedLimit,
+      if (filter != null) #filter: filter,
       if (error != $none) #error: error,
     }),
   );
@@ -459,6 +490,7 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),
     tags: data.get(#tags, or: $value.tags),
     feedLimit: data.get(#feedLimit, or: $value.feedLimit),
+    filter: data.get(#filter, or: $value.filter),
     error: data.get(#error, or: $value.error),
   );
 

@@ -2,6 +2,7 @@ import 'package:core/error/app_result.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_image_change.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 
@@ -9,6 +10,7 @@ abstract class VocabularyRepository {
   Stream<AppResult<List<Vocabulary>>> watchVocabularies({
     required int limit,
     String? tagId,
+    VocabularyFilter filter = emptyVocabularyFilter,
   });
 
   Stream<AppResult<List<Vocabulary>>> watchRecentVocabularies({

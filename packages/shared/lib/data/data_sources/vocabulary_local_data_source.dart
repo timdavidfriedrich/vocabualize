@@ -6,6 +6,7 @@ import 'package:serverpod_database/serverpod_database.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/models/local_activity_day.dart';
+import 'package:shared/data/models/local_level_range.dart';
 import 'package:shared/data/models/local_vocabulary_overview.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -17,6 +18,9 @@ abstract class VocabularyLocalDataSource {
   Stream<List<LocalVocabulary>> watchVocabularies({
     required int limit,
     required UuidValue? tagId,
+    required String query,
+    required List<LocalLevelRange> levelRanges,
+    required bool isDueOnly,
   });
 
   Stream<List<LocalVocabulary>> watchRecentVocabularies({
@@ -82,18 +86,35 @@ class const VocabularyLocalDataSourceImpl(
   Stream<List<LocalVocabulary>> watchVocabularies({
     required int limit,
     required UuidValue? tagId,
+    required String query,
+    required List<LocalLevelRange> levelRanges,
+    required bool isDueOnly,
   }) {
     return _watchTimed(
       empty: const <LocalVocabulary>[],
       query: (session, now) async {
         final scope = await _scope(session, tagId);
+        Expression<dynamic>? matching(LocalVocabularyTable t) => _all([
+          if (query.isNotEmpty) t.source.ilike("%$query%") | t.target.ilike("%$query%"),
+          if (levelRanges.isNotEmpty)
+            _any([
+              for (final range in levelRanges) _levelBetween(t, range.from, range.until),
+            ]),
+        ]);
         final vocabularies = await LocalVocabulary.db.find(
           session,
-          where: _onlyIn(scope),
+          where: _filtered(scope, (t) => _all([matching(t), if (isDueOnly) t.nextReviewAt <= now])),
           orderBy: (t) => t.createdAt.desc(),
           limit: limit,
         );
-        return (value: vocabularies, validUntil: null);
+        final nextDue = isDueOnly
+            ? await LocalVocabulary.db.findFirstRow(
+                session,
+                where: _filtered(scope, (t) => _all([matching(t), t.nextReviewAt > now])),
+                orderBy: (t) => t.nextReviewAt.asc(),
+              )
+            : null;
+        return (value: vocabularies, validUntil: nextDue?.nextReviewAt);
       },
     );
   }
@@ -401,6 +422,27 @@ class const VocabularyLocalDataSourceImpl(
 
   WhereExpressionBuilder<LocalVocabularyTable>? _onlyIn(Set<UuidValue>? scope) {
     return scope == null ? null : (t) => t.id.inSet(scope);
+  }
+
+  WhereExpressionBuilder<LocalVocabularyTable> _filtered(
+    Set<UuidValue>? scope,
+    Expression<dynamic>? Function(LocalVocabularyTable t) condition,
+  ) {
+    return (t) => _within(t, condition(t) ?? t.id.notEquals(null), scope);
+  }
+
+  Expression<dynamic>? _all(List<Expression<dynamic>?> expressions) {
+    return expressions.nonNulls.fold<Expression<dynamic>?>(
+      null,
+      (combined, expression) => combined == null ? expression : combined & expression,
+    );
+  }
+
+  Expression<dynamic>? _any(List<Expression<dynamic>> expressions) {
+    return expressions.fold<Expression<dynamic>?>(
+      null,
+      (combined, expression) => combined == null ? expression : combined | expression,
+    );
   }
 
   DatabaseSession _requireSession() {

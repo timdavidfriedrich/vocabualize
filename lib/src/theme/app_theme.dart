@@ -177,6 +177,10 @@ abstract final class AppTheme {
           ),
         ),
       ),
+      searchBarTheme: const SearchBarThemeData(
+        elevation: WidgetStatePropertyAll(0),
+        backgroundColor: WidgetStatePropertyAll(_surfaceContainerLow),
+      ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(foregroundColor: _onSurface),
       ),

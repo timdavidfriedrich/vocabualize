@@ -282,6 +282,15 @@
   "homeNextDueTodayMessage": "Next word at {time}",
   "homeNextDueLaterMessage": "Next word on {date}",
   "vocabularySpeakTooltip": "Read out",
+  "vocabularySearchTooltip": "Search",
+  "vocabularySearchHint": "Search vocabulary...",
+  "vocabularySearchClearTooltip": "Clear",
+  "vocabularySearchEmptyMessage": "No vocabulary matches your search.",
+  "vocabularyFilterDueLabel": "Due",
+  "vocabularyLevelNovice": "New",
+  "vocabularyLevelBeginner": "Beginner",
+  "vocabularyLevelAdvanced": "Advanced",
+  "vocabularyLevelExpert": "Expert",
   "errorTextToSpeechUnavailable": "No voice for this language is installed on this phone.",
   "@homeNextDueTodayMessage": {
     "placeholders": {

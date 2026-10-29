@@ -8,6 +8,7 @@ import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/activity_mappers.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
+import 'package:shared/data/mappers/vocabulary_filter_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_overview_mappers.dart';
 import 'package:shared/data/models/local_activity_day.dart';
@@ -15,6 +16,7 @@ import 'package:shared/data/models/local_image_variant.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/entities/vocabulary_image_change.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
@@ -36,8 +38,18 @@ class const VocabularyRepositoryImpl(
   Stream<AppResult<List<Vocabulary>>> watchVocabularies({
     required int limit,
     String? tagId,
+    VocabularyFilter filter = emptyVocabularyFilter,
   }) => _withImages(
-    _localDataSource.watchVocabularies(limit: limit, tagId: _uuidOrNull(tagId)),
+    _localDataSource.watchVocabularies(
+      limit: limit,
+      tagId: _uuidOrNull(tagId),
+      query: filter.query.trim(),
+      levelRanges: [
+        for (final level in VocabularyLevel.values)
+          if (filter.levels.contains(level)) level.toLocalLevelRange(),
+      ],
+      isDueOnly: filter.isDueOnly,
+    ),
   ).toAppResult();
 
   @override

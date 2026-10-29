@@ -605,6 +605,33 @@ class AppLocalizationsRo extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Citiți cu voce tare';
 
   @override
+  String get vocabularySearchTooltip => 'Căutați';
+
+  @override
+  String get vocabularySearchHint => 'Căutați cuvinte...';
+
+  @override
+  String get vocabularySearchClearTooltip => 'Ștergeți';
+
+  @override
+  String get vocabularySearchEmptyMessage => 'Niciun cuvânt nu corespunde căutării dumneavoastră.';
+
+  @override
+  String get vocabularyFilterDueLabel => 'De repetat';
+
+  @override
+  String get vocabularyLevelNovice => 'Noi';
+
+  @override
+  String get vocabularyLevelBeginner => 'Începător';
+
+  @override
+  String get vocabularyLevelAdvanced => 'Avansat';
+
+  @override
+  String get vocabularyLevelExpert => 'Expert';
+
+  @override
   String get errorTextToSpeechUnavailable =>
       'Pe acest telefon nu este instalată nicio voce pentru această limbă.';
 

@@ -67,6 +67,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
       VocabularyOverviewMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
       CollectionPreviewMapper.ensureInitialized();
+      VocabularyFilterMapper.ensureInitialized();
       StreakMapper.ensureInitialized();
     }
     return _instance!;
@@ -97,6 +98,11 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
     'feedLimit',
     _$feedLimit,
   );
+  static VocabularyFilter _$filter(HomeLoading v) => v.filter;
+  static const Field<HomeLoading, VocabularyFilter> _f$filter = Field(
+    'filter',
+    _$filter,
+  );
   static Streak? _$streak(HomeLoading v) => v.streak;
   static const Field<HomeLoading, Streak> _f$streak = Field('streak', _$streak);
 
@@ -107,6 +113,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
     #collections: _f$collections,
     #vocabularies: _f$vocabularies,
     #feedLimit: _f$feedLimit,
+    #filter: _f$filter,
     #streak: _f$streak,
   };
 
@@ -117,6 +124,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
       collections: data.dec(_f$collections),
       vocabularies: data.dec(_f$vocabularies),
       feedLimit: data.dec(_f$feedLimit),
+      filter: data.dec(_f$filter),
       streak: data.dec(_f$streak),
     );
   }
@@ -193,6 +201,7 @@ abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
   get collections;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
   get vocabularies;
+  VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter;
   StreakCopyWith<$R, Streak, Streak>? get streak;
   @override
   $R call({
@@ -201,6 +210,7 @@ abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
     List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
     int? feedLimit,
+    VocabularyFilter? filter,
     Streak? streak,
   });
   HomeLoadingCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -249,6 +259,9 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
         )
       : null;
   @override
+  VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter =>
+      $value.filter.copyWith.$chain((v) => call(filter: v));
+  @override
   StreakCopyWith<$R, Streak, Streak>? get streak =>
       $value.streak?.copyWith.$chain((v) => call(streak: v));
   @override
@@ -258,6 +271,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
     Object? collections = $none,
     Object? vocabularies = $none,
     int? feedLimit,
+    VocabularyFilter? filter,
     Object? streak = $none,
   }) => $apply(
     FieldCopyWithData({
@@ -266,6 +280,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
       if (collections != $none) #collections: collections,
       if (vocabularies != $none) #vocabularies: vocabularies,
       if (feedLimit != null) #feedLimit: feedLimit,
+      if (filter != null) #filter: filter,
       if (streak != $none) #streak: streak,
     }),
   );
@@ -279,6 +294,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
     collections: data.get(#collections, or: $value.collections),
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),
     feedLimit: data.get(#feedLimit, or: $value.feedLimit),
+    filter: data.get(#filter, or: $value.filter),
     streak: data.get(#streak, or: $value.streak),
   );
 
@@ -299,6 +315,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
       VocabularyOverviewMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
       CollectionPreviewMapper.ensureInitialized();
+      VocabularyFilterMapper.ensureInitialized();
       StreakMapper.ensureInitialized();
     }
     return _instance!;
@@ -329,6 +346,11 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
     'feedLimit',
     _$feedLimit,
   );
+  static VocabularyFilter _$filter(HomeLoaded v) => v.filter;
+  static const Field<HomeLoaded, VocabularyFilter> _f$filter = Field(
+    'filter',
+    _$filter,
+  );
   static Streak? _$streak(HomeLoaded v) => v.streak;
   static const Field<HomeLoaded, Streak> _f$streak = Field('streak', _$streak);
   static AppError? _$error(HomeLoaded v) => v.error;
@@ -341,6 +363,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
     #collections: _f$collections,
     #vocabularies: _f$vocabularies,
     #feedLimit: _f$feedLimit,
+    #filter: _f$filter,
     #streak: _f$streak,
     #error: _f$error,
   };
@@ -352,6 +375,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
       collections: data.dec(_f$collections),
       vocabularies: data.dec(_f$vocabularies),
       feedLimit: data.dec(_f$feedLimit),
+      filter: data.dec(_f$filter),
       streak: data.dec(_f$streak),
       error: data.dec(_f$error),
     );
@@ -429,6 +453,7 @@ abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
   get collections;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
   get vocabularies;
+  VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter;
   StreakCopyWith<$R, Streak, Streak>? get streak;
   @override
   $R call({
@@ -437,6 +462,7 @@ abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
     List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
     int? feedLimit,
+    VocabularyFilter? filter,
     Streak? streak,
     AppError? error,
   });
@@ -480,6 +506,9 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
     (v) => call(vocabularies: v),
   );
   @override
+  VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter =>
+      $value.filter.copyWith.$chain((v) => call(filter: v));
+  @override
   StreakCopyWith<$R, Streak, Streak>? get streak =>
       $value.streak?.copyWith.$chain((v) => call(streak: v));
   @override
@@ -489,6 +518,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
     List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
     int? feedLimit,
+    VocabularyFilter? filter,
     Object? streak = $none,
     Object? error = $none,
   }) => $apply(
@@ -498,6 +528,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
       if (collections != null) #collections: collections,
       if (vocabularies != null) #vocabularies: vocabularies,
       if (feedLimit != null) #feedLimit: feedLimit,
+      if (filter != null) #filter: filter,
       if (streak != $none) #streak: streak,
       if (error != $none) #error: error,
     }),
@@ -512,6 +543,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
     collections: data.get(#collections, or: $value.collections),
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),
     feedLimit: data.get(#feedLimit, or: $value.feedLimit),
+    filter: data.get(#filter, or: $value.filter),
     streak: data.get(#streak, or: $value.streak),
     error: data.get(#error, or: $value.error),
   );

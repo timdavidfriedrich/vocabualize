@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
@@ -23,10 +24,11 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
           vocabularies: null,
           tags: null,
           feedLimit: 0,
+          filter: emptyVocabularyFilter,
         ),
       ) {
     on<CollectionStarted>(_onStarted);
-    on<CollectionFeedEndReached>(_onFeedEndReached, transformer: restartable());
+    on<CollectionFeedEvent>(_onFeedEvent, transformer: restartable());
     on<CollectionRenamed>(_onRenamed);
     on<CollectionDeleteRequested>(_onDeleteRequested);
     on<CollectionVocabularySpeakRequested>(_onVocabularySpeakRequested);
@@ -67,21 +69,28 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     ]);
   }
 
-  Future<void> _onFeedEndReached(
-    CollectionFeedEndReached event,
-    Emitter<CollectionState> emit,
-  ) async {
+  Future<void> _onFeedEvent(CollectionFeedEvent event, Emitter<CollectionState> emit) async {
     final tagId = _tagId;
-    final limit = switch (state) {
-      CollectionLoading(:final feedLimit) ||
-      CollectionLoaded(:final feedLimit) => feedLimit + _feedPageSize,
-      CollectionClosed() || CollectionFailure() => null,
+    final feed = switch ((state, event)) {
+      (CollectionClosed() || CollectionFailure(), _) => null,
+      (
+        CollectionLoading(:final feedLimit, :final filter) ||
+            CollectionLoaded(:final feedLimit, :final filter),
+        CollectionFeedEndReached(),
+      ) =>
+        (limit: feedLimit + _feedPageSize, filter: filter),
+      (_, CollectionFilterChanged(:final filter)) => (limit: _feedPageSize, filter: filter),
     };
-    if (tagId == null || limit == null) return;
+    if (tagId == null || feed == null) return;
+    emit(_merged(filter: feed.filter));
     await emit.forEach(
-      _vocabularyRepository.watchVocabularies(limit: limit, tagId: tagId),
+      _vocabularyRepository.watchVocabularies(
+        limit: feed.limit,
+        tagId: tagId,
+        filter: feed.filter,
+      ),
       onData: (result) => switch (result) {
-        Success(:final data) => _merged(vocabularies: data, feedLimit: limit),
+        Success(:final data) => _merged(vocabularies: data, feedLimit: feed.limit),
         Failure(:final error) => CollectionFailure(error: error),
       },
     );
@@ -137,6 +146,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     List<Vocabulary>? vocabularies,
     List<Tag>? tags,
     int? feedLimit,
+    VocabularyFilter? filter,
   }) {
     return switch (state) {
       final CollectionLoaded loaded => loaded.copyWith(
@@ -145,6 +155,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         vocabularies: vocabularies,
         tags: tags,
         feedLimit: feedLimit,
+        filter: filter,
       ),
       final CollectionLoading loading => _completed(
         CollectionLoading(
@@ -153,6 +164,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
           vocabularies: vocabularies ?? loading.vocabularies,
           tags: tags ?? loading.tags,
           feedLimit: feedLimit ?? loading.feedLimit,
+          filter: filter ?? loading.filter,
         ),
       ),
       final CollectionClosed closed => closed,
@@ -168,6 +180,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         vocabularies: final vocabularies?,
         tags: final tags?,
         :final feedLimit,
+        :final filter,
       ) =>
         CollectionLoaded(
           tag: tag,
@@ -175,6 +188,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
           vocabularies: vocabularies,
           tags: tags,
           feedLimit: feedLimit,
+          filter: filter,
           error: null,
         ),
       _ => loading,

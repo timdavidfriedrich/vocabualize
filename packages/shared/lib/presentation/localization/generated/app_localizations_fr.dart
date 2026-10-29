@@ -603,6 +603,33 @@ class AppLocalizationsFr extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Lire à voix haute';
 
   @override
+  String get vocabularySearchTooltip => 'Rechercher';
+
+  @override
+  String get vocabularySearchHint => 'Rechercher un mot...';
+
+  @override
+  String get vocabularySearchClearTooltip => 'Effacer';
+
+  @override
+  String get vocabularySearchEmptyMessage => 'Aucun mot ne correspond à votre recherche.';
+
+  @override
+  String get vocabularyFilterDueLabel => 'À réviser';
+
+  @override
+  String get vocabularyLevelNovice => 'Nouveaux';
+
+  @override
+  String get vocabularyLevelBeginner => 'Débutant';
+
+  @override
+  String get vocabularyLevelAdvanced => 'Avancé';
+
+  @override
+  String get vocabularyLevelExpert => 'Expert';
+
+  @override
   String get errorTextToSpeechUnavailable =>
       'Aucune voix n\'est installée pour cette langue sur ce téléphone.';
 

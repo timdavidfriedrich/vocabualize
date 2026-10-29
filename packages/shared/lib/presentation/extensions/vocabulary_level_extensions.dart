@@ -9,4 +9,11 @@ extension VocabularyLevelExtensions on VocabularyLevel {
     VocabularyLevel.advanced => context.levels.advanced,
     VocabularyLevel.expert => context.levels.expert,
   };
+
+  String toLabel(BuildContext context) => switch (this) {
+    VocabularyLevel.novice => context.s.vocabularyLevelNovice,
+    VocabularyLevel.beginner => context.s.vocabularyLevelBeginner,
+    VocabularyLevel.advanced => context.s.vocabularyLevelAdvanced,
+    VocabularyLevel.expert => context.s.vocabularyLevelExpert,
+  };
 }

@@ -599,6 +599,33 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Leer en voz alta';
 
   @override
+  String get vocabularySearchTooltip => 'Buscar';
+
+  @override
+  String get vocabularySearchHint => 'Buscar vocabulario...';
+
+  @override
+  String get vocabularySearchClearTooltip => 'Borrar';
+
+  @override
+  String get vocabularySearchEmptyMessage => 'Ninguna palabra coincide con tu búsqueda.';
+
+  @override
+  String get vocabularyFilterDueLabel => 'Pendientes';
+
+  @override
+  String get vocabularyLevelNovice => 'Nuevas';
+
+  @override
+  String get vocabularyLevelBeginner => 'Principiante';
+
+  @override
+  String get vocabularyLevelAdvanced => 'Avanzado';
+
+  @override
+  String get vocabularyLevelExpert => 'Experto';
+
+  @override
   String get errorTextToSpeechUnavailable =>
       'No hay ninguna voz instalada para este idioma en este teléfono.';
 
