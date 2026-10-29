@@ -26,6 +26,8 @@ import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/stock_image_repository.dart'
     as _i934;
 import 'package:shared/domain/repositories/tag_repository.dart' as _i836;
+import 'package:shared/domain/repositories/text_to_speech_repository.dart'
+    as _i839;
 import 'package:shared/domain/repositories/translation_repository.dart'
     as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
@@ -53,6 +55,7 @@ class FeatureDetailsPackageModule extends _i526.MicroPackageModule {
           gh<_i831.PickImageUseCase>(),
           gh<_i689.ConnectivityRepository>(),
           gh<_i522.ReportRepository>(),
+          gh<_i839.TextToSpeechRepository>(),
         ));
   }
 }

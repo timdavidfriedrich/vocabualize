@@ -92,7 +92,7 @@ class const _EditingScreen() extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const SourceToTarget(),
-        actions: const [SizedBox(width: kToolbarHeight)],
+        actions: const [_SpeakButton()],
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: Spacing.xxxl),
@@ -116,6 +116,28 @@ class const _EditingScreen() extends StatelessWidget {
             _Actions(),
             SizedBox(height: Spacing.xxl),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class const _SpeakButton() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: kToolbarHeight,
+      child: BlocSelector<DetailsBloc, DetailsState, bool>(
+        selector: (state) => switch (state) {
+          DetailsEditing(:final target, languages: _?) => target.isNotEmpty,
+          _ => false,
+        },
+        builder: (context, canSpeak) => IconButton(
+          onPressed: canSpeak
+              ? () => context.read<DetailsBloc>().add(const DetailsSpeakRequested())
+              : null,
+          tooltip: context.s.vocabularySpeakTooltip,
+          icon: const Icon(Icons.volume_up_rounded),
         ),
       ),
     );

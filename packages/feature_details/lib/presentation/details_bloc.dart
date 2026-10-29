@@ -19,6 +19,7 @@ import 'package:shared/domain/repositories/report_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/stock_image_repository.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
+import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/translation_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 
@@ -42,10 +43,12 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     this._pickImage,
     this._connectivityRepository,
     this._reportRepository,
+    this._textToSpeechRepository,
   ) : super(const DetailsLoading()) {
     on<DetailsNewStarted>(_onNewStarted);
     on<DetailsEditStarted>(_onEditStarted);
     on<DetailsConnectionRestored>(_onConnectionRestored);
+    on<DetailsSpeakRequested>(_onSpeakRequested);
     on<DetailsTranslationReported>(_onTranslationReported);
     on<DetailsDuplicateResolved>(_onDuplicateResolved);
     on<DetailsSourceChanged>(_onSourceChanged);
@@ -70,6 +73,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final PickImageUseCase _pickImage;
   final ConnectivityRepository _connectivityRepository;
   final ReportRepository _reportRepository;
+  final TextToSpeechRepository _textToSpeechRepository;
 
   Future<void> _onNewStarted(DetailsNewStarted event, Emitter<DetailsState> emit) async {
     switch (await _vocabularyRepository.hasVocabularyWithSource(event.source)) {
@@ -117,6 +121,17 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           error: lookup.error,
         ),
       );
+    }
+  }
+
+  Future<void> _onSpeakRequested(DetailsSpeakRequested event, Emitter<DetailsState> emit) async {
+    if (state case DetailsEditing(:final target, :final languages?) && final editing
+        when target.isNotEmpty) {
+      emit(editing.copyWith(error: null));
+      final result = await _textToSpeechRepository.speak(text: target, language: languages.target);
+      if (result case Failure(:final error)) {
+        if (state case final DetailsEditing latest) emit(latest.copyWith(error: error));
+      }
     }
   }
 
