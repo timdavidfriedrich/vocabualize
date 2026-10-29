@@ -99,7 +99,7 @@
   "vocabularyReappearsInHours": "{count, plural, one{За {count} годину} few{За {count} години} many{За {count} годин} other{За {count} години}}",
   "vocabularyReappearsInDays": "{count, plural, one{За {count} день} few{За {count} дні} many{За {count} днів} other{За {count} дня}}",
   "detailsDuplicateMessage": "Здається, що «{word}» вже є у вашій колекції.\n\nДодати все одно?",
-  "detailsPhotoByLabel": "Фото від {author}",
+  "vocabularyPhotoByLabel": "Фото від {author}",
   "detailsReplaceButton": "Замінити",
   "errorSyncPending": "Ваші останні зміни ще не завантажено.",
   "settingsSignOutButton": "Вийти",

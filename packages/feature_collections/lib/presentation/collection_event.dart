@@ -25,6 +25,10 @@ class const CollectionRenamed({
 
 class const CollectionDeleteRequested() extends CollectionEvent;
 
+class const CollectionPhotographerLinkOpened({
+  required final String url,
+}) extends CollectionEvent;
+
 class const CollectionVocabularySpeakRequested({
   required final Vocabulary vocabulary,
 }) extends CollectionEvent;

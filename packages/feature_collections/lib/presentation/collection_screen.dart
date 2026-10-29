@@ -244,6 +244,7 @@ class const _Feed({
       },
       onSpeak: () => bloc.add(CollectionVocabularySpeakRequested(vocabulary: vocabulary)),
       onEdit: () => context.pushEditVocabularyDetails(vocabularyId: vocabulary.id),
+      onPhotographerOpened: (url) => bloc.add(CollectionPhotographerLinkOpened(url: url)),
     );
   }
 }

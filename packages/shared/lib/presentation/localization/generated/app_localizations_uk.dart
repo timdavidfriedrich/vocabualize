@@ -346,7 +346,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String detailsPhotoByLabel(String author) {
+  String vocabularyPhotoByLabel(String author) {
     return 'Фото від $author';
   }
 

@@ -99,7 +99,7 @@
   "vocabularyReappearsInHours": "{count, plural, one{En {count} hora} other{En {count} horas}}",
   "vocabularyReappearsInDays": "{count, plural, one{En {count} día} other{En {count} días}}",
   "detailsDuplicateMessage": "Parece que «{word}» ya existe en tu colección.\n\n¿Añadir de todos modos?",
-  "detailsPhotoByLabel": "Foto de {author}",
+  "vocabularyPhotoByLabel": "Foto de {author}",
   "detailsReplaceButton": "Reemplazar",
   "errorSyncPending": "Tus últimos cambios aún no se han subido.",
   "settingsSignOutButton": "Cerrar sesión",

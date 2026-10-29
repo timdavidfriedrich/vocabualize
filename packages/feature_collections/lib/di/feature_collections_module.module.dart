@@ -8,6 +8,8 @@ import 'dart:async' as _i687;
 
 import 'package:feature_collections/presentation/collection_bloc.dart' as _i187;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:shared/domain/repositories/external_link_repository.dart'
+    as _i711;
 import 'package:shared/domain/repositories/tag_repository.dart' as _i836;
 import 'package:shared/domain/repositories/text_to_speech_repository.dart'
     as _i839;
@@ -21,6 +23,7 @@ class FeatureCollectionsPackageModule extends _i526.MicroPackageModule {
           gh<_i836.TagRepository>(),
           gh<_i208.VocabularyRepository>(),
           gh<_i839.TextToSpeechRepository>(),
+          gh<_i711.ExternalLinkRepository>(),
         ));
   }
 }

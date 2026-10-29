@@ -17,6 +17,10 @@ class const HomeFilterChanged({
   required final VocabularyFilter filter,
 }) extends HomeFeedEvent;
 
+class const HomePhotographerLinkOpened({
+  required final String url,
+}) extends HomeEvent;
+
 class const HomeVocabularySpeakRequested({
   required final Vocabulary vocabulary,
 }) extends HomeEvent;

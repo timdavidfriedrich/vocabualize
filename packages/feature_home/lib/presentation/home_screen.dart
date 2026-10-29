@@ -427,6 +427,7 @@ void _showInfo(BuildContext context, Vocabulary vocabulary) {
     },
     onSpeak: () => bloc.add(HomeVocabularySpeakRequested(vocabulary: vocabulary)),
     onEdit: () => _edit(context, vocabulary),
+    onPhotographerOpened: (url) => bloc.add(HomePhotographerLinkOpened(url: url)),
   );
 }
 

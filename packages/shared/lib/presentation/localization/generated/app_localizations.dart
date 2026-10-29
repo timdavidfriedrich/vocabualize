@@ -702,11 +702,11 @@ abstract class AppLocalizations {
   /// **'It seems that “{word}” already exists in your collection.\n\nAdd it anyway?'**
   String detailsDuplicateMessage(String word);
 
-  /// No description provided for @detailsPhotoByLabel.
+  /// No description provided for @vocabularyPhotoByLabel.
   ///
   /// In en, this message translates to:
   /// **'Photo by {author}'**
-  String detailsPhotoByLabel(String author);
+  String vocabularyPhotoByLabel(String author);
 
   /// No description provided for @detailsReplaceButton.
   ///

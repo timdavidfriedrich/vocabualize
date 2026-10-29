@@ -9,10 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
+import 'package:shared/presentation/widgets/photo_overlay.dart';
 
 const _gridColumns = 4;
-const _overlayOpacity = 0.5;
-const _overlayFadeEnd = Alignment(0, -1 / 12);
+const _overlayRadius = BorderRadius.all(
+  Radius.circular(Spacing.radiusL - Spacing.borderWidthMedium),
+);
 
 typedef _ImageChoice = ({
   DetailsImage selected,
@@ -152,33 +154,11 @@ class const _NoImageMessage() extends StatelessWidget {
   }
 }
 
-class const _GradientOverlay({
-  required final Widget _child,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Spacing.radiusL - Spacing.borderWidthMedium),
-        backgroundBlendMode: BlendMode.darken,
-        gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: _overlayFadeEnd,
-          colors: [
-            context.overlay.scrim.withValues(alpha: _overlayOpacity),
-            context.overlay.scrim.withValues(alpha: 0),
-          ],
-        ),
-      ),
-      child: Align(alignment: Alignment.bottomCenter, child: _child),
-    );
-  }
-}
-
 class const _RetakeButton() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return _GradientOverlay(
+    return PhotoOverlay(
+      borderRadius: _overlayRadius,
       child: TextButton(
         onPressed: () => _pickPhoto(context),
         child: Row(
@@ -202,25 +182,10 @@ class const _PhotographerLink({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return _GradientOverlay(
-      child: TextButton(
-        onPressed: () => context.read<DetailsBloc>().add(const DetailsPhotographerLinkOpened()),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(width: Spacing.xs),
-            Flexible(
-              child: Text(
-                context.s.detailsPhotoByLabel(_photographer ?? context.s.unknown),
-                style: context.t.bodySmall?.copyWith(color: context.overlay.onScrim),
-              ),
-            ),
-            const SizedBox(width: Spacing.xs),
-            Icon(Icons.launch_rounded, size: Spacing.iconS, color: context.overlay.onScrim),
-            const SizedBox(width: Spacing.xs),
-          ],
-        ),
-      ),
+    return PhotoCreditButton(
+      photographer: _photographer,
+      borderRadius: _overlayRadius,
+      onPressed: () => context.read<DetailsBloc>().add(const DetailsPhotographerLinkOpened()),
     );
   }
 }

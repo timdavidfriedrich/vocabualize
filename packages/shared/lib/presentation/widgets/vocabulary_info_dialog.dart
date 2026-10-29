@@ -11,6 +11,7 @@ import 'package:shared/presentation/extensions/date_time_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/icon_action_button.dart';
 import 'package:shared/presentation/widgets/level_indicator.dart';
+import 'package:shared/presentation/widgets/photo_overlay.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _targetMaxLines = 7;
@@ -22,6 +23,7 @@ Future<void> showVocabularyInfoDialog(
   required List<Tag> tags,
   required VoidCallback onSpeak,
   required VoidCallback onEdit,
+  required ValueChanged<String> onPhotographerOpened,
 }) {
   return showDialog<void>(
     context: context,
@@ -33,6 +35,7 @@ Future<void> showVocabularyInfoDialog(
       ],
       onSpeak: onSpeak,
       onEdit: onEdit,
+      onPhotographerOpened: onPhotographerOpened,
     ),
   );
 }
@@ -42,9 +45,18 @@ class const _VocabularyInfoDialog({
   required final List<Tag> _tags,
   required final VoidCallback _onSpeak,
   required final VoidCallback _onEdit,
+  required final ValueChanged<String> _onPhotographerOpened,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final credit = switch (_vocabulary.image) {
+      StockImage(:final photographer, photographerUrl: final url?) ||
+      CustomImage(:final photographer, photographerUrl: final url?) => (
+        photographer: photographer,
+        url: url,
+      ),
+      _ => null,
+    };
     return AlertDialog.adaptive(
       title: IntrinsicHeight(
         child: Row(
@@ -93,10 +105,20 @@ class const _VocabularyInfoDialog({
                   aspectRatio: 1,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(Spacing.radiusL),
-                    child: VocabularyImageView(
-                      image: _vocabulary.image,
-                      variant: VocabularyImageVariant.full,
-                      displayWidth: MediaQuery.sizeOf(context).width,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        VocabularyImageView(
+                          image: _vocabulary.image,
+                          variant: VocabularyImageVariant.full,
+                          displayWidth: MediaQuery.sizeOf(context).width,
+                        ),
+                        if (credit case (:final photographer, :final url))
+                          PhotoCreditButton(
+                            photographer: photographer,
+                            onPressed: () => _onPhotographerOpened(url),
+                          ),
+                      ],
                     ),
                   ),
                 ),

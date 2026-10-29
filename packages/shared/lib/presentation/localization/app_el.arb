@@ -99,7 +99,7 @@
   "vocabularyReappearsInHours": "{count, plural, one{Σε {count} ώρα} other{Σε {count} ώρες}}",
   "vocabularyReappearsInDays": "{count, plural, one{Σε {count} ημέρα} other{Σε {count} ημέρες}}",
   "detailsDuplicateMessage": "Φαίνεται ότι η λέξη «{word}» υπάρχει ήδη στη συλλογή σας.\n\nΝα προστεθεί παρ' όλα αυτά;",
-  "detailsPhotoByLabel": "Φωτογραφία: {author}",
+  "vocabularyPhotoByLabel": "Φωτογραφία: {author}",
   "detailsReplaceButton": "Αντικατάσταση",
   "errorSyncPending": "Οι τελευταίες αλλαγές σας δεν έχουν μεταφορτωθεί ακόμη.",
   "settingsSignOutButton": "Αποσύνδεση",

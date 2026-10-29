@@ -336,7 +336,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String detailsPhotoByLabel(String author) {
+  String vocabularyPhotoByLabel(String author) {
     return 'Photo by $author';
   }
 

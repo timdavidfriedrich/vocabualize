@@ -10,6 +10,7 @@ import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
+import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
@@ -26,6 +27,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this._tagRepository,
     this._textToSpeechRepository,
     this._watchStreak,
+    this._externalLinkRepository,
   ) : super(
         const HomeLoading(
           overview: null,
@@ -40,12 +42,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeStarted>(_onStarted);
     on<HomeFeedEvent>(_onFeedEvent, transformer: restartable());
     on<HomeVocabularySpeakRequested>(_onVocabularySpeakRequested);
+    on<HomePhotographerLinkOpened>(_onPhotographerLinkOpened);
   }
 
   final VocabularyRepository _vocabularyRepository;
   final TagRepository _tagRepository;
   final TextToSpeechRepository _textToSpeechRepository;
   final WatchStreakUseCase _watchStreak;
+  final ExternalLinkRepository _externalLinkRepository;
 
   Future<void> _onStarted(HomeStarted event, Emitter<HomeState> emit) async {
     add(const HomeFeedEndReached());
@@ -111,6 +115,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       text: event.vocabulary.target,
       language: event.vocabulary.targetLanguage,
     );
+    if (result case Failure(:final error)) _emitError(emit, error);
+  }
+
+  Future<void> _onPhotographerLinkOpened(
+    HomePhotographerLinkOpened event,
+    Emitter<HomeState> emit,
+  ) async {
+    _emitError(emit, null);
+    final result = await _externalLinkRepository.open(event.url);
     if (result case Failure(:final error)) _emitError(emit, error);
   }
 

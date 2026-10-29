@@ -134,8 +134,8 @@
       }
     }
   },
-  "detailsPhotoByLabel": "Photo by {author}",
-  "@detailsPhotoByLabel": {
+  "vocabularyPhotoByLabel": "Photo by {author}",
+  "@vocabularyPhotoByLabel": {
     "placeholders": {
       "author": {
         "type": "String"

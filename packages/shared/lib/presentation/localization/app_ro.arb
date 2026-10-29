@@ -99,7 +99,7 @@
   "vocabularyReappearsInHours": "{count, plural, one{Peste {count} oră} few{Peste {count} ore} other{Peste {count} de ore}}",
   "vocabularyReappearsInDays": "{count, plural, one{Peste {count} zi} few{Peste {count} zile} other{Peste {count} de zile}}",
   "detailsDuplicateMessage": "Se pare că „{word}” există deja în colecția dvs.\n\nÎl adăugați oricum?",
-  "detailsPhotoByLabel": "Fotografie de {author}",
+  "vocabularyPhotoByLabel": "Fotografie de {author}",
   "detailsReplaceButton": "Înlocuiți",
   "errorSyncPending": "Ultimele modificări nu au fost încă încărcate.",
   "settingsSignOutButton": "Deconectați-vă",

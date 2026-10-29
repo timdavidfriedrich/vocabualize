@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
+import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
@@ -16,8 +17,12 @@ const _feedPageSize = 50;
 
 @injectable
 class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
-  CollectionBloc(this._tagRepository, this._vocabularyRepository, this._textToSpeechRepository)
-    : super(
+  CollectionBloc(
+    this._tagRepository,
+    this._vocabularyRepository,
+    this._textToSpeechRepository,
+    this._externalLinkRepository,
+  ) : super(
         const CollectionLoading(
           tag: null,
           dueCount: null,
@@ -32,11 +37,13 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     on<CollectionRenamed>(_onRenamed);
     on<CollectionDeleteRequested>(_onDeleteRequested);
     on<CollectionVocabularySpeakRequested>(_onVocabularySpeakRequested);
+    on<CollectionPhotographerLinkOpened>(_onPhotographerLinkOpened);
   }
 
   final TagRepository _tagRepository;
   final VocabularyRepository _vocabularyRepository;
   final TextToSpeechRepository _textToSpeechRepository;
+  final ExternalLinkRepository _externalLinkRepository;
   String? _tagId;
 
   Future<void> _onStarted(CollectionStarted event, Emitter<CollectionState> emit) async {
@@ -123,6 +130,15 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       text: event.vocabulary.target,
       language: event.vocabulary.targetLanguage,
     );
+    if (result case Failure(:final error)) _emitError(emit, error);
+  }
+
+  Future<void> _onPhotographerLinkOpened(
+    CollectionPhotographerLinkOpened event,
+    Emitter<CollectionState> emit,
+  ) async {
+    _emitError(emit, null);
+    final result = await _externalLinkRepository.open(event.url);
     if (result case Failure(:final error)) _emitError(emit, error);
   }
 
