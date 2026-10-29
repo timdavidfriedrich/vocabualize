@@ -12,7 +12,6 @@ import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
-import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/practice_button.dart';
 import 'package:shared/presentation/widgets/vocabulary_info_dialog.dart';
@@ -222,11 +221,10 @@ class const _Feed({
               key: ValueKey(vocabulary.id),
               vocabulary: vocabulary,
               onTap: () => _showInfo(context, vocabulary),
+              onLongPress: () => context.pushEditVocabularyDetails(vocabularyId: vocabulary.id),
               onSpeak: () => context.read<CollectionBloc>().add(
                 CollectionVocabularySpeakRequested(vocabulary: vocabulary),
               ),
-              onEdit: () => context.pushEditVocabularyDetails(vocabularyId: vocabulary.id),
-              onDelete: () => _confirmDelete(context, vocabulary),
             ),
             null => const _FeedEndLoader(),
           },
@@ -247,13 +245,6 @@ class const _Feed({
       onSpeak: () => bloc.add(CollectionVocabularySpeakRequested(vocabulary: vocabulary)),
       onEdit: () => context.pushEditVocabularyDetails(vocabularyId: vocabulary.id),
     );
-  }
-
-  Future<void> _confirmDelete(BuildContext context, Vocabulary vocabulary) async {
-    final bloc = context.read<CollectionBloc>();
-    if (await confirmsVocabularyDelete(context, vocabulary)) {
-      bloc.add(CollectionVocabularyDeleteRequested(vocabularyId: vocabulary.id));
-    }
   }
 }
 

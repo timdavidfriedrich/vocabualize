@@ -32,7 +32,6 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     on<CollectionRenamed>(_onRenamed);
     on<CollectionDeleteRequested>(_onDeleteRequested);
     on<CollectionVocabularySpeakRequested>(_onVocabularySpeakRequested);
-    on<CollectionVocabularyDeleteRequested>(_onVocabularyDeleteRequested);
   }
 
   final TagRepository _tagRepository;
@@ -124,15 +123,6 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       text: event.vocabulary.target,
       language: event.vocabulary.targetLanguage,
     );
-    if (result case Failure(:final error)) _emitError(emit, error);
-  }
-
-  Future<void> _onVocabularyDeleteRequested(
-    CollectionVocabularyDeleteRequested event,
-    Emitter<CollectionState> emit,
-  ) async {
-    _emitError(emit, null);
-    final result = await _vocabularyRepository.deleteVocabulary(event.vocabularyId);
     if (result case Failure(:final error)) _emitError(emit, error);
   }
 

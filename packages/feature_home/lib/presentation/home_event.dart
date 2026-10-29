@@ -20,7 +20,3 @@ class const HomeFilterChanged({
 class const HomeVocabularySpeakRequested({
   required final Vocabulary vocabulary,
 }) extends HomeEvent;
-
-class const HomeVocabularyDeleteRequested({
-  required final String vocabularyId,
-}) extends HomeEvent;

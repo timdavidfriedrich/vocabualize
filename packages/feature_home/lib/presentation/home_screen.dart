@@ -23,7 +23,6 @@ import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/account_status_avatar.dart';
-import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
 import 'package:shared/presentation/widgets/vocabulary_info_dialog.dart';
@@ -277,9 +276,8 @@ class const _Feed({
               key: ValueKey(vocabulary.id),
               vocabulary: vocabulary,
               onTap: () => _showInfo(context, vocabulary),
+              onLongPress: () => _edit(context, vocabulary),
               onSpeak: () => _speak(context, vocabulary),
-              onEdit: () => _edit(context, vocabulary),
-              onDelete: () => _confirmDelete(context, vocabulary),
             ),
             null => const _FeedEndLoader(),
           },
@@ -438,11 +436,4 @@ void _edit(BuildContext context, Vocabulary vocabulary) {
 
 void _speak(BuildContext context, Vocabulary vocabulary) {
   context.read<HomeBloc>().add(HomeVocabularySpeakRequested(vocabulary: vocabulary));
-}
-
-Future<void> _confirmDelete(BuildContext context, Vocabulary vocabulary) async {
-  final bloc = context.read<HomeBloc>();
-  if (await confirmsVocabularyDelete(context, vocabulary)) {
-    bloc.add(HomeVocabularyDeleteRequested(vocabularyId: vocabulary.id));
-  }
 }

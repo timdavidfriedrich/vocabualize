@@ -28,7 +28,3 @@ class const CollectionDeleteRequested() extends CollectionEvent;
 class const CollectionVocabularySpeakRequested({
   required final Vocabulary vocabulary,
 }) extends CollectionEvent;
-
-class const CollectionVocabularyDeleteRequested({
-  required final String vocabularyId,
-}) extends CollectionEvent;

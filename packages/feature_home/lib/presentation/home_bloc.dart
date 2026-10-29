@@ -40,7 +40,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeStarted>(_onStarted);
     on<HomeFeedEvent>(_onFeedEvent, transformer: restartable());
     on<HomeVocabularySpeakRequested>(_onVocabularySpeakRequested);
-    on<HomeVocabularyDeleteRequested>(_onVocabularyDeleteRequested);
   }
 
   final VocabularyRepository _vocabularyRepository;
@@ -85,8 +84,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _onFeedEvent(HomeFeedEvent event, Emitter<HomeState> emit) async {
     final feed = switch ((state, event)) {
       (HomeFailure(), _) => null,
-      (HomeLoading(:final feedLimit, :final filter) || HomeLoaded(:final feedLimit, :final filter),
-          HomeFeedEndReached()) =>
+      (
+        HomeLoading(:final feedLimit, :final filter) || HomeLoaded(:final feedLimit, :final filter),
+        HomeFeedEndReached(),
+      ) =>
         (limit: feedLimit + _feedPageSize, filter: filter),
       (_, HomeFilterChanged(:final filter)) => (limit: _feedPageSize, filter: filter),
     };
@@ -110,15 +111,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       text: event.vocabulary.target,
       language: event.vocabulary.targetLanguage,
     );
-    if (result case Failure(:final error)) _emitError(emit, error);
-  }
-
-  Future<void> _onVocabularyDeleteRequested(
-    HomeVocabularyDeleteRequested event,
-    Emitter<HomeState> emit,
-  ) async {
-    _emitError(emit, null);
-    final result = await _vocabularyRepository.deleteVocabulary(event.vocabularyId);
     if (result case Failure(:final error)) _emitError(emit, error);
   }
 
