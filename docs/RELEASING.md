@@ -76,6 +76,15 @@ Without these secrets, pushes still build (debug-signed, with `dart_defines.exam
 - See `docs/PLAY_CONSOLE.md` for the answers to paste: privacy policy and deletion URLs, data safety, content rating, app access and the AI declaration.
 - Each testing track needs testers (email list or Google Group) and countries before its first rollout.
 
+### 5. Google sign-in for Play builds
+
+Google Play re-signs every build with its own app signing key, so builds from the Play Store have a different SHA-1 than local builds. Without an Android OAuth client for that SHA-1, the account picker closes and nothing happens.
+
+1. Play Console → Test and release → App integrity → App signing: copy the SHA-1 of the **app signing key certificate**.
+2. Google Cloud console, in the project of `GOOGLE_SERVER_CLIENT_ID`: Credentials → Create credentials → OAuth client ID → **Android**, package `de.timdavidfriedrich.vocabualize` and that SHA-1.
+
+Keep one Android client per key: debug, upload key and Play app signing key.
+
 ## Before each release
 
 - Update the privacy policy (`website/public`) in both languages if data handling changed: new data, a new service, or different retention.
