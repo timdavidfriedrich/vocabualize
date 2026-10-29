@@ -1,3 +1,0 @@
-Lots of quality-of-life improvements, including:
-• Now works offline
-• You can now search and filter your vocabulary

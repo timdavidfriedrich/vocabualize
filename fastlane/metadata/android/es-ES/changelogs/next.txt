@@ -1,3 +1,0 @@
-Muchas mejoras de usabilidad, entre ellas:
-• Ahora funciona sin conexión
-• Ahora puedes buscar y filtrar tu vocabulario

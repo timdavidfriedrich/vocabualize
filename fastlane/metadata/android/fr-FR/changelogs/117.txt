@@ -1,0 +1,3 @@
+De nombreuses améliorations de confort, notamment :
+• Fonctionne désormais hors ligne
+• Vous pouvez désormais rechercher et filtrer votre vocabulaire
