@@ -28,7 +28,7 @@ class const ImageLabelingService(
       kind: UsageKind.imageLabeling,
       isEnabled: config.enabled,
       perDay: config.perDay,
-      request: () => _provider().label(image: image, language: language),
+      request: (_) => _provider().label(image: image, language: language),
     );
     session.log(
       "${UsageKind.imageLabeling.name} used ${labeled.inputTokens} input and "

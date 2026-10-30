@@ -7,6 +7,13 @@ abstract class TranslationRemoteDataSource {
     required String text,
     required String sourceLanguage,
     required String targetLanguage,
+    required String? context,
+  });
+
+  Future<List<String>> translateBatch({
+    required List<String> texts,
+    required String sourceLanguage,
+    required String targetLanguage,
   });
 }
 
@@ -20,7 +27,28 @@ class const TranslationRemoteDataSourceImpl(
     required String text,
     required String sourceLanguage,
     required String targetLanguage,
+    required String? context,
   }) => _serviceAccess.run(
-    (installKey) => _client.translation.translate(text, sourceLanguage, targetLanguage, installKey),
+    (installKey) => _client.translation.translate(
+      text,
+      sourceLanguage,
+      targetLanguage,
+      context,
+      installKey,
+    ),
+  );
+
+  @override
+  Future<List<String>> translateBatch({
+    required List<String> texts,
+    required String sourceLanguage,
+    required String targetLanguage,
+  }) => _serviceAccess.run(
+    (installKey) => _client.translation.translateBatch(
+      texts,
+      sourceLanguage,
+      targetLanguage,
+      installKey,
+    ),
   );
 }

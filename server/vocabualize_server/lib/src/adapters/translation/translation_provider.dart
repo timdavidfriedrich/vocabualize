@@ -1,8 +1,9 @@
 abstract class TranslationProvider {
-  Future<String> translate({
-    required String text,
+  Future<List<String>> translate({
+    required List<String> texts,
     required String sourceLanguage,
     required String targetLanguage,
+    required String? context,
   });
 }
 

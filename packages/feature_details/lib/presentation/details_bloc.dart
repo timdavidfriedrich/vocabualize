@@ -493,7 +493,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       switch (pending) {
         DetailsPendingLookup.translationAndPhotos => _translationRepository.translate(
           text: text,
-          languages: languages,
+          from: languages.source,
+          to: languages.target,
         ),
         DetailsPendingLookup.photos => Future<AppResult<String>?>.value(),
       },

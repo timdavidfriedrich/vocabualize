@@ -19,7 +19,8 @@ class const MeteredCall() {
     required UsageKind kind,
     required bool isEnabled,
     required int perDay,
-    required Future<T> Function() request,
+    required Future<T> Function(int grantedUnits) request,
+    int units = 1,
   }) async {
     if (!isEnabled) throw ServiceUnavailableException(reason: _disabled);
     final tiers = const ConfigSource().read().tiers;
@@ -29,10 +30,11 @@ class const MeteredCall() {
       kind: kind,
       limits: tiers.limitsFor(caller.tier, kind),
       perDay: perDay,
+      units: units,
       inFlightTimeout: _providerTimeout,
     );
-    final usageId = switch (reservation) {
-      UsageReserved(:final usageId) => usageId,
+    final usageIds = switch (reservation) {
+      UsageReserved(:final usageIds) => usageIds,
       UsageLimitReached(:final limit) => throw QuotaExceededException(
         kind: kind.name,
         period: limit.period.name,
@@ -43,13 +45,13 @@ class const MeteredCall() {
     };
     final T result;
     try {
-      result = await request().timeout(_providerTimeout);
+      result = await request(usageIds.length).timeout(_providerTimeout);
     } on Object catch (error) {
-      await const UsageQuota().release(session, usageId);
+      await const UsageQuota().release(session, usageIds);
       session.log("${kind.name} failed: $error", level: LogLevel.warning);
       throw ServiceUnavailableException(reason: _providerFailed);
     }
-    await const UsageQuota().complete(session, usageId);
+    await const UsageQuota().complete(session, usageIds);
     return result;
   }
 }

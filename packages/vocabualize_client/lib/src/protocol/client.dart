@@ -339,12 +339,30 @@ class EndpointTranslation extends _isc.EndpointRef {
     String text,
     String sourceLanguage,
     String targetLanguage,
+    String? context,
     _ithfgry0.RemoteInstallKey? installKey,
   ) => caller.callServerEndpoint<String>(
     'translation',
     'translate',
     {
       'text': text,
+      'sourceLanguage': sourceLanguage,
+      'targetLanguage': targetLanguage,
+      'context': context,
+      'installKey': installKey,
+    },
+  );
+
+  _ida.Future<List<String>> translateBatch(
+    List<String> texts,
+    String sourceLanguage,
+    String targetLanguage,
+    _ithfgry0.RemoteInstallKey? installKey,
+  ) => caller.callServerEndpoint<List<String>>(
+    'translation',
+    'translateBatch',
+    {
+      'texts': texts,
       'sourceLanguage': sourceLanguage,
       'targetLanguage': targetLanguage,
       'installKey': installKey,

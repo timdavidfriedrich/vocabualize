@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
@@ -23,7 +25,7 @@ sealed class UsageReservation {
 }
 
 class const UsageReserved({
-  required final int usageId,
+  required final List<int> usageIds,
 }) extends UsageReservation;
 
 class const UsageLimitReached({
@@ -39,6 +41,7 @@ class const UsageQuota() {
     required UsageKind kind,
     required List<UsageLimit> limits,
     required int perDay,
+    required int units,
     required Duration inFlightTimeout,
   }) {
     return session.db.transaction((transaction) async {
@@ -50,6 +53,7 @@ class const UsageQuota() {
         where: (t) => t.kind.equals(kind.name) & (t.createdAt < _retainedSince(now)),
         transaction: transaction,
       );
+      var grantedUnits = units;
       for (final limit in limits) {
         final used = await _countActive(
           session,
@@ -60,6 +64,7 @@ class const UsageQuota() {
           inFlightSince: inFlightSince,
         );
         if (used >= limit.limit) return UsageLimitReached(limit: limit);
+        grantedUnits = min(grantedUnits, limit.limit - used);
       }
       final usedByEveryone = await _countActive(
         session,
@@ -70,12 +75,15 @@ class const UsageQuota() {
         inFlightSince: inFlightSince,
       );
       if (usedByEveryone >= perDay) return const UsageExhausted();
-      final usage = await ServiceUsage.db.insertRow(
+      final usages = await ServiceUsage.db.insert(
         session,
-        ServiceUsage(ownerId: ownerId, kind: kind.name, status: _reserved, createdAt: now),
+        [
+          for (var unit = 0; unit < min(grantedUnits, perDay - usedByEveryone); unit++)
+            ServiceUsage(ownerId: ownerId, kind: kind.name, status: _reserved, createdAt: now),
+        ],
         transaction: transaction,
       );
-      return UsageReserved(usageId: usage.id!);
+      return UsageReserved(usageIds: [for (final usage in usages) ?usage.id]);
     });
   }
 
@@ -87,9 +95,11 @@ class const UsageQuota() {
     return deleted.length;
   }
 
-  Future<void> complete(Session session, int usageId) => _setStatus(session, usageId, _completed);
+  Future<void> complete(Session session, List<int> usageIds) =>
+      _setStatus(session, usageIds, _completed);
 
-  Future<void> release(Session session, int usageId) => _setStatus(session, usageId, _failed);
+  Future<void> release(Session session, List<int> usageIds) =>
+      _setStatus(session, usageIds, _failed);
 
   Future<int> _countActive(
     Session session,
@@ -113,12 +123,15 @@ class const UsageQuota() {
     );
   }
 
-  Future<void> _setStatus(Session session, int usageId, String status) async {
-    final usage = await ServiceUsage.db.findById(session, usageId);
-    if (usage == null) return;
-    await ServiceUsage.db.updateRow(
+  Future<void> _setStatus(Session session, List<int> usageIds, String status) async {
+    final usages = await ServiceUsage.db.find(
       session,
-      usage.copyWith(status: status),
+      where: (t) => t.id.inSet(usageIds.toSet()),
+    );
+    if (usages.isEmpty) return;
+    await ServiceUsage.db.update(
+      session,
+      [for (final usage in usages) usage.copyWith(status: status)],
       columns: (t) => [t.status],
     );
   }

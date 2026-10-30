@@ -28,7 +28,7 @@ class const StockImageService(
       kind: UsageKind.stockImageSearch,
       isEnabled: config.enabled,
       perDay: config.perDay,
-      request: () => _provider().search(query: query, language: language),
+      request: (_) => _provider().search(query: query, language: language),
     );
   }
 }

@@ -16,10 +16,11 @@ class const DeeplTranslationProvider(
   final String _apiKey,
 ) implements TranslationProvider {
   @override
-  Future<String> translate({
-    required String text,
+  Future<List<String>> translate({
+    required List<String> texts,
     required String sourceLanguage,
     required String targetLanguage,
+    required String? context,
   }) async {
     final response = await _client.post(
       Uri.https(_apiKey.endsWith(_freeKeySuffix) ? _freeHost : _proHost, _translatePath),
@@ -28,7 +29,8 @@ class const DeeplTranslationProvider(
         HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
       },
       body: jsonEncode({
-        "text": [text],
+        "text": texts,
+        "context": ?context,
         "source_lang": ?supportedLanguages[sourceLanguage]?.deeplSource,
         "target_lang": ?supportedLanguages[targetLanguage]?.deeplTarget,
       }),
@@ -36,9 +38,16 @@ class const DeeplTranslationProvider(
     if (response.statusCode != HttpStatus.ok) {
       throw TranslationFailure("DeepL answered ${response.statusCode}");
     }
-    return switch (jsonDecode(utf8.decode(response.bodyBytes))) {
-      {"translations": [{"text": final String translation}, ...]} => translation,
-      _ => throw const TranslationFailure("DeepL answered without a translation"),
+    final translations = switch (jsonDecode(utf8.decode(response.bodyBytes))) {
+      {"translations": final List<dynamic> entries} => [
+        for (final entry in entries)
+          if (entry case {"text": final String translation}) translation,
+      ],
+      _ => const <String>[],
     };
+    if (translations.length != texts.length) {
+      throw const TranslationFailure("DeepL answered without all translations");
+    }
+    return translations;
   }
 }

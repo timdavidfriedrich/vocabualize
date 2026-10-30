@@ -542,6 +542,11 @@ class Endpoints extends _is.EndpointDispatch {
               type: _is.getType<String>(),
               nullable: false,
             ),
+            'context': _is.ParameterDescription(
+              name: 'context',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
             'installKey': _is.ParameterDescription(
               name: 'installKey',
               type: _is.getType<_igfchjtu.RemoteInstallKey?>(),
@@ -555,6 +560,43 @@ class Endpoints extends _is.EndpointDispatch {
               ) async => (endpoints['translation'] as _i8dzvdiu.TranslationEndpoint).translate(
                 session,
                 params['text'],
+                params['sourceLanguage'],
+                params['targetLanguage'],
+                params['context'],
+                params['installKey'],
+              ),
+        ),
+        'translateBatch': _is.MethodConnector(
+          name: 'translateBatch',
+          params: {
+            'texts': _is.ParameterDescription(
+              name: 'texts',
+              type: _is.getType<List<String>>(),
+              nullable: false,
+            ),
+            'sourceLanguage': _is.ParameterDescription(
+              name: 'sourceLanguage',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'targetLanguage': _is.ParameterDescription(
+              name: 'targetLanguage',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'installKey': _is.ParameterDescription(
+              name: 'installKey',
+              type: _is.getType<_igfchjtu.RemoteInstallKey?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['translation'] as _i8dzvdiu.TranslationEndpoint).translateBatch(
+                session,
+                params['texts'],
                 params['sourceLanguage'],
                 params['targetLanguage'],
                 params['installKey'],
