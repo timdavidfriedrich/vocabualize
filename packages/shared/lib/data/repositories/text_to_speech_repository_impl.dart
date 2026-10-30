@@ -14,7 +14,10 @@ class const TextToSpeechRepositoryImpl(
   @override
   Future<AppResult<()>> speak({required String text, required Language language}) async {
     try {
-      final isSpoken = await _dataSource.speak(text: text, languageCode: language.toLanguageCode());
+      final isSpoken = await _dataSource.speak(
+        text: text,
+        languageCodes: language.toSpeechLanguageCodes(),
+      );
       return isSpoken ? const Success(()) : const Failure(TextToSpeechUnavailableError());
     } on Object catch (error) {
       return Failure(error.toAppError());

@@ -22,7 +22,7 @@ class ImageLabelingEndpoint extends Endpoint {
     String language,
     RemoteInstallKey? installKey,
   ) async {
-    if (image.lengthInBytes == 0 || !supportedLanguageCodes.contains(language)) {
+    if (image.lengthInBytes == 0 || !supportedLanguages.containsKey(language)) {
       throw ServiceUnavailableException(reason: _invalidRequest);
     }
     return _imageLabeling.label(

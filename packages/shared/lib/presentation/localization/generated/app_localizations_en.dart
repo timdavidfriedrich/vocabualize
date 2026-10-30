@@ -440,16 +440,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorInvalidBackup => 'This file isn\'t a Vocabualize backup.';
 
   @override
-  String get languageEnglish => 'English';
+  String get languageEnglishUk => 'English (UK)';
 
   @override
-  String get languageGerman => 'German';
+  String get languageEnglishUs => 'English (US)';
 
   @override
-  String get languageSpanish => 'Spanish';
+  String get languageSpanishSpain => 'Spanish (Spain)';
 
   @override
-  String get languageFrench => 'French';
+  String get languageSpanishLatinAmerica => 'Spanish (Latin America)';
+
+  @override
+  String get languageFrenchFrance => 'French (France)';
+
+  @override
+  String get languageFrenchCanada => 'French (Canada)';
+
+  @override
+  String get languageGermanGermany => 'German (Germany)';
+
+  @override
+  String get languageGermanSwitzerland => 'German (Switzerland)';
 
   @override
   String get languagePolish => 'Polish';

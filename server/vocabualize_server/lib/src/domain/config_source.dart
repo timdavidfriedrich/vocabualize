@@ -59,7 +59,6 @@ RuntimeConfig _parse(String source) {
       enabled: _boolAt(translation["enabled"], "translation.enabled"),
       provider: _stringAt(translation["provider"], "translation.provider"),
       maxTextLength: _intAt(translation["maxTextLength"], "translation.maxTextLength"),
-      englishTarget: _stringAt(translation["englishTarget"], "translation.englishTarget"),
       perDay: _intAt(translation["perDay"], "translation.perDay"),
     ),
     stockImages: StockImagesConfig(

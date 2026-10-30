@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import '../../domain/languages.dart';
 import 'image_labeling_provider.dart';
 
 const _host = "generativelanguage.googleapis.com";
@@ -17,16 +18,6 @@ const _thinkingLevel = "minimal";
 const _labelsField = "labels";
 const _termField = "term";
 const _confidenceField = "confidence";
-const _languageNames = {
-  "en": "English",
-  "de": "German",
-  "es": "Spanish",
-  "fr": "French",
-  "pl": "Polish",
-  "it": "Italian",
-  "el": "Greek",
-  "ro": "Romanian",
-};
 
 String _prompt(String languageName) =>
     """
@@ -54,7 +45,7 @@ class const GeminiImageLabelingProvider(
         _apiKeyHeader: _apiKey,
         HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
       },
-      body: jsonEncode(_requestBody(image, _languageNames[language] ?? language)),
+      body: jsonEncode(_requestBody(image, supportedLanguages[language]?.name ?? language)),
     );
     if (response.statusCode != HttpStatus.ok) {
       throw ImageLabelingFailure("Gemini answered ${response.statusCode}");

@@ -3,18 +3,17 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import '../../domain/languages.dart';
 import 'translation_provider.dart';
 
 const _freeHost = "api-free.deepl.com";
 const _proHost = "api.deepl.com";
 const _freeKeySuffix = ":fx";
 const _translatePath = "/v2/translate";
-const _englishCode = "en";
 
 class const DeeplTranslationProvider(
   final http.Client _client,
   final String _apiKey,
-  final String _englishTarget,
 ) implements TranslationProvider {
   @override
   Future<String> translate({
@@ -30,10 +29,8 @@ class const DeeplTranslationProvider(
       },
       body: jsonEncode({
         "text": [text],
-        "source_lang": sourceLanguage.toUpperCase(),
-        "target_lang": targetLanguage == _englishCode
-            ? _englishTarget
-            : targetLanguage.toUpperCase(),
+        "source_lang": ?supportedLanguages[sourceLanguage]?.deeplSource,
+        "target_lang": ?supportedLanguages[targetLanguage]?.deeplTarget,
       }),
     );
     if (response.statusCode != HttpStatus.ok) {

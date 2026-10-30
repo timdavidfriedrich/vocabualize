@@ -5,5 +5,4 @@ fields:
   enabled: bool
   provider: String
   maxTextLength: int
-  englishTarget: String
   perDay: int

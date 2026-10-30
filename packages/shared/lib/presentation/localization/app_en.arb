@@ -178,10 +178,14 @@
       }
     }
   },
-  "languageEnglish": "English",
-  "languageGerman": "German",
-  "languageSpanish": "Spanish",
-  "languageFrench": "French",
+  "languageEnglishUk": "English (UK)",
+  "languageEnglishUs": "English (US)",
+  "languageSpanishSpain": "Spanish (Spain)",
+  "languageSpanishLatinAmerica": "Spanish (Latin America)",
+  "languageFrenchFrance": "French (France)",
+  "languageFrenchCanada": "French (Canada)",
+  "languageGermanGermany": "German (Germany)",
+  "languageGermanSwitzerland": "German (Switzerland)",
   "languagePolish": "Polish",
   "languageItalian": "Italian",
   "languageGreek": "Greek",

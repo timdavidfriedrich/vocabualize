@@ -21,7 +21,7 @@ class StockImageEndpoint extends Endpoint {
     RemoteInstallKey? installKey,
   ) async {
     final trimmed = query.trim();
-    if (trimmed.isEmpty || !supportedLanguageCodes.contains(language)) {
+    if (trimmed.isEmpty || !supportedLanguages.containsKey(language)) {
       throw ServiceUnavailableException(reason: _invalidRequest);
     }
     return _stockImages.search(

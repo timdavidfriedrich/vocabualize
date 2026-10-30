@@ -1,10 +1,28 @@
-enum Language { english, german, spanish, french, polish, italian, greek, romanian, unknown }
+enum Language {
+  englishUk,
+  englishUs,
+  spanishSpain,
+  spanishLatinAmerica,
+  frenchFrance,
+  frenchCanada,
+  germanGermany,
+  germanSwitzerland,
+  polish,
+  italian,
+  greek,
+  romanian,
+  unknown,
+}
 
 const supportedLanguages = [
-  Language.english,
-  Language.german,
-  Language.spanish,
-  Language.french,
+  Language.englishUk,
+  Language.englishUs,
+  Language.spanishSpain,
+  Language.spanishLatinAmerica,
+  Language.frenchFrance,
+  Language.frenchCanada,
+  Language.germanGermany,
+  Language.germanSwitzerland,
   Language.polish,
   Language.italian,
   Language.greek,
@@ -13,8 +31,8 @@ const supportedLanguages = [
 
 extension LanguageArticles on Language {
   Set<String> get articles => switch (this) {
-    Language.english => const {"the", "a", "an"},
-    Language.german => const {
+    Language.englishUk || Language.englishUs => const {"the", "a", "an"},
+    Language.germanGermany || Language.germanSwitzerland => const {
       "der",
       "die",
       "das",
@@ -28,8 +46,8 @@ extension LanguageArticles on Language {
       "einer",
       "eines",
     },
-    Language.spanish => const {"el", "la", "los", "las", "un", "una", "unos", "unas"},
-    Language.french => const {"le", "la", "les", "l'", "un", "une", "des"},
+    Language.spanishSpain || Language.spanishLatinAmerica => const {"el", "la", "los", "las", "un", "una", "unos", "unas"},
+    Language.frenchFrance || Language.frenchCanada => const {"le", "la", "les", "l'", "un", "une", "des"},
     Language.italian => const {"il", "lo", "la", "l'", "i", "gli", "le", "un", "uno", "una", "un'"},
     Language.greek => const {
       "ο",

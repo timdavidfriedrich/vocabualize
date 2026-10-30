@@ -55,7 +55,7 @@ class const SettingsRepositoryImpl(
   @override
   AppResult<Language> readDeviceLanguage() {
     try {
-      return Success(_appInfoDataSource.deviceLanguageCode().toLanguage());
+      return Success(_appInfoDataSource.deviceLocaleTag().toLanguage());
     } on Object catch (error) {
       return Failure(error.toAppError());
     }

@@ -17,7 +17,6 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
     required this.enabled,
     required this.provider,
     required this.maxTextLength,
-    required this.englishTarget,
     required this.perDay,
   });
 
@@ -25,7 +24,6 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
     required bool enabled,
     required String provider,
     required int maxTextLength,
-    required String englishTarget,
     required int perDay,
   }) = _TranslationConfigImpl;
 
@@ -34,7 +32,6 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
       enabled: _is.BoolJsonExtension.fromJson(jsonSerialization['enabled']),
       provider: jsonSerialization['provider'] as String,
       maxTextLength: jsonSerialization['maxTextLength'] as int,
-      englishTarget: jsonSerialization['englishTarget'] as String,
       perDay: jsonSerialization['perDay'] as int,
     );
   }
@@ -45,8 +42,6 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
 
   int maxTextLength;
 
-  String englishTarget;
-
   int perDay;
 
   /// Returns a shallow copy of this [TranslationConfig]
@@ -56,7 +51,6 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
     bool? enabled,
     String? provider,
     int? maxTextLength,
-    String? englishTarget,
     int? perDay,
   });
   @override
@@ -66,7 +60,6 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
       'enabled': enabled,
       'provider': provider,
       'maxTextLength': maxTextLength,
-      'englishTarget': englishTarget,
       'perDay': perDay,
     };
   }
@@ -87,13 +80,11 @@ class _TranslationConfigImpl extends TranslationConfig {
     required bool enabled,
     required String provider,
     required int maxTextLength,
-    required String englishTarget,
     required int perDay,
   }) : super._(
          enabled: enabled,
          provider: provider,
          maxTextLength: maxTextLength,
-         englishTarget: englishTarget,
          perDay: perDay,
        );
 
@@ -105,14 +96,12 @@ class _TranslationConfigImpl extends TranslationConfig {
     bool? enabled,
     String? provider,
     int? maxTextLength,
-    String? englishTarget,
     int? perDay,
   }) {
     return TranslationConfig(
       enabled: enabled ?? this.enabled,
       provider: provider ?? this.provider,
       maxTextLength: maxTextLength ?? this.maxTextLength,
-      englishTarget: englishTarget ?? this.englishTarget,
       perDay: perDay ?? this.perDay,
     );
   }

@@ -882,29 +882,53 @@ abstract class AppLocalizations {
   /// **'This file isn\'t a Vocabualize backup.'**
   String get errorInvalidBackup;
 
-  /// No description provided for @languageEnglish.
+  /// No description provided for @languageEnglishUk.
   ///
   /// In en, this message translates to:
-  /// **'English'**
-  String get languageEnglish;
+  /// **'English (UK)'**
+  String get languageEnglishUk;
 
-  /// No description provided for @languageGerman.
+  /// No description provided for @languageEnglishUs.
   ///
   /// In en, this message translates to:
-  /// **'German'**
-  String get languageGerman;
+  /// **'English (US)'**
+  String get languageEnglishUs;
 
-  /// No description provided for @languageSpanish.
+  /// No description provided for @languageSpanishSpain.
   ///
   /// In en, this message translates to:
-  /// **'Spanish'**
-  String get languageSpanish;
+  /// **'Spanish (Spain)'**
+  String get languageSpanishSpain;
 
-  /// No description provided for @languageFrench.
+  /// No description provided for @languageSpanishLatinAmerica.
   ///
   /// In en, this message translates to:
-  /// **'French'**
-  String get languageFrench;
+  /// **'Spanish (Latin America)'**
+  String get languageSpanishLatinAmerica;
+
+  /// No description provided for @languageFrenchFrance.
+  ///
+  /// In en, this message translates to:
+  /// **'French (France)'**
+  String get languageFrenchFrance;
+
+  /// No description provided for @languageFrenchCanada.
+  ///
+  /// In en, this message translates to:
+  /// **'French (Canada)'**
+  String get languageFrenchCanada;
+
+  /// No description provided for @languageGermanGermany.
+  ///
+  /// In en, this message translates to:
+  /// **'German (Germany)'**
+  String get languageGermanGermany;
+
+  /// No description provided for @languageGermanSwitzerland.
+  ///
+  /// In en, this message translates to:
+  /// **'German (Switzerland)'**
+  String get languageGermanSwitzerland;
 
   /// No description provided for @languagePolish.
   ///

@@ -22,6 +22,8 @@ abstract class AppInfoDataSource {
 
   String deviceLanguageCode();
 
+  String deviceLocaleTag();
+
   Future<void> openDateSettings();
 
   Future<void> openAppSettings();
@@ -60,6 +62,9 @@ class const AppInfoDataSourceImpl() implements AppInfoDataSource {
 
   @override
   String deviceLanguageCode() => PlatformDispatcher.instance.locale.languageCode;
+
+  @override
+  String deviceLocaleTag() => PlatformDispatcher.instance.locale.toLanguageTag();
 
   @override
   Future<void> openDateSettings() => AppSettings.openAppSettings(type: AppSettingsType.date);

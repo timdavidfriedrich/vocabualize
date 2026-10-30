@@ -453,16 +453,28 @@ class AppLocalizationsUk extends AppLocalizations {
   String get errorInvalidBackup => 'Цей файл не є резервною копією Vocabualize.';
 
   @override
-  String get languageEnglish => 'Англійська';
+  String get languageEnglishUk => 'Англійська (Велика Британія)';
 
   @override
-  String get languageGerman => 'Німецька';
+  String get languageEnglishUs => 'Англійська (США)';
 
   @override
-  String get languageSpanish => 'Іспанська';
+  String get languageSpanishSpain => 'Іспанська (Іспанія)';
 
   @override
-  String get languageFrench => 'Французька';
+  String get languageSpanishLatinAmerica => 'Іспанська (Латинська Америка)';
+
+  @override
+  String get languageFrenchFrance => 'Французька (Франція)';
+
+  @override
+  String get languageFrenchCanada => 'Французька (Канада)';
+
+  @override
+  String get languageGermanGermany => 'Німецька (Німеччина)';
+
+  @override
+  String get languageGermanSwitzerland => 'Німецька (Швейцарія)';
 
   @override
   String get languagePolish => 'Польська';

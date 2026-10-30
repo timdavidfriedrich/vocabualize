@@ -32,11 +32,7 @@ class const Composition() {
   TranslationProvider translationProvider() {
     final translation = const ConfigSource().read().translation;
     return switch (translation.provider) {
-      _deeplProvider => DeeplTranslationProvider(
-        _httpClient,
-        _password("deeplApiKey"),
-        translation.englishTarget,
-      ),
+      _deeplProvider => DeeplTranslationProvider(_httpClient, _password("deeplApiKey")),
       _echoProvider => const EchoTranslationProvider(),
       final name => throw StateError("Unknown translation.provider \"$name\" in app_config.yaml"),
     };

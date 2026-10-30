@@ -22,10 +22,7 @@ class TranslationEndpoint extends Endpoint {
     RemoteInstallKey? installKey,
   ) async {
     final trimmed = text.trim();
-    if (trimmed.isEmpty ||
-        sourceLanguage == targetLanguage ||
-        !supportedLanguageCodes.contains(sourceLanguage) ||
-        !supportedLanguageCodes.contains(targetLanguage)) {
+    if (trimmed.isEmpty || !isTranslatablePair(sourceLanguage, targetLanguage)) {
       throw ServiceUnavailableException(reason: _invalidRequest);
     }
     return _translations.translate(

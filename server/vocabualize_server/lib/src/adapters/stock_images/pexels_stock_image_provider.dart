@@ -3,22 +3,13 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import '../../domain/languages.dart';
 import '../../generated/protocol.dart';
 import 'stock_image_provider.dart';
 
 const _host = "api.pexels.com";
 const _searchPath = "/v1/search";
 const _pageSize = 70;
-const _locales = {
-  "en": "en-US",
-  "de": "de-DE",
-  "es": "es-ES",
-  "fr": "fr-FR",
-  "pl": "pl-PL",
-  "it": "it-IT",
-  "el": "el-GR",
-  "ro": "ro-RO",
-};
 
 class const PexelsStockImageProvider(
   final http.Client _client,
@@ -33,7 +24,7 @@ class const PexelsStockImageProvider(
       Uri.https(_host, _searchPath, {
         "query": query,
         "per_page": "$_pageSize",
-        "locale": ?_locales[language],
+        "locale": ?supportedLanguages[language]?.pexelsLocale,
       }),
       headers: {HttpHeaders.authorizationHeader: _apiKey},
     );

@@ -50,8 +50,8 @@ class const ReportService() {
     final cleanTarget = _clean(target, maxLength: _maxWordLength);
     if (cleanSource.isEmpty ||
         cleanTarget.isEmpty ||
-        !supportedLanguageCodes.contains(sourceLanguage) ||
-        !supportedLanguageCodes.contains(targetLanguage)) {
+        !supportedLanguages.containsKey(sourceLanguage) ||
+        !supportedLanguages.containsKey(targetLanguage)) {
       throw ReportRejectedException(reason: _invalidRequest);
     }
     return _store(

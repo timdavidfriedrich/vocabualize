@@ -26,7 +26,6 @@ translation:
   enabled: true
   provider: deepl
   maxTextLength: 100
-  englishTarget: EN-US
   perDay: 1500
 
 stockImages:
