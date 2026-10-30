@@ -7,17 +7,17 @@ client:
 
 tiers:
   anonymous:
-    translationsPerDay: 100
+    translationsPerDay: 300
     stockImageSearchesPerDay: 100
     imageLabelingsPerDay: 10
     imageLabelingsPerMonth: 40
   free:
-    translationsPerDay: 100
+    translationsPerDay: 300
     stockImageSearchesPerDay: 100
     imageLabelingsPerDay: 10
     imageLabelingsPerMonth: 40
   premium:
-    translationsPerDay: 100
+    translationsPerDay: 300
     stockImageSearchesPerDay: 100
     imageLabelingsPerDay: 100
     imageLabelingsPerMonth: 400
