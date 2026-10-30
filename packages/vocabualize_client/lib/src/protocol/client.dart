@@ -29,6 +29,8 @@ import 'package:vocabualize_client/src/protocol/installs/remote_install_key.dart
     as _ithfgry0;
 import 'package:vocabualize_client/src/protocol/reports/remote_report_context.dart'
     as _il7vcscz;
+import 'package:vocabualize_client/src/protocol/services/remote_image_label.dart'
+    as _ieqge28a;
 import 'package:vocabualize_client/src/protocol/services/remote_stock_image.dart'
     as _i57k2oxs;
 import 'protocol.dart' as _il2as5qe;
@@ -229,11 +231,11 @@ class EndpointImageLabeling extends _isc.EndpointRef {
   @override
   String get name => 'imageLabeling';
 
-  _ida.Future<List<String>> label(
+  _ida.Future<List<_ieqge28a.RemoteImageLabel>> label(
     _idt.ByteData image,
     String language,
     _ithfgry0.RemoteInstallKey? installKey,
-  ) => caller.callServerEndpoint<List<String>>(
+  ) => caller.callServerEndpoint<List<_ieqge28a.RemoteImageLabel>>(
     'imageLabeling',
     'label',
     {

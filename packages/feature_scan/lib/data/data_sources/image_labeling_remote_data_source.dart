@@ -5,7 +5,7 @@ import 'package:shared/data/data_sources/service_access_data_source.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
 abstract class ImageLabelingRemoteDataSource {
-  Future<List<String>> label({
+  Future<List<RemoteImageLabel>> label({
     required Uint8List image,
     required String language,
   });
@@ -17,7 +17,7 @@ class const ImageLabelingRemoteDataSourceImpl(
   final ServiceAccessDataSource _serviceAccess,
 ) implements ImageLabelingRemoteDataSource {
   @override
-  Future<List<String>> label({
+  Future<List<RemoteImageLabel>> label({
     required Uint8List image,
     required String language,
   }) => _serviceAccess.run(

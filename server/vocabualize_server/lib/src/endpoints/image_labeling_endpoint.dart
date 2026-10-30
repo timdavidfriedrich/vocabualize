@@ -16,7 +16,7 @@ class ImageLabelingEndpoint extends Endpoint {
   @override
   bool get requireLogin => false;
 
-  Future<List<String>> label(
+  Future<List<RemoteImageLabel>> label(
     Session session,
     ByteData image,
     String language,

@@ -12,7 +12,7 @@ const _invalidRequest = "invalidRequest";
 class const ImageLabelingService(
   final ImageLabelingProvider Function() _provider,
 ) {
-  Future<List<String>> label(
+  Future<List<RemoteImageLabel>> label(
     Session session,
     Caller caller, {
     required List<int> image,

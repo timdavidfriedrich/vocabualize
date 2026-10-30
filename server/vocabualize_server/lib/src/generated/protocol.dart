@@ -17,6 +17,7 @@ import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart' as _
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart' as _iais;
 import 'package:serverpod_offline_sync_server/serverpod_offline_sync_server.dart' as _izehhkf5;
 import 'package:vocabualize_server/src/generated/images/remote_image_download.dart' as _ixx56s9r;
+import 'package:vocabualize_server/src/generated/services/remote_image_label.dart' as _i08tkb52;
 import 'package:vocabualize_server/src/generated/services/remote_stock_image.dart' as _i7l2n366;
 import 'account/account_tier.dart' as _i9kbx4z0;
 import 'config/image_labeling_config.dart' as _itqfnsgf;
@@ -38,6 +39,7 @@ import 'reports/remote_report_context.dart' as _ikiv91es;
 import 'reports/report.dart' as _ihpzd5k3;
 import 'reports/report_rejected_exception.dart' as _ipfy84dl;
 import 'services/quota_exceeded_exception.dart' as _iu27gnfp;
+import 'services/remote_image_label.dart' as _i6wca3dv;
 import 'services/remote_stock_image.dart' as _i04ejohi;
 import 'services/service_unavailable_exception.dart' as _ilti7uc9;
 import 'services/service_usage.dart' as _ip1otjwk;
@@ -66,6 +68,7 @@ export 'reports/remote_report_context.dart';
 export 'reports/report.dart';
 export 'reports/report_rejected_exception.dart';
 export 'services/quota_exceeded_exception.dart';
+export 'services/remote_image_label.dart';
 export 'services/remote_stock_image.dart';
 export 'services/service_unavailable_exception.dart';
 export 'services/service_usage.dart';
@@ -108,6 +111,7 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_ihpzd5k3.Report>,
       _is.getType<_ipfy84dl.ReportRejectedException>,
       _is.getType<_iu27gnfp.QuotaExceededException>,
+      _is.getType<_i6wca3dv.RemoteImageLabel>,
       _is.getType<_i04ejohi.RemoteStockImage>,
       _is.getType<_ilti7uc9.ServiceUnavailableException>,
       _is.getType<_ip1otjwk.ServiceUsage>,
@@ -136,6 +140,7 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_ihpzd5k3.Report?>,
       _is.getType<_ipfy84dl.ReportRejectedException?>,
       _is.getType<_iu27gnfp.QuotaExceededException?>,
+      _is.getType<_i6wca3dv.RemoteImageLabel?>,
       _is.getType<_i04ejohi.RemoteStockImage?>,
       _is.getType<_ilti7uc9.ServiceUnavailableException?>,
       _is.getType<_ip1otjwk.ServiceUsage?>,
@@ -146,6 +151,7 @@ class Protocol extends _is.DatabaseSerializationManager
       _is.getType<_iagtk9m4.LocalVocabularyTag?>,
       _is.getType<List<String>>,
       _is.getType<List<_ixx56s9r.RemoteImageDownload>>,
+      _is.getType<List<_i08tkb52.RemoteImageLabel>>,
       _is.getType<List<_i7l2n366.RemoteStockImage>>,
     ],
     modules: const [
@@ -1106,6 +1112,9 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _iu27gnfp.QuotaExceededException) {
       return _iu27gnfp.QuotaExceededException.fromJson(data) as T;
     }
+    if (t == _i6wca3dv.RemoteImageLabel) {
+      return _i6wca3dv.RemoteImageLabel.fromJson(data) as T;
+    }
     if (t == _i04ejohi.RemoteStockImage) {
       return _i04ejohi.RemoteStockImage.fromJson(data) as T;
     }
@@ -1190,6 +1199,9 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _is.getType<_iu27gnfp.QuotaExceededException?>()) {
       return (data != null ? _iu27gnfp.QuotaExceededException.fromJson(data) : null) as T;
     }
+    if (t == _is.getType<_i6wca3dv.RemoteImageLabel?>()) {
+      return (data != null ? _i6wca3dv.RemoteImageLabel.fromJson(data) : null) as T;
+    }
     if (t == _is.getType<_i04ejohi.RemoteStockImage?>()) {
       return (data != null ? _i04ejohi.RemoteStockImage.fromJson(data) : null) as T;
     }
@@ -1219,6 +1231,9 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (t == List<_ixx56s9r.RemoteImageDownload>) {
       return (data as List).map((e) => deserialize<_ixx56s9r.RemoteImageDownload>(e)).toList() as T;
+    }
+    if (t == List<_i08tkb52.RemoteImageLabel>) {
+      return (data as List).map((e) => deserialize<_i08tkb52.RemoteImageLabel>(e)).toList() as T;
     }
     if (t == List<_i7l2n366.RemoteStockImage>) {
       return (data as List).map((e) => deserialize<_i7l2n366.RemoteStockImage>(e)).toList() as T;
@@ -1257,6 +1272,7 @@ class Protocol extends _is.DatabaseSerializationManager
       _ihpzd5k3.Report => 'Report',
       _ipfy84dl.ReportRejectedException => 'ReportRejectedException',
       _iu27gnfp.QuotaExceededException => 'QuotaExceededException',
+      _i6wca3dv.RemoteImageLabel => 'RemoteImageLabel',
       _i04ejohi.RemoteStockImage => 'RemoteStockImage',
       _ilti7uc9.ServiceUnavailableException => 'ServiceUnavailableException',
       _ip1otjwk.ServiceUsage => 'ServiceUsage',
@@ -1319,6 +1335,8 @@ class Protocol extends _is.DatabaseSerializationManager
         return 'ReportRejectedException';
       case _iu27gnfp.QuotaExceededException():
         return 'QuotaExceededException';
+      case _i6wca3dv.RemoteImageLabel():
+        return 'RemoteImageLabel';
       case _i04ejohi.RemoteStockImage():
         return 'RemoteStockImage';
       case _ilti7uc9.ServiceUnavailableException():
@@ -1420,6 +1438,9 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (dataClassName == 'QuotaExceededException') {
       return deserialize<_iu27gnfp.QuotaExceededException>(data['data']);
+    }
+    if (dataClassName == 'RemoteImageLabel') {
+      return deserialize<_i6wca3dv.RemoteImageLabel>(data['data']);
     }
     if (dataClassName == 'RemoteStockImage') {
       return deserialize<_i04ejohi.RemoteStockImage>(data['data']);

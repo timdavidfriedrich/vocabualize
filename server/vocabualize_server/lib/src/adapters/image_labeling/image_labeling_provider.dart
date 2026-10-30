@@ -1,3 +1,5 @@
+import '../../generated/protocol.dart';
+
 abstract class ImageLabelingProvider {
   Future<LabeledImage> label({
     required List<int> image,
@@ -6,7 +8,7 @@ abstract class ImageLabelingProvider {
 }
 
 class const LabeledImage({
-  required final List<String> labels,
+  required final List<RemoteImageLabel> labels,
   required final int? inputTokens,
   required final int? outputTokens,
 });

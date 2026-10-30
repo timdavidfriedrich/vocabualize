@@ -513,6 +513,7 @@ class ScanSuggestionsLoadedMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ScanSuggestionsLoadedMapper._());
       ScanSuggestionsMapper.ensureInitialized();
+      ImageLabelMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -520,8 +521,8 @@ class ScanSuggestionsLoadedMapper
   @override
   final String id = 'ScanSuggestionsLoaded';
 
-  static List<String> _$labels(ScanSuggestionsLoaded v) => v.labels;
-  static const Field<ScanSuggestionsLoaded, List<String>> _f$labels = Field(
+  static List<ImageLabel> _$labels(ScanSuggestionsLoaded v) => v.labels;
+  static const Field<ScanSuggestionsLoaded, List<ImageLabel>> _f$labels = Field(
     'labels',
     _$labels,
   );
@@ -605,9 +606,10 @@ abstract class ScanSuggestionsLoadedCopyWith<
   $Out
 >
     implements ScanSuggestionsCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get labels;
+  ListCopyWith<$R, ImageLabel, ImageLabelCopyWith<$R, ImageLabel, ImageLabel>>
+  get labels;
   @override
-  $R call({List<String>? labels});
+  $R call({List<ImageLabel>? labels});
   ScanSuggestionsLoadedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -622,14 +624,14 @@ class _ScanSuggestionsLoadedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ScanSuggestionsLoaded> $mapper =
       ScanSuggestionsLoadedMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get labels =>
-      ListCopyWith(
-        $value.labels,
-        (v, t) => ObjectCopyWith(v, $identity, t),
-        (v) => call(labels: v),
-      );
+  ListCopyWith<$R, ImageLabel, ImageLabelCopyWith<$R, ImageLabel, ImageLabel>>
+  get labels => ListCopyWith(
+    $value.labels,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(labels: v),
+  );
   @override
-  $R call({List<String>? labels}) =>
+  $R call({List<ImageLabel>? labels}) =>
       $apply(FieldCopyWithData({if (labels != null) #labels: labels}));
   @override
   ScanSuggestionsLoaded $make(CopyWithData data) =>

@@ -95,12 +95,12 @@ class const _ReviewView({
                 Padding(
                   padding: const EdgeInsets.only(bottom: Spacing.xs),
                   child: ListTile(
-                    title: Text(label),
+                    title: Text(label.text),
                     tileColor: context.c.surfaceContainerLow,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(Spacing.radiusL),
                     ),
-                    onTap: () => _openDetails(context, word: label, photo: _photo),
+                    onTap: () => _openDetails(context, word: label.text, photo: _photo),
                   ),
                 ),
               TextButton.icon(

@@ -1,5 +1,6 @@
 import 'package:core/error/app_error.dart';
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:shared/domain/entities/image_label.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 
 part 'scan_state.mapper.dart';
@@ -31,7 +32,7 @@ class const ScanSuggestionsLoading() extends ScanSuggestions with ScanSuggestion
 
 @MappableClass()
 class const ScanSuggestionsLoaded({
-  required final List<String> labels,
+  required final List<ImageLabel> labels,
 }) extends ScanSuggestions with ScanSuggestionsLoadedMappable;
 
 @MappableClass()

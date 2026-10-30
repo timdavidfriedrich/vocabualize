@@ -1,0 +1,5 @@
+class: RemoteImageLabel
+
+fields:
+  term: String
+  context: String

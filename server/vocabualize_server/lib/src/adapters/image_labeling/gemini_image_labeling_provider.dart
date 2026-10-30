@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import '../../domain/languages.dart';
+import '../../generated/protocol.dart';
 import 'image_labeling_provider.dart';
 
 const _host = "generativelanguage.googleapis.com";
@@ -18,6 +19,8 @@ const _thinkingLevel = "minimal";
 const _labelsField = "labels";
 const _termField = "term";
 const _confidenceField = "confidence";
+const _contextField = "context";
+const _maxContextWords = 8;
 
 String _prompt(String languageName) =>
     """
@@ -26,6 +29,7 @@ Return up to $_maxLabels short labels with confidence scores.
 Prefer simple and generic terms (e.g., "die Flasche" instead of "die Wasserflasche").
 Use provided language ($languageName).
 Words must have correct definite articles (e.g., "the car", "das Auto").
+For each label, add a context in English with at most $_maxContextWords words that describes the object in this image, so a translator can tell apart words with several meanings (e.g., "metal hex nut on a workbench").
 Prioritize accuracy.
 """;
 
@@ -84,8 +88,9 @@ class const GeminiImageLabelingProvider(
               "properties": {
                 _termField: {"type": "string"},
                 _confidenceField: {"type": "number"},
+                _contextField: {"type": "string"},
               },
-              "required": [_termField, _confidenceField],
+              "required": [_termField, _confidenceField, _contextField],
             },
           },
         },
@@ -94,7 +99,7 @@ class const GeminiImageLabelingProvider(
     },
   };
 
-  List<String> _labelsOf(Object? body) => switch (body) {
+  List<RemoteImageLabel> _labelsOf(Object? body) => switch (body) {
     {
       "candidates": [
         {
@@ -109,7 +114,7 @@ class const GeminiImageLabelingProvider(
     _ => const [],
   };
 
-  List<String> _parseLabels(String text) {
+  List<RemoteImageLabel> _parseLabels(String text) {
     final Object? parsed;
     try {
       parsed = jsonDecode(text);
@@ -123,16 +128,18 @@ class const GeminiImageLabelingProvider(
               case {
                 _termField: final String term,
                 _confidenceField: final num confidence,
+                _contextField: final String context,
               }
               when term.trim().isNotEmpty)
-            (term: term.trim(), confidence: confidence),
+            (term: term.trim(), confidence: confidence, context: context.trim()),
       ],
       _ => throw const ImageLabelingFailure("Gemini answered without labels"),
     }..sort((first, second) => second.confidence.compareTo(first.confidence));
     final seen = <String>{};
     return [
       for (final label in scored)
-        if (seen.add(label.term.toLowerCase())) label.term,
+        if (seen.add(label.term.toLowerCase()))
+          RemoteImageLabel(term: label.term, context: label.context),
     ].take(_maxLabels).toList();
   }
 
