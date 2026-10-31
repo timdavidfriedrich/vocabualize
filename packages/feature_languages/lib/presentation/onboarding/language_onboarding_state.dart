@@ -10,7 +10,8 @@ sealed class LanguageOnboardingState with LanguageOnboardingStateMappable {
 }
 
 @MappableClass()
-class const LanguageOnboardingLoading() extends LanguageOnboardingState
+class const LanguageOnboardingLoading()
+    extends LanguageOnboardingState
     with LanguageOnboardingLoadingMappable;
 
 @MappableClass()
@@ -22,5 +23,6 @@ class const LanguageOnboardingEditing({
 }) extends LanguageOnboardingState with LanguageOnboardingEditingMappable;
 
 @MappableClass()
-class const LanguageOnboardingSaved() extends LanguageOnboardingState
+class const LanguageOnboardingSaved()
+    extends LanguageOnboardingState
     with LanguageOnboardingSavedMappable;

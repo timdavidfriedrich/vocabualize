@@ -52,7 +52,8 @@ class const HomeScreen({
       },
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) =>
-            previous.runtimeType != current.runtimeType || _screenOf(previous) != _screenOf(current),
+            previous.runtimeType != current.runtimeType ||
+            _screenOf(previous) != _screenOf(current),
         builder: (context, state) => switch (_screenOf(state)) {
           _HomeScreenKind.loading => const LoadingScreen(),
           _HomeScreenKind.failure => switch (state) {
@@ -252,22 +253,22 @@ class const _RecentSection() extends StatelessWidget {
         child: switch (recent) {
           (vocabularies: [], setup: _) || (setup: null, vocabularies: _) => null,
           (:final vocabularies, :final setup?) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: Spacing.xxl),
-                  Padding(
-                    padding: _pagePadding,
-                    child: _SectionTitle(title: context.s.homeNewWordsTitle),
-                  ),
-                  const SizedBox(height: Spacing.m),
-                  RecentVocabulariesSection(
-                    vocabularies: vocabularies,
-                    language: setup.selected,
-                    mainLanguage: setup.main,
-                    onTap: (vocabulary) => _showInfo(context, vocabulary),
-                  ),
-                ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: Spacing.xxl),
+              Padding(
+                padding: _pagePadding,
+                child: _SectionTitle(title: context.s.homeNewWordsTitle),
               ),
+              const SizedBox(height: Spacing.m),
+              RecentVocabulariesSection(
+                vocabularies: vocabularies,
+                language: setup.selected,
+                mainLanguage: setup.main,
+                onTap: (vocabulary) => _showInfo(context, vocabulary),
+              ),
+            ],
+          ),
         },
       ),
     );
@@ -449,8 +450,7 @@ class const _LanguageEmptyMessage() extends StatelessWidget {
             ),
             const SizedBox(height: Spacing.m),
             OutlinedButton(
-              onPressed: () =>
-                  context.pushLanguageWords(language: setup.selected, isAdding: false),
+              onPressed: () => context.pushLanguageWords(language: setup.selected, isAdding: false),
               child: Text(context.s.homeChooseWordsButton),
             ),
           ],

@@ -341,10 +341,12 @@ class const VocabularyRepositoryImpl(
     final vocabulariesById = {for (final vocabulary in vocabularies) vocabulary.id: vocabulary};
     return [
       for (final row in progress)
-        if ((vocabulariesById[row.vocabularyId.uuid], row.languageCode.toLanguage()) case (
-          final vocabulary?,
-          final language,
-        ) when language != Language.unknown)
+        if ((vocabulariesById[row.vocabularyId.uuid], row.languageCode.toLanguage())
+            case (
+              final vocabulary?,
+              final language,
+            )
+            when language != Language.unknown)
           PracticeItem(vocabulary: vocabulary, language: language),
     ];
   }

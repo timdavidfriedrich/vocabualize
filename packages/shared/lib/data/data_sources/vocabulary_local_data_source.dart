@@ -153,8 +153,7 @@ class const VocabularyLocalDataSourceImpl(
               [
                 if (query.isNotEmpty)
                   t.translations.any(
-                    (translation) =>
-                        translation.text.ilike("$_anyCharacters$query$_anyCharacters"),
+                    (translation) => translation.text.ilike("$_anyCharacters$query$_anyCharacters"),
                   ),
               ],
             ),

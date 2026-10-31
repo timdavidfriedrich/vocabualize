@@ -43,7 +43,9 @@ class const LanguageWordsScreen({
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            _isAdding ? context.s.languageWordsAddTitle(label) : context.s.languageWordsTitle(label),
+            _isAdding
+                ? context.s.languageWordsAddTitle(label)
+                : context.s.languageWordsTitle(label),
           ),
         ),
         body: BlocBuilder<LanguageWordsBloc, LanguageWordsState>(
@@ -217,8 +219,7 @@ class const _Collections({
             CheckboxListTile(
               tristate: !_state.isAdding,
               value: _state.selection[collection.tag.id] ?? false,
-              onChanged: (_) =>
-                  bloc.add(LanguageWordsCollectionToggled(tagId: collection.tag.id)),
+              onChanged: (_) => bloc.add(LanguageWordsCollectionToggled(tagId: collection.tag.id)),
               title: Text(collection.tag.name),
               subtitle: Text(
                 _countLabel(context, collection.inLanguageCount, collection.totalCount),

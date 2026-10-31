@@ -11,7 +11,8 @@ sealed class LearnedLanguageState with LearnedLanguageStateMappable {
 }
 
 @MappableClass()
-class const LearnedLanguageLoading() extends LearnedLanguageState
+class const LearnedLanguageLoading()
+    extends LearnedLanguageState
     with LearnedLanguageLoadingMappable;
 
 @MappableClass()
@@ -24,8 +25,7 @@ class const LearnedLanguageLoaded({
 }) extends LearnedLanguageState with LearnedLanguageLoadedMappable;
 
 @MappableClass()
-class const LearnedLanguageClosed() extends LearnedLanguageState
-    with LearnedLanguageClosedMappable;
+class const LearnedLanguageClosed() extends LearnedLanguageState with LearnedLanguageClosedMappable;
 
 @MappableClass()
 class const LearnedLanguageFailure({
