@@ -1,6 +1,10 @@
 import 'package:shared/data/mappers/language_mappers.dart';
+import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/models/local_backup.dart';
-import 'package:shared/data/models/local_language_pair_setting.dart';
+import 'package:shared/data/models/local_language_settings.dart';
+import 'package:shared/domain/entities/language.dart';
+import 'package:shared/domain/entities/progress.dart';
+import 'package:shared/domain/entities/translation.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
@@ -15,16 +19,27 @@ extension VocabularyBackupMappers on Vocabulary {
   }) {
     return LocalBackupVocabulary(
       id: id,
-      source: source,
-      target: target,
-      sourceLanguageCode: sourceLanguage.toLanguageCode(),
-      targetLanguageCode: targetLanguage.toLanguageCode(),
+      translations: [
+        for (final translation in translations.values)
+          LocalBackupTranslation(
+            language: translation.language.toLanguageCode(),
+            text: translation.text,
+            origin: translation.origin.value,
+          ),
+      ],
+      progress: [
+        for (final row in progress.values)
+          LocalBackupProgress(
+            language: row.language.toLanguageCode(),
+            stage: row.stage.value,
+            level: row.level,
+            intervalMinutes: row.intervalMinutes,
+            ease: row.ease,
+            nextReviewAt: row.nextReviewAt.toUtc(),
+            createdAt: row.createdAt.toUtc(),
+          ),
+      ],
       tagIds: tagIds,
-      level: level,
-      isNovice: isNovice,
-      intervalMinutes: intervalMinutes,
-      ease: ease,
-      nextReviewAt: nextReviewAt.toUtc(),
       createdAt: createdAt.toUtc(),
       image: switch ((image, imageEntryPath)) {
         (CustomImage(:final photographer, :final photographerUrl), final String path) =>
@@ -69,15 +84,29 @@ extension LocalBackupVocabularyMappers on LocalBackupVocabulary {
   }) {
     return Vocabulary(
       id: id,
-      source: source,
-      target: target,
-      sourceLanguage: sourceLanguageCode.toLanguage(),
-      targetLanguage: targetLanguageCode.toLanguage(),
-      level: level,
-      isNovice: isNovice,
-      intervalMinutes: intervalMinutes,
-      ease: ease,
-      nextReviewAt: nextReviewAt.toUtc(),
+      translations: {
+        for (final translation in translations)
+          if (translation.language.toLanguage() case final language
+              when language != Language.unknown)
+            language: Translation(
+              language: language,
+              text: translation.text,
+              origin: translation.origin.toTranslationOrigin(),
+            ),
+      },
+      progress: {
+        for (final row in progress)
+          if (row.language.toLanguage() case final language when language != Language.unknown)
+            language: Progress(
+              language: language,
+              stage: row.stage.toProgressStage(),
+              level: row.level,
+              intervalMinutes: row.intervalMinutes,
+              ease: row.ease,
+              nextReviewAt: row.nextReviewAt.toUtc(),
+              createdAt: row.createdAt.toUtc(),
+            ),
+      },
       image: image,
       tagIds: const {},
       createdAt: createdAt.toUtc(),
@@ -133,14 +162,12 @@ extension LocalBackupActivityMappers on LocalBackupActivity {
   }
 }
 
-extension LocalBackupSettingsMappers on LocalBackupSettings {
-  LocalLanguagePairSetting toLocalLanguagePairSetting() {
-    return LocalLanguagePairSetting(source: sourceLanguageCode, target: targetLanguageCode);
-  }
-}
-
-extension LocalLanguagePairSettingBackupMappers on LocalLanguagePairSetting {
-  LocalBackupSettings toLocalBackupSettings() {
-    return LocalBackupSettings(sourceLanguageCode: source, targetLanguageCode: target);
+extension LocalLanguageSettingsBackupMappers on LocalLanguageSettings {
+  LocalBackupLanguages toLocalBackupLanguages() {
+    return LocalBackupLanguages(
+      mainLanguage: mainLanguage,
+      selectedLanguage: selectedLanguage,
+      learnedLanguages: learnedLanguages,
+    );
   }
 }

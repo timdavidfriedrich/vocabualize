@@ -68,6 +68,7 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CollectionLoadingMapper._());
       CollectionStateMapper.ensureInitialized();
+      LanguageSetupMapper.ensureInitialized();
       TagMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
       VocabularyFilterMapper.ensureInitialized();
@@ -78,6 +79,11 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
   @override
   final String id = 'CollectionLoading';
 
+  static LanguageSetup? _$setup(CollectionLoading v) => v.setup;
+  static const Field<CollectionLoading, LanguageSetup> _f$setup = Field(
+    'setup',
+    _$setup,
+  );
   static Tag? _$tag(CollectionLoading v) => v.tag;
   static const Field<CollectionLoading, Tag> _f$tag = Field('tag', _$tag);
   static int? _$dueCount(CollectionLoading v) => v.dueCount;
@@ -107,6 +113,7 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
 
   @override
   final MappableFields<CollectionLoading> fields = const {
+    #setup: _f$setup,
     #tag: _f$tag,
     #dueCount: _f$dueCount,
     #vocabularies: _f$vocabularies,
@@ -117,6 +124,7 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
 
   static CollectionLoading _instantiate(DecodingData data) {
     return CollectionLoading(
+      setup: data.dec(_f$setup),
       tag: data.dec(_f$tag),
       dueCount: data.dec(_f$dueCount),
       vocabularies: data.dec(_f$vocabularies),
@@ -197,6 +205,7 @@ abstract class CollectionLoadingCopyWith<
   $Out
 >
     implements CollectionStateCopyWith<$R, $In, $Out> {
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup>? get setup;
   TagCopyWith<$R, Tag, Tag>? get tag;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
   get vocabularies;
@@ -204,6 +213,7 @@ abstract class CollectionLoadingCopyWith<
   VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter;
   @override
   $R call({
+    LanguageSetup? setup,
     Tag? tag,
     int? dueCount,
     List<Vocabulary>? vocabularies,
@@ -224,6 +234,9 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<CollectionLoading> $mapper =
       CollectionLoadingMapper.ensureInitialized();
+  @override
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup>? get setup =>
+      $value.setup?.copyWith.$chain((v) => call(setup: v));
   @override
   TagCopyWith<$R, Tag, Tag>? get tag =>
       $value.tag?.copyWith.$chain((v) => call(tag: v));
@@ -250,6 +263,7 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
       $value.filter.copyWith.$chain((v) => call(filter: v));
   @override
   $R call({
+    Object? setup = $none,
     Object? tag = $none,
     Object? dueCount = $none,
     Object? vocabularies = $none,
@@ -258,6 +272,7 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
     VocabularyFilter? filter,
   }) => $apply(
     FieldCopyWithData({
+      if (setup != $none) #setup: setup,
       if (tag != $none) #tag: tag,
       if (dueCount != $none) #dueCount: dueCount,
       if (vocabularies != $none) #vocabularies: vocabularies,
@@ -268,6 +283,7 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
   );
   @override
   CollectionLoading $make(CopyWithData data) => CollectionLoading(
+    setup: data.get(#setup, or: $value.setup),
     tag: data.get(#tag, or: $value.tag),
     dueCount: data.get(#dueCount, or: $value.dueCount),
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),
@@ -290,6 +306,7 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CollectionLoadedMapper._());
       CollectionStateMapper.ensureInitialized();
+      LanguageSetupMapper.ensureInitialized();
       TagMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
       VocabularyFilterMapper.ensureInitialized();
@@ -300,6 +317,11 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
   @override
   final String id = 'CollectionLoaded';
 
+  static LanguageSetup _$setup(CollectionLoaded v) => v.setup;
+  static const Field<CollectionLoaded, LanguageSetup> _f$setup = Field(
+    'setup',
+    _$setup,
+  );
   static Tag _$tag(CollectionLoaded v) => v.tag;
   static const Field<CollectionLoaded, Tag> _f$tag = Field('tag', _$tag);
   static int _$dueCount(CollectionLoaded v) => v.dueCount;
@@ -333,6 +355,7 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
 
   @override
   final MappableFields<CollectionLoaded> fields = const {
+    #setup: _f$setup,
     #tag: _f$tag,
     #dueCount: _f$dueCount,
     #vocabularies: _f$vocabularies,
@@ -344,6 +367,7 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
 
   static CollectionLoaded _instantiate(DecodingData data) {
     return CollectionLoaded(
+      setup: data.dec(_f$setup),
       tag: data.dec(_f$tag),
       dueCount: data.dec(_f$dueCount),
       vocabularies: data.dec(_f$vocabularies),
@@ -416,6 +440,7 @@ extension CollectionLoadedValueCopy<$R, $Out>
 
 abstract class CollectionLoadedCopyWith<$R, $In extends CollectionLoaded, $Out>
     implements CollectionStateCopyWith<$R, $In, $Out> {
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup;
   TagCopyWith<$R, Tag, Tag> get tag;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
   get vocabularies;
@@ -423,6 +448,7 @@ abstract class CollectionLoadedCopyWith<$R, $In extends CollectionLoaded, $Out>
   VocabularyFilterCopyWith<$R, VocabularyFilter, VocabularyFilter> get filter;
   @override
   $R call({
+    LanguageSetup? setup,
     Tag? tag,
     int? dueCount,
     List<Vocabulary>? vocabularies,
@@ -445,6 +471,9 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CollectionLoaded> $mapper =
       CollectionLoadedMapper.ensureInitialized();
   @override
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup =>
+      $value.setup.copyWith.$chain((v) => call(setup: v));
+  @override
   TagCopyWith<$R, Tag, Tag> get tag =>
       $value.tag.copyWith.$chain((v) => call(tag: v));
   @override
@@ -465,6 +494,7 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
       $value.filter.copyWith.$chain((v) => call(filter: v));
   @override
   $R call({
+    LanguageSetup? setup,
     Tag? tag,
     int? dueCount,
     List<Vocabulary>? vocabularies,
@@ -474,6 +504,7 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
     Object? error = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (setup != null) #setup: setup,
       if (tag != null) #tag: tag,
       if (dueCount != null) #dueCount: dueCount,
       if (vocabularies != null) #vocabularies: vocabularies,
@@ -485,6 +516,7 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
   );
   @override
   CollectionLoaded $make(CopyWithData data) => CollectionLoaded(
+    setup: data.get(#setup, or: $value.setup),
     tag: data.get(#tag, or: $value.tag),
     dueCount: data.get(#dueCount, or: $value.dueCount),
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),

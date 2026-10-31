@@ -10,14 +10,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
+import 'package:shared/domain/entities/practice_item.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 
 typedef _Controls = ({
-  Vocabulary vocabulary,
+  PracticeItem item,
   bool isSolutionShown,
   PracticeAnswer? grade,
   bool isBusy,
@@ -31,7 +33,7 @@ class const PracticeControls({
     return BlocSelector<PracticeBloc, PracticeState, _Controls?>(
       selector: (state) => switch (state) {
         PracticeActive(:final queue, :final isSolutionShown, :final grade, :final isBusy) => (
-          vocabulary: queue.first,
+          item: queue.first,
           isSolutionShown: isSolutionShown,
           grade: grade,
           isBusy: isBusy,
@@ -49,16 +51,16 @@ class const PracticeControls({
             BlocSelector<PreferencesCubit, Preferences, bool>(
               selector: (preferences) => preferences.isTypeAnswerDisabled,
               builder: (context, isTypeAnswerDisabled) => switch (controls) {
-                (isSolutionShown: false, :final vocabulary, isBusy: _, grade: _)
+                (isSolutionShown: false, :final item, isBusy: _, grade: _)
                     when !isTypeAnswerDisabled &&
-                        vocabulary.level.toVocabularyLevel() != VocabularyLevel.novice =>
-                  _AnswerField(key: ValueKey(vocabulary.id), vocabulary: vocabulary),
-                (isSolutionShown: false, vocabulary: _, isBusy: _, grade: _) => ElevatedButton(
+                        item.vocabulary.levelOf(item.language) != VocabularyLevel.novice =>
+                  _AnswerField(key: ValueKey((item.vocabulary.id, item.language)), item: item),
+                (isSolutionShown: false, item: _, isBusy: _, grade: _) => ElevatedButton(
                   onPressed: () =>
                       context.read<PracticeBloc>().add(const PracticeSolutionRequested()),
                   child: Text(context.s.practiceSolutionButton),
                 ),
-                (isSolutionShown: true, :final grade, :final isBusy, vocabulary: _) =>
+                (isSolutionShown: true, :final grade, :final isBusy, item: _) =>
                   OutlinedButton(
                     onPressed: !isBusy && grade.allows(PracticeAnswer.forgot)
                         ? () => context.read<PracticeBloc>().add(
@@ -132,7 +134,7 @@ class const _RateButton({
 
 class const _AnswerField({
   super.key,
-  required final Vocabulary _vocabulary,
+  required final PracticeItem _item,
 }) extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -147,7 +149,9 @@ class const _AnswerField({
       controller: controller,
       onTap: () {
         if (controller.text.isNotEmpty) return;
-        final article = _vocabulary.target.leadingArticle(_vocabulary.targetLanguage.articles);
+        final article = _item.vocabulary
+            .textIn(_item.language)
+            ?.leadingArticle(_item.language.articles);
         if (article != null) controller.text = article;
       },
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),

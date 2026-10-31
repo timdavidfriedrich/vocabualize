@@ -179,6 +179,7 @@
   "homeNextDueTodayMessage": "Următorul cuvânt la {time}",
   "homeNextDueLaterMessage": "Următorul cuvânt: {date}",
   "vocabularySpeakTooltip": "Citiți cu voce tare",
+  "vocabularyTranslationPendingLabel": "Traducere în curs",
   "vocabularySearchTooltip": "Căutați",
   "vocabularySearchHint": "Căutați cuvinte...",
   "vocabularySearchClearTooltip": "Ștergeți",

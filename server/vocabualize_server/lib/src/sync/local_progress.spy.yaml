@@ -1,0 +1,18 @@
+class: LocalProgress
+table: progress
+database: sync
+fields:
+  vocabulary: LocalVocabulary?, relation(name=vocabulary_progress, onDelete=Cascade, deferred)
+  languageCode: String
+  stage: String
+  level: double
+  intervalMinutes: int
+  ease: double
+  nextReviewAt: DateTime
+  createdAt: DateTime
+  extras: String?
+indexes:
+  progress_language_stage_next_review_at_idx:
+    fields: languageCode, stage, nextReviewAt
+  progress_vocabulary_language_idx:
+    fields: vocabularyId, languageCode

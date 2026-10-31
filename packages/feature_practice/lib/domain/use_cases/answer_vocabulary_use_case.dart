@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
-import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/practice_item.dart';
+import 'package:shared/domain/entities/progress.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 
 const _noviceStepMinutes = 5;
@@ -26,63 +28,70 @@ const _minimumEase = 1.3;
 class const AnswerVocabularyUseCase(
   final VocabularyRepository _vocabularyRepository,
 ) {
-  Future<AppResult<Vocabulary>> call({
-    required Vocabulary vocabulary,
+  Future<AppResult<Progress>> call({
+    required PracticeItem item,
     required PracticeAnswer answer,
   }) async {
-    final scheduled = _schedule(vocabulary, answer, DateTime.now().toUtc());
-    if (await _vocabularyRepository.saveReview(scheduled) case Failure(:final error)) {
-      return Failure(error);
-    }
+    final progress = item.vocabulary.progress[item.language];
+    if (progress == null) return const Failure(NotFoundError());
+    final scheduled = _schedule(progress, answer, DateTime.now().toUtc());
+    final saved = await _vocabularyRepository.saveReview(
+      vocabularyId: item.vocabulary.id,
+      progress: scheduled,
+    );
+    if (saved case Failure(:final error)) return Failure(error);
     return Success(scheduled);
   }
 
-  Vocabulary _schedule(Vocabulary vocabulary, PracticeAnswer answer, DateTime now) {
-    return vocabulary.isNovice
-        ? _scheduleNovice(vocabulary, answer, now)
-        : _scheduleLearned(vocabulary, answer, now);
+  Progress _schedule(Progress progress, PracticeAnswer answer, DateTime now) {
+    return switch (progress.stage) {
+      ProgressStage.longTerm => _scheduleLongTerm(progress, answer, now),
+      ProgressStage.shortTerm ||
+      ProgressStage.waiting ||
+      ProgressStage.unknown => _scheduleShortTerm(progress, answer, now),
+    };
   }
 
-  Vocabulary _scheduleNovice(Vocabulary vocabulary, PracticeAnswer answer, DateTime now) {
+  Progress _scheduleShortTerm(Progress progress, PracticeAnswer answer, DateTime now) {
     final level = switch (answer) {
       PracticeAnswer.forgot => _minimumLevel,
-      PracticeAnswer.hard => vocabulary.level - _hardLevelLoss * _noviceLossFactor,
-      PracticeAnswer.good => vocabulary.level + _goodLevelGain * _noviceGainFactor,
-      PracticeAnswer.easy => vocabulary.level + _easyLevelGain * _noviceGainFactor,
+      PracticeAnswer.hard => progress.level - _hardLevelLoss * _noviceLossFactor,
+      PracticeAnswer.good => progress.level + _goodLevelGain * _noviceGainFactor,
+      PracticeAnswer.easy => progress.level + _easyLevelGain * _noviceGainFactor,
     }.clamp(_minimumLevel, _maximumLevel);
     final graduates = switch (answer) {
       PracticeAnswer.good || PracticeAnswer.easy => level >= _graduationLevel,
       PracticeAnswer.forgot || PracticeAnswer.hard => false,
     };
     final intervalMinutes = graduates ? _graduationMinutes : _noviceStepMinutes;
-    return vocabulary.copyWith(
+    return progress.copyWith(
+      stage: graduates ? ProgressStage.longTerm : ProgressStage.shortTerm,
       level: level,
-      isNovice: !graduates,
       intervalMinutes: intervalMinutes,
       ease: switch (answer) {
-        PracticeAnswer.forgot => max(vocabulary.ease - _forgotEasePenalty, _minimumEase),
-        PracticeAnswer.hard || PracticeAnswer.good || PracticeAnswer.easy => vocabulary.ease,
+        PracticeAnswer.forgot => max(progress.ease - _forgotEasePenalty, _minimumEase),
+        PracticeAnswer.hard || PracticeAnswer.good || PracticeAnswer.easy => progress.ease,
       },
       nextReviewAt: now.add(Duration(minutes: intervalMinutes)),
     );
   }
 
-  Vocabulary _scheduleLearned(Vocabulary vocabulary, PracticeAnswer answer, DateTime now) {
-    final interval = vocabulary.intervalMinutes;
-    final ease = vocabulary.ease;
+  Progress _scheduleLongTerm(Progress progress, PracticeAnswer answer, DateTime now) {
+    final interval = progress.intervalMinutes;
+    final ease = progress.ease;
     final (intervalMinutes, newEase, level) = switch (answer) {
       PracticeAnswer.forgot => (_noviceStepMinutes, ease - _forgotEasePenalty, _minimumLevel),
-      PracticeAnswer.hard => (interval, ease - _easeStep, vocabulary.level - _hardLevelLoss),
-      PracticeAnswer.good => ((interval * ease).round(), ease, vocabulary.level + _goodLevelGain),
+      PracticeAnswer.hard => (interval, ease - _easeStep, progress.level - _hardLevelLoss),
+      PracticeAnswer.good => ((interval * ease).round(), ease, progress.level + _goodLevelGain),
       PracticeAnswer.easy => (
         (interval * ease * _easyIntervalBonus).round(),
         ease + _easeStep,
-        vocabulary.level + _easyLevelGain,
+        progress.level + _easyLevelGain,
       ),
     };
-    return vocabulary.copyWith(
+    return progress.copyWith(
+      stage: answer == PracticeAnswer.forgot ? ProgressStage.shortTerm : ProgressStage.longTerm,
       level: level.clamp(_minimumLevel, _maximumLevel),
-      isNovice: answer == PracticeAnswer.forgot,
       intervalMinutes: intervalMinutes,
       ease: max(newEase, _minimumEase),
       nextReviewAt: now.add(Duration(minutes: intervalMinutes)),

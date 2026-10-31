@@ -39,6 +39,7 @@ class const DetailsEditing({
   required final LanguagePair? languages,
   required final String source,
   required final String target,
+  required final bool isTargetEdited,
   required final DetailsImage selectedImage,
   required final DetailsImage? ownPhoto,
   required final List<StockImage> stockImages,

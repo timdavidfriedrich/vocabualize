@@ -21,6 +21,7 @@ import 'package:shared/domain/repositories/connectivity_repository.dart'
 import 'package:shared/domain/repositories/external_link_repository.dart'
     as _i711;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
+import 'package:shared/domain/repositories/language_repository.dart' as _i308;
 import 'package:shared/domain/repositories/report_repository.dart' as _i522;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/stock_image_repository.dart'
@@ -56,6 +57,7 @@ class FeatureDetailsPackageModule extends _i526.MicroPackageModule {
           gh<_i689.ConnectivityRepository>(),
           gh<_i522.ReportRepository>(),
           gh<_i839.TextToSpeechRepository>(),
+          gh<_i308.LanguageRepository>(),
         ));
   }
 }

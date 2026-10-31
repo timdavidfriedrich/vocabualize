@@ -1,3 +1,4 @@
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 
@@ -6,6 +7,10 @@ sealed class HomeEvent {
 }
 
 class const HomeStarted() extends HomeEvent;
+
+class const HomeLanguageChanged({
+  required final Language language,
+}) extends HomeEvent;
 
 sealed class HomeFeedEvent extends HomeEvent {
   const HomeFeedEvent();

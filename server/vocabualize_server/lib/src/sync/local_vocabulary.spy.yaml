@@ -2,15 +2,6 @@ class: LocalVocabulary
 table: vocabulary
 database: sync
 fields:
-  source: String
-  target: String
-  sourceLanguageCode: String
-  targetLanguageCode: String
-  level: double
-  isNovice: bool
-  intervalMinutes: int
-  ease: double
-  nextReviewAt: DateTime
   imageKind: String
   customImageId: String?
   customImageUploadedAt: DateTime?
@@ -21,8 +12,8 @@ fields:
   stockPhotographerUrl: String?
   createdAt: DateTime
   extras: String?
+  translations: List<LocalTranslation>?, relation(name=vocabulary_translations)
+  progress: List<LocalProgress>?, relation(name=vocabulary_progress)
 indexes:
-  vocabulary_next_review_at_idx:
-    fields: nextReviewAt
   vocabulary_created_at_idx:
     fields: createdAt

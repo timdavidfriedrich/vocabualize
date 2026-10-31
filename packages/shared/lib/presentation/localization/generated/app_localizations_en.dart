@@ -636,6 +636,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Read out';
 
   @override
+  String get vocabularyTranslationPendingLabel => 'Translation pending';
+
+  @override
   String get vocabularySearchTooltip => 'Search';
 
   @override

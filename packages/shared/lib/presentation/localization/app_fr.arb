@@ -179,6 +179,7 @@
   "homeNextDueTodayMessage": "Prochain mot à {time}",
   "homeNextDueLaterMessage": "Prochain mot le {date}",
   "vocabularySpeakTooltip": "Lire à voix haute",
+  "vocabularyTranslationPendingLabel": "Traduction en attente",
   "vocabularySearchTooltip": "Rechercher",
   "vocabularySearchHint": "Rechercher un mot...",
   "vocabularySearchClearTooltip": "Effacer",

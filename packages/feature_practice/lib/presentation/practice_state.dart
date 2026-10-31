@@ -1,7 +1,8 @@
 import 'package:core/error/app_error.dart';
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
-import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/practice_item.dart';
 
 part 'practice_state.mapper.dart';
 
@@ -17,9 +18,11 @@ class const PracticeLoading() extends PracticeState with PracticeLoadingMappable
 class const PracticeActive({
   required final DateTime dueBy,
   required final String? tagId,
+  required final Set<Language> languages,
+  required final Language mainLanguage,
   required final int totalCount,
   required final int doneCount,
-  required final List<Vocabulary> queue,
+  required final List<PracticeItem> queue,
   required final bool showsLanguages,
   required final bool isStrictCorrection,
   required final String? typedAnswer,

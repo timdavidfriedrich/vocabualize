@@ -1,13 +1,15 @@
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/progress.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
-import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/date_time_extensions.dart';
+import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/icon_action_button.dart';
 import 'package:shared/presentation/widgets/level_indicator.dart';
@@ -20,6 +22,8 @@ const _sourceMaxLines = 5;
 Future<void> showVocabularyInfoDialog(
   BuildContext context, {
   required Vocabulary vocabulary,
+  required Language language,
+  required Language mainLanguage,
   required List<Tag> tags,
   required VoidCallback onSpeak,
   required VoidCallback onEdit,
@@ -29,6 +33,8 @@ Future<void> showVocabularyInfoDialog(
     context: context,
     builder: (dialogContext) => _VocabularyInfoDialog(
       vocabulary: vocabulary,
+      language: language,
+      mainLanguage: mainLanguage,
       tags: [
         for (final tag in tags)
           if (vocabulary.tagIds.contains(tag.id)) tag,
@@ -42,6 +48,8 @@ Future<void> showVocabularyInfoDialog(
 
 class const _VocabularyInfoDialog({
   required final Vocabulary _vocabulary,
+  required final Language _language,
+  required final Language _mainLanguage,
   required final List<Tag> _tags,
   required final VoidCallback _onSpeak,
   required final VoidCallback _onEdit,
@@ -62,7 +70,7 @@ class const _VocabularyInfoDialog({
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            LevelIndicator(level: _vocabulary.level.toVocabularyLevel()),
+            LevelIndicator(level: _vocabulary.levelOf(_language)),
             const SizedBox(width: Spacing.s),
             Flexible(
               fit: FlexFit.tight,
@@ -71,13 +79,13 @@ class const _VocabularyInfoDialog({
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _vocabulary.target,
+                    _vocabulary.titleIn(context, _language),
                     style: context.t.titleLarge,
                     maxLines: _targetMaxLines,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    _vocabulary.source,
+                    _vocabulary.promptIn(_mainLanguage),
                     style: context.t.bodyLarge,
                     maxLines: _sourceMaxLines,
                     overflow: TextOverflow.ellipsis,
@@ -132,7 +140,7 @@ class const _VocabularyInfoDialog({
               ),
             ],
             const SizedBox(height: Spacing.m),
-            _DatesInformationRow(vocabulary: _vocabulary),
+            _DatesInformationRow(vocabulary: _vocabulary, language: _language),
           ],
         ),
       ),
@@ -163,6 +171,7 @@ class const _VocabularyInfoDialog({
 
 class const _DatesInformationRow({
   required final Vocabulary _vocabulary,
+  required final Language _language,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -179,7 +188,12 @@ class const _DatesInformationRow({
         Flexible(
           child: _DateInformation(
             label: context.s.vocabularyReappearsLabel,
-            value: _vocabulary.nextReviewAt.toReappearsLabel(context),
+            value: switch (_vocabulary.progress[_language]) {
+              final progress? when progress.isStarted => progress.nextReviewAt.toReappearsLabel(
+                context,
+              ),
+              _ => context.s.vocabularyLevelNovice,
+            },
             textAlign: TextAlign.right,
           ),
         ),

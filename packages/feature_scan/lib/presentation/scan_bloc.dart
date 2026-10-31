@@ -9,14 +9,14 @@ import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/repositories/app_info_repository.dart';
 import 'package:shared/domain/repositories/connectivity_repository.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
-import 'package:shared/domain/repositories/settings_repository.dart';
+import 'package:shared/domain/repositories/language_repository.dart';
 
 @injectable
 class ScanBloc extends Bloc<ScanEvent, ScanState> {
   ScanBloc(
     this._imageRepository,
     this._imageLabelingRepository,
-    this._settingsRepository,
+    this._languageRepository,
     this._appInfoRepository,
     this._connectivityRepository,
   ) : super(const ScanCapturing(isProcessing: false, error: null)) {
@@ -29,7 +29,7 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
 
   final ImageRepository _imageRepository;
   final ImageLabelingRepository _imageLabelingRepository;
-  final SettingsRepository _settingsRepository;
+  final LanguageRepository _languageRepository;
   final AppInfoRepository _appInfoRepository;
   final ConnectivityRepository _connectivityRepository;
 
@@ -94,10 +94,10 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
   }
 
   Future<ScanSuggestions> _suggestionsFor(ProcessedImage photo) async {
-    return switch (await _settingsRepository.readLanguagePair()) {
-      Success(data: final languages?) => switch (await _imageLabelingRepository.labelImage(
+    return switch (await _languageRepository.readLanguageSetup()) {
+      Success(data: final setup?) => switch (await _imageLabelingRepository.labelImage(
         photo: photo,
-        language: languages.source,
+        language: setup.main,
       )) {
         Success(:final data) => ScanSuggestionsLoaded(labels: data),
         Failure(:final error) => ScanSuggestionsFailed(error: error),

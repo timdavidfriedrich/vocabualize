@@ -15,6 +15,8 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
   static VocabularyMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = VocabularyMapper._());
+      TranslationMapper.ensureInitialized();
+      ProgressMapper.ensureInitialized();
       VocabularyImageMapper.ensureInitialized();
     }
     return _instance!;
@@ -25,38 +27,14 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
 
   static String _$id(Vocabulary v) => v.id;
   static const Field<Vocabulary, String> _f$id = Field('id', _$id);
-  static String _$source(Vocabulary v) => v.source;
-  static const Field<Vocabulary, String> _f$source = Field('source', _$source);
-  static String _$target(Vocabulary v) => v.target;
-  static const Field<Vocabulary, String> _f$target = Field('target', _$target);
-  static Language _$sourceLanguage(Vocabulary v) => v.sourceLanguage;
-  static const Field<Vocabulary, Language> _f$sourceLanguage = Field(
-    'sourceLanguage',
-    _$sourceLanguage,
-  );
-  static Language _$targetLanguage(Vocabulary v) => v.targetLanguage;
-  static const Field<Vocabulary, Language> _f$targetLanguage = Field(
-    'targetLanguage',
-    _$targetLanguage,
-  );
-  static double _$level(Vocabulary v) => v.level;
-  static const Field<Vocabulary, double> _f$level = Field('level', _$level);
-  static bool _$isNovice(Vocabulary v) => v.isNovice;
-  static const Field<Vocabulary, bool> _f$isNovice = Field(
-    'isNovice',
-    _$isNovice,
-  );
-  static int _$intervalMinutes(Vocabulary v) => v.intervalMinutes;
-  static const Field<Vocabulary, int> _f$intervalMinutes = Field(
-    'intervalMinutes',
-    _$intervalMinutes,
-  );
-  static double _$ease(Vocabulary v) => v.ease;
-  static const Field<Vocabulary, double> _f$ease = Field('ease', _$ease);
-  static DateTime _$nextReviewAt(Vocabulary v) => v.nextReviewAt;
-  static const Field<Vocabulary, DateTime> _f$nextReviewAt = Field(
-    'nextReviewAt',
-    _$nextReviewAt,
+  static Map<Language, Translation> _$translations(Vocabulary v) =>
+      v.translations;
+  static const Field<Vocabulary, Map<Language, Translation>> _f$translations =
+      Field('translations', _$translations);
+  static Map<Language, Progress> _$progress(Vocabulary v) => v.progress;
+  static const Field<Vocabulary, Map<Language, Progress>> _f$progress = Field(
+    'progress',
+    _$progress,
   );
   static VocabularyImage _$image(Vocabulary v) => v.image;
   static const Field<Vocabulary, VocabularyImage> _f$image = Field(
@@ -77,15 +55,8 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
   @override
   final MappableFields<Vocabulary> fields = const {
     #id: _f$id,
-    #source: _f$source,
-    #target: _f$target,
-    #sourceLanguage: _f$sourceLanguage,
-    #targetLanguage: _f$targetLanguage,
-    #level: _f$level,
-    #isNovice: _f$isNovice,
-    #intervalMinutes: _f$intervalMinutes,
-    #ease: _f$ease,
-    #nextReviewAt: _f$nextReviewAt,
+    #translations: _f$translations,
+    #progress: _f$progress,
     #image: _f$image,
     #tagIds: _f$tagIds,
     #createdAt: _f$createdAt,
@@ -94,15 +65,8 @@ class VocabularyMapper extends ClassMapperBase<Vocabulary> {
   static Vocabulary _instantiate(DecodingData data) {
     return Vocabulary(
       id: data.dec(_f$id),
-      source: data.dec(_f$source),
-      target: data.dec(_f$target),
-      sourceLanguage: data.dec(_f$sourceLanguage),
-      targetLanguage: data.dec(_f$targetLanguage),
-      level: data.dec(_f$level),
-      isNovice: data.dec(_f$isNovice),
-      intervalMinutes: data.dec(_f$intervalMinutes),
-      ease: data.dec(_f$ease),
-      nextReviewAt: data.dec(_f$nextReviewAt),
+      translations: data.dec(_f$translations),
+      progress: data.dec(_f$progress),
       image: data.dec(_f$image),
       tagIds: data.dec(_f$tagIds),
       createdAt: data.dec(_f$createdAt),
@@ -169,18 +133,20 @@ extension VocabularyValueCopy<$R, $Out>
 
 abstract class VocabularyCopyWith<$R, $In extends Vocabulary, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  MapCopyWith<
+    $R,
+    Language,
+    Translation,
+    TranslationCopyWith<$R, Translation, Translation>
+  >
+  get translations;
+  MapCopyWith<$R, Language, Progress, ProgressCopyWith<$R, Progress, Progress>>
+  get progress;
   VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage> get image;
   $R call({
     String? id,
-    String? source,
-    String? target,
-    Language? sourceLanguage,
-    Language? targetLanguage,
-    double? level,
-    bool? isNovice,
-    int? intervalMinutes,
-    double? ease,
-    DateTime? nextReviewAt,
+    Map<Language, Translation>? translations,
+    Map<Language, Progress>? progress,
     VocabularyImage? image,
     Set<String>? tagIds,
     DateTime? createdAt,
@@ -197,35 +163,40 @@ class _VocabularyCopyWithImpl<$R, $Out>
   late final ClassMapperBase<Vocabulary> $mapper =
       VocabularyMapper.ensureInitialized();
   @override
+  MapCopyWith<
+    $R,
+    Language,
+    Translation,
+    TranslationCopyWith<$R, Translation, Translation>
+  >
+  get translations => MapCopyWith(
+    $value.translations,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(translations: v),
+  );
+  @override
+  MapCopyWith<$R, Language, Progress, ProgressCopyWith<$R, Progress, Progress>>
+  get progress => MapCopyWith(
+    $value.progress,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(progress: v),
+  );
+  @override
   VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage> get image =>
       $value.image.copyWith.$chain((v) => call(image: v));
   @override
   $R call({
     String? id,
-    String? source,
-    String? target,
-    Language? sourceLanguage,
-    Language? targetLanguage,
-    double? level,
-    bool? isNovice,
-    int? intervalMinutes,
-    double? ease,
-    DateTime? nextReviewAt,
+    Map<Language, Translation>? translations,
+    Map<Language, Progress>? progress,
     VocabularyImage? image,
     Set<String>? tagIds,
     DateTime? createdAt,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
-      if (source != null) #source: source,
-      if (target != null) #target: target,
-      if (sourceLanguage != null) #sourceLanguage: sourceLanguage,
-      if (targetLanguage != null) #targetLanguage: targetLanguage,
-      if (level != null) #level: level,
-      if (isNovice != null) #isNovice: isNovice,
-      if (intervalMinutes != null) #intervalMinutes: intervalMinutes,
-      if (ease != null) #ease: ease,
-      if (nextReviewAt != null) #nextReviewAt: nextReviewAt,
+      if (translations != null) #translations: translations,
+      if (progress != null) #progress: progress,
       if (image != null) #image: image,
       if (tagIds != null) #tagIds: tagIds,
       if (createdAt != null) #createdAt: createdAt,
@@ -234,15 +205,8 @@ class _VocabularyCopyWithImpl<$R, $Out>
   @override
   Vocabulary $make(CopyWithData data) => Vocabulary(
     id: data.get(#id, or: $value.id),
-    source: data.get(#source, or: $value.source),
-    target: data.get(#target, or: $value.target),
-    sourceLanguage: data.get(#sourceLanguage, or: $value.sourceLanguage),
-    targetLanguage: data.get(#targetLanguage, or: $value.targetLanguage),
-    level: data.get(#level, or: $value.level),
-    isNovice: data.get(#isNovice, or: $value.isNovice),
-    intervalMinutes: data.get(#intervalMinutes, or: $value.intervalMinutes),
-    ease: data.get(#ease, or: $value.ease),
-    nextReviewAt: data.get(#nextReviewAt, or: $value.nextReviewAt),
+    translations: data.get(#translations, or: $value.translations),
+    progress: data.get(#progress, or: $value.progress),
     image: data.get(#image, or: $value.image),
     tagIds: data.get(#tagIds, or: $value.tagIds),
     createdAt: data.get(#createdAt, or: $value.createdAt),

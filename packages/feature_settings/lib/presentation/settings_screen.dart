@@ -10,7 +10,7 @@ import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/default_gather_option.dart';
-import 'package:shared/domain/entities/language_pair.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/sync_status.dart';
@@ -22,7 +22,7 @@ import 'package:shared/presentation/extensions/default_gather_option_extensions.
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/string_extensions.dart';
 import 'package:shared/presentation/extensions/sync_status_extensions.dart';
-import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
+import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/reminders/reminder_cubit.dart';
@@ -176,18 +176,18 @@ class const _LanguageTiles({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LanguagePairCubit, LanguagePair?>(
-      builder: (context, pair) => Column(
+    return BlocBuilder<LanguageSetupCubit, LanguageSetup?>(
+      builder: (context, setup) => Column(
         children: [
           ListTile(
             title: Text(context.s.settingsSourceLanguageTitle),
             subtitle: Text(context.s.settingsSourceLanguageHint),
-            trailing: _LanguageButton(label: pair?.source.toLabel(context), isBusy: _isBusy),
+            trailing: _LanguageButton(label: setup?.main.toLabel(context), isBusy: _isBusy),
           ),
           ListTile(
             title: Text(context.s.settingsTargetLanguageTitle),
             subtitle: Text(context.s.settingsTargetLanguageHint),
-            trailing: _LanguageButton(label: pair?.target.toLabel(context), isBusy: _isBusy),
+            trailing: _LanguageButton(label: setup?.selected.toLabel(context), isBusy: _isBusy),
           ),
         ],
       ),

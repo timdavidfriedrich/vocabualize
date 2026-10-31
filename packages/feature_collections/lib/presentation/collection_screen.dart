@@ -7,6 +7,7 @@ import 'package:feature_collections/presentation/widgets/edit_collection_dialog.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
@@ -201,25 +202,28 @@ class const _Feed({
     return BlocSelector<
       CollectionBloc,
       CollectionState,
-      ({List<Vocabulary> vocabularies, bool hasMore})
+      ({List<Vocabulary> vocabularies, bool hasMore, LanguageSetup? setup})
     >(
       selector: (state) => switch (state) {
-        CollectionLoaded(:final vocabularies, :final feedLimit) => (
+        CollectionLoaded(:final vocabularies, :final feedLimit, :final setup) => (
           vocabularies: vocabularies,
           hasMore: vocabularies.length >= feedLimit,
+          setup: setup,
         ),
-        _ => (vocabularies: const [], hasMore: false),
+        _ => (vocabularies: const [], hasMore: false, setup: null),
       },
       builder: (context, feed) => switch (feed) {
-        (vocabularies: [], hasMore: false) when _showsNoResults => const SliverToBoxAdapter(
-          child: VocabularySearchEmpty(),
-        ),
-        _ => SliverList.builder(
+        (vocabularies: [], hasMore: false, setup: _) when _showsNoResults =>
+          const SliverToBoxAdapter(child: VocabularySearchEmpty()),
+        (setup: null, vocabularies: _, hasMore: _) => const SliverToBoxAdapter(),
+        (:final setup?, vocabularies: _, hasMore: _) => SliverList.builder(
           itemCount: feed.vocabularies.length + (feed.hasMore ? 1 : 0),
           itemBuilder: (_, index) => switch (feed.vocabularies.elementAtOrNull(index)) {
             final vocabulary? => VocabularyTile(
               key: ValueKey(vocabulary.id),
               vocabulary: vocabulary,
+              language: setup.selected,
+              mainLanguage: setup.main,
               onTap: () => _showInfo(context, vocabulary),
               onLongPress: () => context.pushEditVocabularyDetails(vocabularyId: vocabulary.id),
               onSpeak: () => context.read<CollectionBloc>().add(
@@ -235,17 +239,18 @@ class const _Feed({
 
   void _showInfo(BuildContext context, Vocabulary vocabulary) {
     final bloc = context.read<CollectionBloc>();
-    showVocabularyInfoDialog(
-      context,
-      vocabulary: vocabulary,
-      tags: switch (bloc.state) {
-        CollectionLoaded(:final tags) => tags,
-        _ => const [],
-      },
-      onSpeak: () => bloc.add(CollectionVocabularySpeakRequested(vocabulary: vocabulary)),
-      onEdit: () => context.pushEditVocabularyDetails(vocabularyId: vocabulary.id),
-      onPhotographerOpened: (url) => bloc.add(CollectionPhotographerLinkOpened(url: url)),
-    );
+    if (bloc.state case CollectionLoaded(:final setup, :final tags)) {
+      showVocabularyInfoDialog(
+        context,
+        vocabulary: vocabulary,
+        language: setup.selected,
+        mainLanguage: setup.main,
+        tags: tags,
+        onSpeak: () => bloc.add(CollectionVocabularySpeakRequested(vocabulary: vocabulary)),
+        onEdit: () => context.pushEditVocabularyDetails(vocabularyId: vocabulary.id),
+        onPhotographerOpened: (url) => bloc.add(CollectionPhotographerLinkOpened(url: url)),
+      );
+    }
   }
 }
 

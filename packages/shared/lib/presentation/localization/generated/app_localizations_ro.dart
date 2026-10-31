@@ -649,6 +649,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Citiți cu voce tare';
 
   @override
+  String get vocabularyTranslationPendingLabel => 'Traducere în curs';
+
+  @override
   String get vocabularySearchTooltip => 'Căutați';
 
   @override

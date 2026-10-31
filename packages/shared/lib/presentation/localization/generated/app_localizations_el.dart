@@ -644,6 +644,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Ανάγνωση';
 
   @override
+  String get vocabularyTranslationPendingLabel => 'Η μετάφραση εκκρεμεί';
+
+  @override
   String get vocabularySearchTooltip => 'Αναζήτηση';
 
   @override

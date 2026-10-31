@@ -10,31 +10,43 @@ class const LocalBackupManifest({
   required final DateTime createdAt,
   required final Map<String, int> counts,
   required final List<String> missingImages,
-  required final LocalBackupSettings? settings,
+  required final LocalBackupLanguages? languages,
 }) with LocalBackupManifestMappable;
 
 @MappableClass()
-class const LocalBackupSettings({
-  required final String sourceLanguageCode,
-  required final String targetLanguageCode,
-}) with LocalBackupSettingsMappable;
+class const LocalBackupLanguages({
+  required final String? mainLanguage,
+  required final String? selectedLanguage,
+  required final List<String> learnedLanguages,
+}) with LocalBackupLanguagesMappable;
 
 @MappableClass()
 class const LocalBackupVocabulary({
   required final String id,
-  required final String source,
-  required final String target,
-  required final String sourceLanguageCode,
-  required final String targetLanguageCode,
+  required final List<LocalBackupTranslation> translations,
+  required final List<LocalBackupProgress> progress,
   required final List<String> tagIds,
+  required final DateTime createdAt,
+  required final LocalBackupImage? image,
+}) with LocalBackupVocabularyMappable;
+
+@MappableClass()
+class const LocalBackupTranslation({
+  required final String language,
+  required final String text,
+  required final String origin,
+}) with LocalBackupTranslationMappable;
+
+@MappableClass()
+class const LocalBackupProgress({
+  required final String language,
+  required final String stage,
   required final double level,
-  required final bool isNovice,
   required final int intervalMinutes,
   required final double ease,
   required final DateTime nextReviewAt,
   required final DateTime createdAt,
-  required final LocalBackupImage? image,
-}) with LocalBackupVocabularyMappable;
+}) with LocalBackupProgressMappable;
 
 @MappableClass()
 class const LocalBackupImage({

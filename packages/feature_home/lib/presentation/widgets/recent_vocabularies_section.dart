@@ -1,9 +1,11 @@
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
@@ -12,6 +14,8 @@ const _cardWidth = Spacing.xxxxl * 2;
 class const RecentVocabulariesSection({
   super.key,
   required final List<Vocabulary> _vocabularies,
+  required final Language _language,
+  required final Language _mainLanguage,
   required final ValueChanged<Vocabulary> _onTap,
 }) extends StatelessWidget {
   @override
@@ -28,6 +32,8 @@ class const RecentVocabulariesSection({
             _RecentVocabularyCard(
               key: ValueKey(vocabulary.id),
               vocabulary: vocabulary,
+              language: _language,
+              mainLanguage: _mainLanguage,
               onTap: () => _onTap(vocabulary),
             ),
           ],
@@ -41,6 +47,8 @@ class const RecentVocabulariesSection({
 class const _RecentVocabularyCard({
   super.key,
   required final Vocabulary _vocabulary,
+  required final Language _language,
+  required final Language _mainLanguage,
   required final VoidCallback _onTap,
 }) extends StatelessWidget {
   @override
@@ -79,9 +87,9 @@ class const _RecentVocabularyCard({
               ),
               const SizedBox(height: Spacing.xs),
             ],
-            _Label(text: _vocabulary.target, isCentered: areImagesHidden),
+            _Label(text: _vocabulary.titleIn(context, _language), isCentered: areImagesHidden),
             _Label(
-              text: _vocabulary.source,
+              text: _vocabulary.promptIn(_mainLanguage),
               color: context.c.outline,
               isCentered: areImagesHidden,
             ),

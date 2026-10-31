@@ -1,5 +1,6 @@
 import 'package:core/error/app_error.dart';
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
@@ -13,6 +14,7 @@ sealed class CollectionState with CollectionStateMappable {
 
 @MappableClass()
 class const CollectionLoading({
+  required final LanguageSetup? setup,
   required final Tag? tag,
   required final int? dueCount,
   required final List<Vocabulary>? vocabularies,
@@ -23,6 +25,7 @@ class const CollectionLoading({
 
 @MappableClass()
 class const CollectionLoaded({
+  required final LanguageSetup setup,
   required final Tag tag,
   required final int dueCount,
   required final List<Vocabulary> vocabularies,

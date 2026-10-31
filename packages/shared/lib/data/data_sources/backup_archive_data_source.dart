@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared/data/models/local_backup.dart';
 
 const _backupFormat = "vocabualize-backup";
-const _backupVersion = 1;
+const _backupVersion = 2;
 const _appSource = "app";
 const _manifestFileName = "manifest.json";
 const _vocabulariesFileName = "vocabularies.json";
@@ -43,7 +43,7 @@ abstract class BackupArchiveDataSource {
     required LocalBackupContents contents,
     required Map<String, String> images,
     required List<String> missingImages,
-    required LocalBackupSettings? settings,
+    required LocalBackupLanguages? languages,
   });
 
   Future<void> deleteArchive(LocalBackupArchive archive);
@@ -108,7 +108,7 @@ class const BackupArchiveDataSourceImpl() implements BackupArchiveDataSource {
     required LocalBackupContents contents,
     required Map<String, String> images,
     required List<String> missingImages,
-    required LocalBackupSettings? settings,
+    required LocalBackupLanguages? languages,
   }) async {
     final directory = Directory("${(await getTemporaryDirectory()).path}/$_exportsFolderName");
     if (await directory.exists()) await directory.delete(recursive: true);
@@ -128,7 +128,7 @@ class const BackupArchiveDataSourceImpl() implements BackupArchiveDataSource {
         _countActivities: contents.activities.length,
       },
       missingImages: missingImages,
-      settings: settings,
+      languages: languages,
     );
     final documents = {
       _manifestFileName: manifest.toJson(),

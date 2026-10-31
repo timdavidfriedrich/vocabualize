@@ -296,6 +296,7 @@
   "homeNextDueTodayMessage": "Next word at {time}",
   "homeNextDueLaterMessage": "Next word on {date}",
   "vocabularySpeakTooltip": "Read out",
+  "vocabularyTranslationPendingLabel": "Translation pending",
   "vocabularySearchTooltip": "Search",
   "vocabularySearchHint": "Search vocabulary...",
   "vocabularySearchClearTooltip": "Clear",

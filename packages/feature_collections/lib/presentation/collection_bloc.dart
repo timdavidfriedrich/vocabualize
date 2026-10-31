@@ -5,10 +5,12 @@ import 'package:feature_collections/presentation/collection_event.dart';
 import 'package:feature_collections/presentation/collection_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/repositories/external_link_repository.dart';
+import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
@@ -22,8 +24,10 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     this._vocabularyRepository,
     this._textToSpeechRepository,
     this._externalLinkRepository,
+    this._languageRepository,
   ) : super(
         const CollectionLoading(
+          setup: null,
           tag: null,
           dueCount: null,
           vocabularies: null,
@@ -33,6 +37,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         ),
       ) {
     on<CollectionStarted>(_onStarted);
+    on<CollectionLanguageChanged>(_onLanguageChanged, transformer: restartable());
     on<CollectionFeedEvent>(_onFeedEvent, transformer: restartable());
     on<CollectionRenamed>(_onRenamed);
     on<CollectionDeleteRequested>(_onDeleteRequested);
@@ -44,24 +49,29 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   final VocabularyRepository _vocabularyRepository;
   final TextToSpeechRepository _textToSpeechRepository;
   final ExternalLinkRepository _externalLinkRepository;
+  final LanguageRepository _languageRepository;
   String? _tagId;
 
   Future<void> _onStarted(CollectionStarted event, Emitter<CollectionState> emit) async {
     _tagId = event.tagId;
-    add(const CollectionFeedEndReached());
     await Future.wait([
+      emit.forEach(
+        _languageRepository.watchLanguageSetup(),
+        onData: (result) {
+          if (result case Success(data: final setup?)) {
+            if (setup.selected != _setup?.selected) {
+              add(CollectionLanguageChanged(language: setup.selected));
+            }
+            return _merged(setup: setup);
+          }
+          return state;
+        },
+      ),
       emit.forEach(
         _tagRepository.watchTag(event.tagId),
         onData: (result) => switch (result) {
           Success(data: final tag?) => _merged(tag: tag),
           Success(data: null) => const CollectionClosed(),
-          Failure(:final error) => CollectionFailure(error: error),
-        },
-      ),
-      emit.forEach(
-        _vocabularyRepository.watchVocabularyOverview(tagId: event.tagId),
-        onData: (result) => switch (result) {
-          Success(:final data) => _merged(dueCount: data.dueCount),
           Failure(:final error) => CollectionFailure(error: error),
         },
       ),
@@ -73,6 +83,22 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         },
       ),
     ]);
+  }
+
+  Future<void> _onLanguageChanged(
+    CollectionLanguageChanged event,
+    Emitter<CollectionState> emit,
+  ) async {
+    final tagId = _tagId;
+    if (tagId == null) return;
+    add(CollectionFilterChanged(filter: _filter));
+    await emit.forEach(
+      _vocabularyRepository.watchVocabularyOverview(languages: {event.language}, tagId: tagId),
+      onData: (result) => switch (result) {
+        Success(:final data) => _merged(dueCount: data.dueCount),
+        Failure(:final error) => CollectionFailure(error: error),
+      },
+    );
   }
 
   Future<void> _onFeedEvent(CollectionFeedEvent event, Emitter<CollectionState> emit) async {
@@ -87,10 +113,12 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         (limit: feedLimit + _feedPageSize, filter: filter),
       (_, CollectionFilterChanged(:final filter)) => (limit: _feedPageSize, filter: filter),
     };
-    if (tagId == null || feed == null) return;
+    final language = _setup?.selected;
+    if (tagId == null || feed == null || language == null) return;
     emit(_merged(filter: feed.filter));
     await emit.forEach(
       _vocabularyRepository.watchVocabularies(
+        language: language,
         limit: feed.limit,
         tagId: tagId,
         filter: feed.filter,
@@ -125,11 +153,11 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     CollectionVocabularySpeakRequested event,
     Emitter<CollectionState> emit,
   ) async {
+    final language = _setup?.selected;
+    final text = language == null ? null : event.vocabulary.textIn(language);
+    if (language == null || text == null) return;
     _emitError(emit, null);
-    final result = await _textToSpeechRepository.speak(
-      text: event.vocabulary.target,
-      language: event.vocabulary.targetLanguage,
-    );
+    final result = await _textToSpeechRepository.speak(text: text, language: language);
     if (result case Failure(:final error)) _emitError(emit, error);
   }
 
@@ -142,11 +170,23 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     if (result case Failure(:final error)) _emitError(emit, error);
   }
 
+  LanguageSetup? get _setup => switch (state) {
+    CollectionLoading(:final setup) => setup,
+    CollectionLoaded(:final setup) => setup,
+    CollectionClosed() || CollectionFailure() => null,
+  };
+
+  VocabularyFilter get _filter => switch (state) {
+    CollectionLoading(:final filter) || CollectionLoaded(:final filter) => filter,
+    CollectionClosed() || CollectionFailure() => emptyVocabularyFilter,
+  };
+
   void _emitError(Emitter<CollectionState> emit, AppError? error) {
     if (state case final CollectionLoaded loaded) emit(loaded.copyWith(error: error));
   }
 
   CollectionState _merged({
+    LanguageSetup? setup,
     Tag? tag,
     int? dueCount,
     List<Vocabulary>? vocabularies,
@@ -156,6 +196,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   }) {
     return switch (state) {
       final CollectionLoaded loaded => loaded.copyWith(
+        setup: setup,
         tag: tag,
         dueCount: dueCount,
         vocabularies: vocabularies,
@@ -165,6 +206,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       ),
       final CollectionLoading loading => _completed(
         CollectionLoading(
+          setup: setup ?? loading.setup,
           tag: tag ?? loading.tag,
           dueCount: dueCount ?? loading.dueCount,
           vocabularies: vocabularies ?? loading.vocabularies,
@@ -181,6 +223,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   CollectionState _completed(CollectionLoading loading) {
     return switch (loading) {
       CollectionLoading(
+        setup: final setup?,
         tag: final tag?,
         dueCount: final dueCount?,
         vocabularies: final vocabularies?,
@@ -189,6 +232,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         :final filter,
       ) =>
         CollectionLoaded(
+          setup: setup,
           tag: tag,
           dueCount: dueCount,
           vocabularies: vocabularies,

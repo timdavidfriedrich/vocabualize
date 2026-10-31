@@ -25,7 +25,7 @@ abstract class Report implements _is.TableRow<int?>, _is.ProtocolSerialization {
     required this.appVersion,
     required this.platform,
     required this.appLanguage,
-    required this.languagePair,
+    required this.languages,
     this.authUserId,
     required this.ipHash,
     required this.createdAt,
@@ -42,7 +42,7 @@ abstract class Report implements _is.TableRow<int?>, _is.ProtocolSerialization {
     required String appVersion,
     required String platform,
     required String appLanguage,
-    required String languagePair,
+    required String languages,
     _is.UuidValue? authUserId,
     required String ipHash,
     required DateTime createdAt,
@@ -60,7 +60,7 @@ abstract class Report implements _is.TableRow<int?>, _is.ProtocolSerialization {
       appVersion: jsonSerialization['appVersion'] as String,
       platform: jsonSerialization['platform'] as String,
       appLanguage: jsonSerialization['appLanguage'] as String,
-      languagePair: jsonSerialization['languagePair'] as String,
+      languages: jsonSerialization['languages'] as String,
       authUserId: jsonSerialization['authUserId'] == null
           ? null
           : _is.UuidValueJsonExtension.fromJson(jsonSerialization['authUserId']),
@@ -94,7 +94,7 @@ abstract class Report implements _is.TableRow<int?>, _is.ProtocolSerialization {
 
   String appLanguage;
 
-  String languagePair;
+  String languages;
 
   _is.UuidValue? authUserId;
 
@@ -119,7 +119,7 @@ abstract class Report implements _is.TableRow<int?>, _is.ProtocolSerialization {
     String? appVersion,
     String? platform,
     String? appLanguage,
-    String? languagePair,
+    String? languages,
     _is.UuidValue? authUserId = const _is.$UndefinedUuidValue(),
     String? ipHash,
     DateTime? createdAt,
@@ -138,7 +138,7 @@ abstract class Report implements _is.TableRow<int?>, _is.ProtocolSerialization {
       'appVersion': appVersion,
       'platform': platform,
       'appLanguage': appLanguage,
-      'languagePair': languagePair,
+      'languages': languages,
       if (authUserId != null) 'authUserId': authUserId?.toJson(),
       'ipHash': ipHash,
       'createdAt': createdAt.toJson(),
@@ -192,7 +192,7 @@ class _ReportImpl extends Report {
     required String appVersion,
     required String platform,
     required String appLanguage,
-    required String languagePair,
+    required String languages,
     _is.UuidValue? authUserId,
     required String ipHash,
     required DateTime createdAt,
@@ -207,7 +207,7 @@ class _ReportImpl extends Report {
          appVersion: appVersion,
          platform: platform,
          appLanguage: appLanguage,
-         languagePair: languagePair,
+         languages: languages,
          authUserId: authUserId,
          ipHash: ipHash,
          createdAt: createdAt,
@@ -228,7 +228,7 @@ class _ReportImpl extends Report {
     String? appVersion,
     String? platform,
     String? appLanguage,
-    String? languagePair,
+    String? languages,
     _is.UuidValue? authUserId = const _is.$UndefinedUuidValue(),
     String? ipHash,
     DateTime? createdAt,
@@ -244,7 +244,7 @@ class _ReportImpl extends Report {
       appVersion: appVersion ?? this.appVersion,
       platform: platform ?? this.platform,
       appLanguage: appLanguage ?? this.appLanguage,
-      languagePair: languagePair ?? this.languagePair,
+      languages: languages ?? this.languages,
       authUserId: authUserId is _is.UndefinedSentinel ? this.authUserId : authUserId,
       ipHash: ipHash ?? this.ipHash,
       createdAt: createdAt ?? this.createdAt,
@@ -300,8 +300,8 @@ class ReportUpdateTable extends _is.UpdateTable<ReportTable> {
     value,
   );
 
-  _is.ColumnValue<String, String> languagePair(String value) => _is.ColumnValue(
-    table.languagePair,
+  _is.ColumnValue<String, String> languages(String value) => _is.ColumnValue(
+    table.languages,
     value,
   );
 
@@ -360,8 +360,8 @@ class ReportTable extends _is.Table<int?> {
       'appLanguage',
       this,
     );
-    languagePair = _is.ColumnString(
-      'languagePair',
+    languages = _is.ColumnString(
+      'languages',
       this,
     );
     authUserId = _is.ColumnUuid(
@@ -398,7 +398,7 @@ class ReportTable extends _is.Table<int?> {
 
   late final _is.ColumnString appLanguage;
 
-  late final _is.ColumnString languagePair;
+  late final _is.ColumnString languages;
 
   late final _is.ColumnUuid authUserId;
 
@@ -418,7 +418,7 @@ class ReportTable extends _is.Table<int?> {
     appVersion,
     platform,
     appLanguage,
-    languagePair,
+    languages,
     authUserId,
     ipHash,
     createdAt,

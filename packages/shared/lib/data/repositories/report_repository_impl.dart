@@ -5,11 +5,15 @@ import 'package:shared/data/data_sources/report_remote_data_source.dart';
 import 'package:shared/data/data_sources/setting_local_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
+import 'package:shared/data/mappers/language_setup_mappers.dart';
 import 'package:shared/domain/entities/language_pair.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/repositories/report_repository.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
-const _unknownLanguagePair = "-";
+const _unknownLanguages = "-";
+const _mainSeparator = "|";
+const _learnedSeparator = ",";
 
 @Injectable(as: ReportRepository)
 class const ReportRepositoryImpl(
@@ -50,22 +54,26 @@ class const ReportRepositoryImpl(
   }
 
   Future<RemoteReportContext> _context() async {
-    final languagePair = await _readLanguagePair();
+    final setup = await _readLanguageSetup();
     return RemoteReportContext(
       appVersion: await _appInfoDataSource.appVersion(),
       platform: await _appInfoDataSource.platformVersion(),
       appLanguage: _appInfoDataSource.deviceLanguageCode(),
-      languagePair: switch (languagePair) {
-        LanguagePair(:final source, :final target) =>
-          "${source.toLanguageCode()}-${target.toLanguageCode()}",
-        null => _unknownLanguagePair,
+      languages: switch (setup) {
+        LanguageSetup(:final main, :final learned) => [
+          main.toLanguageCode(),
+          [
+            for (final learnedLanguage in learned) learnedLanguage.language.toLanguageCode(),
+          ].join(_learnedSeparator),
+        ].join(_mainSeparator),
+        null => _unknownLanguages,
       },
     );
   }
 
-  Future<LanguagePair?> _readLanguagePair() async {
+  Future<LanguageSetup?> _readLanguageSetup() async {
     try {
-      return (await _settingDataSource.readLanguagePair())?.toLanguagePair();
+      return (await _settingDataSource.readLanguageSettings()).toLanguageSetup();
     } on Object {
       return null;
     }

@@ -5,16 +5,19 @@ import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/tag.dart';
+import 'package:shared/domain/entities/translation.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/entities/vocabulary_image_change.dart';
 import 'package:shared/domain/repositories/connectivity_repository.dart';
 import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
+import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/report_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/stock_image_repository.dart';
@@ -44,6 +47,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     this._connectivityRepository,
     this._reportRepository,
     this._textToSpeechRepository,
+    this._languageRepository,
   ) : super(const DetailsLoading()) {
     on<DetailsNewStarted>(_onNewStarted);
     on<DetailsEditStarted>(_onEditStarted);
@@ -74,12 +78,20 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final ConnectivityRepository _connectivityRepository;
   final ReportRepository _reportRepository;
   final TextToSpeechRepository _textToSpeechRepository;
+  final LanguageRepository _languageRepository;
 
   Future<void> _onNewStarted(DetailsNewStarted event, Emitter<DetailsState> emit) async {
-    switch (await _vocabularyRepository.hasVocabularyWithSource(event.source)) {
-      case Success(data: true):
+    final languages = await _languagePair();
+    final duplicates = languages == null
+        ? const Success(<Vocabulary>[])
+        : await _vocabularyRepository.findVocabulariesWithText(
+            language: languages.source,
+            text: event.source,
+          );
+    switch (duplicates) {
+      case Success(data: [_, ...]):
         emit(DetailsDuplicateFound(source: event.source, photo: event.photo));
-      case Success(data: false):
+      case Success():
         await _startNewWord(emit, event.source, photo: event.photo);
       case Failure(:final error):
         emit(DetailsFailure(error: error));
@@ -114,6 +126,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       emit(
         busy.copyWith(
           target: lookup.translation ?? busy.target,
+          isTargetEdited: lookup.translation == null && busy.isTargetEdited,
           stockImages: lookup.stockImages,
           stockPage: 0,
           pendingLookup: lookup.pending,
@@ -193,6 +206,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       emit(
         busy.copyWith(
           target: lookup.translation ?? busy.target,
+          isTargetEdited: lookup.translation == null && busy.isTargetEdited,
           stockImages: lookup.stockImages,
           stockPage: 0,
           pendingLookup: lookup.pending,
@@ -208,6 +222,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       emit(
         editing.copyWith(
           target: event.target.trim(),
+          isTargetEdited: true,
           pendingLookup: switch (editing.pendingLookup) {
             null => null,
             DetailsPendingLookup() => DetailsPendingLookup.photos,
@@ -349,11 +364,33 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       case DetailsNoImage() || DetailsSavedImage():
         newImage = null;
     }
-    if (editing.original case final original?) {
+    final languages = editing.languages;
+    if (languages == null) return const Failure(ValidationError());
+    final original = editing.original;
+    final translations = [
+      _translationFor(
+        original,
+        languages.source,
+        editing.source,
+        origin: switch (original?.translations[languages.source]?.origin) {
+          null || TranslationOrigin.entered => TranslationOrigin.entered,
+          TranslationOrigin() => TranslationOrigin.edited,
+        },
+      ),
+      _translationFor(
+        original,
+        languages.target,
+        editing.target,
+        origin: editing.isTargetEdited ? TranslationOrigin.edited : TranslationOrigin.translated,
+      ),
+    ];
+    if (original != null) {
       return _vocabularyRepository.updateVocabulary(
         id: original.id,
-        source: editing.source,
-        target: editing.target,
+        translations: translations,
+        startedLanguages: original.progress.containsKey(languages.target) ? {} : {languages.target},
+        waitingLanguages: const {},
+        removedLanguages: const {},
         image: switch ((editing.selectedImage, newImage)) {
           (_, final image?) => ReplaceImage(image: image),
           (DetailsSavedImage(), null) => const KeepImage(),
@@ -362,15 +399,25 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         tagIds: editing.selectedTagIds,
       );
     }
-    final languages = editing.languages;
-    if (languages == null) return const Failure(ValidationError());
     return _vocabularyRepository.addVocabulary(
-      source: editing.source,
-      target: editing.target,
-      languages: languages,
+      translations: translations,
+      startedLanguages: {languages.target},
+      waitingLanguages: const {},
       image: newImage,
       tagIds: editing.selectedTagIds,
     );
+  }
+
+  Translation _translationFor(
+    Vocabulary? original,
+    Language language,
+    String text, {
+    required TranslationOrigin origin,
+  }) {
+    return switch (original?.translations[language]) {
+      final existing? when existing.text == text => existing,
+      _ => Translation(language: language, text: text, origin: origin),
+    };
   }
 
   Future<void> _startNewWord(
@@ -385,6 +432,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       languages: languages,
       source: source.trim(),
       target: "",
+      isTargetEdited: false,
       selectedImage: ownPhoto ?? const DetailsNoImage(),
       ownPhoto: ownPhoto,
       stockImages: const [],
@@ -408,6 +456,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       emit(
         current.copyWith(
           target: lookup.translation ?? current.target,
+          isTargetEdited: lookup.translation == null && current.isTargetEdited,
           stockImages: lookup.stockImages,
           stockPage: 0,
           pendingLookup: lookup.pending,
@@ -419,16 +468,19 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   Future<void> _startExistingWord(Emitter<DetailsState> emit, Vocabulary vocabulary) async {
-    final languages = LanguagePair(
-      source: vocabulary.sourceLanguage,
-      target: vocabulary.targetLanguage,
-    );
+    final languages = await _languagePair();
+    if (languages == null) {
+      emit(const DetailsFailure(error: NotFoundError()));
+      return;
+    }
+    final source = vocabulary.promptIn(languages.source);
     emit(
       DetailsEditing(
         original: vocabulary,
         languages: languages,
-        source: vocabulary.source,
-        target: vocabulary.target,
+        source: source,
+        target: vocabulary.textIn(languages.target) ?? "",
+        isTargetEdited: false,
         selectedImage: switch (vocabulary.image) {
           NoImage() => const DetailsNoImage(),
           final image => DetailsSavedImage(image: image),
@@ -449,13 +501,13 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       ),
     );
     final lookup = await _lookUp(
-      vocabulary.source,
+      source,
       languages,
       pending: DetailsPendingLookup.photos,
     );
     if (state case final DetailsEditing current) {
       final isStillWanted =
-          current.source == vocabulary.source && current.runningAction != DetailsAction.lookup;
+          current.source == source && current.runningAction != DetailsAction.lookup;
       emit(
         isStillWanted
             ? current.copyWith(
@@ -471,9 +523,9 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   Future<LanguagePair?> _languagePair() async {
-    return switch (await _settingsRepository.readLanguagePair()) {
-      Success(:final data) => data,
-      Failure() => null,
+    return switch (await _languageRepository.readLanguageSetup()) {
+      Success(data: final setup?) => LanguagePair(source: setup.main, target: setup.selected),
+      Success() || Failure() => null,
     };
   }
 

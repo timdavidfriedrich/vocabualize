@@ -17,14 +17,14 @@ abstract class RemoteReportContext implements _is.SerializableModel, _is.Protoco
     required this.appVersion,
     required this.platform,
     required this.appLanguage,
-    required this.languagePair,
+    required this.languages,
   });
 
   factory RemoteReportContext({
     required String appVersion,
     required String platform,
     required String appLanguage,
-    required String languagePair,
+    required String languages,
   }) = _RemoteReportContextImpl;
 
   factory RemoteReportContext.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -32,7 +32,7 @@ abstract class RemoteReportContext implements _is.SerializableModel, _is.Protoco
       appVersion: jsonSerialization['appVersion'] as String,
       platform: jsonSerialization['platform'] as String,
       appLanguage: jsonSerialization['appLanguage'] as String,
-      languagePair: jsonSerialization['languagePair'] as String,
+      languages: jsonSerialization['languages'] as String,
     );
   }
 
@@ -42,7 +42,7 @@ abstract class RemoteReportContext implements _is.SerializableModel, _is.Protoco
 
   String appLanguage;
 
-  String languagePair;
+  String languages;
 
   /// Returns a shallow copy of this [RemoteReportContext]
   /// with some or all fields replaced by the given arguments.
@@ -51,7 +51,7 @@ abstract class RemoteReportContext implements _is.SerializableModel, _is.Protoco
     String? appVersion,
     String? platform,
     String? appLanguage,
-    String? languagePair,
+    String? languages,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -60,7 +60,7 @@ abstract class RemoteReportContext implements _is.SerializableModel, _is.Protoco
       'appVersion': appVersion,
       'platform': platform,
       'appLanguage': appLanguage,
-      'languagePair': languagePair,
+      'languages': languages,
     };
   }
 
@@ -71,7 +71,7 @@ abstract class RemoteReportContext implements _is.SerializableModel, _is.Protoco
       'appVersion': appVersion,
       'platform': platform,
       'appLanguage': appLanguage,
-      'languagePair': languagePair,
+      'languages': languages,
     };
   }
 
@@ -86,12 +86,12 @@ class _RemoteReportContextImpl extends RemoteReportContext {
     required String appVersion,
     required String platform,
     required String appLanguage,
-    required String languagePair,
+    required String languages,
   }) : super._(
          appVersion: appVersion,
          platform: platform,
          appLanguage: appLanguage,
-         languagePair: languagePair,
+         languages: languages,
        );
 
   /// Returns a shallow copy of this [RemoteReportContext]
@@ -102,13 +102,13 @@ class _RemoteReportContextImpl extends RemoteReportContext {
     String? appVersion,
     String? platform,
     String? appLanguage,
-    String? languagePair,
+    String? languages,
   }) {
     return RemoteReportContext(
       appVersion: appVersion ?? this.appVersion,
       platform: platform ?? this.platform,
       appLanguage: appLanguage ?? this.appLanguage,
-      languagePair: languagePair ?? this.languagePair,
+      languages: languages ?? this.languages,
     );
   }
 }

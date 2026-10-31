@@ -35,21 +35,21 @@ import 'package:kaisel/kaisel.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/entities/data_readiness.dart';
-import 'package:shared/domain/entities/language_pair.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
-import 'package:shared/domain/repositories/settings_repository.dart';
+import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/sync_repository.dart';
 import 'package:shared/presentation/navigation/routes.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:vocabualize/src/di/service_locator.dart';
 
-typedef _EntryState = (AppResult<AuthStatus>, AppResult<DataReadiness>?, AppResult<LanguagePair?>?);
+typedef _EntryState = (AppResult<AuthStatus>, AppResult<DataReadiness>?, AppResult<LanguageSetup?>?);
 
 @lazySingleton
 class NavigationRouter(
   final AccountRepository _accountRepository,
   final SyncRepository _syncRepository,
-  final SettingsRepository _settingsRepository,
+  final LanguageRepository _languageRepository,
 ) {
   late final KaiselRouterConfig<AppRoute> config = KaiselRouterConfig<AppRoute>(
     initial: const Loading(),
@@ -69,8 +69,8 @@ class NavigationRouter(
   Stream<_EntryState> _withDataReadiness(AppResult<AuthStatus> authStatus) => switch (authStatus) {
     Success(data: AuthAuthenticated()) => _syncRepository.watchDataReadiness().switchMap(
       (readiness) => switch (readiness) {
-        Success(data: DataReady()) => _settingsRepository.watchLanguagePair().map(
-          (languagePair) => (authStatus, readiness, languagePair),
+        Success(data: DataReady()) => _languageRepository.watchLanguageSetup().map(
+          (languageSetup) => (authStatus, readiness, languageSetup),
         ),
         Success() || Failure() => Stream.value((authStatus, readiness, null)),
       },

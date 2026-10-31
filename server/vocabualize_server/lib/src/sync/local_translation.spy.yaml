@@ -1,0 +1,14 @@
+class: LocalTranslation
+table: translation
+database: sync
+fields:
+  vocabulary: LocalVocabulary?, relation(name=vocabulary_translations, onDelete=Cascade, deferred)
+  languageCode: String
+  text: String
+  origin: String
+  extras: String?
+indexes:
+  translation_vocabulary_language_idx:
+    fields: vocabularyId, languageCode
+  translation_language_text_idx:
+    fields: languageCode, text

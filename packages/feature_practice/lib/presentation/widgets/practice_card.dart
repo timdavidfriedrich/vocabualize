@@ -5,8 +5,10 @@ import 'package:feature_practice/presentation/practice_state.dart';
 import 'package:feature_practice/presentation/widgets/solution_diff_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
+import 'package:shared/domain/entities/practice_item.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
@@ -19,7 +21,8 @@ const _solutionMaxLines = 7;
 const _sourceMaxLines = 4;
 
 typedef _Card = ({
-  Vocabulary vocabulary,
+  PracticeItem item,
+  Language mainLanguage,
   bool showsLanguages,
   bool isStrictCorrection,
   bool isSolutionShown,
@@ -36,6 +39,7 @@ class const PracticeCard({
       selector: (state) => switch (state) {
         PracticeActive(
           :final queue,
+          :final mainLanguage,
           :final showsLanguages,
           :final isStrictCorrection,
           :final isSolutionShown,
@@ -43,7 +47,8 @@ class const PracticeCard({
           :final grade,
         ) =>
           (
-            vocabulary: queue.first,
+            item: queue.first,
+            mainLanguage: mainLanguage,
             showsLanguages: showsLanguages,
             isStrictCorrection: isStrictCorrection,
             isSolutionShown: isSolutionShown,
@@ -79,10 +84,7 @@ class const _CardContent({
         if (_areImagesHidden) const SizedBox(height: Spacing.xxxxl),
         if (card.showsLanguages)
           Text(
-            LanguagePair(
-              source: card.vocabulary.sourceLanguage,
-              target: card.vocabulary.targetLanguage,
-            ).toLabel(context),
+            LanguagePair(source: card.mainLanguage, target: card.item.language).toLabel(context),
             style: context.t.bodyLarge?.copyWith(color: context.c.outline),
             textAlign: TextAlign.center,
           ),
@@ -95,7 +97,7 @@ class const _CardContent({
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Spacing.radiusXxl),
                   child: VocabularyImageView(
-                    image: card.vocabulary.image,
+                    image: card.item.vocabulary.image,
                     variant: VocabularyImageVariant.full,
                     displayWidth: MediaQuery.sizeOf(context).width,
                   ),
@@ -105,7 +107,7 @@ class const _CardContent({
               AspectRatio(
                 aspectRatio: 1,
                 child: _Solution(
-                  solution: card.vocabulary.target,
+                  solution: card.item.vocabulary.textIn(card.item.language) ?? "",
                   typedAnswer: card.typedAnswer,
                   grade: card.grade,
                   isStrictCorrection: card.isStrictCorrection,
@@ -115,7 +117,7 @@ class const _CardContent({
         ),
         const SizedBox(height: Spacing.xxl),
         Text(
-          card.vocabulary.source,
+          card.item.vocabulary.promptIn(card.mainLanguage),
           style: context.t.bodyLarge,
           maxLines: _sourceMaxLines,
           overflow: TextOverflow.ellipsis,

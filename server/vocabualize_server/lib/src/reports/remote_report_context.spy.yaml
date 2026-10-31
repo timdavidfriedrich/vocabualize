@@ -4,4 +4,4 @@ fields:
   appVersion: String
   platform: String
   appLanguage: String
-  languagePair: String
+  languages: String

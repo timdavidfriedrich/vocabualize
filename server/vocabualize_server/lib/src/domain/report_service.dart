@@ -83,7 +83,7 @@ class const ReportService() {
       appVersion: _clean(context.appVersion, maxLength: _maxContextLength),
       platform: _clean(context.platform, maxLength: _maxContextLength),
       appLanguage: _clean(context.appLanguage, maxLength: _maxContextLength),
-      languagePair: _clean(context.languagePair, maxLength: _maxContextLength),
+      languages: _clean(context.languages, maxLength: _maxContextLength),
       authUserId: switch (session.authenticated?.userIdentifier) {
         final String identifier => UuidValue.withValidation(identifier),
         null => null,

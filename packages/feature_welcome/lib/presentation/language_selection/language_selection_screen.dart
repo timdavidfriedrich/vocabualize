@@ -123,7 +123,7 @@ class const _LanguageChoice({
           children: [
             for (final language in supportedLanguages)
               ChoiceChip(
-                label: Text(language.toLabel(context)),
+                label: Text("${language.toFlag()} ${language.toLabel(context)}"),
                 selected: language == _selected,
                 onSelected: (_) => _onSelected(language),
               ),

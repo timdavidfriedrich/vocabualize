@@ -1182,6 +1182,12 @@ abstract class AppLocalizations {
   /// **'Read out'**
   String get vocabularySpeakTooltip;
 
+  /// No description provided for @vocabularyTranslationPendingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation pending'**
+  String get vocabularyTranslationPendingLabel;
+
   /// No description provided for @vocabularySearchTooltip.
   ///
   /// In en, this message translates to:

@@ -122,6 +122,8 @@ class DatabaseSessionDataSourceImpl(
   Future<LocalSnapshot> _readSnapshot(OfflineSyncDatabaseSession session) async {
     return LocalSnapshot(
       vocabularies: await LocalVocabulary.db.find(session),
+      translations: await LocalTranslation.db.find(session),
+      progress: await LocalProgress.db.find(session),
       tags: await LocalTag.db.find(session),
       vocabularyTags: await LocalVocabularyTag.db.find(session),
       activities: await LocalActivity.db.find(session),

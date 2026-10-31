@@ -657,6 +657,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Прочитати вголос';
 
   @override
+  String get vocabularyTranslationPendingLabel => 'Переклад очікується';
+
+  @override
   String get vocabularySearchTooltip => 'Пошук';
 
   @override

@@ -36,8 +36,10 @@ import 'services/remote_image_label.dart' as _i6wca3dv;
 import 'services/remote_stock_image.dart' as _i04ejohi;
 import 'services/service_unavailable_exception.dart' as _ilti7uc9;
 import 'sync/local_activity.dart' as _ilpzzhur;
+import 'sync/local_progress.dart' as _ikusqymu;
 import 'sync/local_setting.dart' as _ij5ultnt;
 import 'sync/local_tag.dart' as _ia93wqla;
+import 'sync/local_translation.dart' as _itzt2t4i;
 import 'sync/local_vocabulary.dart' as _ifmbxptn;
 import 'sync/local_vocabulary_tag.dart' as _iagtk9m4;
 export 'config/remote_app_config.dart';
@@ -51,8 +53,10 @@ export 'services/remote_image_label.dart';
 export 'services/remote_stock_image.dart';
 export 'services/service_unavailable_exception.dart';
 export 'sync/local_activity.dart';
+export 'sync/local_progress.dart';
 export 'sync/local_setting.dart';
 export 'sync/local_tag.dart';
+export 'sync/local_translation.dart';
 export 'sync/local_vocabulary.dart';
 export 'sync/local_vocabulary_tag.dart';
 export 'client.dart';
@@ -82,8 +86,10 @@ class Protocol extends _isd.DatabaseSerializationManager
           _isc.getType<_i04ejohi.RemoteStockImage>,
           _isc.getType<_ilti7uc9.ServiceUnavailableException>,
           _isc.getType<_ilpzzhur.LocalActivity>,
+          _isc.getType<_ikusqymu.LocalProgress>,
           _isc.getType<_ij5ultnt.LocalSetting>,
           _isc.getType<_ia93wqla.LocalTag>,
+          _isc.getType<_itzt2t4i.LocalTranslation>,
           _isc.getType<_ifmbxptn.LocalVocabulary>,
           _isc.getType<_iagtk9m4.LocalVocabularyTag>,
           _isc.getType<_ia9g9wp9.RemoteAppConfig?>,
@@ -97,10 +103,16 @@ class Protocol extends _isd.DatabaseSerializationManager
           _isc.getType<_i04ejohi.RemoteStockImage?>,
           _isc.getType<_ilti7uc9.ServiceUnavailableException?>,
           _isc.getType<_ilpzzhur.LocalActivity?>,
+          _isc.getType<_ikusqymu.LocalProgress?>,
           _isc.getType<_ij5ultnt.LocalSetting?>,
           _isc.getType<_ia93wqla.LocalTag?>,
+          _isc.getType<_itzt2t4i.LocalTranslation?>,
           _isc.getType<_ifmbxptn.LocalVocabulary?>,
           _isc.getType<_iagtk9m4.LocalVocabularyTag?>,
+          _isc.getType<List<_itzt2t4i.LocalTranslation>>,
+          _isc.getType<List<_itzt2t4i.LocalTranslation>?>,
+          _isc.getType<List<_ikusqymu.LocalProgress>>,
+          _isc.getType<List<_ikusqymu.LocalProgress>?>,
           _isc.getType<List<String>>,
           _isc.getType<List<_ixnafqut.RemoteImageDownload>>,
           _isc.getType<List<_ieqge28a.RemoteImageLabel>>,
@@ -179,6 +191,145 @@ class Protocol extends _isd.DatabaseSerializationManager
             _isd.IndexElementDefinition(
               type: _isd.IndexElementDefinitionType.column,
               definition: 'localDate',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isd.TableDefinition(
+      name: 'progress',
+      dartName: 'LocalProgress',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isd.ColumnDefinition(
+          name: 'id',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
+        ),
+        _isd.ColumnDefinition(
+          name: 'spaceId',
+          columnType: _isd.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isd.ColumnDefinition(
+          name: 'vocabularyId',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _isd.ColumnDefinition(
+          name: 'languageCode',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'stage',
+          columnType: _isd.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isd.ColumnDefinition(
+          name: 'level',
+          columnType: _isd.ColumnType.doublePrecision,
+          isNullable: false,
+          dartType: 'double',
+        ),
+        _isd.ColumnDefinition(
+          name: 'intervalMinutes',
+          columnType: _isd.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isd.ColumnDefinition(
+          name: 'ease',
+          columnType: _isd.ColumnType.doublePrecision,
+          isNullable: false,
+          dartType: 'double',
+        ),
+        _isd.ColumnDefinition(
+          name: 'nextReviewAt',
+          columnType: _isd.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isd.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isd.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isd.ColumnDefinition(
+          name: 'extras',
+          columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [
+        _isd.ForeignKeyDefinition(
+          constraintName: 'progress_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _isd.ForeignKeyDefinition(
+          constraintName: 'progress_fk_1',
+          columns: ['vocabularyId'],
+          referenceTable: 'vocabulary',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+          deferrable: _isd.DeferrableConstraint.initiallyDeferred,
+        ),
+      ],
+      indexes: [
+        _isd.IndexDefinition(
+          indexName: 'progress_language_stage_next_review_at_idx',
+          tableSpace: null,
+          elements: [
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'languageCode',
+            ),
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'stage',
+            ),
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'nextReviewAt',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _isd.IndexDefinition(
+          indexName: 'progress_vocabulary_language_idx',
+          tableSpace: null,
+          elements: [
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'vocabularyId',
+            ),
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'languageCode',
             ),
           ],
           type: 'btree',
@@ -319,8 +470,8 @@ class Protocol extends _isd.DatabaseSerializationManager
       managed: true,
     ),
     _isd.TableDefinition(
-      name: 'vocabulary',
-      dartName: 'LocalVocabulary',
+      name: 'translation',
+      dartName: 'LocalTranslation',
       schema: 'public',
       module: 'vocabualize',
       columns: [
@@ -338,58 +489,115 @@ class Protocol extends _isd.DatabaseSerializationManager
           dartType: 'int?',
         ),
         _isd.ColumnDefinition(
-          name: 'source',
+          name: 'vocabularyId',
+          columnType: _isd.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _isd.ColumnDefinition(
+          name: 'languageCode',
           columnType: _isd.ColumnType.text,
           isNullable: false,
           dartType: 'String',
         ),
         _isd.ColumnDefinition(
-          name: 'target',
+          name: 'text',
           columnType: _isd.ColumnType.text,
           isNullable: false,
           dartType: 'String',
         ),
         _isd.ColumnDefinition(
-          name: 'sourceLanguageCode',
+          name: 'origin',
           columnType: _isd.ColumnType.text,
           isNullable: false,
           dartType: 'String',
         ),
         _isd.ColumnDefinition(
-          name: 'targetLanguageCode',
+          name: 'extras',
           columnType: _isd.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [
+        _isd.ForeignKeyDefinition(
+          constraintName: 'translation_fk_0',
+          columns: ['spaceId'],
+          referenceTable: 'offline_sync_spaces',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _isd.ForeignKeyDefinition(
+          constraintName: 'translation_fk_1',
+          columns: ['vocabularyId'],
+          referenceTable: 'vocabulary',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isd.ForeignKeyAction.noAction,
+          onDelete: _isd.ForeignKeyAction.cascade,
+          matchType: null,
+          deferrable: _isd.DeferrableConstraint.initiallyDeferred,
+        ),
+      ],
+      indexes: [
+        _isd.IndexDefinition(
+          indexName: 'translation_vocabulary_language_idx',
+          tableSpace: null,
+          elements: [
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'vocabularyId',
+            ),
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'languageCode',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _isd.IndexDefinition(
+          indexName: 'translation_language_text_idx',
+          tableSpace: null,
+          elements: [
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'languageCode',
+            ),
+            _isd.IndexElementDefinition(
+              type: _isd.IndexElementDefinitionType.column,
+              definition: 'text',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isd.TableDefinition(
+      name: 'vocabulary',
+      dartName: 'LocalVocabulary',
+      schema: 'public',
+      module: 'vocabualize',
+      columns: [
+        _isd.ColumnDefinition(
+          name: 'id',
+          columnType: _isd.ColumnType.uuid,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'UuidValue?',
+          columnDefault: 'random_v7',
         ),
         _isd.ColumnDefinition(
-          name: 'level',
-          columnType: _isd.ColumnType.doublePrecision,
-          isNullable: false,
-          dartType: 'double',
-        ),
-        _isd.ColumnDefinition(
-          name: 'isNovice',
-          columnType: _isd.ColumnType.boolean,
-          isNullable: false,
-          dartType: 'bool',
-        ),
-        _isd.ColumnDefinition(
-          name: 'intervalMinutes',
+          name: 'spaceId',
           columnType: _isd.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _isd.ColumnDefinition(
-          name: 'ease',
-          columnType: _isd.ColumnType.doublePrecision,
-          isNullable: false,
-          dartType: 'double',
-        ),
-        _isd.ColumnDefinition(
-          name: 'nextReviewAt',
-          columnType: _isd.ColumnType.timestampWithoutTimeZone,
-          isNullable: false,
-          dartType: 'DateTime',
+          isNullable: true,
+          dartType: 'int?',
         ),
         _isd.ColumnDefinition(
           name: 'imageKind',
@@ -465,19 +673,6 @@ class Protocol extends _isd.DatabaseSerializationManager
         ),
       ],
       indexes: [
-        _isd.IndexDefinition(
-          indexName: 'vocabulary_next_review_at_idx',
-          tableSpace: null,
-          elements: [
-            _isd.IndexElementDefinition(
-              type: _isd.IndexElementDefinitionType.column,
-              definition: 'nextReviewAt',
-            ),
-          ],
-          type: 'btree',
-          isUnique: false,
-          isPrimary: false,
-        ),
         _isd.IndexDefinition(
           indexName: 'vocabulary_created_at_idx',
           tableSpace: null,
@@ -643,11 +838,17 @@ class Protocol extends _isd.DatabaseSerializationManager
     if (t == _ilpzzhur.LocalActivity) {
       return _ilpzzhur.LocalActivity.fromJson(data) as T;
     }
+    if (t == _ikusqymu.LocalProgress) {
+      return _ikusqymu.LocalProgress.fromJson(data) as T;
+    }
     if (t == _ij5ultnt.LocalSetting) {
       return _ij5ultnt.LocalSetting.fromJson(data) as T;
     }
     if (t == _ia93wqla.LocalTag) {
       return _ia93wqla.LocalTag.fromJson(data) as T;
+    }
+    if (t == _itzt2t4i.LocalTranslation) {
+      return _itzt2t4i.LocalTranslation.fromJson(data) as T;
     }
     if (t == _ifmbxptn.LocalVocabulary) {
       return _ifmbxptn.LocalVocabulary.fromJson(data) as T;
@@ -711,11 +912,19 @@ class Protocol extends _isd.DatabaseSerializationManager
       return (data != null ? _ilpzzhur.LocalActivity.fromJson(data) : null)
           as T;
     }
+    if (t == _isc.getType<_ikusqymu.LocalProgress?>()) {
+      return (data != null ? _ikusqymu.LocalProgress.fromJson(data) : null)
+          as T;
+    }
     if (t == _isc.getType<_ij5ultnt.LocalSetting?>()) {
       return (data != null ? _ij5ultnt.LocalSetting.fromJson(data) : null) as T;
     }
     if (t == _isc.getType<_ia93wqla.LocalTag?>()) {
       return (data != null ? _ia93wqla.LocalTag.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_itzt2t4i.LocalTranslation?>()) {
+      return (data != null ? _itzt2t4i.LocalTranslation.fromJson(data) : null)
+          as T;
     }
     if (t == _isc.getType<_ifmbxptn.LocalVocabulary?>()) {
       return (data != null ? _ifmbxptn.LocalVocabulary.fromJson(data) : null)
@@ -723,6 +932,34 @@ class Protocol extends _isd.DatabaseSerializationManager
     }
     if (t == _isc.getType<_iagtk9m4.LocalVocabularyTag?>()) {
       return (data != null ? _iagtk9m4.LocalVocabularyTag.fromJson(data) : null)
+          as T;
+    }
+    if (t == List<_itzt2t4i.LocalTranslation>) {
+      return (data as List)
+              .map((e) => deserialize<_itzt2t4i.LocalTranslation>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_itzt2t4i.LocalTranslation>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_itzt2t4i.LocalTranslation>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_ikusqymu.LocalProgress>) {
+      return (data as List)
+              .map((e) => deserialize<_ikusqymu.LocalProgress>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_ikusqymu.LocalProgress>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_ikusqymu.LocalProgress>(e))
+                    .toList()
+              : null)
           as T;
     }
     if (t == List<String>) {
@@ -771,8 +1008,10 @@ class Protocol extends _isd.DatabaseSerializationManager
       _i04ejohi.RemoteStockImage => 'RemoteStockImage',
       _ilti7uc9.ServiceUnavailableException => 'ServiceUnavailableException',
       _ilpzzhur.LocalActivity => 'LocalActivity',
+      _ikusqymu.LocalProgress => 'LocalProgress',
       _ij5ultnt.LocalSetting => 'LocalSetting',
       _ia93wqla.LocalTag => 'LocalTag',
+      _itzt2t4i.LocalTranslation => 'LocalTranslation',
       _ifmbxptn.LocalVocabulary => 'LocalVocabulary',
       _iagtk9m4.LocalVocabularyTag => 'LocalVocabularyTag',
       _ => null,
@@ -811,10 +1050,14 @@ class Protocol extends _isd.DatabaseSerializationManager
         return 'ServiceUnavailableException';
       case _ilpzzhur.LocalActivity():
         return 'LocalActivity';
+      case _ikusqymu.LocalProgress():
+        return 'LocalProgress';
       case _ij5ultnt.LocalSetting():
         return 'LocalSetting';
       case _ia93wqla.LocalTag():
         return 'LocalTag';
+      case _itzt2t4i.LocalTranslation():
+        return 'LocalTranslation';
       case _ifmbxptn.LocalVocabulary():
         return 'LocalVocabulary';
       case _iagtk9m4.LocalVocabularyTag():
@@ -880,11 +1123,17 @@ class Protocol extends _isd.DatabaseSerializationManager
     if (dataClassName == 'LocalActivity') {
       return deserialize<_ilpzzhur.LocalActivity>(data['data']);
     }
+    if (dataClassName == 'LocalProgress') {
+      return deserialize<_ikusqymu.LocalProgress>(data['data']);
+    }
     if (dataClassName == 'LocalSetting') {
       return deserialize<_ij5ultnt.LocalSetting>(data['data']);
     }
     if (dataClassName == 'LocalTag') {
       return deserialize<_ia93wqla.LocalTag>(data['data']);
+    }
+    if (dataClassName == 'LocalTranslation') {
+      return deserialize<_itzt2t4i.LocalTranslation>(data['data']);
     }
     if (dataClassName == 'LocalVocabulary') {
       return deserialize<_ifmbxptn.LocalVocabulary>(data['data']);
@@ -945,10 +1194,14 @@ class Protocol extends _isd.DatabaseSerializationManager
     switch (t) {
       case _ilpzzhur.LocalActivity:
         return _ilpzzhur.LocalActivity.t;
+      case _ikusqymu.LocalProgress:
+        return _ikusqymu.LocalProgress.t;
       case _ij5ultnt.LocalSetting:
         return _ij5ultnt.LocalSetting.t;
       case _ia93wqla.LocalTag:
         return _ia93wqla.LocalTag.t;
+      case _itzt2t4i.LocalTranslation:
+        return _itzt2t4i.LocalTranslation.t;
       case _ifmbxptn.LocalVocabulary:
         return _ifmbxptn.LocalVocabulary.t;
       case _iagtk9m4.LocalVocabularyTag:

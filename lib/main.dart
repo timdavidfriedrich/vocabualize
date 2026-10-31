@@ -13,7 +13,7 @@ import 'package:shared/presentation/account/account_cubit.dart';
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/appearance_mode_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
-import 'package:shared/presentation/language_pair/language_pair_cubit.dart';
+import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/localization/generated/app_localizations.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/reminders/reminder_cubit.dart';
@@ -40,7 +40,7 @@ class const App({
         BlocProvider(create: (_) => sl<AccountCubit>()..start()),
         BlocProvider(create: (_) => sl<SyncStatusCubit>()..start()),
         BlocProvider(create: (_) => sl<GateCubit>()..start()),
-        BlocProvider(create: (_) => sl<LanguagePairCubit>()..start()),
+        BlocProvider(create: (_) => sl<LanguageSetupCubit>()..start()),
         BlocProvider(create: (_) => sl<ConnectivityCubit>()..start()),
         BlocProvider(create: (_) => sl<PreferencesCubit>()..start()),
         BlocProvider(lazy: false, create: (_) => sl<ReminderCubit>()..start()),

@@ -1,6 +1,7 @@
 import 'package:core/error/app_error.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
@@ -15,6 +16,7 @@ sealed class HomeState with HomeStateMappable {
 
 @MappableClass()
 class const HomeLoading({
+  required final LanguageSetup? setup,
   required final VocabularyOverview? overview,
   required final List<Vocabulary>? recentVocabularies,
   required final List<CollectionPreview>? collections,
@@ -26,6 +28,7 @@ class const HomeLoading({
 
 @MappableClass()
 class const HomeLoaded({
+  required final LanguageSetup setup,
   required final VocabularyOverview overview,
   required final List<Vocabulary> recentVocabularies,
   required final List<CollectionPreview> collections,

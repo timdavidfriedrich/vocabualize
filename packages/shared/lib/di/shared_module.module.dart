@@ -74,6 +74,8 @@ import 'package:shared/data/repositories/connectivity_repository_impl.dart'
 import 'package:shared/data/repositories/external_link_repository_impl.dart'
     as _i22;
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
+import 'package:shared/data/repositories/language_repository_impl.dart'
+    as _i850;
 import 'package:shared/data/repositories/reminder_repository_impl.dart'
     as _i899;
 import 'package:shared/data/repositories/report_repository_impl.dart' as _i296;
@@ -101,6 +103,7 @@ import 'package:shared/domain/repositories/connectivity_repository.dart'
 import 'package:shared/domain/repositories/external_link_repository.dart'
     as _i711;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
+import 'package:shared/domain/repositories/language_repository.dart' as _i308;
 import 'package:shared/domain/repositories/reminder_repository.dart' as _i821;
 import 'package:shared/domain/repositories/report_repository.dart' as _i522;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
@@ -117,8 +120,8 @@ import 'package:shared/domain/use_cases/watch_streak_use_case.dart' as _i76;
 import 'package:shared/presentation/account/account_cubit.dart' as _i346;
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart'
     as _i855;
-import 'package:shared/presentation/language_pair/language_pair_cubit.dart'
-    as _i650;
+import 'package:shared/presentation/language_setup/language_setup_cubit.dart'
+    as _i827;
 import 'package:shared/presentation/preferences/preferences_cubit.dart'
     as _i218;
 import 'package:shared/presentation/reminders/reminder_cubit.dart' as _i902;
@@ -250,6 +253,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i555.SettingLocalDataSource>(() =>
         _i555.SettingLocalDataSourceImpl(
             gh<_i862.DatabaseSessionDataSource>()));
+    gh.factory<_i0.SettingsRepository>(
+        () => _i921.SettingsRepositoryImpl(gh<_i555.SettingLocalDataSource>()));
     gh.factory<_i522.ReportRepository>(() => _i296.ReportRepositoryImpl(
           gh<_i320.ReportRemoteDataSource>(),
           gh<_i394.AppInfoDataSource>(),
@@ -278,7 +283,7 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i532.ImageFileDataSource>(),
           gh<_i931.DeviceDataSource>(),
         ));
-    gh.factory<_i0.SettingsRepository>(() => _i921.SettingsRepositoryImpl(
+    gh.factory<_i308.LanguageRepository>(() => _i850.LanguageRepositoryImpl(
           gh<_i555.SettingLocalDataSource>(),
           gh<_i394.AppInfoDataSource>(),
         ));
@@ -286,8 +291,6 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i452.TagLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
         ));
-    gh.factory<_i650.LanguagePairCubit>(
-        () => _i650.LanguagePairCubit(gh<_i0.SettingsRepository>()));
     gh.factory<_i218.PreferencesCubit>(
         () => _i218.PreferencesCubit(gh<_i0.SettingsRepository>()));
     gh.factory<_i523.SyncRepository>(() => _i368.SyncRepositoryImpl(
@@ -320,14 +323,17 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         ));
     gh.factory<_i76.WatchStreakUseCase>(
         () => _i76.WatchStreakUseCase(gh<_i503.ActivityRepository>()));
+    gh.factory<_i827.LanguageSetupCubit>(
+        () => _i827.LanguageSetupCubit(gh<_i308.LanguageRepository>()));
+    gh.factory<_i346.AccountCubit>(
+        () => _i346.AccountCubit(gh<_i923.AccountRepository>()));
     gh.factory<_i902.ReminderCubit>(() => _i902.ReminderCubit(
           gh<_i821.ReminderRepository>(),
           gh<_i0.SettingsRepository>(),
           gh<_i208.VocabularyRepository>(),
+          gh<_i308.LanguageRepository>(),
           gh<_i76.WatchStreakUseCase>(),
         ));
-    gh.factory<_i346.AccountCubit>(
-        () => _i346.AccountCubit(gh<_i923.AccountRepository>()));
   }
 }
 

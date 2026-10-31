@@ -247,6 +247,8 @@ class AccountRepositoryImpl(
         await _importDataSource.importSnapshot(
           LocalSnapshot(
             vocabularies: snapshot.vocabularies,
+            translations: snapshot.translations,
+            progress: snapshot.progress,
             tags: snapshot.tags,
             vocabularyTags: snapshot.vocabularyTags,
             activities: snapshot.activities,

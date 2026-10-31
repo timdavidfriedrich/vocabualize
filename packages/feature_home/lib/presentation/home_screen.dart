@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
@@ -224,15 +225,22 @@ class const _CollectionsRow() extends StatelessWidget {
 class const _RecentSection() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, List<Vocabulary>>(
+    return BlocSelector<
+      HomeBloc,
+      HomeState,
+      ({List<Vocabulary> vocabularies, LanguageSetup? setup})
+    >(
       selector: (state) => switch (state) {
-        HomeLoaded(:final recentVocabularies) => recentVocabularies,
-        _ => const [],
+        HomeLoaded(:final recentVocabularies, :final setup) => (
+          vocabularies: recentVocabularies,
+          setup: setup,
+        ),
+        _ => (vocabularies: const [], setup: null),
       },
-      builder: (context, recentVocabularies) => SliverToBoxAdapter(
-        child: recentVocabularies.isEmpty
-            ? null
-            : Column(
+      builder: (context, recent) => SliverToBoxAdapter(
+        child: switch (recent) {
+          (vocabularies: [], setup: _) || (setup: null, vocabularies: _) => null,
+          (:final vocabularies, :final setup?) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: Spacing.xxl),
@@ -242,11 +250,14 @@ class const _RecentSection() extends StatelessWidget {
                   ),
                   const SizedBox(height: Spacing.m),
                   RecentVocabulariesSection(
-                    vocabularies: recentVocabularies,
+                    vocabularies: vocabularies,
+                    language: setup.selected,
+                    mainLanguage: setup.main,
                     onTap: (vocabulary) => _showInfo(context, vocabulary),
                   ),
                 ],
               ),
+        },
       ),
     );
   }
@@ -257,24 +268,31 @@ class const _Feed({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, ({List<Vocabulary> vocabularies, bool hasMore})>(
+    return BlocSelector<
+      HomeBloc,
+      HomeState,
+      ({List<Vocabulary> vocabularies, bool hasMore, LanguageSetup? setup})
+    >(
       selector: (state) => switch (state) {
-        HomeLoaded(:final vocabularies, :final feedLimit) => (
+        HomeLoaded(:final vocabularies, :final feedLimit, :final setup) => (
           vocabularies: vocabularies,
           hasMore: vocabularies.length >= feedLimit,
+          setup: setup,
         ),
-        _ => (vocabularies: const [], hasMore: false),
+        _ => (vocabularies: const [], hasMore: false, setup: null),
       },
       builder: (context, feed) => switch (feed) {
-        (vocabularies: [], hasMore: false) when _showsNoResults => const SliverToBoxAdapter(
-          child: VocabularySearchEmpty(),
-        ),
-        _ => SliverList.builder(
+        (vocabularies: [], hasMore: false, setup: _) when _showsNoResults =>
+          const SliverToBoxAdapter(child: VocabularySearchEmpty()),
+        (setup: null, vocabularies: _, hasMore: _) => const SliverToBoxAdapter(),
+        (:final setup?, vocabularies: _, hasMore: _) => SliverList.builder(
           itemCount: feed.vocabularies.length + (feed.hasMore ? 1 : 0),
           itemBuilder: (_, index) => switch (feed.vocabularies.elementAtOrNull(index)) {
             final vocabulary? => VocabularyTile(
               key: ValueKey(vocabulary.id),
               vocabulary: vocabulary,
+              language: setup.selected,
+              mainLanguage: setup.main,
               onTap: () => _showInfo(context, vocabulary),
               onLongPress: () => _edit(context, vocabulary),
               onSpeak: () => _speak(context, vocabulary),
@@ -418,17 +436,18 @@ class const _FailureScreen({
 
 void _showInfo(BuildContext context, Vocabulary vocabulary) {
   final bloc = context.read<HomeBloc>();
-  showVocabularyInfoDialog(
-    context,
-    vocabulary: vocabulary,
-    tags: switch (bloc.state) {
-      HomeLoaded(:final collections) => [for (final collection in collections) collection.tag],
-      _ => const [],
-    },
-    onSpeak: () => bloc.add(HomeVocabularySpeakRequested(vocabulary: vocabulary)),
-    onEdit: () => _edit(context, vocabulary),
-    onPhotographerOpened: (url) => bloc.add(HomePhotographerLinkOpened(url: url)),
-  );
+  if (bloc.state case HomeLoaded(:final setup, :final collections)) {
+    showVocabularyInfoDialog(
+      context,
+      vocabulary: vocabulary,
+      language: setup.selected,
+      mainLanguage: setup.main,
+      tags: [for (final collection in collections) collection.tag],
+      onSpeak: () => bloc.add(HomeVocabularySpeakRequested(vocabulary: vocabulary)),
+      onEdit: () => _edit(context, vocabulary),
+      onPhotographerOpened: (url) => bloc.add(HomePhotographerLinkOpened(url: url)),
+    );
+  }
 }
 
 void _edit(BuildContext context, Vocabulary vocabulary) {

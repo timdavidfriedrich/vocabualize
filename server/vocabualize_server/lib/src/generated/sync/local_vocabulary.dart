@@ -8,24 +8,19 @@
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
 // ignore_for_file: invalid_use_of_internal_member
+// ignore_for_file: dead_code, unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
 import 'package:serverpod/serverpod.dart' as _is;
+import 'package:vocabualize_server/src/generated/protocol.dart' as _i935iz7n;
+import '../sync/local_progress.dart' as _in2srp6w;
+import '../sync/local_translation.dart' as _ilfqqi7t;
 
 abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.ProtocolSerialization {
   LocalVocabulary._({
     this.id,
     this.spaceId,
-    required this.source,
-    required this.target,
-    required this.sourceLanguageCode,
-    required this.targetLanguageCode,
-    required this.level,
-    required this.isNovice,
-    required this.intervalMinutes,
-    required this.ease,
-    required this.nextReviewAt,
     required this.imageKind,
     this.customImageId,
     this.customImageUploadedAt,
@@ -36,20 +31,13 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
     this.stockPhotographerUrl,
     required this.createdAt,
     this.extras,
+    this.translations,
+    this.progress,
   });
 
   factory LocalVocabulary({
     _is.UuidValue? id,
     int? spaceId,
-    required String source,
-    required String target,
-    required String sourceLanguageCode,
-    required String targetLanguageCode,
-    required double level,
-    required bool isNovice,
-    required int intervalMinutes,
-    required double ease,
-    required DateTime nextReviewAt,
     required String imageKind,
     String? customImageId,
     DateTime? customImageUploadedAt,
@@ -60,6 +48,8 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
     String? stockPhotographerUrl,
     required DateTime createdAt,
     String? extras,
+    List<_ilfqqi7t.LocalTranslation>? translations,
+    List<_in2srp6w.LocalProgress>? progress,
   }) = _LocalVocabularyImpl;
 
   factory LocalVocabulary.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -68,15 +58,6 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
           ? null
           : _is.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
       spaceId: jsonSerialization['spaceId'] as int?,
-      source: jsonSerialization['source'] as String,
-      target: jsonSerialization['target'] as String,
-      sourceLanguageCode: jsonSerialization['sourceLanguageCode'] as String,
-      targetLanguageCode: jsonSerialization['targetLanguageCode'] as String,
-      level: (jsonSerialization['level'] as num).toDouble(),
-      isNovice: _is.BoolJsonExtension.fromJson(jsonSerialization['isNovice']),
-      intervalMinutes: jsonSerialization['intervalMinutes'] as int,
-      ease: (jsonSerialization['ease'] as num).toDouble(),
-      nextReviewAt: _is.DateTimeJsonExtension.fromJson(jsonSerialization['nextReviewAt']),
       imageKind: jsonSerialization['imageKind'] as String,
       customImageId: jsonSerialization['customImageId'] as String?,
       customImageUploadedAt: jsonSerialization['customImageUploadedAt'] == null
@@ -89,6 +70,16 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
       stockPhotographerUrl: jsonSerialization['stockPhotographerUrl'] as String?,
       createdAt: _is.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
       extras: jsonSerialization['extras'] as String?,
+      translations: jsonSerialization['translations'] == null
+          ? null
+          : _i935iz7n.Protocol().deserialize<List<_ilfqqi7t.LocalTranslation>>(
+              jsonSerialization['translations'],
+            ),
+      progress: jsonSerialization['progress'] == null
+          ? null
+          : _i935iz7n.Protocol().deserialize<List<_in2srp6w.LocalProgress>>(
+              jsonSerialization['progress'],
+            ),
     );
   }
 
@@ -101,24 +92,6 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
 
   /// The space owning this row. Maintained by the sync engine.
   int? spaceId;
-
-  String source;
-
-  String target;
-
-  String sourceLanguageCode;
-
-  String targetLanguageCode;
-
-  double level;
-
-  bool isNovice;
-
-  int intervalMinutes;
-
-  double ease;
-
-  DateTime nextReviewAt;
 
   String imageKind;
 
@@ -140,6 +113,10 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
 
   String? extras;
 
+  List<_ilfqqi7t.LocalTranslation>? translations;
+
+  List<_in2srp6w.LocalProgress>? progress;
+
   @override
   _is.Table<_is.UuidValue?> get table => t;
 
@@ -149,15 +126,6 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
   LocalVocabulary copyWith({
     _is.UuidValue? id = const _is.$UndefinedUuidValue(),
     int? spaceId,
-    String? source,
-    String? target,
-    String? sourceLanguageCode,
-    String? targetLanguageCode,
-    double? level,
-    bool? isNovice,
-    int? intervalMinutes,
-    double? ease,
-    DateTime? nextReviewAt,
     String? imageKind,
     String? customImageId,
     DateTime? customImageUploadedAt = const _is.$UndefinedDateTime(),
@@ -168,6 +136,9 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
     String? stockPhotographerUrl,
     DateTime? createdAt,
     String? extras,
+    List<_ilfqqi7t.LocalTranslation>? translations =
+        const _is.$UndefinedList<_ilfqqi7t.LocalTranslation>(),
+    List<_in2srp6w.LocalProgress>? progress = const _is.$UndefinedList<_in2srp6w.LocalProgress>(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -175,15 +146,6 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
       '__className__': 'LocalVocabulary',
       if (id != null) 'id': id?.toJson(),
       if (spaceId != null) 'spaceId': spaceId,
-      'source': source,
-      'target': target,
-      'sourceLanguageCode': sourceLanguageCode,
-      'targetLanguageCode': targetLanguageCode,
-      'level': level,
-      'isNovice': isNovice,
-      'intervalMinutes': intervalMinutes,
-      'ease': ease,
-      'nextReviewAt': nextReviewAt.toJson(),
       'imageKind': imageKind,
       if (customImageId != null) 'customImageId': customImageId,
       if (customImageUploadedAt != null) 'customImageUploadedAt': customImageUploadedAt?.toJson(),
@@ -194,6 +156,9 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
       if (stockPhotographerUrl != null) 'stockPhotographerUrl': stockPhotographerUrl,
       'createdAt': createdAt.toJson(),
       if (extras != null) 'extras': extras,
+      if (translations != null)
+        'translations': translations?.toJson(valueToJson: (v) => v.toJson()),
+      if (progress != null) 'progress': progress?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -203,15 +168,6 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
       '__className__': 'LocalVocabulary',
       if (id != null) 'id': id?.toJson(),
       if (spaceId != null) 'spaceId': spaceId,
-      'source': source,
-      'target': target,
-      'sourceLanguageCode': sourceLanguageCode,
-      'targetLanguageCode': targetLanguageCode,
-      'level': level,
-      'isNovice': isNovice,
-      'intervalMinutes': intervalMinutes,
-      'ease': ease,
-      'nextReviewAt': nextReviewAt.toJson(),
       'imageKind': imageKind,
       if (customImageId != null) 'customImageId': customImageId,
       if (customImageUploadedAt != null) 'customImageUploadedAt': customImageUploadedAt?.toJson(),
@@ -222,11 +178,20 @@ abstract class LocalVocabulary implements _is.TableRow<_is.UuidValue?>, _is.Prot
       if (stockPhotographerUrl != null) 'stockPhotographerUrl': stockPhotographerUrl,
       'createdAt': createdAt.toJson(),
       if (extras != null) 'extras': extras,
+      if (translations != null)
+        'translations': translations?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+      if (progress != null) 'progress': progress?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
     };
   }
 
-  static LocalVocabularyInclude include() {
-    return LocalVocabularyInclude._();
+  static LocalVocabularyInclude include({
+    _ilfqqi7t.LocalTranslationIncludeList? translations,
+    _in2srp6w.LocalProgressIncludeList? progress,
+  }) {
+    return LocalVocabularyInclude._(
+      translations: translations,
+      progress: progress,
+    );
   }
 
   static LocalVocabularyIncludeList includeList({
@@ -259,15 +224,6 @@ class _LocalVocabularyImpl extends LocalVocabulary {
   _LocalVocabularyImpl({
     _is.UuidValue? id,
     int? spaceId,
-    required String source,
-    required String target,
-    required String sourceLanguageCode,
-    required String targetLanguageCode,
-    required double level,
-    required bool isNovice,
-    required int intervalMinutes,
-    required double ease,
-    required DateTime nextReviewAt,
     required String imageKind,
     String? customImageId,
     DateTime? customImageUploadedAt,
@@ -278,18 +234,11 @@ class _LocalVocabularyImpl extends LocalVocabulary {
     String? stockPhotographerUrl,
     required DateTime createdAt,
     String? extras,
+    List<_ilfqqi7t.LocalTranslation>? translations,
+    List<_in2srp6w.LocalProgress>? progress,
   }) : super._(
          id: id,
          spaceId: spaceId,
-         source: source,
-         target: target,
-         sourceLanguageCode: sourceLanguageCode,
-         targetLanguageCode: targetLanguageCode,
-         level: level,
-         isNovice: isNovice,
-         intervalMinutes: intervalMinutes,
-         ease: ease,
-         nextReviewAt: nextReviewAt,
          imageKind: imageKind,
          customImageId: customImageId,
          customImageUploadedAt: customImageUploadedAt,
@@ -300,6 +249,8 @@ class _LocalVocabularyImpl extends LocalVocabulary {
          stockPhotographerUrl: stockPhotographerUrl,
          createdAt: createdAt,
          extras: extras,
+         translations: translations,
+         progress: progress,
        );
 
   /// Returns a shallow copy of this [LocalVocabulary]
@@ -309,15 +260,6 @@ class _LocalVocabularyImpl extends LocalVocabulary {
   LocalVocabulary copyWith({
     _is.UuidValue? id = const _is.$UndefinedUuidValue(),
     Object? spaceId = _Undefined,
-    String? source,
-    String? target,
-    String? sourceLanguageCode,
-    String? targetLanguageCode,
-    double? level,
-    bool? isNovice,
-    int? intervalMinutes,
-    double? ease,
-    DateTime? nextReviewAt,
     String? imageKind,
     Object? customImageId = _Undefined,
     DateTime? customImageUploadedAt = const _is.$UndefinedDateTime(),
@@ -328,19 +270,13 @@ class _LocalVocabularyImpl extends LocalVocabulary {
     Object? stockPhotographerUrl = _Undefined,
     DateTime? createdAt,
     Object? extras = _Undefined,
+    List<_ilfqqi7t.LocalTranslation>? translations =
+        const _is.$UndefinedList<_ilfqqi7t.LocalTranslation>(),
+    List<_in2srp6w.LocalProgress>? progress = const _is.$UndefinedList<_in2srp6w.LocalProgress>(),
   }) {
     return LocalVocabulary(
       id: id is _is.UndefinedSentinel ? this.id : id,
       spaceId: spaceId is int? ? spaceId : this.spaceId,
-      source: source ?? this.source,
-      target: target ?? this.target,
-      sourceLanguageCode: sourceLanguageCode ?? this.sourceLanguageCode,
-      targetLanguageCode: targetLanguageCode ?? this.targetLanguageCode,
-      level: level ?? this.level,
-      isNovice: isNovice ?? this.isNovice,
-      intervalMinutes: intervalMinutes ?? this.intervalMinutes,
-      ease: ease ?? this.ease,
-      nextReviewAt: nextReviewAt ?? this.nextReviewAt,
       imageKind: imageKind ?? this.imageKind,
       customImageId: customImageId is String? ? customImageId : this.customImageId,
       customImageUploadedAt: customImageUploadedAt is _is.UndefinedSentinel
@@ -357,6 +293,12 @@ class _LocalVocabularyImpl extends LocalVocabulary {
           : this.stockPhotographerUrl,
       createdAt: createdAt ?? this.createdAt,
       extras: extras is String? ? extras : this.extras,
+      translations: translations is _is.UndefinedSentinel
+          ? this.translations?.map((e0) => e0.copyWith()).toList()
+          : translations,
+      progress: progress is _is.UndefinedSentinel
+          ? this.progress?.map((e0) => e0.copyWith()).toList()
+          : progress,
     );
   }
 }
@@ -366,51 +308,6 @@ class LocalVocabularyUpdateTable extends _is.UpdateTable<LocalVocabularyTable> {
 
   _is.ColumnValue<int, int> spaceId(int? value) => _is.ColumnValue(
     table.spaceId,
-    value,
-  );
-
-  _is.ColumnValue<String, String> source(String value) => _is.ColumnValue(
-    table.source,
-    value,
-  );
-
-  _is.ColumnValue<String, String> target(String value) => _is.ColumnValue(
-    table.target,
-    value,
-  );
-
-  _is.ColumnValue<String, String> sourceLanguageCode(String value) => _is.ColumnValue(
-    table.sourceLanguageCode,
-    value,
-  );
-
-  _is.ColumnValue<String, String> targetLanguageCode(String value) => _is.ColumnValue(
-    table.targetLanguageCode,
-    value,
-  );
-
-  _is.ColumnValue<double, double> level(double value) => _is.ColumnValue(
-    table.level,
-    value,
-  );
-
-  _is.ColumnValue<bool, bool> isNovice(bool value) => _is.ColumnValue(
-    table.isNovice,
-    value,
-  );
-
-  _is.ColumnValue<int, int> intervalMinutes(int value) => _is.ColumnValue(
-    table.intervalMinutes,
-    value,
-  );
-
-  _is.ColumnValue<double, double> ease(double value) => _is.ColumnValue(
-    table.ease,
-    value,
-  );
-
-  _is.ColumnValue<DateTime, DateTime> nextReviewAt(DateTime value) => _is.ColumnValue(
-    table.nextReviewAt,
     value,
   );
 
@@ -472,42 +369,6 @@ class LocalVocabularyTable extends _is.Table<_is.UuidValue?> {
       'spaceId',
       this,
     );
-    source = _is.ColumnString(
-      'source',
-      this,
-    );
-    target = _is.ColumnString(
-      'target',
-      this,
-    );
-    sourceLanguageCode = _is.ColumnString(
-      'sourceLanguageCode',
-      this,
-    );
-    targetLanguageCode = _is.ColumnString(
-      'targetLanguageCode',
-      this,
-    );
-    level = _is.ColumnDouble(
-      'level',
-      this,
-    );
-    isNovice = _is.ColumnBool(
-      'isNovice',
-      this,
-    );
-    intervalMinutes = _is.ColumnInt(
-      'intervalMinutes',
-      this,
-    );
-    ease = _is.ColumnDouble(
-      'ease',
-      this,
-    );
-    nextReviewAt = _is.ColumnDateTime(
-      'nextReviewAt',
-      this,
-    );
     imageKind = _is.ColumnString(
       'imageKind',
       this,
@@ -555,24 +416,6 @@ class LocalVocabularyTable extends _is.Table<_is.UuidValue?> {
   /// The space owning this row. Maintained by the sync engine.
   late final _is.ColumnInt spaceId;
 
-  late final _is.ColumnString source;
-
-  late final _is.ColumnString target;
-
-  late final _is.ColumnString sourceLanguageCode;
-
-  late final _is.ColumnString targetLanguageCode;
-
-  late final _is.ColumnDouble level;
-
-  late final _is.ColumnBool isNovice;
-
-  late final _is.ColumnInt intervalMinutes;
-
-  late final _is.ColumnDouble ease;
-
-  late final _is.ColumnDateTime nextReviewAt;
-
   late final _is.ColumnString imageKind;
 
   late final _is.ColumnString customImageId;
@@ -593,19 +436,80 @@ class LocalVocabularyTable extends _is.Table<_is.UuidValue?> {
 
   late final _is.ColumnString extras;
 
+  _ilfqqi7t.LocalTranslationTable? ___translations;
+
+  _is.ManyRelation<_ilfqqi7t.LocalTranslationTable>? _translations;
+
+  _in2srp6w.LocalProgressTable? ___progress;
+
+  _is.ManyRelation<_in2srp6w.LocalProgressTable>? _progress;
+
+  _ilfqqi7t.LocalTranslationTable get __translations {
+    if (___translations != null) return ___translations!;
+    ___translations = _is.createRelationTable(
+      relationFieldName: '__translations',
+      field: LocalVocabulary.t.id,
+      foreignField: _ilfqqi7t.LocalTranslation.t.vocabularyId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _ilfqqi7t.LocalTranslationTable(tableRelation: foreignTableRelation),
+    );
+    return ___translations!;
+  }
+
+  _in2srp6w.LocalProgressTable get __progress {
+    if (___progress != null) return ___progress!;
+    ___progress = _is.createRelationTable(
+      relationFieldName: '__progress',
+      field: LocalVocabulary.t.id,
+      foreignField: _in2srp6w.LocalProgress.t.vocabularyId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _in2srp6w.LocalProgressTable(tableRelation: foreignTableRelation),
+    );
+    return ___progress!;
+  }
+
+  _is.ManyRelation<_ilfqqi7t.LocalTranslationTable> get translations {
+    if (_translations != null) return _translations!;
+    var relationTable = _is.createRelationTable(
+      relationFieldName: 'translations',
+      field: LocalVocabulary.t.id,
+      foreignField: _ilfqqi7t.LocalTranslation.t.vocabularyId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _ilfqqi7t.LocalTranslationTable(tableRelation: foreignTableRelation),
+    );
+    _translations = _is.ManyRelation<_ilfqqi7t.LocalTranslationTable>(
+      tableWithRelations: relationTable,
+      table: _ilfqqi7t.LocalTranslationTable(
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
+    );
+    return _translations!;
+  }
+
+  _is.ManyRelation<_in2srp6w.LocalProgressTable> get progress {
+    if (_progress != null) return _progress!;
+    var relationTable = _is.createRelationTable(
+      relationFieldName: 'progress',
+      field: LocalVocabulary.t.id,
+      foreignField: _in2srp6w.LocalProgress.t.vocabularyId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _in2srp6w.LocalProgressTable(tableRelation: foreignTableRelation),
+    );
+    _progress = _is.ManyRelation<_in2srp6w.LocalProgressTable>(
+      tableWithRelations: relationTable,
+      table: _in2srp6w.LocalProgressTable(tableRelation: relationTable.tableRelation!.lastRelation),
+    );
+    return _progress!;
+  }
+
   @override
   List<_is.Column> get columns => [
     id,
     spaceId,
-    source,
-    target,
-    sourceLanguageCode,
-    targetLanguageCode,
-    level,
-    isNovice,
-    intervalMinutes,
-    ease,
-    nextReviewAt,
     imageKind,
     customImageId,
     customImageUploadedAt,
@@ -617,13 +521,37 @@ class LocalVocabularyTable extends _is.Table<_is.UuidValue?> {
     createdAt,
     extras,
   ];
+
+  @override
+  _is.Table? getRelationTable(String relationField) {
+    if (relationField == 'translations') {
+      return __translations;
+    }
+    if (relationField == 'progress') {
+      return __progress;
+    }
+    return null;
+  }
 }
 
 class LocalVocabularyInclude extends _is.IncludeObject {
-  LocalVocabularyInclude._();
+  LocalVocabularyInclude._({
+    _ilfqqi7t.LocalTranslationIncludeList? translations,
+    _in2srp6w.LocalProgressIncludeList? progress,
+  }) {
+    _translations = translations;
+    _progress = progress;
+  }
+
+  _ilfqqi7t.LocalTranslationIncludeList? _translations;
+
+  _in2srp6w.LocalProgressIncludeList? _progress;
 
   @override
-  Map<String, _is.Include?> get includes => {};
+  Map<String, _is.Include?> get includes => {
+    'translations': _translations,
+    'progress': _progress,
+  };
 
   @override
   _is.Table<_is.UuidValue?> get table => LocalVocabulary.t;
@@ -650,6 +578,10 @@ class LocalVocabularyIncludeList extends _is.IncludeList {
 
 class LocalVocabularyRepository {
   const LocalVocabularyRepository._();
+
+  final attach = const LocalVocabularyAttachRepository._();
+
+  final attachRow = const LocalVocabularyAttachRowRepository._();
 
   /// Returns a list of [LocalVocabulary]s matching the given query parameters.
   ///
@@ -681,6 +613,7 @@ class LocalVocabularyRepository {
     _is.OrderByBuilder<LocalVocabularyTable>? orderBy,
     _is.OrderByListBuilder<LocalVocabularyTable>? orderByList,
     _is.Transaction? transaction,
+    LocalVocabularyInclude? include,
     _is.LockMode? lockMode,
     _is.LockBehavior? lockBehavior,
   }) async {
@@ -691,6 +624,7 @@ class LocalVocabularyRepository {
       limit: limit,
       offset: offset,
       transaction: transaction,
+      include: include,
       lockMode: lockMode,
       lockBehavior: lockBehavior,
     );
@@ -745,6 +679,7 @@ class LocalVocabularyRepository {
     int? offset,
     _is.OrderByBuilder<LocalVocabularyTable>? orderBy,
     _is.OrderByListBuilder<LocalVocabularyTable>? orderByList,
+    LocalVocabularyInclude? include,
     Duration? throttle = const Duration(milliseconds: 30),
     Iterable<_is.Table>? alsoTriggerOnTables,
   }) {
@@ -754,6 +689,7 @@ class LocalVocabularyRepository {
       orderByList: orderByList?.call(LocalVocabulary.t),
       limit: limit,
       offset: offset,
+      include: include,
       throttle: throttle,
       alsoTriggerOnTables: alsoTriggerOnTables,
     );
@@ -783,6 +719,7 @@ class LocalVocabularyRepository {
     _is.OrderByBuilder<LocalVocabularyTable>? orderBy,
     _is.OrderByListBuilder<LocalVocabularyTable>? orderByList,
     _is.Transaction? transaction,
+    LocalVocabularyInclude? include,
     _is.LockMode? lockMode,
     _is.LockBehavior? lockBehavior,
   }) async {
@@ -792,6 +729,7 @@ class LocalVocabularyRepository {
       orderByList: orderByList?.call(LocalVocabulary.t),
       offset: offset,
       transaction: transaction,
+      include: include,
       lockMode: lockMode,
       lockBehavior: lockBehavior,
     );
@@ -802,12 +740,14 @@ class LocalVocabularyRepository {
     _is.DatabaseSession session,
     _is.UuidValue id, {
     _is.Transaction? transaction,
+    LocalVocabularyInclude? include,
     _is.LockMode? lockMode,
     _is.LockBehavior? lockBehavior,
   }) async {
     return session.db.findById<LocalVocabulary>(
       id,
       transaction: transaction,
+      include: include,
       lockMode: lockMode,
       lockBehavior: lockBehavior,
     );
@@ -1101,6 +1041,110 @@ class LocalVocabularyRepository {
       where: where(LocalVocabulary.t),
       lockMode: lockMode,
       lockBehavior: lockBehavior,
+      transaction: transaction,
+    );
+  }
+}
+
+class LocalVocabularyAttachRepository {
+  const LocalVocabularyAttachRepository._();
+
+  /// Creates a relation between this [LocalVocabulary] and the given [LocalTranslation]s
+  /// by setting each [LocalTranslation]'s foreign key `vocabularyId` to refer to this [LocalVocabulary].
+  Future<void> translations(
+    _is.DatabaseSession session,
+    LocalVocabulary localVocabulary,
+    List<_ilfqqi7t.LocalTranslation> localTranslation, {
+    _is.Transaction? transaction,
+  }) async {
+    if (localTranslation.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('localTranslation.id');
+    }
+    if (localVocabulary.id == null) {
+      throw ArgumentError.notNull('localVocabulary.id');
+    }
+
+    var $localTranslation = localTranslation
+        .map((e) => e.copyWith(vocabularyId: localVocabulary.id))
+        .toList();
+    await session.db.update<_ilfqqi7t.LocalTranslation>(
+      $localTranslation,
+      columns: [_ilfqqi7t.LocalTranslation.t.vocabularyId],
+      transaction: transaction,
+    );
+  }
+
+  /// Creates a relation between this [LocalVocabulary] and the given [LocalProgress]s
+  /// by setting each [LocalProgress]'s foreign key `vocabularyId` to refer to this [LocalVocabulary].
+  Future<void> progress(
+    _is.DatabaseSession session,
+    LocalVocabulary localVocabulary,
+    List<_in2srp6w.LocalProgress> localProgress, {
+    _is.Transaction? transaction,
+  }) async {
+    if (localProgress.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('localProgress.id');
+    }
+    if (localVocabulary.id == null) {
+      throw ArgumentError.notNull('localVocabulary.id');
+    }
+
+    var $localProgress = localProgress
+        .map((e) => e.copyWith(vocabularyId: localVocabulary.id))
+        .toList();
+    await session.db.update<_in2srp6w.LocalProgress>(
+      $localProgress,
+      columns: [_in2srp6w.LocalProgress.t.vocabularyId],
+      transaction: transaction,
+    );
+  }
+}
+
+class LocalVocabularyAttachRowRepository {
+  const LocalVocabularyAttachRowRepository._();
+
+  /// Creates a relation between this [LocalVocabulary] and the given [LocalTranslation]
+  /// by setting the [LocalTranslation]'s foreign key `vocabularyId` to refer to this [LocalVocabulary].
+  Future<void> translations(
+    _is.DatabaseSession session,
+    LocalVocabulary localVocabulary,
+    _ilfqqi7t.LocalTranslation localTranslation, {
+    _is.Transaction? transaction,
+  }) async {
+    if (localTranslation.id == null) {
+      throw ArgumentError.notNull('localTranslation.id');
+    }
+    if (localVocabulary.id == null) {
+      throw ArgumentError.notNull('localVocabulary.id');
+    }
+
+    var $localTranslation = localTranslation.copyWith(vocabularyId: localVocabulary.id);
+    await session.db.updateRow<_ilfqqi7t.LocalTranslation>(
+      $localTranslation,
+      columns: [_ilfqqi7t.LocalTranslation.t.vocabularyId],
+      transaction: transaction,
+    );
+  }
+
+  /// Creates a relation between this [LocalVocabulary] and the given [LocalProgress]
+  /// by setting the [LocalProgress]'s foreign key `vocabularyId` to refer to this [LocalVocabulary].
+  Future<void> progress(
+    _is.DatabaseSession session,
+    LocalVocabulary localVocabulary,
+    _in2srp6w.LocalProgress localProgress, {
+    _is.Transaction? transaction,
+  }) async {
+    if (localProgress.id == null) {
+      throw ArgumentError.notNull('localProgress.id');
+    }
+    if (localVocabulary.id == null) {
+      throw ArgumentError.notNull('localVocabulary.id');
+    }
+
+    var $localProgress = localProgress.copyWith(vocabularyId: localVocabulary.id);
+    await session.db.updateRow<_in2srp6w.LocalProgress>(
+      $localProgress,
+      columns: [_in2srp6w.LocalProgress.t.vocabularyId],
       transaction: transaction,
     );
   }

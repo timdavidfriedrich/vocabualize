@@ -13,8 +13,11 @@ import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_overview_mappers.dart';
 import 'package:shared/data/models/local_activity_day.dart';
 import 'package:shared/data/models/local_image_variant.dart';
-import 'package:shared/domain/entities/language_pair.dart';
+import 'package:shared/domain/entities/language.dart';
+import 'package:shared/domain/entities/practice_item.dart';
 import 'package:shared/domain/entities/processed_image.dart';
+import 'package:shared/domain/entities/progress.dart';
+import 'package:shared/domain/entities/translation.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
@@ -36,11 +39,13 @@ class const VocabularyRepositoryImpl(
 ) implements VocabularyRepository {
   @override
   Stream<AppResult<List<Vocabulary>>> watchVocabularies({
+    required Language language,
     required int limit,
     String? tagId,
     VocabularyFilter filter = emptyVocabularyFilter,
   }) => _withImages(
     _localDataSource.watchVocabularies(
+      languageCode: language.toLanguageCode(),
       limit: limit,
       tagId: _uuidOrNull(tagId),
       query: filter.query.trim(),
@@ -54,16 +59,25 @@ class const VocabularyRepositoryImpl(
 
   @override
   Stream<AppResult<List<Vocabulary>>> watchRecentVocabularies({
+    required Language language,
     required Duration maxAge,
     required int limit,
   }) => _withImages(
-    _localDataSource.watchRecentVocabularies(maxAge: maxAge, limit: limit),
+    _localDataSource.watchRecentVocabularies(
+      languageCode: language.toLanguageCode(),
+      maxAge: maxAge,
+      limit: limit,
+    ),
   ).toAppResult();
 
   @override
-  Stream<AppResult<VocabularyOverview>> watchVocabularyOverview({String? tagId}) {
+  Stream<AppResult<VocabularyOverview>> watchVocabularyOverview({
+    required Set<Language> languages,
+    String? tagId,
+  }) {
     return _localDataSource
         .watchOverview(
+          languageCodes: _languageCodes(languages),
           levelFloors: [for (final level in VocabularyLevel.values) level.floor],
           tagId: _uuidOrNull(tagId),
         )
@@ -73,26 +87,25 @@ class const VocabularyRepositoryImpl(
 
   @override
   Future<AppResult<Vocabulary>> addVocabulary({
-    required String source,
-    required String target,
-    required LanguagePair languages,
+    required List<Translation> translations,
+    required Set<Language> startedLanguages,
+    required Set<Language> waitingLanguages,
     required ProcessedImage? image,
     required Set<String> tagIds,
   }) async {
     final now = DateTime.now().toUtc();
+    final vocabularyId = const Uuid().v7obj();
     final imageId = const Uuid().v7obj().uuid;
     try {
       final vocabulary = Vocabulary(
-        id: const Uuid().v7obj().uuid,
-        source: source,
-        target: target,
-        sourceLanguage: languages.source,
-        targetLanguage: languages.target,
-        level: _initialLevel,
-        isNovice: true,
-        intervalMinutes: _initialIntervalMinutes,
-        ease: _initialEase,
-        nextReviewAt: now,
+        id: vocabularyId.uuid,
+        translations: {for (final translation in translations) translation.language: translation},
+        progress: {
+          for (final language in startedLanguages)
+            language: _newProgress(language, ProgressStage.shortTerm, now),
+          for (final language in waitingLanguages.difference(startedLanguages))
+            language: _newProgress(language, ProgressStage.waiting, now),
+        },
         image: switch (image) {
           final image? => await _saveImage(imageId, image),
           null => const NoImage(),
@@ -102,6 +115,14 @@ class const VocabularyRepositoryImpl(
       );
       final inserted = await _localDataSource.insertVocabulary(
         vocabulary.toLocalVocabulary(),
+        translations: [
+          for (final translation in vocabulary.translations.values)
+            translation.toLocalTranslation(vocabularyId: vocabularyId),
+        ],
+        progress: [
+          for (final progress in vocabulary.progress.values)
+            progress.toLocalProgress(vocabularyId: vocabularyId),
+        ],
         activityDay: await _activityDay(),
         tagIds: _uuids(tagIds),
       );
@@ -124,30 +145,14 @@ class const VocabularyRepositoryImpl(
   }
 
   @override
-  Future<AppResult<int>> countDueVocabularies({
-    required DateTime dueBy,
-    String? tagId,
+  Future<AppResult<List<Vocabulary>>> findVocabulariesWithText({
+    required Language language,
+    required String text,
   }) async {
     try {
-      return Success(
-        await _localDataSource.countDueVocabularies(dueBy: dueBy, tagId: _uuidOrNull(tagId)),
-      );
-    } on Object catch (error) {
-      return Failure(error.toAppError());
-    }
-  }
-
-  @override
-  Future<AppResult<List<Vocabulary>>> findDueVocabularies({
-    required DateTime dueBy,
-    required int limit,
-    String? tagId,
-  }) async {
-    try {
-      final vocabularies = await _localDataSource.findDueVocabularies(
-        dueBy: dueBy,
-        limit: limit,
-        tagId: _uuidOrNull(tagId),
+      final vocabularies = await _localDataSource.findVocabulariesWithText(
+        languageCode: language.toLanguageCode(),
+        text: text,
       );
       return Success(await _toVocabularies(vocabularies));
     } on Object catch (error) {
@@ -156,17 +161,16 @@ class const VocabularyRepositoryImpl(
   }
 
   @override
-  Future<AppResult<bool>> hasDueVocabulariesOutside({
+  Future<AppResult<int>> countDueItems({
+    required Set<Language> languages,
     required DateTime dueBy,
-    required LanguagePair languages,
     String? tagId,
   }) async {
     try {
       return Success(
-        await _localDataSource.hasDueVocabulariesOutsidePair(
+        await _localDataSource.countDueProgress(
+          languageCodes: _languageCodes(languages),
           dueBy: dueBy,
-          sourceLanguageCode: languages.source.toLanguageCode(),
-          targetLanguageCode: languages.target.toLanguageCode(),
           tagId: _uuidOrNull(tagId),
         ),
       );
@@ -176,10 +180,33 @@ class const VocabularyRepositoryImpl(
   }
 
   @override
-  Future<AppResult<()>> saveReview(Vocabulary vocabulary) async {
+  Future<AppResult<List<PracticeItem>>> findDueItems({
+    required Set<Language> languages,
+    required DateTime dueBy,
+    required int limit,
+    String? tagId,
+  }) async {
+    try {
+      final progress = await _localDataSource.findDueProgress(
+        languageCodes: _languageCodes(languages),
+        dueBy: dueBy,
+        limit: limit,
+        tagId: _uuidOrNull(tagId),
+      );
+      return Success(await _toPracticeItems(progress));
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<()>> saveReview({
+    required String vocabularyId,
+    required Progress progress,
+  }) async {
     try {
       await _localDataSource.saveReview(
-        vocabulary.toLocalVocabulary(),
+        progress.toLocalProgress(vocabularyId: UuidValue.withValidation(vocabularyId)),
         activityDay: await _activityDay(),
       );
       return const Success(());
@@ -189,25 +216,20 @@ class const VocabularyRepositoryImpl(
   }
 
   @override
-  Future<AppResult<bool>> hasVocabularyWithSource(String source) async {
-    try {
-      return Success(await _localDataSource.hasVocabularyWithSource(source));
-    } on Object catch (error) {
-      return Failure(error.toAppError());
-    }
-  }
-
-  @override
   Future<AppResult<Vocabulary>> updateVocabulary({
     required String id,
-    required String source,
-    required String target,
+    required List<Translation> translations,
+    required Set<Language> startedLanguages,
+    required Set<Language> waitingLanguages,
+    required Set<Language> removedLanguages,
     required VocabularyImageChange image,
     required Set<String> tagIds,
   }) async {
+    final now = DateTime.now().toUtc();
+    final vocabularyId = UuidValue.withValidation(id);
     final newImageId = const Uuid().v7obj().uuid;
     try {
-      final stored = await _localDataSource.findVocabulary(UuidValue.withValidation(id));
+      final stored = await _localDataSource.findVocabulary(vocabularyId);
       if (stored == null) return const Failure(NotFoundError());
       final current = (await _toVocabularies([stored])).single;
       final newImage = switch (image) {
@@ -216,12 +238,10 @@ class const VocabularyRepositoryImpl(
         ReplaceImage(:final image) => await _saveImage(newImageId, image),
       };
       final updated = await _localDataSource.updateVocabulary(
-        current.copyWith(source: source, target: target, image: newImage).toLocalVocabulary(),
-        columns: (t) => switch (image) {
-          KeepImage() => [t.source, t.target],
-          RemoveImage() || ReplaceImage() => [
-            t.source,
-            t.target,
+        current.copyWith(image: newImage).toLocalVocabulary(),
+        columns: switch (image) {
+          KeepImage() => null,
+          RemoveImage() || ReplaceImage() => (t) => [
             t.imageKind,
             t.customImageId,
             t.customImageUploadedAt,
@@ -232,6 +252,25 @@ class const VocabularyRepositoryImpl(
             t.stockPhotographerUrl,
           ],
         },
+        translations: [
+          for (final translation in translations)
+            translation.toLocalTranslation(vocabularyId: vocabularyId),
+        ],
+        addedProgress: [
+          for (final language in startedLanguages)
+            _newProgress(
+              language,
+              ProgressStage.shortTerm,
+              now,
+            ).toLocalProgress(vocabularyId: vocabularyId),
+          for (final language in waitingLanguages.difference(startedLanguages))
+            _newProgress(
+              language,
+              ProgressStage.waiting,
+              now,
+            ).toLocalProgress(vocabularyId: vocabularyId),
+        ],
+        removedLanguageCodes: _languageCodes(removedLanguages),
         tagIds: _uuids(tagIds),
       );
       if ((image, stored.customImageId) case (RemoveImage() || ReplaceImage(), final oldId?)) {
@@ -257,6 +296,18 @@ class const VocabularyRepositoryImpl(
     } on Object catch (error) {
       return Failure(error.toAppError());
     }
+  }
+
+  Progress _newProgress(Language language, ProgressStage stage, DateTime now) {
+    return Progress(
+      language: language,
+      stage: stage,
+      level: _initialLevel,
+      intervalMinutes: _initialIntervalMinutes,
+      ease: _initialEase,
+      nextReviewAt: now,
+      createdAt: now,
+    );
   }
 
   Future<CustomImage> _saveImage(String imageId, ProcessedImage image) async {
@@ -292,6 +343,21 @@ class const VocabularyRepositoryImpl(
     );
   }
 
+  Future<List<PracticeItem>> _toPracticeItems(List<LocalProgress> progress) async {
+    final vocabularies = await _toVocabularies([
+      for (final row in progress) ?row.vocabulary,
+    ]);
+    final vocabulariesById = {for (final vocabulary in vocabularies) vocabulary.id: vocabulary};
+    return [
+      for (final row in progress)
+        if ((vocabulariesById[row.vocabularyId.uuid], row.languageCode.toLanguage()) case (
+          final vocabulary?,
+          final language,
+        ) when language != Language.unknown)
+          PracticeItem(vocabulary: vocabulary, language: language),
+    ];
+  }
+
   Future<List<Vocabulary>> _toVocabularies(List<LocalVocabulary> vocabularies) async {
     final imagePaths = await _imageFileDataSource.findImagePaths([
       for (final vocabulary in vocabularies) ?vocabulary.customImageId,
@@ -311,6 +377,10 @@ class const VocabularyRepositoryImpl(
         ),
     ];
   }
+
+  Set<String> _languageCodes(Set<Language> languages) => {
+    for (final language in languages) language.toLanguageCode(),
+  };
 
   UuidValue? _uuidOrNull(String? id) => id == null ? null : UuidValue.withValidation(id);
 

@@ -12,7 +12,7 @@ import 'package:shared/data/data_sources/local_import_data_source.dart';
 import 'package:shared/data/data_sources/setting_local_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/mappers/backup_mappers.dart';
-import 'package:shared/data/mappers/language_mappers.dart';
+import 'package:shared/data/mappers/language_setup_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/models/local_backup.dart';
 import 'package:shared/data/models/local_image_variant.dart';
@@ -78,10 +78,7 @@ class const BackupRepositoryImpl(
         ),
         images: images,
         missingImages: missingImages,
-        settings: (await _settingDataSource.readLanguagePair())
-            ?.toLanguagePair()
-            ?.toLocalLanguagePairSetting()
-            .toLocalBackupSettings(),
+        languages: (await _settingDataSource.readLanguageSettings()).toLocalBackupLanguages(),
       );
       await _fileDataSource.shareArchive(archivePath);
       return const Success(());
@@ -142,11 +139,21 @@ class const BackupRepositoryImpl(
     final tagsById = {for (final tag in contents.tags) tag.id: tag};
     final tagIds = {for (final tagId in tagsById.keys) tagId: _newId()};
     final vocabularies = <LocalVocabulary>[];
+    final translations = <LocalTranslation>[];
+    final progress = <LocalProgress>[];
     final vocabularyTags = <LocalVocabularyTag>[];
     for (final item in contents.vocabularies) {
       final vocabularyId = _newId();
       final image = images[item.id] ?? item.image?.toVocabularyImage() ?? const NoImage();
-      vocabularies.add(item.toVocabulary(id: vocabularyId.uuid, image: image).toLocalVocabulary());
+      final vocabulary = item.toVocabulary(id: vocabularyId.uuid, image: image);
+      vocabularies.add(vocabulary.toLocalVocabulary());
+      translations.addAll([
+        for (final translation in vocabulary.translations.values)
+          translation.toLocalTranslation(vocabularyId: vocabularyId),
+      ]);
+      progress.addAll([
+        for (final row in vocabulary.progress.values) row.toLocalProgress(vocabularyId: vocabularyId),
+      ]);
       for (final tagId in item.tagIds.toSet()) {
         if (tagIds[tagId] case final localTagId?) {
           vocabularyTags.add(
@@ -155,8 +162,11 @@ class const BackupRepositoryImpl(
         }
       }
     }
+    final languages = archive.manifest.languages;
     return LocalSnapshot(
       vocabularies: vocabularies,
+      translations: translations,
+      progress: progress,
       tags: [
         for (final MapEntry(key: tagId, value: tag) in tagsById.entries)
           if (tagIds[tagId] case final id?) tag.toLocalTag(id: id, createdAt: now),
@@ -166,10 +176,15 @@ class const BackupRepositoryImpl(
         for (final activity in contents.activities) activity.toLocalActivity(id: _newId()),
       ],
       settings: [
-        if (archive.manifest.settings?.toLocalLanguagePairSetting() case final pair?
-            when pair.toLanguagePair() != null)
-          _settingDataSource.createLanguagePair(
-            value: pair.toJson(),
+        if (languages != null)
+          ..._settingDataSource.createLanguageSettingRows(
+            mainLanguage: languages.mainLanguage,
+            selectedLanguage: languages.selectedLanguage,
+            learnedLanguages: {
+              for (final value in languages.learnedLanguages)
+                if (value.toLocalLearnedLanguageSetting() case final setting?)
+                  setting.language: value,
+            },
             changedAt: archive.manifest.createdAt,
           ),
       ],

@@ -22,7 +22,7 @@ import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/connectivity_repository.dart'
     as _i689;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
-import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
+import 'package:shared/domain/repositories/language_repository.dart' as _i308;
 import 'package:vocabualize_client/vocabualize_client.dart' as _i1040;
 
 class FeatureScanPackageModule extends _i526.MicroPackageModule {
@@ -42,7 +42,7 @@ class FeatureScanPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i710.ScanBloc>(() => _i710.ScanBloc(
           gh<_i204.ImageRepository>(),
           gh<_i901.ImageLabelingRepository>(),
-          gh<_i0.SettingsRepository>(),
+          gh<_i308.LanguageRepository>(),
           gh<_i328.AppInfoRepository>(),
           gh<_i689.ConnectivityRepository>(),
         ));

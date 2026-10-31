@@ -5,25 +5,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_pair.dart';
-import 'package:shared/domain/repositories/settings_repository.dart';
+import 'package:shared/domain/entities/language_setup.dart';
+import 'package:shared/domain/repositories/language_repository.dart';
 
 @injectable
 class LanguageSelectionBloc extends Bloc<LanguageSelectionEvent, LanguageSelectionState> {
-  LanguageSelectionBloc(this._settingsRepository) : super(const LanguageSelectionLoading()) {
+  LanguageSelectionBloc(this._languageRepository) : super(const LanguageSelectionLoading()) {
     on<LanguageSelectionStarted>(_onStarted);
     on<LanguageSelectionSourceChanged>(_onSourceChanged);
     on<LanguageSelectionTargetChanged>(_onTargetChanged);
     on<LanguageSelectionSaveRequested>(_onSaveRequested);
   }
 
-  final SettingsRepository _settingsRepository;
+  final LanguageRepository _languageRepository;
 
   Future<void> _onStarted(
     LanguageSelectionStarted event,
     Emitter<LanguageSelectionState> emit,
   ) async {
-    final pair = switch (await _settingsRepository.readLanguagePair()) {
-      Success(data: final pair?) => pair,
+    final pair = switch (await _languageRepository.readLanguageSetup()) {
+      Success(data: LanguageSetup(:final main, :final selected)) => LanguagePair(
+        source: main,
+        target: selected,
+      ),
       Success() || Failure() => _suggestedPair(),
     };
     emit(LanguageSelectionEditing(pair: pair, isSaving: false, error: null));
@@ -39,7 +43,7 @@ class LanguageSelectionBloc extends Bloc<LanguageSelectionEvent, LanguageSelecti
         editing.copyWith(
           pair: LanguagePair(
             source: event.language,
-            target: event.language == pair.target ? pair.source : pair.target,
+            target: event.language.isSameLanguageAs(pair.target) ? pair.source : pair.target,
           ),
         ),
       );
@@ -55,7 +59,7 @@ class LanguageSelectionBloc extends Bloc<LanguageSelectionEvent, LanguageSelecti
       emit(
         editing.copyWith(
           pair: LanguagePair(
-            source: event.language == pair.source ? pair.target : pair.source,
+            source: event.language.isSameLanguageAs(pair.source) ? pair.target : pair.source,
             target: event.language,
           ),
         ),
@@ -70,7 +74,10 @@ class LanguageSelectionBloc extends Bloc<LanguageSelectionEvent, LanguageSelecti
     if (state case final LanguageSelectionEditing editing when !editing.isSaving) {
       final saving = editing.copyWith(isSaving: true, error: null);
       emit(saving);
-      emit(switch (await _settingsRepository.setLanguagePair(editing.pair)) {
+      emit(switch (await _languageRepository.setUpLanguages(
+        main: editing.pair.source,
+        learned: [editing.pair.target],
+      )) {
         Success() => const LanguageSelectionSaved(),
         Failure(:final error) => saving.copyWith(isSaving: false, error: error),
       });
@@ -78,13 +85,13 @@ class LanguageSelectionBloc extends Bloc<LanguageSelectionEvent, LanguageSelecti
   }
 
   LanguagePair _suggestedPair() {
-    final source = switch (_settingsRepository.readDeviceLanguage()) {
+    final source = switch (_languageRepository.readDeviceLanguage()) {
       Success(data: final language) when supportedLanguages.contains(language) => language,
       Success() || Failure() => supportedLanguages.first,
     };
     return LanguagePair(
       source: source,
-      target: supportedLanguages.firstWhere((language) => language != source),
+      target: supportedLanguages.firstWhere((language) => !language.isSameLanguageAs(source)),
     );
   }
 }

@@ -643,6 +643,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get vocabularySpeakTooltip => 'Leggi ad alta voce';
 
   @override
+  String get vocabularyTranslationPendingLabel => 'Traduzione in arrivo';
+
+  @override
   String get vocabularySearchTooltip => 'Cerca';
 
   @override

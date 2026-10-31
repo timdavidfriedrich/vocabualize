@@ -512,6 +512,11 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     'target',
     _$target,
   );
+  static bool _$isTargetEdited(DetailsEditing v) => v.isTargetEdited;
+  static const Field<DetailsEditing, bool> _f$isTargetEdited = Field(
+    'isTargetEdited',
+    _$isTargetEdited,
+  );
   static DetailsImage _$selectedImage(DetailsEditing v) => v.selectedImage;
   static const Field<DetailsEditing, DetailsImage> _f$selectedImage = Field(
     'selectedImage',
@@ -570,6 +575,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     #languages: _f$languages,
     #source: _f$source,
     #target: _f$target,
+    #isTargetEdited: _f$isTargetEdited,
     #selectedImage: _f$selectedImage,
     #ownPhoto: _f$ownPhoto,
     #stockImages: _f$stockImages,
@@ -589,6 +595,7 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       languages: data.dec(_f$languages),
       source: data.dec(_f$source),
       target: data.dec(_f$target),
+      isTargetEdited: data.dec(_f$isTargetEdited),
       selectedImage: data.dec(_f$selectedImage),
       ownPhoto: data.dec(_f$ownPhoto),
       stockImages: data.dec(_f$stockImages),
@@ -678,6 +685,7 @@ abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
     LanguagePair? languages,
     String? source,
     String? target,
+    bool? isTargetEdited,
     DetailsImage? selectedImage,
     DetailsImage? ownPhoto,
     List<StockImage>? stockImages,
@@ -734,6 +742,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     Object? languages = $none,
     String? source,
     String? target,
+    bool? isTargetEdited,
     DetailsImage? selectedImage,
     Object? ownPhoto = $none,
     List<StockImage>? stockImages,
@@ -751,6 +760,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
       if (languages != $none) #languages: languages,
       if (source != null) #source: source,
       if (target != null) #target: target,
+      if (isTargetEdited != null) #isTargetEdited: isTargetEdited,
       if (selectedImage != null) #selectedImage: selectedImage,
       if (ownPhoto != $none) #ownPhoto: ownPhoto,
       if (stockImages != null) #stockImages: stockImages,
@@ -770,6 +780,7 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
     languages: data.get(#languages, or: $value.languages),
     source: data.get(#source, or: $value.source),
     target: data.get(#target, or: $value.target),
+    isTargetEdited: data.get(#isTargetEdited, or: $value.isTargetEdited),
     selectedImage: data.get(#selectedImage, or: $value.selectedImage),
     ownPhoto: data.get(#ownPhoto, or: $value.ownPhoto),
     stockImages: data.get(#stockImages, or: $value.stockImages),

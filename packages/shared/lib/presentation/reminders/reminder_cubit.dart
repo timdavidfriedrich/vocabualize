@@ -5,11 +5,14 @@ import 'package:core/error/app_result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared/domain/entities/language.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/reminder_notification.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
+import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/reminder_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
@@ -24,15 +27,19 @@ class ReminderCubit extends Cubit<bool> {
     this._reminderRepository,
     this._settingsRepository,
     this._vocabularyRepository,
+    this._languageRepository,
     this._watchStreak,
   ) : super(true);
 
   final ReminderRepository _reminderRepository;
   final SettingsRepository _settingsRepository;
   final VocabularyRepository _vocabularyRepository;
+  final LanguageRepository _languageRepository;
   final WatchStreakUseCase _watchStreak;
   final _subscriptions = <StreamSubscription<Object?>>[];
   final _scheduled = <ReminderKind, List<ReminderNotification>>{};
+  StreamSubscription<AppResult<VocabularyOverview>>? _overviewSubscription;
+  Set<Language>? _activeLanguages;
   Preferences? _preferences;
   VocabularyOverview? _overview;
   Streak? _streak;
@@ -55,11 +62,8 @@ class ReminderCubit extends Cubit<bool> {
           _reschedule();
         }
       }),
-      _vocabularyRepository.watchVocabularyOverview().listen((result) {
-        if (result case Success(:final data)) {
-          _overview = data;
-          _reschedule();
-        }
+      _languageRepository.watchLanguageSetup().listen((result) {
+        if (result case Success(:final data)) _watchOverview(data);
       }),
       _watchStreak().listen((result) {
         if (result case Success(:final data)) {
@@ -68,6 +72,24 @@ class ReminderCubit extends Cubit<bool> {
         }
       }),
     ]);
+  }
+
+  void _watchOverview(LanguageSetup? setup) {
+    final languages = {
+      for (final learnedLanguage in setup?.active ?? const <LearnedLanguage>[])
+        learnedLanguage.language,
+    };
+    if (setEquals(languages, _activeLanguages)) return;
+    _activeLanguages = languages;
+    unawaited(_overviewSubscription?.cancel());
+    _overviewSubscription = _vocabularyRepository
+        .watchVocabularyOverview(languages: languages)
+        .listen((result) {
+          if (result case Success(:final data)) {
+            _overview = data;
+            _reschedule();
+          }
+        });
   }
 
   void _reschedule() {
@@ -152,6 +174,7 @@ class ReminderCubit extends Cubit<bool> {
     for (final subscription in _subscriptions) {
       await subscription.cancel();
     }
+    await _overviewSubscription?.cancel();
     return super.close();
   }
 }

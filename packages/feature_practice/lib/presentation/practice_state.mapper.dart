@@ -176,7 +176,7 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PracticeActiveMapper._());
       PracticeStateMapper.ensureInitialized();
-      VocabularyMapper.ensureInitialized();
+      PracticeItemMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -191,6 +191,16 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
   );
   static String? _$tagId(PracticeActive v) => v.tagId;
   static const Field<PracticeActive, String> _f$tagId = Field('tagId', _$tagId);
+  static Set<Language> _$languages(PracticeActive v) => v.languages;
+  static const Field<PracticeActive, Set<Language>> _f$languages = Field(
+    'languages',
+    _$languages,
+  );
+  static Language _$mainLanguage(PracticeActive v) => v.mainLanguage;
+  static const Field<PracticeActive, Language> _f$mainLanguage = Field(
+    'mainLanguage',
+    _$mainLanguage,
+  );
   static int _$totalCount(PracticeActive v) => v.totalCount;
   static const Field<PracticeActive, int> _f$totalCount = Field(
     'totalCount',
@@ -201,8 +211,8 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     'doneCount',
     _$doneCount,
   );
-  static List<Vocabulary> _$queue(PracticeActive v) => v.queue;
-  static const Field<PracticeActive, List<Vocabulary>> _f$queue = Field(
+  static List<PracticeItem> _$queue(PracticeActive v) => v.queue;
+  static const Field<PracticeActive, List<PracticeItem>> _f$queue = Field(
     'queue',
     _$queue,
   );
@@ -246,6 +256,8 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
   final MappableFields<PracticeActive> fields = const {
     #dueBy: _f$dueBy,
     #tagId: _f$tagId,
+    #languages: _f$languages,
+    #mainLanguage: _f$mainLanguage,
     #totalCount: _f$totalCount,
     #doneCount: _f$doneCount,
     #queue: _f$queue,
@@ -262,6 +274,8 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     return PracticeActive(
       dueBy: data.dec(_f$dueBy),
       tagId: data.dec(_f$tagId),
+      languages: data.dec(_f$languages),
+      mainLanguage: data.dec(_f$mainLanguage),
       totalCount: data.dec(_f$totalCount),
       doneCount: data.dec(_f$doneCount),
       queue: data.dec(_f$queue),
@@ -337,15 +351,21 @@ extension PracticeActiveValueCopy<$R, $Out>
 
 abstract class PracticeActiveCopyWith<$R, $In extends PracticeActive, $Out>
     implements PracticeStateCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
+  ListCopyWith<
+    $R,
+    PracticeItem,
+    PracticeItemCopyWith<$R, PracticeItem, PracticeItem>
+  >
   get queue;
   @override
   $R call({
     DateTime? dueBy,
     String? tagId,
+    Set<Language>? languages,
+    Language? mainLanguage,
     int? totalCount,
     int? doneCount,
-    List<Vocabulary>? queue,
+    List<PracticeItem>? queue,
     bool? showsLanguages,
     bool? isStrictCorrection,
     String? typedAnswer,
@@ -368,7 +388,11 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PracticeActive> $mapper =
       PracticeActiveMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
+  ListCopyWith<
+    $R,
+    PracticeItem,
+    PracticeItemCopyWith<$R, PracticeItem, PracticeItem>
+  >
   get queue => ListCopyWith(
     $value.queue,
     (v, t) => v.copyWith.$chain(t),
@@ -378,9 +402,11 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
   $R call({
     DateTime? dueBy,
     Object? tagId = $none,
+    Set<Language>? languages,
+    Language? mainLanguage,
     int? totalCount,
     int? doneCount,
-    List<Vocabulary>? queue,
+    List<PracticeItem>? queue,
     bool? showsLanguages,
     bool? isStrictCorrection,
     Object? typedAnswer = $none,
@@ -392,6 +418,8 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (dueBy != null) #dueBy: dueBy,
       if (tagId != $none) #tagId: tagId,
+      if (languages != null) #languages: languages,
+      if (mainLanguage != null) #mainLanguage: mainLanguage,
       if (totalCount != null) #totalCount: totalCount,
       if (doneCount != null) #doneCount: doneCount,
       if (queue != null) #queue: queue,
@@ -408,6 +436,8 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
   PracticeActive $make(CopyWithData data) => PracticeActive(
     dueBy: data.get(#dueBy, or: $value.dueBy),
     tagId: data.get(#tagId, or: $value.tagId),
+    languages: data.get(#languages, or: $value.languages),
+    mainLanguage: data.get(#mainLanguage, or: $value.mainLanguage),
     totalCount: data.get(#totalCount, or: $value.totalCount),
     doneCount: data.get(#doneCount, or: $value.doneCount),
     queue: data.get(#queue, or: $value.queue),

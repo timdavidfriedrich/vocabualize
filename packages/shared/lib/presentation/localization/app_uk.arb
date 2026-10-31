@@ -179,6 +179,7 @@
   "homeNextDueTodayMessage": "Наступне слово о {time}",
   "homeNextDueLaterMessage": "Наступне слово {date}",
   "vocabularySpeakTooltip": "Прочитати вголос",
+  "vocabularyTranslationPendingLabel": "Переклад очікується",
   "vocabularySearchTooltip": "Пошук",
   "vocabularySearchHint": "Пошук слів...",
   "vocabularySearchClearTooltip": "Очистити",

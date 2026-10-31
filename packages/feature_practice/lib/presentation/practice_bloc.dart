@@ -9,8 +9,10 @@ import 'package:feature_practice/presentation/practice_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/language.dart';
-import 'package:shared/domain/entities/language_pair.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
@@ -24,6 +26,7 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
     this._textToSpeechRepository,
     this._answerVocabulary,
     this._settingsRepository,
+    this._languageRepository,
   ) : super(const PracticeLoading()) {
     on<PracticeStarted>(_onStarted);
     on<PracticeAnswerTyped>(_onAnswerTyped);
@@ -36,16 +39,35 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
   final TextToSpeechRepository _textToSpeechRepository;
   final AnswerVocabularyUseCase _answerVocabulary;
   final SettingsRepository _settingsRepository;
+  final LanguageRepository _languageRepository;
 
   Future<void> _onStarted(PracticeStarted event, Emitter<PracticeState> emit) async {
+    switch (await _languageRepository.readLanguageSetup()) {
+      case Failure(:final error):
+        emit(PracticeFailure(error: error));
+      case Success(data: null):
+        emit(const PracticeDone());
+      case Success(data: final setup?):
+        await _start(emit, setup, tagId: event.tagId);
+    }
+  }
+
+  Future<void> _start(
+    Emitter<PracticeState> emit,
+    LanguageSetup setup, {
+    required String? tagId,
+  }) async {
+    final languages = {setup.selected};
     final dueBy = DateTime.now().toUtc();
-    final (count, batch) = await (
-      _vocabularyRepository.countDueVocabularies(dueBy: dueBy, tagId: event.tagId),
-      _vocabularyRepository.findDueVocabularies(
+    final (count, batch, preferences) = await (
+      _vocabularyRepository.countDueItems(languages: languages, dueBy: dueBy, tagId: tagId),
+      _vocabularyRepository.findDueItems(
+        languages: languages,
         dueBy: dueBy,
         limit: _batchSize,
-        tagId: event.tagId,
+        tagId: tagId,
       ),
+      _settingsRepository.readPreferences(),
     ).wait;
     switch ((count, batch)) {
       case (Failure(:final error), _) || (_, Failure(:final error)):
@@ -53,26 +75,16 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
       case (Success(), Success(data: [])):
         emit(const PracticeDone());
       case (Success(data: final total), Success(data: final queue)):
-        final first = queue.first;
-        final (showsLanguages, preferences) = await (
-          _vocabularyRepository.hasDueVocabulariesOutside(
-            dueBy: dueBy,
-            languages: LanguagePair(source: first.sourceLanguage, target: first.targetLanguage),
-            tagId: event.tagId,
-          ),
-          _settingsRepository.readPreferences(),
-        ).wait;
         emit(
           PracticeActive(
             dueBy: dueBy,
-            tagId: event.tagId,
+            tagId: tagId,
+            languages: languages,
+            mainLanguage: setup.main,
             totalCount: max(total, queue.length),
             doneCount: 0,
             queue: queue,
-            showsLanguages: switch (showsLanguages) {
-              Success(:final data) => data,
-              Failure() => false,
-            },
+            showsLanguages: languages.length > 1,
             isStrictCorrection: switch (preferences) {
               Success(data: Preferences(:final isStrictCorrectionEnabled)) =>
                 isStrictCorrectionEnabled,
@@ -95,8 +107,8 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
         active.copyWith(
           typedAnswer: event.text,
           grade: event.text.gradeAgainst(
-            current.target,
-            articles: current.targetLanguage.articles,
+            current.vocabulary.textIn(current.language) ?? "",
+            articles: current.language.articles,
             isStrict: active.isStrictCorrection,
           ),
           isSolutionShown: true,
@@ -116,7 +128,7 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
     if (active is! PracticeActive || active.isBusy || !active.grade.allows(event.answer)) return;
     final busy = active.copyWith(isBusy: true, error: null);
     emit(busy);
-    final result = await _answerVocabulary(vocabulary: active.queue.first, answer: event.answer);
+    final result = await _answerVocabulary(item: active.queue.first, answer: event.answer);
     if (result case Failure(:final error)) {
       emit(busy.copyWith(isBusy: false, error: error));
       return;
@@ -124,7 +136,8 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
     final remaining = active.queue.skip(1).toList();
     final next = remaining.isNotEmpty
         ? Success(remaining)
-        : await _vocabularyRepository.findDueVocabularies(
+        : await _vocabularyRepository.findDueItems(
+            languages: active.languages,
             dueBy: active.dueBy,
             limit: _batchSize,
             tagId: active.tagId,
@@ -152,10 +165,9 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
   Future<void> _onSpeakRequested(PracticeSpeakRequested event, Emitter<PracticeState> emit) async {
     if (state case final PracticeActive active) {
       final current = active.queue.first;
-      final result = await _textToSpeechRepository.speak(
-        text: current.target,
-        language: current.targetLanguage,
-      );
+      final text = current.vocabulary.textIn(current.language);
+      if (text == null) return;
+      final result = await _textToSpeechRepository.speak(text: text, language: current.language);
       if (result case Failure(:final error)) {
         if (state case final PracticeActive latest) emit(latest.copyWith(error: error));
       }

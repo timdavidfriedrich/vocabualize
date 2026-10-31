@@ -196,8 +196,14 @@ class const _DeleteButton({
 
   Future<void> _delete(BuildContext context) async {
     final bloc = context.read<DetailsBloc>();
-    if (await confirmsVocabularyDelete(context, _original)) {
-      bloc.add(const DetailsDeleteRequested());
+    if (bloc.state case DetailsEditing(languages: final languages?)) {
+      final isConfirmed = await confirmsVocabularyDelete(
+        context,
+        vocabulary: _original,
+        language: languages.target,
+        mainLanguage: languages.source,
+      );
+      if (isConfirmed) bloc.add(const DetailsDeleteRequested());
     }
   }
 }

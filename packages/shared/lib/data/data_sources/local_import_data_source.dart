@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
+import 'package:shared/data/extensions/uuid_extensions.dart';
 import 'package:shared/data/models/local_snapshot.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -26,7 +27,26 @@ class const LocalImportDataSourceImpl(
     ];
     final vocabularies = [
       for (final vocabulary in snapshot.vocabularies)
-        if (vocabularyIds[vocabulary.id] case final id?) vocabulary.copyWith(id: id, spaceId: null),
+        if (vocabularyIds[vocabulary.id] case final id?)
+          vocabulary.copyWith(id: id, spaceId: null, translations: null, progress: null),
+    ];
+    final translations = [
+      for (final translation in snapshot.translations)
+        if (vocabularyIds[translation.vocabularyId] case final vocabularyId?)
+          translation.copyWith(
+            id: vocabularyId.languageRowId(translation.languageCode),
+            spaceId: null,
+            vocabularyId: vocabularyId,
+          ),
+    ];
+    final progress = [
+      for (final row in snapshot.progress)
+        if (vocabularyIds[row.vocabularyId] case final vocabularyId?)
+          row.copyWith(
+            id: vocabularyId.languageRowId(row.languageCode),
+            spaceId: null,
+            vocabularyId: vocabularyId,
+          ),
     ];
     final vocabularyTags = [
       for (final link in snapshot.vocabularyTags)
@@ -45,6 +65,8 @@ class const LocalImportDataSourceImpl(
     await session.db.transaction((transaction) async {
       await LocalTag.db.insert(session, tags, transaction: transaction);
       await LocalVocabulary.db.insert(session, vocabularies, transaction: transaction);
+      await LocalTranslation.db.insert(session, translations, transaction: transaction);
+      await LocalProgress.db.insert(session, progress, transaction: transaction);
       await LocalVocabularyTag.db.insert(session, vocabularyTags, transaction: transaction);
       await LocalActivity.db.insert(session, activities, transaction: transaction);
       await LocalSetting.db.insert(session, settings, transaction: transaction);

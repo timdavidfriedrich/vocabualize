@@ -64,6 +64,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = HomeLoadingMapper._());
       HomeStateMapper.ensureInitialized();
+      LanguageSetupMapper.ensureInitialized();
       VocabularyOverviewMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
       CollectionPreviewMapper.ensureInitialized();
@@ -76,6 +77,11 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
   @override
   final String id = 'HomeLoading';
 
+  static LanguageSetup? _$setup(HomeLoading v) => v.setup;
+  static const Field<HomeLoading, LanguageSetup> _f$setup = Field(
+    'setup',
+    _$setup,
+  );
   static VocabularyOverview? _$overview(HomeLoading v) => v.overview;
   static const Field<HomeLoading, VocabularyOverview> _f$overview = Field(
     'overview',
@@ -108,6 +114,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
 
   @override
   final MappableFields<HomeLoading> fields = const {
+    #setup: _f$setup,
     #overview: _f$overview,
     #recentVocabularies: _f$recentVocabularies,
     #collections: _f$collections,
@@ -119,6 +126,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
 
   static HomeLoading _instantiate(DecodingData data) {
     return HomeLoading(
+      setup: data.dec(_f$setup),
       overview: data.dec(_f$overview),
       recentVocabularies: data.dec(_f$recentVocabularies),
       collections: data.dec(_f$collections),
@@ -189,6 +197,7 @@ extension HomeLoadingValueCopy<$R, $Out>
 
 abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
     implements HomeStateCopyWith<$R, $In, $Out> {
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup>? get setup;
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>?
   get overview;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
@@ -205,6 +214,7 @@ abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
   StreakCopyWith<$R, Streak, Streak>? get streak;
   @override
   $R call({
+    LanguageSetup? setup,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
@@ -224,6 +234,9 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<HomeLoading> $mapper =
       HomeLoadingMapper.ensureInitialized();
+  @override
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup>? get setup =>
+      $value.setup?.copyWith.$chain((v) => call(setup: v));
   @override
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>?
   get overview => $value.overview?.copyWith.$chain((v) => call(overview: v));
@@ -266,6 +279,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
       $value.streak?.copyWith.$chain((v) => call(streak: v));
   @override
   $R call({
+    Object? setup = $none,
     Object? overview = $none,
     Object? recentVocabularies = $none,
     Object? collections = $none,
@@ -275,6 +289,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
     Object? streak = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (setup != $none) #setup: setup,
       if (overview != $none) #overview: overview,
       if (recentVocabularies != $none) #recentVocabularies: recentVocabularies,
       if (collections != $none) #collections: collections,
@@ -286,6 +301,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   );
   @override
   HomeLoading $make(CopyWithData data) => HomeLoading(
+    setup: data.get(#setup, or: $value.setup),
     overview: data.get(#overview, or: $value.overview),
     recentVocabularies: data.get(
       #recentVocabularies,
@@ -312,6 +328,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = HomeLoadedMapper._());
       HomeStateMapper.ensureInitialized();
+      LanguageSetupMapper.ensureInitialized();
       VocabularyOverviewMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
       CollectionPreviewMapper.ensureInitialized();
@@ -324,6 +341,11 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
   @override
   final String id = 'HomeLoaded';
 
+  static LanguageSetup _$setup(HomeLoaded v) => v.setup;
+  static const Field<HomeLoaded, LanguageSetup> _f$setup = Field(
+    'setup',
+    _$setup,
+  );
   static VocabularyOverview _$overview(HomeLoaded v) => v.overview;
   static const Field<HomeLoaded, VocabularyOverview> _f$overview = Field(
     'overview',
@@ -358,6 +380,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
 
   @override
   final MappableFields<HomeLoaded> fields = const {
+    #setup: _f$setup,
     #overview: _f$overview,
     #recentVocabularies: _f$recentVocabularies,
     #collections: _f$collections,
@@ -370,6 +393,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
 
   static HomeLoaded _instantiate(DecodingData data) {
     return HomeLoaded(
+      setup: data.dec(_f$setup),
       overview: data.dec(_f$overview),
       recentVocabularies: data.dec(_f$recentVocabularies),
       collections: data.dec(_f$collections),
@@ -441,6 +465,7 @@ extension HomeLoadedValueCopy<$R, $Out>
 
 abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
     implements HomeStateCopyWith<$R, $In, $Out> {
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup;
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
   get overview;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
@@ -457,6 +482,7 @@ abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
   StreakCopyWith<$R, Streak, Streak>? get streak;
   @override
   $R call({
+    LanguageSetup? setup,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
@@ -477,6 +503,9 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<HomeLoaded> $mapper =
       HomeLoadedMapper.ensureInitialized();
+  @override
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup =>
+      $value.setup.copyWith.$chain((v) => call(setup: v));
   @override
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
   get overview => $value.overview.copyWith.$chain((v) => call(overview: v));
@@ -513,6 +542,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
       $value.streak?.copyWith.$chain((v) => call(streak: v));
   @override
   $R call({
+    LanguageSetup? setup,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
@@ -523,6 +553,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
     Object? error = $none,
   }) => $apply(
     FieldCopyWithData({
+      if (setup != null) #setup: setup,
       if (overview != null) #overview: overview,
       if (recentVocabularies != null) #recentVocabularies: recentVocabularies,
       if (collections != null) #collections: collections,
@@ -535,6 +566,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   );
   @override
   HomeLoaded $make(CopyWithData data) => HomeLoaded(
+    setup: data.get(#setup, or: $value.setup),
     overview: data.get(#overview, or: $value.overview),
     recentVocabularies: data.get(
       #recentVocabularies,

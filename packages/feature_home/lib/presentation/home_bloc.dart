@@ -6,11 +6,13 @@ import 'package:feature_home/presentation/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/domain/repositories/external_link_repository.dart';
+import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
@@ -28,8 +30,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this._textToSpeechRepository,
     this._watchStreak,
     this._externalLinkRepository,
+    this._languageRepository,
   ) : super(
         const HomeLoading(
+          setup: null,
           overview: null,
           recentVocabularies: null,
           collections: null,
@@ -40,6 +44,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       ) {
     on<HomeStarted>(_onStarted);
+    on<HomeLanguageChanged>(_onLanguageChanged, transformer: restartable());
     on<HomeFeedEvent>(_onFeedEvent, transformer: restartable());
     on<HomeVocabularySpeakRequested>(_onVocabularySpeakRequested);
     on<HomePhotographerLinkOpened>(_onPhotographerLinkOpened);
@@ -50,22 +55,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final TextToSpeechRepository _textToSpeechRepository;
   final WatchStreakUseCase _watchStreak;
   final ExternalLinkRepository _externalLinkRepository;
+  final LanguageRepository _languageRepository;
 
   Future<void> _onStarted(HomeStarted event, Emitter<HomeState> emit) async {
-    add(const HomeFeedEndReached());
     await Future.wait([
       emit.forEach(
-        _vocabularyRepository.watchVocabularyOverview(),
-        onData: (result) => switch (result) {
-          Success(:final data) => _merged(overview: data),
-          Failure(:final error) => HomeFailure(error: error),
-        },
-      ),
-      emit.forEach(
-        _vocabularyRepository.watchRecentVocabularies(maxAge: _recentMaxAge, limit: _recentLimit),
-        onData: (result) => switch (result) {
-          Success(:final data) => _merged(recentVocabularies: data),
-          Failure(:final error) => HomeFailure(error: error),
+        _languageRepository.watchLanguageSetup(),
+        onData: (result) {
+          if (result case Success(data: final setup?)) {
+            if (setup.selected != _setup?.selected) {
+              add(HomeLanguageChanged(language: setup.selected));
+            }
+            return _merged(setup: setup);
+          }
+          return state;
         },
       ),
       emit.forEach(
@@ -85,6 +88,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ]);
   }
 
+  Future<void> _onLanguageChanged(HomeLanguageChanged event, Emitter<HomeState> emit) async {
+    final language = event.language;
+    add(HomeFilterChanged(filter: _filter));
+    await Future.wait([
+      emit.forEach(
+        _vocabularyRepository.watchVocabularyOverview(languages: {language}),
+        onData: (result) => switch (result) {
+          Success(:final data) => _merged(overview: data),
+          Failure(:final error) => HomeFailure(error: error),
+        },
+      ),
+      emit.forEach(
+        _vocabularyRepository.watchRecentVocabularies(
+          language: language,
+          maxAge: _recentMaxAge,
+          limit: _recentLimit,
+        ),
+        onData: (result) => switch (result) {
+          Success(:final data) => _merged(recentVocabularies: data),
+          Failure(:final error) => HomeFailure(error: error),
+        },
+      ),
+    ]);
+  }
+
   Future<void> _onFeedEvent(HomeFeedEvent event, Emitter<HomeState> emit) async {
     final feed = switch ((state, event)) {
       (HomeFailure(), _) => null,
@@ -95,10 +123,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         (limit: feedLimit + _feedPageSize, filter: filter),
       (_, HomeFilterChanged(:final filter)) => (limit: _feedPageSize, filter: filter),
     };
-    if (feed == null) return;
+    final language = _setup?.selected;
+    if (feed == null || language == null) return;
     emit(_merged(filter: feed.filter));
     await emit.forEach(
-      _vocabularyRepository.watchVocabularies(limit: feed.limit, filter: feed.filter),
+      _vocabularyRepository.watchVocabularies(
+        language: language,
+        limit: feed.limit,
+        filter: feed.filter,
+      ),
       onData: (result) => switch (result) {
         Success(:final data) => _merged(vocabularies: data, feedLimit: feed.limit),
         Failure(:final error) => HomeFailure(error: error),
@@ -110,11 +143,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeVocabularySpeakRequested event,
     Emitter<HomeState> emit,
   ) async {
+    final language = _setup?.selected;
+    final text = language == null ? null : event.vocabulary.textIn(language);
+    if (language == null || text == null) return;
     _emitError(emit, null);
-    final result = await _textToSpeechRepository.speak(
-      text: event.vocabulary.target,
-      language: event.vocabulary.targetLanguage,
-    );
+    final result = await _textToSpeechRepository.speak(text: text, language: language);
     if (result case Failure(:final error)) _emitError(emit, error);
   }
 
@@ -127,11 +160,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (result case Failure(:final error)) _emitError(emit, error);
   }
 
+  LanguageSetup? get _setup => switch (state) {
+    HomeLoading(:final setup) => setup,
+    HomeLoaded(:final setup) => setup,
+    HomeFailure() => null,
+  };
+
+  VocabularyFilter get _filter => switch (state) {
+    HomeLoading(:final filter) || HomeLoaded(:final filter) => filter,
+    HomeFailure() => emptyVocabularyFilter,
+  };
+
   void _emitError(Emitter<HomeState> emit, AppError? error) {
     if (state case final HomeLoaded loaded) emit(loaded.copyWith(error: error));
   }
 
   HomeState _merged({
+    LanguageSetup? setup,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
@@ -142,6 +187,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }) {
     return switch (state) {
       final HomeLoaded loaded => loaded.copyWith(
+        setup: setup,
         overview: overview,
         recentVocabularies: recentVocabularies,
         collections: collections,
@@ -152,6 +198,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ),
       final HomeLoading loading => _completed(
         HomeLoading(
+          setup: setup ?? loading.setup,
           overview: overview ?? loading.overview,
           recentVocabularies: recentVocabularies ?? loading.recentVocabularies,
           collections: collections ?? loading.collections,
@@ -168,6 +215,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeState _completed(HomeLoading loading) {
     return switch (loading) {
       HomeLoading(
+        setup: final setup?,
         overview: final overview?,
         recentVocabularies: final recentVocabularies?,
         collections: final collections?,
@@ -177,6 +225,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         :final streak,
       ) =>
         HomeLoaded(
+          setup: setup,
           overview: overview,
           recentVocabularies: recentVocabularies,
           collections: collections,

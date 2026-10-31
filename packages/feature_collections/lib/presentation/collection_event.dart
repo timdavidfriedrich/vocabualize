@@ -1,3 +1,4 @@
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 
@@ -7,6 +8,10 @@ sealed class CollectionEvent {
 
 class const CollectionStarted({
   required final String tagId,
+}) extends CollectionEvent;
+
+class const CollectionLanguageChanged({
+  required final Language language,
 }) extends CollectionEvent;
 
 sealed class CollectionFeedEvent extends CollectionEvent {

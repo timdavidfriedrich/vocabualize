@@ -3,25 +3,38 @@ import 'package:serverpod_database/serverpod_database.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
+import 'package:shared/data/models/local_language_settings.dart';
 import 'package:shared/data/models/local_preference_key.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
-const _languagePairKey = "languagePair";
+const _mainLanguageKey = "mainLanguage";
+const _selectedLanguageKey = "selectedLanguage";
+const _learnedLanguageKeyPrefix = "learnedLanguage.";
+const _anyCharacters = "%";
 const _adoptedLocalSpaceKey = "adoptedLocalSpace";
 
 final _preferenceKeys = {for (final key in LocalPreferenceKey.values) key.value: key};
 
 abstract class SettingLocalDataSource {
-  Stream<LocalSetting?> watchLanguagePair();
+  Stream<LocalLanguageSettings> watchLanguageSettings();
 
-  Future<LocalSetting?> readLanguagePair();
+  Future<LocalLanguageSettings> readLanguageSettings();
 
-  LocalSetting createLanguagePair({
-    required String value,
+  Future<void> saveLanguageSettings({
+    required String? mainLanguage,
+    required String? selectedLanguage,
+    required Map<String, String> learnedLanguages,
     required DateTime changedAt,
   });
 
-  Future<void> insertSetting(LocalSetting setting);
+  Future<void> deleteLearnedLanguage(String languageCode);
+
+  List<LocalSetting> createLanguageSettingRows({
+    required String? mainLanguage,
+    required String? selectedLanguage,
+    required Map<String, String> learnedLanguages,
+    required DateTime changedAt,
+  });
 
   Stream<Map<LocalPreferenceKey, String>> watchPreferences();
 
@@ -46,41 +59,89 @@ class const SettingLocalDataSourceImpl(
   final DatabaseSessionDataSource _sessions,
 ) implements SettingLocalDataSource {
   @override
-  Stream<LocalSetting?> watchLanguagePair() {
+  Stream<LocalLanguageSettings> watchLanguageSettings() {
     return _sessions.watchSession().switchMap(
       (session) => session == null
-          ? const Stream<LocalSetting?>.empty()
+          ? const Stream<LocalLanguageSettings>.empty()
           : LocalSetting.db
                 .watch(
                   session,
-                  where: (t) => t.key.equals(_languagePairKey),
-                  orderBy: (t) => t.changedAt.desc(),
-                  limit: 1,
+                  where: _isLanguageSetting,
+                  orderBy: (t) => t.changedAt.asc(),
                 )
-                .map((settings) => settings.firstOrNull),
+                .map(_latestLanguageSettings),
     );
   }
 
   @override
-  Future<LocalSetting?> readLanguagePair() {
-    return LocalSetting.db.findFirstRow(
+  Future<LocalLanguageSettings> readLanguageSettings() async {
+    final settings = await LocalSetting.db.find(
       _requireSession(),
-      where: (t) => t.key.equals(_languagePairKey),
-      orderBy: (t) => t.changedAt.desc(),
+      where: _isLanguageSetting,
+      orderBy: (t) => t.changedAt.asc(),
     );
+    return _latestLanguageSettings(settings);
   }
 
   @override
-  LocalSetting createLanguagePair({
-    required String value,
+  Future<void> saveLanguageSettings({
+    required String? mainLanguage,
+    required String? selectedLanguage,
+    required Map<String, String> learnedLanguages,
     required DateTime changedAt,
   }) {
-    return LocalSetting(key: _languagePairKey, value: value, changedAt: changedAt.toUtc());
+    final session = _sessions.requireWritableSession();
+    final timestamp = changedAt.toUtc();
+    final values = {
+      _mainLanguageKey: ?mainLanguage,
+      _selectedLanguageKey: ?selectedLanguage,
+      for (final MapEntry(key: languageCode, value: value) in learnedLanguages.entries)
+        "$_learnedLanguageKeyPrefix$languageCode": value,
+    };
+    return session.db.transaction((transaction) async {
+      for (final MapEntry(:key, :value) in values.entries) {
+        await LocalSetting.db.deleteWhere(
+          session,
+          where: (t) => t.key.equals(key) & (t.changedAt < timestamp),
+          transaction: transaction,
+        );
+        await LocalSetting.db.insertRow(
+          session,
+          LocalSetting(key: key, value: value, changedAt: timestamp),
+          transaction: transaction,
+        );
+      }
+    });
   }
 
   @override
-  Future<void> insertSetting(LocalSetting setting) async {
-    await LocalSetting.db.insertRow(_sessions.requireWritableSession(), setting);
+  List<LocalSetting> createLanguageSettingRows({
+    required String? mainLanguage,
+    required String? selectedLanguage,
+    required Map<String, String> learnedLanguages,
+    required DateTime changedAt,
+  }) {
+    final timestamp = changedAt.toUtc();
+    return [
+      if (mainLanguage != null)
+        LocalSetting(key: _mainLanguageKey, value: mainLanguage, changedAt: timestamp),
+      if (selectedLanguage != null)
+        LocalSetting(key: _selectedLanguageKey, value: selectedLanguage, changedAt: timestamp),
+      for (final MapEntry(key: languageCode, :value) in learnedLanguages.entries)
+        LocalSetting(
+          key: "$_learnedLanguageKeyPrefix$languageCode",
+          value: value,
+          changedAt: timestamp,
+        ),
+    ];
+  }
+
+  @override
+  Future<void> deleteLearnedLanguage(String languageCode) async {
+    await LocalSetting.db.deleteWhere(
+      _sessions.requireWritableSession(),
+      where: (t) => t.key.equals("$_learnedLanguageKeyPrefix$languageCode"),
+    );
   }
 
   @override
@@ -149,6 +210,23 @@ class const SettingLocalDataSourceImpl(
       where: (t) => t.key.equals(_adoptedLocalSpaceKey) & t.value.equals(localOwnerId.uuid),
     );
     return record != null;
+  }
+
+  Expression<dynamic> _isLanguageSetting(LocalSettingTable t) =>
+      t.key.equals(_mainLanguageKey) |
+      t.key.equals(_selectedLanguageKey) |
+      t.key.like("$_learnedLanguageKeyPrefix$_anyCharacters");
+
+  LocalLanguageSettings _latestLanguageSettings(List<LocalSetting> settings) {
+    final latest = {for (final setting in settings) setting.key: setting.value};
+    return LocalLanguageSettings(
+      mainLanguage: latest[_mainLanguageKey],
+      selectedLanguage: latest[_selectedLanguageKey],
+      learnedLanguages: [
+        for (final MapEntry(:key, :value) in latest.entries)
+          if (key.startsWith(_learnedLanguageKeyPrefix)) value,
+      ],
+    );
   }
 
   Map<LocalPreferenceKey, String> _latestPreferences(List<LocalSetting> settings) {

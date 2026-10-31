@@ -7,6 +7,7 @@ part 'vocabulary_overview.mapper.dart';
 class const VocabularyOverview({
   required final int totalCount,
   required final int dueCount,
+  required final int waitingCount,
   required final int addedTodayCount,
   required final DateTime? nextDueAt,
   required final int noviceCount,

@@ -179,6 +179,7 @@
   "homeNextDueTodayMessage": "Επόμενη λέξη στις {time}",
   "homeNextDueLaterMessage": "Επόμενη λέξη: {date}",
   "vocabularySpeakTooltip": "Ανάγνωση",
+  "vocabularyTranslationPendingLabel": "Η μετάφραση εκκρεμεί",
   "vocabularySearchTooltip": "Αναζήτηση",
   "vocabularySearchHint": "Αναζήτηση λέξεων...",
   "vocabularySearchClearTooltip": "Εκκαθάριση",
