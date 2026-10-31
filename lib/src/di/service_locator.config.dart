@@ -16,6 +16,8 @@ import 'package:feature_collections/di/feature_collections_module.module.dart'
 import 'package:feature_details/di/feature_details_module.module.dart' as _i159;
 import 'package:feature_gate/di/feature_gate_module.module.dart' as _i188;
 import 'package:feature_home/di/feature_home_module.module.dart' as _i606;
+import 'package:feature_languages/di/feature_languages_module.module.dart'
+    as _i807;
 import 'package:feature_practice/di/feature_practice_module.module.dart'
     as _i391;
 import 'package:feature_report/di/feature_report_module.module.dart' as _i123;
@@ -49,6 +51,7 @@ extension GetItInjectableX on _i174.GetIt {
     await _i924.FeatureSettingsPackageModule().init(gh);
     await _i123.FeatureReportPackageModule().init(gh);
     await _i188.FeatureGatePackageModule().init(gh);
+    await _i807.FeatureLanguagesPackageModule().init(gh);
     gh.lazySingleton<_i2.NavigationRouter>(
       () => _i2.NavigationRouter(
         gh<_i923.AccountRepository>(),

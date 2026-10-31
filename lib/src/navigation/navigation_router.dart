@@ -12,6 +12,18 @@ import 'package:feature_gate/presentation/wait_for_data/wait_for_data_screen.dar
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_screen.dart';
+import 'package:feature_languages/presentation/language_words/language_words_bloc.dart';
+import 'package:feature_languages/presentation/language_words/language_words_event.dart';
+import 'package:feature_languages/presentation/language_words/language_words_screen.dart';
+import 'package:feature_languages/presentation/languages/languages_bloc.dart';
+import 'package:feature_languages/presentation/languages/languages_event.dart';
+import 'package:feature_languages/presentation/languages/languages_screen.dart';
+import 'package:feature_languages/presentation/learned_language/learned_language_bloc.dart';
+import 'package:feature_languages/presentation/learned_language/learned_language_event.dart';
+import 'package:feature_languages/presentation/learned_language/learned_language_screen.dart';
+import 'package:feature_languages/presentation/onboarding/language_onboarding_bloc.dart';
+import 'package:feature_languages/presentation/onboarding/language_onboarding_event.dart';
+import 'package:feature_languages/presentation/onboarding/language_onboarding_screen.dart';
 import 'package:feature_practice/presentation/practice_bloc.dart';
 import 'package:feature_practice/presentation/practice_event.dart';
 import 'package:feature_practice/presentation/practice_screen.dart';
@@ -23,9 +35,6 @@ import 'package:feature_scan/presentation/scan_screen.dart';
 import 'package:feature_settings/presentation/settings_bloc.dart';
 import 'package:feature_settings/presentation/settings_event.dart';
 import 'package:feature_settings/presentation/settings_screen.dart';
-import 'package:feature_welcome/presentation/language_selection/language_selection_bloc.dart';
-import 'package:feature_welcome/presentation/language_selection/language_selection_event.dart';
-import 'package:feature_welcome/presentation/language_selection/language_selection_screen.dart';
 import 'package:feature_welcome/presentation/welcome/welcome_bloc.dart';
 import 'package:feature_welcome/presentation/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +91,7 @@ class NavigationRouter(
     final router = config.router;
     final current = router.current;
     final isOnEntryRoute = switch (current) {
-      Loading() || Welcome() || WaitForData() || LanguageSelection(isOnboarding: true) => true,
+      Loading() || Welcome() || WaitForData() || LanguageOnboarding() => true,
       _ => false,
     };
     final target = switch (state) {
@@ -99,7 +108,7 @@ class NavigationRouter(
         const Home(),
       (Success(data: AuthAuthenticated()), Success(data: DataReady()), Success(data: null))
           when isOnEntryRoute =>
-        const LanguageSelection(isOnboarding: true),
+        const LanguageOnboarding(),
       (Success(data: AuthAuthenticated()), _, _) => null,
     };
     if (target != null && target != current) unawaited(router.set([target]));
@@ -136,9 +145,23 @@ class const _AppPage({
       create: (_) => sl<WelcomeBloc>(),
       child: const WelcomeScreen(),
     ),
-    LanguageSelection(:final isOnboarding) => BlocProvider(
-      create: (_) => sl<LanguageSelectionBloc>()..add(const LanguageSelectionStarted()),
-      child: LanguageSelectionScreen(isOnboarding: isOnboarding),
+    LanguageOnboarding() => BlocProvider(
+      create: (_) => sl<LanguageOnboardingBloc>()..add(const LanguageOnboardingStarted()),
+      child: const LanguageOnboardingScreen(),
+    ),
+    Languages() => BlocProvider(
+      create: (_) => sl<LanguagesBloc>()..add(const LanguagesStarted()),
+      child: const LanguagesScreen(),
+    ),
+    LearnedLanguageDetails(:final language) => BlocProvider(
+      create: (_) => sl<LearnedLanguageBloc>()..add(LearnedLanguageStarted(language: language)),
+      child: LearnedLanguageScreen(language: language),
+    ),
+    LanguageWords(:final language, :final isAdding) => BlocProvider(
+      create: (_) =>
+          sl<LanguageWordsBloc>()
+            ..add(LanguageWordsStarted(language: language, isAdding: isAdding)),
+      child: LanguageWordsScreen(language: language, isAdding: isAdding),
     ),
     Home() => BlocProvider(
       create: (_) => sl<HomeBloc>()..add(const HomeStarted()),

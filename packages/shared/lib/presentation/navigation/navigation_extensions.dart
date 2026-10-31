@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:kaisel/kaisel.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/presentation/navigation/routes.dart';
 
@@ -26,6 +27,11 @@ extension NavigationExtension on BuildContext {
 
   Future<void> pushCollection({required String tagId}) => appRouter.push(Collection(tagId: tagId));
 
-  Future<void> pushLanguageSelection() =>
-      appRouter.push(const LanguageSelection(isOnboarding: false));
+  Future<void> pushLanguages() => appRouter.push(const Languages());
+
+  Future<void> pushLearnedLanguageDetails({required Language language}) =>
+      appRouter.push(LearnedLanguageDetails(language: language));
+
+  Future<void> pushLanguageWords({required Language language, required bool isAdding}) =>
+      appRouter.push(LanguageWords(language: language, isAdding: isAdding));
 }

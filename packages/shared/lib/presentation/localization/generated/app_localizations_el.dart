@@ -70,9 +70,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get edit => 'Επεξεργασία';
 
   @override
-  String get languagePickerTitle => 'Επιλογή γλώσσας';
-
-  @override
   String get vocabularyDeleteTitle => 'Διαγραφή;';
 
   @override
@@ -102,12 +99,6 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String get notificationPracticeBody =>
       'Κάποιες λέξεις περιμένουν επανάληψη. Θα τα πάτε τέλεια! :D';
-
-  @override
-  String get welcomeSourceLanguageTitle => 'Μιλάω';
-
-  @override
-  String get welcomeTargetLanguageTitle => 'Θέλω να μάθω';
 
   @override
   String get welcomeStartButton => 'Ας ξεκινήσουμε!';
@@ -299,18 +290,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsAppearanceDark => 'Σκοτεινό';
 
   @override
-  String get settingsSourceLanguageTitle => 'Η γλώσσα μου';
-
-  @override
-  String get settingsSourceLanguageHint => 'Μια γλώσσα που γνωρίζετε καλά';
-
-  @override
-  String get settingsTargetLanguageTitle => 'Γλώσσα που μαθαίνω';
-
-  @override
-  String get settingsTargetLanguageHint => 'Η γλώσσα που μαθαίνετε';
-
-  @override
   String vocabularyReappearsInMinutes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -485,15 +464,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String languagePairLabel(String source, String target) {
     return '$source → $target';
   }
-
-  @override
-  String get languageSelectionTitle => 'Οι γλώσσες σας';
-
-  @override
-  String get languageSelectionContinueButton => 'Συνέχεια';
-
-  @override
-  String get languageSelectionSaveButton => 'Αποθήκευση';
 
   @override
   String get dataOfflineTitle => 'Είστε εκτός σύνδεσης';
@@ -1006,4 +976,248 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get scanReportSuggestionButton => 'Αναφορά πρότασης';
+
+  @override
+  String get languagesTitle => 'Οι γλώσσες σας';
+
+  @override
+  String get languagesSpeakTitle => 'Μιλάω';
+
+  @override
+  String get languagesSpeakHint => 'Μια γλώσσα που γνωρίζετε καλά';
+
+  @override
+  String get languagesLearnTitle => 'Μαθαίνω';
+
+  @override
+  String get languagesLearnHint => 'Επιλέξτε μία ή περισσότερες';
+
+  @override
+  String get languagesContinueButton => 'Συνέχεια';
+
+  @override
+  String get languagesPausedTitle => 'Σε παύση';
+
+  @override
+  String get languagesChangeButton => 'Αλλαγή';
+
+  @override
+  String get languagesAddButton => 'Προσθήκη γλώσσας';
+
+  @override
+  String languagesWordCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count λέξεις',
+      one: '1 λέξη',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get languagesPickTitle => 'Επιλέξτε γλώσσα';
+
+  @override
+  String languagesMainClashTitle(String language) {
+    return 'Μιλάτε $language;';
+  }
+
+  @override
+  String languagesMainClashMessage(String language) {
+    return 'Μαθαίνετε $language. Αν τη μιλάτε, μπαίνει σε παύση. Η πρόοδός σας παραμένει.';
+  }
+
+  @override
+  String get languagesMainClashButton => 'Συνέχεια';
+
+  @override
+  String get learnedLanguageAskMeInLabel => 'Ρωτήστε με στα';
+
+  @override
+  String get learnedLanguageAddAskMeInButton => 'Ρωτήστε με σε άλλη γλώσσα';
+
+  @override
+  String learnedLanguageAskMeInHelpMessage(String askMeIn, String main, String learned) {
+    return 'Οι κάρτες ρωτούν στα $askMeIn αντί για τα $main, για λέξεις που ήδη γνωρίζετε καλά στα $askMeIn. Μπορείτε πάντα να δείτε τη λέξη στα $main. Έτσι τα $askMeIn σας μένουν ενεργά όσο μαθαίνετε $learned.';
+  }
+
+  @override
+  String get learnedLanguageAskMeInHelpTooltip => 'Τι σημαίνει αυτό;';
+
+  @override
+  String get learnedLanguageRemoveAskMeInTooltip => 'Αφαίρεση';
+
+  @override
+  String learnedLanguageFromLevelLabel(String level) {
+    return 'Από επίπεδο: $level';
+  }
+
+  @override
+  String get learnedLanguageNewWordsTitle => 'Νέες λέξεις ανά εξάσκηση';
+
+  @override
+  String get learnedLanguageAllNewWords => 'Όλες';
+
+  @override
+  String get learnedLanguageWordsTitle => 'Λέξεις';
+
+  @override
+  String learnedLanguageWordsCount(int count, int total) {
+    return '$count από $total';
+  }
+
+  @override
+  String get learnedLanguageChooseWordsButton => 'Επιλογή λέξεων';
+
+  @override
+  String get learnedLanguagePauseButton => 'Παύση';
+
+  @override
+  String get learnedLanguageResumeButton => 'Συνέχιση';
+
+  @override
+  String get learnedLanguageLastActiveHint => 'Χρειάζεστε τουλάχιστον μία γλώσσα για να μαθαίνετε.';
+
+  @override
+  String learnedLanguageDeleteTitle(String language) {
+    return 'Διαγραφή $language;';
+  }
+
+  @override
+  String learnedLanguageDeleteMessage(String language) {
+    return 'Η πρόοδός σας στα $language διαγράφεται. Οι λέξεις σας μένουν στις άλλες γλώσσες σας.';
+  }
+
+  @override
+  String learnedLanguageResumeTitle(String language) {
+    return 'Καλώς ήρθατε ξανά στα $language';
+  }
+
+  @override
+  String get learnedLanguageResumeMessage => 'Συνέχεια από εκεί που σταματήσατε ή από την αρχή;';
+
+  @override
+  String get learnedLanguageStartOverButton => 'Από την αρχή';
+
+  @override
+  String languageWordsTitle(String language) {
+    return 'Λέξεις στα $language';
+  }
+
+  @override
+  String languageWordsAddTitle(String language) {
+    return 'Να μάθετε και $language;';
+  }
+
+  @override
+  String languageWordsAddQuestion(String language) {
+    return 'Ποιες από τις λέξεις σας θέλετε να μάθετε στα $language;';
+  }
+
+  @override
+  String languageWordsAllOption(int count) {
+    return 'Όλες οι λέξεις ($count)';
+  }
+
+  @override
+  String get languageWordsChooseOption => 'Επιλογή συλλογών';
+
+  @override
+  String get languageWordsNoneOption => 'Καμία, νέο ξεκίνημα';
+
+  @override
+  String languageWordsLeftOutHint(String language) {
+    return 'Οι λέξεις που αφήνετε έξω μένουν στις άλλες γλώσσες σας. Μπορείτε να τις προσθέσετε στα $language οποιαδήποτε στιγμή.';
+  }
+
+  @override
+  String get languageWordsUntaggedLabel => 'Χωρίς συλλογή';
+
+  @override
+  String languageWordsCount(int count) {
+    return '($count)';
+  }
+
+  @override
+  String languageWordsPartialCount(int count, int total) {
+    return '($count από $total)';
+  }
+
+  @override
+  String languageWordsStartButton(String language) {
+    return 'Έναρξη $language';
+  }
+
+  @override
+  String get languageWordsSaveButton => 'Αποθήκευση';
+
+  @override
+  String get languageWordsSummaryTitle => 'Αποθήκευση αλλαγών;';
+
+  @override
+  String languageWordsSummaryAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Προστίθενται $count λέξεις.',
+      one: 'Προστίθεται 1 λέξη.',
+      zero: 'Δεν προστίθενται λέξεις.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String languageWordsSummaryRemoved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Αφαιρούνται $count λέξεις.',
+      one: 'Αφαιρείται 1 λέξη.',
+      zero: 'Δεν αφαιρούνται λέξεις.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get languageWordsSummaryRestartHint =>
+      'Οι λέξεις που αφαιρούνται ξεκινούν από την αρχή αν τις προσθέσετε ξανά.';
+
+  @override
+  String languageWordsSummaryAlsoElsewhere(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count από αυτές είναι και σε άλλες συλλογές.',
+      one: '1 από αυτές είναι και σε άλλη συλλογή.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String languageWordsNoWordsHint(String language) {
+    return 'Δεν έχετε ακόμη λέξεις. Τις λέξεις που προσθέτετε τις μαθαίνετε και στα $language.';
+  }
+
+  @override
+  String get homeManageLanguagesButton => 'Διαχείριση γλωσσών';
+
+  @override
+  String homeEmptyLanguageMessage(String language) {
+    return 'Καμία από τις λέξεις σας δεν είναι ακόμη στα $language.';
+  }
+
+  @override
+  String get homeChooseWordsButton => 'Επιλογή λέξεων';
+
+  @override
+  String get homeLanguageButtonTooltip => 'Αλλαγή γλώσσας';
+
+  @override
+  String get settingsLanguagesTitle => 'Γλώσσες';
+
+  @override
+  String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
+    return 'Οι κάρτες ρωτούν στα $askMeIn αντί για τα $main. Μπορείτε πάντα να δείτε τη λέξη στα $main. Έτσι τα $askMeIn σας μένουν ενεργά όσο μαθαίνετε $learned.';
+  }
 }

@@ -26,7 +26,6 @@
   "submit": "Submit",
   "delete": "Delete",
   "edit": "Edit",
-  "languagePickerTitle": "Select language",
   "vocabularyDeleteTitle": "Delete?",
   "vocabularyDeleteMessage": "Do you really want to delete this vocabulary?",
   "vocabularyCreatedLabel": "Created:",
@@ -37,8 +36,6 @@
   "notificationPracticeChannelDescription": "Let’s practice 🎯",
   "notificationPracticeTitle": "Let’s practice 🎯",
   "notificationPracticeBody": "Some vocabulary may be due. You’ll rock this! :D",
-  "welcomeSourceLanguageTitle": "I speak",
-  "welcomeTargetLanguageTitle": "I want to learn",
   "welcomeStartButton": "Let’s start!",
   "welcomeGoogleSignInButton": "Sign in with Google",
   "welcomeContinueWithoutAccountButton": "Continue without account",
@@ -101,10 +98,6 @@
   "settingsAppearanceSystem": "System",
   "settingsAppearanceLight": "Light",
   "settingsAppearanceDark": "Dark",
-  "settingsSourceLanguageTitle": "Source language",
-  "settingsSourceLanguageHint": "A language you know well",
-  "settingsTargetLanguageTitle": "Target language",
-  "settingsTargetLanguageHint": "The language you learn",
   "vocabularyReappearsInMinutes": "{count, plural, one{In {count} minute} other{In {count} minutes}}",
   "@vocabularyReappearsInMinutes": {
     "placeholders": {
@@ -191,8 +184,6 @@
   "languageGreek": "Greek",
   "languageRomanian": "Romanian",
   "languagePairLabel": "{source} → {target}",
-  "languageSelectionTitle": "Your languages",
-  "languageSelectionContinueButton": "Continue",
   "@languagePairLabel": {
     "placeholders": {
       "source": {
@@ -203,7 +194,6 @@
       }
     }
   },
-  "languageSelectionSaveButton": "Save",
   "dataOfflineTitle": "You're offline",
   "dataOfflineMessage": "Your words will download as soon as you're connected.",
   "dataRetryButton": "Try again",
@@ -492,5 +482,241 @@
   },
   "reminderStreakInARowBody": "Don't stop now. Add or practice a word today.",
   "settingsPrivacyPolicyButton": "Privacy policy",
-  "scanReportSuggestionButton": "Report a suggestion"
+  "scanReportSuggestionButton": "Report a suggestion",
+  "languagesTitle": "Your languages",
+  "languagesSpeakTitle": "I speak",
+  "languagesSpeakHint": "A language you know well",
+  "languagesLearnTitle": "I learn",
+  "languagesLearnHint": "Choose one or more",
+  "languagesContinueButton": "Continue",
+  "languagesPausedTitle": "Paused",
+  "languagesChangeButton": "Change",
+  "languagesAddButton": "Add a language",
+  "languagesWordCount": "{count, plural, =1{1 word} other{{count} words}}",
+  "@languagesWordCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languagesPickTitle": "Choose a language",
+  "languagesMainClashTitle": "Speak {language}?",
+  "@languagesMainClashTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languagesMainClashMessage": "You're learning {language}. If you speak it, it gets paused. Its progress stays.",
+  "@languagesMainClashMessage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languagesMainClashButton": "Continue",
+  "learnedLanguageAskMeInLabel": "Ask me in",
+  "learnedLanguageAddAskMeInButton": "Ask me in another language",
+  "learnedLanguageAskMeInHelpMessage": "Cards ask in {askMeIn} instead of {main}, for words you already know well in {askMeIn}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.",
+  "@learnedLanguageAskMeInHelpMessage": {
+    "placeholders": {
+      "askMeIn": {
+        "type": "String"
+      },
+      "main": {
+        "type": "String"
+      },
+      "learned": {
+        "type": "String"
+      }
+    }
+  },
+  "learnedLanguageAskMeInHelpTooltip": "What does this mean?",
+  "learnedLanguageRemoveAskMeInTooltip": "Remove",
+  "learnedLanguageFromLevelLabel": "From level: {level}",
+  "@learnedLanguageFromLevelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "learnedLanguageNewWordsTitle": "New words per practice",
+  "learnedLanguageAllNewWords": "All",
+  "learnedLanguageWordsTitle": "Words",
+  "learnedLanguageWordsCount": "{count} of {total}",
+  "@learnedLanguageWordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "learnedLanguageChooseWordsButton": "Choose words",
+  "learnedLanguagePauseButton": "Pause",
+  "learnedLanguageResumeButton": "Resume",
+  "learnedLanguageLastActiveHint": "You need at least one language to learn.",
+  "learnedLanguageDeleteTitle": "Delete {language}?",
+  "@learnedLanguageDeleteTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "learnedLanguageDeleteMessage": "Your progress in {language} is deleted. Your words stay in your other languages.",
+  "@learnedLanguageDeleteMessage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "learnedLanguageResumeTitle": "Welcome back to {language}",
+  "@learnedLanguageResumeTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "learnedLanguageResumeMessage": "Continue where you left off, or start over?",
+  "learnedLanguageStartOverButton": "Start over",
+  "languageWordsTitle": "Words in {language}",
+  "@languageWordsTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageWordsAddTitle": "Learn {language} too?",
+  "@languageWordsAddTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageWordsAddQuestion": "Which of your words do you want to learn in {language}?",
+  "@languageWordsAddQuestion": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageWordsAllOption": "All words ({count})",
+  "@languageWordsAllOption": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageWordsChooseOption": "Choose collections",
+  "languageWordsNoneOption": "None, start fresh",
+  "languageWordsLeftOutHint": "Words you leave out stay in your other languages. You can add them to {language} any time.",
+  "@languageWordsLeftOutHint": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageWordsUntaggedLabel": "Not in a collection",
+  "languageWordsCount": "({count})",
+  "@languageWordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageWordsPartialCount": "({count} of {total})",
+  "@languageWordsPartialCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "languageWordsStartButton": "Start {language}",
+  "@languageWordsStartButton": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageWordsSaveButton": "Save",
+  "languageWordsSummaryTitle": "Save changes?",
+  "languageWordsSummaryAdded": "{count, plural, =0{No words are added.} =1{1 word is added.} other{{count} words are added.}}",
+  "@languageWordsSummaryAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageWordsSummaryRemoved": "{count, plural, =0{No words are removed.} =1{1 word is removed.} other{{count} words are removed.}}",
+  "@languageWordsSummaryRemoved": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageWordsSummaryRestartHint": "Removed words start over if you add them again.",
+  "languageWordsSummaryAlsoElsewhere": "{count, plural, =1{1 of them is also in another collection.} other{{count} of them are also in other collections.}}",
+  "@languageWordsSummaryAlsoElsewhere": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageWordsNoWordsHint": "You have no words yet. Words you add are learned in {language} too.",
+  "@languageWordsNoWordsHint": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "homeManageLanguagesButton": "Manage languages",
+  "homeEmptyLanguageMessage": "None of your words are in {language} yet.",
+  "@homeEmptyLanguageMessage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "homeChooseWordsButton": "Choose words",
+  "homeLanguageButtonTooltip": "Switch language",
+  "settingsLanguagesTitle": "Languages",
+  "learnedLanguageAskMeInAlwaysHelpMessage": "Cards ask in {askMeIn} instead of {main}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.",
+  "@learnedLanguageAskMeInAlwaysHelpMessage": {
+    "placeholders": {
+      "askMeIn": {
+        "type": "String"
+      },
+      "main": {
+        "type": "String"
+      },
+      "learned": {
+        "type": "String"
+      }
+    }
+  }
 }

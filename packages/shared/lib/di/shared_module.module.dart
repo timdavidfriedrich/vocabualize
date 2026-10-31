@@ -76,6 +76,8 @@ import 'package:shared/data/repositories/external_link_repository_impl.dart'
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
 import 'package:shared/data/repositories/language_repository_impl.dart'
     as _i850;
+import 'package:shared/data/repositories/language_words_repository_impl.dart'
+    as _i23;
 import 'package:shared/data/repositories/reminder_repository_impl.dart'
     as _i899;
 import 'package:shared/data/repositories/report_repository_impl.dart' as _i296;
@@ -92,7 +94,7 @@ import 'package:shared/data/repositories/translation_fill_repository_impl.dart'
 import 'package:shared/data/repositories/translation_repository_impl.dart'
     as _i542;
 import 'package:shared/data/repositories/vocabulary_repository_impl.dart'
-    as _i23;
+    as _i24;
 import 'package:shared/di/serverpod_client_module.dart' as _i74;
 import 'package:shared/domain/repositories/account_repository.dart' as _i923;
 import 'package:shared/domain/repositories/activity_repository.dart' as _i503;
@@ -106,6 +108,8 @@ import 'package:shared/domain/repositories/external_link_repository.dart'
     as _i711;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/language_repository.dart' as _i308;
+import 'package:shared/domain/repositories/language_words_repository.dart'
+    as _i1019;
 import 'package:shared/domain/repositories/reminder_repository.dart' as _i821;
 import 'package:shared/domain/repositories/report_repository.dart' as _i522;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
@@ -288,9 +292,12 @@ class SharedPackageModule extends _i526.MicroPackageModule {
               gh<_i532.ImageFileDataSource>(),
               gh<_i28.ImageTransferDataSource>(),
             ));
+    gh.factory<_i1019.LanguageWordsRepository>(() =>
+        _i23.LanguageWordsRepositoryImpl(
+            gh<_i397.VocabularyLocalDataSource>()));
     gh.factory<_i843.LocalImportDataSource>(() =>
         _i843.LocalImportDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
-    gh.factory<_i208.VocabularyRepository>(() => _i23.VocabularyRepositoryImpl(
+    gh.factory<_i208.VocabularyRepository>(() => _i24.VocabularyRepositoryImpl(
           gh<_i397.VocabularyLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
           gh<_i931.DeviceDataSource>(),

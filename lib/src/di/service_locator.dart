@@ -3,6 +3,7 @@ import 'package:feature_collections/di/feature_collections_module.module.dart';
 import 'package:feature_details/di/feature_details_module.module.dart';
 import 'package:feature_gate/di/feature_gate_module.module.dart';
 import 'package:feature_home/di/feature_home_module.module.dart';
+import 'package:feature_languages/di/feature_languages_module.module.dart';
 import 'package:feature_practice/di/feature_practice_module.module.dart';
 import 'package:feature_report/di/feature_report_module.module.dart';
 import 'package:feature_scan/di/feature_scan_module.module.dart';
@@ -28,6 +29,7 @@ final sl = GetIt.instance;
     ExternalModule(FeatureSettingsPackageModule),
     ExternalModule(FeatureReportPackageModule),
     ExternalModule(FeatureGatePackageModule),
+    ExternalModule(FeatureLanguagesPackageModule),
   ],
 )
 Future<void> configureDependencies() async => sl.init();

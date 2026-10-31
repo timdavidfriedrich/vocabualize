@@ -177,33 +177,20 @@ class const _LanguageTiles({
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LanguageSetupCubit, LanguageSetup?>(
-      builder: (context, setup) => Column(
-        children: [
-          ListTile(
-            title: Text(context.s.settingsSourceLanguageTitle),
-            subtitle: Text(context.s.settingsSourceLanguageHint),
-            trailing: _LanguageButton(label: setup?.main.toLabel(context), isBusy: _isBusy),
+      builder: (context, setup) => ListTile(
+        title: Text(context.s.settingsLanguagesTitle),
+        subtitle: switch (setup) {
+          final setup? => Text(
+            context.s.languagePairLabel(
+              setup.main.toLabel(context),
+              [for (final learned in setup.active) learned.language.toLabel(context)].join(", "),
+            ),
           ),
-          ListTile(
-            title: Text(context.s.settingsTargetLanguageTitle),
-            subtitle: Text(context.s.settingsTargetLanguageHint),
-            trailing: _LanguageButton(label: setup?.selected.toLabel(context), isBusy: _isBusy),
-          ),
-        ],
+          null => null,
+        },
+        trailing: const Icon(Icons.chevron_right_rounded),
+        onTap: _isBusy ? null : context.pushLanguages,
       ),
-    );
-  }
-}
-
-class const _LanguageButton({
-  required final String? _label,
-  required final bool _isBusy,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: _isBusy ? null : context.pushLanguageSelection,
-      child: Text(_label ?? context.s.unknown),
     );
   }
 }

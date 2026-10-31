@@ -6,6 +6,7 @@ import 'package:serverpod_database/serverpod_database.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/models/local_activity_day.dart';
+import 'package:shared/data/models/local_language_membership.dart';
 import 'package:shared/data/models/local_level_range.dart';
 import 'package:shared/data/models/local_progress_stage.dart';
 import 'package:shared/data/models/local_translation_origin.dart';
@@ -27,6 +28,8 @@ abstract class VocabularyLocalDataSource {
     required List<LocalLevelRange> levelRanges,
     required bool isDueOnly,
   });
+
+  Stream<int> watchVocabularyCount();
 
   Stream<List<LocalVocabulary>> watchRecentVocabularies({
     required String languageCode,
@@ -94,6 +97,26 @@ abstract class VocabularyLocalDataSource {
   });
 
   Future<void> insertMissingTranslations(List<LocalTranslation> translations);
+
+  Stream<LocalLanguageMembership> watchLanguageMembership(String languageCode);
+
+  Future<LocalLanguageMembership> readLanguageMembership(String languageCode);
+
+  Future<List<LocalProgress>> findProgress(String languageCode);
+
+  Future<void> insertMissingProgress(List<LocalProgress> progress);
+
+  Future<void> resetProgress(List<LocalProgress> progress);
+
+  Future<void> deleteProgress({
+    required String languageCode,
+    required Set<UuidValue>? vocabularyIds,
+  });
+
+  Future<void> deleteTranslations({
+    required String languageCode,
+    required Set<String> keptOrigins,
+  });
 }
 
 @Injectable(as: VocabularyLocalDataSource)
@@ -157,6 +180,17 @@ class const VocabularyLocalDataSourceImpl(
             : null;
         return (value: vocabularies, validUntil: nextDue?.nextReviewAt);
       },
+    );
+  }
+
+  @override
+  Stream<int> watchVocabularyCount() {
+    return _watchTimed(
+      empty: 0,
+      query: (session, now) async => (
+        value: await LocalVocabulary.db.count(session),
+        validUntil: null,
+      ),
     );
   }
 
@@ -522,6 +556,108 @@ class const VocabularyLocalDataSourceImpl(
         await LocalTranslation.db.insert(session, missing, transaction: transaction);
       }
     });
+  }
+
+  @override
+  Stream<LocalLanguageMembership> watchLanguageMembership(String languageCode) {
+    return _watchTimed(
+      empty: const LocalLanguageMembership(
+        vocabularyIds: {},
+        inLanguage: {},
+        tagLinks: [],
+        tags: [],
+      ),
+      query: (session, now) async => (
+        value: await _membership(session, languageCode),
+        validUntil: null,
+      ),
+    );
+  }
+
+  @override
+  Future<LocalLanguageMembership> readLanguageMembership(String languageCode) {
+    return _membership(_requireSession(), languageCode);
+  }
+
+  @override
+  Future<List<LocalProgress>> findProgress(String languageCode) {
+    return LocalProgress.db.find(
+      _requireSession(),
+      where: (t) => t.languageCode.equals(languageCode),
+    );
+  }
+
+  @override
+  Future<void> insertMissingProgress(List<LocalProgress> progress) async {
+    if (progress.isEmpty) return;
+    final session = _sessions.requireWritableSession();
+    await session.db.transaction((transaction) async {
+      final existingIds = {
+        for (final row in await LocalProgress.db.find(
+          session,
+          where: (t) => t.id.inSet(<UuidValue>{for (final row in progress) ?row.id}),
+          transaction: transaction,
+        ))
+          row.id,
+      };
+      final missing = [
+        for (final row in progress)
+          if (!existingIds.contains(row.id)) row,
+      ];
+      if (missing.isNotEmpty) {
+        await LocalProgress.db.insert(session, missing, transaction: transaction);
+      }
+    });
+  }
+
+  @override
+  Future<void> resetProgress(List<LocalProgress> progress) async {
+    if (progress.isEmpty) return;
+    await LocalProgress.db.update(
+      _sessions.requireWritableSession(),
+      progress,
+      columns: (t) => [t.stage, t.level, t.intervalMinutes, t.ease, t.nextReviewAt],
+    );
+  }
+
+  @override
+  Future<void> deleteProgress({
+    required String languageCode,
+    required Set<UuidValue>? vocabularyIds,
+  }) async {
+    if (vocabularyIds case final ids? when ids.isEmpty) return;
+    await LocalProgress.db.deleteWhere(
+      _sessions.requireWritableSession(),
+      where: (t) => switch (vocabularyIds) {
+        final ids? => t.languageCode.equals(languageCode) & t.vocabularyId.inSet(ids),
+        null => t.languageCode.equals(languageCode),
+      },
+    );
+  }
+
+  @override
+  Future<void> deleteTranslations({
+    required String languageCode,
+    required Set<String> keptOrigins,
+  }) async {
+    await LocalTranslation.db.deleteWhere(
+      _sessions.requireWritableSession(),
+      where: (t) => t.languageCode.equals(languageCode) & t.origin.notInSet(keptOrigins),
+    );
+  }
+
+  Future<LocalLanguageMembership> _membership(DatabaseSession session, String languageCode) async {
+    final vocabularies = await LocalVocabulary.db.find(session);
+    final progress = await LocalProgress.db.find(
+      session,
+      where: (t) => t.languageCode.equals(languageCode),
+    );
+    return LocalLanguageMembership(
+      vocabularyIds: {for (final vocabulary in vocabularies) ?vocabulary.id},
+      inLanguage: {for (final row in progress) row.vocabularyId},
+      tagLinks: await LocalVocabularyTag.db.find(session),
+      tags: await LocalTag.db.find(session, orderBy: (t) => t.name),
+    );
   }
 
   Future<LocalVocabulary> _requireVocabulary(DatabaseSession session, UuidValue id) async {

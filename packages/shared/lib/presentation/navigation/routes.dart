@@ -1,5 +1,6 @@
 import 'package:kaisel/kaisel.dart';
 import 'package:shared/domain/entities/data_readiness.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 
 sealed class AppRoute extends KaiselRoute {
@@ -14,9 +15,24 @@ class const WaitForData({
 
 class const Welcome() extends AppRoute;
 
-class const LanguageSelection({
-  required final bool isOnboarding,
-}) extends AppRoute;
+class const LanguageOnboarding() extends AppRoute;
+
+class const Languages() extends AppRoute;
+
+class const LearnedLanguageDetails({
+  required final Language language,
+}) extends AppRoute {
+  @override
+  List<Object?> get props => [language];
+}
+
+class const LanguageWords({
+  required final Language language,
+  required final bool isAdding,
+}) extends AppRoute {
+  @override
+  List<Object?> get props => [language, isAdding];
+}
 
 class const Home() extends AppRoute;
 

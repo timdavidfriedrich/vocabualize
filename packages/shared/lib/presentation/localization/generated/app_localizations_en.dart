@@ -70,9 +70,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit => 'Edit';
 
   @override
-  String get languagePickerTitle => 'Select language';
-
-  @override
   String get vocabularyDeleteTitle => 'Delete?';
 
   @override
@@ -101,12 +98,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationPracticeBody => 'Some vocabulary may be due. You’ll rock this! :D';
-
-  @override
-  String get welcomeSourceLanguageTitle => 'I speak';
-
-  @override
-  String get welcomeTargetLanguageTitle => 'I want to learn';
 
   @override
   String get welcomeStartButton => 'Let’s start!';
@@ -296,18 +287,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAppearanceDark => 'Dark';
 
   @override
-  String get settingsSourceLanguageTitle => 'Source language';
-
-  @override
-  String get settingsSourceLanguageHint => 'A language you know well';
-
-  @override
-  String get settingsTargetLanguageTitle => 'Target language';
-
-  @override
-  String get settingsTargetLanguageHint => 'The language you learn';
-
-  @override
   String vocabularyReappearsInMinutes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -479,15 +458,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String languagePairLabel(String source, String target) {
     return '$source → $target';
   }
-
-  @override
-  String get languageSelectionTitle => 'Your languages';
-
-  @override
-  String get languageSelectionContinueButton => 'Continue';
-
-  @override
-  String get languageSelectionSaveButton => 'Save';
 
   @override
   String get dataOfflineTitle => 'You\'re offline';
@@ -988,4 +958,247 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scanReportSuggestionButton => 'Report a suggestion';
+
+  @override
+  String get languagesTitle => 'Your languages';
+
+  @override
+  String get languagesSpeakTitle => 'I speak';
+
+  @override
+  String get languagesSpeakHint => 'A language you know well';
+
+  @override
+  String get languagesLearnTitle => 'I learn';
+
+  @override
+  String get languagesLearnHint => 'Choose one or more';
+
+  @override
+  String get languagesContinueButton => 'Continue';
+
+  @override
+  String get languagesPausedTitle => 'Paused';
+
+  @override
+  String get languagesChangeButton => 'Change';
+
+  @override
+  String get languagesAddButton => 'Add a language';
+
+  @override
+  String languagesWordCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words',
+      one: '1 word',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get languagesPickTitle => 'Choose a language';
+
+  @override
+  String languagesMainClashTitle(String language) {
+    return 'Speak $language?';
+  }
+
+  @override
+  String languagesMainClashMessage(String language) {
+    return 'You\'re learning $language. If you speak it, it gets paused. Its progress stays.';
+  }
+
+  @override
+  String get languagesMainClashButton => 'Continue';
+
+  @override
+  String get learnedLanguageAskMeInLabel => 'Ask me in';
+
+  @override
+  String get learnedLanguageAddAskMeInButton => 'Ask me in another language';
+
+  @override
+  String learnedLanguageAskMeInHelpMessage(String askMeIn, String main, String learned) {
+    return 'Cards ask in $askMeIn instead of $main, for words you already know well in $askMeIn. You can always show the $main word. This keeps your $askMeIn active while you learn $learned.';
+  }
+
+  @override
+  String get learnedLanguageAskMeInHelpTooltip => 'What does this mean?';
+
+  @override
+  String get learnedLanguageRemoveAskMeInTooltip => 'Remove';
+
+  @override
+  String learnedLanguageFromLevelLabel(String level) {
+    return 'From level: $level';
+  }
+
+  @override
+  String get learnedLanguageNewWordsTitle => 'New words per practice';
+
+  @override
+  String get learnedLanguageAllNewWords => 'All';
+
+  @override
+  String get learnedLanguageWordsTitle => 'Words';
+
+  @override
+  String learnedLanguageWordsCount(int count, int total) {
+    return '$count of $total';
+  }
+
+  @override
+  String get learnedLanguageChooseWordsButton => 'Choose words';
+
+  @override
+  String get learnedLanguagePauseButton => 'Pause';
+
+  @override
+  String get learnedLanguageResumeButton => 'Resume';
+
+  @override
+  String get learnedLanguageLastActiveHint => 'You need at least one language to learn.';
+
+  @override
+  String learnedLanguageDeleteTitle(String language) {
+    return 'Delete $language?';
+  }
+
+  @override
+  String learnedLanguageDeleteMessage(String language) {
+    return 'Your progress in $language is deleted. Your words stay in your other languages.';
+  }
+
+  @override
+  String learnedLanguageResumeTitle(String language) {
+    return 'Welcome back to $language';
+  }
+
+  @override
+  String get learnedLanguageResumeMessage => 'Continue where you left off, or start over?';
+
+  @override
+  String get learnedLanguageStartOverButton => 'Start over';
+
+  @override
+  String languageWordsTitle(String language) {
+    return 'Words in $language';
+  }
+
+  @override
+  String languageWordsAddTitle(String language) {
+    return 'Learn $language too?';
+  }
+
+  @override
+  String languageWordsAddQuestion(String language) {
+    return 'Which of your words do you want to learn in $language?';
+  }
+
+  @override
+  String languageWordsAllOption(int count) {
+    return 'All words ($count)';
+  }
+
+  @override
+  String get languageWordsChooseOption => 'Choose collections';
+
+  @override
+  String get languageWordsNoneOption => 'None, start fresh';
+
+  @override
+  String languageWordsLeftOutHint(String language) {
+    return 'Words you leave out stay in your other languages. You can add them to $language any time.';
+  }
+
+  @override
+  String get languageWordsUntaggedLabel => 'Not in a collection';
+
+  @override
+  String languageWordsCount(int count) {
+    return '($count)';
+  }
+
+  @override
+  String languageWordsPartialCount(int count, int total) {
+    return '($count of $total)';
+  }
+
+  @override
+  String languageWordsStartButton(String language) {
+    return 'Start $language';
+  }
+
+  @override
+  String get languageWordsSaveButton => 'Save';
+
+  @override
+  String get languageWordsSummaryTitle => 'Save changes?';
+
+  @override
+  String languageWordsSummaryAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words are added.',
+      one: '1 word is added.',
+      zero: 'No words are added.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String languageWordsSummaryRemoved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words are removed.',
+      one: '1 word is removed.',
+      zero: 'No words are removed.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get languageWordsSummaryRestartHint => 'Removed words start over if you add them again.';
+
+  @override
+  String languageWordsSummaryAlsoElsewhere(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count of them are also in other collections.',
+      one: '1 of them is also in another collection.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String languageWordsNoWordsHint(String language) {
+    return 'You have no words yet. Words you add are learned in $language too.';
+  }
+
+  @override
+  String get homeManageLanguagesButton => 'Manage languages';
+
+  @override
+  String homeEmptyLanguageMessage(String language) {
+    return 'None of your words are in $language yet.';
+  }
+
+  @override
+  String get homeChooseWordsButton => 'Choose words';
+
+  @override
+  String get homeLanguageButtonTooltip => 'Switch language';
+
+  @override
+  String get settingsLanguagesTitle => 'Languages';
+
+  @override
+  String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
+    return 'Cards ask in $askMeIn instead of $main. You can always show the $main word. This keeps your $askMeIn active while you learn $learned.';
+  }
 }

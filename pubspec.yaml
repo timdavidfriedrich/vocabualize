@@ -19,6 +19,7 @@ workspace:
   - packages/feature_settings
   - packages/feature_report
   - packages/feature_gate
+  - packages/feature_languages
 
 dependencies:
   flutter:
@@ -35,6 +36,7 @@ dependencies:
   feature_settings:
   feature_report:
   feature_gate:
+  feature_languages:
   flutter_bloc: ^9.1.1
   get_it: ^9.3.0
   injectable: ^3.0.0

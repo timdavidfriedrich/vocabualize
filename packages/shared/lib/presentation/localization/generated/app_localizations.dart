@@ -222,12 +222,6 @@ abstract class AppLocalizations {
   /// **'Edit'**
   String get edit;
 
-  /// No description provided for @languagePickerTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Select language'**
-  String get languagePickerTitle;
-
   /// No description provided for @vocabularyDeleteTitle.
   ///
   /// In en, this message translates to:
@@ -287,18 +281,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Some vocabulary may be due. You’ll rock this! :D'**
   String get notificationPracticeBody;
-
-  /// No description provided for @welcomeSourceLanguageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'I speak'**
-  String get welcomeSourceLanguageTitle;
-
-  /// No description provided for @welcomeTargetLanguageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'I want to learn'**
-  String get welcomeTargetLanguageTitle;
 
   /// No description provided for @welcomeStartButton.
   ///
@@ -672,30 +654,6 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get settingsAppearanceDark;
 
-  /// No description provided for @settingsSourceLanguageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Source language'**
-  String get settingsSourceLanguageTitle;
-
-  /// No description provided for @settingsSourceLanguageHint.
-  ///
-  /// In en, this message translates to:
-  /// **'A language you know well'**
-  String get settingsSourceLanguageHint;
-
-  /// No description provided for @settingsTargetLanguageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Target language'**
-  String get settingsTargetLanguageTitle;
-
-  /// No description provided for @settingsTargetLanguageHint.
-  ///
-  /// In en, this message translates to:
-  /// **'The language you learn'**
-  String get settingsTargetLanguageHint;
-
   /// No description provided for @vocabularyReappearsInMinutes.
   ///
   /// In en, this message translates to:
@@ -959,24 +917,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{source} → {target}'**
   String languagePairLabel(String source, String target);
-
-  /// No description provided for @languageSelectionTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Your languages'**
-  String get languageSelectionTitle;
-
-  /// No description provided for @languageSelectionContinueButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Continue'**
-  String get languageSelectionContinueButton;
-
-  /// No description provided for @languageSelectionSaveButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Save'**
-  String get languageSelectionSaveButton;
 
   /// No description provided for @dataOfflineTitle.
   ///
@@ -1697,6 +1637,348 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report a suggestion'**
   String get scanReportSuggestionButton;
+
+  /// No description provided for @languagesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your languages'**
+  String get languagesTitle;
+
+  /// No description provided for @languagesSpeakTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I speak'**
+  String get languagesSpeakTitle;
+
+  /// No description provided for @languagesSpeakHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A language you know well'**
+  String get languagesSpeakHint;
+
+  /// No description provided for @languagesLearnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I learn'**
+  String get languagesLearnTitle;
+
+  /// No description provided for @languagesLearnHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose one or more'**
+  String get languagesLearnHint;
+
+  /// No description provided for @languagesContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get languagesContinueButton;
+
+  /// No description provided for @languagesPausedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get languagesPausedTitle;
+
+  /// No description provided for @languagesChangeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get languagesChangeButton;
+
+  /// No description provided for @languagesAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a language'**
+  String get languagesAddButton;
+
+  /// No description provided for @languagesWordCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 word} other{{count} words}}'**
+  String languagesWordCount(int count);
+
+  /// No description provided for @languagesPickTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a language'**
+  String get languagesPickTitle;
+
+  /// No description provided for @languagesMainClashTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Speak {language}?'**
+  String languagesMainClashTitle(String language);
+
+  /// No description provided for @languagesMainClashMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re learning {language}. If you speak it, it gets paused. Its progress stays.'**
+  String languagesMainClashMessage(String language);
+
+  /// No description provided for @languagesMainClashButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get languagesMainClashButton;
+
+  /// No description provided for @learnedLanguageAskMeInLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask me in'**
+  String get learnedLanguageAskMeInLabel;
+
+  /// No description provided for @learnedLanguageAddAskMeInButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask me in another language'**
+  String get learnedLanguageAddAskMeInButton;
+
+  /// No description provided for @learnedLanguageAskMeInHelpMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards ask in {askMeIn} instead of {main}, for words you already know well in {askMeIn}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.'**
+  String learnedLanguageAskMeInHelpMessage(String askMeIn, String main, String learned);
+
+  /// No description provided for @learnedLanguageAskMeInHelpTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'What does this mean?'**
+  String get learnedLanguageAskMeInHelpTooltip;
+
+  /// No description provided for @learnedLanguageRemoveAskMeInTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get learnedLanguageRemoveAskMeInTooltip;
+
+  /// No description provided for @learnedLanguageFromLevelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'From level: {level}'**
+  String learnedLanguageFromLevelLabel(String level);
+
+  /// No description provided for @learnedLanguageNewWordsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New words per practice'**
+  String get learnedLanguageNewWordsTitle;
+
+  /// No description provided for @learnedLanguageAllNewWords.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get learnedLanguageAllNewWords;
+
+  /// No description provided for @learnedLanguageWordsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get learnedLanguageWordsTitle;
+
+  /// No description provided for @learnedLanguageWordsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total}'**
+  String learnedLanguageWordsCount(int count, int total);
+
+  /// No description provided for @learnedLanguageChooseWordsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose words'**
+  String get learnedLanguageChooseWordsButton;
+
+  /// No description provided for @learnedLanguagePauseButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get learnedLanguagePauseButton;
+
+  /// No description provided for @learnedLanguageResumeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get learnedLanguageResumeButton;
+
+  /// No description provided for @learnedLanguageLastActiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You need at least one language to learn.'**
+  String get learnedLanguageLastActiveHint;
+
+  /// No description provided for @learnedLanguageDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {language}?'**
+  String learnedLanguageDeleteTitle(String language);
+
+  /// No description provided for @learnedLanguageDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress in {language} is deleted. Your words stay in your other languages.'**
+  String learnedLanguageDeleteMessage(String language);
+
+  /// No description provided for @learnedLanguageResumeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back to {language}'**
+  String learnedLanguageResumeTitle(String language);
+
+  /// No description provided for @learnedLanguageResumeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue where you left off, or start over?'**
+  String get learnedLanguageResumeMessage;
+
+  /// No description provided for @learnedLanguageStartOverButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start over'**
+  String get learnedLanguageStartOverButton;
+
+  /// No description provided for @languageWordsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Words in {language}'**
+  String languageWordsTitle(String language);
+
+  /// No description provided for @languageWordsAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn {language} too?'**
+  String languageWordsAddTitle(String language);
+
+  /// No description provided for @languageWordsAddQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Which of your words do you want to learn in {language}?'**
+  String languageWordsAddQuestion(String language);
+
+  /// No description provided for @languageWordsAllOption.
+  ///
+  /// In en, this message translates to:
+  /// **'All words ({count})'**
+  String languageWordsAllOption(int count);
+
+  /// No description provided for @languageWordsChooseOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose collections'**
+  String get languageWordsChooseOption;
+
+  /// No description provided for @languageWordsNoneOption.
+  ///
+  /// In en, this message translates to:
+  /// **'None, start fresh'**
+  String get languageWordsNoneOption;
+
+  /// No description provided for @languageWordsLeftOutHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Words you leave out stay in your other languages. You can add them to {language} any time.'**
+  String languageWordsLeftOutHint(String language);
+
+  /// No description provided for @languageWordsUntaggedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in a collection'**
+  String get languageWordsUntaggedLabel;
+
+  /// No description provided for @languageWordsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'({count})'**
+  String languageWordsCount(int count);
+
+  /// No description provided for @languageWordsPartialCount.
+  ///
+  /// In en, this message translates to:
+  /// **'({count} of {total})'**
+  String languageWordsPartialCount(int count, int total);
+
+  /// No description provided for @languageWordsStartButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start {language}'**
+  String languageWordsStartButton(String language);
+
+  /// No description provided for @languageWordsSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get languageWordsSaveButton;
+
+  /// No description provided for @languageWordsSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes?'**
+  String get languageWordsSummaryTitle;
+
+  /// No description provided for @languageWordsSummaryAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No words are added.} =1{1 word is added.} other{{count} words are added.}}'**
+  String languageWordsSummaryAdded(int count);
+
+  /// No description provided for @languageWordsSummaryRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No words are removed.} =1{1 word is removed.} other{{count} words are removed.}}'**
+  String languageWordsSummaryRemoved(int count);
+
+  /// No description provided for @languageWordsSummaryRestartHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed words start over if you add them again.'**
+  String get languageWordsSummaryRestartHint;
+
+  /// No description provided for @languageWordsSummaryAlsoElsewhere.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 of them is also in another collection.} other{{count} of them are also in other collections.}}'**
+  String languageWordsSummaryAlsoElsewhere(int count);
+
+  /// No description provided for @languageWordsNoWordsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no words yet. Words you add are learned in {language} too.'**
+  String languageWordsNoWordsHint(String language);
+
+  /// No description provided for @homeManageLanguagesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage languages'**
+  String get homeManageLanguagesButton;
+
+  /// No description provided for @homeEmptyLanguageMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'None of your words are in {language} yet.'**
+  String homeEmptyLanguageMessage(String language);
+
+  /// No description provided for @homeChooseWordsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose words'**
+  String get homeChooseWordsButton;
+
+  /// No description provided for @homeLanguageButtonTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch language'**
+  String get homeLanguageButtonTooltip;
+
+  /// No description provided for @settingsLanguagesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get settingsLanguagesTitle;
+
+  /// No description provided for @learnedLanguageAskMeInAlwaysHelpMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards ask in {askMeIn} instead of {main}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.'**
+  String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

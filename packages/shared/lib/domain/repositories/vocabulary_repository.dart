@@ -17,6 +17,8 @@ abstract class VocabularyRepository {
     VocabularyFilter filter = emptyVocabularyFilter,
   });
 
+  Stream<AppResult<int>> watchVocabularyCount();
+
   Stream<AppResult<List<Vocabulary>>> watchRecentVocabularies({
     required Language language,
     required Duration maxAge,

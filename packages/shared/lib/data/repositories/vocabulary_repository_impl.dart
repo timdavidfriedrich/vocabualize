@@ -27,10 +27,6 @@ import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
-const _initialLevel = 0.0;
-const _initialIntervalMinutes = 5;
-const _initialEase = 2.5;
-
 @Injectable(as: VocabularyRepository)
 class const VocabularyRepositoryImpl(
   final VocabularyLocalDataSource _localDataSource,
@@ -56,6 +52,10 @@ class const VocabularyRepositoryImpl(
       isDueOnly: filter.isDueOnly,
     ),
   ).toAppResult();
+
+  @override
+  Stream<AppResult<int>> watchVocabularyCount() =>
+      _localDataSource.watchVocabularyCount().toAppResult();
 
   @override
   Stream<AppResult<List<Vocabulary>>> watchRecentVocabularies({
@@ -298,17 +298,8 @@ class const VocabularyRepositoryImpl(
     }
   }
 
-  Progress _newProgress(Language language, ProgressStage stage, DateTime now) {
-    return Progress(
-      language: language,
-      stage: stage,
-      level: _initialLevel,
-      intervalMinutes: _initialIntervalMinutes,
-      ease: _initialEase,
-      nextReviewAt: now,
-      createdAt: now,
-    );
-  }
+  Progress _newProgress(Language language, ProgressStage stage, DateTime now) =>
+      language.toNewProgress(stage, at: now);
 
   Future<CustomImage> _saveImage(String imageId, ProcessedImage image) async {
     final thumbnailPath = await _imageFileDataSource.writeImage(
