@@ -8,6 +8,7 @@ import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/models/local_activity_day.dart';
 import 'package:shared/data/models/local_level_range.dart';
 import 'package:shared/data/models/local_progress_stage.dart';
+import 'package:shared/data/models/local_translation_origin.dart';
 import 'package:shared/data/models/local_vocabulary_overview.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -85,6 +86,14 @@ abstract class VocabularyLocalDataSource {
   });
 
   Future<List<LocalVocabulary>> deleteVocabulary(UuidValue id);
+
+  Future<List<LocalVocabulary>> findVocabulariesMissingTranslation({
+    required String languageCode,
+    required String? progressLanguageCode,
+    required int limit,
+  });
+
+  Future<void> insertMissingTranslations(List<LocalTranslation> translations);
 }
 
 @Injectable(as: VocabularyLocalDataSource)
@@ -464,6 +473,53 @@ class const VocabularyLocalDataSourceImpl(
       _sessions.requireWritableSession(),
       where: (t) => t.id.equals(id),
     );
+  }
+
+  @override
+  Future<List<LocalVocabulary>> findVocabulariesMissingTranslation({
+    required String languageCode,
+    required String? progressLanguageCode,
+    required int limit,
+  }) {
+    return LocalVocabulary.db.find(
+      _requireSession(),
+      where: (t) => _allOf(
+        t.translations.none((translation) => translation.languageCode.equals(languageCode)),
+        [
+          t.translations.any(
+            (translation) => translation.origin.equals(LocalTranslationOrigin.entered.value),
+          ),
+          if (progressLanguageCode != null)
+            t.progress.any((progress) => progress.languageCode.equals(progressLanguageCode)),
+        ],
+      ),
+      orderBy: (t) => t.createdAt.asc(),
+      limit: limit,
+      include: _withLanguages(),
+    );
+  }
+
+  @override
+  Future<void> insertMissingTranslations(List<LocalTranslation> translations) async {
+    if (translations.isEmpty) return;
+    final session = _sessions.requireWritableSession();
+    await session.db.transaction((transaction) async {
+      final existingIds = {
+        for (final translation in await LocalTranslation.db.find(
+          session,
+          where: (t) => t.id.inSet({for (final translation in translations) ?translation.id}),
+          transaction: transaction,
+        ))
+          translation.id,
+      };
+      final missing = [
+        for (final translation in translations)
+          if (!existingIds.contains(translation.id)) translation,
+      ];
+      if (missing.isNotEmpty) {
+        await LocalTranslation.db.insert(session, missing, transaction: transaction);
+      }
+    });
   }
 
   Future<LocalVocabulary> _requireVocabulary(DatabaseSession session, UuidValue id) async {

@@ -18,7 +18,7 @@ import 'package:shared/presentation/localization/generated/app_localizations.dar
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/reminders/reminder_cubit.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
-
+import 'package:shared/presentation/translation_fill/translation_fill_cubit.dart';
 import 'package:vocabualize/src/di/service_locator.dart';
 import 'package:vocabualize/src/navigation/navigation_router.dart';
 import 'package:vocabualize/src/theme/app_theme.dart';
@@ -44,6 +44,7 @@ class const App({
         BlocProvider(create: (_) => sl<ConnectivityCubit>()..start()),
         BlocProvider(create: (_) => sl<PreferencesCubit>()..start()),
         BlocProvider(lazy: false, create: (_) => sl<ReminderCubit>()..start()),
+        BlocProvider(lazy: false, create: (_) => sl<TranslationFillCubit>()..start()),
       ],
       child: BlocSelector<PreferencesCubit, Preferences, AppearanceMode>(
         selector: (preferences) => preferences.appearanceMode,

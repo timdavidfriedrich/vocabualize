@@ -87,6 +87,8 @@ import 'package:shared/data/repositories/sync_repository_impl.dart' as _i368;
 import 'package:shared/data/repositories/tag_repository_impl.dart' as _i453;
 import 'package:shared/data/repositories/text_to_speech_repository_impl.dart'
     as _i905;
+import 'package:shared/data/repositories/translation_fill_repository_impl.dart'
+    as _i964;
 import 'package:shared/data/repositories/translation_repository_impl.dart'
     as _i542;
 import 'package:shared/data/repositories/vocabulary_repository_impl.dart'
@@ -113,6 +115,8 @@ import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
 import 'package:shared/domain/repositories/tag_repository.dart' as _i836;
 import 'package:shared/domain/repositories/text_to_speech_repository.dart'
     as _i839;
+import 'package:shared/domain/repositories/translation_fill_repository.dart'
+    as _i307;
 import 'package:shared/domain/repositories/translation_repository.dart'
     as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
@@ -127,6 +131,8 @@ import 'package:shared/presentation/preferences/preferences_cubit.dart'
 import 'package:shared/presentation/reminders/reminder_cubit.dart' as _i902;
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart'
     as _i765;
+import 'package:shared/presentation/translation_fill/translation_fill_cubit.dart'
+    as _i709;
 import 'package:vocabualize_client/vocabualize_client.dart' as _i1040;
 
 class SharedPackageModule extends _i526.MicroPackageModule {
@@ -269,6 +275,12 @@ class SharedPackageModule extends _i526.MicroPackageModule {
               gh<_i862.DatabaseSessionDataSource>(),
               gh<_i753.SpaceStorageDataSource>(),
             ));
+    gh.factory<_i307.TranslationFillRepository>(
+        () => _i964.TranslationFillRepositoryImpl(
+              gh<_i397.VocabularyLocalDataSource>(),
+              gh<_i555.SettingLocalDataSource>(),
+              gh<_i906.TranslationRemoteDataSource>(),
+            ));
     gh.lazySingleton<_i61.ImageSyncDataSource>(
         () => _i61.ImageSyncDataSourceImpl(
               gh<_i1034.SyncDataSource>(),
@@ -293,6 +305,12 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         ));
     gh.factory<_i218.PreferencesCubit>(
         () => _i218.PreferencesCubit(gh<_i0.SettingsRepository>()));
+    gh.factory<_i709.TranslationFillCubit>(() => _i709.TranslationFillCubit(
+          gh<_i307.TranslationFillRepository>(),
+          gh<_i308.LanguageRepository>(),
+          gh<_i689.ConnectivityRepository>(),
+          gh<_i208.VocabularyRepository>(),
+        ));
     gh.factory<_i523.SyncRepository>(() => _i368.SyncRepositoryImpl(
           gh<_i1034.SyncDataSource>(),
           gh<_i61.ImageSyncDataSource>(),
