@@ -507,7 +507,9 @@ class const VocabularyLocalDataSourceImpl(
       final existingIds = {
         for (final translation in await LocalTranslation.db.find(
           session,
-          where: (t) => t.id.inSet({for (final translation in translations) ?translation.id}),
+          where: (t) => t.id.inSet(<UuidValue>{
+            for (final translation in translations) ?translation.id,
+          }),
           transaction: transaction,
         ))
           translation.id,
