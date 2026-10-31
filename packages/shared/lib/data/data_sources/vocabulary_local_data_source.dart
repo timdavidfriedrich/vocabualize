@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:serverpod_database/serverpod_database.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
+import 'package:shared/data/extensions/table_extensions.dart';
 import 'package:shared/data/models/local_activity_day.dart';
 import 'package:shared/data/models/local_language_membership.dart';
 import 'package:shared/data/models/local_level_range.dart';
@@ -143,6 +144,7 @@ class const VocabularyLocalDataSourceImpl(
             _allOf(
               t.progress.any(
                 (progress) => _allOf(progress.languageCode.equals(languageCode), [
+                  progress.isVisible,
                   ?_anyOf([
                     for (final range in levelRanges)
                       _levelBetween(progress, range.from, range.until),
@@ -153,7 +155,9 @@ class const VocabularyLocalDataSourceImpl(
               [
                 if (query.isNotEmpty)
                   t.translations.any(
-                    (translation) => translation.text.ilike("$_anyCharacters$query$_anyCharacters"),
+                    (translation) =>
+                        translation.isVisible &
+                        translation.text.ilike("$_anyCharacters$query$_anyCharacters"),
                   ),
               ],
             ),
@@ -206,7 +210,9 @@ class const VocabularyLocalDataSourceImpl(
           session,
           where: (t) =>
               (t.createdAt > now.subtract(maxAge)) &
-              t.progress.any((progress) => progress.languageCode.equals(languageCode)),
+              t.progress.any(
+                (progress) => progress.isVisible & progress.languageCode.equals(languageCode),
+              ),
           orderBy: (t) => t.createdAt.desc(),
           limit: limit,
           include: _withLanguages(),
@@ -260,7 +266,8 @@ class const VocabularyLocalDataSourceImpl(
               _allOf(progress.languageCode.equals(languageCode), [
                 progress.stage.equals(LocalProgressStage.waiting.value),
                 progress.vocabulary.translations.any(
-                  (translation) => translation.languageCode.equals(languageCode),
+                  (translation) =>
+                      translation.isVisible & translation.languageCode.equals(languageCode),
                 ),
               ]),
               scope,
@@ -320,7 +327,9 @@ class const VocabularyLocalDataSourceImpl(
       _requireSession(),
       where: (t) => t.translations.any(
         (translation) =>
-            translation.languageCode.equals(languageCode) & translation.text.ilike(text.trim()),
+            translation.isVisible &
+            translation.languageCode.equals(languageCode) &
+            translation.text.ilike(text.trim()),
       ),
       include: _withLanguages(),
     );
@@ -517,13 +526,19 @@ class const VocabularyLocalDataSourceImpl(
     return LocalVocabulary.db.find(
       _requireSession(),
       where: (t) => _allOf(
-        t.translations.none((translation) => translation.languageCode.equals(languageCode)),
+        t.translations.none(
+          (translation) => translation.isVisible & translation.languageCode.equals(languageCode),
+        ),
         [
           t.translations.any(
-            (translation) => translation.origin.equals(LocalTranslationOrigin.entered.value),
+            (translation) =>
+                translation.isVisible &
+                translation.origin.equals(LocalTranslationOrigin.entered.value),
           ),
           if (progressLanguageCode != null)
-            t.progress.any((progress) => progress.languageCode.equals(progressLanguageCode)),
+            t.progress.any(
+              (progress) => progress.isVisible & progress.languageCode.equals(progressLanguageCode),
+            ),
         ],
       ),
       orderBy: (t) => t.createdAt.asc(),

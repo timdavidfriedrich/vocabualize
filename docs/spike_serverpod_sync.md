@@ -57,6 +57,10 @@ The release build with R8 runs without missing classes, and the SQLite native li
 3. **Never load all rows into the UI.** Lists use `watch` with `limit` and load more pages; numbers come from `count()`.
 4. **The first sync shows progress.** A fresh device with 5,000 words needs about 17 s. The single migrated user has a few hundred words, which takes 1–2 s.
 5. **Times are millisecond-precise.** Nothing may depend on sub-millisecond ordering.
+6. **Relation filters need `isVisible`.**
+   - A deleted synced row stays in its table; only its `crdt_data_rows.visibility` hides it.
+   - Root queries and `include` lists add that check, but relation filters inside `where` (`any`, `none`, `count`, `every`) don't, so they match deleted rows.
+   - Every condition inside a relation filter adds `.isVisible` from `packages/shared/lib/data/extensions/table_extensions.dart`, for example `t.progress.any((progress) => progress.isVisible & ...)`.
 
 ## Still open
 
