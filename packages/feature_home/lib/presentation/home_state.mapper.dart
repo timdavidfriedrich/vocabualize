@@ -82,6 +82,11 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
     'setup',
     _$setup,
   );
+  static int? _$allWordsCount(HomeLoading v) => v.allWordsCount;
+  static const Field<HomeLoading, int> _f$allWordsCount = Field(
+    'allWordsCount',
+    _$allWordsCount,
+  );
   static VocabularyOverview? _$overview(HomeLoading v) => v.overview;
   static const Field<HomeLoading, VocabularyOverview> _f$overview = Field(
     'overview',
@@ -115,6 +120,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
   @override
   final MappableFields<HomeLoading> fields = const {
     #setup: _f$setup,
+    #allWordsCount: _f$allWordsCount,
     #overview: _f$overview,
     #recentVocabularies: _f$recentVocabularies,
     #collections: _f$collections,
@@ -127,6 +133,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
   static HomeLoading _instantiate(DecodingData data) {
     return HomeLoading(
       setup: data.dec(_f$setup),
+      allWordsCount: data.dec(_f$allWordsCount),
       overview: data.dec(_f$overview),
       recentVocabularies: data.dec(_f$recentVocabularies),
       collections: data.dec(_f$collections),
@@ -215,6 +222,7 @@ abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
   @override
   $R call({
     LanguageSetup? setup,
+    int? allWordsCount,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
@@ -280,6 +288,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   @override
   $R call({
     Object? setup = $none,
+    Object? allWordsCount = $none,
     Object? overview = $none,
     Object? recentVocabularies = $none,
     Object? collections = $none,
@@ -290,6 +299,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (setup != $none) #setup: setup,
+      if (allWordsCount != $none) #allWordsCount: allWordsCount,
       if (overview != $none) #overview: overview,
       if (recentVocabularies != $none) #recentVocabularies: recentVocabularies,
       if (collections != $none) #collections: collections,
@@ -302,6 +312,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   @override
   HomeLoading $make(CopyWithData data) => HomeLoading(
     setup: data.get(#setup, or: $value.setup),
+    allWordsCount: data.get(#allWordsCount, or: $value.allWordsCount),
     overview: data.get(#overview, or: $value.overview),
     recentVocabularies: data.get(
       #recentVocabularies,
@@ -346,6 +357,11 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
     'setup',
     _$setup,
   );
+  static int _$allWordsCount(HomeLoaded v) => v.allWordsCount;
+  static const Field<HomeLoaded, int> _f$allWordsCount = Field(
+    'allWordsCount',
+    _$allWordsCount,
+  );
   static VocabularyOverview _$overview(HomeLoaded v) => v.overview;
   static const Field<HomeLoaded, VocabularyOverview> _f$overview = Field(
     'overview',
@@ -381,6 +397,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
   @override
   final MappableFields<HomeLoaded> fields = const {
     #setup: _f$setup,
+    #allWordsCount: _f$allWordsCount,
     #overview: _f$overview,
     #recentVocabularies: _f$recentVocabularies,
     #collections: _f$collections,
@@ -394,6 +411,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
   static HomeLoaded _instantiate(DecodingData data) {
     return HomeLoaded(
       setup: data.dec(_f$setup),
+      allWordsCount: data.dec(_f$allWordsCount),
       overview: data.dec(_f$overview),
       recentVocabularies: data.dec(_f$recentVocabularies),
       collections: data.dec(_f$collections),
@@ -483,6 +501,7 @@ abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
   @override
   $R call({
     LanguageSetup? setup,
+    int? allWordsCount,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
@@ -543,6 +562,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   @override
   $R call({
     LanguageSetup? setup,
+    int? allWordsCount,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
@@ -554,6 +574,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (setup != null) #setup: setup,
+      if (allWordsCount != null) #allWordsCount: allWordsCount,
       if (overview != null) #overview: overview,
       if (recentVocabularies != null) #recentVocabularies: recentVocabularies,
       if (collections != null) #collections: collections,
@@ -567,6 +588,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   @override
   HomeLoaded $make(CopyWithData data) => HomeLoaded(
     setup: data.get(#setup, or: $value.setup),
+    allWordsCount: data.get(#allWordsCount, or: $value.allWordsCount),
     overview: data.get(#overview, or: $value.overview),
     recentVocabularies: data.get(
       #recentVocabularies,

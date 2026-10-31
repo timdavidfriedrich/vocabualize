@@ -34,6 +34,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) : super(
         const HomeLoading(
           setup: null,
+          allWordsCount: null,
           overview: null,
           recentVocabularies: null,
           collections: null,
@@ -69,6 +70,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             return _merged(setup: setup);
           }
           return state;
+        },
+      ),
+      emit.forEach(
+        _vocabularyRepository.watchVocabularyCount(),
+        onData: (result) => switch (result) {
+          Success(:final data) => _merged(allWordsCount: data),
+          Failure(:final error) => HomeFailure(error: error),
         },
       ),
       emit.forEach(
@@ -177,6 +185,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeState _merged({
     LanguageSetup? setup,
+    int? allWordsCount,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
@@ -188,6 +197,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return switch (state) {
       final HomeLoaded loaded => loaded.copyWith(
         setup: setup,
+        allWordsCount: allWordsCount,
         overview: overview,
         recentVocabularies: recentVocabularies,
         collections: collections,
@@ -199,6 +209,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final HomeLoading loading => _completed(
         HomeLoading(
           setup: setup ?? loading.setup,
+          allWordsCount: allWordsCount ?? loading.allWordsCount,
           overview: overview ?? loading.overview,
           recentVocabularies: recentVocabularies ?? loading.recentVocabularies,
           collections: collections ?? loading.collections,
@@ -216,6 +227,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return switch (loading) {
       HomeLoading(
         setup: final setup?,
+        allWordsCount: final allWordsCount?,
         overview: final overview?,
         recentVocabularies: final recentVocabularies?,
         collections: final collections?,
@@ -226,6 +238,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ) =>
         HomeLoaded(
           setup: setup,
+          allWordsCount: allWordsCount,
           overview: overview,
           recentVocabularies: recentVocabularies,
           collections: collections,

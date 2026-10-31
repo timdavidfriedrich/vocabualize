@@ -17,6 +17,7 @@ sealed class HomeState with HomeStateMappable {
 @MappableClass()
 class const HomeLoading({
   required final LanguageSetup? setup,
+  required final int? allWordsCount,
   required final VocabularyOverview? overview,
   required final List<Vocabulary>? recentVocabularies,
   required final List<CollectionPreview>? collections,
@@ -29,6 +30,7 @@ class const HomeLoading({
 @MappableClass()
 class const HomeLoaded({
   required final LanguageSetup setup,
+  required final int allWordsCount,
   required final VocabularyOverview overview,
   required final List<Vocabulary> recentVocabularies,
   required final List<CollectionPreview> collections,

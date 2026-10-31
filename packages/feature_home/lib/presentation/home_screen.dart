@@ -4,6 +4,7 @@ import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_state.dart';
 import 'package:feature_home/presentation/widgets/collections_section.dart';
+import 'package:feature_home/presentation/widgets/language_switch_button.dart';
 import 'package:feature_home/presentation/widgets/recent_vocabularies_section.dart';
 import 'package:feature_home/presentation/widgets/record_fab.dart';
 import 'package:feature_home/presentation/widgets/status_card.dart';
@@ -22,6 +23,7 @@ import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/presentation/account/account_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/account_status_avatar.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
@@ -50,21 +52,30 @@ class const HomeScreen({
       },
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) =>
-            previous.runtimeType != current.runtimeType || _isEmpty(previous) != _isEmpty(current),
-        builder: (context, state) => switch (state) {
-          HomeLoading() => const LoadingScreen(),
-          HomeFailure(:final error) => _FailureScreen(error: error),
-          HomeLoaded() when _isEmpty(state) => const _EmptyScreen(),
-          HomeLoaded() => const _ContentScreen(),
+            previous.runtimeType != current.runtimeType || _screenOf(previous) != _screenOf(current),
+        builder: (context, state) => switch (_screenOf(state)) {
+          _HomeScreenKind.loading => const LoadingScreen(),
+          _HomeScreenKind.failure => switch (state) {
+            HomeFailure(:final error) => _FailureScreen(error: error),
+            HomeLoading() || HomeLoaded() => const LoadingScreen(),
+          },
+          _HomeScreenKind.empty => const _EmptyScreen(isLanguageEmpty: false),
+          _HomeScreenKind.emptyLanguage => const _EmptyScreen(isLanguageEmpty: true),
+          _HomeScreenKind.content => const _ContentScreen(),
         },
       ),
     );
   }
 }
 
-bool _isEmpty(HomeState state) => switch (state) {
-  HomeLoaded(overview: VocabularyOverview(totalCount: 0), vocabularies: []) => true,
-  _ => false,
+enum _HomeScreenKind { loading, failure, empty, emptyLanguage, content }
+
+_HomeScreenKind _screenOf(HomeState state) => switch (state) {
+  HomeLoading() => _HomeScreenKind.loading,
+  HomeFailure() => _HomeScreenKind.failure,
+  HomeLoaded(overview: VocabularyOverview(totalCount: 0), vocabularies: [], :final allWordsCount) =>
+    allWordsCount > 0 ? _HomeScreenKind.emptyLanguage : _HomeScreenKind.empty,
+  HomeLoaded() => _HomeScreenKind.content,
 };
 
 class const _ContentScreen() extends HookWidget {
@@ -322,18 +333,14 @@ class const _FeedEndLoader() extends HookWidget {
 class const _TitleRow() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
         Expanded(
-          child: FittedBox(
-            alignment: Alignment.centerLeft,
-            fit: BoxFit.scaleDown,
-            child: Text(context.s.appTitle, style: context.t.headlineMedium),
-          ),
+          child: Align(alignment: Alignment.centerLeft, child: LanguageSwitchButton()),
         ),
-        const SizedBox(width: Spacing.m),
-        const _StreakButton(),
-        const _AccountButton(),
+        SizedBox(width: Spacing.m),
+        _StreakButton(),
+        _AccountButton(),
       ],
     );
   }
@@ -385,7 +392,9 @@ class const _SectionTitle({
   }
 }
 
-class const _EmptyScreen() extends StatelessWidget {
+class const _EmptyScreen({
+  required final bool _isLanguageEmpty,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -404,16 +413,49 @@ class const _EmptyScreen() extends StatelessWidget {
                 child: const Mascot(pose: MascotPose.search),
               ),
               const Spacer(),
-              Text(
-                context.s.homeAddFirstWordMessage,
-                style: context.t.bodyLarge,
-                textAlign: TextAlign.center,
-              ),
+              if (_isLanguageEmpty)
+                const _LanguageEmptyMessage()
+              else
+                Text(
+                  context.s.homeAddFirstWordMessage,
+                  style: context.t.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
               const SizedBox(height: _scrollEndSpacing),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class const _LanguageEmptyMessage() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, LanguageSetup?>(
+      selector: (state) => switch (state) {
+        HomeLoaded(:final setup) => setup,
+        HomeLoading() || HomeFailure() => null,
+      },
+      builder: (context, setup) => switch (setup) {
+        null => const SizedBox.shrink(),
+        final setup => Column(
+          children: [
+            Text(
+              context.s.homeEmptyLanguageMessage(setup.selected.toLabel(context)),
+              style: context.t.bodyLarge,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: Spacing.m),
+            OutlinedButton(
+              onPressed: () =>
+                  context.pushLanguageWords(language: setup.selected, isAdding: false),
+              child: Text(context.s.homeChooseWordsButton),
+            ),
+          ],
+        ),
+      },
     );
   }
 }
