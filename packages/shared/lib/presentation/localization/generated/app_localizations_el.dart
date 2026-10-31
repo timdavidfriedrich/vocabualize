@@ -1243,4 +1243,94 @@ class AppLocalizationsEl extends AppLocalizations {
   String detailsExistingAddButton(String language) {
     return 'Προσθήκη στα $language';
   }
+
+  @override
+  String get practiceCustomTooltip => 'Προσαρμοσμένη εξάσκηση';
+
+  @override
+  String get customPracticeTitle => 'Προσαρμοσμένη εξάσκηση';
+
+  @override
+  String get customPracticeLanguagesTitle => 'Γλώσσες';
+
+  @override
+  String get customPracticeAllOption => 'Όλες';
+
+  @override
+  String get customPracticeCollectionsTitle => 'Συλλογές';
+
+  @override
+  String get customPracticeChooseOption => 'Επιλογή';
+
+  @override
+  String get customPracticeWordsTitle => 'Λέξεις';
+
+  @override
+  String get customPracticeDueOption => 'Προς επανάληψη';
+
+  @override
+  String get customPracticeAllWordsOption => 'Όλες οι λέξεις';
+
+  @override
+  String get customPracticeNewWordsTitle => 'Νέες λέξεις';
+
+  @override
+  String get customPracticeNoNewWordsOption => 'Καμία';
+
+  @override
+  String get customPracticeUpToLimitOption => 'Έως το όριο';
+
+  @override
+  String get customPracticeAllWaitingOption => 'Όλες σε αναμονή';
+
+  @override
+  String customPracticeStartButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Έναρξη $count λέξεων',
+      one: 'Έναρξη 1 λέξης',
+      zero: 'Δεν υπάρχουν λέξεις για εξάσκηση',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customPracticeReplaceTitle => 'Αντικατάσταση της προσαρμοσμένης εξάσκησης;';
+
+  @override
+  String get customPracticeReplaceMessage =>
+      'Η ημιτελής προσαρμοσμένη εξάσκηση τελειώνει όταν ξεκινήσετε νέα.';
+
+  @override
+  String get customPracticeReplaceButton => 'Νέα έναρξη';
+
+  @override
+  String homeCustomPracticeProgress(int remaining, int total) {
+    return 'Προσαρμοσμένη εξάσκηση: απομένουν $remaining από $total';
+  }
+
+  @override
+  String get homeCustomPracticeContinueButton => 'Συνέχεια';
+
+  @override
+  String get homeCustomPracticeEndButton => 'Τέλος';
+
+  @override
+  String practiceIntroSkipButton(String language) {
+    return 'Παράλειψη στα $language';
+  }
+
+  @override
+  String get practiceIntroGotItButton => 'Εντάξει';
+
+  @override
+  String practiceShowMainButton(String language) {
+    return 'Εμφάνιση στα $language';
+  }
+
+  @override
+  String collectionEmptyLanguageMessage(String language) {
+    return 'Καμία από αυτές τις λέξεις δεν είναι ακόμη στα $language.';
+  }
 }

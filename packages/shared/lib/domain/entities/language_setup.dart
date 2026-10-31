@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:shared/domain/entities/language.dart';
+import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 
 part 'language_setup.mapper.dart';
@@ -61,6 +62,25 @@ extension LanguageSetupExtensions on LanguageSetup {
       learned.where((learnedLanguage) => learnedLanguage.language == language).firstOrNull;
 
   bool isLearning(Language language) => learnedOf(language) != null;
+
+  Language? promptFor(Vocabulary vocabulary, Language language) {
+    final candidates = [
+      if (learnedOf(language) case LearnedLanguage(:final askMeIn?, :final askMeInFromLevel)
+          when switch (learnedOf(askMeIn)) {
+            null => true,
+            LearnedLanguage() => vocabulary.levelIn(askMeIn) >= askMeInFromLevel.floor,
+          })
+        askMeIn,
+      main,
+      ?vocabulary.entered?.language,
+    ];
+    return candidates
+        .where(
+          (candidate) =>
+              !candidate.isSameLanguageAs(language) && vocabulary.textIn(candidate) != null,
+        )
+        .firstOrNull;
+  }
 }
 
 extension LearnedLanguageDefaults on Language {

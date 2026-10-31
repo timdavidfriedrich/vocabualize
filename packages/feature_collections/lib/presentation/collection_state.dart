@@ -16,7 +16,8 @@ sealed class CollectionState with CollectionStateMappable {
 class const CollectionLoading({
   required final LanguageSetup? setup,
   required final Tag? tag,
-  required final int? dueCount,
+  required final int? practiceCount,
+  required final int? tagWordCount,
   required final List<Vocabulary>? vocabularies,
   required final List<Tag>? tags,
   required final int feedLimit,
@@ -27,7 +28,8 @@ class const CollectionLoading({
 class const CollectionLoaded({
   required final LanguageSetup setup,
   required final Tag tag,
-  required final int dueCount,
+  required final int practiceCount,
+  required final int tagWordCount,
   required final List<Vocabulary> vocabularies,
   required final List<Tag> tags,
   required final int feedLimit,

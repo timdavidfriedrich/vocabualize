@@ -1,14 +1,13 @@
 import 'package:core/theme/spacing.dart';
-import 'package:feature_practice/presentation/practice_bloc.dart';
-import 'package:feature_practice/presentation/practice_event.dart';
-import 'package:feature_practice/presentation/practice_state.dart';
+import 'package:feature_practice/presentation/practice/practice_bloc.dart';
+import 'package:feature_practice/presentation/practice/practice_event.dart';
+import 'package:feature_practice/presentation/practice/practice_state.dart';
 import 'package:feature_practice/presentation/widgets/solution_diff_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
-import 'package:shared/domain/entities/practice_item.dart';
+import 'package:shared/domain/entities/practice_card.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
@@ -18,51 +17,48 @@ import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _solutionOpacity = 0.75;
 const _solutionMaxLines = 7;
-const _sourceMaxLines = 4;
+const _promptMaxLines = 4;
 
-typedef _Card = ({
-  PracticeItem item,
-  Language mainLanguage,
+typedef _CardView = ({
+  PracticeCard card,
   bool showsLanguages,
   bool isStrictCorrection,
   bool isSolutionShown,
+  bool isPromptRevealed,
+  String? mainText,
+  String mainLabel,
   String? typedAnswer,
   PracticeAnswer? grade,
 });
 
-class const PracticeCard({
+class const PracticeCardView({
   super.key,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<PracticeBloc, PracticeState, _Card?>(
+    return BlocSelector<PracticeBloc, PracticeState, _CardView?>(
       selector: (state) => switch (state) {
-        PracticeActive(
-          :final queue,
-          :final mainLanguage,
-          :final showsLanguages,
-          :final isStrictCorrection,
-          :final isSolutionShown,
-          :final typedAnswer,
-          :final grade,
-        ) =>
-          (
-            item: queue.first,
-            mainLanguage: mainLanguage,
-            showsLanguages: showsLanguages,
-            isStrictCorrection: isStrictCorrection,
-            isSolutionShown: isSolutionShown,
-            typedAnswer: typedAnswer,
-            grade: grade,
-          ),
+        final PracticeActive active => (
+          card: active.current,
+          showsLanguages: active.showsLanguagesFor(active.current),
+          isStrictCorrection: active.isStrictCorrection,
+          isSolutionShown: active.isSolutionShown || active.current.isIntro,
+          isPromptRevealed: active.isPromptRevealed,
+          mainText: active.current.prompt == active.setup.main
+              ? null
+              : active.current.item.vocabulary.textIn(active.setup.main),
+          mainLabel: active.setup.main.toLabel(context),
+          typedAnswer: active.typedAnswer,
+          grade: active.grade,
+        ),
         _ => null,
       },
-      builder: (context, card) => switch (card) {
+      builder: (context, view) => switch (view) {
         null => const SizedBox.shrink(),
-        final card => BlocSelector<PreferencesCubit, Preferences, bool>(
+        final view => BlocSelector<PreferencesCubit, Preferences, bool>(
           selector: (preferences) => preferences.areImagesHidden,
           builder: (context, areImagesHidden) => _CardContent(
-            card: card,
+            view: view,
             areImagesHidden: areImagesHidden,
           ),
         ),
@@ -72,19 +68,20 @@ class const PracticeCard({
 }
 
 class const _CardContent({
-  required final _Card _card,
+  required final _CardView _view,
   required final bool _areImagesHidden,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final card = _card;
+    final card = _view.card;
+    final item = card.item;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (_areImagesHidden) const SizedBox(height: Spacing.xxxxl),
-        if (card.showsLanguages)
+        if (_view.showsLanguages)
           Text(
-            LanguagePair(source: card.mainLanguage, target: card.item.language).toLabel(context),
+            LanguagePair(source: card.prompt, target: item.language).toLabel(context),
             style: context.t.bodyLarge?.copyWith(color: context.c.outline),
             textAlign: TextAlign.center,
           ),
@@ -97,32 +94,46 @@ class const _CardContent({
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Spacing.radiusXxl),
                   child: VocabularyImageView(
-                    image: card.item.vocabulary.image,
+                    image: item.vocabulary.image,
                     variant: VocabularyImageVariant.full,
                     displayWidth: MediaQuery.sizeOf(context).width,
                   ),
                 ),
               ),
-            if (card.isSolutionShown)
+            if (_view.isSolutionShown)
               AspectRatio(
                 aspectRatio: 1,
                 child: _Solution(
-                  solution: card.item.vocabulary.textIn(card.item.language) ?? "",
-                  typedAnswer: card.typedAnswer,
-                  grade: card.grade,
-                  isStrictCorrection: card.isStrictCorrection,
+                  solution: item.vocabulary.textIn(item.language) ?? "",
+                  typedAnswer: _view.typedAnswer,
+                  grade: _view.grade,
+                  isStrictCorrection: _view.isStrictCorrection,
                 ),
               ),
           ],
         ),
         const SizedBox(height: Spacing.xxl),
         Text(
-          card.item.vocabulary.promptIn(card.mainLanguage),
+          item.vocabulary.textIn(card.prompt) ?? "",
           style: context.t.bodyLarge,
-          maxLines: _sourceMaxLines,
+          maxLines: _promptMaxLines,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
         ),
+        if (_view.mainText case final mainText?)
+          _view.isPromptRevealed
+              ? Text(
+                  mainText,
+                  style: context.t.bodyMedium?.copyWith(color: context.c.outline),
+                  textAlign: TextAlign.center,
+                )
+              : Center(
+                  child: TextButton(
+                    onPressed: () =>
+                        context.read<PracticeBloc>().add(const PracticePromptRevealed()),
+                    child: Text(context.s.practiceShowMainButton(_view.mainLabel)),
+                  ),
+                ),
       ],
     );
   }

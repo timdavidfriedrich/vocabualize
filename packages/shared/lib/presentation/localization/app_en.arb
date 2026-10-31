@@ -758,5 +758,67 @@
         "type": "String"
       }
     }
+  },
+  "practiceCustomTooltip": "Custom practice",
+  "customPracticeTitle": "Custom practice",
+  "customPracticeLanguagesTitle": "Languages",
+  "customPracticeAllOption": "All",
+  "customPracticeCollectionsTitle": "Collections",
+  "customPracticeChooseOption": "Choose",
+  "customPracticeWordsTitle": "Words",
+  "customPracticeDueOption": "Due",
+  "customPracticeAllWordsOption": "All words",
+  "customPracticeNewWordsTitle": "New words",
+  "customPracticeNoNewWordsOption": "None",
+  "customPracticeUpToLimitOption": "Up to the limit",
+  "customPracticeAllWaitingOption": "All waiting",
+  "customPracticeStartButton": "{count, plural, =0{No words to practice} =1{Start 1 word} other{Start {count} words}}",
+  "@customPracticeStartButton": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customPracticeReplaceTitle": "Replace your custom practice?",
+  "customPracticeReplaceMessage": "Your unfinished custom practice ends when you start a new one.",
+  "customPracticeReplaceButton": "Start new",
+  "homeCustomPracticeProgress": "Custom practice: {remaining} of {total} left",
+  "@homeCustomPracticeProgress": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "homeCustomPracticeContinueButton": "Continue",
+  "homeCustomPracticeEndButton": "End",
+  "practiceIntroSkipButton": "Skip in {language}",
+  "@practiceIntroSkipButton": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceIntroGotItButton": "Got it",
+  "practiceShowMainButton": "Show {language}",
+  "@practiceShowMainButton": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "collectionEmptyLanguageMessage": "None of these words are in {language} yet.",
+  "@collectionEmptyLanguageMessage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
   }
 }

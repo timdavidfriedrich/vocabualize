@@ -2,9 +2,9 @@ import 'package:adaptive_actions/adaptive_actions.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:feature_practice/presentation/extensions/practice_answer_extensions.dart';
 import 'package:feature_practice/presentation/extensions/typed_answer_extensions.dart';
-import 'package:feature_practice/presentation/practice_bloc.dart';
-import 'package:feature_practice/presentation/practice_event.dart';
-import 'package:feature_practice/presentation/practice_state.dart';
+import 'package:feature_practice/presentation/practice/practice_bloc.dart';
+import 'package:feature_practice/presentation/practice/practice_event.dart';
+import 'package:feature_practice/presentation/practice/practice_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,11 +15,14 @@ import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
+import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 
 typedef _Controls = ({
   PracticeItem item,
+  bool isIntro,
   bool isSolutionShown,
   PracticeAnswer? grade,
   bool isBusy,
@@ -33,7 +36,8 @@ class const PracticeControls({
     return BlocSelector<PracticeBloc, PracticeState, _Controls?>(
       selector: (state) => switch (state) {
         PracticeActive(:final queue, :final isSolutionShown, :final grade, :final isBusy) => (
-          item: queue.first,
+          item: queue.first.item,
+          isIntro: queue.first.isIntro,
           isSolutionShown: isSolutionShown,
           grade: grade,
           isBusy: isBusy,
@@ -42,6 +46,10 @@ class const PracticeControls({
       },
       builder: (context, controls) => switch (controls) {
         null => const SizedBox.shrink(),
+        (isIntro: true, :final item, :final isBusy, isSolutionShown: _, grade: _) => _IntroControls(
+          item: item,
+          isBusy: isBusy,
+        ),
         final controls => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -51,16 +59,17 @@ class const PracticeControls({
             BlocSelector<PreferencesCubit, Preferences, bool>(
               selector: (preferences) => preferences.isTypeAnswerDisabled,
               builder: (context, isTypeAnswerDisabled) => switch (controls) {
-                (isSolutionShown: false, :final item, isBusy: _, grade: _)
+                (isSolutionShown: false, :final item, isBusy: _, grade: _, isIntro: _)
                     when !isTypeAnswerDisabled &&
                         item.vocabulary.levelOf(item.language) != VocabularyLevel.novice =>
                   _AnswerField(key: ValueKey((item.vocabulary.id, item.language)), item: item),
-                (isSolutionShown: false, item: _, isBusy: _, grade: _) => ElevatedButton(
-                  onPressed: () =>
-                      context.read<PracticeBloc>().add(const PracticeSolutionRequested()),
-                  child: Text(context.s.practiceSolutionButton),
-                ),
-                (isSolutionShown: true, :final grade, :final isBusy, item: _) =>
+                (isSolutionShown: false, item: _, isBusy: _, grade: _, isIntro: _) =>
+                  ElevatedButton(
+                    onPressed: () =>
+                        context.read<PracticeBloc>().add(const PracticeSolutionRequested()),
+                    child: Text(context.s.practiceSolutionButton),
+                  ),
+                (isSolutionShown: true, :final grade, :final isBusy, item: _, isIntro: _) =>
                   OutlinedButton(
                     onPressed: !isBusy && grade.allows(PracticeAnswer.forgot)
                         ? () => context.read<PracticeBloc>().add(
@@ -167,5 +176,51 @@ class const _AnswerField({
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(Spacing.radiusS)),
       ),
     );
+  }
+}
+
+class const _IntroControls({
+  required final PracticeItem _item,
+  required final bool _isBusy,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<PracticeBloc>();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Spacer(),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroSkipped()),
+                child: Text(context.s.practiceIntroSkipButton(_item.language.toLabel(context))),
+              ),
+            ),
+            const SizedBox(width: Spacing.s),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroConfirmed()),
+                child: Text(context.s.practiceIntroGotItButton),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: Spacing.s),
+        TextButton.icon(
+          onPressed: _isBusy ? null : () => _edit(context),
+          icon: const Icon(Icons.edit_rounded),
+          label: Text(context.s.edit),
+        ),
+        const SizedBox(height: Spacing.xxxl),
+      ],
+    );
+  }
+
+  Future<void> _edit(BuildContext context) async {
+    final bloc = context.read<PracticeBloc>();
+    await context.pushEditVocabularyDetails(vocabularyId: _item.vocabulary.id);
+    bloc.add(const PracticeCardEdited());
   }
 }

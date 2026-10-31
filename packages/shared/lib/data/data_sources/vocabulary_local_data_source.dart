@@ -57,15 +57,30 @@ abstract class VocabularyLocalDataSource {
   Future<int> countDueProgress({
     required Set<String> languageCodes,
     required DateTime dueBy,
-    required UuidValue? tagId,
+    required Set<UuidValue> tagIds,
   });
 
   Future<List<LocalProgress>> findDueProgress({
     required Set<String> languageCodes,
     required DateTime dueBy,
-    required int limit,
-    required UuidValue? tagId,
+    required int? limit,
+    required Set<UuidValue> tagIds,
   });
+
+  Future<List<LocalProgress>> findWaitingProgress({
+    required String languageCode,
+    required int? limit,
+    required Set<UuidValue> tagIds,
+  });
+
+  Future<List<LocalProgress>> findStartedProgress({
+    required Set<String> languageCodes,
+    required Set<UuidValue> tagIds,
+  });
+
+  Future<List<LocalProgress>> findProgressByIds(Set<UuidValue> ids);
+
+  Future<void> recordPractice({required LocalActivityDay activityDay});
 
   Future<LocalVocabulary> insertVocabulary(
     LocalVocabulary vocabulary, {
@@ -358,10 +373,10 @@ class const VocabularyLocalDataSourceImpl(
   Future<int> countDueProgress({
     required Set<String> languageCodes,
     required DateTime dueBy,
-    required UuidValue? tagId,
+    required Set<UuidValue> tagIds,
   }) async {
     final session = _requireSession();
-    final scope = await _scope(session, tagId);
+    final scope = await _scopeOfTags(session, tagIds);
     return LocalProgress.db.count(
       session,
       where: (progress) => _progressWithin(
@@ -376,11 +391,11 @@ class const VocabularyLocalDataSourceImpl(
   Future<List<LocalProgress>> findDueProgress({
     required Set<String> languageCodes,
     required DateTime dueBy,
-    required int limit,
-    required UuidValue? tagId,
+    required int? limit,
+    required Set<UuidValue> tagIds,
   }) async {
     final session = _requireSession();
-    final scope = await _scope(session, tagId);
+    final scope = await _scopeOfTags(session, tagIds);
     return LocalProgress.db.find(
       session,
       where: (progress) => _progressWithin(
@@ -391,6 +406,72 @@ class const VocabularyLocalDataSourceImpl(
       orderBy: (progress) => progress.nextReviewAt.asc(),
       limit: limit,
       include: LocalProgress.include(vocabulary: _withLanguages()),
+    );
+  }
+
+  @override
+  Future<List<LocalProgress>> findWaitingProgress({
+    required String languageCode,
+    required int? limit,
+    required Set<UuidValue> tagIds,
+  }) async {
+    final session = _requireSession();
+    final scope = await _scopeOfTags(session, tagIds);
+    return LocalProgress.db.find(
+      session,
+      where: (progress) => _progressWithin(
+        progress,
+        _allOf(progress.languageCode.equals(languageCode), [
+          progress.stage.equals(LocalProgressStage.waiting.value),
+          progress.vocabulary.translations.any(
+            (translation) => translation.isVisible & translation.languageCode.equals(languageCode),
+          ),
+        ]),
+        scope,
+      ),
+      orderByList: (progress) => [
+        progress.nextReviewAt.asc(),
+        progress.vocabulary.createdAt.asc(),
+      ],
+      limit: limit,
+      include: LocalProgress.include(vocabulary: _withLanguages()),
+    );
+  }
+
+  @override
+  Future<List<LocalProgress>> findStartedProgress({
+    required Set<String> languageCodes,
+    required Set<UuidValue> tagIds,
+  }) async {
+    final session = _requireSession();
+    final scope = await _scopeOfTags(session, tagIds);
+    return LocalProgress.db.find(
+      session,
+      where: (progress) => _progressWithin(
+        progress,
+        progress.languageCode.inSet(languageCodes) & progress.stage.inSet(startedProgressStages),
+        scope,
+      ),
+      orderBy: (progress) => progress.nextReviewAt.asc(),
+      include: LocalProgress.include(vocabulary: _withLanguages()),
+    );
+  }
+
+  @override
+  Future<List<LocalProgress>> findProgressByIds(Set<UuidValue> ids) async {
+    if (ids.isEmpty) return const [];
+    return LocalProgress.db.find(
+      _requireSession(),
+      where: (progress) => progress.id.inSet(ids),
+      include: LocalProgress.include(vocabulary: _withLanguages()),
+    );
+  }
+
+  @override
+  Future<void> recordPractice({required LocalActivityDay activityDay}) {
+    final session = _sessions.requireWritableSession();
+    return session.db.transaction(
+      (transaction) => _recordActivity(session, activityDay, answers: 1, transaction: transaction),
     );
   }
 
@@ -749,6 +830,15 @@ class const VocabularyLocalDataSourceImpl(
     translations: LocalTranslation.includeList(),
     progress: LocalProgress.includeList(),
   );
+
+  Future<Set<UuidValue>?> _scopeOfTags(DatabaseSession session, Set<UuidValue> tagIds) async {
+    if (tagIds.isEmpty) return null;
+    final links = await LocalVocabularyTag.db.find(
+      session,
+      where: (t) => t.tagId.inSet(tagIds),
+    );
+    return {for (final link in links) link.vocabularyId};
+  }
 
   Future<Set<UuidValue>?> _scope(DatabaseSession session, UuidValue? tagId) async {
     if (tagId == null) return null;

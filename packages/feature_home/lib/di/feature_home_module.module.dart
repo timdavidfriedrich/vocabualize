@@ -8,6 +8,8 @@ import 'dart:async' as _i687;
 
 import 'package:feature_home/presentation/home_bloc.dart' as _i748;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:shared/domain/repositories/custom_practice_repository.dart'
+    as _i472;
 import 'package:shared/domain/repositories/external_link_repository.dart'
     as _i711;
 import 'package:shared/domain/repositories/language_repository.dart' as _i308;
@@ -28,6 +30,7 @@ class FeatureHomePackageModule extends _i526.MicroPackageModule {
           gh<_i76.WatchStreakUseCase>(),
           gh<_i711.ExternalLinkRepository>(),
           gh<_i308.LanguageRepository>(),
+          gh<_i472.CustomPracticeRepository>(),
         ));
   }
 }

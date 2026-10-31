@@ -1,6 +1,6 @@
 import 'package:core/theme/spacing.dart';
-import 'package:feature_practice/presentation/practice_bloc.dart';
-import 'package:feature_practice/presentation/practice_state.dart';
+import 'package:feature_practice/presentation/practice/practice_bloc.dart';
+import 'package:feature_practice/presentation/practice/practice_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';

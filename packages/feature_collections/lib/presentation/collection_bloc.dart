@@ -9,8 +9,10 @@ import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
+import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
+import 'package:shared/domain/repositories/language_words_repository.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
@@ -25,11 +27,13 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     this._textToSpeechRepository,
     this._externalLinkRepository,
     this._languageRepository,
+    this._languageWordsRepository,
   ) : super(
         const CollectionLoading(
           setup: null,
           tag: null,
-          dueCount: null,
+          practiceCount: null,
+          tagWordCount: null,
           vocabularies: null,
           tags: null,
           feedLimit: 0,
@@ -50,6 +54,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   final TextToSpeechRepository _textToSpeechRepository;
   final ExternalLinkRepository _externalLinkRepository;
   final LanguageRepository _languageRepository;
+  final LanguageWordsRepository _languageWordsRepository;
   String? _tagId;
 
   Future<void> _onStarted(CollectionStarted event, Emitter<CollectionState> emit) async {
@@ -92,13 +97,28 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     final tagId = _tagId;
     if (tagId == null) return;
     add(CollectionFilterChanged(filter: _filter));
-    await emit.forEach(
-      _vocabularyRepository.watchVocabularyOverview(languages: {event.language}, tagId: tagId),
-      onData: (result) => switch (result) {
-        Success(:final data) => _merged(dueCount: data.dueCount),
-        Failure(:final error) => CollectionFailure(error: error),
-      },
-    );
+    await Future.wait([
+      emit.forEach(
+        _vocabularyRepository.watchVocabularyOverview(languages: {event.language}, tagId: tagId),
+        onData: (result) => switch (result) {
+          Success(:final data) => _merged(
+            practiceCount: data.practiceCountWith(_setup?.learnedOf(event.language)?.newWords),
+          ),
+          Failure(:final error) => CollectionFailure(error: error),
+        },
+      ),
+      emit.forEach(
+        _languageWordsRepository.watchLanguageCoverage(event.language),
+        onData: (result) => switch (result) {
+          Success(:final data) => _merged(
+            tagWordCount: data.collections
+                .where((collection) => collection.tag.id == tagId)
+                .fold<int>(0, (count, collection) => count + collection.totalCount),
+          ),
+          Failure(:final error) => CollectionFailure(error: error),
+        },
+      ),
+    ]);
   }
 
   Future<void> _onFeedEvent(CollectionFeedEvent event, Emitter<CollectionState> emit) async {
@@ -188,7 +208,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   CollectionState _merged({
     LanguageSetup? setup,
     Tag? tag,
-    int? dueCount,
+    int? practiceCount,
+    int? tagWordCount,
     List<Vocabulary>? vocabularies,
     List<Tag>? tags,
     int? feedLimit,
@@ -198,7 +219,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       final CollectionLoaded loaded => loaded.copyWith(
         setup: setup,
         tag: tag,
-        dueCount: dueCount,
+        practiceCount: practiceCount,
+        tagWordCount: tagWordCount,
         vocabularies: vocabularies,
         tags: tags,
         feedLimit: feedLimit,
@@ -208,7 +230,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         CollectionLoading(
           setup: setup ?? loading.setup,
           tag: tag ?? loading.tag,
-          dueCount: dueCount ?? loading.dueCount,
+          practiceCount: practiceCount ?? loading.practiceCount,
+          tagWordCount: tagWordCount ?? loading.tagWordCount,
           vocabularies: vocabularies ?? loading.vocabularies,
           tags: tags ?? loading.tags,
           feedLimit: feedLimit ?? loading.feedLimit,
@@ -225,7 +248,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       CollectionLoading(
         setup: final setup?,
         tag: final tag?,
-        dueCount: final dueCount?,
+        practiceCount: final practiceCount?,
+        tagWordCount: final tagWordCount?,
         vocabularies: final vocabularies?,
         tags: final tags?,
         :final feedLimit,
@@ -234,7 +258,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         CollectionLoaded(
           setup: setup,
           tag: tag,
-          dueCount: dueCount,
+          practiceCount: practiceCount,
+          tagWordCount: tagWordCount,
           vocabularies: vocabularies,
           tags: tags,
           feedLimit: feedLimit,

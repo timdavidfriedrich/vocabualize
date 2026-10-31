@@ -8,6 +8,8 @@ class const PracticeStarted({
   required final String? tagId,
 }) extends PracticeEvent;
 
+class const PracticeCustomStarted() extends PracticeEvent;
+
 class const PracticeAnswerTyped({
   required final String text,
 }) extends PracticeEvent;
@@ -19,3 +21,11 @@ class const PracticeAnswered({
 }) extends PracticeEvent;
 
 class const PracticeSpeakRequested() extends PracticeEvent;
+
+class const PracticeIntroConfirmed() extends PracticeEvent;
+
+class const PracticeIntroSkipped() extends PracticeEvent;
+
+class const PracticePromptRevealed() extends PracticeEvent;
+
+class const PracticeCardEdited() extends PracticeEvent;

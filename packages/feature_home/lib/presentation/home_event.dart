@@ -8,6 +8,8 @@ sealed class HomeEvent {
 
 class const HomeStarted() extends HomeEvent;
 
+class const HomeCustomPracticeEnded() extends HomeEvent;
+
 class const HomeLanguageChanged({
   required final Language language,
 }) extends HomeEvent;

@@ -1286,4 +1286,96 @@ class AppLocalizationsUk extends AppLocalizations {
   String detailsExistingAddButton(String language) {
     return 'Додати до $language';
   }
+
+  @override
+  String get practiceCustomTooltip => 'Власне тренування';
+
+  @override
+  String get customPracticeTitle => 'Власне тренування';
+
+  @override
+  String get customPracticeLanguagesTitle => 'Мови';
+
+  @override
+  String get customPracticeAllOption => 'Усі';
+
+  @override
+  String get customPracticeCollectionsTitle => 'Колекції';
+
+  @override
+  String get customPracticeChooseOption => 'Обрати';
+
+  @override
+  String get customPracticeWordsTitle => 'Слова';
+
+  @override
+  String get customPracticeDueOption => 'Заплановані';
+
+  @override
+  String get customPracticeAllWordsOption => 'Усі слова';
+
+  @override
+  String get customPracticeNewWordsTitle => 'Нові слова';
+
+  @override
+  String get customPracticeNoNewWordsOption => 'Жодних';
+
+  @override
+  String get customPracticeUpToLimitOption => 'До ліміту';
+
+  @override
+  String get customPracticeAllWaitingOption => 'Усі, що чекають';
+
+  @override
+  String customPracticeStartButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Тренувати $count слова',
+      many: 'Тренувати $count слів',
+      few: 'Тренувати $count слова',
+      one: 'Тренувати $count слово',
+      zero: 'Немає слів для тренування',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customPracticeReplaceTitle => 'Замінити ваше власне тренування?';
+
+  @override
+  String get customPracticeReplaceMessage =>
+      'Ваше незавершене власне тренування закінчиться, коли ви почнете нове.';
+
+  @override
+  String get customPracticeReplaceButton => 'Почати нове';
+
+  @override
+  String homeCustomPracticeProgress(int remaining, int total) {
+    return 'Власне тренування: залишилось $remaining з $total';
+  }
+
+  @override
+  String get homeCustomPracticeContinueButton => 'Продовжити';
+
+  @override
+  String get homeCustomPracticeEndButton => 'Завершити';
+
+  @override
+  String practiceIntroSkipButton(String language) {
+    return 'Пропустити в мові $language';
+  }
+
+  @override
+  String get practiceIntroGotItButton => 'Зрозуміло';
+
+  @override
+  String practiceShowMainButton(String language) {
+    return 'Показати мовою $language';
+  }
+
+  @override
+  String collectionEmptyLanguageMessage(String language) {
+    return 'Жодне з цих слів ще не додано до мови $language.';
+  }
 }

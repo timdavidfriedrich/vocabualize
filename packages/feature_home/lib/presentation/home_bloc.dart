@@ -11,6 +11,7 @@ import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
+import 'package:shared/domain/repositories/custom_practice_repository.dart';
 import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
@@ -31,9 +32,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this._watchStreak,
     this._externalLinkRepository,
     this._languageRepository,
+    this._customPracticeRepository,
   ) : super(
         const HomeLoading(
           setup: null,
+          customSession: null,
           allWordsCount: null,
           overview: null,
           recentVocabularies: null,
@@ -45,6 +48,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       ) {
     on<HomeStarted>(_onStarted);
+    on<HomeCustomPracticeEnded>(_onCustomPracticeEnded);
     on<HomeLanguageChanged>(_onLanguageChanged, transformer: restartable());
     on<HomeFeedEvent>(_onFeedEvent, transformer: restartable());
     on<HomeVocabularySpeakRequested>(_onVocabularySpeakRequested);
@@ -57,6 +61,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final WatchStreakUseCase _watchStreak;
   final ExternalLinkRepository _externalLinkRepository;
   final LanguageRepository _languageRepository;
+  final CustomPracticeRepository _customPracticeRepository;
 
   Future<void> _onStarted(HomeStarted event, Emitter<HomeState> emit) async {
     await Future.wait([
@@ -70,6 +75,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             return _merged(setup: setup);
           }
           return state;
+        },
+      ),
+      emit.forEach(
+        _customPracticeRepository.watchSession(),
+        onData: (result) => switch ((state, result)) {
+          (final HomeLoaded loaded, Success(:final data)) => loaded.copyWith(customSession: data),
+          (final HomeLoading loading, Success(:final data)) => loading.copyWith(
+            customSession: data,
+          ),
+          (_, Success()) || (_, Failure()) => state,
         },
       ),
       emit.forEach(
@@ -94,6 +109,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         },
       ),
     ]);
+  }
+
+  Future<void> _onCustomPracticeEnded(
+    HomeCustomPracticeEnded event,
+    Emitter<HomeState> emit,
+  ) async {
+    if (await _customPracticeRepository.endSession() case Failure(:final error)) {
+      _emitError(emit, error);
+    }
   }
 
   Future<void> _onLanguageChanged(HomeLanguageChanged event, Emitter<HomeState> emit) async {
@@ -209,6 +233,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final HomeLoading loading => _completed(
         HomeLoading(
           setup: setup ?? loading.setup,
+          customSession: loading.customSession,
           allWordsCount: allWordsCount ?? loading.allWordsCount,
           overview: overview ?? loading.overview,
           recentVocabularies: recentVocabularies ?? loading.recentVocabularies,
@@ -238,6 +263,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ) =>
         HomeLoaded(
           setup: setup,
+          customSession: loading.customSession,
           allWordsCount: allWordsCount,
           overview: overview,
           recentVocabularies: recentVocabularies,

@@ -6,6 +6,7 @@ import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
+import 'package:shared/data/extensions/uuid_extensions.dart';
 import 'package:shared/data/mappers/activity_mappers.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_filter_mappers.dart';
@@ -15,6 +16,7 @@ import 'package:shared/data/models/local_activity_day.dart';
 import 'package:shared/data/models/local_image_variant.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_item.dart';
+import 'package:shared/domain/entities/practice_session.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/progress.dart';
 import 'package:shared/domain/entities/translation.dart';
@@ -164,14 +166,14 @@ class const VocabularyRepositoryImpl(
   Future<AppResult<int>> countDueItems({
     required Set<Language> languages,
     required DateTime dueBy,
-    String? tagId,
+    Set<String> tagIds = const {},
   }) async {
     try {
       return Success(
         await _localDataSource.countDueProgress(
           languageCodes: _languageCodes(languages),
           dueBy: dueBy,
-          tagId: _uuidOrNull(tagId),
+          tagIds: _uuids(tagIds),
         ),
       );
     } on Object catch (error) {
@@ -183,17 +185,90 @@ class const VocabularyRepositoryImpl(
   Future<AppResult<List<PracticeItem>>> findDueItems({
     required Set<Language> languages,
     required DateTime dueBy,
-    required int limit,
-    String? tagId,
+    required int? limit,
+    Set<String> tagIds = const {},
+  }) => _practiceItems(
+    () => _localDataSource.findDueProgress(
+      languageCodes: _languageCodes(languages),
+      dueBy: dueBy,
+      limit: limit,
+      tagIds: _uuids(tagIds),
+    ),
+  );
+
+  @override
+  Future<AppResult<List<PracticeItem>>> findWaitingItems({
+    required Language language,
+    required int? limit,
+    Set<String> tagIds = const {},
+  }) => _practiceItems(
+    () => _localDataSource.findWaitingProgress(
+      languageCode: language.toLanguageCode(),
+      limit: limit,
+      tagIds: _uuids(tagIds),
+    ),
+  );
+
+  @override
+  Future<AppResult<List<PracticeItem>>> findStartedItems({
+    required Set<Language> languages,
+    Set<String> tagIds = const {},
+  }) => _practiceItems(
+    () => _localDataSource.findStartedProgress(
+      languageCodes: _languageCodes(languages),
+      tagIds: _uuids(tagIds),
+    ),
+  );
+
+  @override
+  Future<AppResult<List<PracticeItem>>> findItems(List<PracticeItemKey> keys) async {
+    try {
+      final ids = [
+        for (final key in keys)
+          UuidValue.withValidation(
+            key.vocabularyId,
+          ).languageRowId(key.language.toLanguageCode()),
+      ];
+      final progress = {
+        for (final row in await _localDataSource.findProgressByIds(ids.toSet())) row.id: row,
+      };
+      return Success(await _toPracticeItems([for (final id in ids) ?progress[id]]));
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<()>> recordPractice() async {
+    try {
+      await _localDataSource.recordPractice(activityDay: await _activityDay());
+      return const Success(());
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<()>> removeFromLanguage({
+    required String vocabularyId,
+    required Language language,
   }) async {
     try {
-      final progress = await _localDataSource.findDueProgress(
-        languageCodes: _languageCodes(languages),
-        dueBy: dueBy,
-        limit: limit,
-        tagId: _uuidOrNull(tagId),
+      await _localDataSource.deleteProgress(
+        languageCode: language.toLanguageCode(),
+        vocabularyIds: {UuidValue.withValidation(vocabularyId)},
       );
-      return Success(await _toPracticeItems(progress));
+      return const Success(());
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  Future<AppResult<List<PracticeItem>>> _practiceItems(
+    Future<List<LocalProgress>> Function() query,
+  ) async {
+    try {
+      return Success(await _toPracticeItems(await query()));
     } on Object catch (error) {
       return Failure(error.toAppError());
     }

@@ -24,9 +24,12 @@ import 'package:feature_languages/presentation/learned_language/learned_language
 import 'package:feature_languages/presentation/onboarding/language_onboarding_bloc.dart';
 import 'package:feature_languages/presentation/onboarding/language_onboarding_event.dart';
 import 'package:feature_languages/presentation/onboarding/language_onboarding_screen.dart';
-import 'package:feature_practice/presentation/practice_bloc.dart';
-import 'package:feature_practice/presentation/practice_event.dart';
-import 'package:feature_practice/presentation/practice_screen.dart';
+import 'package:feature_practice/presentation/custom_practice/custom_practice_bloc.dart';
+import 'package:feature_practice/presentation/custom_practice/custom_practice_event.dart';
+import 'package:feature_practice/presentation/custom_practice/custom_practice_screen.dart';
+import 'package:feature_practice/presentation/practice/practice_bloc.dart';
+import 'package:feature_practice/presentation/practice/practice_event.dart';
+import 'package:feature_practice/presentation/practice/practice_screen.dart';
 import 'package:feature_report/presentation/feedback_bloc.dart';
 import 'package:feature_report/presentation/feedback_screen.dart';
 import 'package:feature_scan/presentation/scan_bloc.dart';
@@ -192,9 +195,15 @@ class const _AppPage({
       create: (_) => sl<DetailsBloc>()..add(DetailsEditStarted(vocabularyId: vocabularyId)),
       child: const DetailsScreen(),
     ),
-    Practice(:final tagId) => BlocProvider(
-      create: (_) => sl<PracticeBloc>()..add(PracticeStarted(tagId: tagId)),
+    Practice(:final tagId, :final isCustom) => BlocProvider(
+      create: (_) =>
+          sl<PracticeBloc>()
+            ..add(isCustom ? const PracticeCustomStarted() : PracticeStarted(tagId: tagId)),
       child: const PracticeScreen(),
+    ),
+    CustomPractice(:final tagId) => BlocProvider(
+      create: (_) => sl<CustomPracticeBloc>()..add(CustomPracticeStarted(tagId: tagId)),
+      child: const CustomPracticeScreen(),
     ),
     Collection(:final tagId) => BlocProvider(
       create: (_) => sl<CollectionBloc>()..add(CollectionStarted(tagId: tagId)),

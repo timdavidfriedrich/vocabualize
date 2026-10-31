@@ -65,6 +65,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
       MapperContainer.globals.use(_instance = HomeLoadingMapper._());
       HomeStateMapper.ensureInitialized();
       LanguageSetupMapper.ensureInitialized();
+      CustomPracticeSessionMapper.ensureInitialized();
       VocabularyOverviewMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
       CollectionPreviewMapper.ensureInitialized();
@@ -82,6 +83,10 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
     'setup',
     _$setup,
   );
+  static CustomPracticeSession? _$customSession(HomeLoading v) =>
+      v.customSession;
+  static const Field<HomeLoading, CustomPracticeSession> _f$customSession =
+      Field('customSession', _$customSession);
   static int? _$allWordsCount(HomeLoading v) => v.allWordsCount;
   static const Field<HomeLoading, int> _f$allWordsCount = Field(
     'allWordsCount',
@@ -120,6 +125,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
   @override
   final MappableFields<HomeLoading> fields = const {
     #setup: _f$setup,
+    #customSession: _f$customSession,
     #allWordsCount: _f$allWordsCount,
     #overview: _f$overview,
     #recentVocabularies: _f$recentVocabularies,
@@ -133,6 +139,7 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
   static HomeLoading _instantiate(DecodingData data) {
     return HomeLoading(
       setup: data.dec(_f$setup),
+      customSession: data.dec(_f$customSession),
       allWordsCount: data.dec(_f$allWordsCount),
       overview: data.dec(_f$overview),
       recentVocabularies: data.dec(_f$recentVocabularies),
@@ -205,6 +212,12 @@ extension HomeLoadingValueCopy<$R, $Out>
 abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
     implements HomeStateCopyWith<$R, $In, $Out> {
   LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup>? get setup;
+  CustomPracticeSessionCopyWith<
+    $R,
+    CustomPracticeSession,
+    CustomPracticeSession
+  >?
+  get customSession;
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>?
   get overview;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
@@ -222,6 +235,7 @@ abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
   @override
   $R call({
     LanguageSetup? setup,
+    CustomPracticeSession? customSession,
     int? allWordsCount,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
@@ -245,6 +259,14 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   @override
   LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup>? get setup =>
       $value.setup?.copyWith.$chain((v) => call(setup: v));
+  @override
+  CustomPracticeSessionCopyWith<
+    $R,
+    CustomPracticeSession,
+    CustomPracticeSession
+  >?
+  get customSession =>
+      $value.customSession?.copyWith.$chain((v) => call(customSession: v));
   @override
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>?
   get overview => $value.overview?.copyWith.$chain((v) => call(overview: v));
@@ -288,6 +310,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   @override
   $R call({
     Object? setup = $none,
+    Object? customSession = $none,
     Object? allWordsCount = $none,
     Object? overview = $none,
     Object? recentVocabularies = $none,
@@ -299,6 +322,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (setup != $none) #setup: setup,
+      if (customSession != $none) #customSession: customSession,
       if (allWordsCount != $none) #allWordsCount: allWordsCount,
       if (overview != $none) #overview: overview,
       if (recentVocabularies != $none) #recentVocabularies: recentVocabularies,
@@ -312,6 +336,7 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   @override
   HomeLoading $make(CopyWithData data) => HomeLoading(
     setup: data.get(#setup, or: $value.setup),
+    customSession: data.get(#customSession, or: $value.customSession),
     allWordsCount: data.get(#allWordsCount, or: $value.allWordsCount),
     overview: data.get(#overview, or: $value.overview),
     recentVocabularies: data.get(
@@ -340,6 +365,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
       MapperContainer.globals.use(_instance = HomeLoadedMapper._());
       HomeStateMapper.ensureInitialized();
       LanguageSetupMapper.ensureInitialized();
+      CustomPracticeSessionMapper.ensureInitialized();
       VocabularyOverviewMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
       CollectionPreviewMapper.ensureInitialized();
@@ -357,6 +383,10 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
     'setup',
     _$setup,
   );
+  static CustomPracticeSession? _$customSession(HomeLoaded v) =>
+      v.customSession;
+  static const Field<HomeLoaded, CustomPracticeSession> _f$customSession =
+      Field('customSession', _$customSession);
   static int _$allWordsCount(HomeLoaded v) => v.allWordsCount;
   static const Field<HomeLoaded, int> _f$allWordsCount = Field(
     'allWordsCount',
@@ -397,6 +427,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
   @override
   final MappableFields<HomeLoaded> fields = const {
     #setup: _f$setup,
+    #customSession: _f$customSession,
     #allWordsCount: _f$allWordsCount,
     #overview: _f$overview,
     #recentVocabularies: _f$recentVocabularies,
@@ -411,6 +442,7 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
   static HomeLoaded _instantiate(DecodingData data) {
     return HomeLoaded(
       setup: data.dec(_f$setup),
+      customSession: data.dec(_f$customSession),
       allWordsCount: data.dec(_f$allWordsCount),
       overview: data.dec(_f$overview),
       recentVocabularies: data.dec(_f$recentVocabularies),
@@ -484,6 +516,12 @@ extension HomeLoadedValueCopy<$R, $Out>
 abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
     implements HomeStateCopyWith<$R, $In, $Out> {
   LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup;
+  CustomPracticeSessionCopyWith<
+    $R,
+    CustomPracticeSession,
+    CustomPracticeSession
+  >?
+  get customSession;
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
   get overview;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
@@ -501,6 +539,7 @@ abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
   @override
   $R call({
     LanguageSetup? setup,
+    CustomPracticeSession? customSession,
     int? allWordsCount,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
@@ -525,6 +564,14 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   @override
   LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup =>
       $value.setup.copyWith.$chain((v) => call(setup: v));
+  @override
+  CustomPracticeSessionCopyWith<
+    $R,
+    CustomPracticeSession,
+    CustomPracticeSession
+  >?
+  get customSession =>
+      $value.customSession?.copyWith.$chain((v) => call(customSession: v));
   @override
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
   get overview => $value.overview.copyWith.$chain((v) => call(overview: v));
@@ -562,6 +609,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   @override
   $R call({
     LanguageSetup? setup,
+    Object? customSession = $none,
     int? allWordsCount,
     VocabularyOverview? overview,
     List<Vocabulary>? recentVocabularies,
@@ -574,6 +622,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (setup != null) #setup: setup,
+      if (customSession != $none) #customSession: customSession,
       if (allWordsCount != null) #allWordsCount: allWordsCount,
       if (overview != null) #overview: overview,
       if (recentVocabularies != null) #recentVocabularies: recentVocabularies,
@@ -588,6 +637,7 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   @override
   HomeLoaded $make(CopyWithData data) => HomeLoaded(
     setup: data.get(#setup, or: $value.setup),
+    customSession: data.get(#customSession, or: $value.customSession),
     allWordsCount: data.get(#allWordsCount, or: $value.allWordsCount),
     overview: data.get(#overview, or: $value.overview),
     recentVocabularies: data.get(

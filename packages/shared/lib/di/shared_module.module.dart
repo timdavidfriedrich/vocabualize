@@ -27,6 +27,8 @@ import 'package:shared/data/data_sources/calendar_data_source.dart' as _i4;
 import 'package:shared/data/data_sources/clock_data_source.dart' as _i44;
 import 'package:shared/data/data_sources/connectivity_data_source.dart'
     as _i154;
+import 'package:shared/data/data_sources/custom_practice_local_data_source.dart'
+    as _i791;
 import 'package:shared/data/data_sources/database_session_data_source.dart'
     as _i862;
 import 'package:shared/data/data_sources/device_data_source.dart' as _i931;
@@ -71,6 +73,8 @@ import 'package:shared/data/repositories/backup_repository_impl.dart' as _i237;
 import 'package:shared/data/repositories/clock_repository_impl.dart' as _i314;
 import 'package:shared/data/repositories/connectivity_repository_impl.dart'
     as _i951;
+import 'package:shared/data/repositories/custom_practice_repository_impl.dart'
+    as _i863;
 import 'package:shared/data/repositories/external_link_repository_impl.dart'
     as _i22;
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
@@ -104,6 +108,8 @@ import 'package:shared/domain/repositories/backup_repository.dart' as _i152;
 import 'package:shared/domain/repositories/clock_repository.dart' as _i946;
 import 'package:shared/domain/repositories/connectivity_repository.dart'
     as _i689;
+import 'package:shared/domain/repositories/custom_practice_repository.dart'
+    as _i472;
 import 'package:shared/domain/repositories/external_link_repository.dart'
     as _i711;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
@@ -270,6 +276,11 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i394.AppInfoDataSource>(),
           gh<_i555.SettingLocalDataSource>(),
         ));
+    gh.lazySingleton<_i791.CustomPracticeLocalDataSource>(
+        () => _i791.CustomPracticeLocalDataSourceImpl(
+              gh<_i862.DatabaseSessionDataSource>(),
+              gh<_i753.SpaceStorageDataSource>(),
+            ));
     gh.factory<_i503.ActivityRepository>(() => _i351.ActivityRepositoryImpl(
           gh<_i347.ActivityLocalDataSource>(),
           gh<_i4.CalendarDataSource>(),
@@ -348,6 +359,9 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         ));
     gh.factory<_i76.WatchStreakUseCase>(
         () => _i76.WatchStreakUseCase(gh<_i503.ActivityRepository>()));
+    gh.factory<_i472.CustomPracticeRepository>(() =>
+        _i863.CustomPracticeRepositoryImpl(
+            gh<_i791.CustomPracticeLocalDataSource>()));
     gh.factory<_i827.LanguageSetupCubit>(
         () => _i827.LanguageSetupCubit(gh<_i308.LanguageRepository>()));
     gh.factory<_i346.AccountCubit>(

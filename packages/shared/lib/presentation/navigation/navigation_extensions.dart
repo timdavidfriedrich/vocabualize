@@ -31,6 +31,12 @@ extension NavigationExtension on BuildContext {
 
   Future<void> pushPractice({String? tagId}) => appRouter.push(Practice(tagId: tagId));
 
+  Future<void> pushCustomPractice({String? tagId}) => appRouter.push(CustomPractice(tagId: tagId));
+
+  Future<void> continueCustomPractice() => appRouter.push(const Practice(isCustom: true));
+
+  Future<void> startCustomPractice() => appRouter.replaceTop(const Practice(isCustom: true));
+
   Future<void> pushCollection({required String tagId}) => appRouter.push(Collection(tagId: tagId));
 
   Future<void> pushLanguages() => appRouter.push(const Languages());

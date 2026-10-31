@@ -34,7 +34,13 @@ class const AnswerVocabularyUseCase(
   }) async {
     final progress = item.vocabulary.progress[item.language];
     if (progress == null) return const Failure(NotFoundError());
-    final scheduled = _schedule(progress, answer, DateTime.now().toUtc());
+    final now = DateTime.now().toUtc();
+    if (!progress.isDueAt(now)) {
+      final recorded = await _vocabularyRepository.recordPractice();
+      if (recorded case Failure(:final error)) return Failure(error);
+      return Success(progress);
+    }
+    final scheduled = _schedule(progress, answer, now);
     final saved = await _vocabularyRepository.saveReview(
       vocabularyId: item.vocabulary.id,
       progress: scheduled,

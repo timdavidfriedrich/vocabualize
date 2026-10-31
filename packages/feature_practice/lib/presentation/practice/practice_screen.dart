@@ -1,7 +1,7 @@
 import 'package:core/error/app_error.dart';
 import 'package:core/theme/spacing.dart';
-import 'package:feature_practice/presentation/practice_bloc.dart';
-import 'package:feature_practice/presentation/practice_state.dart';
+import 'package:feature_practice/presentation/practice/practice_bloc.dart';
+import 'package:feature_practice/presentation/practice/practice_state.dart';
 import 'package:feature_practice/presentation/widgets/practice_card.dart';
 import 'package:feature_practice/presentation/widgets/practice_controls.dart';
 import 'package:feature_practice/presentation/widgets/practice_done_view.dart';
@@ -56,7 +56,7 @@ class const _ActiveScreen() extends StatelessWidget {
                     SizedBox(height: Spacing.xxl),
                     PracticeProgressBar(),
                     SizedBox(height: Spacing.m),
-                    PracticeCard(),
+                    PracticeCardView(),
                     SizedBox(height: Spacing.m),
                   ],
                 ),

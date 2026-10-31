@@ -1250,4 +1250,94 @@ class AppLocalizationsFr extends AppLocalizations {
   String detailsExistingAddButton(String language) {
     return 'Ajouter à $language';
   }
+
+  @override
+  String get practiceCustomTooltip => 'Exercice personnalisé';
+
+  @override
+  String get customPracticeTitle => 'Exercice personnalisé';
+
+  @override
+  String get customPracticeLanguagesTitle => 'Langues';
+
+  @override
+  String get customPracticeAllOption => 'Toutes';
+
+  @override
+  String get customPracticeCollectionsTitle => 'Collections';
+
+  @override
+  String get customPracticeChooseOption => 'Choisir';
+
+  @override
+  String get customPracticeWordsTitle => 'Mots';
+
+  @override
+  String get customPracticeDueOption => 'À réviser';
+
+  @override
+  String get customPracticeAllWordsOption => 'Tous les mots';
+
+  @override
+  String get customPracticeNewWordsTitle => 'Nouveaux mots';
+
+  @override
+  String get customPracticeNoNewWordsOption => 'Aucun';
+
+  @override
+  String get customPracticeUpToLimitOption => 'Jusqu\'à la limite';
+
+  @override
+  String get customPracticeAllWaitingOption => 'Tous en attente';
+
+  @override
+  String customPracticeStartButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pratiquer $count mots',
+      one: 'Pratiquer 1 mot',
+      zero: 'Aucun mot à pratiquer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customPracticeReplaceTitle => 'Remplacer votre exercice personnalisé ?';
+
+  @override
+  String get customPracticeReplaceMessage =>
+      'Votre exercice personnalisé inachevé se termine lorsque vous en commencez un nouveau.';
+
+  @override
+  String get customPracticeReplaceButton => 'Commencer un nouveau';
+
+  @override
+  String homeCustomPracticeProgress(int remaining, int total) {
+    return 'Exercice personnalisé : $remaining sur $total restants';
+  }
+
+  @override
+  String get homeCustomPracticeContinueButton => 'Continuer';
+
+  @override
+  String get homeCustomPracticeEndButton => 'Terminer';
+
+  @override
+  String practiceIntroSkipButton(String language) {
+    return 'Ignorer en $language';
+  }
+
+  @override
+  String get practiceIntroGotItButton => 'Compris';
+
+  @override
+  String practiceShowMainButton(String language) {
+    return 'Afficher en $language';
+  }
+
+  @override
+  String collectionEmptyLanguageMessage(String language) {
+    return 'Aucun de ces mots n\'est encore en $language.';
+  }
 }

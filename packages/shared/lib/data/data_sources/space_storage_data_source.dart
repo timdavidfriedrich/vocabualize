@@ -5,6 +5,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared/data/models/local_account_metadata.dart';
+import 'package:shared/data/models/local_custom_practice.dart';
 import 'package:shared/data/models/storage_space.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -15,6 +16,7 @@ const _databaseFileName = "database.db";
 const _imagesDirectoryName = "images";
 const _accountFileName = "account.json";
 const _ownerIdFileName = "owner_id";
+const _customPracticeFileName = "custom_practice.json";
 const _profilePicturePrefix = "profile_picture_";
 const _partialSuffix = ".part";
 
@@ -46,6 +48,12 @@ abstract class SpaceStorageDataSource {
   Future<UuidValue?> readLocalOwnerId();
 
   Future<UuidValue> readOrCreateLocalOwnerId();
+
+  Future<LocalCustomPractice?> readCustomPractice(StorageSpace space);
+
+  Future<void> writeCustomPractice(StorageSpace space, LocalCustomPractice practice);
+
+  Future<void> deleteCustomPractice(StorageSpace space);
 
   Future<void> markForDeletion(StorageSpace space);
 
@@ -176,6 +184,34 @@ class const SpaceStorageDataSourceImpl() implements SpaceStorageDataSource {
       }
     }
   }
+
+  @override
+  Future<LocalCustomPractice?> readCustomPractice(StorageSpace space) async {
+    final file = await _customPracticeFile(space);
+    if (!await file.exists()) return null;
+    try {
+      return LocalCustomPracticeMapper.fromJson(await file.readAsString());
+    } on MapperException {
+      return null;
+    }
+  }
+
+  @override
+  Future<void> writeCustomPractice(StorageSpace space, LocalCustomPractice practice) async {
+    final file = await _customPracticeFile(space);
+    final partialFile = File("${file.path}$_partialSuffix");
+    await partialFile.writeAsString(practice.toJson(), flush: true);
+    await partialFile.rename(file.path);
+  }
+
+  @override
+  Future<void> deleteCustomPractice(StorageSpace space) async {
+    final file = await _customPracticeFile(space);
+    if (await file.exists()) await file.delete();
+  }
+
+  Future<File> _customPracticeFile(StorageSpace space) async =>
+      File("${(await _spaceDirectory(space)).path}/$_customPracticeFileName");
 
   Future<Directory> _spacesDirectory() async =>
       Directory("${(await getApplicationSupportDirectory()).path}/$_spacesDirectoryName");

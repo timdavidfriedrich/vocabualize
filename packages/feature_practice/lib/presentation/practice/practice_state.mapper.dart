@@ -176,7 +176,9 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PracticeActiveMapper._());
       PracticeStateMapper.ensureInitialized();
-      PracticeItemMapper.ensureInitialized();
+      LanguageSetupMapper.ensureInitialized();
+      PracticeCardMapper.ensureInitialized();
+      PracticeItemKeyMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -184,22 +186,27 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
   @override
   final String id = 'PracticeActive';
 
-  static DateTime _$dueBy(PracticeActive v) => v.dueBy;
-  static const Field<PracticeActive, DateTime> _f$dueBy = Field(
-    'dueBy',
-    _$dueBy,
-  );
   static String? _$tagId(PracticeActive v) => v.tagId;
   static const Field<PracticeActive, String> _f$tagId = Field('tagId', _$tagId);
+  static bool _$isCustom(PracticeActive v) => v.isCustom;
+  static const Field<PracticeActive, bool> _f$isCustom = Field(
+    'isCustom',
+    _$isCustom,
+  );
+  static LanguageSetup _$setup(PracticeActive v) => v.setup;
+  static const Field<PracticeActive, LanguageSetup> _f$setup = Field(
+    'setup',
+    _$setup,
+  );
   static Set<Language> _$languages(PracticeActive v) => v.languages;
   static const Field<PracticeActive, Set<Language>> _f$languages = Field(
     'languages',
     _$languages,
   );
-  static Language _$mainLanguage(PracticeActive v) => v.mainLanguage;
-  static const Field<PracticeActive, Language> _f$mainLanguage = Field(
-    'mainLanguage',
-    _$mainLanguage,
+  static DateTime _$dueBy(PracticeActive v) => v.dueBy;
+  static const Field<PracticeActive, DateTime> _f$dueBy = Field(
+    'dueBy',
+    _$dueBy,
   );
   static int _$totalCount(PracticeActive v) => v.totalCount;
   static const Field<PracticeActive, int> _f$totalCount = Field(
@@ -211,16 +218,19 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     'doneCount',
     _$doneCount,
   );
-  static List<PracticeItem> _$queue(PracticeActive v) => v.queue;
-  static const Field<PracticeActive, List<PracticeItem>> _f$queue = Field(
+  static List<PracticeCard> _$queue(PracticeActive v) => v.queue;
+  static const Field<PracticeActive, List<PracticeCard>> _f$queue = Field(
     'queue',
     _$queue,
   );
-  static bool _$showsLanguages(PracticeActive v) => v.showsLanguages;
-  static const Field<PracticeActive, bool> _f$showsLanguages = Field(
-    'showsLanguages',
-    _$showsLanguages,
+  static List<PracticeCard> _$newCards(PracticeActive v) => v.newCards;
+  static const Field<PracticeActive, List<PracticeCard>> _f$newCards = Field(
+    'newCards',
+    _$newCards,
   );
+  static List<PracticeItemKey> _$pendingKeys(PracticeActive v) => v.pendingKeys;
+  static const Field<PracticeActive, List<PracticeItemKey>> _f$pendingKeys =
+      Field('pendingKeys', _$pendingKeys);
   static bool _$isStrictCorrection(PracticeActive v) => v.isStrictCorrection;
   static const Field<PracticeActive, bool> _f$isStrictCorrection = Field(
     'isStrictCorrection',
@@ -241,6 +251,11 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     'isSolutionShown',
     _$isSolutionShown,
   );
+  static bool _$isPromptRevealed(PracticeActive v) => v.isPromptRevealed;
+  static const Field<PracticeActive, bool> _f$isPromptRevealed = Field(
+    'isPromptRevealed',
+    _$isPromptRevealed,
+  );
   static bool _$isBusy(PracticeActive v) => v.isBusy;
   static const Field<PracticeActive, bool> _f$isBusy = Field(
     'isBusy',
@@ -254,36 +269,42 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
 
   @override
   final MappableFields<PracticeActive> fields = const {
-    #dueBy: _f$dueBy,
     #tagId: _f$tagId,
+    #isCustom: _f$isCustom,
+    #setup: _f$setup,
     #languages: _f$languages,
-    #mainLanguage: _f$mainLanguage,
+    #dueBy: _f$dueBy,
     #totalCount: _f$totalCount,
     #doneCount: _f$doneCount,
     #queue: _f$queue,
-    #showsLanguages: _f$showsLanguages,
+    #newCards: _f$newCards,
+    #pendingKeys: _f$pendingKeys,
     #isStrictCorrection: _f$isStrictCorrection,
     #typedAnswer: _f$typedAnswer,
     #grade: _f$grade,
     #isSolutionShown: _f$isSolutionShown,
+    #isPromptRevealed: _f$isPromptRevealed,
     #isBusy: _f$isBusy,
     #error: _f$error,
   };
 
   static PracticeActive _instantiate(DecodingData data) {
     return PracticeActive(
-      dueBy: data.dec(_f$dueBy),
       tagId: data.dec(_f$tagId),
+      isCustom: data.dec(_f$isCustom),
+      setup: data.dec(_f$setup),
       languages: data.dec(_f$languages),
-      mainLanguage: data.dec(_f$mainLanguage),
+      dueBy: data.dec(_f$dueBy),
       totalCount: data.dec(_f$totalCount),
       doneCount: data.dec(_f$doneCount),
       queue: data.dec(_f$queue),
-      showsLanguages: data.dec(_f$showsLanguages),
+      newCards: data.dec(_f$newCards),
+      pendingKeys: data.dec(_f$pendingKeys),
       isStrictCorrection: data.dec(_f$isStrictCorrection),
       typedAnswer: data.dec(_f$typedAnswer),
       grade: data.dec(_f$grade),
       isSolutionShown: data.dec(_f$isSolutionShown),
+      isPromptRevealed: data.dec(_f$isPromptRevealed),
       isBusy: data.dec(_f$isBusy),
       error: data.dec(_f$error),
     );
@@ -351,26 +372,42 @@ extension PracticeActiveValueCopy<$R, $Out>
 
 abstract class PracticeActiveCopyWith<$R, $In extends PracticeActive, $Out>
     implements PracticeStateCopyWith<$R, $In, $Out> {
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup;
   ListCopyWith<
     $R,
-    PracticeItem,
-    PracticeItemCopyWith<$R, PracticeItem, PracticeItem>
+    PracticeCard,
+    PracticeCardCopyWith<$R, PracticeCard, PracticeCard>
   >
   get queue;
+  ListCopyWith<
+    $R,
+    PracticeCard,
+    PracticeCardCopyWith<$R, PracticeCard, PracticeCard>
+  >
+  get newCards;
+  ListCopyWith<
+    $R,
+    PracticeItemKey,
+    PracticeItemKeyCopyWith<$R, PracticeItemKey, PracticeItemKey>
+  >
+  get pendingKeys;
   @override
   $R call({
-    DateTime? dueBy,
     String? tagId,
+    bool? isCustom,
+    LanguageSetup? setup,
     Set<Language>? languages,
-    Language? mainLanguage,
+    DateTime? dueBy,
     int? totalCount,
     int? doneCount,
-    List<PracticeItem>? queue,
-    bool? showsLanguages,
+    List<PracticeCard>? queue,
+    List<PracticeCard>? newCards,
+    List<PracticeItemKey>? pendingKeys,
     bool? isStrictCorrection,
     String? typedAnswer,
     PracticeAnswer? grade,
     bool? isSolutionShown,
+    bool? isPromptRevealed,
     bool? isBusy,
     AppError? error,
   });
@@ -388,10 +425,13 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PracticeActive> $mapper =
       PracticeActiveMapper.ensureInitialized();
   @override
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup =>
+      $value.setup.copyWith.$chain((v) => call(setup: v));
+  @override
   ListCopyWith<
     $R,
-    PracticeItem,
-    PracticeItemCopyWith<$R, PracticeItem, PracticeItem>
+    PracticeCard,
+    PracticeCardCopyWith<$R, PracticeCard, PracticeCard>
   >
   get queue => ListCopyWith(
     $value.queue,
@@ -399,49 +439,79 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
     (v) => call(queue: v),
   );
   @override
+  ListCopyWith<
+    $R,
+    PracticeCard,
+    PracticeCardCopyWith<$R, PracticeCard, PracticeCard>
+  >
+  get newCards => ListCopyWith(
+    $value.newCards,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(newCards: v),
+  );
+  @override
+  ListCopyWith<
+    $R,
+    PracticeItemKey,
+    PracticeItemKeyCopyWith<$R, PracticeItemKey, PracticeItemKey>
+  >
+  get pendingKeys => ListCopyWith(
+    $value.pendingKeys,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(pendingKeys: v),
+  );
+  @override
   $R call({
-    DateTime? dueBy,
     Object? tagId = $none,
+    bool? isCustom,
+    LanguageSetup? setup,
     Set<Language>? languages,
-    Language? mainLanguage,
+    DateTime? dueBy,
     int? totalCount,
     int? doneCount,
-    List<PracticeItem>? queue,
-    bool? showsLanguages,
+    List<PracticeCard>? queue,
+    List<PracticeCard>? newCards,
+    List<PracticeItemKey>? pendingKeys,
     bool? isStrictCorrection,
     Object? typedAnswer = $none,
     Object? grade = $none,
     bool? isSolutionShown,
+    bool? isPromptRevealed,
     bool? isBusy,
     Object? error = $none,
   }) => $apply(
     FieldCopyWithData({
-      if (dueBy != null) #dueBy: dueBy,
       if (tagId != $none) #tagId: tagId,
+      if (isCustom != null) #isCustom: isCustom,
+      if (setup != null) #setup: setup,
       if (languages != null) #languages: languages,
-      if (mainLanguage != null) #mainLanguage: mainLanguage,
+      if (dueBy != null) #dueBy: dueBy,
       if (totalCount != null) #totalCount: totalCount,
       if (doneCount != null) #doneCount: doneCount,
       if (queue != null) #queue: queue,
-      if (showsLanguages != null) #showsLanguages: showsLanguages,
+      if (newCards != null) #newCards: newCards,
+      if (pendingKeys != null) #pendingKeys: pendingKeys,
       if (isStrictCorrection != null) #isStrictCorrection: isStrictCorrection,
       if (typedAnswer != $none) #typedAnswer: typedAnswer,
       if (grade != $none) #grade: grade,
       if (isSolutionShown != null) #isSolutionShown: isSolutionShown,
+      if (isPromptRevealed != null) #isPromptRevealed: isPromptRevealed,
       if (isBusy != null) #isBusy: isBusy,
       if (error != $none) #error: error,
     }),
   );
   @override
   PracticeActive $make(CopyWithData data) => PracticeActive(
-    dueBy: data.get(#dueBy, or: $value.dueBy),
     tagId: data.get(#tagId, or: $value.tagId),
+    isCustom: data.get(#isCustom, or: $value.isCustom),
+    setup: data.get(#setup, or: $value.setup),
     languages: data.get(#languages, or: $value.languages),
-    mainLanguage: data.get(#mainLanguage, or: $value.mainLanguage),
+    dueBy: data.get(#dueBy, or: $value.dueBy),
     totalCount: data.get(#totalCount, or: $value.totalCount),
     doneCount: data.get(#doneCount, or: $value.doneCount),
     queue: data.get(#queue, or: $value.queue),
-    showsLanguages: data.get(#showsLanguages, or: $value.showsLanguages),
+    newCards: data.get(#newCards, or: $value.newCards),
+    pendingKeys: data.get(#pendingKeys, or: $value.pendingKeys),
     isStrictCorrection: data.get(
       #isStrictCorrection,
       or: $value.isStrictCorrection,
@@ -449,6 +519,7 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
     typedAnswer: data.get(#typedAnswer, or: $value.typedAnswer),
     grade: data.get(#grade, or: $value.grade),
     isSolutionShown: data.get(#isSolutionShown, or: $value.isSolutionShown),
+    isPromptRevealed: data.get(#isPromptRevealed, or: $value.isPromptRevealed),
     isBusy: data.get(#isBusy, or: $value.isBusy),
     error: data.get(#error, or: $value.error),
   );

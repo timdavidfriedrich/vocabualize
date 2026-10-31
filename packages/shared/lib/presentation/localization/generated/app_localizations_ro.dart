@@ -1262,4 +1262,95 @@ class AppLocalizationsRo extends AppLocalizations {
   String detailsExistingAddButton(String language) {
     return 'Adăugați la $language';
   }
+
+  @override
+  String get practiceCustomTooltip => 'Exercițiu personalizat';
+
+  @override
+  String get customPracticeTitle => 'Exercițiu personalizat';
+
+  @override
+  String get customPracticeLanguagesTitle => 'Limbi';
+
+  @override
+  String get customPracticeAllOption => 'Toate';
+
+  @override
+  String get customPracticeCollectionsTitle => 'Colecții';
+
+  @override
+  String get customPracticeChooseOption => 'Alegeți';
+
+  @override
+  String get customPracticeWordsTitle => 'Cuvinte';
+
+  @override
+  String get customPracticeDueOption => 'Programate';
+
+  @override
+  String get customPracticeAllWordsOption => 'Toate cuvintele';
+
+  @override
+  String get customPracticeNewWordsTitle => 'Cuvinte noi';
+
+  @override
+  String get customPracticeNoNewWordsOption => 'Niciunul';
+
+  @override
+  String get customPracticeUpToLimitOption => 'Până la limită';
+
+  @override
+  String get customPracticeAllWaitingOption => 'Toate în așteptare';
+
+  @override
+  String customPracticeStartButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Exersați $count de cuvinte',
+      few: 'Exersați $count cuvinte',
+      one: 'Exersați 1 cuvânt',
+      zero: 'Niciun cuvânt de exersat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customPracticeReplaceTitle => 'Înlocuiți exercițiul personalizat?';
+
+  @override
+  String get customPracticeReplaceMessage =>
+      'Exercițiul personalizat neterminat se încheie când începeți unul nou.';
+
+  @override
+  String get customPracticeReplaceButton => 'Începeți unul nou';
+
+  @override
+  String homeCustomPracticeProgress(int remaining, int total) {
+    return 'Exercițiu personalizat: au rămas $remaining din $total';
+  }
+
+  @override
+  String get homeCustomPracticeContinueButton => 'Continuați';
+
+  @override
+  String get homeCustomPracticeEndButton => 'Încheiați';
+
+  @override
+  String practiceIntroSkipButton(String language) {
+    return 'Omiteți în $language';
+  }
+
+  @override
+  String get practiceIntroGotItButton => 'Am înțeles';
+
+  @override
+  String practiceShowMainButton(String language) {
+    return 'Afișați în $language';
+  }
+
+  @override
+  String collectionEmptyLanguageMessage(String language) {
+    return 'Niciunul dintre aceste cuvinte nu este încă în $language.';
+  }
 }

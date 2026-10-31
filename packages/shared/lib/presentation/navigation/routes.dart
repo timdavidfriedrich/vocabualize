@@ -57,6 +57,14 @@ class const EditVocabularyDetails({
 
 class const Practice({
   final String? tagId,
+  final bool isCustom = false,
+}) extends AppRoute {
+  @override
+  List<Object?> get props => [tagId, isCustom];
+}
+
+class const CustomPractice({
+  final String? tagId,
 }) extends AppRoute {
   @override
   List<Object?> get props => [tagId];

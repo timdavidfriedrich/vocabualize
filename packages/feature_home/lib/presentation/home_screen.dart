@@ -16,6 +16,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/language_setup.dart';
+import 'package:shared/domain/entities/practice_session.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
@@ -152,13 +153,31 @@ class const _Overview({
                       const SizedBox(height: Spacing.xxl),
                       const _TitleRow(),
                       const SizedBox(height: Spacing.m),
-                      BlocSelector<HomeBloc, HomeState, VocabularyOverview?>(
+                      BlocSelector<
+                        HomeBloc,
+                        HomeState,
+                        ({
+                          VocabularyOverview overview,
+                          NewWordLimit? newWordLimit,
+                          CustomPracticeSession? customSession,
+                        })?
+                      >(
                         selector: (state) => switch (state) {
-                          HomeLoaded(:final overview) => overview,
+                          HomeLoaded(:final overview, :final setup, :final customSession) => (
+                            overview: overview,
+                            newWordLimit: setup.learnedOf(setup.selected)?.newWords,
+                            customSession: customSession,
+                          ),
                           _ => null,
                         },
-                        builder: (context, overview) => switch (overview) {
-                          final overview? => StatusCard(overview: overview),
+                        builder: (context, status) => switch (status) {
+                          final status? => StatusCard(
+                            overview: status.overview,
+                            newWordLimit: status.newWordLimit,
+                            customSession: status.customSession,
+                            onCustomPracticeEnded: () =>
+                                context.read<HomeBloc>().add(const HomeCustomPracticeEnded()),
+                          ),
                           null => const SizedBox.shrink(),
                         },
                       ),

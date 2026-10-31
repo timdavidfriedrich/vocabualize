@@ -7,11 +7,13 @@ import 'package:feature_collections/presentation/widgets/edit_collection_dialog.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/practice_button.dart';
@@ -144,22 +146,23 @@ class const _Overview({
                   child: Column(
                     children: [
                       const SizedBox(height: Spacing.m),
-                      BlocSelector<CollectionBloc, CollectionState, ({String tagId, int due})?>(
+                      BlocSelector<CollectionBloc, CollectionState, ({String tagId, int count})?>(
                         selector: (state) => switch (state) {
-                          CollectionLoaded(:final tag, :final dueCount) => (
+                          CollectionLoaded(:final tag, :final practiceCount) => (
                             tagId: tag.id,
-                            due: dueCount,
+                            count: practiceCount,
                           ),
                           _ => null,
                         },
                         builder: (context, practice) => switch (practice) {
-                          final practice? => SizedBox(
-                            width: double.infinity,
-                            child: PracticeButton(dueCount: practice.due, tagId: practice.tagId),
+                          final practice? => PracticeButton(
+                            count: practice.count,
+                            tagId: practice.tagId,
                           ),
                           null => const SizedBox.shrink(),
                         },
                       ),
+                      const _EmptyLanguageHint(),
                       const SizedBox(height: Spacing.m),
                     ],
                   ),
@@ -191,6 +194,45 @@ class const _Overview({
       case null:
         return;
     }
+  }
+}
+
+class const _EmptyLanguageHint() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<CollectionBloc, CollectionState, Language?>(
+      selector: (state) => switch (state) {
+        CollectionLoaded(
+          vocabularies: [],
+          :final tagWordCount,
+          :final setup,
+          :final filter,
+        )
+            when tagWordCount > 0 && filter == emptyVocabularyFilter =>
+          setup.selected,
+        _ => null,
+      },
+      builder: (context, language) => switch (language) {
+        final language? => Padding(
+          padding: const EdgeInsets.only(top: Spacing.xl),
+          child: Column(
+            children: [
+              Text(
+                context.s.collectionEmptyLanguageMessage(language.toLabel(context)),
+                style: context.t.bodyLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: Spacing.m),
+              OutlinedButton(
+                onPressed: () => context.pushLanguageWords(language: language, isAdding: false),
+                child: Text(context.s.homeChooseWordsButton),
+              ),
+            ],
+          ),
+        ),
+        null => const SizedBox.shrink(),
+      },
+    );
   }
 }
 

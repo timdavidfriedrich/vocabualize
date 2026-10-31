@@ -2,12 +2,15 @@ import 'dart:math';
 
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/domain/entities/language_setup.dart';
+import 'package:shared/domain/entities/practice_session.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/date_time_extensions.dart';
 import 'package:shared/presentation/extensions/int_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_level_extensions.dart';
+import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/practice_button.dart';
 
 const _shownLevels = [VocabularyLevel.beginner, VocabularyLevel.advanced, VocabularyLevel.expert];
@@ -17,6 +20,9 @@ const _manyWordsInTotal = 10;
 class const StatusCard({
   super.key,
   required final VocabularyOverview _overview,
+  required final NewWordLimit? _newWordLimit,
+  required final CustomPracticeSession? _customSession,
+  required final VoidCallback _onCustomPracticeEnded,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -42,9 +48,33 @@ class const StatusCard({
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _LevelStatistics(overview: _overview),
-              PracticeButton(dueCount: _overview.dueCount),
+              PracticeButton(count: _overview.practiceCountWith(_newWordLimit)),
             ],
           ),
+          if (_customSession case final session?) ...[
+            const SizedBox(height: Spacing.m),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    context.s.homeCustomPracticeProgress(
+                      session.remainingCount,
+                      session.items.length,
+                    ),
+                    style: context.t.bodyMedium,
+                  ),
+                ),
+                TextButton(
+                  onPressed: _onCustomPracticeEnded,
+                  child: Text(context.s.homeCustomPracticeEndButton),
+                ),
+                FilledButton.tonal(
+                  onPressed: context.continueCustomPractice,
+                  child: Text(context.s.homeCustomPracticeContinueButton),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
@@ -66,7 +96,7 @@ class const StatusCard({
   }
 
   String? _doneMessage(BuildContext context) => switch (_overview) {
-    VocabularyOverview(:final dueCount) when dueCount > 0 => null,
+    final overview when overview.practiceCountWith(_newWordLimit) > 0 => null,
     VocabularyOverview(nextDueAt: final nextDueAt?) =>
       "${context.s.homeAllDoneMessage}\n${nextDueAt.toNextDueLabel(context)}",
     VocabularyOverview() => context.s.homeAllDoneMessage,

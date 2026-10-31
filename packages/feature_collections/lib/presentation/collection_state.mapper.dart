@@ -86,10 +86,15 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
   );
   static Tag? _$tag(CollectionLoading v) => v.tag;
   static const Field<CollectionLoading, Tag> _f$tag = Field('tag', _$tag);
-  static int? _$dueCount(CollectionLoading v) => v.dueCount;
-  static const Field<CollectionLoading, int> _f$dueCount = Field(
-    'dueCount',
-    _$dueCount,
+  static int? _$practiceCount(CollectionLoading v) => v.practiceCount;
+  static const Field<CollectionLoading, int> _f$practiceCount = Field(
+    'practiceCount',
+    _$practiceCount,
+  );
+  static int? _$tagWordCount(CollectionLoading v) => v.tagWordCount;
+  static const Field<CollectionLoading, int> _f$tagWordCount = Field(
+    'tagWordCount',
+    _$tagWordCount,
   );
   static List<Vocabulary>? _$vocabularies(CollectionLoading v) =>
       v.vocabularies;
@@ -115,7 +120,8 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
   final MappableFields<CollectionLoading> fields = const {
     #setup: _f$setup,
     #tag: _f$tag,
-    #dueCount: _f$dueCount,
+    #practiceCount: _f$practiceCount,
+    #tagWordCount: _f$tagWordCount,
     #vocabularies: _f$vocabularies,
     #tags: _f$tags,
     #feedLimit: _f$feedLimit,
@@ -126,7 +132,8 @@ class CollectionLoadingMapper extends ClassMapperBase<CollectionLoading> {
     return CollectionLoading(
       setup: data.dec(_f$setup),
       tag: data.dec(_f$tag),
-      dueCount: data.dec(_f$dueCount),
+      practiceCount: data.dec(_f$practiceCount),
+      tagWordCount: data.dec(_f$tagWordCount),
       vocabularies: data.dec(_f$vocabularies),
       tags: data.dec(_f$tags),
       feedLimit: data.dec(_f$feedLimit),
@@ -215,7 +222,8 @@ abstract class CollectionLoadingCopyWith<
   $R call({
     LanguageSetup? setup,
     Tag? tag,
-    int? dueCount,
+    int? practiceCount,
+    int? tagWordCount,
     List<Vocabulary>? vocabularies,
     List<Tag>? tags,
     int? feedLimit,
@@ -265,7 +273,8 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
   $R call({
     Object? setup = $none,
     Object? tag = $none,
-    Object? dueCount = $none,
+    Object? practiceCount = $none,
+    Object? tagWordCount = $none,
     Object? vocabularies = $none,
     Object? tags = $none,
     int? feedLimit,
@@ -274,7 +283,8 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (setup != $none) #setup: setup,
       if (tag != $none) #tag: tag,
-      if (dueCount != $none) #dueCount: dueCount,
+      if (practiceCount != $none) #practiceCount: practiceCount,
+      if (tagWordCount != $none) #tagWordCount: tagWordCount,
       if (vocabularies != $none) #vocabularies: vocabularies,
       if (tags != $none) #tags: tags,
       if (feedLimit != null) #feedLimit: feedLimit,
@@ -285,7 +295,8 @@ class _CollectionLoadingCopyWithImpl<$R, $Out>
   CollectionLoading $make(CopyWithData data) => CollectionLoading(
     setup: data.get(#setup, or: $value.setup),
     tag: data.get(#tag, or: $value.tag),
-    dueCount: data.get(#dueCount, or: $value.dueCount),
+    practiceCount: data.get(#practiceCount, or: $value.practiceCount),
+    tagWordCount: data.get(#tagWordCount, or: $value.tagWordCount),
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),
     tags: data.get(#tags, or: $value.tags),
     feedLimit: data.get(#feedLimit, or: $value.feedLimit),
@@ -324,10 +335,15 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
   );
   static Tag _$tag(CollectionLoaded v) => v.tag;
   static const Field<CollectionLoaded, Tag> _f$tag = Field('tag', _$tag);
-  static int _$dueCount(CollectionLoaded v) => v.dueCount;
-  static const Field<CollectionLoaded, int> _f$dueCount = Field(
-    'dueCount',
-    _$dueCount,
+  static int _$practiceCount(CollectionLoaded v) => v.practiceCount;
+  static const Field<CollectionLoaded, int> _f$practiceCount = Field(
+    'practiceCount',
+    _$practiceCount,
+  );
+  static int _$tagWordCount(CollectionLoaded v) => v.tagWordCount;
+  static const Field<CollectionLoaded, int> _f$tagWordCount = Field(
+    'tagWordCount',
+    _$tagWordCount,
   );
   static List<Vocabulary> _$vocabularies(CollectionLoaded v) => v.vocabularies;
   static const Field<CollectionLoaded, List<Vocabulary>> _f$vocabularies =
@@ -357,7 +373,8 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
   final MappableFields<CollectionLoaded> fields = const {
     #setup: _f$setup,
     #tag: _f$tag,
-    #dueCount: _f$dueCount,
+    #practiceCount: _f$practiceCount,
+    #tagWordCount: _f$tagWordCount,
     #vocabularies: _f$vocabularies,
     #tags: _f$tags,
     #feedLimit: _f$feedLimit,
@@ -369,7 +386,8 @@ class CollectionLoadedMapper extends ClassMapperBase<CollectionLoaded> {
     return CollectionLoaded(
       setup: data.dec(_f$setup),
       tag: data.dec(_f$tag),
-      dueCount: data.dec(_f$dueCount),
+      practiceCount: data.dec(_f$practiceCount),
+      tagWordCount: data.dec(_f$tagWordCount),
       vocabularies: data.dec(_f$vocabularies),
       tags: data.dec(_f$tags),
       feedLimit: data.dec(_f$feedLimit),
@@ -450,7 +468,8 @@ abstract class CollectionLoadedCopyWith<$R, $In extends CollectionLoaded, $Out>
   $R call({
     LanguageSetup? setup,
     Tag? tag,
-    int? dueCount,
+    int? practiceCount,
+    int? tagWordCount,
     List<Vocabulary>? vocabularies,
     List<Tag>? tags,
     int? feedLimit,
@@ -496,7 +515,8 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
   $R call({
     LanguageSetup? setup,
     Tag? tag,
-    int? dueCount,
+    int? practiceCount,
+    int? tagWordCount,
     List<Vocabulary>? vocabularies,
     List<Tag>? tags,
     int? feedLimit,
@@ -506,7 +526,8 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (setup != null) #setup: setup,
       if (tag != null) #tag: tag,
-      if (dueCount != null) #dueCount: dueCount,
+      if (practiceCount != null) #practiceCount: practiceCount,
+      if (tagWordCount != null) #tagWordCount: tagWordCount,
       if (vocabularies != null) #vocabularies: vocabularies,
       if (tags != null) #tags: tags,
       if (feedLimit != null) #feedLimit: feedLimit,
@@ -518,7 +539,8 @@ class _CollectionLoadedCopyWithImpl<$R, $Out>
   CollectionLoaded $make(CopyWithData data) => CollectionLoaded(
     setup: data.get(#setup, or: $value.setup),
     tag: data.get(#tag, or: $value.tag),
-    dueCount: data.get(#dueCount, or: $value.dueCount),
+    practiceCount: data.get(#practiceCount, or: $value.practiceCount),
+    tagWordCount: data.get(#tagWordCount, or: $value.tagWordCount),
     vocabularies: data.get(#vocabularies, or: $value.vocabularies),
     tags: data.get(#tags, or: $value.tags),
     feedLimit: data.get(#feedLimit, or: $value.feedLimit),

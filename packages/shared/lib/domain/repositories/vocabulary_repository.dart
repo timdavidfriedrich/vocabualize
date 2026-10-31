@@ -1,6 +1,7 @@
 import 'package:core/error/app_result.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_item.dart';
+import 'package:shared/domain/entities/practice_session.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/progress.dart';
 import 'package:shared/domain/entities/translation.dart';
@@ -48,14 +49,34 @@ abstract class VocabularyRepository {
   Future<AppResult<int>> countDueItems({
     required Set<Language> languages,
     required DateTime dueBy,
-    String? tagId,
+    Set<String> tagIds = const {},
   });
 
   Future<AppResult<List<PracticeItem>>> findDueItems({
     required Set<Language> languages,
     required DateTime dueBy,
-    required int limit,
-    String? tagId,
+    required int? limit,
+    Set<String> tagIds = const {},
+  });
+
+  Future<AppResult<List<PracticeItem>>> findWaitingItems({
+    required Language language,
+    required int? limit,
+    Set<String> tagIds = const {},
+  });
+
+  Future<AppResult<List<PracticeItem>>> findStartedItems({
+    required Set<Language> languages,
+    Set<String> tagIds = const {},
+  });
+
+  Future<AppResult<List<PracticeItem>>> findItems(List<PracticeItemKey> keys);
+
+  Future<AppResult<()>> recordPractice();
+
+  Future<AppResult<()>> removeFromLanguage({
+    required String vocabularyId,
+    required Language language,
   });
 
   Future<AppResult<()>> saveReview({

@@ -1241,4 +1241,94 @@ class AppLocalizationsDe extends AppLocalizations {
   String detailsExistingAddButton(String language) {
     return 'Zu $language hinzufügen';
   }
+
+  @override
+  String get practiceCustomTooltip => 'Eigene Übung';
+
+  @override
+  String get customPracticeTitle => 'Eigene Übung';
+
+  @override
+  String get customPracticeLanguagesTitle => 'Sprachen';
+
+  @override
+  String get customPracticeAllOption => 'Alle';
+
+  @override
+  String get customPracticeCollectionsTitle => 'Sammlungen';
+
+  @override
+  String get customPracticeChooseOption => 'Auswählen';
+
+  @override
+  String get customPracticeWordsTitle => 'Wörter';
+
+  @override
+  String get customPracticeDueOption => 'Fällig';
+
+  @override
+  String get customPracticeAllWordsOption => 'Alle Wörter';
+
+  @override
+  String get customPracticeNewWordsTitle => 'Neue Wörter';
+
+  @override
+  String get customPracticeNoNewWordsOption => 'Keine';
+
+  @override
+  String get customPracticeUpToLimitOption => 'Bis zum Limit';
+
+  @override
+  String get customPracticeAllWaitingOption => 'Alle wartenden';
+
+  @override
+  String customPracticeStartButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Wörter üben',
+      one: '1 Wort üben',
+      zero: 'Keine Wörter zum Üben',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customPracticeReplaceTitle => 'Eigene Übung ersetzen?';
+
+  @override
+  String get customPracticeReplaceMessage =>
+      'Deine angefangene eigene Übung endet, wenn du eine neue startest.';
+
+  @override
+  String get customPracticeReplaceButton => 'Neu starten';
+
+  @override
+  String homeCustomPracticeProgress(int remaining, int total) {
+    return 'Eigene Übung: $remaining von $total übrig';
+  }
+
+  @override
+  String get homeCustomPracticeContinueButton => 'Weiter';
+
+  @override
+  String get homeCustomPracticeEndButton => 'Beenden';
+
+  @override
+  String practiceIntroSkipButton(String language) {
+    return 'Auf $language überspringen';
+  }
+
+  @override
+  String get practiceIntroGotItButton => 'Verstanden';
+
+  @override
+  String practiceShowMainButton(String language) {
+    return '$language zeigen';
+  }
+
+  @override
+  String collectionEmptyLanguageMessage(String language) {
+    return 'Noch keins dieser Wörter ist auf $language.';
+  }
 }
