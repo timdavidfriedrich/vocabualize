@@ -41,8 +41,6 @@
   "homeScanButton": "Escanear",
   "homeWriteButton": "Escribir",
   "homeWriteHint": "Entrar palabra...",
-  "detailsSourceLabel": "Fuente",
-  "detailsTargetLabel": "Traducción",
   "detailsReportTranslationButton": "Informar de una traducción incorrecta",
   "detailsAddCollectionButton": "Añadir a colección",
   "detailsReplaceTitle": "¿Reemplazar?",
@@ -311,5 +309,10 @@
   "homeChooseWordsButton": "Elegir palabras",
   "homeLanguageButtonTooltip": "Cambiar de idioma",
   "settingsLanguagesTitle": "Idiomas",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Las tarjetas preguntan en {askMeIn} en lugar de {main}. Siempre puedes ver la palabra en {main}. Así mantienes activo tu {askMeIn} mientras aprendes {learned}."
+  "learnedLanguageAskMeInAlwaysHelpMessage": "Las tarjetas preguntan en {askMeIn} en lugar de {main}. Siempre puedes ver la palabra en {main}. Así mantienes activo tu {askMeIn} mientras aprendes {learned}.",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{Idioma en pausa (1)} other{Idiomas en pausa ({count})}}",
+  "detailsLearnSwitchLabel": "Aprender en {language}",
+  "detailsExistingTitle": "Ya guardada",
+  "detailsExistingMessage": "«{word}» ya está guardada ({language}: {translation}). ¿Añadirla a {target}?",
+  "detailsExistingAddButton": "Añadir a {language}"
 }

@@ -41,8 +41,6 @@
   "homeScanButton": "Σάρωση",
   "homeWriteButton": "Γράψιμο",
   "homeWriteHint": "Πληκτρολογήστε μια λέξη...",
-  "detailsSourceLabel": "Πρωτότυπο",
-  "detailsTargetLabel": "Μετάφραση",
   "detailsReportTranslationButton": "Αναφορά λανθασμένης μετάφρασης",
   "detailsAddCollectionButton": "Προσθήκη συλλογής",
   "detailsReplaceTitle": "Αντικατάσταση;",
@@ -311,5 +309,10 @@
   "homeChooseWordsButton": "Επιλογή λέξεων",
   "homeLanguageButtonTooltip": "Αλλαγή γλώσσας",
   "settingsLanguagesTitle": "Γλώσσες",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Οι κάρτες ρωτούν στα {askMeIn} αντί για τα {main}. Μπορείτε πάντα να δείτε τη λέξη στα {main}. Έτσι τα {askMeIn} σας μένουν ενεργά όσο μαθαίνετε {learned}."
+  "learnedLanguageAskMeInAlwaysHelpMessage": "Οι κάρτες ρωτούν στα {askMeIn} αντί για τα {main}. Μπορείτε πάντα να δείτε τη λέξη στα {main}. Έτσι τα {askMeIn} σας μένουν ενεργά όσο μαθαίνετε {learned}.",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{Γλώσσα σε παύση (1)} other{Γλώσσες σε παύση ({count})}}",
+  "detailsLearnSwitchLabel": "Εκμάθηση στα {language}",
+  "detailsExistingTitle": "Έχει ήδη αποθηκευτεί",
+  "detailsExistingMessage": "Το «{word}» έχει ήδη αποθηκευτεί ({language}: {translation}). Να προστεθεί στα {target};",
+  "detailsExistingAddButton": "Προσθήκη στα {language}"
 }

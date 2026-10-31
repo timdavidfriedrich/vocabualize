@@ -41,8 +41,6 @@
   "homeScanButton": "Scannen",
   "homeWriteButton": "Eingeben",
   "homeWriteHint": "Wort eingeben...",
-  "detailsSourceLabel": "Quellwort",
-  "detailsTargetLabel": "Übersetzung",
   "detailsReportTranslationButton": "Fehlerhafte Übersetzung melden",
   "detailsAddCollectionButton": "Sammlung hinzufügen",
   "detailsReplaceTitle": "Ersetzen?",
@@ -311,5 +309,10 @@
   "homeChooseWordsButton": "Wörter wählen",
   "homeLanguageButtonTooltip": "Sprache wechseln",
   "settingsLanguagesTitle": "Sprachen",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Karten fragen auf {askMeIn} statt auf {main}. Das Wort auf {main} kannst du jederzeit anzeigen. So bleibt dein {askMeIn} aktiv, während du {learned} lernst."
+  "learnedLanguageAskMeInAlwaysHelpMessage": "Karten fragen auf {askMeIn} statt auf {main}. Das Wort auf {main} kannst du jederzeit anzeigen. So bleibt dein {askMeIn} aktiv, während du {learned} lernst.",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{Pausierte Sprache (1)} other{Pausierte Sprachen ({count})}}",
+  "detailsLearnSwitchLabel": "Auf {language} lernen",
+  "detailsExistingTitle": "Schon gespeichert",
+  "detailsExistingMessage": "„{word}“ ist schon gespeichert ({language}: {translation}). Zu {target} hinzufügen?",
+  "detailsExistingAddButton": "Zu {language} hinzufügen"
 }

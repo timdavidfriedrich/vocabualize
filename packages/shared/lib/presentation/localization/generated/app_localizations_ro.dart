@@ -136,12 +136,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get homeWriteHint => 'Introduceți un cuvânt...';
 
   @override
-  String get detailsSourceLabel => 'Original';
-
-  @override
-  String get detailsTargetLabel => 'Traducere';
-
-  @override
   String get detailsReportTranslationButton => 'Raportați o traducere greșită';
 
   @override
@@ -1238,5 +1232,34 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
     return 'Cartonașele întreabă în $askMeIn în loc de $main. Puteți afișa oricând cuvântul în $main. Astfel, $askMeIn rămâne activă cât învățați $learned.';
+  }
+
+  @override
+  String detailsPausedLanguagesTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Limbi în pauză ($count)',
+      one: 'Limbă în pauză (1)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String detailsLearnSwitchLabel(String language) {
+    return 'Învățați în $language';
+  }
+
+  @override
+  String get detailsExistingTitle => 'Deja salvat';
+
+  @override
+  String detailsExistingMessage(String word, String language, String translation, String target) {
+    return '„$word” este deja salvat ($language: $translation). Îl adăugați la $target?';
+  }
+
+  @override
+  String detailsExistingAddButton(String language) {
+    return 'Adăugați la $language';
   }
 }

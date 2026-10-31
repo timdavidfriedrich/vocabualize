@@ -136,12 +136,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeWriteHint => 'Type in word...';
 
   @override
-  String get detailsSourceLabel => 'Source';
-
-  @override
-  String get detailsTargetLabel => 'Target';
-
-  @override
   String get detailsReportTranslationButton => 'Report faulty translation';
 
   @override
@@ -1200,5 +1194,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
     return 'Cards ask in $askMeIn instead of $main. You can always show the $main word. This keeps your $askMeIn active while you learn $learned.';
+  }
+
+  @override
+  String detailsPausedLanguagesTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Paused languages ($count)',
+      one: 'Paused language (1)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String detailsLearnSwitchLabel(String language) {
+    return 'Learn in $language';
+  }
+
+  @override
+  String get detailsExistingTitle => 'Already saved';
+
+  @override
+  String detailsExistingMessage(String word, String language, String translation, String target) {
+    return '“$word” is already saved ($language: $translation). Add it to $target?';
+  }
+
+  @override
+  String detailsExistingAddButton(String language) {
+    return 'Add to $language';
   }
 }

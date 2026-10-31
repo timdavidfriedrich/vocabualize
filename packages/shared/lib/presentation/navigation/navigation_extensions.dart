@@ -11,8 +11,14 @@ extension NavigationExtension on BuildContext {
 
   Future<void> closeToHome() => appRouter.popUntil((route) => route is Home);
 
-  Future<void> pushNewVocabularyDetails({required String source, ProcessedImage? photo}) =>
-      appRouter.push(NewVocabularyDetails(source: source, photo: photo));
+  Future<void> pushNewVocabularyDetails({
+    required String text,
+    required Language language,
+    ProcessedImage? photo,
+    String? context,
+  }) => appRouter.push(
+    NewVocabularyDetails(text: text, language: language, photo: photo, context: context),
+  );
 
   Future<void> pushScan() => appRouter.push(const Scan());
 

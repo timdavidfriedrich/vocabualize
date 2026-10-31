@@ -52,7 +52,11 @@ import 'package:shared/presentation/navigation/routes.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:vocabualize/src/di/service_locator.dart';
 
-typedef _EntryState = (AppResult<AuthStatus>, AppResult<DataReadiness>?, AppResult<LanguageSetup?>?);
+typedef _EntryState = (
+  AppResult<AuthStatus>,
+  AppResult<DataReadiness>?,
+  AppResult<LanguageSetup?>?,
+);
 
 @lazySingleton
 class NavigationRouter(
@@ -167,10 +171,19 @@ class const _AppPage({
       create: (_) => sl<HomeBloc>()..add(const HomeStarted()),
       child: const HomeScreen(),
     ),
-    NewVocabularyDetails(:final source, :final photo) => BlocProvider(
-      create: (_) => sl<DetailsBloc>()..add(DetailsNewStarted(source: source, photo: photo)),
-      child: const DetailsScreen(),
-    ),
+    NewVocabularyDetails(:final text, :final language, :final photo, context: final labelContext) =>
+      BlocProvider(
+        create: (_) => sl<DetailsBloc>()
+          ..add(
+            DetailsNewStarted(
+              text: text,
+              language: language,
+              photo: photo,
+              context: labelContext,
+            ),
+          ),
+        child: const DetailsScreen(),
+      ),
     Scan() => BlocProvider(
       create: (_) => sl<ScanBloc>()..add(const ScanStarted()),
       child: const ScanScreen(),

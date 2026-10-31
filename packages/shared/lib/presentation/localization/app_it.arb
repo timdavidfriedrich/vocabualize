@@ -41,8 +41,6 @@
   "homeScanButton": "Scansiona",
   "homeWriteButton": "Scrivi",
   "homeWriteHint": "Scrivi una parola...",
-  "detailsSourceLabel": "Originale",
-  "detailsTargetLabel": "Traduzione",
   "detailsReportTranslationButton": "Segnala una traduzione errata",
   "detailsAddCollectionButton": "Aggiungi raccolta",
   "detailsReplaceTitle": "Sostituire?",
@@ -311,5 +309,10 @@
   "homeChooseWordsButton": "Scegli parole",
   "homeLanguageButtonTooltip": "Cambia lingua",
   "settingsLanguagesTitle": "Lingue",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Le schede chiedono in {askMeIn} invece che in {main}. Puoi sempre mostrare la parola in {main}. Così il tuo {askMeIn} resta attivo mentre impari {learned}."
+  "learnedLanguageAskMeInAlwaysHelpMessage": "Le schede chiedono in {askMeIn} invece che in {main}. Puoi sempre mostrare la parola in {main}. Così il tuo {askMeIn} resta attivo mentre impari {learned}.",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{Lingua in pausa (1)} other{Lingue in pausa ({count})}}",
+  "detailsLearnSwitchLabel": "Impara in {language}",
+  "detailsExistingTitle": "Già salvata",
+  "detailsExistingMessage": "«{word}» è già salvata ({language}: {translation}). Aggiungerla a {target}?",
+  "detailsExistingAddButton": "Aggiungi a {language}"
 }

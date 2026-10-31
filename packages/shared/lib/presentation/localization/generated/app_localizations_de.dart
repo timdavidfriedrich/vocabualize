@@ -136,12 +136,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get homeWriteHint => 'Wort eingeben...';
 
   @override
-  String get detailsSourceLabel => 'Quellwort';
-
-  @override
-  String get detailsTargetLabel => 'Übersetzung';
-
-  @override
   String get detailsReportTranslationButton => 'Fehlerhafte Übersetzung melden';
 
   @override
@@ -1217,5 +1211,34 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
     return 'Karten fragen auf $askMeIn statt auf $main. Das Wort auf $main kannst du jederzeit anzeigen. So bleibt dein $askMeIn aktiv, während du $learned lernst.';
+  }
+
+  @override
+  String detailsPausedLanguagesTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pausierte Sprachen ($count)',
+      one: 'Pausierte Sprache (1)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String detailsLearnSwitchLabel(String language) {
+    return 'Auf $language lernen';
+  }
+
+  @override
+  String get detailsExistingTitle => 'Schon gespeichert';
+
+  @override
+  String detailsExistingMessage(String word, String language, String translation, String target) {
+    return '„$word“ ist schon gespeichert ($language: $translation). Zu $target hinzufügen?';
+  }
+
+  @override
+  String detailsExistingAddButton(String language) {
+    return 'Zu $language hinzufügen';
   }
 }

@@ -137,12 +137,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homeWriteHint => 'Введіть слово...';
 
   @override
-  String get detailsSourceLabel => 'Джерело';
-
-  @override
-  String get detailsTargetLabel => 'Переклад';
-
-  @override
   String get detailsReportTranslationButton => 'Повідомити про неправильний переклад';
 
   @override
@@ -1262,5 +1256,34 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
     return 'Картки питають мовою $askMeIn замість $main. Ви завжди можете показати слово мовою $main. Так ваша $askMeIn залишається активною, поки ви вивчаєте $learned.';
+  }
+
+  @override
+  String detailsPausedLanguagesTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Призупинені мови ($count)',
+      one: 'Призупинена мова ($count)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String detailsLearnSwitchLabel(String language) {
+    return 'Вивчати мовою $language';
+  }
+
+  @override
+  String get detailsExistingTitle => 'Уже збережено';
+
+  @override
+  String detailsExistingMessage(String word, String language, String translation, String target) {
+    return '«$word» уже збережено ($language: $translation). Додати до мови $target?';
+  }
+
+  @override
+  String detailsExistingAddButton(String language) {
+    return 'Додати до $language';
   }
 }

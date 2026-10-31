@@ -48,8 +48,6 @@
   "homeScanButton": "Scan",
   "homeWriteButton": "Write",
   "homeWriteHint": "Type in word...",
-  "detailsSourceLabel": "Source",
-  "detailsTargetLabel": "Target",
   "detailsReportTranslationButton": "Report faulty translation",
   "detailsAddCollectionButton": "Add collection",
   "detailsReplaceTitle": "Replace",
@@ -715,6 +713,48 @@
         "type": "String"
       },
       "learned": {
+        "type": "String"
+      }
+    }
+  },
+  "detailsPausedLanguagesTitle": "{count, plural, =1{Paused language (1)} other{Paused languages ({count})}}",
+  "@detailsPausedLanguagesTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "detailsLearnSwitchLabel": "Learn in {language}",
+  "@detailsLearnSwitchLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "detailsExistingTitle": "Already saved",
+  "detailsExistingMessage": "“{word}” is already saved ({language}: {translation}). Add it to {target}?",
+  "@detailsExistingMessage": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      },
+      "language": {
+        "type": "String"
+      },
+      "translation": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "detailsExistingAddButton": "Add to {language}",
+  "@detailsExistingAddButton": {
+    "placeholders": {
+      "language": {
         "type": "String"
       }
     }

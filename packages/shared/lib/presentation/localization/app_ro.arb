@@ -41,8 +41,6 @@
   "homeScanButton": "Scanați",
   "homeWriteButton": "Scrieți",
   "homeWriteHint": "Introduceți un cuvânt...",
-  "detailsSourceLabel": "Original",
-  "detailsTargetLabel": "Traducere",
   "detailsReportTranslationButton": "Raportați o traducere greșită",
   "detailsAddCollectionButton": "Adăugați o colecție",
   "detailsReplaceTitle": "Înlocuiți?",
@@ -311,5 +309,10 @@
   "homeChooseWordsButton": "Alegeți cuvinte",
   "homeLanguageButtonTooltip": "Schimbați limba",
   "settingsLanguagesTitle": "Limbi",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Cartonașele întreabă în {askMeIn} în loc de {main}. Puteți afișa oricând cuvântul în {main}. Astfel, {askMeIn} rămâne activă cât învățați {learned}."
+  "learnedLanguageAskMeInAlwaysHelpMessage": "Cartonașele întreabă în {askMeIn} în loc de {main}. Puteți afișa oricând cuvântul în {main}. Astfel, {askMeIn} rămâne activă cât învățați {learned}.",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{Limbă în pauză (1)} other{Limbi în pauză ({count})}}",
+  "detailsLearnSwitchLabel": "Învățați în {language}",
+  "detailsExistingTitle": "Deja salvat",
+  "detailsExistingMessage": "„{word}” este deja salvat ({language}: {translation}). Îl adăugați la {target}?",
+  "detailsExistingAddButton": "Adăugați la {language}"
 }

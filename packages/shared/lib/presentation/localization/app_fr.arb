@@ -41,8 +41,6 @@
   "homeScanButton": "Scanner",
   "homeWriteButton": "Écrire",
   "homeWriteHint": "Saisissez un mot...",
-  "detailsSourceLabel": "Mot source",
-  "detailsTargetLabel": "Traduction",
   "detailsReportTranslationButton": "Signaler une traduction erronée",
   "detailsAddCollectionButton": "Ajouter à une collection",
   "detailsReplaceTitle": "Remplacer",
@@ -311,5 +309,10 @@
   "homeChooseWordsButton": "Choisir des mots",
   "homeLanguageButtonTooltip": "Changer de langue",
   "settingsLanguagesTitle": "Langues",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Les cartes posent la question en {askMeIn} au lieu de {main}. Vous pouvez toujours afficher le mot en {main}. Votre {askMeIn} reste ainsi actif pendant que vous apprenez {learned}."
+  "learnedLanguageAskMeInAlwaysHelpMessage": "Les cartes posent la question en {askMeIn} au lieu de {main}. Vous pouvez toujours afficher le mot en {main}. Votre {askMeIn} reste ainsi actif pendant que vous apprenez {learned}.",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{Langue en pause (1)} other{Langues en pause ({count})}}",
+  "detailsLearnSwitchLabel": "Apprendre en {language}",
+  "detailsExistingTitle": "Déjà enregistré",
+  "detailsExistingMessage": "« {word} » est déjà enregistré ({language} : {translation}). L'ajouter à {target} ?",
+  "detailsExistingAddButton": "Ajouter à {language}"
 }

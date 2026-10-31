@@ -137,12 +137,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get homeWriteHint => 'Πληκτρολογήστε μια λέξη...';
 
   @override
-  String get detailsSourceLabel => 'Πρωτότυπο';
-
-  @override
-  String get detailsTargetLabel => 'Μετάφραση';
-
-  @override
   String get detailsReportTranslationButton => 'Αναφορά λανθασμένης μετάφρασης';
 
   @override
@@ -1219,5 +1213,34 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
     return 'Οι κάρτες ρωτούν στα $askMeIn αντί για τα $main. Μπορείτε πάντα να δείτε τη λέξη στα $main. Έτσι τα $askMeIn σας μένουν ενεργά όσο μαθαίνετε $learned.';
+  }
+
+  @override
+  String detailsPausedLanguagesTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Γλώσσες σε παύση ($count)',
+      one: 'Γλώσσα σε παύση (1)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String detailsLearnSwitchLabel(String language) {
+    return 'Εκμάθηση στα $language';
+  }
+
+  @override
+  String get detailsExistingTitle => 'Έχει ήδη αποθηκευτεί';
+
+  @override
+  String detailsExistingMessage(String word, String language, String translation, String target) {
+    return 'Το «$word» έχει ήδη αποθηκευτεί ($language: $translation). Να προστεθεί στα $target;';
+  }
+
+  @override
+  String detailsExistingAddButton(String language) {
+    return 'Προσθήκη στα $language';
   }
 }

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/default_gather_option.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/default_gather_option_extensions.dart';
+import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 
@@ -171,6 +173,13 @@ class const _RecordFabItem({
 }
 
 Future<void> _write(BuildContext context) async {
-  final word = await requestsWrittenWord(context);
-  if (word != null && context.mounted) await context.pushNewVocabularyDetails(source: word);
+  final setup = context.read<LanguageSetupCubit>().state;
+  if (setup == null) return;
+  final word = await requestsWrittenWord(
+    context,
+    languages: [setup.main, for (final learned in setup.active) learned.language],
+  );
+  if (word != null && context.mounted) {
+    await context.pushNewVocabularyDetails(text: word.text, language: word.language);
+  }
 }

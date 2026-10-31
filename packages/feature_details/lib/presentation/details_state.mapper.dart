@@ -29,6 +29,8 @@ class DetailsPendingLookupMapper extends EnumMapper<DetailsPendingLookup> {
     switch (value) {
       case r'translationAndPhotos':
         return DetailsPendingLookup.translationAndPhotos;
+      case r'translations':
+        return DetailsPendingLookup.translations;
       case r'photos':
         return DetailsPendingLookup.photos;
       default:
@@ -41,6 +43,8 @@ class DetailsPendingLookupMapper extends EnumMapper<DetailsPendingLookup> {
     switch (self) {
       case DetailsPendingLookup.translationAndPhotos:
         return r'translationAndPhotos';
+      case DetailsPendingLookup.translations:
+        return r'translations';
       case DetailsPendingLookup.photos:
         return r'photos';
     }
@@ -168,6 +172,7 @@ class DetailsStateMapper extends ClassMapperBase<DetailsState> {
       MapperContainer.globals.use(_instance = DetailsStateMapper._());
       DetailsLoadingMapper.ensureInitialized();
       DetailsDuplicateFoundMapper.ensureInitialized();
+      DetailsExistingFoundMapper.ensureInitialized();
       DetailsEditingMapper.ensureInitialized();
       DetailsAddedMapper.ensureInitialized();
       DetailsClosedMapper.ensureInitialized();
@@ -337,27 +342,41 @@ class DetailsDuplicateFoundMapper
   @override
   final String id = 'DetailsDuplicateFound';
 
-  static String _$source(DetailsDuplicateFound v) => v.source;
-  static const Field<DetailsDuplicateFound, String> _f$source = Field(
-    'source',
-    _$source,
+  static String _$text(DetailsDuplicateFound v) => v.text;
+  static const Field<DetailsDuplicateFound, String> _f$text = Field(
+    'text',
+    _$text,
+  );
+  static Language _$language(DetailsDuplicateFound v) => v.language;
+  static const Field<DetailsDuplicateFound, Language> _f$language = Field(
+    'language',
+    _$language,
   );
   static ProcessedImage? _$photo(DetailsDuplicateFound v) => v.photo;
   static const Field<DetailsDuplicateFound, ProcessedImage> _f$photo = Field(
     'photo',
     _$photo,
   );
+  static String? _$context(DetailsDuplicateFound v) => v.context;
+  static const Field<DetailsDuplicateFound, String> _f$context = Field(
+    'context',
+    _$context,
+  );
 
   @override
   final MappableFields<DetailsDuplicateFound> fields = const {
-    #source: _f$source,
+    #text: _f$text,
+    #language: _f$language,
     #photo: _f$photo,
+    #context: _f$context,
   };
 
   static DetailsDuplicateFound _instantiate(DecodingData data) {
     return DetailsDuplicateFound(
-      source: data.dec(_f$source),
+      text: data.dec(_f$text),
+      language: data.dec(_f$language),
       photo: data.dec(_f$photo),
+      context: data.dec(_f$context),
     );
   }
 
@@ -433,7 +452,12 @@ abstract class DetailsDuplicateFoundCopyWith<
     implements DetailsStateCopyWith<$R, $In, $Out> {
   ProcessedImageCopyWith<$R, ProcessedImage, ProcessedImage>? get photo;
   @override
-  $R call({String? source, ProcessedImage? photo});
+  $R call({
+    String? text,
+    Language? language,
+    ProcessedImage? photo,
+    String? context,
+  });
   DetailsDuplicateFoundCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -451,22 +475,330 @@ class _DetailsDuplicateFoundCopyWithImpl<$R, $Out>
   ProcessedImageCopyWith<$R, ProcessedImage, ProcessedImage>? get photo =>
       $value.photo?.copyWith.$chain((v) => call(photo: v));
   @override
-  $R call({String? source, Object? photo = $none}) => $apply(
+  $R call({
+    String? text,
+    Language? language,
+    Object? photo = $none,
+    Object? context = $none,
+  }) => $apply(
     FieldCopyWithData({
-      if (source != null) #source: source,
+      if (text != null) #text: text,
+      if (language != null) #language: language,
       if (photo != $none) #photo: photo,
+      if (context != $none) #context: context,
     }),
   );
   @override
   DetailsDuplicateFound $make(CopyWithData data) => DetailsDuplicateFound(
-    source: data.get(#source, or: $value.source),
+    text: data.get(#text, or: $value.text),
+    language: data.get(#language, or: $value.language),
     photo: data.get(#photo, or: $value.photo),
+    context: data.get(#context, or: $value.context),
   );
 
   @override
   DetailsDuplicateFoundCopyWith<$R2, DetailsDuplicateFound, $Out2>
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _DetailsDuplicateFoundCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class DetailsExistingFoundMapper extends ClassMapperBase<DetailsExistingFound> {
+  DetailsExistingFoundMapper._();
+
+  static DetailsExistingFoundMapper? _instance;
+  static DetailsExistingFoundMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsExistingFoundMapper._());
+      DetailsStateMapper.ensureInitialized();
+      VocabularyMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsExistingFound';
+
+  static String _$text(DetailsExistingFound v) => v.text;
+  static const Field<DetailsExistingFound, String> _f$text = Field(
+    'text',
+    _$text,
+  );
+  static Vocabulary _$vocabulary(DetailsExistingFound v) => v.vocabulary;
+  static const Field<DetailsExistingFound, Vocabulary> _f$vocabulary = Field(
+    'vocabulary',
+    _$vocabulary,
+  );
+  static Language _$language(DetailsExistingFound v) => v.language;
+  static const Field<DetailsExistingFound, Language> _f$language = Field(
+    'language',
+    _$language,
+  );
+  static Language _$knownLanguage(DetailsExistingFound v) => v.knownLanguage;
+  static const Field<DetailsExistingFound, Language> _f$knownLanguage = Field(
+    'knownLanguage',
+    _$knownLanguage,
+  );
+
+  @override
+  final MappableFields<DetailsExistingFound> fields = const {
+    #text: _f$text,
+    #vocabulary: _f$vocabulary,
+    #language: _f$language,
+    #knownLanguage: _f$knownLanguage,
+  };
+
+  static DetailsExistingFound _instantiate(DecodingData data) {
+    return DetailsExistingFound(
+      text: data.dec(_f$text),
+      vocabulary: data.dec(_f$vocabulary),
+      language: data.dec(_f$language),
+      knownLanguage: data.dec(_f$knownLanguage),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsExistingFound fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsExistingFound>(map);
+  }
+
+  static DetailsExistingFound fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsExistingFound>(json);
+  }
+}
+
+mixin DetailsExistingFoundMappable {
+  String toJson() {
+    return DetailsExistingFoundMapper.ensureInitialized()
+        .encodeJson<DetailsExistingFound>(this as DetailsExistingFound);
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsExistingFoundMapper.ensureInitialized()
+        .encodeMap<DetailsExistingFound>(this as DetailsExistingFound);
+  }
+
+  DetailsExistingFoundCopyWith<
+    DetailsExistingFound,
+    DetailsExistingFound,
+    DetailsExistingFound
+  >
+  get copyWith =>
+      _DetailsExistingFoundCopyWithImpl<
+        DetailsExistingFound,
+        DetailsExistingFound
+      >(this as DetailsExistingFound, $identity, $identity);
+  @override
+  String toString() {
+    return DetailsExistingFoundMapper.ensureInitialized().stringifyValue(
+      this as DetailsExistingFound,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsExistingFoundMapper.ensureInitialized().equalsValue(
+      this as DetailsExistingFound,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsExistingFoundMapper.ensureInitialized().hashValue(
+      this as DetailsExistingFound,
+    );
+  }
+}
+
+extension DetailsExistingFoundValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsExistingFound, $Out> {
+  DetailsExistingFoundCopyWith<$R, DetailsExistingFound, $Out>
+  get $asDetailsExistingFound => $base.as(
+    (v, t, t2) => _DetailsExistingFoundCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class DetailsExistingFoundCopyWith<
+  $R,
+  $In extends DetailsExistingFound,
+  $Out
+>
+    implements DetailsStateCopyWith<$R, $In, $Out> {
+  VocabularyCopyWith<$R, Vocabulary, Vocabulary> get vocabulary;
+  @override
+  $R call({
+    String? text,
+    Vocabulary? vocabulary,
+    Language? language,
+    Language? knownLanguage,
+  });
+  DetailsExistingFoundCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _DetailsExistingFoundCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsExistingFound, $Out>
+    implements DetailsExistingFoundCopyWith<$R, DetailsExistingFound, $Out> {
+  _DetailsExistingFoundCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsExistingFound> $mapper =
+      DetailsExistingFoundMapper.ensureInitialized();
+  @override
+  VocabularyCopyWith<$R, Vocabulary, Vocabulary> get vocabulary =>
+      $value.vocabulary.copyWith.$chain((v) => call(vocabulary: v));
+  @override
+  $R call({
+    String? text,
+    Vocabulary? vocabulary,
+    Language? language,
+    Language? knownLanguage,
+  }) => $apply(
+    FieldCopyWithData({
+      if (text != null) #text: text,
+      if (vocabulary != null) #vocabulary: vocabulary,
+      if (language != null) #language: language,
+      if (knownLanguage != null) #knownLanguage: knownLanguage,
+    }),
+  );
+  @override
+  DetailsExistingFound $make(CopyWithData data) => DetailsExistingFound(
+    text: data.get(#text, or: $value.text),
+    vocabulary: data.get(#vocabulary, or: $value.vocabulary),
+    language: data.get(#language, or: $value.language),
+    knownLanguage: data.get(#knownLanguage, or: $value.knownLanguage),
+  );
+
+  @override
+  DetailsExistingFoundCopyWith<$R2, DetailsExistingFound, $Out2>
+  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _DetailsExistingFoundCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class DetailsTextMapper extends ClassMapperBase<DetailsText> {
+  DetailsTextMapper._();
+
+  static DetailsTextMapper? _instance;
+  static DetailsTextMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = DetailsTextMapper._());
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'DetailsText';
+
+  static String _$text(DetailsText v) => v.text;
+  static const Field<DetailsText, String> _f$text = Field('text', _$text);
+  static TranslationOrigin _$origin(DetailsText v) => v.origin;
+  static const Field<DetailsText, TranslationOrigin> _f$origin = Field(
+    'origin',
+    _$origin,
+  );
+
+  @override
+  final MappableFields<DetailsText> fields = const {
+    #text: _f$text,
+    #origin: _f$origin,
+  };
+
+  static DetailsText _instantiate(DecodingData data) {
+    return DetailsText(text: data.dec(_f$text), origin: data.dec(_f$origin));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static DetailsText fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<DetailsText>(map);
+  }
+
+  static DetailsText fromJson(String json) {
+    return ensureInitialized().decodeJson<DetailsText>(json);
+  }
+}
+
+mixin DetailsTextMappable {
+  String toJson() {
+    return DetailsTextMapper.ensureInitialized().encodeJson<DetailsText>(
+      this as DetailsText,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return DetailsTextMapper.ensureInitialized().encodeMap<DetailsText>(
+      this as DetailsText,
+    );
+  }
+
+  DetailsTextCopyWith<DetailsText, DetailsText, DetailsText> get copyWith =>
+      _DetailsTextCopyWithImpl<DetailsText, DetailsText>(
+        this as DetailsText,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return DetailsTextMapper.ensureInitialized().stringifyValue(
+      this as DetailsText,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return DetailsTextMapper.ensureInitialized().equalsValue(
+      this as DetailsText,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return DetailsTextMapper.ensureInitialized().hashValue(this as DetailsText);
+  }
+}
+
+extension DetailsTextValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, DetailsText, $Out> {
+  DetailsTextCopyWith<$R, DetailsText, $Out> get $asDetailsText =>
+      $base.as((v, t, t2) => _DetailsTextCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class DetailsTextCopyWith<$R, $In extends DetailsText, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call({String? text, TranslationOrigin? origin});
+  DetailsTextCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _DetailsTextCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, DetailsText, $Out>
+    implements DetailsTextCopyWith<$R, DetailsText, $Out> {
+  _DetailsTextCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<DetailsText> $mapper =
+      DetailsTextMapper.ensureInitialized();
+  @override
+  $R call({String? text, TranslationOrigin? origin}) => $apply(
+    FieldCopyWithData({
+      if (text != null) #text: text,
+      if (origin != null) #origin: origin,
+    }),
+  );
+  @override
+  DetailsText $make(CopyWithData data) => DetailsText(
+    text: data.get(#text, or: $value.text),
+    origin: data.get(#origin, or: $value.origin),
+  );
+
+  @override
+  DetailsTextCopyWith<$R2, DetailsText, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _DetailsTextCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
@@ -478,7 +810,8 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
       MapperContainer.globals.use(_instance = DetailsEditingMapper._());
       DetailsStateMapper.ensureInitialized();
       VocabularyMapper.ensureInitialized();
-      LanguagePairMapper.ensureInitialized();
+      LanguageSetupMapper.ensureInitialized();
+      DetailsTextMapper.ensureInitialized();
       DetailsImageMapper.ensureInitialized();
       StockImageMapper.ensureInitialized();
       TagMapper.ensureInitialized();
@@ -497,25 +830,33 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
     'original',
     _$original,
   );
-  static LanguagePair? _$languages(DetailsEditing v) => v.languages;
-  static const Field<DetailsEditing, LanguagePair> _f$languages = Field(
-    'languages',
-    _$languages,
+  static LanguageSetup _$setup(DetailsEditing v) => v.setup;
+  static const Field<DetailsEditing, LanguageSetup> _f$setup = Field(
+    'setup',
+    _$setup,
   );
-  static String _$source(DetailsEditing v) => v.source;
-  static const Field<DetailsEditing, String> _f$source = Field(
-    'source',
-    _$source,
+  static Language _$enteredLanguage(DetailsEditing v) => v.enteredLanguage;
+  static const Field<DetailsEditing, Language> _f$enteredLanguage = Field(
+    'enteredLanguage',
+    _$enteredLanguage,
   );
-  static String _$target(DetailsEditing v) => v.target;
-  static const Field<DetailsEditing, String> _f$target = Field(
-    'target',
-    _$target,
+  static Map<Language, DetailsText> _$texts(DetailsEditing v) => v.texts;
+  static const Field<DetailsEditing, Map<Language, DetailsText>> _f$texts =
+      Field('texts', _$texts);
+  static Set<Language> _$enabledLanguages(DetailsEditing v) =>
+      v.enabledLanguages;
+  static const Field<DetailsEditing, Set<Language>> _f$enabledLanguages = Field(
+    'enabledLanguages',
+    _$enabledLanguages,
   );
-  static bool _$isTargetEdited(DetailsEditing v) => v.isTargetEdited;
-  static const Field<DetailsEditing, bool> _f$isTargetEdited = Field(
-    'isTargetEdited',
-    _$isTargetEdited,
+  static Set<Language> _$translatingLanguages(DetailsEditing v) =>
+      v.translatingLanguages;
+  static const Field<DetailsEditing, Set<Language>> _f$translatingLanguages =
+      Field('translatingLanguages', _$translatingLanguages);
+  static String? _$context(DetailsEditing v) => v.context;
+  static const Field<DetailsEditing, String> _f$context = Field(
+    'context',
+    _$context,
   );
   static DetailsImage _$selectedImage(DetailsEditing v) => v.selectedImage;
   static const Field<DetailsEditing, DetailsImage> _f$selectedImage = Field(
@@ -572,10 +913,12 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
   @override
   final MappableFields<DetailsEditing> fields = const {
     #original: _f$original,
-    #languages: _f$languages,
-    #source: _f$source,
-    #target: _f$target,
-    #isTargetEdited: _f$isTargetEdited,
+    #setup: _f$setup,
+    #enteredLanguage: _f$enteredLanguage,
+    #texts: _f$texts,
+    #enabledLanguages: _f$enabledLanguages,
+    #translatingLanguages: _f$translatingLanguages,
+    #context: _f$context,
     #selectedImage: _f$selectedImage,
     #ownPhoto: _f$ownPhoto,
     #stockImages: _f$stockImages,
@@ -592,10 +935,12 @@ class DetailsEditingMapper extends ClassMapperBase<DetailsEditing> {
   static DetailsEditing _instantiate(DecodingData data) {
     return DetailsEditing(
       original: data.dec(_f$original),
-      languages: data.dec(_f$languages),
-      source: data.dec(_f$source),
-      target: data.dec(_f$target),
-      isTargetEdited: data.dec(_f$isTargetEdited),
+      setup: data.dec(_f$setup),
+      enteredLanguage: data.dec(_f$enteredLanguage),
+      texts: data.dec(_f$texts),
+      enabledLanguages: data.dec(_f$enabledLanguages),
+      translatingLanguages: data.dec(_f$translatingLanguages),
+      context: data.dec(_f$context),
       selectedImage: data.dec(_f$selectedImage),
       ownPhoto: data.dec(_f$ownPhoto),
       stockImages: data.dec(_f$stockImages),
@@ -673,7 +1018,14 @@ extension DetailsEditingValueCopy<$R, $Out>
 abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
     implements DetailsStateCopyWith<$R, $In, $Out> {
   VocabularyCopyWith<$R, Vocabulary, Vocabulary>? get original;
-  LanguagePairCopyWith<$R, LanguagePair, LanguagePair>? get languages;
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup;
+  MapCopyWith<
+    $R,
+    Language,
+    DetailsText,
+    DetailsTextCopyWith<$R, DetailsText, DetailsText>
+  >
+  get texts;
   DetailsImageCopyWith<$R, DetailsImage, DetailsImage> get selectedImage;
   DetailsImageCopyWith<$R, DetailsImage, DetailsImage>? get ownPhoto;
   ListCopyWith<$R, StockImage, StockImageCopyWith<$R, StockImage, StockImage>>
@@ -682,10 +1034,12 @@ abstract class DetailsEditingCopyWith<$R, $In extends DetailsEditing, $Out>
   @override
   $R call({
     Vocabulary? original,
-    LanguagePair? languages,
-    String? source,
-    String? target,
-    bool? isTargetEdited,
+    LanguageSetup? setup,
+    Language? enteredLanguage,
+    Map<Language, DetailsText>? texts,
+    Set<Language>? enabledLanguages,
+    Set<Language>? translatingLanguages,
+    String? context,
     DetailsImage? selectedImage,
     DetailsImage? ownPhoto,
     List<StockImage>? stockImages,
@@ -715,8 +1069,20 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
   VocabularyCopyWith<$R, Vocabulary, Vocabulary>? get original =>
       $value.original?.copyWith.$chain((v) => call(original: v));
   @override
-  LanguagePairCopyWith<$R, LanguagePair, LanguagePair>? get languages =>
-      $value.languages?.copyWith.$chain((v) => call(languages: v));
+  LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup =>
+      $value.setup.copyWith.$chain((v) => call(setup: v));
+  @override
+  MapCopyWith<
+    $R,
+    Language,
+    DetailsText,
+    DetailsTextCopyWith<$R, DetailsText, DetailsText>
+  >
+  get texts => MapCopyWith(
+    $value.texts,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(texts: v),
+  );
   @override
   DetailsImageCopyWith<$R, DetailsImage, DetailsImage> get selectedImage =>
       $value.selectedImage.copyWith.$chain((v) => call(selectedImage: v));
@@ -739,10 +1105,12 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
   @override
   $R call({
     Object? original = $none,
-    Object? languages = $none,
-    String? source,
-    String? target,
-    bool? isTargetEdited,
+    LanguageSetup? setup,
+    Language? enteredLanguage,
+    Map<Language, DetailsText>? texts,
+    Set<Language>? enabledLanguages,
+    Set<Language>? translatingLanguages,
+    Object? context = $none,
     DetailsImage? selectedImage,
     Object? ownPhoto = $none,
     List<StockImage>? stockImages,
@@ -757,10 +1125,13 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (original != $none) #original: original,
-      if (languages != $none) #languages: languages,
-      if (source != null) #source: source,
-      if (target != null) #target: target,
-      if (isTargetEdited != null) #isTargetEdited: isTargetEdited,
+      if (setup != null) #setup: setup,
+      if (enteredLanguage != null) #enteredLanguage: enteredLanguage,
+      if (texts != null) #texts: texts,
+      if (enabledLanguages != null) #enabledLanguages: enabledLanguages,
+      if (translatingLanguages != null)
+        #translatingLanguages: translatingLanguages,
+      if (context != $none) #context: context,
       if (selectedImage != null) #selectedImage: selectedImage,
       if (ownPhoto != $none) #ownPhoto: ownPhoto,
       if (stockImages != null) #stockImages: stockImages,
@@ -777,10 +1148,15 @@ class _DetailsEditingCopyWithImpl<$R, $Out>
   @override
   DetailsEditing $make(CopyWithData data) => DetailsEditing(
     original: data.get(#original, or: $value.original),
-    languages: data.get(#languages, or: $value.languages),
-    source: data.get(#source, or: $value.source),
-    target: data.get(#target, or: $value.target),
-    isTargetEdited: data.get(#isTargetEdited, or: $value.isTargetEdited),
+    setup: data.get(#setup, or: $value.setup),
+    enteredLanguage: data.get(#enteredLanguage, or: $value.enteredLanguage),
+    texts: data.get(#texts, or: $value.texts),
+    enabledLanguages: data.get(#enabledLanguages, or: $value.enabledLanguages),
+    translatingLanguages: data.get(
+      #translatingLanguages,
+      or: $value.translatingLanguages,
+    ),
+    context: data.get(#context, or: $value.context),
     selectedImage: data.get(#selectedImage, or: $value.selectedImage),
     ownPhoto: data.get(#ownPhoto, or: $value.ownPhoto),
     stockImages: data.get(#stockImages, or: $value.stockImages),

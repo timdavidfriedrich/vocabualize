@@ -354,18 +354,6 @@ abstract class AppLocalizations {
   /// **'Type in word...'**
   String get homeWriteHint;
 
-  /// No description provided for @detailsSourceLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Source'**
-  String get detailsSourceLabel;
-
-  /// No description provided for @detailsTargetLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Target'**
-  String get detailsTargetLabel;
-
   /// No description provided for @detailsReportTranslationButton.
   ///
   /// In en, this message translates to:
@@ -1979,6 +1967,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cards ask in {askMeIn} instead of {main}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.'**
   String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned);
+
+  /// No description provided for @detailsPausedLanguagesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Paused language (1)} other{Paused languages ({count})}}'**
+  String detailsPausedLanguagesTitle(int count);
+
+  /// No description provided for @detailsLearnSwitchLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn in {language}'**
+  String detailsLearnSwitchLabel(String language);
+
+  /// No description provided for @detailsExistingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Already saved'**
+  String get detailsExistingTitle;
+
+  /// No description provided for @detailsExistingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'“{word}” is already saved ({language}: {translation}). Add it to {target}?'**
+  String detailsExistingMessage(String word, String language, String translation, String target);
+
+  /// No description provided for @detailsExistingAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to {language}'**
+  String detailsExistingAddButton(String language);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

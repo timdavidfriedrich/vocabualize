@@ -41,8 +41,6 @@
   "homeScanButton": "Сканувати",
   "homeWriteButton": "Писати",
   "homeWriteHint": "Введіть слово...",
-  "detailsSourceLabel": "Джерело",
-  "detailsTargetLabel": "Переклад",
   "detailsReportTranslationButton": "Повідомити про неправильний переклад",
   "detailsAddCollectionButton": "Додати до колекції",
   "detailsReplaceTitle": "Замінити",
@@ -311,5 +309,10 @@
   "homeChooseWordsButton": "Обрати слова",
   "homeLanguageButtonTooltip": "Змінити мову",
   "settingsLanguagesTitle": "Мови",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Картки питають мовою {askMeIn} замість {main}. Ви завжди можете показати слово мовою {main}. Так ваша {askMeIn} залишається активною, поки ви вивчаєте {learned}."
+  "learnedLanguageAskMeInAlwaysHelpMessage": "Картки питають мовою {askMeIn} замість {main}. Ви завжди можете показати слово мовою {main}. Так ваша {askMeIn} залишається активною, поки ви вивчаєте {learned}.",
+  "detailsPausedLanguagesTitle": "{count, plural, one{Призупинена мова ({count})} other{Призупинені мови ({count})}}",
+  "detailsLearnSwitchLabel": "Вивчати мовою {language}",
+  "detailsExistingTitle": "Уже збережено",
+  "detailsExistingMessage": "«{word}» уже збережено ({language}: {translation}). Додати до мови {target}?",
+  "detailsExistingAddButton": "Додати до {language}"
 }

@@ -4,11 +4,14 @@ import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:feature_details/presentation/widgets/duplicate_dialog.dart';
+import 'package:feature_details/presentation/widgets/existing_dialog.dart';
 import 'package:feature_details/presentation/widgets/image_chooser.dart';
+import 'package:feature_details/presentation/widgets/language_rows.dart';
 import 'package:feature_details/presentation/widgets/source_to_target.dart';
 import 'package:feature_details/presentation/widgets/tag_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
@@ -49,10 +52,31 @@ class const DetailsScreen({
         BlocListener<DetailsBloc, DetailsState>(
           listenWhen: (previous, current) => current is DetailsDuplicateFound,
           listener: (context, state) async {
-            if (state case DetailsDuplicateFound(:final source)) {
+            if (state case DetailsDuplicateFound(:final text)) {
               final bloc = context.read<DetailsBloc>();
-              final addsAnyway = await confirmsAddingDuplicate(context, source);
+              final addsAnyway = await confirmsAddingDuplicate(context, text);
               bloc.add(DetailsDuplicateResolved(addsAnyway: addsAnyway));
+            }
+          },
+        ),
+        BlocListener<DetailsBloc, DetailsState>(
+          listenWhen: (previous, current) => current is DetailsExistingFound,
+          listener: (context, state) async {
+            if (state case DetailsExistingFound(
+              :final text,
+              :final vocabulary,
+              :final language,
+              :final knownLanguage,
+            )) {
+              final bloc = context.read<DetailsBloc>();
+              final addsLanguage = await confirmsAddingLanguage(
+                context,
+                text: text,
+                vocabulary: vocabulary,
+                language: language,
+                knownLanguage: knownLanguage,
+              );
+              bloc.add(DetailsExistingResolved(addsLanguage: addsLanguage));
             }
           },
         ),
@@ -75,6 +99,7 @@ class const DetailsScreen({
         builder: (context, state) => switch (state) {
           DetailsLoading() ||
           DetailsDuplicateFound() ||
+          DetailsExistingFound() ||
           DetailsAdded() ||
           DetailsClosed() => const LoadingScreen(),
           DetailsFailure(:final error) => _FailureScreen(error: error),
@@ -91,7 +116,14 @@ class const _EditingScreen() extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const SourceToTarget(),
+        title: BlocSelector<DetailsBloc, DetailsState, bool>(
+          selector: (state) => switch (state) {
+            final DetailsEditing editing => editing.isSingleLayout,
+            _ => true,
+          },
+          builder: (context, isSingleLayout) =>
+              isSingleLayout ? const SourceToTarget() : const MainTextButton(),
+        ),
         actions: const [_SpeakButton()],
       ),
       body: const Padding(
@@ -106,6 +138,7 @@ class const _EditingScreen() extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: Spacing.xs),
+                    LanguageRows(),
                     _ImageSection(),
                     TagWrap(),
                   ],
@@ -129,16 +162,29 @@ class const _SpeakButton() extends StatelessWidget {
       width: kToolbarHeight,
       child: BlocSelector<DetailsBloc, DetailsState, bool>(
         selector: (state) => switch (state) {
-          DetailsEditing(:final target, languages: _?) => target.isNotEmpty,
+          final DetailsEditing editing => editing.isSingleLayout,
           _ => false,
         },
-        builder: (context, canSpeak) => IconButton(
-          onPressed: canSpeak
-              ? () => context.read<DetailsBloc>().add(const DetailsSpeakRequested())
-              : null,
-          tooltip: context.s.vocabularySpeakTooltip,
-          icon: const Icon(Icons.volume_up_rounded),
-        ),
+        builder: (context, isShown) => !isShown
+            ? const SizedBox.shrink()
+            : BlocSelector<DetailsBloc, DetailsState, Language?>(
+                selector: (state) => switch (state) {
+                  final DetailsEditing editing
+                      when editing.textOf(editing.setup.selected).isNotEmpty =>
+                    editing.setup.selected,
+                  _ => null,
+                },
+                builder: (context, language) => IconButton(
+                  onPressed: switch (language) {
+                    final language? => () => context.read<DetailsBloc>().add(
+                      DetailsSpeakRequested(language: language),
+                    ),
+                    null => null,
+                  },
+                  tooltip: context.s.vocabularySpeakTooltip,
+                  icon: const Icon(Icons.volume_up_rounded),
+                ),
+              ),
       ),
     );
   }
@@ -149,7 +195,7 @@ class const _Actions() extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DetailsBloc, DetailsState>(
       builder: (context, state) => switch (state) {
-        DetailsEditing(:final original, :final source, :final target, :final runningAction) => Row(
+        DetailsEditing(:final original, :final runningAction) => Row(
           children: [
             if (original != null) ...[
               _DeleteButton(original: original, runningAction: runningAction),
@@ -157,7 +203,7 @@ class const _Actions() extends StatelessWidget {
             ],
             Expanded(
               child: ElevatedButton(
-                onPressed: runningAction != null || source.isEmpty || target.isEmpty
+                onPressed: runningAction != null || !state.canSave
                     ? null
                     : () => context.read<DetailsBloc>().add(const DetailsSaveRequested()),
                 child: runningAction == DetailsAction.save
@@ -196,12 +242,12 @@ class const _DeleteButton({
 
   Future<void> _delete(BuildContext context) async {
     final bloc = context.read<DetailsBloc>();
-    if (bloc.state case DetailsEditing(languages: final languages?)) {
+    if (bloc.state case final DetailsEditing editing) {
       final isConfirmed = await confirmsVocabularyDelete(
         context,
         vocabulary: _original,
-        language: languages.target,
-        mainLanguage: languages.source,
+        language: editing.setup.selected,
+        mainLanguage: editing.setup.main,
       );
       if (isConfirmed) bloc.add(const DetailsDeleteRequested());
     }

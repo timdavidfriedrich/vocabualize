@@ -37,11 +37,13 @@ class const LanguageWords({
 class const Home() extends AppRoute;
 
 class const NewVocabularyDetails({
-  required final String source,
+  required final String text,
+  required final Language language,
   final ProcessedImage? photo,
+  final String? context,
 }) extends AppRoute {
   @override
-  List<Object?> get props => [source, photo];
+  List<Object?> get props => [text, language, photo, context];
 }
 
 class const Scan() extends AppRoute;

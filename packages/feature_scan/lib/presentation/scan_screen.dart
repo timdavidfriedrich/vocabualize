@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
 
@@ -73,7 +74,8 @@ class const _ReviewView({
         const SizedBox(height: Spacing.xxl),
         TextField(
           decoration: InputDecoration(hintText: context.s.scanTypeHint),
-          onSubmitted: (word) => _openDetails(context, word: word, photo: _photo),
+          onSubmitted: (word) =>
+              _openDetails(context, word: word, photo: _photo, labelContext: null),
         ),
         const SizedBox(height: Spacing.xl),
         Align(
@@ -100,7 +102,12 @@ class const _ReviewView({
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(Spacing.radiusL),
                     ),
-                    onTap: () => _openDetails(context, word: label.text, photo: _photo),
+                    onTap: () => _openDetails(
+                      context,
+                      word: label.text,
+                      photo: _photo,
+                      labelContext: label.context,
+                    ),
                   ),
                 ),
               TextButton.icon(
@@ -132,7 +139,21 @@ class const _SuggestionsHint({
   }
 }
 
-void _openDetails(BuildContext context, {required String word, required ProcessedImage photo}) {
-  final source = word.trim();
-  if (source.isNotEmpty) unawaited(context.pushNewVocabularyDetails(source: source, photo: photo));
+void _openDetails(
+  BuildContext context, {
+  required String word,
+  required ProcessedImage photo,
+  required String? labelContext,
+}) {
+  final text = word.trim();
+  final setup = context.read<LanguageSetupCubit>().state;
+  if (text.isEmpty || setup == null) return;
+  unawaited(
+    context.pushNewVocabularyDetails(
+      text: text,
+      language: setup.main,
+      photo: photo,
+      context: labelContext,
+    ),
+  );
 }
