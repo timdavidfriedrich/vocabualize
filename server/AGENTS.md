@@ -27,6 +27,8 @@ The generated client resolves with the Flutter app, and the server keeps its own
 - **Synced tables** (`database: sync`):
   - Updates are always column-scoped (`updateRow(..., columns:)`).
   - Any schema change breaks sync for clients on the old schema until they update, so changes are rare, ship together with an app release, and only add nullable columns.
+  - The synced tables are `vocabulary`, `translation`, `progress`, `tag`, `vocabulary_tag`, `activity` and `setting`.
+  - The migrations were reset once, in October 2026, to the single migration `20261030235928099` for the multi-language model, while the owner was the only user. Production needs a fresh database and an empty photo bucket for it. This was the one exception to the rule above.
 - **Generated code is never edited:** that covers `lib/src/generated/` and all of `packages/vocabualize_client`. A generated `migration.sql` may be hand-edited only to avoid data loss.
 
 ## Commands
@@ -56,5 +58,5 @@ The app is run with `fvm flutter run` from the repository root, never with `serv
 ## Checklist after changes
 
 1. `fvm dart analyze`
-2. `fvm dart format lib bin`
+2. `fvm dart format` on the changed files outside `lib/src/generated/`
 3. `create-migration` and apply it, if a model changed

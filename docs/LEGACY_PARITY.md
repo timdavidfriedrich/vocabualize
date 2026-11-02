@@ -34,7 +34,7 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Email sign-up, sign-in, verification, password reset | none | 🗑 Google only | S |
 | Anonymous account (password = record ID) | "Continue without account", local only | 🔄 local-only mode, no server account | P |
 | Thesis notes, accept, "keep data after test phase" | none | 🗑 thesis | S |
-| Choose languages via a full-screen language picker | Language pair as chips (5 languages) | 🔄 bundled language list, chips instead of picker | P |
+| Choose languages via a full-screen language picker | "I speak" (one) and "I learn" (several) as chips; 12 languages including DeepL's regional variants | 🔄 bundled language list, chips instead of picker, several learned languages | P |
 | Languages loaded from the server | Bundled constants | 🔄 by design | S |
 | Note that the code is open source (GitHub) | none | 🗑 decided: left out | S |
 
@@ -58,7 +58,7 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Legacy | New | Status | Verified |
 |---|---|---|---|
 | Edit source and target in dialogs, offer retranslation | Same | ✅ | P |
-| Automatic translation | DeepL through the server, limits per tier | ✅ 🔄 | P |
+| Automatic translation | DeepL through the server, 300 texts a day; missing texts of every language in use are filled in the background | ✅ 🔄 | P |
 | Stock photos: word translated to English, articles removed, then searched | Searched in the source language with Pexels' `locale` | 🔄 decided: keep | P |
 | Browse more stock photos | Same | ✅ | P |
 | Own photo from camera or gallery | Same, resized, metadata removed | ✅ | P |
@@ -107,7 +107,7 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 |---|---|---|---|
 | Sign in, sign out | Same, sign-out guarded until synced | ✅ | P |
 | Link anonymous account to Google or GitHub | Sign in moves local data into the account (adoption) | 🔄 | P |
-| Source and target language | Language pair | ✅ | P |
+| Source and target language | "Languages" screen: I speak, I learn (add, pause, delete, choose words), "Ask me in" per learned language | 🔄 several learned languages | P |
 | Disable type-answer mode (experimental) | In "Learning" | ✅ | P |
 | Hide images (experimental) | In "Learning", also hides Scan and stock photos | ✅ | P |
 | Enable collections (experimental, off by default) | none, always on | 🔄 decided: no switch | E |
@@ -145,7 +145,7 @@ Compares the legacy app (`../vocabualize_dev`) with the new app, feature by feat
 | Mascots and launcher icon | ✅ same artwork |
 | Layout of Home, Details, Scan, Practice, Collections | ✅ matches in the side-by-side pass |
 | Layout of Welcome and Settings | ✅ legacy design (Settings with the new rows as rounded rows) |
-| Language choice | 🔄 new chips kept (decided), button at the bottom |
+| Language choice | 🔄 new chips kept (decided) for "I speak" and "I learn", button at the bottom |
 
 ## Side-by-side pass (2026-10-27)
 

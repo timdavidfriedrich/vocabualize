@@ -46,7 +46,7 @@ General:
 | Personal info → Email address | yes | yes | Account management | From Google sign-in |
 | Personal info → User IDs | yes | yes | Account management, App functionality | Account ID and Google account ID |
 | Photos and videos → Photos | yes | yes | App functionality | Your photos, synced when signed in; a downscaled copy for Scan |
-| App activity → Other user-generated content | yes | yes | App functionality, Customer support | Words and translations (synced, translated, searched), feedback messages |
+| App activity → Other user-generated content | yes | yes | App functionality, Customer support | Words and translations (synced, translated, searched), the short object description of a scanned word (sent along to DeepL, not stored), feedback messages |
 | App activity → Other actions | yes | yes | App functionality | Activity days and answer counts for streaks, synced when signed in |
 | Device or other IDs | yes | yes | App functionality, Fraud prevention, security and compliance | Random install key for anonymous limits, random device ID for activity rows |
 | App info and performance → Other app performance data | yes | yes | Customer support | App and Android version sent with feedback |

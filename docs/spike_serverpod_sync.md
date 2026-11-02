@@ -54,6 +54,7 @@ The release build with R8 runs without missing classes, and the SQLite native li
 2. **The synced schema is frozen before the first release.**
    - Each synced table gets one nullable `extras` JSON column for later, non-indexed attributes. It merges as a single field with last-writer-wins.
    - A real schema change means: server and app release on the same day; old clients map `OfflineSyncTablesHashMismatchException` to an "update to keep syncing" state, and the app keeps working offline.
+   - The one exception: in October 2026 the schema was rebuilt for the multi-language model (`vocabulary`, `translation`, `progress`) with one fresh migration, while the owner was the only user.
 3. **Never load all rows into the UI.** Lists use `watch` with `limit` and load more pages; numbers come from `count()`.
 4. **The first sync shows progress.** A fresh device with 5,000 words needs about 17 s. The single migrated user has a few hundred words, which takes 1–2 s.
 5. **Times are millisecond-precise.** Nothing may depend on sub-millisecond ordering.

@@ -27,13 +27,21 @@ These were decided on purpose; do not "fix" them:
    - **Composition:** `NavigationRouter` (`@lazySingleton`, `lib/src/navigation/navigation_router.dart`) owns the `KaiselRouterConfig`, and its exhaustive page switch is the only place that creates `BlocProvider`s for routes.
    - **Gating:** auth and app-status redirects are kaisel guards, or an app-status listener that calls `router.set(...)`. There is no refresh stream.
 
+## Data model
+
+- **Words:** `vocabulary` holds the photo and creation date, `translation` one text per language (`origin`: entered, translated, edited), `progress` the review state per learned language (`stage`: waiting, shortTerm, longTerm).
+- **Membership:** a word is in a language when it has a `progress` row there. Removing deletes the row; adding it back starts over.
+- **Row ids:** `translation` and `progress` ids are UUIDv5 of `"<vocabularyId>/<languageCode>"` (`languageRowId` in `data/extensions/uuid_extensions.dart`), so two offline devices create the same row.
+- **Languages:** `setting` rows `mainLanguage`, one `learnedLanguage.<tag>` per learned language and `selectedLanguage`, read through `LanguageRepository`.
+- **One-time reset:** the schema was rebuilt in October 2026 with the single migration `20261030235928099`, while the owner was the only user. It was the one exception to the frozen synced schema below.
+
 ## Rules from the sync spike
 
 The spike's findings are in `docs/spike_serverpod_sync.md` and are binding for the data layer:
 
 - Updates to synced rows are always column-scoped (`updateRow(..., columns:)`).
 - The synced schema is frozen before release. A synced-table change breaks sync for older clients until they update.
-- Dropping a synced column in the same migration that adds one makes the sync engine refuse to start (it can't tell a drop from a rename) while the dropped column still has CRDT field metadata. Append a cleanup to both generated migrations (server `migration.sql` and client `migration.dart`): delete the column's `crdt_data_attempted_value`, `crdt_data_fields` and `crdt_schema_columns` rows. SQLite migrations run with foreign keys off, so cascades don't help there. Example: migration `20261026220306720`.
+- Dropping a synced column in the same migration that adds one makes the sync engine refuse to start (it can't tell a drop from a rename) while the dropped column still has CRDT field metadata. Append a cleanup to both generated migrations (server `migration.sql` and client `migration.dart`): delete the column's `crdt_data_attempted_value`, `crdt_data_fields` and `crdt_schema_columns` rows. SQLite migrations run with foreign keys off, so cascades don't help there.
 - Lists read pages through `watch(limit:)` and numbers come from `count()`. Never load every row into the UI.
 - Deleted synced rows stay in their tables, hidden only by sync metadata. Root queries and `include` lists hide them; relation filters in `where` (`any`, `none`, `count`, `every`) don't. Every condition inside a relation filter adds `.isVisible` (`data/extensions/table_extensions.dart`).
 - The sync module rejects clocks more than 1 minute apart (`_maxDrift` in its `hlc.dart`); a phone that is ahead fails on the server, which only closes the stream. `ClockDataSource` compares the phone clock with `config.serverTime()` on start, resume, network back and after a failed sync. Only a server-confirmed drift closes the gate (`GateClockWrong`) or blocks a write (`requireWritableSession()`); when unsure, nothing is blocked. The monotonic reference is dropped whenever the app leaves the foreground, because Android's monotonic clock pauses during sleep.
@@ -53,7 +61,7 @@ An empty state may only ever mean "there is no data".
 - Run with `fvm flutter run -d <device> --dart-define-from-file=dart_defines.json`.
 
 ## Storage spaces and sign-out
-Each account, and the local-only use, is one storage space with one folder: `spaces/<userId>/` or `spaces/local/`, holding `database.db`, `images/` and `account.json` (or `owner_id` for local).
+Each account, and the local-only use, is one storage space with one folder: `spaces/<userId>/` or `spaces/local/`, holding `database.db`, `images/` and `account.json` (or `owner_id` for local), plus `custom_practice.json` while a custom practice session is unfinished. That session belongs to the device and is never synced.
 1. **Disk: one folder per space.** Only `SpaceStorageDataSource` knows the layout. Removing a space renames its folder to `<name>.deleting` (atomic), then deletes it; every start deletes leftover `*.deleting` folders. Never add per-account files outside the space folder.
 2. **Memory: components reset themselves.** Anything that keeps per-space state in memory keys it to the open session (`DatabaseSessionDataSource.currentSession`/`watchSession`), like the image index in `ImageFileDataSource`. Sign-out never calls such components.
 3. **Order: one orchestrator.** `AccountRepositoryImpl` alone decides the order. Sign-out: stop sync → upload barrier (unless discarded) → leave the account in the UI → close the session → mark the space for deletion → clear the auth tokens → delete marked spaces. An account switch and the adoption of the local space reuse `_removeSpace`.
