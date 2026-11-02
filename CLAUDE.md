@@ -59,6 +59,7 @@ An empty state may only ever mean "there is no data".
 - Start the local backend from `server/vocabualize_server` (see `server/AGENTS.md`).
 - On each Android device or emulator, run `adb -s <device> reverse tcp:8180 tcp:8180` once per connection, so the device's `localhost:8180` reaches this Mac.
 - Run with `fvm flutter run -d <device> --dart-define-from-file=dart_defines.json`.
+- Against production, add the build number CI uses: `fvm flutter run -d <device> --dart-define-from-file=dart_defines.production.json --build-number=$(git rev-list --count HEAD)`. Without it, the build number is the one in `pubspec.yaml`, which is below production's `minSupportedBuild`, so the app shows "Update necessary".
 
 ## Storage spaces and sign-out
 Each account, and the local-only use, is one storage space with one folder: `spaces/<userId>/` or `spaces/local/`, holding `database.db`, `images/` and `account.json` (or `owner_id` for local), plus `custom_practice.json` while a custom practice session is unfinished. That session belongs to the device and is never synced.
