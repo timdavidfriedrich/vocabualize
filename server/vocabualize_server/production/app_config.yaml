@@ -1,7 +1,7 @@
 version: 1
 
 client:
-  minSupportedBuild: 13
+  minSupportedBuild: 124
   maintenanceMode: false
   maintenanceMessage: null
 
