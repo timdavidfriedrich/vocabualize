@@ -13,6 +13,11 @@ if (hasReleaseKeystore) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+val commitCount = runCatching {
+    providers.exec { commandLine("git", "rev-list", "--count", "HEAD") }
+        .standardOutput.asText.get().trim().toInt()
+}.getOrDefault(0)
+
 android {
     namespace = "de.timdavidfriedrich.vocabualize"
     compileSdk = flutter.compileSdkVersion
@@ -28,7 +33,7 @@ android {
         applicationId = "de.timdavidfriedrich.vocabualize"
         minSdk = 29
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
+        versionCode = maxOf(flutter.versionCode, commitCount)
         versionName = flutter.versionName
     }
 
