@@ -1,4 +1,0 @@
-Petites corrections après la refonte :
-• Textes plus petits sur l'accueil et pendant les exercices
-• La barre de progression de l'exercice personnalisé est plus visible
-• Gère tes langues depuis le menu des langues de l'accueil

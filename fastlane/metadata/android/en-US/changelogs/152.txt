@@ -1,0 +1,4 @@
+Small fixes after the redesign:
+• Smaller texts on Home and in practice
+• The custom practice progress bar is easier to see
+• Manage your languages from the language menu on Home

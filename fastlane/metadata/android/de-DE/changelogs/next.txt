@@ -1,4 +1,0 @@
-Kleine Korrekturen nach dem Redesign:
-• Kleinere Texte auf der Startseite und beim Üben
-• Der Fortschrittsbalken der eigenen Übung ist besser zu sehen
-• Sprachen verwaltest du jetzt über das Sprachmenü auf der Startseite
