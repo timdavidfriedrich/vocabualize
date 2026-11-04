@@ -364,5 +364,7 @@
   "customPracticeDoneButton": "Fertig",
   "detailsLanguagesTitle": "Sprachen",
   "detailsNotLearningLabel": "{language}, dieses Wort lerne ich nicht",
-  "detailsLanguageRoleLabel": "{language}, {role}"
+  "detailsLanguageRoleLabel": "{language}, {role}",
+  "homeCustomPracticeEndTitle": "Eigene Übung beenden?",
+  "homeCustomPracticeEndMessage": "{remaining, plural, =1{Es ist noch 1 Wort übrig.} other{Es sind noch {remaining} Wörter übrig.}} Deine bisherigen Antworten bleiben gespeichert."
 }

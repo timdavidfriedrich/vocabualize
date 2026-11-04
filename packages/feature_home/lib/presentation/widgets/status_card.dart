@@ -183,11 +183,32 @@ class const _CustomSessionCard({
             tooltip: context.s.homeCustomPracticeEndButton,
             color: context.c.surfaceContainerHighest,
             iconColor: context.c.onSurface,
-            onPressed: _onEnded,
+            onPressed: () => _end(context),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _end(BuildContext context) async {
+    final isConfirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog.adaptive(
+        title: Text(context.s.homeCustomPracticeEndTitle),
+        content: Text(context.s.homeCustomPracticeEndMessage(_session.remainingCount)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(context.s.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(context.s.homeCustomPracticeEndButton),
+          ),
+        ],
+      ),
+    );
+    if (isConfirmed == true) _onEnded();
   }
 }
 

@@ -364,5 +364,7 @@
   "customPracticeDoneButton": "Τέλος",
   "detailsLanguagesTitle": "Γλώσσες",
   "detailsNotLearningLabel": "{language}, δεν μαθαίνω αυτή τη λέξη",
-  "detailsLanguageRoleLabel": "{language}, {role}"
+  "detailsLanguageRoleLabel": "{language}, {role}",
+  "homeCustomPracticeEndTitle": "Τερματισμός της προσαρμοσμένης εξάσκησης;",
+  "homeCustomPracticeEndMessage": "{remaining, plural, =1{Απομένει ακόμη 1 λέξη.} other{Απομένουν ακόμη {remaining} λέξεις.}} Οι απαντήσεις σας μέχρι τώρα παραμένουν αποθηκευμένες."
 }

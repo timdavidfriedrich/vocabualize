@@ -1462,4 +1462,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String detailsLanguageRoleLabel(String language, String role) {
     return '$language, $role';
   }
+
+  @override
+  String get homeCustomPracticeEndTitle => 'End your custom practice?';
+
+  @override
+  String homeCustomPracticeEndMessage(int remaining) {
+    String _temp0 = intl.Intl.pluralLogic(
+      remaining,
+      locale: localeName,
+      other: '$remaining words are still left.',
+      one: '1 word is still left.',
+    );
+    return '$_temp0 Your answers so far are saved.';
+  }
 }

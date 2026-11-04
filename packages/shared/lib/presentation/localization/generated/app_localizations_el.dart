@@ -1481,4 +1481,18 @@ class AppLocalizationsEl extends AppLocalizations {
   String detailsLanguageRoleLabel(String language, String role) {
     return '$language, $role';
   }
+
+  @override
+  String get homeCustomPracticeEndTitle => 'Τερματισμός της προσαρμοσμένης εξάσκησης;';
+
+  @override
+  String homeCustomPracticeEndMessage(int remaining) {
+    String _temp0 = intl.Intl.pluralLogic(
+      remaining,
+      locale: localeName,
+      other: 'Απομένουν ακόμη $remaining λέξεις.',
+      one: 'Απομένει ακόμη 1 λέξη.',
+    );
+    return '$_temp0 Οι απαντήσεις σας μέχρι τώρα παραμένουν αποθηκευμένες.';
+  }
 }

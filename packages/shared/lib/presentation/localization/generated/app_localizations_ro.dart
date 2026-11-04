@@ -1510,4 +1510,19 @@ class AppLocalizationsRo extends AppLocalizations {
   String detailsLanguageRoleLabel(String language, String role) {
     return '$language, $role';
   }
+
+  @override
+  String get homeCustomPracticeEndTitle => 'Încheiați exercițiul personalizat?';
+
+  @override
+  String homeCustomPracticeEndMessage(int remaining) {
+    String _temp0 = intl.Intl.pluralLogic(
+      remaining,
+      locale: localeName,
+      other: 'Au mai rămas $remaining de cuvinte.',
+      few: 'Au mai rămas $remaining cuvinte.',
+      one: 'A mai rămas 1 cuvânt.',
+    );
+    return '$_temp0 Răspunsurile de până acum rămân salvate.';
+  }
 }

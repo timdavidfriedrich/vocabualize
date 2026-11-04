@@ -1009,5 +1009,14 @@
         "type": "String"
       }
     }
+  },
+  "homeCustomPracticeEndTitle": "End your custom practice?",
+  "homeCustomPracticeEndMessage": "{remaining, plural, =1{1 word is still left.} other{{remaining} words are still left.}} Your answers so far are saved.",
+  "@homeCustomPracticeEndMessage": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
   }
 }

@@ -2297,6 +2297,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{language}, {role}'**
   String detailsLanguageRoleLabel(String language, String role);
+
+  /// No description provided for @homeCustomPracticeEndTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'End your custom practice?'**
+  String get homeCustomPracticeEndTitle;
+
+  /// No description provided for @homeCustomPracticeEndMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{remaining, plural, =1{1 word is still left.} other{{remaining} words are still left.}} Your answers so far are saved.'**
+  String homeCustomPracticeEndMessage(int remaining);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

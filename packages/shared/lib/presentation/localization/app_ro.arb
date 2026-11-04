@@ -364,5 +364,7 @@
   "customPracticeDoneButton": "Gata",
   "detailsLanguagesTitle": "Limbi",
   "detailsNotLearningLabel": "{language}, nu învăț acest cuvânt",
-  "detailsLanguageRoleLabel": "{language}, {role}"
+  "detailsLanguageRoleLabel": "{language}, {role}",
+  "homeCustomPracticeEndTitle": "Încheiați exercițiul personalizat?",
+  "homeCustomPracticeEndMessage": "{remaining, plural, =1{A mai rămas 1 cuvânt.} few{Au mai rămas {remaining} cuvinte.} other{Au mai rămas {remaining} de cuvinte.}} Răspunsurile de până acum rămân salvate."
 }

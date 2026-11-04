@@ -364,5 +364,7 @@
   "customPracticeDoneButton": "Готово",
   "detailsLanguagesTitle": "Мови",
   "detailsNotLearningLabel": "{language}, не вивчаю це слово",
-  "detailsLanguageRoleLabel": "{language}, {role}"
+  "detailsLanguageRoleLabel": "{language}, {role}",
+  "homeCustomPracticeEndTitle": "Завершити ваше власне тренування?",
+  "homeCustomPracticeEndMessage": "{remaining, plural, one{Залишилось ще {remaining} слово.} few{Залишилось ще {remaining} слова.} many{Залишилось ще {remaining} слів.} other{Залишилось ще {remaining} слова.}} Відповіді, які ви вже дали, збережено."
 }

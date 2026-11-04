@@ -1541,4 +1541,20 @@ class AppLocalizationsUk extends AppLocalizations {
   String detailsLanguageRoleLabel(String language, String role) {
     return '$language, $role';
   }
+
+  @override
+  String get homeCustomPracticeEndTitle => 'Завершити ваше власне тренування?';
+
+  @override
+  String homeCustomPracticeEndMessage(int remaining) {
+    String _temp0 = intl.Intl.pluralLogic(
+      remaining,
+      locale: localeName,
+      other: 'Залишилось ще $remaining слова.',
+      many: 'Залишилось ще $remaining слів.',
+      few: 'Залишилось ще $remaining слова.',
+      one: 'Залишилось ще $remaining слово.',
+    );
+    return '$_temp0 Відповіді, які ви вже дали, збережено.';
+  }
 }

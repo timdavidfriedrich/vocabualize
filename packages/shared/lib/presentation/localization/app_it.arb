@@ -364,5 +364,7 @@
   "customPracticeDoneButton": "Fatto",
   "detailsLanguagesTitle": "Lingue",
   "detailsNotLearningLabel": "{language}, non imparo questa parola",
-  "detailsLanguageRoleLabel": "{language}, {role}"
+  "detailsLanguageRoleLabel": "{language}, {role}",
+  "homeCustomPracticeEndTitle": "Terminare il tuo esercizio personalizzato?",
+  "homeCustomPracticeEndMessage": "{remaining, plural, =1{Resta ancora 1 parola.} other{Restano ancora {remaining} parole.}} Le tue risposte finora restano salvate."
 }
