@@ -122,7 +122,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get homeAllWordsTitle => 'Tutte le parole';
 
   @override
-  String get homeNewWordsTitle => 'Aggiunte di recente';
+  String get homeNewWordsTitle => 'Parole nuove';
 
   @override
   String get homePracticeButton => 'Esercitati';
@@ -572,23 +572,23 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String homeStatusManyWordsMessage(int count) {
+  String homeStatusManyWordsMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Accidenti, hai aggiunto $count parole in totale. Niente male!',
-      one: 'Accidenti, hai aggiunto $count parola in totale. Niente male!',
+      other: 'Hai già aggiunto $count parole in $language, fantastico!',
+      one: 'Hai già aggiunto $count parola in $language, fantastico!',
     );
     return '$_temp0';
   }
 
   @override
-  String homeStatusDefaultMessage(int count) {
+  String homeStatusDefaultMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'La tua raccolta contiene $count parole.',
-      one: 'La tua raccolta contiene $count parola.',
+      other: 'Hai $count parole in $language.',
+      one: 'Hai $count parola in $language.',
     );
     return '$_temp0';
   }
@@ -1065,15 +1065,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get homeManageLanguagesButton => 'Gestisci lingue';
 
   @override
-  String homeEmptyLanguageMessage(String language) {
-    return 'Nessuna delle tue parole è ancora in $language.';
+  String homeEmptyLanguageMessage(int count, String source, String language) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hai $count parole in $source. Importa quelle che vuoi imparare anche in $language.',
+      one: 'Hai 1 parola in $source. Importala se vuoi impararla anche in $language.',
+    );
+    return '$_temp0';
   }
 
   @override
   String get homeChooseWordsButton => 'Scegli parole';
-
-  @override
-  String get homeLanguageButtonTooltip => 'Cambia lingua';
 
   @override
   String get settingsLanguagesTitle => 'Lingue';
@@ -1175,7 +1178,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String homeCustomPracticeProgress(int remaining, int total) {
-    return 'Esercizio personalizzato: ne restano $remaining di $total';
+    return 'Ne restano $remaining di $total';
   }
 
   @override
@@ -1418,5 +1421,23 @@ class AppLocalizationsIt extends AppLocalizations {
       one: '1 parola, i progressi in $language vengono eliminati',
     );
     return '$_temp0';
+  }
+
+  @override
+  String homeEmptyLanguageTitle(String language) {
+    return 'Nessuna delle tue parole è ancora in $language';
+  }
+
+  @override
+  String homeEmptyLanguageNoSourceMessage(String language) {
+    return 'Importa le parole che vuoi imparare in $language.';
+  }
+
+  @override
+  String get homeImportWordsButton => 'Importa parole';
+
+  @override
+  String homeEmptyLanguageFeedHint(String language) {
+    return 'Le parole che aggiungi mentre è selezionato $language compaiono qui.';
   }
 }

@@ -24,6 +24,7 @@ class const IconActionButton({
             padding: EdgeInsets.zero,
             backgroundColor: backgroundColor,
             foregroundColor: foregroundColor,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Spacing.radiusXxl)),
           ),
           onPressed: _onPressed,
           child: _icon,

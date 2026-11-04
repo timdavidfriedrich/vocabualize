@@ -42,8 +42,8 @@
   "welcomeSignInFailedTitle": "Sign in failed",
   "homeCollectionsTitle": "Collections",
   "homeAddFirstWordMessage": "Click the button\nto add your first word",
-  "homeAllWordsTitle": "All vocabulary",
-  "homeNewWordsTitle": "Recently added",
+  "homeAllWordsTitle": "All words",
+  "homeNewWordsTitle": "New words",
   "homePracticeButton": "Practice",
   "homeScanButton": "Scan",
   "homeWriteButton": "Write",
@@ -265,19 +265,25 @@
       }
     }
   },
-  "homeStatusManyWordsMessage": "{count, plural, one{Damn, you added {count} word in total. Not bad!} other{Damn, you added {count} words in total. Not bad!}}",
+  "homeStatusManyWordsMessage": "{count, plural, one{You already added {count} word in {language}, amazing!} other{You already added {count} words in {language}, amazing!}}",
   "@homeStatusManyWordsMessage": {
     "placeholders": {
       "count": {
         "type": "int"
+      },
+      "language": {
+        "type": "String"
       }
     }
   },
-  "homeStatusDefaultMessage": "{count, plural, one{Your collection contains {count} word.} other{Your collection contains {count} words.}}",
+  "homeStatusDefaultMessage": "{count, plural, one{You have {count} word in {language}.} other{You have {count} words in {language}.}}",
   "@homeStatusDefaultMessage": {
     "placeholders": {
       "count": {
         "type": "int"
+      },
+      "language": {
+        "type": "String"
       }
     }
   },
@@ -535,16 +541,21 @@
     }
   },
   "homeManageLanguagesButton": "Manage languages",
-  "homeEmptyLanguageMessage": "None of your words are in {language} yet.",
+  "homeEmptyLanguageMessage": "{count, plural, =1{You have 1 word in {source}. Import it if you want to learn it in {language} too.} other{You have {count} words in {source}. Import the ones you want to learn in {language} too.}}",
   "@homeEmptyLanguageMessage": {
     "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "source": {
+        "type": "String"
+      },
       "language": {
         "type": "String"
       }
     }
   },
   "homeChooseWordsButton": "Choose words",
-  "homeLanguageButtonTooltip": "Switch language",
   "settingsLanguagesTitle": "Languages",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Cards ask in {askMeIn} instead of {main}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.",
   "@learnedLanguageAskMeInAlwaysHelpMessage": {
@@ -626,7 +637,7 @@
   "customPracticeReplaceTitle": "Replace your custom practice?",
   "customPracticeReplaceMessage": "Your unfinished custom practice ends when you start a new one.",
   "customPracticeReplaceButton": "Start new",
-  "homeCustomPracticeProgress": "Custom practice: {remaining} of {total} left",
+  "homeCustomPracticeProgress": "{remaining} of {total} left",
   "@homeCustomPracticeProgress": {
     "placeholders": {
       "remaining": {
@@ -905,6 +916,31 @@
       "count": {
         "type": "int"
       },
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "homeEmptyLanguageTitle": "None of your words are in {language} yet",
+  "@homeEmptyLanguageTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "homeEmptyLanguageNoSourceMessage": "Import the words you want to learn in {language}.",
+  "@homeEmptyLanguageNoSourceMessage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "homeImportWordsButton": "Import words",
+  "homeEmptyLanguageFeedHint": "Words you add while {language} is selected show up here.",
+  "@homeEmptyLanguageFeedHint": {
+    "placeholders": {
       "language": {
         "type": "String"
       }

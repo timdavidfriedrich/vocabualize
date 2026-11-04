@@ -122,7 +122,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get homeAllWordsTitle => 'Όλες οι λέξεις';
 
   @override
-  String get homeNewWordsTitle => 'Πρόσφατες προσθήκες';
+  String get homeNewWordsTitle => 'Νέες λέξεις';
 
   @override
   String get homePracticeButton => 'Εξάσκηση';
@@ -573,23 +573,23 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String homeStatusManyWordsMessage(int count) {
+  String homeStatusManyWordsMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Απίστευτο, προσθέσατε συνολικά $count λέξεις. Καθόλου άσχημα!',
-      one: 'Απίστευτο, προσθέσατε συνολικά $count λέξη. Καθόλου άσχημα!',
+      other: 'Έχεις ήδη προσθέσει $count λέξεις στα $language, τέλεια!',
+      one: 'Έχεις ήδη προσθέσει $count λέξη στα $language, τέλεια!',
     );
     return '$_temp0';
   }
 
   @override
-  String homeStatusDefaultMessage(int count) {
+  String homeStatusDefaultMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Η συλλογή σας έχει $count λέξεις.',
-      one: 'Η συλλογή σας έχει $count λέξη.',
+      other: 'Έχεις $count λέξεις στα $language.',
+      one: 'Έχεις $count λέξη στα $language.',
     );
     return '$_temp0';
   }
@@ -1069,15 +1069,18 @@ class AppLocalizationsEl extends AppLocalizations {
   String get homeManageLanguagesButton => 'Διαχείριση γλωσσών';
 
   @override
-  String homeEmptyLanguageMessage(String language) {
-    return 'Καμία από τις λέξεις σας δεν είναι ακόμη στα $language.';
+  String homeEmptyLanguageMessage(int count, String source, String language) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Έχεις $count λέξεις στα $source. Εισήγαγε όσες θέλεις να μάθεις και στα $language.',
+      one: 'Έχεις 1 λέξη στα $source. Εισήγαγέ την αν θέλεις να τη μάθεις και στα $language.',
+    );
+    return '$_temp0';
   }
 
   @override
   String get homeChooseWordsButton => 'Επιλογή λέξεων';
-
-  @override
-  String get homeLanguageButtonTooltip => 'Αλλαγή γλώσσας';
 
   @override
   String get settingsLanguagesTitle => 'Γλώσσες';
@@ -1179,7 +1182,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String homeCustomPracticeProgress(int remaining, int total) {
-    return 'Προσαρμοσμένη εξάσκηση: απομένουν $remaining από $total';
+    return 'Απομένουν $remaining από $total';
   }
 
   @override
@@ -1422,5 +1425,23 @@ class AppLocalizationsEl extends AppLocalizations {
       one: '1 λέξη, η πρόοδος στα $language διαγράφεται',
     );
     return '$_temp0';
+  }
+
+  @override
+  String homeEmptyLanguageTitle(String language) {
+    return 'Καμία λέξη σου δεν είναι ακόμη στα $language';
+  }
+
+  @override
+  String homeEmptyLanguageNoSourceMessage(String language) {
+    return 'Εισήγαγε τις λέξεις που θέλεις να μάθεις στα $language.';
+  }
+
+  @override
+  String get homeImportWordsButton => 'Εισαγωγή λέξεων';
+
+  @override
+  String homeEmptyLanguageFeedHint(String language) {
+    return 'Οι λέξεις που προσθέτεις όσο είναι επιλεγμένα τα $language εμφανίζονται εδώ.';
   }
 }

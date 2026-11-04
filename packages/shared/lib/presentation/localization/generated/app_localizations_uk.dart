@@ -122,7 +122,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homeAllWordsTitle => 'Усі слова';
 
   @override
-  String get homeNewWordsTitle => 'Нещодавно додані';
+  String get homeNewWordsTitle => 'Нові слова';
 
   @override
   String get homePracticeButton => 'Тренуватися';
@@ -582,27 +582,27 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String homeStatusManyWordsMessage(int count) {
+  String homeStatusManyWordsMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Вау, ви додали $count слова загалом. Непогано!',
-      many: 'Вау, ви додали $count слів загалом. Непогано!',
-      few: 'Вау, ви додали $count слова загалом. Непогано!',
-      one: 'Вау, ви додали $count слово загалом. Непогано!',
+      other: 'Ти вже додав $count слова мовою $language, чудово!',
+      many: 'Ти вже додав $count слів мовою $language, чудово!',
+      few: 'Ти вже додав $count слова мовою $language, чудово!',
+      one: 'Ти вже додав $count слово мовою $language, чудово!',
     );
     return '$_temp0';
   }
 
   @override
-  String homeStatusDefaultMessage(int count) {
+  String homeStatusDefaultMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Ваша колекція містить $count слова.',
-      many: 'Ваша колекція містить $count слів.',
-      few: 'Ваша колекція містить $count слова.',
-      one: 'Ваша колекція містить $count слово.',
+      other: 'У тебе $count слова мовою $language.',
+      many: 'У тебе $count слів мовою $language.',
+      few: 'У тебе $count слова мовою $language.',
+      one: 'У тебе $count слово мовою $language.',
     );
     return '$_temp0';
   }
@@ -1105,15 +1105,24 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homeManageLanguagesButton => 'Керувати мовами';
 
   @override
-  String homeEmptyLanguageMessage(String language) {
-    return 'Жодне з ваших слів ще не додано до мови $language.';
+  String homeEmptyLanguageMessage(int count, String source, String language) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'У тебе $count слова мовою $source. Імпортуй ті, які хочеш вивчати ще й мовою $language.',
+      many:
+          'У тебе $count слів мовою $source. Імпортуй ті, які хочеш вивчати ще й мовою $language.',
+      few:
+          'У тебе $count слова мовою $source. Імпортуй ті, які хочеш вивчати ще й мовою $language.',
+      one:
+          'У тебе $count слово мовою $source. Імпортуй ті, які хочеш вивчати ще й мовою $language.',
+    );
+    return '$_temp0';
   }
 
   @override
   String get homeChooseWordsButton => 'Обрати слова';
-
-  @override
-  String get homeLanguageButtonTooltip => 'Змінити мову';
 
   @override
   String get settingsLanguagesTitle => 'Мови';
@@ -1217,7 +1226,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String homeCustomPracticeProgress(int remaining, int total) {
-    return 'Власне тренування: залишилось $remaining з $total';
+    return 'Залишилось $remaining з $total';
   }
 
   @override
@@ -1472,5 +1481,23 @@ class AppLocalizationsUk extends AppLocalizations {
       one: '$count слово, прогрес мовою $language видаляється',
     );
     return '$_temp0';
+  }
+
+  @override
+  String homeEmptyLanguageTitle(String language) {
+    return 'Жодного твого слова ще немає мовою $language';
+  }
+
+  @override
+  String homeEmptyLanguageNoSourceMessage(String language) {
+    return 'Імпортуй слова, які хочеш вивчати мовою $language.';
+  }
+
+  @override
+  String get homeImportWordsButton => 'Імпортувати слова';
+
+  @override
+  String homeEmptyLanguageFeedHint(String language) {
+    return 'Слова, які ти додаєш, поки вибрано $language, з\'являться тут.';
   }
 }

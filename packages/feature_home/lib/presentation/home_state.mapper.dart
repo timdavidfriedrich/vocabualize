@@ -97,6 +97,15 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
     'overview',
     _$overview,
   );
+  static Map<Language, VocabularyOverview> _$overviews(HomeLoading v) =>
+      v.overviews;
+  static const Field<HomeLoading, Map<Language, VocabularyOverview>>
+  _f$overviews = Field('overviews', _$overviews);
+  static List<Vocabulary> _$importWords(HomeLoading v) => v.importWords;
+  static const Field<HomeLoading, List<Vocabulary>> _f$importWords = Field(
+    'importWords',
+    _$importWords,
+  );
   static List<Vocabulary>? _$recentVocabularies(HomeLoading v) =>
       v.recentVocabularies;
   static const Field<HomeLoading, List<Vocabulary>> _f$recentVocabularies =
@@ -128,6 +137,8 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
     #customSession: _f$customSession,
     #allWordsCount: _f$allWordsCount,
     #overview: _f$overview,
+    #overviews: _f$overviews,
+    #importWords: _f$importWords,
     #recentVocabularies: _f$recentVocabularies,
     #collections: _f$collections,
     #vocabularies: _f$vocabularies,
@@ -142,6 +153,8 @@ class HomeLoadingMapper extends ClassMapperBase<HomeLoading> {
       customSession: data.dec(_f$customSession),
       allWordsCount: data.dec(_f$allWordsCount),
       overview: data.dec(_f$overview),
+      overviews: data.dec(_f$overviews),
+      importWords: data.dec(_f$importWords),
       recentVocabularies: data.dec(_f$recentVocabularies),
       collections: data.dec(_f$collections),
       vocabularies: data.dec(_f$vocabularies),
@@ -220,6 +233,15 @@ abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
   get customSession;
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>?
   get overview;
+  MapCopyWith<
+    $R,
+    Language,
+    VocabularyOverview,
+    VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
+  >
+  get overviews;
+  ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
+  get importWords;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
   get recentVocabularies;
   ListCopyWith<
@@ -238,6 +260,8 @@ abstract class HomeLoadingCopyWith<$R, $In extends HomeLoading, $Out>
     CustomPracticeSession? customSession,
     int? allWordsCount,
     VocabularyOverview? overview,
+    Map<Language, VocabularyOverview>? overviews,
+    List<Vocabulary>? importWords,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
@@ -270,6 +294,25 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
   @override
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>?
   get overview => $value.overview?.copyWith.$chain((v) => call(overview: v));
+  @override
+  MapCopyWith<
+    $R,
+    Language,
+    VocabularyOverview,
+    VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
+  >
+  get overviews => MapCopyWith(
+    $value.overviews,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(overviews: v),
+  );
+  @override
+  ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
+  get importWords => ListCopyWith(
+    $value.importWords,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(importWords: v),
+  );
   @override
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>?
   get recentVocabularies => $value.recentVocabularies != null
@@ -313,6 +356,8 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
     Object? customSession = $none,
     Object? allWordsCount = $none,
     Object? overview = $none,
+    Map<Language, VocabularyOverview>? overviews,
+    List<Vocabulary>? importWords,
     Object? recentVocabularies = $none,
     Object? collections = $none,
     Object? vocabularies = $none,
@@ -325,6 +370,8 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
       if (customSession != $none) #customSession: customSession,
       if (allWordsCount != $none) #allWordsCount: allWordsCount,
       if (overview != $none) #overview: overview,
+      if (overviews != null) #overviews: overviews,
+      if (importWords != null) #importWords: importWords,
       if (recentVocabularies != $none) #recentVocabularies: recentVocabularies,
       if (collections != $none) #collections: collections,
       if (vocabularies != $none) #vocabularies: vocabularies,
@@ -339,6 +386,8 @@ class _HomeLoadingCopyWithImpl<$R, $Out>
     customSession: data.get(#customSession, or: $value.customSession),
     allWordsCount: data.get(#allWordsCount, or: $value.allWordsCount),
     overview: data.get(#overview, or: $value.overview),
+    overviews: data.get(#overviews, or: $value.overviews),
+    importWords: data.get(#importWords, or: $value.importWords),
     recentVocabularies: data.get(
       #recentVocabularies,
       or: $value.recentVocabularies,
@@ -397,6 +446,15 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
     'overview',
     _$overview,
   );
+  static Map<Language, VocabularyOverview> _$overviews(HomeLoaded v) =>
+      v.overviews;
+  static const Field<HomeLoaded, Map<Language, VocabularyOverview>>
+  _f$overviews = Field('overviews', _$overviews);
+  static List<Vocabulary> _$importWords(HomeLoaded v) => v.importWords;
+  static const Field<HomeLoaded, List<Vocabulary>> _f$importWords = Field(
+    'importWords',
+    _$importWords,
+  );
   static List<Vocabulary> _$recentVocabularies(HomeLoaded v) =>
       v.recentVocabularies;
   static const Field<HomeLoaded, List<Vocabulary>> _f$recentVocabularies =
@@ -430,6 +488,8 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
     #customSession: _f$customSession,
     #allWordsCount: _f$allWordsCount,
     #overview: _f$overview,
+    #overviews: _f$overviews,
+    #importWords: _f$importWords,
     #recentVocabularies: _f$recentVocabularies,
     #collections: _f$collections,
     #vocabularies: _f$vocabularies,
@@ -445,6 +505,8 @@ class HomeLoadedMapper extends ClassMapperBase<HomeLoaded> {
       customSession: data.dec(_f$customSession),
       allWordsCount: data.dec(_f$allWordsCount),
       overview: data.dec(_f$overview),
+      overviews: data.dec(_f$overviews),
+      importWords: data.dec(_f$importWords),
       recentVocabularies: data.dec(_f$recentVocabularies),
       collections: data.dec(_f$collections),
       vocabularies: data.dec(_f$vocabularies),
@@ -524,6 +586,15 @@ abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
   get customSession;
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
   get overview;
+  MapCopyWith<
+    $R,
+    Language,
+    VocabularyOverview,
+    VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
+  >
+  get overviews;
+  ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
+  get importWords;
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
   get recentVocabularies;
   ListCopyWith<
@@ -542,6 +613,8 @@ abstract class HomeLoadedCopyWith<$R, $In extends HomeLoaded, $Out>
     CustomPracticeSession? customSession,
     int? allWordsCount,
     VocabularyOverview? overview,
+    Map<Language, VocabularyOverview>? overviews,
+    List<Vocabulary>? importWords,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
@@ -575,6 +648,25 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
   @override
   VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
   get overview => $value.overview.copyWith.$chain((v) => call(overview: v));
+  @override
+  MapCopyWith<
+    $R,
+    Language,
+    VocabularyOverview,
+    VocabularyOverviewCopyWith<$R, VocabularyOverview, VocabularyOverview>
+  >
+  get overviews => MapCopyWith(
+    $value.overviews,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(overviews: v),
+  );
+  @override
+  ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
+  get importWords => ListCopyWith(
+    $value.importWords,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(importWords: v),
+  );
   @override
   ListCopyWith<$R, Vocabulary, VocabularyCopyWith<$R, Vocabulary, Vocabulary>>
   get recentVocabularies => ListCopyWith(
@@ -612,6 +704,8 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
     Object? customSession = $none,
     int? allWordsCount,
     VocabularyOverview? overview,
+    Map<Language, VocabularyOverview>? overviews,
+    List<Vocabulary>? importWords,
     List<Vocabulary>? recentVocabularies,
     List<CollectionPreview>? collections,
     List<Vocabulary>? vocabularies,
@@ -625,6 +719,8 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
       if (customSession != $none) #customSession: customSession,
       if (allWordsCount != null) #allWordsCount: allWordsCount,
       if (overview != null) #overview: overview,
+      if (overviews != null) #overviews: overviews,
+      if (importWords != null) #importWords: importWords,
       if (recentVocabularies != null) #recentVocabularies: recentVocabularies,
       if (collections != null) #collections: collections,
       if (vocabularies != null) #vocabularies: vocabularies,
@@ -640,6 +736,8 @@ class _HomeLoadedCopyWithImpl<$R, $Out>
     customSession: data.get(#customSession, or: $value.customSession),
     allWordsCount: data.get(#allWordsCount, or: $value.allWordsCount),
     overview: data.get(#overview, or: $value.overview),
+    overviews: data.get(#overviews, or: $value.overviews),
+    importWords: data.get(#importWords, or: $value.importWords),
     recentVocabularies: data.get(
       #recentVocabularies,
       or: $value.recentVocabularies,

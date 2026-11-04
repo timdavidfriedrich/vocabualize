@@ -119,10 +119,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeAddFirstWordMessage => 'Cliquez sur le bouton\npour ajouter votre premier mot';
 
   @override
-  String get homeAllWordsTitle => 'Tous les vocabulaires';
+  String get homeAllWordsTitle => 'Tous les mots';
 
   @override
-  String get homeNewWordsTitle => 'Récemment ajoutés';
+  String get homeNewWordsTitle => 'Nouveaux mots';
 
   @override
   String get homePracticeButton => 'S\'exercer';
@@ -576,23 +576,23 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String homeStatusManyWordsMessage(int count) {
+  String homeStatusManyWordsMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Eh bien, vous avez ajouté $count mots au total. Pas mal !',
-      one: 'Eh bien, vous avez ajouté $count mot au total. Pas mal !',
+      other: 'Tu as déjà ajouté $count mots en $language, génial !',
+      one: 'Tu as déjà ajouté $count mot en $language, génial !',
     );
     return '$_temp0';
   }
 
   @override
-  String homeStatusDefaultMessage(int count) {
+  String homeStatusDefaultMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Votre collection contient $count mots.',
-      one: 'Votre collection contient $count mot.',
+      other: 'Tu as $count mots en $language.',
+      one: 'Tu as $count mot en $language.',
     );
     return '$_temp0';
   }
@@ -1075,15 +1075,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeManageLanguagesButton => 'Gérer les langues';
 
   @override
-  String homeEmptyLanguageMessage(String language) {
-    return 'Aucun de vos mots n\'est encore en $language.';
+  String homeEmptyLanguageMessage(int count, String source, String language) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tu as $count mots en $source. Importe ceux que tu veux aussi apprendre en $language.',
+      one: 'Tu as 1 mot en $source. Importe-le si tu veux aussi l\'apprendre en $language.',
+    );
+    return '$_temp0';
   }
 
   @override
   String get homeChooseWordsButton => 'Choisir des mots';
-
-  @override
-  String get homeLanguageButtonTooltip => 'Changer de langue';
 
   @override
   String get settingsLanguagesTitle => 'Langues';
@@ -1185,7 +1188,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String homeCustomPracticeProgress(int remaining, int total) {
-    return 'Exercice personnalisé : $remaining sur $total restants';
+    return 'Encore $remaining sur $total';
   }
 
   @override
@@ -1428,5 +1431,23 @@ class AppLocalizationsFr extends AppLocalizations {
       one: '1 mot, la progression en $language est supprimée',
     );
     return '$_temp0';
+  }
+
+  @override
+  String homeEmptyLanguageTitle(String language) {
+    return 'Aucun de tes mots n\'est encore en $language';
+  }
+
+  @override
+  String homeEmptyLanguageNoSourceMessage(String language) {
+    return 'Importe les mots que tu veux apprendre en $language.';
+  }
+
+  @override
+  String get homeImportWordsButton => 'Importer des mots';
+
+  @override
+  String homeEmptyLanguageFeedHint(String language) {
+    return 'Les mots que tu ajoutes quand $language est sélectionné apparaissent ici.';
   }
 }

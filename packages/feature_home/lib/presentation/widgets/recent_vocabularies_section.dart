@@ -9,7 +9,7 @@ import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
-const _cardWidth = Spacing.xxxxl * 2;
+const _cardWidth = Spacing.xxxxl * 2 + Spacing.xl;
 
 class const RecentVocabulariesSection({
   super.key,
@@ -26,9 +26,8 @@ class const RecentVocabulariesSection({
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(width: Spacing.m),
+          const SizedBox(width: Spacing.xs),
           for (final vocabulary in _vocabularies) ...[
-            const SizedBox(width: Spacing.xs),
             _RecentVocabularyCard(
               key: ValueKey(vocabulary.id),
               vocabulary: vocabulary,
@@ -77,7 +76,7 @@ class const _RecentVocabularyCard({
               SizedBox.square(
                 dimension: _cardWidth,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(Spacing.radiusL),
+                  borderRadius: BorderRadius.circular(Spacing.radiusXxl),
                   child: VocabularyImageView(
                     image: _vocabulary.image,
                     variant: VocabularyImageVariant.full,
@@ -87,10 +86,14 @@ class const _RecentVocabularyCard({
               ),
               const SizedBox(height: Spacing.xs),
             ],
-            _Label(text: _vocabulary.titleIn(context, _language), isCentered: areImagesHidden),
+            _Label(
+              text: _vocabulary.titleIn(context, _language),
+              style: context.t.titleMedium,
+              isCentered: areImagesHidden,
+            ),
             _Label(
               text: _vocabulary.promptIn(_mainLanguage),
-              color: context.c.outline,
+              style: context.t.bodyLarge?.copyWith(color: context.c.outline),
               isCentered: areImagesHidden,
             ),
           ],
@@ -102,7 +105,7 @@ class const _RecentVocabularyCard({
 
 class const _Label({
   required final String _text,
-  final Color? _color,
+  required final TextStyle? _style,
   final bool _isCentered = false,
 }) extends StatelessWidget {
   @override
@@ -112,7 +115,7 @@ class const _Label({
       padding: const EdgeInsets.symmetric(horizontal: Spacing.xxxs),
       child: Text(
         _text,
-        style: context.t.bodyLarge?.copyWith(color: _color),
+        style: _style,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         textAlign: _isCentered ? TextAlign.center : TextAlign.start,

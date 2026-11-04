@@ -321,13 +321,13 @@ abstract class AppLocalizations {
   /// No description provided for @homeAllWordsTitle.
   ///
   /// In en, this message translates to:
-  /// **'All vocabulary'**
+  /// **'All words'**
   String get homeAllWordsTitle;
 
   /// No description provided for @homeNewWordsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Recently added'**
+  /// **'New words'**
   String get homeNewWordsTitle;
 
   /// No description provided for @homePracticeButton.
@@ -1083,14 +1083,14 @@ abstract class AppLocalizations {
   /// No description provided for @homeStatusManyWordsMessage.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, one{Damn, you added {count} word in total. Not bad!} other{Damn, you added {count} words in total. Not bad!}}'**
-  String homeStatusManyWordsMessage(int count);
+  /// **'{count, plural, one{You already added {count} word in {language}, amazing!} other{You already added {count} words in {language}, amazing!}}'**
+  String homeStatusManyWordsMessage(int count, String language);
 
   /// No description provided for @homeStatusDefaultMessage.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, one{Your collection contains {count} word.} other{Your collection contains {count} words.}}'**
-  String homeStatusDefaultMessage(int count);
+  /// **'{count, plural, one{You have {count} word in {language}.} other{You have {count} words in {language}.}}'**
+  String homeStatusDefaultMessage(int count, String language);
 
   /// No description provided for @homeNextDueTodayMessage.
   ///
@@ -1791,20 +1791,14 @@ abstract class AppLocalizations {
   /// No description provided for @homeEmptyLanguageMessage.
   ///
   /// In en, this message translates to:
-  /// **'None of your words are in {language} yet.'**
-  String homeEmptyLanguageMessage(String language);
+  /// **'{count, plural, =1{You have 1 word in {source}. Import it if you want to learn it in {language} too.} other{You have {count} words in {source}. Import the ones you want to learn in {language} too.}}'**
+  String homeEmptyLanguageMessage(int count, String source, String language);
 
   /// No description provided for @homeChooseWordsButton.
   ///
   /// In en, this message translates to:
   /// **'Choose words'**
   String get homeChooseWordsButton;
-
-  /// No description provided for @homeLanguageButtonTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Switch language'**
-  String get homeLanguageButtonTooltip;
 
   /// No description provided for @settingsLanguagesTitle.
   ///
@@ -1953,7 +1947,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeCustomPracticeProgress.
   ///
   /// In en, this message translates to:
-  /// **'Custom practice: {remaining} of {total} left'**
+  /// **'{remaining} of {total} left'**
   String homeCustomPracticeProgress(int remaining, int total);
 
   /// No description provided for @homeCustomPracticeContinueButton.
@@ -2249,6 +2243,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 word, {language} progress is deleted} other{{count} words, {language} progress is deleted}}'**
   String languageWordsRemovedWarning(int count, String language);
+
+  /// No description provided for @homeEmptyLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'None of your words are in {language} yet'**
+  String homeEmptyLanguageTitle(String language);
+
+  /// No description provided for @homeEmptyLanguageNoSourceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Import the words you want to learn in {language}.'**
+  String homeEmptyLanguageNoSourceMessage(String language);
+
+  /// No description provided for @homeImportWordsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import words'**
+  String get homeImportWordsButton;
+
+  /// No description provided for @homeEmptyLanguageFeedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Words you add while {language} is selected show up here.'**
+  String homeEmptyLanguageFeedHint(String language);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

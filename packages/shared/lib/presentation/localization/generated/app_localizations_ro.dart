@@ -121,7 +121,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get homeAllWordsTitle => 'Toate cuvintele';
 
   @override
-  String get homeNewWordsTitle => 'Adăugate recent';
+  String get homeNewWordsTitle => 'Cuvinte noi';
 
   @override
   String get homePracticeButton => 'Exersați';
@@ -576,25 +576,25 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String homeStatusManyWordsMessage(int count) {
+  String homeStatusManyWordsMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Impresionant, ați adăugat $count de cuvinte în total. Nu-i rău deloc!',
-      few: 'Impresionant, ați adăugat $count cuvinte în total. Nu-i rău deloc!',
-      one: 'Impresionant, ați adăugat $count cuvânt în total. Nu-i rău deloc!',
+      other: 'Ai adăugat deja $count de cuvinte în $language, super!',
+      few: 'Ai adăugat deja $count cuvinte în $language, super!',
+      one: 'Ai adăugat deja $count cuvânt în $language, super!',
     );
     return '$_temp0';
   }
 
   @override
-  String homeStatusDefaultMessage(int count) {
+  String homeStatusDefaultMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Colecția dvs. conține $count de cuvinte.',
-      few: 'Colecția dvs. conține $count cuvinte.',
-      one: 'Colecția dvs. conține $count cuvânt.',
+      other: 'Ai $count de cuvinte în $language.',
+      few: 'Ai $count cuvinte în $language.',
+      one: 'Ai $count cuvânt în $language.',
     );
     return '$_temp0';
   }
@@ -1084,15 +1084,21 @@ class AppLocalizationsRo extends AppLocalizations {
   String get homeManageLanguagesButton => 'Gestionați limbile';
 
   @override
-  String homeEmptyLanguageMessage(String language) {
-    return 'Niciunul dintre cuvintele dvs. nu este încă în $language.';
+  String homeEmptyLanguageMessage(int count, String source, String language) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Ai $count de cuvinte în $source. Importă-le pe cele pe care vrei să le înveți și în $language.',
+      few:
+          'Ai $count cuvinte în $source. Importă-le pe cele pe care vrei să le înveți și în $language.',
+      one: 'Ai 1 cuvânt în $source. Importă-l dacă vrei să-l înveți și în $language.',
+    );
+    return '$_temp0';
   }
 
   @override
   String get homeChooseWordsButton => 'Alegeți cuvinte';
-
-  @override
-  String get homeLanguageButtonTooltip => 'Schimbați limba';
 
   @override
   String get settingsLanguagesTitle => 'Limbi';
@@ -1195,7 +1201,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String homeCustomPracticeProgress(int remaining, int total) {
-    return 'Exercițiu personalizat: au rămas $remaining din $total';
+    return 'Mai sunt $remaining din $total';
   }
 
   @override
@@ -1446,5 +1452,23 @@ class AppLocalizationsRo extends AppLocalizations {
       one: '1 cuvânt, progresul în $language se șterge',
     );
     return '$_temp0';
+  }
+
+  @override
+  String homeEmptyLanguageTitle(String language) {
+    return 'Niciunul dintre cuvintele tale nu e încă în $language';
+  }
+
+  @override
+  String homeEmptyLanguageNoSourceMessage(String language) {
+    return 'Importă cuvintele pe care vrei să le înveți în $language.';
+  }
+
+  @override
+  String get homeImportWordsButton => 'Importă cuvinte';
+
+  @override
+  String homeEmptyLanguageFeedHint(String language) {
+    return 'Cuvintele pe care le adaugi cât e selectată $language apar aici.';
   }
 }

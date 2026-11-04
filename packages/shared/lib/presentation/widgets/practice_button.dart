@@ -1,9 +1,12 @@
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
-import 'package:shared/presentation/extensions/int_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/widgets/count_badge.dart';
 import 'package:shared/presentation/widgets/icon_action_button.dart';
+
+const _buttonHeight = Spacing.xxxl + Spacing.xxxs;
+const _badgeOffset = -Spacing.xs;
 
 class const PracticeButton({
   super.key,
@@ -12,46 +15,48 @@ class const PracticeButton({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Flexible(
-          child: Stack(
-            clipBehavior: Clip.none,
-            fit: StackFit.passthrough,
-            children: [
-              ElevatedButton(
-                onPressed: () => context.pushPractice(tagId: _tagId),
-                child: Text(context.s.homePracticeButton),
-              ),
-              if (_count > 0)
-                Positioned(
-                  top: -Spacing.xxxs,
-                  right: -Spacing.xxxs,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: context.c.onPrimary,
-                      borderRadius: BorderRadius.circular(Spacing.radiusL),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
-                      child: Text(
-                        _count.toCountLabel(context),
-                        style: context.t.labelSmall?.copyWith(color: context.c.primary),
-                      ),
+    return SizedBox(
+      height: _buttonHeight,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Stack(
+              clipBehavior: Clip.none,
+              fit: StackFit.expand,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    textStyle: context.t.titleLarge,
+                    padding: const EdgeInsets.symmetric(horizontal: Spacing.s),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(Spacing.radiusXxl),
                     ),
                   ),
+                  onPressed: () => context.pushPractice(tagId: _tagId),
+                  child: Text(context.s.homePracticeButton),
                 ),
-            ],
+                if (_count > 0)
+                  Positioned(
+                    top: _badgeOffset,
+                    right: _badgeOffset,
+                    child: CountBadge(
+                      count: _count,
+                      color: context.c.onPrimary,
+                      textColor: context.c.primary,
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(width: Spacing.xs),
-        IconActionButton(
-          icon: const Icon(Icons.playlist_play_rounded),
-          tooltip: context.s.practiceCustomTooltip,
-          onPressed: () => context.pushCustomPractice(tagId: _tagId),
-        ),
-      ],
+          const SizedBox(width: Spacing.s),
+          IconActionButton(
+            icon: const Icon(Icons.playlist_play_rounded, size: Spacing.iconL),
+            tooltip: context.s.practiceCustomTooltip,
+            onPressed: () => context.pushCustomPractice(tagId: _tagId),
+          ),
+        ],
+      ),
     );
   }
 }

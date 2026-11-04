@@ -14,6 +14,14 @@ class const HomeLanguageChanged({
   required final Language language,
 }) extends HomeEvent;
 
+class const HomeActiveLanguagesChanged({
+  required final Set<Language> languages,
+}) extends HomeEvent;
+
+class const HomeImportSourceChanged({
+  required final Language? language,
+}) extends HomeEvent;
+
 sealed class HomeFeedEvent extends HomeEvent {
   const HomeFeedEvent();
 }

@@ -6,6 +6,7 @@ import 'package:feature_home/presentation/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
@@ -22,6 +23,7 @@ import 'package:shared/domain/use_cases/watch_streak_use_case.dart';
 const _feedPageSize = 50;
 const _recentMaxAge = Duration(days: 7);
 const _recentLimit = 10;
+const _importPreviewCount = 3;
 
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -39,6 +41,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           customSession: null,
           allWordsCount: null,
           overview: null,
+          overviews: {},
+          importWords: [],
           recentVocabularies: null,
           collections: null,
           vocabularies: null,
@@ -50,6 +54,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeStarted>(_onStarted);
     on<HomeCustomPracticeEnded>(_onCustomPracticeEnded);
     on<HomeLanguageChanged>(_onLanguageChanged, transformer: restartable());
+    on<HomeActiveLanguagesChanged>(_onActiveLanguagesChanged, transformer: restartable());
+    on<HomeImportSourceChanged>(_onImportSourceChanged, transformer: restartable());
     on<HomeFeedEvent>(_onFeedEvent, transformer: restartable());
     on<HomeVocabularySpeakRequested>(_onVocabularySpeakRequested);
     on<HomePhotographerLinkOpened>(_onPhotographerLinkOpened);
@@ -62,6 +68,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ExternalLinkRepository _externalLinkRepository;
   final LanguageRepository _languageRepository;
   final CustomPracticeRepository _customPracticeRepository;
+  Language? _importSource;
 
   Future<void> _onStarted(HomeStarted event, Emitter<HomeState> emit) async {
     await Future.wait([
@@ -69,10 +76,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _languageRepository.watchLanguageSetup(),
         onData: (result) {
           if (result case Success(data: final setup?)) {
-            if (setup.selected != _setup?.selected) {
+            final previous = _setup;
+            if (setup.selected != previous?.selected) {
               add(HomeLanguageChanged(language: setup.selected));
             }
-            return _merged(setup: setup);
+            final languages = {for (final learned in setup.active) learned.language};
+            final previousLanguages = {
+              for (final learned in previous?.active ?? const <LearnedLanguage>[]) learned.language,
+            };
+            if (languages.length != previousLanguages.length ||
+                !languages.containsAll(previousLanguages)) {
+              add(HomeActiveLanguagesChanged(languages: languages));
+            }
+            return _withImportSource(_merged(setup: setup));
           }
           return state;
         },
@@ -90,7 +106,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit.forEach(
         _vocabularyRepository.watchVocabularyCount(),
         onData: (result) => switch (result) {
-          Success(:final data) => _merged(allWordsCount: data),
+          Success(:final data) => _withImportSource(_merged(allWordsCount: data)),
           Failure(:final error) => HomeFailure(error: error),
         },
       ),
@@ -127,7 +143,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit.forEach(
         _vocabularyRepository.watchVocabularyOverview(languages: {language}),
         onData: (result) => switch (result) {
-          Success(:final data) => _merged(overview: data),
+          Success(:final data) => _withImportSource(_merged(overview: data)),
           Failure(:final error) => HomeFailure(error: error),
         },
       ),
@@ -143,6 +159,57 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         },
       ),
     ]);
+  }
+
+  Future<void> _onActiveLanguagesChanged(
+    HomeActiveLanguagesChanged event,
+    Emitter<HomeState> emit,
+  ) async {
+    await Future.wait([
+      for (final language in event.languages)
+        emit.forEach(
+          _vocabularyRepository.watchVocabularyOverview(languages: {language}),
+          onData: (result) => switch ((state, result)) {
+            (final HomeLoaded loaded, Success(:final data)) => _withImportSource(
+              loaded.copyWith(overviews: {...loaded.overviews, language: data}),
+            ),
+            (final HomeLoading loading, Success(:final data)) => loading.copyWith(
+              overviews: {...loading.overviews, language: data},
+            ),
+            (_, Success()) || (_, Failure()) => state,
+          },
+        ),
+    ]);
+  }
+
+  Future<void> _onImportSourceChanged(
+    HomeImportSourceChanged event,
+    Emitter<HomeState> emit,
+  ) async {
+    final language = event.language;
+    if (language == null) {
+      if (state case final HomeLoaded loaded) emit(loaded.copyWith(importWords: const []));
+      return;
+    }
+    await emit.forEach(
+      _vocabularyRepository.watchVocabularies(language: language, limit: _importPreviewCount),
+      onData: (result) => switch ((state, result)) {
+        (final HomeLoaded loaded, Success(:final data)) => loaded.copyWith(importWords: data),
+        (_, Success()) || (_, Failure()) => state,
+      },
+    );
+  }
+
+  HomeState _withImportSource(HomeState next) {
+    final source = switch (next) {
+      final HomeLoaded loaded when loaded.isLanguageEmpty => loaded.importSource,
+      _ => null,
+    };
+    if (source != _importSource) {
+      _importSource = source;
+      add(HomeImportSourceChanged(language: source));
+    }
+    return next;
   }
 
   Future<void> _onFeedEvent(HomeFeedEvent event, Emitter<HomeState> emit) async {
@@ -165,7 +232,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         filter: feed.filter,
       ),
       onData: (result) => switch (result) {
-        Success(:final data) => _merged(vocabularies: data, feedLimit: feed.limit),
+        Success(:final data) => _withImportSource(
+          _merged(vocabularies: data, feedLimit: feed.limit),
+        ),
         Failure(:final error) => HomeFailure(error: error),
       },
     );
@@ -236,6 +305,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           customSession: loading.customSession,
           allWordsCount: allWordsCount ?? loading.allWordsCount,
           overview: overview ?? loading.overview,
+          overviews: loading.overviews,
+          importWords: loading.importWords,
           recentVocabularies: recentVocabularies ?? loading.recentVocabularies,
           collections: collections ?? loading.collections,
           vocabularies: vocabularies ?? loading.vocabularies,
@@ -266,6 +337,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           customSession: loading.customSession,
           allWordsCount: allWordsCount,
           overview: overview,
+          overviews: loading.overviews,
+          importWords: loading.importWords,
           recentVocabularies: recentVocabularies,
           collections: collections,
           vocabularies: vocabularies,

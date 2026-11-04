@@ -4,7 +4,8 @@ import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_state.dart';
 import 'package:feature_home/presentation/widgets/collections_section.dart';
-import 'package:feature_home/presentation/widgets/language_switch_button.dart';
+import 'package:feature_home/presentation/widgets/language_import_card.dart';
+import 'package:feature_home/presentation/widgets/language_menu_button.dart';
 import 'package:feature_home/presentation/widgets/recent_vocabularies_section.dart';
 import 'package:feature_home/presentation/widgets/record_fab.dart';
 import 'package:feature_home/presentation/widgets/status_card.dart';
@@ -15,8 +16,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_setup.dart';
-import 'package:shared/domain/entities/practice_session.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
@@ -33,7 +34,7 @@ import 'package:shared/presentation/widgets/vocabulary_info_dialog.dart';
 import 'package:shared/presentation/widgets/vocabulary_search_view.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
-const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.xxl);
+const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.m);
 const _scrollEndSpacing = Spacing.xxxxl * 2;
 const _mascotScreenHeightFactor = 0.4;
 const _avatarRadius = Spacing.m;
@@ -61,8 +62,7 @@ class const HomeScreen({
             HomeFailure(:final error) => _FailureScreen(error: error),
             HomeLoading() || HomeLoaded() => const LoadingScreen(),
           },
-          _HomeScreenKind.empty => const _EmptyScreen(isLanguageEmpty: false),
-          _HomeScreenKind.emptyLanguage => const _EmptyScreen(isLanguageEmpty: true),
+          _HomeScreenKind.empty => const _EmptyScreen(),
           _HomeScreenKind.content => const _ContentScreen(),
         },
       ),
@@ -70,13 +70,13 @@ class const HomeScreen({
   }
 }
 
-enum _HomeScreenKind { loading, failure, empty, emptyLanguage, content }
+enum _HomeScreenKind { loading, failure, empty, content }
 
 _HomeScreenKind _screenOf(HomeState state) => switch (state) {
   HomeLoading() => _HomeScreenKind.loading,
   HomeFailure() => _HomeScreenKind.failure,
-  HomeLoaded(overview: VocabularyOverview(totalCount: 0), vocabularies: [], :final allWordsCount) =>
-    allWordsCount > 0 ? _HomeScreenKind.emptyLanguage : _HomeScreenKind.empty,
+  HomeLoaded(overview: VocabularyOverview(totalCount: 0), vocabularies: [], allWordsCount: 0) =>
+    _HomeScreenKind.empty,
   HomeLoaded() => _HomeScreenKind.content,
 };
 
@@ -145,42 +145,15 @@ class const _Overview({
           right: false,
           sliver: SliverMainAxisGroup(
             slivers: [
-              SliverPadding(
+              const SliverPadding(
                 padding: _pagePadding,
                 sliver: SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      const SizedBox(height: Spacing.xxl),
-                      const _TitleRow(),
-                      const SizedBox(height: Spacing.m),
-                      BlocSelector<
-                        HomeBloc,
-                        HomeState,
-                        ({
-                          VocabularyOverview overview,
-                          NewWordLimit? newWordLimit,
-                          CustomPracticeSession? customSession,
-                        })?
-                      >(
-                        selector: (state) => switch (state) {
-                          HomeLoaded(:final overview, :final setup, :final customSession) => (
-                            overview: overview,
-                            newWordLimit: setup.learnedOf(setup.selected)?.newWords,
-                            customSession: customSession,
-                          ),
-                          _ => null,
-                        },
-                        builder: (context, status) => switch (status) {
-                          final status? => StatusCard(
-                            overview: status.overview,
-                            newWordLimit: status.newWordLimit,
-                            customSession: status.customSession,
-                            onCustomPracticeEnded: () =>
-                                context.read<HomeBloc>().add(const HomeCustomPracticeEnded()),
-                          ),
-                          null => const SizedBox.shrink(),
-                        },
-                      ),
+                      SizedBox(height: Spacing.xxl),
+                      _TitleRow(),
+                      SizedBox(height: Spacing.m),
+                      _StatusArea(),
                     ],
                   ),
                 ),
@@ -196,18 +169,7 @@ class const _Overview({
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: Spacing.xxl),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _SectionTitle(title: context.s.homeAllWordsTitle),
-                              ),
-                              IconButton(
-                                onPressed: _onSearchOpened,
-                                tooltip: context.s.vocabularySearchTooltip,
-                                icon: const Icon(Icons.search_rounded),
-                              ),
-                            ],
-                          ),
+                          _AllWordsHeader(onSearchOpened: _onSearchOpened),
                           const SizedBox(height: Spacing.xs),
                         ],
                       ),
@@ -230,7 +192,7 @@ class const _CollectionsRow() extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<HomeBloc, HomeState, List<CollectionPreview>>(
       selector: (state) => switch (state) {
-        HomeLoaded(:final collections) => collections,
+        final HomeLoaded loaded when !loaded.isLanguageEmpty => loaded.collections,
         _ => const [],
       },
       builder: (context, collections) => SliverToBoxAdapter(
@@ -353,15 +315,118 @@ class const _FeedEndLoader() extends HookWidget {
 class const _TitleRow() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       children: [
         Expanded(
-          child: Align(alignment: Alignment.centerLeft, child: LanguageSwitchButton()),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child:
+                BlocSelector<
+                  HomeBloc,
+                  HomeState,
+                  ({LanguageSetup setup, Map<Language, VocabularyOverview> overviews})?
+                >(
+                  selector: (state) => switch (state) {
+                    HomeLoaded(:final setup, :final overviews) => (
+                      setup: setup,
+                      overviews: overviews,
+                    ),
+                    HomeLoading(setup: final setup?, :final overviews) => (
+                      setup: setup,
+                      overviews: overviews,
+                    ),
+                    _ => null,
+                  },
+                  builder: (context, menu) => switch (menu) {
+                    final menu? => LanguageMenuButton(setup: menu.setup, overviews: menu.overviews),
+                    null => const SizedBox.shrink(),
+                  },
+                ),
+          ),
         ),
-        SizedBox(width: Spacing.m),
-        _StreakButton(),
-        _AccountButton(),
+        const SizedBox(width: Spacing.s),
+        const _StreakButton(),
+        const SizedBox(width: Spacing.xs),
+        const _AccountButton(),
       ],
+    );
+  }
+}
+
+class const _StatusArea() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) => switch ((previous, current)) {
+        (final HomeLoaded before, final HomeLoaded after) =>
+          before.overview != after.overview ||
+              before.setup != after.setup ||
+              before.customSession != after.customSession ||
+              before.collections != after.collections ||
+              before.overviews != after.overviews ||
+              before.importWords != after.importWords ||
+              before.isLanguageEmpty != after.isLanguageEmpty,
+        _ => true,
+      },
+      builder: (context, state) => switch (state) {
+        final HomeLoaded loaded when loaded.isLanguageEmpty => LanguageImportCard(
+          language: loaded.setup.selected,
+          source: loaded.importSource,
+          sourceCount: switch (loaded.importSource) {
+            final source? => loaded.overviews[source]?.totalCount ?? 0,
+            null => loaded.allWordsCount,
+          },
+          words: loaded.importWords,
+        ),
+        HomeLoaded(:final overview, :final setup, :final customSession, :final collections) =>
+          StatusCard(
+            overview: overview,
+            language: setup.selected,
+            newWordLimit: setup.learnedOf(setup.selected)?.newWords,
+            customSession: customSession,
+            tags: [for (final collection in collections) collection.tag],
+            onCustomPracticeEnded: () =>
+                context.read<HomeBloc>().add(const HomeCustomPracticeEnded()),
+          ),
+        HomeLoading() || HomeFailure() => const SizedBox.shrink(),
+      },
+    );
+  }
+}
+
+class const _AllWordsHeader({
+  required final VoidCallback _onSearchOpened,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, Language?>(
+      selector: (state) => switch (state) {
+        final HomeLoaded loaded when loaded.isLanguageEmpty => loaded.setup.selected,
+        _ => null,
+      },
+      builder: (context, emptyLanguage) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(child: _SectionTitle(title: context.s.homeAllWordsTitle)),
+              if (emptyLanguage == null)
+                IconButton(
+                  onPressed: _onSearchOpened,
+                  tooltip: context.s.vocabularySearchTooltip,
+                  icon: const Icon(Icons.search_rounded),
+                ),
+            ],
+          ),
+          if (emptyLanguage case final language?) ...[
+            const SizedBox(height: Spacing.m),
+            Text(
+              context.s.homeEmptyLanguageFeedHint(language.toShortLabel(context)),
+              style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
@@ -412,9 +477,7 @@ class const _SectionTitle({
   }
 }
 
-class const _EmptyScreen({
-  required final bool _isLanguageEmpty,
-}) extends StatelessWidget {
+class const _EmptyScreen() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -425,7 +488,7 @@ class const _EmptyScreen({
           padding: _pagePadding,
           child: Column(
             children: [
-              const SizedBox(height: Spacing.xxl),
+              const SizedBox(height: Spacing.xl),
               const _TitleRow(),
               const Spacer(),
               SizedBox(
@@ -433,48 +496,16 @@ class const _EmptyScreen({
                 child: const Mascot(pose: MascotPose.search),
               ),
               const Spacer(),
-              if (_isLanguageEmpty)
-                const _LanguageEmptyMessage()
-              else
-                Text(
-                  context.s.homeAddFirstWordMessage,
-                  style: context.t.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
+              Text(
+                context.s.homeAddFirstWordMessage,
+                style: context.t.bodyLarge,
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: _scrollEndSpacing),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class const _LanguageEmptyMessage() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, LanguageSetup?>(
-      selector: (state) => switch (state) {
-        HomeLoaded(:final setup) => setup,
-        HomeLoading() || HomeFailure() => null,
-      },
-      builder: (context, setup) => switch (setup) {
-        null => const SizedBox.shrink(),
-        final setup => Column(
-          children: [
-            Text(
-              context.s.homeEmptyLanguageMessage(setup.selected.toLabel(context)),
-              style: context.t.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: Spacing.m),
-            OutlinedButton(
-              onPressed: () => context.pushLanguageWords(language: setup.selected, isAdding: false),
-              child: Text(context.s.homeChooseWordsButton),
-            ),
-          ],
-        ),
-      },
     );
   }
 }
