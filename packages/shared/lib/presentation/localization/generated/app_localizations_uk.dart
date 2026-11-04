@@ -1168,48 +1168,21 @@ class AppLocalizationsUk extends AppLocalizations {
   String get customPracticeTitle => 'Власне тренування';
 
   @override
-  String get customPracticeLanguagesTitle => 'Мови';
-
-  @override
   String get customPracticeAllOption => 'Усі';
 
   @override
   String get customPracticeCollectionsTitle => 'Колекції';
 
   @override
-  String get customPracticeChooseOption => 'Обрати';
-
-  @override
-  String get customPracticeWordsTitle => 'Слова';
-
-  @override
-  String get customPracticeDueOption => 'Заплановані';
-
-  @override
-  String get customPracticeAllWordsOption => 'Усі слова';
-
-  @override
-  String get customPracticeNewWordsTitle => 'Нові слова';
-
-  @override
-  String get customPracticeNoNewWordsOption => 'Жодних';
-
-  @override
-  String get customPracticeUpToLimitOption => 'До ліміту';
-
-  @override
-  String get customPracticeAllWaitingOption => 'Усі, що чекають';
-
-  @override
   String customPracticeStartButton(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Тренувати $count слова',
-      many: 'Тренувати $count слів',
-      few: 'Тренувати $count слова',
-      one: 'Тренувати $count слово',
-      zero: 'Немає слів для тренування',
+      other: 'Практикувати $count слова',
+      many: 'Практикувати $count слів',
+      few: 'Практикувати $count слова',
+      one: 'Практикувати $count слово',
+      zero: 'Немає слів для практики',
     );
     return '$_temp0';
   }
@@ -1510,4 +1483,50 @@ class AppLocalizationsUk extends AppLocalizations {
   String practiceIntroBadge(String language) {
     return 'Нове: $language';
   }
+
+  @override
+  String customPracticeWordsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'слова',
+      many: 'слів',
+      few: 'слова',
+      one: 'слово',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customPracticeDueLegend(int count) {
+    return 'до повторення $count';
+  }
+
+  @override
+  String customPracticeAllLegend(int count) {
+    return 'усі $count';
+  }
+
+  @override
+  String customPracticeNewLegend(int count) {
+    return 'нові $count';
+  }
+
+  @override
+  String get customPracticeDueLabel => 'До повторення';
+
+  @override
+  String get customPracticeAllWordsLabel => 'Усі слова';
+
+  @override
+  String get customPracticeNewLabel => 'Нові';
+
+  @override
+  String get customPracticeFewerTooltip => 'Менше';
+
+  @override
+  String get customPracticeMoreTooltip => 'Більше';
+
+  @override
+  String get customPracticeDoneButton => 'Готово';
 }

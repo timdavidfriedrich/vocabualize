@@ -1126,46 +1126,19 @@ class AppLocalizationsEl extends AppLocalizations {
   String get customPracticeTitle => 'Προσαρμοσμένη εξάσκηση';
 
   @override
-  String get customPracticeLanguagesTitle => 'Γλώσσες';
-
-  @override
   String get customPracticeAllOption => 'Όλες';
 
   @override
   String get customPracticeCollectionsTitle => 'Συλλογές';
 
   @override
-  String get customPracticeChooseOption => 'Επιλογή';
-
-  @override
-  String get customPracticeWordsTitle => 'Λέξεις';
-
-  @override
-  String get customPracticeDueOption => 'Προς επανάληψη';
-
-  @override
-  String get customPracticeAllWordsOption => 'Όλες οι λέξεις';
-
-  @override
-  String get customPracticeNewWordsTitle => 'Νέες λέξεις';
-
-  @override
-  String get customPracticeNoNewWordsOption => 'Καμία';
-
-  @override
-  String get customPracticeUpToLimitOption => 'Έως το όριο';
-
-  @override
-  String get customPracticeAllWaitingOption => 'Όλες σε αναμονή';
-
-  @override
   String customPracticeStartButton(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Έναρξη $count λέξεων',
-      one: 'Έναρξη 1 λέξης',
-      zero: 'Δεν υπάρχουν λέξεις για εξάσκηση',
+      other: 'Εξάσκηση $count λέξεων',
+      one: 'Εξάσκηση 1 λέξης',
+      zero: 'Δεν υπάρχουν λέξεις',
     );
     return '$_temp0';
   }
@@ -1454,4 +1427,48 @@ class AppLocalizationsEl extends AppLocalizations {
   String practiceIntroBadge(String language) {
     return 'Νέα στα $language';
   }
+
+  @override
+  String customPracticeWordsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'λέξεις',
+      one: 'λέξη',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customPracticeDueLegend(int count) {
+    return 'οφειλόμενες $count';
+  }
+
+  @override
+  String customPracticeAllLegend(int count) {
+    return 'όλες $count';
+  }
+
+  @override
+  String customPracticeNewLegend(int count) {
+    return 'νέες $count';
+  }
+
+  @override
+  String get customPracticeDueLabel => 'Οφειλόμενες';
+
+  @override
+  String get customPracticeAllWordsLabel => 'Όλες οι λέξεις';
+
+  @override
+  String get customPracticeNewLabel => 'Νέες';
+
+  @override
+  String get customPracticeFewerTooltip => 'Λιγότερες';
+
+  @override
+  String get customPracticeMoreTooltip => 'Περισσότερες';
+
+  @override
+  String get customPracticeDoneButton => 'Τέλος';
 }

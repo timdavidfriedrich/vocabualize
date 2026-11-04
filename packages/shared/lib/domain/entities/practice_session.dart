@@ -6,9 +6,6 @@ part 'practice_session.mapper.dart';
 @MappableEnum()
 enum PracticeWords { due, all }
 
-@MappableEnum()
-enum PracticeNewWords { none, upToCap, allWaiting }
-
 @MappableClass()
 class const PracticeItemKey({
   required final String vocabularyId,
@@ -19,9 +16,27 @@ class const PracticeItemKey({
 class const CustomPracticeFilter({
   required final Set<Language> languages,
   required final Set<String> tagIds,
-  required final PracticeWords words,
-  required final PracticeNewWords newWords,
 }) with CustomPracticeFilterMappable;
+
+@MappableClass()
+class const CustomPracticeLanguagePlan({
+  required final Language language,
+  required final PracticeWords words,
+  required final int newWordCount,
+}) with CustomPracticeLanguagePlanMappable;
+
+@MappableClass()
+class const CustomPracticePlan({
+  required final List<CustomPracticeLanguagePlan> languages,
+  required final Set<String> tagIds,
+}) with CustomPracticePlanMappable;
+
+@MappableClass()
+class const CustomPracticeCounts({
+  required final int dueCount,
+  required final int startedCount,
+  required final int waitingCount,
+}) with CustomPracticeCountsMappable;
 
 @MappableClass()
 class const CustomPracticeSession({
@@ -33,4 +48,11 @@ class const CustomPracticeSession({
 
 extension CustomPracticeSessionExtensions on CustomPracticeSession {
   int get remainingCount => items.length - doneCount;
+}
+
+extension CustomPracticePlanExtensions on CustomPracticePlan {
+  CustomPracticeFilter get filter => CustomPracticeFilter(
+    languages: {for (final plan in languages) plan.language},
+    tagIds: tagIds,
+  );
 }

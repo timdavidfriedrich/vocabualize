@@ -2,11 +2,11 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:feature_practice/domain/use_cases/build_custom_practice_use_case.dart';
+import 'package:feature_practice/domain/use_cases/count_custom_practice_use_case.dart';
 import 'package:feature_practice/presentation/custom_practice/custom_practice_event.dart';
 import 'package:feature_practice/presentation/custom_practice/custom_practice_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/practice_session.dart';
 import 'package:shared/domain/repositories/custom_practice_repository.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
@@ -19,15 +19,15 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
     this._tagRepository,
     this._customPracticeRepository,
     this._buildCustomPractice,
+    this._countCustomPractice,
   ) : super(const CustomPracticeLoading()) {
     on<CustomPracticeStarted>(_onStarted);
     on<CustomPracticeLanguageToggled>(_onLanguageToggled);
-    on<CustomPracticeAllLanguagesSelected>(_onAllLanguagesSelected);
-    on<CustomPracticeCollectionsModeChanged>(_onCollectionsModeChanged);
-    on<CustomPracticeCollectionToggled>(_onCollectionToggled);
-    on<CustomPracticeWordsChanged>(_onWordsChanged);
+    on<CustomPracticeAllWordsToggled>(_onAllWordsToggled);
     on<CustomPracticeNewWordsChanged>(_onNewWordsChanged);
-    on<CustomPracticeCountRequested>(_onCountRequested, transformer: restartable());
+    on<CustomPracticeCollectionsChanged>(_onCollectionsChanged);
+    on<CustomPracticeCountsRequested>(_onCountsRequested, transformer: restartable());
+    on<CustomPracticePreviewRequested>(_onPreviewRequested, transformer: restartable());
     on<CustomPracticeStartRequested>(_onStartRequested);
   }
 
@@ -35,6 +35,7 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
   final TagRepository _tagRepository;
   final CustomPracticeRepository _customPracticeRepository;
   final BuildCustomPracticeUseCase _buildCustomPractice;
+  final CountCustomPracticeUseCase _countCustomPractice;
 
   Future<void> _onStarted(CustomPracticeStarted event, Emitter<CustomPracticeState> emit) async {
     final (setup, tags, session) = await (
@@ -52,96 +53,105 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
           CustomPracticeEditing(
             setup: setup,
             tags: tags,
-            filter: CustomPracticeFilter(
-              languages: {setup.selected},
-              tagIds: {?event.tagId},
-              words: PracticeWords.due,
-              newWords: PracticeNewWords.upToCap,
-            ),
-            isChoosingCollections: event.tagId != null,
-            count: null,
+            tagIds: {?event.tagId},
+            enabledLanguages: {setup.selected},
+            allWordsLanguages: const {},
+            newWordCounts: const {},
+            counts: null,
+            previewImages: const [],
             hasUnfinishedSession: session != null,
             isStarting: false,
             error: null,
           ),
         );
-        add(const CustomPracticeCountRequested());
+        add(const CustomPracticeCountsRequested());
+        add(const CustomPracticePreviewRequested());
       case (Success(data: null), _, _):
         emit(const CustomPracticeFailure(error: NotFoundError()));
     }
   }
 
   void _onLanguageToggled(CustomPracticeLanguageToggled event, Emitter<CustomPracticeState> emit) {
-    _changeFilter(emit, (editing) {
-      final languages = editing.filter.languages;
-      return editing.filter.copyWith(
-        languages: languages.contains(event.language)
-            ? languages.difference({event.language})
-            : {...languages, event.language},
-      );
-    });
-  }
-
-  void _onAllLanguagesSelected(
-    CustomPracticeAllLanguagesSelected event,
-    Emitter<CustomPracticeState> emit,
-  ) {
-    _changeFilter(
-      emit,
-      (editing) => editing.filter.copyWith(
-        languages: {for (final learned in editing.setup.active) learned.language},
-      ),
-    );
-  }
-
-  void _onCollectionsModeChanged(
-    CustomPracticeCollectionsModeChanged event,
-    Emitter<CustomPracticeState> emit,
-  ) {
     if (state case final CustomPracticeEditing editing when !editing.isStarting) {
+      final languages = editing.enabledLanguages;
       emit(
         editing.copyWith(
-          isChoosingCollections: event.isChoosing,
-          filter: event.isChoosing ? editing.filter : editing.filter.copyWith(tagIds: const {}),
+          enabledLanguages: languages.contains(event.language)
+              ? languages.difference({event.language})
+              : {...languages, event.language},
         ),
       );
-      add(const CustomPracticeCountRequested());
+      add(const CustomPracticePreviewRequested());
     }
   }
 
-  void _onCollectionToggled(
-    CustomPracticeCollectionToggled event,
-    Emitter<CustomPracticeState> emit,
-  ) {
-    _changeFilter(emit, (editing) {
-      final tagIds = editing.filter.tagIds;
-      return editing.filter.copyWith(
-        tagIds: tagIds.contains(event.tagId)
-            ? tagIds.difference({event.tagId})
-            : {...tagIds, event.tagId},
+  void _onAllWordsToggled(CustomPracticeAllWordsToggled event, Emitter<CustomPracticeState> emit) {
+    if (state case final CustomPracticeEditing editing when !editing.isStarting) {
+      final languages = editing.allWordsLanguages;
+      emit(
+        editing.copyWith(
+          allWordsLanguages: languages.contains(event.language)
+              ? languages.difference({event.language})
+              : {...languages, event.language},
+        ),
       );
-    });
-  }
-
-  void _onWordsChanged(CustomPracticeWordsChanged event, Emitter<CustomPracticeState> emit) {
-    _changeFilter(emit, (editing) => editing.filter.copyWith(words: event.words));
+    }
   }
 
   void _onNewWordsChanged(CustomPracticeNewWordsChanged event, Emitter<CustomPracticeState> emit) {
-    _changeFilter(emit, (editing) => editing.filter.copyWith(newWords: event.newWords));
+    if (state case final CustomPracticeEditing editing when !editing.isStarting) {
+      final waiting = editing.waitingCountOf(event.language);
+      emit(
+        editing.copyWith(
+          newWordCounts: {
+            ...editing.newWordCounts,
+            event.language: event.count.clamp(0, waiting),
+          },
+        ),
+      );
+    }
   }
 
-  Future<void> _onCountRequested(
-    CustomPracticeCountRequested event,
+  void _onCollectionsChanged(
+    CustomPracticeCollectionsChanged event,
+    Emitter<CustomPracticeState> emit,
+  ) {
+    if (state case final CustomPracticeEditing editing when !editing.isStarting) {
+      emit(editing.copyWith(tagIds: event.tagIds, counts: null, newWordCounts: const {}));
+      add(const CustomPracticeCountsRequested());
+      add(const CustomPracticePreviewRequested());
+    }
+  }
+
+  Future<void> _onCountsRequested(
+    CustomPracticeCountsRequested event,
     Emitter<CustomPracticeState> emit,
   ) async {
     if (state case final CustomPracticeEditing editing) {
-      final result = await _buildCustomPractice(_effectiveFilter(editing));
+      final result = await _countCustomPractice(
+        languages: editing.activeLanguages,
+        tagIds: editing.tagIds,
+      );
       if (state case final CustomPracticeEditing latest) {
         emit(switch (result) {
-          Success(:final data) => latest.copyWith(count: data.length),
-          Failure(:final error) => latest.copyWith(count: 0, error: error),
+          Success(:final data) => latest.copyWith(counts: data),
+          Failure(:final error) => latest.copyWith(counts: const {}, error: error),
         });
+      }
+    }
+  }
+
+  Future<void> _onPreviewRequested(
+    CustomPracticePreviewRequested event,
+    Emitter<CustomPracticeState> emit,
+  ) async {
+    if (state case final CustomPracticeEditing editing) {
+      final result = await _countCustomPractice.previewImages(
+        languages: editing.enabledLanguages,
+        tagIds: editing.tagIds,
+      );
+      if (state case final CustomPracticeEditing latest) {
+        if (result case Success(:final data)) emit(latest.copyWith(previewImages: data));
       }
     }
   }
@@ -153,14 +163,14 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
     if (state case final CustomPracticeEditing editing when !editing.isStarting) {
       final starting = editing.copyWith(isStarting: true, error: null);
       emit(starting);
-      final filter = _effectiveFilter(editing);
-      switch (await _buildCustomPractice(filter)) {
+      final plan = editing.plan;
+      switch (await _buildCustomPractice(plan)) {
         case Success(data: []):
-          emit(starting.copyWith(isStarting: false, count: 0));
+          emit(starting.copyWith(isStarting: false));
         case Success(:final data):
           final saved = await _customPracticeRepository.saveSession(
             CustomPracticeSession(
-              filter: filter,
+              filter: plan.filter,
               items: data,
               doneCount: 0,
               startedAt: DateTime.now().toUtc(),
@@ -174,21 +184,5 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
           emit(starting.copyWith(isStarting: false, error: error));
       }
     }
-  }
-
-  void _changeFilter(
-    Emitter<CustomPracticeState> emit,
-    CustomPracticeFilter Function(CustomPracticeEditing editing) change,
-  ) {
-    if (state case final CustomPracticeEditing editing when !editing.isStarting) {
-      emit(editing.copyWith(filter: change(editing), count: null, error: null));
-      add(const CustomPracticeCountRequested());
-    }
-  }
-
-  CustomPracticeFilter _effectiveFilter(CustomPracticeEditing editing) {
-    return editing.isChoosingCollections
-        ? editing.filter
-        : editing.filter.copyWith(tagIds: const <String>{});
   }
 }

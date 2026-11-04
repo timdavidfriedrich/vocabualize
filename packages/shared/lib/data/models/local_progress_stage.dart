@@ -8,4 +8,7 @@ enum LocalProgressStage {
   final String value;
 }
 
-final startedProgressStages = {LocalProgressStage.shortTerm.value, LocalProgressStage.longTerm.value};
+final startedProgressStages = {
+  LocalProgressStage.shortTerm.value,
+  LocalProgressStage.longTerm.value,
+};

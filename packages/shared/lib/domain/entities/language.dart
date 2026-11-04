@@ -64,8 +64,10 @@ extension LanguageArticles on Language {
       "einer",
       "eines",
     },
-    Language.spanishSpain || Language.spanishLatinAmerica => const {"el", "la", "los", "las", "un", "una", "unos", "unas"},
-    Language.frenchFrance || Language.frenchCanada => const {"le", "la", "les", "l'", "un", "une", "des"},
+    Language.spanishSpain ||
+    Language.spanishLatinAmerica => const {"el", "la", "los", "las", "un", "una", "unos", "unas"},
+    Language.frenchFrance ||
+    Language.frenchCanada => const {"le", "la", "les", "l'", "un", "une", "des"},
     Language.italian => const {"il", "lo", "la", "l'", "i", "gli", "le", "un", "uno", "una", "un'"},
     Language.greek => const {
       "ο",

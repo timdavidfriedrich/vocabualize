@@ -73,6 +73,16 @@ abstract class VocabularyLocalDataSource {
     required Set<UuidValue> tagIds,
   });
 
+  Future<int> countStartedProgress({
+    required Set<String> languageCodes,
+    required Set<UuidValue> tagIds,
+  });
+
+  Future<int> countWaitingProgress({
+    required String languageCode,
+    required Set<UuidValue> tagIds,
+  });
+
   Future<List<LocalProgress>> findStartedProgress({
     required Set<String> languageCodes,
     required Set<UuidValue> tagIds,
@@ -435,6 +445,45 @@ class const VocabularyLocalDataSourceImpl(
       ],
       limit: limit,
       include: LocalProgress.include(vocabulary: _withLanguages()),
+    );
+  }
+
+  @override
+  Future<int> countStartedProgress({
+    required Set<String> languageCodes,
+    required Set<UuidValue> tagIds,
+  }) async {
+    final session = _requireSession();
+    final scope = await _scopeOfTags(session, tagIds);
+    return LocalProgress.db.count(
+      session,
+      where: (progress) => _progressWithin(
+        progress,
+        progress.languageCode.inSet(languageCodes) & progress.stage.inSet(startedProgressStages),
+        scope,
+      ),
+    );
+  }
+
+  @override
+  Future<int> countWaitingProgress({
+    required String languageCode,
+    required Set<UuidValue> tagIds,
+  }) async {
+    final session = _requireSession();
+    final scope = await _scopeOfTags(session, tagIds);
+    return LocalProgress.db.count(
+      session,
+      where: (progress) => _progressWithin(
+        progress,
+        _allOf(progress.languageCode.equals(languageCode), [
+          progress.stage.equals(LocalProgressStage.waiting.value),
+          progress.vocabulary.translations.any(
+            (translation) => translation.isVisible & translation.languageCode.equals(languageCode),
+          ),
+        ]),
+        scope,
+      ),
     );
   }
 

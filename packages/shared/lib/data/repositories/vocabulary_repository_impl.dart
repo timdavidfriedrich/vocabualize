@@ -182,6 +182,40 @@ class const VocabularyRepositoryImpl(
   }
 
   @override
+  Future<AppResult<int>> countStartedItems({
+    required Set<Language> languages,
+    Set<String> tagIds = const {},
+  }) async {
+    try {
+      return Success(
+        await _localDataSource.countStartedProgress(
+          languageCodes: _languageCodes(languages),
+          tagIds: _uuids(tagIds),
+        ),
+      );
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
+  Future<AppResult<int>> countWaitingItems({
+    required Language language,
+    Set<String> tagIds = const {},
+  }) async {
+    try {
+      return Success(
+        await _localDataSource.countWaitingProgress(
+          languageCode: language.toLanguageCode(),
+          tagIds: _uuids(tagIds),
+        ),
+      );
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
   Future<AppResult<List<PracticeItem>>> findDueItems({
     required Set<Language> languages,
     required DateTime dueBy,

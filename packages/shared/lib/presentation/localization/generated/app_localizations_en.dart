@@ -1109,45 +1109,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customPracticeTitle => 'Custom practice';
 
   @override
-  String get customPracticeLanguagesTitle => 'Languages';
-
-  @override
   String get customPracticeAllOption => 'All';
 
   @override
   String get customPracticeCollectionsTitle => 'Collections';
 
   @override
-  String get customPracticeChooseOption => 'Choose';
-
-  @override
-  String get customPracticeWordsTitle => 'Words';
-
-  @override
-  String get customPracticeDueOption => 'Due';
-
-  @override
-  String get customPracticeAllWordsOption => 'All words';
-
-  @override
-  String get customPracticeNewWordsTitle => 'New words';
-
-  @override
-  String get customPracticeNoNewWordsOption => 'None';
-
-  @override
-  String get customPracticeUpToLimitOption => 'Up to the limit';
-
-  @override
-  String get customPracticeAllWaitingOption => 'All waiting';
-
-  @override
   String customPracticeStartButton(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Start $count words',
-      one: 'Start 1 word',
+      other: 'Practice $count words',
+      one: 'Practice 1 word',
       zero: 'No words to practice',
     );
     return '$_temp0';
@@ -1435,4 +1408,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String practiceIntroBadge(String language) {
     return 'New in $language';
   }
+
+  @override
+  String customPracticeWordsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'words',
+      one: 'word',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customPracticeDueLegend(int count) {
+    return 'due $count';
+  }
+
+  @override
+  String customPracticeAllLegend(int count) {
+    return 'all $count';
+  }
+
+  @override
+  String customPracticeNewLegend(int count) {
+    return 'new $count';
+  }
+
+  @override
+  String get customPracticeDueLabel => 'Due';
+
+  @override
+  String get customPracticeAllWordsLabel => 'All words';
+
+  @override
+  String get customPracticeNewLabel => 'New';
+
+  @override
+  String get customPracticeFewerTooltip => 'Fewer';
+
+  @override
+  String get customPracticeMoreTooltip => 'More';
+
+  @override
+  String get customPracticeDoneButton => 'Done';
 }

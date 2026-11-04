@@ -1125,37 +1125,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get customPracticeTitle => 'Eigene Übung';
 
   @override
-  String get customPracticeLanguagesTitle => 'Sprachen';
-
-  @override
   String get customPracticeAllOption => 'Alle';
 
   @override
   String get customPracticeCollectionsTitle => 'Sammlungen';
-
-  @override
-  String get customPracticeChooseOption => 'Auswählen';
-
-  @override
-  String get customPracticeWordsTitle => 'Wörter';
-
-  @override
-  String get customPracticeDueOption => 'Fällig';
-
-  @override
-  String get customPracticeAllWordsOption => 'Alle Wörter';
-
-  @override
-  String get customPracticeNewWordsTitle => 'Neue Wörter';
-
-  @override
-  String get customPracticeNoNewWordsOption => 'Keine';
-
-  @override
-  String get customPracticeUpToLimitOption => 'Bis zum Limit';
-
-  @override
-  String get customPracticeAllWaitingOption => 'Alle wartenden';
 
   @override
   String customPracticeStartButton(int count) {
@@ -1453,4 +1426,48 @@ class AppLocalizationsDe extends AppLocalizations {
   String practiceIntroBadge(String language) {
     return 'Neu auf $language';
   }
+
+  @override
+  String customPracticeWordsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Wörter',
+      one: 'Wort',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customPracticeDueLegend(int count) {
+    return 'fällig $count';
+  }
+
+  @override
+  String customPracticeAllLegend(int count) {
+    return 'alle $count';
+  }
+
+  @override
+  String customPracticeNewLegend(int count) {
+    return 'neu $count';
+  }
+
+  @override
+  String get customPracticeDueLabel => 'Fällig';
+
+  @override
+  String get customPracticeAllWordsLabel => 'Alle Wörter';
+
+  @override
+  String get customPracticeNewLabel => 'Neu';
+
+  @override
+  String get customPracticeFewerTooltip => 'Weniger';
+
+  @override
+  String get customPracticeMoreTooltip => 'Mehr';
+
+  @override
+  String get customPracticeDoneButton => 'Fertig';
 }

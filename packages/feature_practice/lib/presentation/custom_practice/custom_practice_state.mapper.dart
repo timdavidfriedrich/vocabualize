@@ -198,7 +198,8 @@ class CustomPracticeEditingMapper
       CustomPracticeStateMapper.ensureInitialized();
       LanguageSetupMapper.ensureInitialized();
       TagMapper.ensureInitialized();
-      CustomPracticeFilterMapper.ensureInitialized();
+      CustomPracticeCountsMapper.ensureInitialized();
+      VocabularyImageMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -216,18 +217,32 @@ class CustomPracticeEditingMapper
     'tags',
     _$tags,
   );
-  static CustomPracticeFilter _$filter(CustomPracticeEditing v) => v.filter;
-  static const Field<CustomPracticeEditing, CustomPracticeFilter> _f$filter =
-      Field('filter', _$filter);
-  static bool _$isChoosingCollections(CustomPracticeEditing v) =>
-      v.isChoosingCollections;
-  static const Field<CustomPracticeEditing, bool> _f$isChoosingCollections =
-      Field('isChoosingCollections', _$isChoosingCollections);
-  static int? _$count(CustomPracticeEditing v) => v.count;
-  static const Field<CustomPracticeEditing, int> _f$count = Field(
-    'count',
-    _$count,
+  static Set<String> _$tagIds(CustomPracticeEditing v) => v.tagIds;
+  static const Field<CustomPracticeEditing, Set<String>> _f$tagIds = Field(
+    'tagIds',
+    _$tagIds,
   );
+  static Set<Language> _$enabledLanguages(CustomPracticeEditing v) =>
+      v.enabledLanguages;
+  static const Field<CustomPracticeEditing, Set<Language>> _f$enabledLanguages =
+      Field('enabledLanguages', _$enabledLanguages);
+  static Set<Language> _$allWordsLanguages(CustomPracticeEditing v) =>
+      v.allWordsLanguages;
+  static const Field<CustomPracticeEditing, Set<Language>>
+  _f$allWordsLanguages = Field('allWordsLanguages', _$allWordsLanguages);
+  static Map<Language, int> _$newWordCounts(CustomPracticeEditing v) =>
+      v.newWordCounts;
+  static const Field<CustomPracticeEditing, Map<Language, int>>
+  _f$newWordCounts = Field('newWordCounts', _$newWordCounts);
+  static Map<Language, CustomPracticeCounts>? _$counts(
+    CustomPracticeEditing v,
+  ) => v.counts;
+  static const Field<CustomPracticeEditing, Map<Language, CustomPracticeCounts>>
+  _f$counts = Field('counts', _$counts);
+  static List<VocabularyImage> _$previewImages(CustomPracticeEditing v) =>
+      v.previewImages;
+  static const Field<CustomPracticeEditing, List<VocabularyImage>>
+  _f$previewImages = Field('previewImages', _$previewImages);
   static bool _$hasUnfinishedSession(CustomPracticeEditing v) =>
       v.hasUnfinishedSession;
   static const Field<CustomPracticeEditing, bool> _f$hasUnfinishedSession =
@@ -247,9 +262,12 @@ class CustomPracticeEditingMapper
   final MappableFields<CustomPracticeEditing> fields = const {
     #setup: _f$setup,
     #tags: _f$tags,
-    #filter: _f$filter,
-    #isChoosingCollections: _f$isChoosingCollections,
-    #count: _f$count,
+    #tagIds: _f$tagIds,
+    #enabledLanguages: _f$enabledLanguages,
+    #allWordsLanguages: _f$allWordsLanguages,
+    #newWordCounts: _f$newWordCounts,
+    #counts: _f$counts,
+    #previewImages: _f$previewImages,
     #hasUnfinishedSession: _f$hasUnfinishedSession,
     #isStarting: _f$isStarting,
     #error: _f$error,
@@ -259,9 +277,12 @@ class CustomPracticeEditingMapper
     return CustomPracticeEditing(
       setup: data.dec(_f$setup),
       tags: data.dec(_f$tags),
-      filter: data.dec(_f$filter),
-      isChoosingCollections: data.dec(_f$isChoosingCollections),
-      count: data.dec(_f$count),
+      tagIds: data.dec(_f$tagIds),
+      enabledLanguages: data.dec(_f$enabledLanguages),
+      allWordsLanguages: data.dec(_f$allWordsLanguages),
+      newWordCounts: data.dec(_f$newWordCounts),
+      counts: data.dec(_f$counts),
+      previewImages: data.dec(_f$previewImages),
       hasUnfinishedSession: data.dec(_f$hasUnfinishedSession),
       isStarting: data.dec(_f$isStarting),
       error: data.dec(_f$error),
@@ -340,15 +361,31 @@ abstract class CustomPracticeEditingCopyWith<
     implements CustomPracticeStateCopyWith<$R, $In, $Out> {
   LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get tags;
-  CustomPracticeFilterCopyWith<$R, CustomPracticeFilter, CustomPracticeFilter>
-  get filter;
+  MapCopyWith<$R, Language, int, ObjectCopyWith<$R, int, int>>
+  get newWordCounts;
+  MapCopyWith<
+    $R,
+    Language,
+    CustomPracticeCounts,
+    CustomPracticeCountsCopyWith<$R, CustomPracticeCounts, CustomPracticeCounts>
+  >?
+  get counts;
+  ListCopyWith<
+    $R,
+    VocabularyImage,
+    VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage>
+  >
+  get previewImages;
   @override
   $R call({
     LanguageSetup? setup,
     List<Tag>? tags,
-    CustomPracticeFilter? filter,
-    bool? isChoosingCollections,
-    int? count,
+    Set<String>? tagIds,
+    Set<Language>? enabledLanguages,
+    Set<Language>? allWordsLanguages,
+    Map<Language, int>? newWordCounts,
+    Map<Language, CustomPracticeCounts>? counts,
+    List<VocabularyImage>? previewImages,
     bool? hasUnfinishedSession,
     bool? isStarting,
     AppError? error,
@@ -376,15 +413,47 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
     (v) => call(tags: v),
   );
   @override
-  CustomPracticeFilterCopyWith<$R, CustomPracticeFilter, CustomPracticeFilter>
-  get filter => $value.filter.copyWith.$chain((v) => call(filter: v));
+  MapCopyWith<$R, Language, int, ObjectCopyWith<$R, int, int>>
+  get newWordCounts => MapCopyWith(
+    $value.newWordCounts,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(newWordCounts: v),
+  );
+  @override
+  MapCopyWith<
+    $R,
+    Language,
+    CustomPracticeCounts,
+    CustomPracticeCountsCopyWith<$R, CustomPracticeCounts, CustomPracticeCounts>
+  >?
+  get counts => $value.counts != null
+      ? MapCopyWith(
+          $value.counts!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(counts: v),
+        )
+      : null;
+  @override
+  ListCopyWith<
+    $R,
+    VocabularyImage,
+    VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage>
+  >
+  get previewImages => ListCopyWith(
+    $value.previewImages,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(previewImages: v),
+  );
   @override
   $R call({
     LanguageSetup? setup,
     List<Tag>? tags,
-    CustomPracticeFilter? filter,
-    bool? isChoosingCollections,
-    Object? count = $none,
+    Set<String>? tagIds,
+    Set<Language>? enabledLanguages,
+    Set<Language>? allWordsLanguages,
+    Map<Language, int>? newWordCounts,
+    Object? counts = $none,
+    List<VocabularyImage>? previewImages,
     bool? hasUnfinishedSession,
     bool? isStarting,
     Object? error = $none,
@@ -392,10 +461,12 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (setup != null) #setup: setup,
       if (tags != null) #tags: tags,
-      if (filter != null) #filter: filter,
-      if (isChoosingCollections != null)
-        #isChoosingCollections: isChoosingCollections,
-      if (count != $none) #count: count,
+      if (tagIds != null) #tagIds: tagIds,
+      if (enabledLanguages != null) #enabledLanguages: enabledLanguages,
+      if (allWordsLanguages != null) #allWordsLanguages: allWordsLanguages,
+      if (newWordCounts != null) #newWordCounts: newWordCounts,
+      if (counts != $none) #counts: counts,
+      if (previewImages != null) #previewImages: previewImages,
       if (hasUnfinishedSession != null)
         #hasUnfinishedSession: hasUnfinishedSession,
       if (isStarting != null) #isStarting: isStarting,
@@ -406,12 +477,15 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
   CustomPracticeEditing $make(CopyWithData data) => CustomPracticeEditing(
     setup: data.get(#setup, or: $value.setup),
     tags: data.get(#tags, or: $value.tags),
-    filter: data.get(#filter, or: $value.filter),
-    isChoosingCollections: data.get(
-      #isChoosingCollections,
-      or: $value.isChoosingCollections,
+    tagIds: data.get(#tagIds, or: $value.tagIds),
+    enabledLanguages: data.get(#enabledLanguages, or: $value.enabledLanguages),
+    allWordsLanguages: data.get(
+      #allWordsLanguages,
+      or: $value.allWordsLanguages,
     ),
-    count: data.get(#count, or: $value.count),
+    newWordCounts: data.get(#newWordCounts, or: $value.newWordCounts),
+    counts: data.get(#counts, or: $value.counts),
+    previewImages: data.get(#previewImages, or: $value.previewImages),
     hasUnfinishedSession: data.get(
       #hasUnfinishedSession,
       or: $value.hasUnfinishedSession,

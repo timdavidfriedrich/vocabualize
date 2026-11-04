@@ -615,18 +615,9 @@
   },
   "practiceCustomTooltip": "Custom practice",
   "customPracticeTitle": "Custom practice",
-  "customPracticeLanguagesTitle": "Languages",
   "customPracticeAllOption": "All",
   "customPracticeCollectionsTitle": "Collections",
-  "customPracticeChooseOption": "Choose",
-  "customPracticeWordsTitle": "Words",
-  "customPracticeDueOption": "Due",
-  "customPracticeAllWordsOption": "All words",
-  "customPracticeNewWordsTitle": "New words",
-  "customPracticeNoNewWordsOption": "None",
-  "customPracticeUpToLimitOption": "Up to the limit",
-  "customPracticeAllWaitingOption": "All waiting",
-  "customPracticeStartButton": "{count, plural, =0{No words to practice} =1{Start 1 word} other{Start {count} words}}",
+  "customPracticeStartButton": "{count, plural, =0{No words to practice} =1{Practice 1 word} other{Practice {count} words}}",
   "@customPracticeStartButton": {
     "placeholders": {
       "count": {
@@ -961,5 +952,43 @@
         "type": "String"
       }
     }
-  }
+  },
+  "customPracticeWordsLabel": "{count, plural, =1{word} other{words}}",
+  "@customPracticeWordsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customPracticeDueLegend": "due {count}",
+  "@customPracticeDueLegend": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customPracticeAllLegend": "all {count}",
+  "@customPracticeAllLegend": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customPracticeNewLegend": "new {count}",
+  "@customPracticeNewLegend": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customPracticeDueLabel": "Due",
+  "customPracticeAllWordsLabel": "All words",
+  "customPracticeNewLabel": "New",
+  "customPracticeFewerTooltip": "Fewer",
+  "customPracticeMoreTooltip": "More",
+  "customPracticeDoneButton": "Done"
 }

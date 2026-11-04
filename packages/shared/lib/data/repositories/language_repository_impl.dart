@@ -46,11 +46,12 @@ class const LanguageRepositoryImpl(
         selectedLanguage: learned.firstOrNull?.toLanguageCode(),
         learnedLanguages: {
           for (final (index, language) in learned.indexed)
-            language.toLanguageCode(): (existing[language.toLanguageCode()] ??
-                    language.toLearnedLanguage().toLocalLearnedLanguageSetting(
-                      addedAt: now.add(Duration(microseconds: index)),
-                    ))
-                .toJson(),
+            language.toLanguageCode():
+                (existing[language.toLanguageCode()] ??
+                        language.toLearnedLanguage().toLocalLearnedLanguageSetting(
+                          addedAt: now.add(Duration(microseconds: index)),
+                        ))
+                    .toJson(),
         },
         changedAt: now,
       );

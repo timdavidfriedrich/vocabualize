@@ -1854,12 +1854,6 @@ abstract class AppLocalizations {
   /// **'Custom practice'**
   String get customPracticeTitle;
 
-  /// No description provided for @customPracticeLanguagesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Languages'**
-  String get customPracticeLanguagesTitle;
-
   /// No description provided for @customPracticeAllOption.
   ///
   /// In en, this message translates to:
@@ -1872,58 +1866,10 @@ abstract class AppLocalizations {
   /// **'Collections'**
   String get customPracticeCollectionsTitle;
 
-  /// No description provided for @customPracticeChooseOption.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose'**
-  String get customPracticeChooseOption;
-
-  /// No description provided for @customPracticeWordsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Words'**
-  String get customPracticeWordsTitle;
-
-  /// No description provided for @customPracticeDueOption.
-  ///
-  /// In en, this message translates to:
-  /// **'Due'**
-  String get customPracticeDueOption;
-
-  /// No description provided for @customPracticeAllWordsOption.
-  ///
-  /// In en, this message translates to:
-  /// **'All words'**
-  String get customPracticeAllWordsOption;
-
-  /// No description provided for @customPracticeNewWordsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'New words'**
-  String get customPracticeNewWordsTitle;
-
-  /// No description provided for @customPracticeNoNewWordsOption.
-  ///
-  /// In en, this message translates to:
-  /// **'None'**
-  String get customPracticeNoNewWordsOption;
-
-  /// No description provided for @customPracticeUpToLimitOption.
-  ///
-  /// In en, this message translates to:
-  /// **'Up to the limit'**
-  String get customPracticeUpToLimitOption;
-
-  /// No description provided for @customPracticeAllWaitingOption.
-  ///
-  /// In en, this message translates to:
-  /// **'All waiting'**
-  String get customPracticeAllWaitingOption;
-
   /// No description provided for @customPracticeStartButton.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =0{No words to practice} =1{Start 1 word} other{Start {count} words}}'**
+  /// **'{count, plural, =0{No words to practice} =1{Practice 1 word} other{Practice {count} words}}'**
   String customPracticeStartButton(int count);
 
   /// No description provided for @customPracticeReplaceTitle.
@@ -2279,6 +2225,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New in {language}'**
   String practiceIntroBadge(String language);
+
+  /// No description provided for @customPracticeWordsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{word} other{words}}'**
+  String customPracticeWordsLabel(int count);
+
+  /// No description provided for @customPracticeDueLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'due {count}'**
+  String customPracticeDueLegend(int count);
+
+  /// No description provided for @customPracticeAllLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'all {count}'**
+  String customPracticeAllLegend(int count);
+
+  /// No description provided for @customPracticeNewLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'new {count}'**
+  String customPracticeNewLegend(int count);
+
+  /// No description provided for @customPracticeDueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get customPracticeDueLabel;
+
+  /// No description provided for @customPracticeAllWordsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'All words'**
+  String get customPracticeAllWordsLabel;
+
+  /// No description provided for @customPracticeNewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get customPracticeNewLabel;
+
+  /// No description provided for @customPracticeFewerTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewer'**
+  String get customPracticeFewerTooltip;
+
+  /// No description provided for @customPracticeMoreTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get customPracticeMoreTooltip;
+
+  /// No description provided for @customPracticeDoneButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get customPracticeDoneButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

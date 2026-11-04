@@ -1132,37 +1132,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get customPracticeTitle => 'Exercice personnalisé';
 
   @override
-  String get customPracticeLanguagesTitle => 'Langues';
-
-  @override
   String get customPracticeAllOption => 'Toutes';
 
   @override
   String get customPracticeCollectionsTitle => 'Collections';
-
-  @override
-  String get customPracticeChooseOption => 'Choisir';
-
-  @override
-  String get customPracticeWordsTitle => 'Mots';
-
-  @override
-  String get customPracticeDueOption => 'À réviser';
-
-  @override
-  String get customPracticeAllWordsOption => 'Tous les mots';
-
-  @override
-  String get customPracticeNewWordsTitle => 'Nouveaux mots';
-
-  @override
-  String get customPracticeNoNewWordsOption => 'Aucun';
-
-  @override
-  String get customPracticeUpToLimitOption => 'Jusqu\'à la limite';
-
-  @override
-  String get customPracticeAllWaitingOption => 'Tous en attente';
 
   @override
   String customPracticeStartButton(int count) {
@@ -1460,4 +1433,48 @@ class AppLocalizationsFr extends AppLocalizations {
   String practiceIntroBadge(String language) {
     return 'Nouveau en $language';
   }
+
+  @override
+  String customPracticeWordsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'mots',
+      one: 'mot',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customPracticeDueLegend(int count) {
+    return 'à revoir $count';
+  }
+
+  @override
+  String customPracticeAllLegend(int count) {
+    return 'tous $count';
+  }
+
+  @override
+  String customPracticeNewLegend(int count) {
+    return 'nouveaux $count';
+  }
+
+  @override
+  String get customPracticeDueLabel => 'À revoir';
+
+  @override
+  String get customPracticeAllWordsLabel => 'Tous les mots';
+
+  @override
+  String get customPracticeNewLabel => 'Nouveaux';
+
+  @override
+  String get customPracticeFewerTooltip => 'Moins';
+
+  @override
+  String get customPracticeMoreTooltip => 'Plus';
+
+  @override
+  String get customPracticeDoneButton => 'Terminé';
 }

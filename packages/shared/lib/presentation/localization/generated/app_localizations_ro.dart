@@ -1144,46 +1144,19 @@ class AppLocalizationsRo extends AppLocalizations {
   String get customPracticeTitle => 'Exercițiu personalizat';
 
   @override
-  String get customPracticeLanguagesTitle => 'Limbi';
-
-  @override
   String get customPracticeAllOption => 'Toate';
 
   @override
   String get customPracticeCollectionsTitle => 'Colecții';
 
   @override
-  String get customPracticeChooseOption => 'Alegeți';
-
-  @override
-  String get customPracticeWordsTitle => 'Cuvinte';
-
-  @override
-  String get customPracticeDueOption => 'Programate';
-
-  @override
-  String get customPracticeAllWordsOption => 'Toate cuvintele';
-
-  @override
-  String get customPracticeNewWordsTitle => 'Cuvinte noi';
-
-  @override
-  String get customPracticeNoNewWordsOption => 'Niciunul';
-
-  @override
-  String get customPracticeUpToLimitOption => 'Până la limită';
-
-  @override
-  String get customPracticeAllWaitingOption => 'Toate în așteptare';
-
-  @override
   String customPracticeStartButton(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Exersați $count de cuvinte',
-      few: 'Exersați $count cuvinte',
-      one: 'Exersați 1 cuvânt',
+      other: 'Exersează $count de cuvinte',
+      few: 'Exersează $count cuvinte',
+      one: 'Exersează 1 cuvânt',
       zero: 'Niciun cuvânt de exersat',
     );
     return '$_temp0';
@@ -1481,4 +1454,49 @@ class AppLocalizationsRo extends AppLocalizations {
   String practiceIntroBadge(String language) {
     return 'Nou în $language';
   }
+
+  @override
+  String customPracticeWordsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'de cuvinte',
+      few: 'cuvinte',
+      one: 'cuvânt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customPracticeDueLegend(int count) {
+    return 'scadente $count';
+  }
+
+  @override
+  String customPracticeAllLegend(int count) {
+    return 'toate $count';
+  }
+
+  @override
+  String customPracticeNewLegend(int count) {
+    return 'noi $count';
+  }
+
+  @override
+  String get customPracticeDueLabel => 'Scadente';
+
+  @override
+  String get customPracticeAllWordsLabel => 'Toate cuvintele';
+
+  @override
+  String get customPracticeNewLabel => 'Noi';
+
+  @override
+  String get customPracticeFewerTooltip => 'Mai puține';
+
+  @override
+  String get customPracticeMoreTooltip => 'Mai multe';
+
+  @override
+  String get customPracticeDoneButton => 'Gata';
 }

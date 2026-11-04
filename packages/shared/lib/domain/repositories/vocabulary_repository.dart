@@ -52,6 +52,16 @@ abstract class VocabularyRepository {
     Set<String> tagIds = const {},
   });
 
+  Future<AppResult<int>> countStartedItems({
+    required Set<Language> languages,
+    Set<String> tagIds = const {},
+  });
+
+  Future<AppResult<int>> countWaitingItems({
+    required Language language,
+    Set<String> tagIds = const {},
+  });
+
   Future<AppResult<List<PracticeItem>>> findDueItems({
     required Set<Language> languages,
     required DateTime dueBy,

@@ -33,16 +33,6 @@ class LocalCustomPracticeMapper extends ClassMapperBase<LocalCustomPractice> {
     'tagIds',
     _$tagIds,
   );
-  static String _$words(LocalCustomPractice v) => v.words;
-  static const Field<LocalCustomPractice, String> _f$words = Field(
-    'words',
-    _$words,
-  );
-  static String _$newWords(LocalCustomPractice v) => v.newWords;
-  static const Field<LocalCustomPractice, String> _f$newWords = Field(
-    'newWords',
-    _$newWords,
-  );
   static List<LocalCustomPracticeItem> _$items(LocalCustomPractice v) =>
       v.items;
   static const Field<LocalCustomPractice, List<LocalCustomPracticeItem>>
@@ -62,8 +52,6 @@ class LocalCustomPracticeMapper extends ClassMapperBase<LocalCustomPractice> {
   final MappableFields<LocalCustomPractice> fields = const {
     #languages: _f$languages,
     #tagIds: _f$tagIds,
-    #words: _f$words,
-    #newWords: _f$newWords,
     #items: _f$items,
     #doneCount: _f$doneCount,
     #startedAt: _f$startedAt,
@@ -73,8 +61,6 @@ class LocalCustomPracticeMapper extends ClassMapperBase<LocalCustomPractice> {
     return LocalCustomPractice(
       languages: data.dec(_f$languages),
       tagIds: data.dec(_f$tagIds),
-      words: data.dec(_f$words),
-      newWords: data.dec(_f$newWords),
       items: data.dec(_f$items),
       doneCount: data.dec(_f$doneCount),
       startedAt: data.dec(_f$startedAt),
@@ -166,8 +152,6 @@ abstract class LocalCustomPracticeCopyWith<
   $R call({
     List<String>? languages,
     List<String>? tagIds,
-    String? words,
-    String? newWords,
     List<LocalCustomPracticeItem>? items,
     int? doneCount,
     DateTime? startedAt,
@@ -218,8 +202,6 @@ class _LocalCustomPracticeCopyWithImpl<$R, $Out>
   $R call({
     List<String>? languages,
     List<String>? tagIds,
-    String? words,
-    String? newWords,
     List<LocalCustomPracticeItem>? items,
     int? doneCount,
     DateTime? startedAt,
@@ -227,8 +209,6 @@ class _LocalCustomPracticeCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (languages != null) #languages: languages,
       if (tagIds != null) #tagIds: tagIds,
-      if (words != null) #words: words,
-      if (newWords != null) #newWords: newWords,
       if (items != null) #items: items,
       if (doneCount != null) #doneCount: doneCount,
       if (startedAt != null) #startedAt: startedAt,
@@ -238,8 +218,6 @@ class _LocalCustomPracticeCopyWithImpl<$R, $Out>
   LocalCustomPractice $make(CopyWithData data) => LocalCustomPractice(
     languages: data.get(#languages, or: $value.languages),
     tagIds: data.get(#tagIds, or: $value.tagIds),
-    words: data.get(#words, or: $value.words),
-    newWords: data.get(#newWords, or: $value.newWords),
     items: data.get(#items, or: $value.items),
     doneCount: data.get(#doneCount, or: $value.doneCount),
     startedAt: data.get(#startedAt, or: $value.startedAt),

@@ -1122,37 +1122,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get customPracticeTitle => 'Práctica personalizada';
 
   @override
-  String get customPracticeLanguagesTitle => 'Idiomas';
-
-  @override
   String get customPracticeAllOption => 'Todos';
 
   @override
   String get customPracticeCollectionsTitle => 'Colecciones';
-
-  @override
-  String get customPracticeChooseOption => 'Elegir';
-
-  @override
-  String get customPracticeWordsTitle => 'Palabras';
-
-  @override
-  String get customPracticeDueOption => 'Pendientes';
-
-  @override
-  String get customPracticeAllWordsOption => 'Todas las palabras';
-
-  @override
-  String get customPracticeNewWordsTitle => 'Palabras nuevas';
-
-  @override
-  String get customPracticeNoNewWordsOption => 'Ninguna';
-
-  @override
-  String get customPracticeUpToLimitOption => 'Hasta el límite';
-
-  @override
-  String get customPracticeAllWaitingOption => 'Todas las pendientes';
 
   @override
   String customPracticeStartButton(int count) {
@@ -1450,4 +1423,48 @@ class AppLocalizationsEs extends AppLocalizations {
   String practiceIntroBadge(String language) {
     return 'Nueva en $language';
   }
+
+  @override
+  String customPracticeWordsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'palabras',
+      one: 'palabra',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customPracticeDueLegend(int count) {
+    return 'pendientes $count';
+  }
+
+  @override
+  String customPracticeAllLegend(int count) {
+    return 'todas $count';
+  }
+
+  @override
+  String customPracticeNewLegend(int count) {
+    return 'nuevas $count';
+  }
+
+  @override
+  String get customPracticeDueLabel => 'Pendientes';
+
+  @override
+  String get customPracticeAllWordsLabel => 'Todas las palabras';
+
+  @override
+  String get customPracticeNewLabel => 'Nuevas';
+
+  @override
+  String get customPracticeFewerTooltip => 'Menos';
+
+  @override
+  String get customPracticeMoreTooltip => 'Más';
+
+  @override
+  String get customPracticeDoneButton => 'Listo';
 }

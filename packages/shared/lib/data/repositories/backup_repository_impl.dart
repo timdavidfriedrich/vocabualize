@@ -152,7 +152,8 @@ class const BackupRepositoryImpl(
           translation.toLocalTranslation(vocabularyId: vocabularyId),
       ]);
       progress.addAll([
-        for (final row in vocabulary.progress.values) row.toLocalProgress(vocabularyId: vocabularyId),
+        for (final row in vocabulary.progress.values)
+          row.toLocalProgress(vocabularyId: vocabularyId),
       ]);
       for (final tagId in item.tagIds.toSet()) {
         if (tagIds[tagId] case final localTagId?) {

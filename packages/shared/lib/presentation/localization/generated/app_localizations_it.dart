@@ -1122,37 +1122,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get customPracticeTitle => 'Esercizio personalizzato';
 
   @override
-  String get customPracticeLanguagesTitle => 'Lingue';
-
-  @override
   String get customPracticeAllOption => 'Tutte';
 
   @override
   String get customPracticeCollectionsTitle => 'Raccolte';
-
-  @override
-  String get customPracticeChooseOption => 'Scegli';
-
-  @override
-  String get customPracticeWordsTitle => 'Parole';
-
-  @override
-  String get customPracticeDueOption => 'Da ripassare';
-
-  @override
-  String get customPracticeAllWordsOption => 'Tutte le parole';
-
-  @override
-  String get customPracticeNewWordsTitle => 'Parole nuove';
-
-  @override
-  String get customPracticeNoNewWordsOption => 'Nessuna';
-
-  @override
-  String get customPracticeUpToLimitOption => 'Fino al limite';
-
-  @override
-  String get customPracticeAllWaitingOption => 'Tutte in attesa';
 
   @override
   String customPracticeStartButton(int count) {
@@ -1450,4 +1423,48 @@ class AppLocalizationsIt extends AppLocalizations {
   String practiceIntroBadge(String language) {
     return 'Nuova in $language';
   }
+
+  @override
+  String customPracticeWordsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'parole',
+      one: 'parola',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customPracticeDueLegend(int count) {
+    return 'da ripassare $count';
+  }
+
+  @override
+  String customPracticeAllLegend(int count) {
+    return 'tutte $count';
+  }
+
+  @override
+  String customPracticeNewLegend(int count) {
+    return 'nuove $count';
+  }
+
+  @override
+  String get customPracticeDueLabel => 'Da ripassare';
+
+  @override
+  String get customPracticeAllWordsLabel => 'Tutte le parole';
+
+  @override
+  String get customPracticeNewLabel => 'Nuove';
+
+  @override
+  String get customPracticeFewerTooltip => 'Meno';
+
+  @override
+  String get customPracticeMoreTooltip => 'Di più';
+
+  @override
+  String get customPracticeDoneButton => 'Fatto';
 }

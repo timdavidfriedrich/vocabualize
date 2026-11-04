@@ -3,12 +3,6 @@ import 'package:shared/data/models/local_custom_practice.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_session.dart';
 
-const _wordsDue = "due";
-const _wordsAll = "all";
-const _newWordsNone = "none";
-const _newWordsUpToCap = "upToCap";
-const _newWordsAllWaiting = "allWaiting";
-
 extension LocalCustomPracticeMappers on LocalCustomPractice {
   CustomPracticeSession toCustomPracticeSession() {
     return CustomPracticeSession(
@@ -18,15 +12,6 @@ extension LocalCustomPracticeMappers on LocalCustomPractice {
             if (code.toLanguage() case final language when language != Language.unknown) language,
         },
         tagIds: tagIds.toSet(),
-        words: switch (words) {
-          _wordsAll => PracticeWords.all,
-          _ => PracticeWords.due,
-        },
-        newWords: switch (newWords) {
-          _newWordsNone => PracticeNewWords.none,
-          _newWordsAllWaiting => PracticeNewWords.allWaiting,
-          _ => PracticeNewWords.upToCap,
-        },
       ),
       items: [
         for (final item in items)
@@ -44,15 +29,6 @@ extension CustomPracticeSessionMappers on CustomPracticeSession {
     return LocalCustomPractice(
       languages: [for (final language in filter.languages) language.toLanguageCode()],
       tagIds: filter.tagIds.toList(),
-      words: switch (filter.words) {
-        PracticeWords.due => _wordsDue,
-        PracticeWords.all => _wordsAll,
-      },
-      newWords: switch (filter.newWords) {
-        PracticeNewWords.none => _newWordsNone,
-        PracticeNewWords.upToCap => _newWordsUpToCap,
-        PracticeNewWords.allWaiting => _newWordsAllWaiting,
-      },
       items: [
         for (final item in items)
           LocalCustomPracticeItem(

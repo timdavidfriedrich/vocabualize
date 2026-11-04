@@ -34,7 +34,9 @@ class AppConfigLocalDataSourceImpl() implements AppConfigLocalDataSource {
     final file = File(await _cachePath());
     if (!await file.exists()) return null;
     try {
-      return RemoteAppConfig.fromJson(jsonDecode(await file.readAsString()) as Map<String, dynamic>);
+      return RemoteAppConfig.fromJson(
+        jsonDecode(await file.readAsString()) as Map<String, dynamic>,
+      );
     } on FormatException {
       return null;
     }
