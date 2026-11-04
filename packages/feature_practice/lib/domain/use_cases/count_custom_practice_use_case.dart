@@ -64,6 +64,7 @@ class const CountCustomPracticeUseCase(
       );
       if (waiting case Success(:final data)) items.addAll(data);
     }
-    return Success([for (final item in items) item.vocabulary.image]);
+    final images = {for (final item in items) item.vocabulary.id: item.vocabulary.image};
+    return Success(images.values.take(_previewCount).toList());
   }
 }
