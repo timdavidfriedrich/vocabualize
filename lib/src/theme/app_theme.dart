@@ -143,6 +143,16 @@ abstract final class AppTheme {
         scrolledUnderElevation: 0,
         centerTitle: true,
       ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: colors.inverseSurface,
+        contentTextStyle: textTheme.bodyLarge?.copyWith(color: colors.onInverseSurface),
+        actionTextColor: colors.primary,
+        insetPadding: const EdgeInsets.symmetric(horizontal: Spacing.m, vertical: Spacing.xs),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Spacing.radiusXxl)),
+        ),
+      ),
       cardTheme: CardThemeData(
         color: colors.surfaceContainerLow,
         elevation: 0,

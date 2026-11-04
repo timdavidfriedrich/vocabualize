@@ -27,113 +27,118 @@ class const RecordFab({
     final defaultOption = context.select<PreferencesCubit, DefaultGatherOption>(
       (cubit) => cubit.state.defaultGatherOption.withImagesHidden(cubit.state.areImagesHidden),
     );
+    final overlay = useAnimationController(duration: _animationDuration);
+    useEffect(() {
+      if (isOpen.value) {
+        overlay.forward();
+      } else {
+        overlay.reverse();
+      }
+      return null;
+    }, [isOpen.value]);
+    final overlayOpacity = Curves.easeOut.transform(useAnimation(overlay));
+    final buttonKey = useMemoized(GlobalKey.new);
+    final button = KeyedSubtree(
+      key: buttonKey,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.c.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(Spacing.radiusL),
+        ),
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AnimatedSize(
+                duration: _animationDuration,
+                curve: Curves.easeOut,
+                child: SizedBox(
+                  height: isOpen.value ? null : 0,
+                  width: isOpen.value ? null : 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      BlocSelector<PreferencesCubit, Preferences, bool>(
+                        selector: (preferences) => preferences.areImagesHidden,
+                        builder: (context, areImagesHidden) => switch (areImagesHidden) {
+                          true => const SizedBox.shrink(),
+                          false => _RecordFabItem(
+                            onPressed: () {
+                              toggle();
+                              context.pushScan();
+                            },
+                            icon: Icons.camera_alt_rounded,
+                            label: context.s.homeScanButton,
+                          ),
+                        },
+                      ),
+                      _RecordFabItem(
+                        onPressed: () {
+                          toggle();
+                          _write(context);
+                        },
+                        icon: Icons.edit_rounded,
+                        label: context.s.homeWriteButton,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onLongPress: isOpen.value
+                    ? null
+                    : () {
+                        Feedback.forLongPress(context);
+                        toggle();
+                      },
+                child: FloatingActionButton.extended(
+                  heroTag: null,
+                  onPressed: switch ((isOpen.value, defaultOption)) {
+                    (true, _) || (false, DefaultGatherOption.none) => toggle,
+                    (false, DefaultGatherOption.scan) => context.pushScan,
+                    (false, DefaultGatherOption.write) => () => _write(context),
+                  },
+                  isExtended: isOpen.value,
+                  foregroundColor: context.c.onPrimary,
+                  backgroundColor: isOpen.value
+                      ? context.c.primary.withValues(alpha: _openButtonOpacity)
+                      : context.c.primary,
+                  icon: AnimatedRotation(
+                    turns: isOpen.value ? _openIconTurns : 0,
+                    duration: _animationDuration,
+                    curve: Curves.easeOut,
+                    child: Icon(switch ((isOpen.value, defaultOption)) {
+                      (false, DefaultGatherOption.scan) => Icons.camera_alt_rounded,
+                      (false, DefaultGatherOption.write) => Icons.edit_rounded,
+                      _ => Icons.add_rounded,
+                    }),
+                  ),
+                  label: Text(context.s.cancel),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (overlayOpacity == 0) return button;
     return Stack(
       clipBehavior: Clip.none,
       children: [
         Positioned.fill(
           right: -Spacing.xxxxl,
           bottom: -Spacing.xxxxl,
-          child: AnimatedScale(
-            duration: Duration.zero,
-            alignment: Alignment.bottomRight,
-            scale: isOpen.value ? 1 : 0,
-            child: AnimatedOpacity(
-              duration: _animationDuration,
-              curve: Curves.easeOut,
-              opacity: isOpen.value ? 1 : 0,
-              child: GestureDetector(
-                onTap: toggle,
-                child: ColoredBox(color: context.c.scrim.withValues(alpha: _overlayOpacity)),
-              ),
+          child: Opacity(
+            opacity: overlayOpacity,
+            child: GestureDetector(
+              onTap: toggle,
+              child: ColoredBox(color: context.c.scrim.withValues(alpha: _overlayOpacity)),
             ),
           ),
         ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: context.c.surfaceContainerLow,
-              borderRadius: BorderRadius.circular(Spacing.radiusL),
-            ),
-            child: IntrinsicWidth(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AnimatedSize(
-                    duration: _animationDuration,
-                    curve: Curves.easeOut,
-                    child: SizedBox(
-                      height: isOpen.value ? null : 0,
-                      width: isOpen.value ? null : 0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          BlocSelector<PreferencesCubit, Preferences, bool>(
-                            selector: (preferences) => preferences.areImagesHidden,
-                            builder: (context, areImagesHidden) => switch (areImagesHidden) {
-                              true => const SizedBox.shrink(),
-                              false => _RecordFabItem(
-                                onPressed: () {
-                                  toggle();
-                                  context.pushScan();
-                                },
-                                icon: Icons.camera_alt_rounded,
-                                label: context.s.homeScanButton,
-                              ),
-                            },
-                          ),
-                          _RecordFabItem(
-                            onPressed: () {
-                              toggle();
-                              _write(context);
-                            },
-                            icon: Icons.edit_rounded,
-                            label: context.s.homeWriteButton,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onLongPress: isOpen.value
-                        ? null
-                        : () {
-                            Feedback.forLongPress(context);
-                            toggle();
-                          },
-                    child: FloatingActionButton.extended(
-                      heroTag: null,
-                      onPressed: switch ((isOpen.value, defaultOption)) {
-                        (true, _) || (false, DefaultGatherOption.none) => toggle,
-                        (false, DefaultGatherOption.scan) => context.pushScan,
-                        (false, DefaultGatherOption.write) => () => _write(context),
-                      },
-                      isExtended: isOpen.value,
-                      foregroundColor: context.c.onPrimary,
-                      backgroundColor: isOpen.value
-                          ? context.c.primary.withValues(alpha: _openButtonOpacity)
-                          : context.c.primary,
-                      icon: AnimatedRotation(
-                        turns: isOpen.value ? _openIconTurns : 0,
-                        duration: _animationDuration,
-                        curve: Curves.easeOut,
-                        child: Icon(switch ((isOpen.value, defaultOption)) {
-                          (false, DefaultGatherOption.scan) => Icons.camera_alt_rounded,
-                          (false, DefaultGatherOption.write) => Icons.edit_rounded,
-                          _ => Icons.add_rounded,
-                        }),
-                      ),
-                      label: Text(context.s.cancel),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+        Positioned(bottom: 0, right: 0, child: button),
       ],
     );
   }
