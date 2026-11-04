@@ -10,6 +10,7 @@ import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/count_badge.dart';
+import 'package:shared/presentation/widgets/language_label.dart';
 
 const _menuWidth = Spacing.xxxxl * 4 + Spacing.xxxl;
 const _scrimOpacity = 0.6;
@@ -38,14 +39,8 @@ class const LanguageMenuButton({
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(language.toFlag(), style: context.t.titleLarge),
-              const SizedBox(width: Spacing.s),
               Flexible(
-                child: Text(
-                  language.toLabel(context),
-                  style: context.t.titleLarge?.copyWith(fontWeight: FontWeight.normal),
-                  overflow: TextOverflow.ellipsis,
-                ),
+                child: LanguageLabel(language: language, style: context.t.titleMedium),
               ),
               const SizedBox(width: Spacing.xs),
               Icon(

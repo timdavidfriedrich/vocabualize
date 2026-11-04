@@ -27,7 +27,6 @@ class const PracticeButton({
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    textStyle: context.t.titleLarge,
                     padding: const EdgeInsets.symmetric(horizontal: Spacing.s),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(Spacing.radiusXxl),
@@ -51,7 +50,7 @@ class const PracticeButton({
           ),
           const SizedBox(width: Spacing.s),
           IconActionButton(
-            icon: const Icon(Icons.playlist_play_rounded, size: Spacing.iconL),
+            icon: const Icon(Icons.playlist_play_rounded, size: Spacing.iconM),
             tooltip: context.s.practiceCustomTooltip,
             onPressed: () => context.pushCustomPractice(tagId: _tagId),
           ),
