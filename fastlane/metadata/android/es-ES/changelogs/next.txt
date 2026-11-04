@@ -1,0 +1,4 @@
+Pequeños ajustes tras el rediseño:
+• Textos más pequeños en el inicio y al practicar
+• La barra de progreso de la práctica personalizada se ve mejor
+• Gestiona tus idiomas desde el menú de idiomas del inicio
