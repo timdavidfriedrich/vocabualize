@@ -172,7 +172,7 @@ class const _CustomSessionCard({
                   minHeight: _progressHeight,
                   borderRadius: BorderRadius.circular(Spacing.radiusFull),
                   color: context.c.primary,
-                  backgroundColor: context.c.surfaceContainerHighest,
+                  backgroundColor: context.c.outlineVariant,
                 ),
               ],
             ),
