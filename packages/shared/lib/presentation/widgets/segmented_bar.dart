@@ -23,6 +23,7 @@ class const SegmentedBar({
     return SizedBox(
       height: Spacing.s,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: Spacing.xxxs,
         children: [
           for (final part in parts)
@@ -36,7 +37,7 @@ class const SegmentedBar({
               child: _Segment(color: context.c.surfaceContainer),
             ),
           if (filled == 0 && rest <= 0)
-            Expanded(child: _Segment(color: context.c.surfaceContainer)),
+            Expanded(child: _Segment(color: context.c.surfaceContainerLowest)),
         ],
       ),
     );

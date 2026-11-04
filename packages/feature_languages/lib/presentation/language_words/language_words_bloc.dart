@@ -30,6 +30,7 @@ class LanguageWordsBloc extends Bloc<LanguageWordsEvent, LanguageWordsState> {
   final LanguageWordsRepository _languageWordsRepository;
   final TagRepository _tagRepository;
   final AddLearnedLanguageUseCase _addLearnedLanguage;
+  Map<String, VocabularyImage> _images = const {};
 
   Future<void> _onStarted(LanguageWordsStarted event, Emitter<LanguageWordsState> emit) async {
     await Future.wait([
@@ -45,13 +46,14 @@ class LanguageWordsBloc extends Bloc<LanguageWordsEvent, LanguageWordsState> {
       ),
       emit.forEach(
         _tagRepository.watchCollectionPreviews(),
-        onData: (result) => switch ((state, result)) {
-          (final LanguageWordsEditing editing, Success(:final data)) => editing.copyWith(
-            images: {
-              for (final preview in data) preview.tag.id: ?preview.images.firstOrNull,
-            },
-          ),
-          (_, Success()) || (_, Failure()) => state,
+        onData: (result) {
+          if (result case Success(:final data)) {
+            _images = {for (final preview in data) preview.tag.id: ?preview.images.firstOrNull};
+          }
+          return switch (state) {
+            final LanguageWordsEditing editing => editing.copyWith(images: _images),
+            _ => state,
+          };
         },
       ),
     ]);
@@ -72,7 +74,7 @@ class LanguageWordsBloc extends Bloc<LanguageWordsEvent, LanguageWordsState> {
       language: event.language,
       isAdding: event.isAdding,
       coverage: coverage,
-      images: const <String, VocabularyImage>{},
+      images: _images,
       option: LanguageWordsOption.all,
       initialSelection: selection,
       selection: selection,
