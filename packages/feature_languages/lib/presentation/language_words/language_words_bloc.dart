@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:core/error/app_result.dart';
 import 'package:feature_languages/domain/use_cases/add_learned_language_use_case.dart';
 import 'package:feature_languages/presentation/language_words/language_words_event.dart';
@@ -7,38 +8,53 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/language_coverage.dart';
 import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/language_words_change.dart';
+import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/repositories/language_words_repository.dart';
+import 'package:shared/domain/repositories/tag_repository.dart';
 
 @injectable
 class LanguageWordsBloc extends Bloc<LanguageWordsEvent, LanguageWordsState> {
   LanguageWordsBloc(
     this._languageWordsRepository,
+    this._tagRepository,
     this._addLearnedLanguage,
   ) : super(const LanguageWordsLoading()) {
     on<LanguageWordsStarted>(_onStarted);
     on<LanguageWordsOptionChanged>(_onOptionChanged);
     on<LanguageWordsCollectionToggled>(_onCollectionToggled);
     on<LanguageWordsUntaggedToggled>(_onUntaggedToggled);
-    on<LanguageWordsNewWordsChanged>(_onNewWordsChanged);
+    on<LanguageWordsPreviewRequested>(_onPreviewRequested, transformer: restartable());
     on<LanguageWordsSaveRequested>(_onSaveRequested);
-    on<LanguageWordsSaveConfirmed>(_onSaveConfirmed);
-    on<LanguageWordsSaveCancelled>(_onSaveCancelled);
   }
 
   final LanguageWordsRepository _languageWordsRepository;
+  final TagRepository _tagRepository;
   final AddLearnedLanguageUseCase _addLearnedLanguage;
 
-  Future<void> _onStarted(LanguageWordsStarted event, Emitter<LanguageWordsState> emit) {
-    return emit.forEach(
-      _languageWordsRepository.watchLanguageCoverage(event.language),
-      onData: (result) => switch ((state, result)) {
-        (final LanguageWordsEditing editing, Success(:final data)) => editing.copyWith(
-          coverage: data,
-        ),
-        (_, Success(:final data)) => _initial(event, data),
-        (_, Failure(:final error)) => LanguageWordsFailure(error: error),
-      },
-    );
+  Future<void> _onStarted(LanguageWordsStarted event, Emitter<LanguageWordsState> emit) async {
+    await Future.wait([
+      emit.forEach(
+        _languageWordsRepository.watchLanguageCoverage(event.language),
+        onData: (result) => switch ((state, result)) {
+          (final LanguageWordsEditing editing, Success(:final data)) => editing.copyWith(
+            coverage: data,
+          ),
+          (_, Success(:final data)) => _initial(event, data),
+          (_, Failure(:final error)) => LanguageWordsFailure(error: error),
+        },
+      ),
+      emit.forEach(
+        _tagRepository.watchCollectionPreviews(),
+        onData: (result) => switch ((state, result)) {
+          (final LanguageWordsEditing editing, Success(:final data)) => editing.copyWith(
+            images: {
+              for (final preview in data) preview.tag.id: ?preview.images.firstOrNull,
+            },
+          ),
+          (_, Success()) || (_, Failure()) => state,
+        },
+      ),
+    ]);
   }
 
   LanguageWordsEditing _initial(LanguageWordsStarted event, LanguageCoverage coverage) {
@@ -51,16 +67,17 @@ class LanguageWordsBloc extends Bloc<LanguageWordsEvent, LanguageWordsState> {
     final untagged = event.isAdding
         ? false
         : _stateOf(coverage.untaggedInLanguageCount, coverage.untaggedCount);
+    add(const LanguageWordsPreviewRequested());
     return LanguageWordsEditing(
       language: event.language,
       isAdding: event.isAdding,
       coverage: coverage,
+      images: const <String, VocabularyImage>{},
       option: LanguageWordsOption.all,
       initialSelection: selection,
       selection: selection,
       initialUntagged: untagged,
       untagged: untagged,
-      newWords: defaultNewWordLimit,
       preview: null,
       isSaving: false,
       error: null,
@@ -86,24 +103,38 @@ class LanguageWordsBloc extends Bloc<LanguageWordsEvent, LanguageWordsState> {
     if (state case final LanguageWordsEditing editing when !editing.isSaving) {
       emit(
         editing.copyWith(
+          option: LanguageWordsOption.choose,
           selection: {
             ...editing.selection,
             event.tagId: editing.selection[event.tagId] != true,
           },
         ),
       );
+      add(const LanguageWordsPreviewRequested());
     }
   }
 
   void _onUntaggedToggled(LanguageWordsUntaggedToggled event, Emitter<LanguageWordsState> emit) {
     if (state case final LanguageWordsEditing editing when !editing.isSaving) {
-      emit(editing.copyWith(untagged: editing.untagged != true));
+      emit(
+        editing.copyWith(option: LanguageWordsOption.choose, untagged: editing.untagged != true),
+      );
+      add(const LanguageWordsPreviewRequested());
     }
   }
 
-  void _onNewWordsChanged(LanguageWordsNewWordsChanged event, Emitter<LanguageWordsState> emit) {
-    if (state case final LanguageWordsEditing editing when !editing.isSaving) {
-      emit(editing.copyWith(newWords: event.newWords));
+  Future<void> _onPreviewRequested(
+    LanguageWordsPreviewRequested event,
+    Emitter<LanguageWordsState> emit,
+  ) async {
+    if (state case final LanguageWordsEditing editing) {
+      final result = await _languageWordsRepository.previewChange(editing.language, editing.change);
+      if (state case final LanguageWordsEditing latest) {
+        emit(switch (result) {
+          Success(:final data) => latest.copyWith(preview: data),
+          Failure(:final error) => latest.copyWith(error: error),
+        });
+      }
     }
   }
 
@@ -112,56 +143,26 @@ class LanguageWordsBloc extends Bloc<LanguageWordsEvent, LanguageWordsState> {
     Emitter<LanguageWordsState> emit,
   ) async {
     if (state case final LanguageWordsEditing editing when !editing.isSaving) {
-      final saving = editing.copyWith(isSaving: true, error: null);
-      emit(saving);
-      if (editing.isAdding) {
-        _finish(
-          emit,
-          await _addLearnedLanguage(
-            language: editing.language,
-            newWords: editing.newWords,
-            words: switch (editing.option) {
-              LanguageWordsOption.all => addAllWords,
-              LanguageWordsOption.choose => editing.change,
-              LanguageWordsOption.none => null,
-            },
-          ),
-        );
-        return;
+      emit(editing.copyWith(isSaving: true, error: null));
+      final result = editing.isAdding
+          ? await _addLearnedLanguage(
+              language: editing.language,
+              newWords: defaultNewWordLimit,
+              words: switch (editing.option) {
+                LanguageWordsOption.all => addAllWords,
+                LanguageWordsOption.choose => editing.change,
+                LanguageWordsOption.none => null,
+              },
+            )
+          : await _languageWordsRepository.applyChange(editing.language, editing.change);
+      switch ((state, result)) {
+        case (_, Success()):
+          emit(const LanguageWordsSaved());
+        case (final LanguageWordsEditing latest, Failure(:final error)):
+          emit(latest.copyWith(isSaving: false, error: error));
+        case (_, Failure()):
+          break;
       }
-      emit(switch (await _languageWordsRepository.previewChange(editing.language, editing.change)) {
-        Success(:final data) => saving.copyWith(preview: data),
-        Failure(:final error) => saving.copyWith(isSaving: false, error: error),
-      });
-    }
-  }
-
-  Future<void> _onSaveConfirmed(
-    LanguageWordsSaveConfirmed event,
-    Emitter<LanguageWordsState> emit,
-  ) async {
-    if (state case final LanguageWordsEditing editing when editing.preview != null) {
-      _finish(
-        emit,
-        await _languageWordsRepository.applyChange(editing.language, editing.change),
-      );
-    }
-  }
-
-  void _onSaveCancelled(LanguageWordsSaveCancelled event, Emitter<LanguageWordsState> emit) {
-    if (state case final LanguageWordsEditing editing) {
-      emit(editing.copyWith(preview: null, isSaving: false));
-    }
-  }
-
-  void _finish(Emitter<LanguageWordsState> emit, AppResult<()> result) {
-    switch ((state, result)) {
-      case (_, Success()):
-        emit(const LanguageWordsSaved());
-      case (final LanguageWordsEditing editing, Failure(:final error)):
-        emit(editing.copyWith(isSaving: false, preview: null, error: error));
-      case (_, Failure()):
-        break;
     }
   }
 }

@@ -34,6 +34,18 @@ extension LanguageExtensions on Language {
     Language.unknown => context.s.unknown,
   };
 
+  String toShortLabel(BuildContext context) => switch (this) {
+    Language.englishUk || Language.englishUs => context.s.languageEnglish,
+    Language.spanishSpain || Language.spanishLatinAmerica => context.s.languageSpanish,
+    Language.frenchFrance || Language.frenchCanada => context.s.languageFrench,
+    Language.germanGermany || Language.germanSwitzerland => context.s.languageGerman,
+    Language.polish => context.s.languagePolish,
+    Language.italian => context.s.languageItalian,
+    Language.greek => context.s.languageGreek,
+    Language.romanian => context.s.languageRomanian,
+    Language.unknown => context.s.unknown,
+  };
+
   String toFlag() => switch (this) {
     Language.englishUk => _flagUnitedKingdom,
     Language.englishUs => _flagUnitedStates,

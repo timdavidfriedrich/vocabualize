@@ -2,8 +2,8 @@ import 'package:core/error/app_error.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_coverage.dart';
-import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/language_words_change.dart';
+import 'package:shared/domain/entities/vocabulary_image.dart';
 
 part 'language_words_state.mapper.dart';
 
@@ -23,12 +23,12 @@ class const LanguageWordsEditing({
   required final Language language,
   required final bool isAdding,
   required final LanguageCoverage coverage,
+  required final Map<String, VocabularyImage> images,
   required final LanguageWordsOption option,
   required final Map<String, bool?> initialSelection,
   required final Map<String, bool?> selection,
   required final bool? initialUntagged,
   required final bool? untagged,
-  required final NewWordLimit newWords,
   required final LanguageWordsPreview? preview,
   required final bool isSaving,
   required final AppError? error,
@@ -64,4 +64,17 @@ extension LanguageWordsEditingExtensions on LanguageWordsEditing {
         change.addsUntagged ||
         change.removesUntagged;
   }
+
+  bool isRemoving(String tagId) => selection[tagId] == false && initialSelection[tagId] != false;
+
+  bool get isRemovingUntagged => untagged == false && initialUntagged != false;
+
+  int get importCount => switch (option) {
+    LanguageWordsOption.all => coverage.totalCount,
+    LanguageWordsOption.choose => preview?.addedCount ?? 0,
+    LanguageWordsOption.none => 0,
+  };
+
+  int get resultCount =>
+      coverage.inLanguageCount + (preview?.addedCount ?? 0) - (preview?.removedCount ?? 0);
 }

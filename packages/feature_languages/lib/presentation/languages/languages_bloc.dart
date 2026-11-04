@@ -1,6 +1,8 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:core/error/app_result.dart';
 import 'package:feature_languages/domain/use_cases/change_main_language_use_case.dart';
+import 'package:feature_languages/domain/use_cases/delete_learned_language_use_case.dart';
+import 'package:feature_languages/domain/use_cases/resume_learned_language_use_case.dart';
 import 'package:feature_languages/presentation/languages/languages_event.dart';
 import 'package:feature_languages/presentation/languages/languages_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,15 +17,22 @@ class LanguagesBloc extends Bloc<LanguagesEvent, LanguagesState> {
     this._languageRepository,
     this._vocabularyRepository,
     this._changeMainLanguage,
+    this._resumeLearnedLanguage,
+    this._deleteLearnedLanguage,
   ) : super(const LanguagesLoading()) {
     on<LanguagesStarted>(_onStarted);
     on<LanguagesSetupChanged>(_onSetupChanged, transformer: restartable());
     on<LanguagesMainLanguageChanged>(_onMainLanguageChanged);
+    on<LanguagesPauseRequested>(_onPauseRequested);
+    on<LanguagesResumeRequested>(_onResumeRequested);
+    on<LanguagesDeleteRequested>(_onDeleteRequested);
   }
 
   final LanguageRepository _languageRepository;
   final VocabularyRepository _vocabularyRepository;
   final ChangeMainLanguageUseCase _changeMainLanguage;
+  final ResumeLearnedLanguageUseCase _resumeLearnedLanguage;
+  final DeleteLearnedLanguageUseCase _deleteLearnedLanguage;
 
   Future<void> _onStarted(LanguagesStarted event, Emitter<LanguagesState> emit) {
     return emit.forEach(
@@ -72,10 +81,38 @@ class LanguagesBloc extends Bloc<LanguagesEvent, LanguagesState> {
   Future<void> _onMainLanguageChanged(
     LanguagesMainLanguageChanged event,
     Emitter<LanguagesState> emit,
+  ) => _run(emit, (_) => _changeMainLanguage(event.language));
+
+  Future<void> _onPauseRequested(
+    LanguagesPauseRequested event,
+    Emitter<LanguagesState> emit,
+  ) => _run(emit, (setup) async {
+    final learned = setup.learnedOf(event.language);
+    if (learned == null) return const Success(());
+    return _languageRepository.saveLearnedLanguage(learned.copyWith(isPaused: true));
+  });
+
+  Future<void> _onResumeRequested(
+    LanguagesResumeRequested event,
+    Emitter<LanguagesState> emit,
+  ) => _run(emit, (setup) async {
+    final learned = setup.learnedOf(event.language);
+    if (learned == null) return const Success(());
+    return _resumeLearnedLanguage(learned, startsOver: event.startsOver);
+  });
+
+  Future<void> _onDeleteRequested(
+    LanguagesDeleteRequested event,
+    Emitter<LanguagesState> emit,
+  ) => _run(emit, (_) => _deleteLearnedLanguage(event.language));
+
+  Future<void> _run(
+    Emitter<LanguagesState> emit,
+    Future<AppResult<()>> Function(LanguageSetup setup) action,
   ) async {
     if (state case final LanguagesLoaded loaded when !loaded.isBusy) {
       emit(loaded.copyWith(isBusy: true, error: null));
-      final result = await _changeMainLanguage(event.language);
+      final result = await action(loaded.setup);
       if (state case final LanguagesLoaded latest) {
         emit(
           latest.copyWith(

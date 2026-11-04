@@ -483,9 +483,8 @@
   "scanReportSuggestionButton": "Report a suggestion",
   "languagesTitle": "Your languages",
   "languagesSpeakTitle": "I speak",
-  "languagesSpeakHint": "A language you know well",
   "languagesLearnTitle": "I learn",
-  "languagesLearnHint": "Choose one or more",
+  "languagesLearnHint": "Pick one or more",
   "languagesContinueButton": "Continue",
   "languagesPausedTitle": "Paused",
   "languagesChangeButton": "Change",
@@ -499,23 +498,6 @@
     }
   },
   "languagesPickTitle": "Choose a language",
-  "languagesMainClashTitle": "Speak {language}?",
-  "@languagesMainClashTitle": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "languagesMainClashMessage": "You're learning {language}. If you speak it, it gets paused. Its progress stays.",
-  "@languagesMainClashMessage": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "languagesMainClashButton": "Continue",
   "learnedLanguageAskMeInLabel": "Ask me in",
   "learnedLanguageAddAskMeInButton": "Ask me in another language",
   "learnedLanguageAskMeInHelpMessage": "Cards ask in {askMeIn} instead of {main}, for words you already know well in {askMeIn}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.",
@@ -534,155 +516,16 @@
   },
   "learnedLanguageAskMeInHelpTooltip": "What does this mean?",
   "learnedLanguageRemoveAskMeInTooltip": "Remove",
-  "learnedLanguageFromLevelLabel": "From level: {level}",
-  "@learnedLanguageFromLevelLabel": {
-    "placeholders": {
-      "level": {
-        "type": "String"
-      }
-    }
-  },
   "learnedLanguageNewWordsTitle": "New words per practice",
   "learnedLanguageAllNewWords": "All",
-  "learnedLanguageWordsTitle": "Words",
-  "learnedLanguageWordsCount": "{count} of {total}",
-  "@learnedLanguageWordsCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "learnedLanguageChooseWordsButton": "Choose words",
-  "learnedLanguagePauseButton": "Pause",
-  "learnedLanguageResumeButton": "Resume",
+  "learnedLanguagePauseButton": "Pause {language}",
+  "learnedLanguageResumeButton": "Resume {language}",
   "learnedLanguageLastActiveHint": "You need at least one language to learn.",
-  "learnedLanguageDeleteTitle": "Delete {language}?",
-  "@learnedLanguageDeleteTitle": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "learnedLanguageDeleteMessage": "Your progress in {language} is deleted. Your words stay in your other languages.",
-  "@learnedLanguageDeleteMessage": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "learnedLanguageResumeTitle": "Welcome back to {language}",
-  "@learnedLanguageResumeTitle": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "learnedLanguageResumeMessage": "Continue where you left off, or start over?",
   "learnedLanguageStartOverButton": "Start over",
-  "languageWordsTitle": "Words in {language}",
-  "@languageWordsTitle": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "languageWordsAddTitle": "Learn {language} too?",
-  "@languageWordsAddTitle": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "languageWordsAddQuestion": "Which of your words do you want to learn in {language}?",
-  "@languageWordsAddQuestion": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "languageWordsAllOption": "All words ({count})",
-  "@languageWordsAllOption": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "languageWordsChooseOption": "Choose collections",
-  "languageWordsNoneOption": "None, start fresh",
-  "languageWordsLeftOutHint": "Words you leave out stay in your other languages. You can add them to {language} any time.",
-  "@languageWordsLeftOutHint": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
+  "languageWordsAllOption": "All words",
+  "languageWordsNoneOption": "None",
   "languageWordsUntaggedLabel": "Not in a collection",
-  "languageWordsCount": "({count})",
-  "@languageWordsCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "languageWordsPartialCount": "({count} of {total})",
-  "@languageWordsPartialCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "languageWordsStartButton": "Start {language}",
-  "@languageWordsStartButton": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
   "languageWordsSaveButton": "Save",
-  "languageWordsSummaryTitle": "Save changes?",
-  "languageWordsSummaryAdded": "{count, plural, =0{No words are added.} =1{1 word is added.} other{{count} words are added.}}",
-  "@languageWordsSummaryAdded": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "languageWordsSummaryRemoved": "{count, plural, =0{No words are removed.} =1{1 word is removed.} other{{count} words are removed.}}",
-  "@languageWordsSummaryRemoved": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "languageWordsSummaryRestartHint": "Removed words start over if you add them again.",
-  "languageWordsSummaryAlsoElsewhere": "{count, plural, =1{1 of them is also in another collection.} other{{count} of them are also in other collections.}}",
-  "@languageWordsSummaryAlsoElsewhere": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "languageWordsNoWordsHint": "You have no words yet. Words you add are learned in {language} too.",
   "@languageWordsNoWordsHint": {
     "placeholders": {
@@ -816,6 +659,252 @@
   "collectionEmptyLanguageMessage": "None of these words are in {language} yet.",
   "@collectionEmptyLanguageMessage": {
     "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageEnglish": "English",
+  "languageSpanish": "Spanish",
+  "languageFrench": "French",
+  "languageGerman": "German",
+  "photoStackMoreLabel": "+{count}",
+  "@photoStackMoreLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "languageOnboardingSpeakTitle": "Which language do you speak?",
+  "languageOnboardingLearnTitle": "What do you want to learn?",
+  "languageOnboardingContinueWithButton": "Continue with {count}",
+  "@languageOnboardingContinueWithButton": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languagesPauseAction": "Pause",
+  "languagesAsksInLabel": "Asks in {flag}",
+  "@languagesAsksInLabel": {
+    "placeholders": {
+      "flag": {
+        "type": "String"
+      }
+    }
+  },
+  "languagesPausedWordCount": "{count, plural, =1{1 word, progress kept} other{{count} words, progress kept}}",
+  "@languagesPausedWordCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languagesContinueWhereLeftOffButton": "Continue where I left off",
+  "languageDeleteButton": "Delete {language}",
+  "@languageDeleteButton": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageDeleteTitle": "Delete {language}?",
+  "@languageDeleteTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageDeleteDeletedLabel": "Deleted",
+  "languageDeleteProgressLine": "{count, plural, =1{{language} progress for 1 word} other{{language} progress for {count} words}}",
+  "@languageDeleteProgressLine": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageDeleteKeptLabel": "Kept",
+  "languageDeleteWordsLine": "All words, photos and collections",
+  "languageDeleteKeptProgressLine": "Your progress in {language}",
+  "@languageDeleteKeptProgressLine": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "mainLanguageClashEmphasis": "learning",
+  "mainLanguageClashTitle": "You are {emphasis} {language}",
+  "@mainLanguageClashTitle": {
+    "placeholders": {
+      "emphasis": {
+        "type": "String"
+      },
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "mainLanguageClashMessage": "{count, plural, =1{To speak {language}, {language} pauses as a learned language. Your word and its progress are kept.} other{To speak {language}, {language} pauses as a learned language. Your {count} words and their progress are kept.}}",
+  "@mainLanguageClashMessage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mainLanguageClashSwitchButton": "Pause {language} and switch",
+  "@mainLanguageClashSwitchButton": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "mainLanguageClashKeepButton": "Keep {language}",
+  "@mainLanguageClashKeepButton": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "learnedLanguageAskMeInFromRole": "Ask me in, from {level}",
+  "@learnedLanguageAskMeInFromRole": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "learnedLanguageFromLevelTitle": "From level",
+  "learnedLanguageBelowLevelHint": "Words below this level ask in {language}.",
+  "@learnedLanguageBelowLevelHint": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "learnedLanguageAskMeInIntroMessage": "Cards can ask in another language instead of {main}. You can always show the {main} word. This keeps another language active while you learn {learned}.",
+  "@learnedLanguageAskMeInIntroMessage": {
+    "placeholders": {
+      "main": {
+        "type": "String"
+      },
+      "learned": {
+        "type": "String"
+      }
+    }
+  },
+  "learnedLanguagePausedMessage": "{language} paused",
+  "@learnedLanguagePausedMessage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "undo": "Undo",
+  "learnedLanguagePausedHint": "{count, plural, =1{{language} is hidden from Home and practice. Progress for its word is kept.} other{{language} is hidden from Home and practice. Progress for its {count} words is kept.}}",
+  "@learnedLanguagePausedHint": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "learnedLanguageImportedWordsTitle": "Imported words",
+  "learnedLanguageTotalWordsHint": "You have {count} in total",
+  "@learnedLanguageTotalWordsHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageWordsManageTitle": "Manage words",
+  "@learnedLanguageResumeButton": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "@learnedLanguagePauseButton": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageWordsImportButton": "{count, plural, =0{Start with no words} =1{Import 1 word} other{Import {count} words}}",
+  "@languageWordsImportButton": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageWordsImportTitle": "Which words do you want to import to {language}?",
+  "@languageWordsImportTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageWordsImportHint": "You can change this later.",
+  "languageWordsSomeCollectionsOption": "Some collections",
+  "languageWordsNoneHint": "Start with an empty list",
+  "languageWordsAddedLabel": "+{count}",
+  "@languageWordsAddedLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "languageWordsRemovedLabel": "−{count}",
+  "@languageWordsRemovedLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "languageWordsImportedCount": "{count} of {total} words imported",
+  "@languageWordsImportedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "languageWordsRemovedWarning": "{count, plural, =1{1 word, {language} progress is deleted} other{{count} words, {language} progress is deleted}}",
+  "@languageWordsRemovedWarning": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
       "language": {
         "type": "String"
       }

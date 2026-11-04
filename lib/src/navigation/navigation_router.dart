@@ -18,6 +18,7 @@ import 'package:feature_languages/presentation/language_words/language_words_scr
 import 'package:feature_languages/presentation/languages/languages_bloc.dart';
 import 'package:feature_languages/presentation/languages/languages_event.dart';
 import 'package:feature_languages/presentation/languages/languages_screen.dart';
+import 'package:feature_languages/presentation/languages/main_language_screen.dart';
 import 'package:feature_languages/presentation/learned_language/learned_language_bloc.dart';
 import 'package:feature_languages/presentation/learned_language/learned_language_event.dart';
 import 'package:feature_languages/presentation/learned_language/learned_language_screen.dart';
@@ -159,6 +160,10 @@ class const _AppPage({
     Languages() => BlocProvider(
       create: (_) => sl<LanguagesBloc>()..add(const LanguagesStarted()),
       child: const LanguagesScreen(),
+    ),
+    MainLanguage() => BlocProvider(
+      create: (_) => sl<LanguagesBloc>()..add(const LanguagesStarted()),
+      child: const MainLanguageScreen(),
     ),
     LearnedLanguageDetails(:final language) => BlocProvider(
       create: (_) => sl<LearnedLanguageBloc>()..add(LearnedLanguageStarted(language: language)),

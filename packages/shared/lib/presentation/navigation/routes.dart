@@ -19,6 +19,8 @@ class const LanguageOnboarding() extends AppRoute;
 
 class const Languages() extends AppRoute;
 
+class const MainLanguage() extends AppRoute;
+
 class const LearnedLanguageDetails({
   required final Language language,
 }) extends AppRoute {

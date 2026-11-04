@@ -41,6 +41,8 @@ extension NavigationExtension on BuildContext {
 
   Future<void> pushLanguages() => appRouter.push(const Languages());
 
+  Future<void> pushMainLanguage() => appRouter.push(const MainLanguage());
+
   Future<void> pushLearnedLanguageDetails({required Language language}) =>
       appRouter.push(LearnedLanguageDetails(language: language));
 

@@ -14,3 +14,16 @@ class const LanguagesSetupChanged({
 class const LanguagesMainLanguageChanged({
   required final Language language,
 }) extends LanguagesEvent;
+
+class const LanguagesPauseRequested({
+  required final Language language,
+}) extends LanguagesEvent;
+
+class const LanguagesResumeRequested({
+  required final Language language,
+  required final bool startsOver,
+}) extends LanguagesEvent;
+
+class const LanguagesDeleteRequested({
+  required final Language language,
+}) extends LanguagesEvent;

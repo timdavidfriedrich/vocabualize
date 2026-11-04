@@ -1012,13 +1012,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get languagesSpeakTitle => 'Я розмовляю';
 
   @override
-  String get languagesSpeakHint => 'Мова, яку ви добре знаєте';
-
-  @override
   String get languagesLearnTitle => 'Я вивчаю';
 
   @override
-  String get languagesLearnHint => 'Оберіть одну або кілька';
+  String get languagesLearnHint => 'Обери одну або кілька';
 
   @override
   String get languagesContinueButton => 'Продовжити';
@@ -1049,19 +1046,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get languagesPickTitle => 'Оберіть мову';
 
   @override
-  String languagesMainClashTitle(String language) {
-    return 'Ви розмовляєте мовою $language?';
-  }
-
-  @override
-  String languagesMainClashMessage(String language) {
-    return 'Ви вивчаєте $language. Якщо ви нею розмовляєте, її буде призупинено. Ваш прогрес збережеться.';
-  }
-
-  @override
-  String get languagesMainClashButton => 'Продовжити';
-
-  @override
   String get learnedLanguageAskMeInLabel => 'Питати мене мовою';
 
   @override
@@ -1079,157 +1063,38 @@ class AppLocalizationsUk extends AppLocalizations {
   String get learnedLanguageRemoveAskMeInTooltip => 'Прибрати';
 
   @override
-  String learnedLanguageFromLevelLabel(String level) {
-    return 'Від рівня: $level';
-  }
-
-  @override
   String get learnedLanguageNewWordsTitle => 'Нових слів за тренування';
 
   @override
   String get learnedLanguageAllNewWords => 'Усі';
 
   @override
-  String get learnedLanguageWordsTitle => 'Слова';
-
-  @override
-  String learnedLanguageWordsCount(int count, int total) {
-    return '$count з $total';
+  String learnedLanguagePauseButton(String language) {
+    return 'Поставити $language на паузу';
   }
 
   @override
-  String get learnedLanguageChooseWordsButton => 'Обрати слова';
-
-  @override
-  String get learnedLanguagePauseButton => 'Призупинити';
-
-  @override
-  String get learnedLanguageResumeButton => 'Відновити';
+  String learnedLanguageResumeButton(String language) {
+    return 'Відновити: $language';
+  }
 
   @override
   String get learnedLanguageLastActiveHint => 'Потрібна принаймні одна мова для вивчення.';
 
   @override
-  String learnedLanguageDeleteTitle(String language) {
-    return 'Видалити $language?';
-  }
-
-  @override
-  String learnedLanguageDeleteMessage(String language) {
-    return 'Ваш прогрес у мові $language буде видалено. Ваші слова залишаться в інших мовах.';
-  }
-
-  @override
-  String learnedLanguageResumeTitle(String language) {
-    return 'З поверненням до мови $language';
-  }
-
-  @override
-  String get learnedLanguageResumeMessage =>
-      'Продовжити з того місця, де ви зупинилися, чи почати спочатку?';
-
-  @override
   String get learnedLanguageStartOverButton => 'Почати спочатку';
 
   @override
-  String languageWordsTitle(String language) {
-    return 'Слова мовою $language';
-  }
+  String get languageWordsAllOption => 'Усі слова';
 
   @override
-  String languageWordsAddTitle(String language) {
-    return 'Вивчати також $language?';
-  }
-
-  @override
-  String languageWordsAddQuestion(String language) {
-    return 'Які зі своїх слів ви хочете вивчати мовою $language?';
-  }
-
-  @override
-  String languageWordsAllOption(int count) {
-    return 'Усі слова ($count)';
-  }
-
-  @override
-  String get languageWordsChooseOption => 'Обрати колекції';
-
-  @override
-  String get languageWordsNoneOption => 'Жодних, почати з нуля';
-
-  @override
-  String languageWordsLeftOutHint(String language) {
-    return 'Слова, які ви не обрали, залишаються в інших мовах. Ви можете будь-коли додати їх до мови $language.';
-  }
+  String get languageWordsNoneOption => 'Жодних';
 
   @override
   String get languageWordsUntaggedLabel => 'Поза колекціями';
 
   @override
-  String languageWordsCount(int count) {
-    return '($count)';
-  }
-
-  @override
-  String languageWordsPartialCount(int count, int total) {
-    return '($count з $total)';
-  }
-
-  @override
-  String languageWordsStartButton(String language) {
-    return 'Почати $language';
-  }
-
-  @override
   String get languageWordsSaveButton => 'Зберегти';
-
-  @override
-  String get languageWordsSummaryTitle => 'Зберегти зміни?';
-
-  @override
-  String languageWordsSummaryAdded(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Додається $count слова.',
-      many: 'Додається $count слів.',
-      few: 'Додаються $count слова.',
-      one: 'Додається $count слово.',
-      zero: 'Жодне слово не додається.',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String languageWordsSummaryRemoved(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Прибирається $count слова.',
-      many: 'Прибирається $count слів.',
-      few: 'Прибираються $count слова.',
-      one: 'Прибирається $count слово.',
-      zero: 'Жодне слово не прибирається.',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get languageWordsSummaryRestartHint =>
-      'Прибрані слова почнуться спочатку, якщо ви додасте їх знову.';
-
-  @override
-  String languageWordsSummaryAlsoElsewhere(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count з них є також в інших колекціях.',
-      many: '$count з них є також в інших колекціях.',
-      few: '$count з них є також в інших колекціях.',
-      one: '$count з них є також в інших колекціях.',
-    );
-    return '$_temp0';
-  }
 
   @override
   String languageWordsNoWordsHint(String language) {
@@ -1377,5 +1242,235 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String collectionEmptyLanguageMessage(String language) {
     return 'Жодне з цих слів ще не додано до мови $language.';
+  }
+
+  @override
+  String get languageEnglish => 'Англійська';
+
+  @override
+  String get languageSpanish => 'Іспанська';
+
+  @override
+  String get languageFrench => 'Французька';
+
+  @override
+  String get languageGerman => 'Німецька';
+
+  @override
+  String photoStackMoreLabel(String count) {
+    return '+$count';
+  }
+
+  @override
+  String get languageOnboardingSpeakTitle => 'Якою мовою ти розмовляєш?';
+
+  @override
+  String get languageOnboardingLearnTitle => 'Що ти хочеш вивчати?';
+
+  @override
+  String languageOnboardingContinueWithButton(int count) {
+    return 'Продовжити з $count';
+  }
+
+  @override
+  String get languagesPauseAction => 'Пауза';
+
+  @override
+  String languagesAsksInLabel(String flag) {
+    return 'Питає мовою $flag';
+  }
+
+  @override
+  String languagesPausedWordCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count слова, прогрес збережено',
+      many: '$count слів, прогрес збережено',
+      few: '$count слова, прогрес збережено',
+      one: '$count слово, прогрес збережено',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get languagesContinueWhereLeftOffButton => 'Продовжити з того ж місця';
+
+  @override
+  String languageDeleteButton(String language) {
+    return 'Видалити: $language';
+  }
+
+  @override
+  String languageDeleteTitle(String language) {
+    return 'Видалити: $language?';
+  }
+
+  @override
+  String get languageDeleteDeletedLabel => 'Видаляється';
+
+  @override
+  String languageDeleteProgressLine(String language, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Прогрес мовою $language для $count слова',
+      many: 'Прогрес мовою $language для $count слів',
+      few: 'Прогрес мовою $language для $count слів',
+      one: 'Прогрес мовою $language для $count слова',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get languageDeleteKeptLabel => 'Залишається';
+
+  @override
+  String get languageDeleteWordsLine => 'Усі слова, фото та колекції';
+
+  @override
+  String languageDeleteKeptProgressLine(String language) {
+    return 'Твій прогрес мовою $language';
+  }
+
+  @override
+  String get mainLanguageClashEmphasis => 'вивчаєш';
+
+  @override
+  String mainLanguageClashTitle(String emphasis, String language) {
+    return 'Ти $emphasis $language';
+  }
+
+  @override
+  String mainLanguageClashMessage(String language, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Твої $count слова і їхній прогрес збережено.',
+      many:
+          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Твої $count слів і їхній прогрес збережено.',
+      few:
+          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Твої $count слова і їхній прогрес збережено.',
+      one:
+          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Твоє $count слово і його прогрес збережено.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mainLanguageClashSwitchButton(String language) {
+    return 'Поставити $language на паузу і змінити';
+  }
+
+  @override
+  String mainLanguageClashKeepButton(String language) {
+    return 'Залишити $language';
+  }
+
+  @override
+  String learnedLanguageAskMeInFromRole(String level) {
+    return 'Питай мовою, від рівня $level';
+  }
+
+  @override
+  String get learnedLanguageFromLevelTitle => 'Від рівня';
+
+  @override
+  String learnedLanguageBelowLevelHint(String language) {
+    return 'Слова нижче цього рівня питають мовою $language.';
+  }
+
+  @override
+  String learnedLanguageAskMeInIntroMessage(String main, String learned) {
+    return 'Картки можуть питати іншою мовою замість $main. Слово мовою $main завжди можна показати. Так ще одна мова залишається активною, поки ти вивчаєш $learned.';
+  }
+
+  @override
+  String learnedLanguagePausedMessage(String language) {
+    return '$language на паузі';
+  }
+
+  @override
+  String get undo => 'Скасувати';
+
+  @override
+  String learnedLanguagePausedHint(String language, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$language приховано з головної та з практики. Прогрес для $count слова збережено.',
+      many: '$language приховано з головної та з практики. Прогрес для $count слів збережено.',
+      few: '$language приховано з головної та з практики. Прогрес для $count слів збережено.',
+      one: '$language приховано з головної та з практики. Прогрес для $count слова збережено.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get learnedLanguageImportedWordsTitle => 'Імпортовані слова';
+
+  @override
+  String learnedLanguageTotalWordsHint(int count) {
+    return 'Усього в тебе $count';
+  }
+
+  @override
+  String get languageWordsManageTitle => 'Керувати словами';
+
+  @override
+  String languageWordsImportButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Імпортувати $count слова',
+      many: 'Імпортувати $count слів',
+      few: 'Імпортувати $count слова',
+      one: 'Імпортувати $count слово',
+      zero: 'Почати без слів',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String languageWordsImportTitle(String language) {
+    return 'Які слова ти хочеш імпортувати до мови $language?';
+  }
+
+  @override
+  String get languageWordsImportHint => 'Це можна змінити пізніше.';
+
+  @override
+  String get languageWordsSomeCollectionsOption => 'Деякі колекції';
+
+  @override
+  String get languageWordsNoneHint => 'Почати з порожнього списку';
+
+  @override
+  String languageWordsAddedLabel(String count) {
+    return '+$count';
+  }
+
+  @override
+  String languageWordsRemovedLabel(String count) {
+    return '−$count';
+  }
+
+  @override
+  String languageWordsImportedCount(int count, int total) {
+    return 'Імпортовано $count з $total слів';
+  }
+
+  @override
+  String languageWordsRemovedWarning(int count, String language) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count слова, прогрес мовою $language видаляється',
+      many: '$count слів, прогрес мовою $language видаляється',
+      few: '$count слова, прогрес мовою $language видаляється',
+      one: '$count слово, прогрес мовою $language видаляється',
+    );
+    return '$_temp0';
   }
 }

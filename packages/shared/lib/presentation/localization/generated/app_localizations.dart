@@ -1638,12 +1638,6 @@ abstract class AppLocalizations {
   /// **'I speak'**
   String get languagesSpeakTitle;
 
-  /// No description provided for @languagesSpeakHint.
-  ///
-  /// In en, this message translates to:
-  /// **'A language you know well'**
-  String get languagesSpeakHint;
-
   /// No description provided for @languagesLearnTitle.
   ///
   /// In en, this message translates to:
@@ -1653,7 +1647,7 @@ abstract class AppLocalizations {
   /// No description provided for @languagesLearnHint.
   ///
   /// In en, this message translates to:
-  /// **'Choose one or more'**
+  /// **'Pick one or more'**
   String get languagesLearnHint;
 
   /// No description provided for @languagesContinueButton.
@@ -1692,24 +1686,6 @@ abstract class AppLocalizations {
   /// **'Choose a language'**
   String get languagesPickTitle;
 
-  /// No description provided for @languagesMainClashTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Speak {language}?'**
-  String languagesMainClashTitle(String language);
-
-  /// No description provided for @languagesMainClashMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'You\'re learning {language}. If you speak it, it gets paused. Its progress stays.'**
-  String languagesMainClashMessage(String language);
-
-  /// No description provided for @languagesMainClashButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Continue'**
-  String get languagesMainClashButton;
-
   /// No description provided for @learnedLanguageAskMeInLabel.
   ///
   /// In en, this message translates to:
@@ -1740,12 +1716,6 @@ abstract class AppLocalizations {
   /// **'Remove'**
   String get learnedLanguageRemoveAskMeInTooltip;
 
-  /// No description provided for @learnedLanguageFromLevelLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'From level: {level}'**
-  String learnedLanguageFromLevelLabel(String level);
-
   /// No description provided for @learnedLanguageNewWordsTitle.
   ///
   /// In en, this message translates to:
@@ -1758,35 +1728,17 @@ abstract class AppLocalizations {
   /// **'All'**
   String get learnedLanguageAllNewWords;
 
-  /// No description provided for @learnedLanguageWordsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Words'**
-  String get learnedLanguageWordsTitle;
-
-  /// No description provided for @learnedLanguageWordsCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} of {total}'**
-  String learnedLanguageWordsCount(int count, int total);
-
-  /// No description provided for @learnedLanguageChooseWordsButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose words'**
-  String get learnedLanguageChooseWordsButton;
-
   /// No description provided for @learnedLanguagePauseButton.
   ///
   /// In en, this message translates to:
-  /// **'Pause'**
-  String get learnedLanguagePauseButton;
+  /// **'Pause {language}'**
+  String learnedLanguagePauseButton(String language);
 
   /// No description provided for @learnedLanguageResumeButton.
   ///
   /// In en, this message translates to:
-  /// **'Resume'**
-  String get learnedLanguageResumeButton;
+  /// **'Resume {language}'**
+  String learnedLanguageResumeButton(String language);
 
   /// No description provided for @learnedLanguageLastActiveHint.
   ///
@@ -1794,77 +1746,23 @@ abstract class AppLocalizations {
   /// **'You need at least one language to learn.'**
   String get learnedLanguageLastActiveHint;
 
-  /// No description provided for @learnedLanguageDeleteTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete {language}?'**
-  String learnedLanguageDeleteTitle(String language);
-
-  /// No description provided for @learnedLanguageDeleteMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Your progress in {language} is deleted. Your words stay in your other languages.'**
-  String learnedLanguageDeleteMessage(String language);
-
-  /// No description provided for @learnedLanguageResumeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome back to {language}'**
-  String learnedLanguageResumeTitle(String language);
-
-  /// No description provided for @learnedLanguageResumeMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Continue where you left off, or start over?'**
-  String get learnedLanguageResumeMessage;
-
   /// No description provided for @learnedLanguageStartOverButton.
   ///
   /// In en, this message translates to:
   /// **'Start over'**
   String get learnedLanguageStartOverButton;
 
-  /// No description provided for @languageWordsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Words in {language}'**
-  String languageWordsTitle(String language);
-
-  /// No description provided for @languageWordsAddTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Learn {language} too?'**
-  String languageWordsAddTitle(String language);
-
-  /// No description provided for @languageWordsAddQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'Which of your words do you want to learn in {language}?'**
-  String languageWordsAddQuestion(String language);
-
   /// No description provided for @languageWordsAllOption.
   ///
   /// In en, this message translates to:
-  /// **'All words ({count})'**
-  String languageWordsAllOption(int count);
-
-  /// No description provided for @languageWordsChooseOption.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose collections'**
-  String get languageWordsChooseOption;
+  /// **'All words'**
+  String get languageWordsAllOption;
 
   /// No description provided for @languageWordsNoneOption.
   ///
   /// In en, this message translates to:
-  /// **'None, start fresh'**
+  /// **'None'**
   String get languageWordsNoneOption;
-
-  /// No description provided for @languageWordsLeftOutHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Words you leave out stay in your other languages. You can add them to {language} any time.'**
-  String languageWordsLeftOutHint(String language);
 
   /// No description provided for @languageWordsUntaggedLabel.
   ///
@@ -1872,59 +1770,11 @@ abstract class AppLocalizations {
   /// **'Not in a collection'**
   String get languageWordsUntaggedLabel;
 
-  /// No description provided for @languageWordsCount.
-  ///
-  /// In en, this message translates to:
-  /// **'({count})'**
-  String languageWordsCount(int count);
-
-  /// No description provided for @languageWordsPartialCount.
-  ///
-  /// In en, this message translates to:
-  /// **'({count} of {total})'**
-  String languageWordsPartialCount(int count, int total);
-
-  /// No description provided for @languageWordsStartButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Start {language}'**
-  String languageWordsStartButton(String language);
-
   /// No description provided for @languageWordsSaveButton.
   ///
   /// In en, this message translates to:
   /// **'Save'**
   String get languageWordsSaveButton;
-
-  /// No description provided for @languageWordsSummaryTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Save changes?'**
-  String get languageWordsSummaryTitle;
-
-  /// No description provided for @languageWordsSummaryAdded.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =0{No words are added.} =1{1 word is added.} other{{count} words are added.}}'**
-  String languageWordsSummaryAdded(int count);
-
-  /// No description provided for @languageWordsSummaryRemoved.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =0{No words are removed.} =1{1 word is removed.} other{{count} words are removed.}}'**
-  String languageWordsSummaryRemoved(int count);
-
-  /// No description provided for @languageWordsSummaryRestartHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Removed words start over if you add them again.'**
-  String get languageWordsSummaryRestartHint;
-
-  /// No description provided for @languageWordsSummaryAlsoElsewhere.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 of them is also in another collection.} other{{count} of them are also in other collections.}}'**
-  String languageWordsSummaryAlsoElsewhere(int count);
 
   /// No description provided for @languageWordsNoWordsHint.
   ///
@@ -2141,6 +1991,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'None of these words are in {language} yet.'**
   String collectionEmptyLanguageMessage(String language);
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @languageSpanish.
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get languageSpanish;
+
+  /// No description provided for @languageFrench.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get languageFrench;
+
+  /// No description provided for @languageGerman.
+  ///
+  /// In en, this message translates to:
+  /// **'German'**
+  String get languageGerman;
+
+  /// No description provided for @photoStackMoreLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count}'**
+  String photoStackMoreLabel(String count);
+
+  /// No description provided for @languageOnboardingSpeakTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which language do you speak?'**
+  String get languageOnboardingSpeakTitle;
+
+  /// No description provided for @languageOnboardingLearnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you want to learn?'**
+  String get languageOnboardingLearnTitle;
+
+  /// No description provided for @languageOnboardingContinueWithButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with {count}'**
+  String languageOnboardingContinueWithButton(int count);
+
+  /// No description provided for @languagesPauseAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get languagesPauseAction;
+
+  /// No description provided for @languagesAsksInLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Asks in {flag}'**
+  String languagesAsksInLabel(String flag);
+
+  /// No description provided for @languagesPausedWordCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 word, progress kept} other{{count} words, progress kept}}'**
+  String languagesPausedWordCount(int count);
+
+  /// No description provided for @languagesContinueWhereLeftOffButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue where I left off'**
+  String get languagesContinueWhereLeftOffButton;
+
+  /// No description provided for @languageDeleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {language}'**
+  String languageDeleteButton(String language);
+
+  /// No description provided for @languageDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {language}?'**
+  String languageDeleteTitle(String language);
+
+  /// No description provided for @languageDeleteDeletedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get languageDeleteDeletedLabel;
+
+  /// No description provided for @languageDeleteProgressLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{{language} progress for 1 word} other{{language} progress for {count} words}}'**
+  String languageDeleteProgressLine(String language, int count);
+
+  /// No description provided for @languageDeleteKeptLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept'**
+  String get languageDeleteKeptLabel;
+
+  /// No description provided for @languageDeleteWordsLine.
+  ///
+  /// In en, this message translates to:
+  /// **'All words, photos and collections'**
+  String get languageDeleteWordsLine;
+
+  /// No description provided for @languageDeleteKeptProgressLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress in {language}'**
+  String languageDeleteKeptProgressLine(String language);
+
+  /// No description provided for @mainLanguageClashEmphasis.
+  ///
+  /// In en, this message translates to:
+  /// **'learning'**
+  String get mainLanguageClashEmphasis;
+
+  /// No description provided for @mainLanguageClashTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You are {emphasis} {language}'**
+  String mainLanguageClashTitle(String emphasis, String language);
+
+  /// No description provided for @mainLanguageClashMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{To speak {language}, {language} pauses as a learned language. Your word and its progress are kept.} other{To speak {language}, {language} pauses as a learned language. Your {count} words and their progress are kept.}}'**
+  String mainLanguageClashMessage(String language, int count);
+
+  /// No description provided for @mainLanguageClashSwitchButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause {language} and switch'**
+  String mainLanguageClashSwitchButton(String language);
+
+  /// No description provided for @mainLanguageClashKeepButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep {language}'**
+  String mainLanguageClashKeepButton(String language);
+
+  /// No description provided for @learnedLanguageAskMeInFromRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask me in, from {level}'**
+  String learnedLanguageAskMeInFromRole(String level);
+
+  /// No description provided for @learnedLanguageFromLevelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'From level'**
+  String get learnedLanguageFromLevelTitle;
+
+  /// No description provided for @learnedLanguageBelowLevelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Words below this level ask in {language}.'**
+  String learnedLanguageBelowLevelHint(String language);
+
+  /// No description provided for @learnedLanguageAskMeInIntroMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards can ask in another language instead of {main}. You can always show the {main} word. This keeps another language active while you learn {learned}.'**
+  String learnedLanguageAskMeInIntroMessage(String main, String learned);
+
+  /// No description provided for @learnedLanguagePausedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{language} paused'**
+  String learnedLanguagePausedMessage(String language);
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @learnedLanguagePausedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{{language} is hidden from Home and practice. Progress for its word is kept.} other{{language} is hidden from Home and practice. Progress for its {count} words is kept.}}'**
+  String learnedLanguagePausedHint(String language, int count);
+
+  /// No description provided for @learnedLanguageImportedWordsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported words'**
+  String get learnedLanguageImportedWordsTitle;
+
+  /// No description provided for @learnedLanguageTotalWordsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You have {count} in total'**
+  String learnedLanguageTotalWordsHint(int count);
+
+  /// No description provided for @languageWordsManageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage words'**
+  String get languageWordsManageTitle;
+
+  /// No description provided for @languageWordsImportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Start with no words} =1{Import 1 word} other{Import {count} words}}'**
+  String languageWordsImportButton(int count);
+
+  /// No description provided for @languageWordsImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which words do you want to import to {language}?'**
+  String languageWordsImportTitle(String language);
+
+  /// No description provided for @languageWordsImportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this later.'**
+  String get languageWordsImportHint;
+
+  /// No description provided for @languageWordsSomeCollectionsOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Some collections'**
+  String get languageWordsSomeCollectionsOption;
+
+  /// No description provided for @languageWordsNoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with an empty list'**
+  String get languageWordsNoneHint;
+
+  /// No description provided for @languageWordsAddedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count}'**
+  String languageWordsAddedLabel(String count);
+
+  /// No description provided for @languageWordsRemovedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'−{count}'**
+  String languageWordsRemovedLabel(String count);
+
+  /// No description provided for @languageWordsImportedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total} words imported'**
+  String languageWordsImportedCount(int count, int total);
+
+  /// No description provided for @languageWordsRemovedWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 word, {language} progress is deleted} other{{count} words, {language} progress is deleted}}'**
+  String languageWordsRemovedWarning(int count, String language);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

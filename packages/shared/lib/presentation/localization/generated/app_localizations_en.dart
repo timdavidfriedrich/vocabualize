@@ -960,13 +960,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languagesSpeakTitle => 'I speak';
 
   @override
-  String get languagesSpeakHint => 'A language you know well';
-
-  @override
   String get languagesLearnTitle => 'I learn';
 
   @override
-  String get languagesLearnHint => 'Choose one or more';
+  String get languagesLearnHint => 'Pick one or more';
 
   @override
   String get languagesContinueButton => 'Continue';
@@ -995,19 +992,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languagesPickTitle => 'Choose a language';
 
   @override
-  String languagesMainClashTitle(String language) {
-    return 'Speak $language?';
-  }
-
-  @override
-  String languagesMainClashMessage(String language) {
-    return 'You\'re learning $language. If you speak it, it gets paused. Its progress stays.';
-  }
-
-  @override
-  String get languagesMainClashButton => 'Continue';
-
-  @override
   String get learnedLanguageAskMeInLabel => 'Ask me in';
 
   @override
@@ -1025,149 +1009,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get learnedLanguageRemoveAskMeInTooltip => 'Remove';
 
   @override
-  String learnedLanguageFromLevelLabel(String level) {
-    return 'From level: $level';
-  }
-
-  @override
   String get learnedLanguageNewWordsTitle => 'New words per practice';
 
   @override
   String get learnedLanguageAllNewWords => 'All';
 
   @override
-  String get learnedLanguageWordsTitle => 'Words';
-
-  @override
-  String learnedLanguageWordsCount(int count, int total) {
-    return '$count of $total';
+  String learnedLanguagePauseButton(String language) {
+    return 'Pause $language';
   }
 
   @override
-  String get learnedLanguageChooseWordsButton => 'Choose words';
-
-  @override
-  String get learnedLanguagePauseButton => 'Pause';
-
-  @override
-  String get learnedLanguageResumeButton => 'Resume';
+  String learnedLanguageResumeButton(String language) {
+    return 'Resume $language';
+  }
 
   @override
   String get learnedLanguageLastActiveHint => 'You need at least one language to learn.';
 
   @override
-  String learnedLanguageDeleteTitle(String language) {
-    return 'Delete $language?';
-  }
-
-  @override
-  String learnedLanguageDeleteMessage(String language) {
-    return 'Your progress in $language is deleted. Your words stay in your other languages.';
-  }
-
-  @override
-  String learnedLanguageResumeTitle(String language) {
-    return 'Welcome back to $language';
-  }
-
-  @override
-  String get learnedLanguageResumeMessage => 'Continue where you left off, or start over?';
-
-  @override
   String get learnedLanguageStartOverButton => 'Start over';
 
   @override
-  String languageWordsTitle(String language) {
-    return 'Words in $language';
-  }
+  String get languageWordsAllOption => 'All words';
 
   @override
-  String languageWordsAddTitle(String language) {
-    return 'Learn $language too?';
-  }
-
-  @override
-  String languageWordsAddQuestion(String language) {
-    return 'Which of your words do you want to learn in $language?';
-  }
-
-  @override
-  String languageWordsAllOption(int count) {
-    return 'All words ($count)';
-  }
-
-  @override
-  String get languageWordsChooseOption => 'Choose collections';
-
-  @override
-  String get languageWordsNoneOption => 'None, start fresh';
-
-  @override
-  String languageWordsLeftOutHint(String language) {
-    return 'Words you leave out stay in your other languages. You can add them to $language any time.';
-  }
+  String get languageWordsNoneOption => 'None';
 
   @override
   String get languageWordsUntaggedLabel => 'Not in a collection';
 
   @override
-  String languageWordsCount(int count) {
-    return '($count)';
-  }
-
-  @override
-  String languageWordsPartialCount(int count, int total) {
-    return '($count of $total)';
-  }
-
-  @override
-  String languageWordsStartButton(String language) {
-    return 'Start $language';
-  }
-
-  @override
   String get languageWordsSaveButton => 'Save';
-
-  @override
-  String get languageWordsSummaryTitle => 'Save changes?';
-
-  @override
-  String languageWordsSummaryAdded(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count words are added.',
-      one: '1 word is added.',
-      zero: 'No words are added.',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String languageWordsSummaryRemoved(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count words are removed.',
-      one: '1 word is removed.',
-      zero: 'No words are removed.',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get languageWordsSummaryRestartHint => 'Removed words start over if you add them again.';
-
-  @override
-  String languageWordsSummaryAlsoElsewhere(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count of them are also in other collections.',
-      one: '1 of them is also in another collection.',
-    );
-    return '$_temp0';
-  }
 
   @override
   String languageWordsNoWordsHint(String language) {
@@ -1313,5 +1186,221 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String collectionEmptyLanguageMessage(String language) {
     return 'None of these words are in $language yet.';
+  }
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageSpanish => 'Spanish';
+
+  @override
+  String get languageFrench => 'French';
+
+  @override
+  String get languageGerman => 'German';
+
+  @override
+  String photoStackMoreLabel(String count) {
+    return '+$count';
+  }
+
+  @override
+  String get languageOnboardingSpeakTitle => 'Which language do you speak?';
+
+  @override
+  String get languageOnboardingLearnTitle => 'What do you want to learn?';
+
+  @override
+  String languageOnboardingContinueWithButton(int count) {
+    return 'Continue with $count';
+  }
+
+  @override
+  String get languagesPauseAction => 'Pause';
+
+  @override
+  String languagesAsksInLabel(String flag) {
+    return 'Asks in $flag';
+  }
+
+  @override
+  String languagesPausedWordCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words, progress kept',
+      one: '1 word, progress kept',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get languagesContinueWhereLeftOffButton => 'Continue where I left off';
+
+  @override
+  String languageDeleteButton(String language) {
+    return 'Delete $language';
+  }
+
+  @override
+  String languageDeleteTitle(String language) {
+    return 'Delete $language?';
+  }
+
+  @override
+  String get languageDeleteDeletedLabel => 'Deleted';
+
+  @override
+  String languageDeleteProgressLine(String language, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$language progress for $count words',
+      one: '$language progress for 1 word',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get languageDeleteKeptLabel => 'Kept';
+
+  @override
+  String get languageDeleteWordsLine => 'All words, photos and collections';
+
+  @override
+  String languageDeleteKeptProgressLine(String language) {
+    return 'Your progress in $language';
+  }
+
+  @override
+  String get mainLanguageClashEmphasis => 'learning';
+
+  @override
+  String mainLanguageClashTitle(String emphasis, String language) {
+    return 'You are $emphasis $language';
+  }
+
+  @override
+  String mainLanguageClashMessage(String language, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'To speak $language, $language pauses as a learned language. Your $count words and their progress are kept.',
+      one:
+          'To speak $language, $language pauses as a learned language. Your word and its progress are kept.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mainLanguageClashSwitchButton(String language) {
+    return 'Pause $language and switch';
+  }
+
+  @override
+  String mainLanguageClashKeepButton(String language) {
+    return 'Keep $language';
+  }
+
+  @override
+  String learnedLanguageAskMeInFromRole(String level) {
+    return 'Ask me in, from $level';
+  }
+
+  @override
+  String get learnedLanguageFromLevelTitle => 'From level';
+
+  @override
+  String learnedLanguageBelowLevelHint(String language) {
+    return 'Words below this level ask in $language.';
+  }
+
+  @override
+  String learnedLanguageAskMeInIntroMessage(String main, String learned) {
+    return 'Cards can ask in another language instead of $main. You can always show the $main word. This keeps another language active while you learn $learned.';
+  }
+
+  @override
+  String learnedLanguagePausedMessage(String language) {
+    return '$language paused';
+  }
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String learnedLanguagePausedHint(String language, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$language is hidden from Home and practice. Progress for its $count words is kept.',
+      one: '$language is hidden from Home and practice. Progress for its word is kept.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get learnedLanguageImportedWordsTitle => 'Imported words';
+
+  @override
+  String learnedLanguageTotalWordsHint(int count) {
+    return 'You have $count in total';
+  }
+
+  @override
+  String get languageWordsManageTitle => 'Manage words';
+
+  @override
+  String languageWordsImportButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Import $count words',
+      one: 'Import 1 word',
+      zero: 'Start with no words',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String languageWordsImportTitle(String language) {
+    return 'Which words do you want to import to $language?';
+  }
+
+  @override
+  String get languageWordsImportHint => 'You can change this later.';
+
+  @override
+  String get languageWordsSomeCollectionsOption => 'Some collections';
+
+  @override
+  String get languageWordsNoneHint => 'Start with an empty list';
+
+  @override
+  String languageWordsAddedLabel(String count) {
+    return '+$count';
+  }
+
+  @override
+  String languageWordsRemovedLabel(String count) {
+    return '−$count';
+  }
+
+  @override
+  String languageWordsImportedCount(int count, int total) {
+    return '$count of $total words imported';
+  }
+
+  @override
+  String languageWordsRemovedWarning(int count, String language) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count words, $language progress is deleted',
+      one: '1 word, $language progress is deleted',
+    );
+    return '$_temp0';
   }
 }

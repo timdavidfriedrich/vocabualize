@@ -1,25 +1,55 @@
+import 'package:core/theme/spacing.dart';
+import 'package:feature_languages/presentation/widgets/language_option_row.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
-import 'package:shared/presentation/widgets/language_label.dart';
 
 Future<Language?> requestsLanguage(
   BuildContext context, {
   required List<Language> options,
   Set<Language> paused = const {},
 }) {
-  return showDialog<Language>(
+  return showModalBottomSheet<Language>(
     context: context,
-    builder: (dialogContext) => SimpleDialog(
-      title: Text(context.s.languagesPickTitle),
-      children: [
-        for (final language in options)
-          ListTile(
-            title: LanguageLabel(language: language),
-            trailing: paused.contains(language) ? Text(context.s.languagesPausedTitle) : null,
-            onTap: () => Navigator.of(dialogContext).pop(language),
+    showDragHandle: true,
+    isScrollControlled: true,
+    backgroundColor: context.c.surface,
+    builder: (sheetContext) => SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Spacing.l),
+            child: Text(context.s.languagesPickTitle, style: context.t.headlineSmall),
           ),
-      ],
+          const SizedBox(height: Spacing.m),
+          Flexible(
+            child: ListView.separated(
+              shrinkWrap: true,
+              padding: const EdgeInsets.fromLTRB(Spacing.m, 0, Spacing.m, Spacing.m),
+              itemCount: options.length,
+              separatorBuilder: (_, _) => const SizedBox(height: Spacing.xs),
+              itemBuilder: (context, index) {
+                final language = options[index];
+                return LanguageOptionRow(
+                  language: language,
+                  isSelected: false,
+                  onTap: () => Navigator.of(sheetContext).pop(language),
+                  trailing: paused.contains(language)
+                      ? Text(
+                          context.s.languagesPausedTitle,
+                          style: context.t.bodyMedium?.copyWith(
+                            color: context.c.onSurfaceVariant,
+                          ),
+                        )
+                      : null,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

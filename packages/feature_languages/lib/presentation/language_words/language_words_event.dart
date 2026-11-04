@@ -1,6 +1,5 @@
 import 'package:feature_languages/presentation/language_words/language_words_state.dart';
 import 'package:shared/domain/entities/language.dart';
-import 'package:shared/domain/entities/language_setup.dart';
 
 sealed class LanguageWordsEvent {
   const LanguageWordsEvent();
@@ -21,12 +20,6 @@ class const LanguageWordsCollectionToggled({
 
 class const LanguageWordsUntaggedToggled() extends LanguageWordsEvent;
 
-class const LanguageWordsNewWordsChanged({
-  required final NewWordLimit newWords,
-}) extends LanguageWordsEvent;
+class const LanguageWordsPreviewRequested() extends LanguageWordsEvent;
 
 class const LanguageWordsSaveRequested() extends LanguageWordsEvent;
-
-class const LanguageWordsSaveConfirmed() extends LanguageWordsEvent;
-
-class const LanguageWordsSaveCancelled() extends LanguageWordsEvent;

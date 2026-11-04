@@ -26,6 +26,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared/domain/repositories/language_repository.dart' as _i308;
 import 'package:shared/domain/repositories/language_words_repository.dart'
     as _i1019;
+import 'package:shared/domain/repositories/tag_repository.dart' as _i836;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
 
 class FeatureLanguagesPackageModule extends _i526.MicroPackageModule {
@@ -51,6 +52,13 @@ class FeatureLanguagesPackageModule extends _i526.MicroPackageModule {
         () => _i278.ChangeMainLanguageUseCase(gh<_i308.LanguageRepository>()));
     gh.factory<_i660.LanguageOnboardingBloc>(
         () => _i660.LanguageOnboardingBloc(gh<_i308.LanguageRepository>()));
+    gh.factory<_i514.LanguagesBloc>(() => _i514.LanguagesBloc(
+          gh<_i308.LanguageRepository>(),
+          gh<_i208.VocabularyRepository>(),
+          gh<_i278.ChangeMainLanguageUseCase>(),
+          gh<_i489.ResumeLearnedLanguageUseCase>(),
+          gh<_i997.DeleteLearnedLanguageUseCase>(),
+        ));
     gh.factory<_i313.LearnedLanguageBloc>(() => _i313.LearnedLanguageBloc(
           gh<_i308.LanguageRepository>(),
           gh<_i1019.LanguageWordsRepository>(),
@@ -59,12 +67,8 @@ class FeatureLanguagesPackageModule extends _i526.MicroPackageModule {
         ));
     gh.factory<_i607.LanguageWordsBloc>(() => _i607.LanguageWordsBloc(
           gh<_i1019.LanguageWordsRepository>(),
+          gh<_i836.TagRepository>(),
           gh<_i1001.AddLearnedLanguageUseCase>(),
-        ));
-    gh.factory<_i514.LanguagesBloc>(() => _i514.LanguagesBloc(
-          gh<_i308.LanguageRepository>(),
-          gh<_i208.VocabularyRepository>(),
-          gh<_i278.ChangeMainLanguageUseCase>(),
         ));
   }
 }

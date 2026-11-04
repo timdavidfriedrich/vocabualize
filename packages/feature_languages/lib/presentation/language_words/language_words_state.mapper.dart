@@ -245,8 +245,8 @@ class LanguageWordsEditingMapper extends ClassMapperBase<LanguageWordsEditing> {
       MapperContainer.globals.use(_instance = LanguageWordsEditingMapper._());
       LanguageWordsStateMapper.ensureInitialized();
       LanguageCoverageMapper.ensureInitialized();
+      VocabularyImageMapper.ensureInitialized();
       LanguageWordsOptionMapper.ensureInitialized();
-      NewWordLimitMapper.ensureInitialized();
       LanguageWordsPreviewMapper.ensureInitialized();
     }
     return _instance!;
@@ -268,6 +268,10 @@ class LanguageWordsEditingMapper extends ClassMapperBase<LanguageWordsEditing> {
   static LanguageCoverage _$coverage(LanguageWordsEditing v) => v.coverage;
   static const Field<LanguageWordsEditing, LanguageCoverage> _f$coverage =
       Field('coverage', _$coverage);
+  static Map<String, VocabularyImage> _$images(LanguageWordsEditing v) =>
+      v.images;
+  static const Field<LanguageWordsEditing, Map<String, VocabularyImage>>
+  _f$images = Field('images', _$images);
   static LanguageWordsOption _$option(LanguageWordsEditing v) => v.option;
   static const Field<LanguageWordsEditing, LanguageWordsOption> _f$option =
       Field('option', _$option);
@@ -288,11 +292,6 @@ class LanguageWordsEditingMapper extends ClassMapperBase<LanguageWordsEditing> {
     'untagged',
     _$untagged,
   );
-  static NewWordLimit _$newWords(LanguageWordsEditing v) => v.newWords;
-  static const Field<LanguageWordsEditing, NewWordLimit> _f$newWords = Field(
-    'newWords',
-    _$newWords,
-  );
   static LanguageWordsPreview? _$preview(LanguageWordsEditing v) => v.preview;
   static const Field<LanguageWordsEditing, LanguageWordsPreview> _f$preview =
       Field('preview', _$preview);
@@ -312,12 +311,12 @@ class LanguageWordsEditingMapper extends ClassMapperBase<LanguageWordsEditing> {
     #language: _f$language,
     #isAdding: _f$isAdding,
     #coverage: _f$coverage,
+    #images: _f$images,
     #option: _f$option,
     #initialSelection: _f$initialSelection,
     #selection: _f$selection,
     #initialUntagged: _f$initialUntagged,
     #untagged: _f$untagged,
-    #newWords: _f$newWords,
     #preview: _f$preview,
     #isSaving: _f$isSaving,
     #error: _f$error,
@@ -328,12 +327,12 @@ class LanguageWordsEditingMapper extends ClassMapperBase<LanguageWordsEditing> {
       language: data.dec(_f$language),
       isAdding: data.dec(_f$isAdding),
       coverage: data.dec(_f$coverage),
+      images: data.dec(_f$images),
       option: data.dec(_f$option),
       initialSelection: data.dec(_f$initialSelection),
       selection: data.dec(_f$selection),
       initialUntagged: data.dec(_f$initialUntagged),
       untagged: data.dec(_f$untagged),
-      newWords: data.dec(_f$newWords),
       preview: data.dec(_f$preview),
       isSaving: data.dec(_f$isSaving),
       error: data.dec(_f$error),
@@ -411,11 +410,17 @@ abstract class LanguageWordsEditingCopyWith<
 >
     implements LanguageWordsStateCopyWith<$R, $In, $Out> {
   LanguageCoverageCopyWith<$R, LanguageCoverage, LanguageCoverage> get coverage;
+  MapCopyWith<
+    $R,
+    String,
+    VocabularyImage,
+    VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage>
+  >
+  get images;
   MapCopyWith<$R, String, bool?, ObjectCopyWith<$R, bool?, bool?>?>
   get initialSelection;
   MapCopyWith<$R, String, bool?, ObjectCopyWith<$R, bool?, bool?>?>
   get selection;
-  NewWordLimitCopyWith<$R, NewWordLimit, NewWordLimit> get newWords;
   LanguageWordsPreviewCopyWith<$R, LanguageWordsPreview, LanguageWordsPreview>?
   get preview;
   @override
@@ -423,12 +428,12 @@ abstract class LanguageWordsEditingCopyWith<
     Language? language,
     bool? isAdding,
     LanguageCoverage? coverage,
+    Map<String, VocabularyImage>? images,
     LanguageWordsOption? option,
     Map<String, bool?>? initialSelection,
     Map<String, bool?>? selection,
     bool? initialUntagged,
     bool? untagged,
-    NewWordLimit? newWords,
     LanguageWordsPreview? preview,
     bool? isSaving,
     AppError? error,
@@ -450,6 +455,18 @@ class _LanguageWordsEditingCopyWithImpl<$R, $Out>
   LanguageCoverageCopyWith<$R, LanguageCoverage, LanguageCoverage>
   get coverage => $value.coverage.copyWith.$chain((v) => call(coverage: v));
   @override
+  MapCopyWith<
+    $R,
+    String,
+    VocabularyImage,
+    VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage>
+  >
+  get images => MapCopyWith(
+    $value.images,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(images: v),
+  );
+  @override
   MapCopyWith<$R, String, bool?, ObjectCopyWith<$R, bool?, bool?>?>
   get initialSelection => MapCopyWith(
     $value.initialSelection,
@@ -464,9 +481,6 @@ class _LanguageWordsEditingCopyWithImpl<$R, $Out>
     (v) => call(selection: v),
   );
   @override
-  NewWordLimitCopyWith<$R, NewWordLimit, NewWordLimit> get newWords =>
-      $value.newWords.copyWith.$chain((v) => call(newWords: v));
-  @override
   LanguageWordsPreviewCopyWith<$R, LanguageWordsPreview, LanguageWordsPreview>?
   get preview => $value.preview?.copyWith.$chain((v) => call(preview: v));
   @override
@@ -474,12 +488,12 @@ class _LanguageWordsEditingCopyWithImpl<$R, $Out>
     Language? language,
     bool? isAdding,
     LanguageCoverage? coverage,
+    Map<String, VocabularyImage>? images,
     LanguageWordsOption? option,
     Map<String, bool?>? initialSelection,
     Map<String, bool?>? selection,
     Object? initialUntagged = $none,
     Object? untagged = $none,
-    NewWordLimit? newWords,
     Object? preview = $none,
     bool? isSaving,
     Object? error = $none,
@@ -488,12 +502,12 @@ class _LanguageWordsEditingCopyWithImpl<$R, $Out>
       if (language != null) #language: language,
       if (isAdding != null) #isAdding: isAdding,
       if (coverage != null) #coverage: coverage,
+      if (images != null) #images: images,
       if (option != null) #option: option,
       if (initialSelection != null) #initialSelection: initialSelection,
       if (selection != null) #selection: selection,
       if (initialUntagged != $none) #initialUntagged: initialUntagged,
       if (untagged != $none) #untagged: untagged,
-      if (newWords != null) #newWords: newWords,
       if (preview != $none) #preview: preview,
       if (isSaving != null) #isSaving: isSaving,
       if (error != $none) #error: error,
@@ -504,12 +518,12 @@ class _LanguageWordsEditingCopyWithImpl<$R, $Out>
     language: data.get(#language, or: $value.language),
     isAdding: data.get(#isAdding, or: $value.isAdding),
     coverage: data.get(#coverage, or: $value.coverage),
+    images: data.get(#images, or: $value.images),
     option: data.get(#option, or: $value.option),
     initialSelection: data.get(#initialSelection, or: $value.initialSelection),
     selection: data.get(#selection, or: $value.selection),
     initialUntagged: data.get(#initialUntagged, or: $value.initialUntagged),
     untagged: data.get(#untagged, or: $value.untagged),
-    newWords: data.get(#newWords, or: $value.newWords),
     preview: data.get(#preview, or: $value.preview),
     isSaving: data.get(#isSaving, or: $value.isSaving),
     error: data.get(#error, or: $value.error),
