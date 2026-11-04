@@ -96,7 +96,7 @@ class const _CardContent({
             context.s.practiceQuestionTitle(
               "${target.toFlag()}$_nonBreakingSpace${target.toShortLabel(context)}",
             ),
-            style: context.t.headlineSmall,
+            style: context.t.titleLarge,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Spacing.l),
@@ -131,7 +131,7 @@ class const _CardContent({
         _FlaggedText(
           language: mainText == null ? null : card.prompt,
           text: vocabulary.textIn(card.prompt) ?? "",
-          style: context.t.titleLarge?.copyWith(fontWeight: FontWeight.normal),
+          style: context.t.bodyLarge,
         ),
         if (mainText != null) ...[
           const SizedBox(height: Spacing.s),
@@ -139,7 +139,7 @@ class const _CardContent({
             _FlaggedText(
               language: _view.main,
               text: mainText,
-              style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
+              style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
             )
           else
             Center(
@@ -149,7 +149,7 @@ class const _CardContent({
                 icon: const Icon(Icons.visibility_outlined, size: Spacing.iconS),
                 label: Text(
                   context.s.practiceShowMainButton(_view.main.toShortLabel(context)),
-                  style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
+                  style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
                 ),
               ),
             ),
