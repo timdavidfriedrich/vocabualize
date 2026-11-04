@@ -27,5 +27,3 @@ class const PracticeIntroConfirmed() extends PracticeEvent;
 class const PracticeIntroSkipped() extends PracticeEvent;
 
 class const PracticePromptRevealed() extends PracticeEvent;
-
-class const PracticeCardEdited() extends PracticeEvent;

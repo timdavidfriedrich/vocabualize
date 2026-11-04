@@ -945,5 +945,21 @@
         "type": "String"
       }
     }
+  },
+  "practiceQuestionTitle": "What is this word in {language}?",
+  "@practiceQuestionTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceIntroBadge": "New in {language}",
+  "@practiceIntroBadge": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -359,5 +359,7 @@
   "homeEmptyLanguageTitle": "Niciunul dintre cuvintele tale nu e încă în {language}",
   "homeEmptyLanguageNoSourceMessage": "Importă cuvintele pe care vrei să le înveți în {language}.",
   "homeImportWordsButton": "Importă cuvinte",
-  "homeEmptyLanguageFeedHint": "Cuvintele pe care le adaugi cât e selectată {language} apar aici."
+  "homeEmptyLanguageFeedHint": "Cuvintele pe care le adaugi cât e selectată {language} apar aici.",
+  "practiceQuestionTitle": "Cum se spune acest cuvânt în {language}?",
+  "practiceIntroBadge": "Nou în {language}"
 }

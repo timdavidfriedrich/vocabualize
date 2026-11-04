@@ -47,6 +47,4 @@ class const PracticeFailure({
 
 extension PracticeActiveExtensions on PracticeActive {
   PracticeCard get current => queue.first;
-
-  bool showsLanguagesFor(PracticeCard card) => languages.length > 1 || card.prompt != setup.main;
 }

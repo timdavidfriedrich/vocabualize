@@ -359,5 +359,7 @@
   "homeEmptyLanguageTitle": "Noch keins deiner Wörter ist auf {language}",
   "homeEmptyLanguageNoSourceMessage": "Importiere die Wörter, die du auf {language} lernen möchtest.",
   "homeImportWordsButton": "Wörter importieren",
-  "homeEmptyLanguageFeedHint": "Wörter, die du hinzufügst, während {language} ausgewählt ist, erscheinen hier."
+  "homeEmptyLanguageFeedHint": "Wörter, die du hinzufügst, während {language} ausgewählt ist, erscheinen hier.",
+  "practiceQuestionTitle": "Wie heißt dieses Wort auf {language}?",
+  "practiceIntroBadge": "Neu auf {language}"
 }

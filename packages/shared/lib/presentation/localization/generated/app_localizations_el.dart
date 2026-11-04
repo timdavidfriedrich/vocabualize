@@ -1444,4 +1444,14 @@ class AppLocalizationsEl extends AppLocalizations {
   String homeEmptyLanguageFeedHint(String language) {
     return 'Οι λέξεις που προσθέτεις όσο είναι επιλεγμένα τα $language εμφανίζονται εδώ.';
   }
+
+  @override
+  String practiceQuestionTitle(String language) {
+    return 'Πώς λέγεται αυτή η λέξη στα $language;';
+  }
+
+  @override
+  String practiceIntroBadge(String language) {
+    return 'Νέα στα $language';
+  }
 }

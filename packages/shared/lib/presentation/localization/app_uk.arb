@@ -359,5 +359,7 @@
   "homeEmptyLanguageTitle": "Жодного твого слова ще немає мовою {language}",
   "homeEmptyLanguageNoSourceMessage": "Імпортуй слова, які хочеш вивчати мовою {language}.",
   "homeImportWordsButton": "Імпортувати слова",
-  "homeEmptyLanguageFeedHint": "Слова, які ти додаєш, поки вибрано {language}, з'являться тут."
+  "homeEmptyLanguageFeedHint": "Слова, які ти додаєш, поки вибрано {language}, з'являться тут.",
+  "practiceQuestionTitle": "Як це слово мовою {language}?",
+  "practiceIntroBadge": "Нове: {language}"
 }

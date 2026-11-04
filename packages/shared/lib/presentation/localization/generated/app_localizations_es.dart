@@ -1440,4 +1440,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String homeEmptyLanguageFeedHint(String language) {
     return 'Las palabras que añadas con $language seleccionado aparecen aquí.';
   }
+
+  @override
+  String practiceQuestionTitle(String language) {
+    return '¿Cómo se dice esta palabra en $language?';
+  }
+
+  @override
+  String practiceIntroBadge(String language) {
+    return 'Nueva en $language';
+  }
 }

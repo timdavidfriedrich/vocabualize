@@ -17,8 +17,8 @@ import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
-import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 
 typedef _Controls = ({
   PracticeItem item,
@@ -70,7 +70,7 @@ class const PracticeControls({
                     child: Text(context.s.practiceSolutionButton),
                   ),
                 (isSolutionShown: true, :final grade, :final isBusy, item: _, isIntro: _) =>
-                  OutlinedButton(
+                  TonalButton(
                     onPressed: !isBusy && grade.allows(PracticeAnswer.forgot)
                         ? () => context.read<PracticeBloc>().add(
                             const PracticeAnswered(answer: PracticeAnswer.forgot),
@@ -190,37 +190,17 @@ class const _IntroControls({
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Spacer(),
-        Row(
-          children: [
-            Expanded(
-              child: OutlinedButton(
-                onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroSkipped()),
-                child: Text(context.s.practiceIntroSkipButton(_item.language.toLabel(context))),
-              ),
-            ),
-            const SizedBox(width: Spacing.s),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroConfirmed()),
-                child: Text(context.s.practiceIntroGotItButton),
-              ),
-            ),
-          ],
+        ElevatedButton(
+          onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroConfirmed()),
+          child: Text(context.s.practiceIntroGotItButton),
         ),
         const SizedBox(height: Spacing.s),
-        TextButton.icon(
-          onPressed: _isBusy ? null : () => _edit(context),
-          icon: const Icon(Icons.edit_rounded),
-          label: Text(context.s.edit),
+        TonalButton(
+          onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroSkipped()),
+          child: Text(context.s.practiceIntroSkipButton(_item.language.toShortLabel(context))),
         ),
-        const SizedBox(height: Spacing.xxxl),
+        const SizedBox(height: Spacing.xxxxl),
       ],
     );
-  }
-
-  Future<void> _edit(BuildContext context) async {
-    final bloc = context.read<PracticeBloc>();
-    await context.pushEditVocabularyDetails(vocabularyId: _item.vocabulary.id);
-    bloc.add(const PracticeCardEdited());
   }
 }

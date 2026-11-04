@@ -359,5 +359,7 @@
   "homeEmptyLanguageTitle": "Καμία λέξη σου δεν είναι ακόμη στα {language}",
   "homeEmptyLanguageNoSourceMessage": "Εισήγαγε τις λέξεις που θέλεις να μάθεις στα {language}.",
   "homeImportWordsButton": "Εισαγωγή λέξεων",
-  "homeEmptyLanguageFeedHint": "Οι λέξεις που προσθέτεις όσο είναι επιλεγμένα τα {language} εμφανίζονται εδώ."
+  "homeEmptyLanguageFeedHint": "Οι λέξεις που προσθέτεις όσο είναι επιλεγμένα τα {language} εμφανίζονται εδώ.",
+  "practiceQuestionTitle": "Πώς λέγεται αυτή η λέξη στα {language};",
+  "practiceIntroBadge": "Νέα στα {language}"
 }

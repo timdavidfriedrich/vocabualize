@@ -1500,4 +1500,14 @@ class AppLocalizationsUk extends AppLocalizations {
   String homeEmptyLanguageFeedHint(String language) {
     return 'Слова, які ти додаєш, поки вибрано $language, з\'являться тут.';
   }
+
+  @override
+  String practiceQuestionTitle(String language) {
+    return 'Як це слово мовою $language?';
+  }
+
+  @override
+  String practiceIntroBadge(String language) {
+    return 'Нове: $language';
+  }
 }

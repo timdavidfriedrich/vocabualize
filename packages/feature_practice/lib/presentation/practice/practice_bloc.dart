@@ -13,7 +13,6 @@ import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/practice_card.dart';
 import 'package:shared/domain/entities/practice_item.dart';
-import 'package:shared/domain/entities/practice_session.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/progress.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
@@ -45,7 +44,6 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
     on<PracticeIntroConfirmed>(_onIntroConfirmed);
     on<PracticeIntroSkipped>(_onIntroSkipped);
     on<PracticePromptRevealed>(_onPromptRevealed);
-    on<PracticeCardEdited>(_onCardEdited);
   }
 
   final VocabularyRepository _vocabularyRepository;
@@ -199,27 +197,6 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
 
   void _onPromptRevealed(PracticePromptRevealed event, Emitter<PracticeState> emit) {
     if (state case final PracticeActive active) emit(active.copyWith(isPromptRevealed: true));
-  }
-
-  Future<void> _onCardEdited(PracticeCardEdited event, Emitter<PracticeState> emit) async {
-    if (state case final PracticeActive active) {
-      final item = active.current.item;
-      final result = await _vocabularyRepository.findItems([
-        PracticeItemKey(vocabularyId: item.vocabulary.id, language: item.language),
-      ]);
-      if (state case final PracticeActive latest) {
-        final cards = switch (result) {
-          Success(:final data) => _cardsOf(data, latest.setup),
-          Failure() => const <PracticeCard>[],
-        };
-        emit(
-          switch (cards) {
-            [final card, ...] => latest.copyWith(queue: [card, ...latest.queue.skip(1)]),
-            _ => await _advanced(latest),
-          },
-        );
-      }
-    }
   }
 
   Future<void> _onSpeakRequested(PracticeSpeakRequested event, Emitter<PracticeState> emit) async {

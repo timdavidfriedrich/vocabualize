@@ -2267,6 +2267,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Words you add while {language} is selected show up here.'**
   String homeEmptyLanguageFeedHint(String language);
+
+  /// No description provided for @practiceQuestionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What is this word in {language}?'**
+  String practiceQuestionTitle(String language);
+
+  /// No description provided for @practiceIntroBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'New in {language}'**
+  String practiceIntroBadge(String language);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

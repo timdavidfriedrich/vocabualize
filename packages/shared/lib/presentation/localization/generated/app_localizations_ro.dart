@@ -1471,4 +1471,14 @@ class AppLocalizationsRo extends AppLocalizations {
   String homeEmptyLanguageFeedHint(String language) {
     return 'Cuvintele pe care le adaugi cât e selectată $language apar aici.';
   }
+
+  @override
+  String practiceQuestionTitle(String language) {
+    return 'Cum se spune acest cuvânt în $language?';
+  }
+
+  @override
+  String practiceIntroBadge(String language) {
+    return 'Nou în $language';
+  }
 }

@@ -16,7 +16,7 @@ class const SolutionDiffText({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final style = context.t.headlineSmall ?? const TextStyle();
+    final style = context.t.headlineMedium ?? const TextStyle();
     final correctionStyle = style.copyWith(
       color: context.c.onPrimary,
       backgroundColor: context.c.primary,

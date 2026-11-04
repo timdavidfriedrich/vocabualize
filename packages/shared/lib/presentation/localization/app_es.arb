@@ -359,5 +359,7 @@
   "homeEmptyLanguageTitle": "Ninguna de tus palabras está en {language} todavía",
   "homeEmptyLanguageNoSourceMessage": "Importa las palabras que quieras aprender en {language}.",
   "homeImportWordsButton": "Importar palabras",
-  "homeEmptyLanguageFeedHint": "Las palabras que añadas con {language} seleccionado aparecen aquí."
+  "homeEmptyLanguageFeedHint": "Las palabras que añadas con {language} seleccionado aparecen aquí.",
+  "practiceQuestionTitle": "¿Cómo se dice esta palabra en {language}?",
+  "practiceIntroBadge": "Nueva en {language}"
 }

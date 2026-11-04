@@ -1443,4 +1443,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String homeEmptyLanguageFeedHint(String language) {
     return 'Wörter, die du hinzufügst, während $language ausgewählt ist, erscheinen hier.';
   }
+
+  @override
+  String practiceQuestionTitle(String language) {
+    return 'Wie heißt dieses Wort auf $language?';
+  }
+
+  @override
+  String practiceIntroBadge(String language) {
+    return 'Neu auf $language';
+  }
 }
