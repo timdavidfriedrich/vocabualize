@@ -140,7 +140,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get detailsReportTranslationButton => 'Αναφορά λανθασμένης μετάφρασης';
 
   @override
-  String get detailsAddCollectionButton => 'Προσθήκη συλλογής';
+  String get detailsAddCollectionButton => 'Προσθήκη σε συλλογή';
 
   @override
   String get detailsReplaceTitle => 'Αντικατάσταση;';
@@ -1095,8 +1095,8 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Γλώσσες σε παύση ($count)',
-      one: 'Γλώσσα σε παύση (1)',
+      other: '$count γλώσσες σε παύση',
+      one: '1 γλώσσα σε παύση',
     );
     return '$_temp0';
   }
@@ -1471,4 +1471,17 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get customPracticeDoneButton => 'Τέλος';
+
+  @override
+  String get detailsLanguagesTitle => 'Γλώσσες';
+
+  @override
+  String detailsNotLearningLabel(String language) {
+    return '$language, δεν μαθαίνω αυτή τη λέξη';
+  }
+
+  @override
+  String detailsLanguageRoleLabel(String language, String role) {
+    return '$language, $role';
+  }
 }

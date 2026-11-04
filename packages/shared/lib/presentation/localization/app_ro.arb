@@ -42,7 +42,7 @@
   "homeWriteButton": "Scrieți",
   "homeWriteHint": "Introduceți un cuvânt...",
   "detailsReportTranslationButton": "Raportați o traducere greșită",
-  "detailsAddCollectionButton": "Adăugați o colecție",
+  "detailsAddCollectionButton": "Adaugă într-o colecție",
   "detailsReplaceTitle": "Înlocuiți?",
   "detailsReplaceMessage": "Doriți să traduceți din nou cuvântul și să-l înlocuiți?",
   "detailsDuplicateTitle": "Duplicat!",
@@ -284,7 +284,7 @@
   "homeChooseWordsButton": "Alegeți cuvinte",
   "settingsLanguagesTitle": "Limbi",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Cartonașele întreabă în {askMeIn} în loc de {main}. Puteți afișa oricând cuvântul în {main}. Astfel, {askMeIn} rămâne activă cât învățați {learned}.",
-  "detailsPausedLanguagesTitle": "{count, plural, =1{Limbă în pauză (1)} other{Limbi în pauză ({count})}}",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{1 limbă pe pauză} few{{count} limbi pe pauză} other{{count} de limbi pe pauză}}",
   "detailsLearnSwitchLabel": "Învățați în {language}",
   "detailsExistingTitle": "Deja salvat",
   "detailsExistingMessage": "„{word}” este deja salvat ({language}: {translation}). Îl adăugați la {target}?",
@@ -362,5 +362,8 @@
   "customPracticeNewLabel": "Noi",
   "customPracticeFewerTooltip": "Mai puține",
   "customPracticeMoreTooltip": "Mai multe",
-  "customPracticeDoneButton": "Gata"
+  "customPracticeDoneButton": "Gata",
+  "detailsLanguagesTitle": "Limbi",
+  "detailsNotLearningLabel": "{language}, nu învăț acest cuvânt",
+  "detailsLanguageRoleLabel": "{language}, {role}"
 }

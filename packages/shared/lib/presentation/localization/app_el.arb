@@ -42,7 +42,7 @@
   "homeWriteButton": "Γράψιμο",
   "homeWriteHint": "Πληκτρολογήστε μια λέξη...",
   "detailsReportTranslationButton": "Αναφορά λανθασμένης μετάφρασης",
-  "detailsAddCollectionButton": "Προσθήκη συλλογής",
+  "detailsAddCollectionButton": "Προσθήκη σε συλλογή",
   "detailsReplaceTitle": "Αντικατάσταση;",
   "detailsReplaceMessage": "Να μεταφραστεί ξανά η λέξη και να αντικατασταθεί;",
   "detailsDuplicateTitle": "Διπλότυπο!",
@@ -284,7 +284,7 @@
   "homeChooseWordsButton": "Επιλογή λέξεων",
   "settingsLanguagesTitle": "Γλώσσες",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Οι κάρτες ρωτούν στα {askMeIn} αντί για τα {main}. Μπορείτε πάντα να δείτε τη λέξη στα {main}. Έτσι τα {askMeIn} σας μένουν ενεργά όσο μαθαίνετε {learned}.",
-  "detailsPausedLanguagesTitle": "{count, plural, =1{Γλώσσα σε παύση (1)} other{Γλώσσες σε παύση ({count})}}",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{1 γλώσσα σε παύση} other{{count} γλώσσες σε παύση}}",
   "detailsLearnSwitchLabel": "Εκμάθηση στα {language}",
   "detailsExistingTitle": "Έχει ήδη αποθηκευτεί",
   "detailsExistingMessage": "Το «{word}» έχει ήδη αποθηκευτεί ({language}: {translation}). Να προστεθεί στα {target};",
@@ -362,5 +362,8 @@
   "customPracticeNewLabel": "Νέες",
   "customPracticeFewerTooltip": "Λιγότερες",
   "customPracticeMoreTooltip": "Περισσότερες",
-  "customPracticeDoneButton": "Τέλος"
+  "customPracticeDoneButton": "Τέλος",
+  "detailsLanguagesTitle": "Γλώσσες",
+  "detailsNotLearningLabel": "{language}, δεν μαθαίνω αυτή τη λέξη",
+  "detailsLanguageRoleLabel": "{language}, {role}"
 }

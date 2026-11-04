@@ -93,9 +93,6 @@ extension DetailsEditingExtensions on DetailsEditing {
     for (final learned in setup.paused) learned.language,
   ];
 
-  bool get isSingleLayout =>
-      activeLanguages.length == 1 && askMeInLanguages.isEmpty && pausedLanguages.isEmpty;
-
   Set<Language> get shownLanguages => {
     setup.main,
     ...activeLanguages,

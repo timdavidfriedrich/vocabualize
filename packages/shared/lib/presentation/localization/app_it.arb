@@ -42,7 +42,7 @@
   "homeWriteButton": "Scrivi",
   "homeWriteHint": "Scrivi una parola...",
   "detailsReportTranslationButton": "Segnala una traduzione errata",
-  "detailsAddCollectionButton": "Aggiungi raccolta",
+  "detailsAddCollectionButton": "Aggiungi a una raccolta",
   "detailsReplaceTitle": "Sostituire?",
   "detailsReplaceMessage": "Tradurre di nuovo la parola e sostituirla?",
   "detailsDuplicateTitle": "Duplicato!",
@@ -284,7 +284,7 @@
   "homeChooseWordsButton": "Scegli parole",
   "settingsLanguagesTitle": "Lingue",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Le schede chiedono in {askMeIn} invece che in {main}. Puoi sempre mostrare la parola in {main}. Così il tuo {askMeIn} resta attivo mentre impari {learned}.",
-  "detailsPausedLanguagesTitle": "{count, plural, =1{Lingua in pausa (1)} other{Lingue in pausa ({count})}}",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{1 lingua in pausa} other{{count} lingue in pausa}}",
   "detailsLearnSwitchLabel": "Impara in {language}",
   "detailsExistingTitle": "Già salvata",
   "detailsExistingMessage": "«{word}» è già salvata ({language}: {translation}). Aggiungerla a {target}?",
@@ -362,5 +362,8 @@
   "customPracticeNewLabel": "Nuove",
   "customPracticeFewerTooltip": "Meno",
   "customPracticeMoreTooltip": "Di più",
-  "customPracticeDoneButton": "Fatto"
+  "customPracticeDoneButton": "Fatto",
+  "detailsLanguagesTitle": "Lingue",
+  "detailsNotLearningLabel": "{language}, non imparo questa parola",
+  "detailsLanguageRoleLabel": "{language}, {role}"
 }

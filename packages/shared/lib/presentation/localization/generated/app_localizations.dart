@@ -363,7 +363,7 @@ abstract class AppLocalizations {
   /// No description provided for @detailsAddCollectionButton.
   ///
   /// In en, this message translates to:
-  /// **'Add collection'**
+  /// **'Add to collection'**
   String get detailsAddCollectionButton;
 
   /// No description provided for @detailsReplaceTitle.
@@ -1815,7 +1815,7 @@ abstract class AppLocalizations {
   /// No description provided for @detailsPausedLanguagesTitle.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{Paused language (1)} other{Paused languages ({count})}}'**
+  /// **'{count, plural, =1{1 paused language} other{{count} paused languages}}'**
   String detailsPausedLanguagesTitle(int count);
 
   /// No description provided for @detailsLearnSwitchLabel.
@@ -2285,6 +2285,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done'**
   String get customPracticeDoneButton;
+
+  /// No description provided for @detailsLanguagesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get detailsLanguagesTitle;
+
+  /// No description provided for @detailsNotLearningLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{language}, not learning this word'**
+  String detailsNotLearningLabel(String language);
+
+  /// No description provided for @detailsLanguageRoleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{language}, {role}'**
+  String detailsLanguageRoleLabel(String language, String role);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

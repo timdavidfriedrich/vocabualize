@@ -139,7 +139,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailsReportTranslationButton => 'Report faulty translation';
 
   @override
-  String get detailsAddCollectionButton => 'Add collection';
+  String get detailsAddCollectionButton => 'Add to collection';
 
   @override
   String get detailsReplaceTitle => 'Replace';
@@ -1078,8 +1078,8 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Paused languages ($count)',
-      one: 'Paused language (1)',
+      other: '$count paused languages',
+      one: '1 paused language',
     );
     return '$_temp0';
   }
@@ -1452,4 +1452,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get customPracticeDoneButton => 'Done';
+
+  @override
+  String get detailsLanguagesTitle => 'Languages';
+
+  @override
+  String detailsNotLearningLabel(String language) {
+    return '$language, not learning this word';
+  }
+
+  @override
+  String detailsLanguageRoleLabel(String language, String role) {
+    return '$language, $role';
+  }
 }

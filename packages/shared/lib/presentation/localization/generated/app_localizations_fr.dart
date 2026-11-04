@@ -1101,8 +1101,8 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Langues en pause ($count)',
-      one: 'Langue en pause (1)',
+      other: '$count langues en pause',
+      one: '1 langue en pause',
     );
     return '$_temp0';
   }
@@ -1477,4 +1477,17 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get customPracticeDoneButton => 'Terminé';
+
+  @override
+  String get detailsLanguagesTitle => 'Langues';
+
+  @override
+  String detailsNotLearningLabel(String language) {
+    return '$language, je n\'apprends pas ce mot';
+  }
+
+  @override
+  String detailsLanguageRoleLabel(String language, String role) {
+    return '$language, $role';
+  }
 }

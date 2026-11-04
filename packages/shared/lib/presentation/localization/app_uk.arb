@@ -284,7 +284,7 @@
   "homeChooseWordsButton": "Обрати слова",
   "settingsLanguagesTitle": "Мови",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Картки питають мовою {askMeIn} замість {main}. Ви завжди можете показати слово мовою {main}. Так ваша {askMeIn} залишається активною, поки ви вивчаєте {learned}.",
-  "detailsPausedLanguagesTitle": "{count, plural, one{Призупинена мова ({count})} other{Призупинені мови ({count})}}",
+  "detailsPausedLanguagesTitle": "{count, plural, one{{count} мова на паузі} few{{count} мови на паузі} many{{count} мов на паузі} other{{count} мови на паузі}}",
   "detailsLearnSwitchLabel": "Вивчати мовою {language}",
   "detailsExistingTitle": "Уже збережено",
   "detailsExistingMessage": "«{word}» уже збережено ({language}: {translation}). Додати до мови {target}?",
@@ -362,5 +362,8 @@
   "customPracticeNewLabel": "Нові",
   "customPracticeFewerTooltip": "Менше",
   "customPracticeMoreTooltip": "Більше",
-  "customPracticeDoneButton": "Готово"
+  "customPracticeDoneButton": "Готово",
+  "detailsLanguagesTitle": "Мови",
+  "detailsNotLearningLabel": "{language}, не вивчаю це слово",
+  "detailsLanguageRoleLabel": "{language}, {role}"
 }

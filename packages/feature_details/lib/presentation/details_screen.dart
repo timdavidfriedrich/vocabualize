@@ -116,18 +116,11 @@ class const _EditingScreen() extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: BlocSelector<DetailsBloc, DetailsState, bool>(
-          selector: (state) => switch (state) {
-            final DetailsEditing editing => editing.isSingleLayout,
-            _ => true,
-          },
-          builder: (context, isSingleLayout) =>
-              isSingleLayout ? const SourceToTarget() : const MainTextButton(),
-        ),
+        title: const SourceToTarget(),
         actions: const [_SpeakButton()],
       ),
       body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: Spacing.xxxl),
+        padding: EdgeInsets.symmetric(horizontal: Spacing.l),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -138,8 +131,10 @@ class const _EditingScreen() extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: Spacing.xs),
-                    LanguageRows(),
                     _ImageSection(),
+                    SizedBox(height: Spacing.s),
+                    LanguageRows(),
+                    SizedBox(height: Spacing.m),
                     TagWrap(),
                   ],
                 ),
@@ -160,31 +155,22 @@ class const _SpeakButton() extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: kToolbarHeight,
-      child: BlocSelector<DetailsBloc, DetailsState, bool>(
+      child: BlocSelector<DetailsBloc, DetailsState, Language?>(
         selector: (state) => switch (state) {
-          final DetailsEditing editing => editing.isSingleLayout,
-          _ => false,
+          final DetailsEditing editing when editing.textOf(editing.setup.selected).isNotEmpty =>
+            editing.setup.selected,
+          _ => null,
         },
-        builder: (context, isShown) => !isShown
-            ? const SizedBox.shrink()
-            : BlocSelector<DetailsBloc, DetailsState, Language?>(
-                selector: (state) => switch (state) {
-                  final DetailsEditing editing
-                      when editing.textOf(editing.setup.selected).isNotEmpty =>
-                    editing.setup.selected,
-                  _ => null,
-                },
-                builder: (context, language) => IconButton(
-                  onPressed: switch (language) {
-                    final language? => () => context.read<DetailsBloc>().add(
-                      DetailsSpeakRequested(language: language),
-                    ),
-                    null => null,
-                  },
-                  tooltip: context.s.vocabularySpeakTooltip,
-                  icon: const Icon(Icons.volume_up_rounded),
-                ),
-              ),
+        builder: (context, language) => IconButton(
+          onPressed: switch (language) {
+            final language? => () => context.read<DetailsBloc>().add(
+              DetailsSpeakRequested(language: language),
+            ),
+            null => null,
+          },
+          tooltip: context.s.vocabularySpeakTooltip,
+          icon: const Icon(Icons.volume_up_rounded),
+        ),
       ),
     );
   }

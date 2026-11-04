@@ -284,7 +284,7 @@
   "homeChooseWordsButton": "Choisir des mots",
   "settingsLanguagesTitle": "Langues",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Les cartes posent la question en {askMeIn} au lieu de {main}. Vous pouvez toujours afficher le mot en {main}. Votre {askMeIn} reste ainsi actif pendant que vous apprenez {learned}.",
-  "detailsPausedLanguagesTitle": "{count, plural, =1{Langue en pause (1)} other{Langues en pause ({count})}}",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{1 langue en pause} other{{count} langues en pause}}",
   "detailsLearnSwitchLabel": "Apprendre en {language}",
   "detailsExistingTitle": "Déjà enregistré",
   "detailsExistingMessage": "« {word} » est déjà enregistré ({language} : {translation}). L'ajouter à {target} ?",
@@ -362,5 +362,8 @@
   "customPracticeNewLabel": "Nouveaux",
   "customPracticeFewerTooltip": "Moins",
   "customPracticeMoreTooltip": "Plus",
-  "customPracticeDoneButton": "Terminé"
+  "customPracticeDoneButton": "Terminé",
+  "detailsLanguagesTitle": "Langues",
+  "detailsNotLearningLabel": "{language}, je n'apprends pas ce mot",
+  "detailsLanguageRoleLabel": "{language}, {role}"
 }

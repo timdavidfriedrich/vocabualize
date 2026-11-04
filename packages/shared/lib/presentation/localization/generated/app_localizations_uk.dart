@@ -1137,8 +1137,10 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Призупинені мови ($count)',
-      one: 'Призупинена мова ($count)',
+      other: '$count мови на паузі',
+      many: '$count мов на паузі',
+      few: '$count мови на паузі',
+      one: '$count мова на паузі',
     );
     return '$_temp0';
   }
@@ -1529,4 +1531,17 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get customPracticeDoneButton => 'Готово';
+
+  @override
+  String get detailsLanguagesTitle => 'Мови';
+
+  @override
+  String detailsNotLearningLabel(String language) {
+    return '$language, не вивчаю це слово';
+  }
+
+  @override
+  String detailsLanguageRoleLabel(String language, String role) {
+    return '$language, $role';
+  }
 }

@@ -42,7 +42,7 @@
   "homeWriteButton": "Eingeben",
   "homeWriteHint": "Wort eingeben...",
   "detailsReportTranslationButton": "Fehlerhafte Übersetzung melden",
-  "detailsAddCollectionButton": "Sammlung hinzufügen",
+  "detailsAddCollectionButton": "Zu Sammlung hinzufügen",
   "detailsReplaceTitle": "Ersetzen?",
   "detailsReplaceMessage": "Vokabel neu übersetzen und ersetzen?",
   "detailsDuplicateTitle": "Duplikat!",
@@ -284,7 +284,7 @@
   "homeChooseWordsButton": "Wörter wählen",
   "settingsLanguagesTitle": "Sprachen",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Karten fragen auf {askMeIn} statt auf {main}. Das Wort auf {main} kannst du jederzeit anzeigen. So bleibt dein {askMeIn} aktiv, während du {learned} lernst.",
-  "detailsPausedLanguagesTitle": "{count, plural, =1{Pausierte Sprache (1)} other{Pausierte Sprachen ({count})}}",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{1 pausierte Sprache} other{{count} pausierte Sprachen}}",
   "detailsLearnSwitchLabel": "Auf {language} lernen",
   "detailsExistingTitle": "Schon gespeichert",
   "detailsExistingMessage": "„{word}“ ist schon gespeichert ({language}: {translation}). Zu {target} hinzufügen?",
@@ -362,5 +362,8 @@
   "customPracticeNewLabel": "Neu",
   "customPracticeFewerTooltip": "Weniger",
   "customPracticeMoreTooltip": "Mehr",
-  "customPracticeDoneButton": "Fertig"
+  "customPracticeDoneButton": "Fertig",
+  "detailsLanguagesTitle": "Sprachen",
+  "detailsNotLearningLabel": "{language}, dieses Wort lerne ich nicht",
+  "detailsLanguageRoleLabel": "{language}, {role}"
 }

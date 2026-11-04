@@ -51,27 +51,6 @@ class const SourceToTarget({
   }
 }
 
-class const MainTextButton({
-  super.key,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<DetailsBloc, DetailsState>(
-      builder: (context, state) => switch (state) {
-        final DetailsEditing editing => Align(
-          alignment: Alignment.centerLeft,
-          child: _TextButton(
-            editing: editing,
-            language: editing.setup.main,
-            textAlign: TextAlign.left,
-          ),
-        ),
-        _ => const SizedBox.shrink(),
-      },
-    );
-  }
-}
-
 class const _TextButton({
   required final DetailsEditing _editing,
   required final Language _language,

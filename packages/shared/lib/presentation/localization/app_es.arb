@@ -42,7 +42,7 @@
   "homeWriteButton": "Escribir",
   "homeWriteHint": "Entrar palabra...",
   "detailsReportTranslationButton": "Informar de una traducción incorrecta",
-  "detailsAddCollectionButton": "Añadir a colección",
+  "detailsAddCollectionButton": "Añadir a una colección",
   "detailsReplaceTitle": "¿Reemplazar?",
   "detailsReplaceMessage": "¿Volver a traducir la palabra y reemplazarla?",
   "detailsDuplicateTitle": "¡Duplicado!",
@@ -284,7 +284,7 @@
   "homeChooseWordsButton": "Elegir palabras",
   "settingsLanguagesTitle": "Idiomas",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Las tarjetas preguntan en {askMeIn} en lugar de {main}. Siempre puedes ver la palabra en {main}. Así mantienes activo tu {askMeIn} mientras aprendes {learned}.",
-  "detailsPausedLanguagesTitle": "{count, plural, =1{Idioma en pausa (1)} other{Idiomas en pausa ({count})}}",
+  "detailsPausedLanguagesTitle": "{count, plural, =1{1 idioma en pausa} other{{count} idiomas en pausa}}",
   "detailsLearnSwitchLabel": "Aprender en {language}",
   "detailsExistingTitle": "Ya guardada",
   "detailsExistingMessage": "«{word}» ya está guardada ({language}: {translation}). ¿Añadirla a {target}?",
@@ -362,5 +362,8 @@
   "customPracticeNewLabel": "Nuevas",
   "customPracticeFewerTooltip": "Menos",
   "customPracticeMoreTooltip": "Más",
-  "customPracticeDoneButton": "Listo"
+  "customPracticeDoneButton": "Listo",
+  "detailsLanguagesTitle": "Idiomas",
+  "detailsNotLearningLabel": "{language}, no aprendo esta palabra",
+  "detailsLanguageRoleLabel": "{language}, {role}"
 }

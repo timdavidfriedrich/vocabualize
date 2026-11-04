@@ -139,7 +139,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get detailsReportTranslationButton => 'Raportați o traducere greșită';
 
   @override
-  String get detailsAddCollectionButton => 'Adăugați o colecție';
+  String get detailsAddCollectionButton => 'Adaugă într-o colecție';
 
   @override
   String get detailsReplaceTitle => 'Înlocuiți?';
@@ -1113,8 +1113,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Limbi în pauză ($count)',
-      one: 'Limbă în pauză (1)',
+      other: '$count de limbi pe pauză',
+      few: '$count limbi pe pauză',
+      one: '1 limbă pe pauză',
     );
     return '$_temp0';
   }
@@ -1499,4 +1500,17 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get customPracticeDoneButton => 'Gata';
+
+  @override
+  String get detailsLanguagesTitle => 'Limbi';
+
+  @override
+  String detailsNotLearningLabel(String language) {
+    return '$language, nu învăț acest cuvânt';
+  }
+
+  @override
+  String detailsLanguageRoleLabel(String language, String role) {
+    return '$language, $role';
+  }
 }
