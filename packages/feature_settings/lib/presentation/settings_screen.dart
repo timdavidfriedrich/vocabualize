@@ -10,7 +10,6 @@ import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/default_gather_option.dart';
-import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/sync_status.dart';
@@ -19,10 +18,8 @@ import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/appearance_mode_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/default_gather_option_extensions.dart';
-import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/string_extensions.dart';
 import 'package:shared/presentation/extensions/sync_status_extensions.dart';
-import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/reminders/reminder_cubit.dart';
@@ -124,8 +121,6 @@ class const SettingsScreen({
                     },
                   ),
                   const SizedBox(height: Spacing.xl),
-                  _LanguageTiles(isBusy: runningAction != null),
-                  const SizedBox(height: Spacing.m),
                   const _LearningSection(),
                   const SizedBox(height: Spacing.m),
                   const _NotificationsSection(),
@@ -167,30 +162,6 @@ class const SettingsScreen({
       signOutAnyway == true
           ? const SettingsSignOutRequested(discardUnsyncedChanges: true)
           : const SettingsSignOutDismissed(),
-    );
-  }
-}
-
-class const _LanguageTiles({
-  required final bool _isBusy,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LanguageSetupCubit, LanguageSetup?>(
-      builder: (context, setup) => ListTile(
-        title: Text(context.s.settingsLanguagesTitle),
-        subtitle: switch (setup) {
-          final setup? => Text(
-            context.s.languagePairLabel(
-              setup.main.toLabel(context),
-              [for (final learned in setup.active) learned.language.toLabel(context)].join(", "),
-            ),
-          ),
-          null => null,
-        },
-        trailing: const Icon(Icons.chevron_right_rounded),
-        onTap: _isBusy ? null : context.pushLanguages,
-      ),
     );
   }
 }

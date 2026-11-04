@@ -282,7 +282,6 @@
   "homeManageLanguagesButton": "Gestionar idiomas",
   "homeEmptyLanguageMessage": "{count, plural, =1{Tienes 1 palabra en {source}. Impórtala si quieres aprenderla también en {language}.} other{Tienes {count} palabras en {source}. Importa las que quieras aprender también en {language}.}}",
   "homeChooseWordsButton": "Elegir palabras",
-  "settingsLanguagesTitle": "Idiomas",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Las tarjetas preguntan en {askMeIn} en lugar de {main}. Siempre puedes ver la palabra en {main}. Así mantienes activo tu {askMeIn} mientras aprendes {learned}.",
   "detailsPausedLanguagesTitle": "{count, plural, =1{1 idioma en pausa} other{{count} idiomas en pausa}}",
   "detailsLearnSwitchLabel": "Aprender en {language}",

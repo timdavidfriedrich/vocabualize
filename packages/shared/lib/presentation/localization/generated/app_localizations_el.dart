@@ -1083,9 +1083,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get homeChooseWordsButton => 'Επιλογή λέξεων';
 
   @override
-  String get settingsLanguagesTitle => 'Γλώσσες';
-
-  @override
   String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
     return 'Οι κάρτες ρωτούν στα $askMeIn αντί για τα $main. Μπορείτε πάντα να δείτε τη λέξη στα $main. Έτσι τα $askMeIn σας μένουν ενεργά όσο μαθαίνετε $learned.';
   }

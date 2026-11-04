@@ -282,7 +282,6 @@
   "homeManageLanguagesButton": "Διαχείριση γλωσσών",
   "homeEmptyLanguageMessage": "{count, plural, =1{Έχεις 1 λέξη στα {source}. Εισήγαγέ την αν θέλεις να τη μάθεις και στα {language}.} other{Έχεις {count} λέξεις στα {source}. Εισήγαγε όσες θέλεις να μάθεις και στα {language}.}}",
   "homeChooseWordsButton": "Επιλογή λέξεων",
-  "settingsLanguagesTitle": "Γλώσσες",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Οι κάρτες ρωτούν στα {askMeIn} αντί για τα {main}. Μπορείτε πάντα να δείτε τη λέξη στα {main}. Έτσι τα {askMeIn} σας μένουν ενεργά όσο μαθαίνετε {learned}.",
   "detailsPausedLanguagesTitle": "{count, plural, =1{1 γλώσσα σε παύση} other{{count} γλώσσες σε παύση}}",
   "detailsLearnSwitchLabel": "Εκμάθηση στα {language}",

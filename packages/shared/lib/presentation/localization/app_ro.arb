@@ -282,7 +282,6 @@
   "homeManageLanguagesButton": "Gestionați limbile",
   "homeEmptyLanguageMessage": "{count, plural, =1{Ai 1 cuvânt în {source}. Importă-l dacă vrei să-l înveți și în {language}.} few{Ai {count} cuvinte în {source}. Importă-le pe cele pe care vrei să le înveți și în {language}.} other{Ai {count} de cuvinte în {source}. Importă-le pe cele pe care vrei să le înveți și în {language}.}}",
   "homeChooseWordsButton": "Alegeți cuvinte",
-  "settingsLanguagesTitle": "Limbi",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Cartonașele întreabă în {askMeIn} în loc de {main}. Puteți afișa oricând cuvântul în {main}. Astfel, {askMeIn} rămâne activă cât învățați {learned}.",
   "detailsPausedLanguagesTitle": "{count, plural, =1{1 limbă pe pauză} few{{count} limbi pe pauză} other{{count} de limbi pe pauză}}",
   "detailsLearnSwitchLabel": "Învățați în {language}",

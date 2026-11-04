@@ -282,7 +282,6 @@
   "homeManageLanguagesButton": "Gestisci lingue",
   "homeEmptyLanguageMessage": "{count, plural, =1{Hai 1 parola in {source}. Importala se vuoi impararla anche in {language}.} other{Hai {count} parole in {source}. Importa quelle che vuoi imparare anche in {language}.}}",
   "homeChooseWordsButton": "Scegli parole",
-  "settingsLanguagesTitle": "Lingue",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Le schede chiedono in {askMeIn} invece che in {main}. Puoi sempre mostrare la parola in {main}. Così il tuo {askMeIn} resta attivo mentre impari {learned}.",
   "detailsPausedLanguagesTitle": "{count, plural, =1{1 lingua in pausa} other{{count} lingue in pausa}}",
   "detailsLearnSwitchLabel": "Impara in {language}",

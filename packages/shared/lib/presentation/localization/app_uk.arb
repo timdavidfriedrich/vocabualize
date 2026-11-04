@@ -282,7 +282,6 @@
   "homeManageLanguagesButton": "Керувати мовами",
   "homeEmptyLanguageMessage": "{count, plural, one{У тебе {count} слово мовою {source}. Імпортуй ті, які хочеш вивчати ще й мовою {language}.} few{У тебе {count} слова мовою {source}. Імпортуй ті, які хочеш вивчати ще й мовою {language}.} many{У тебе {count} слів мовою {source}. Імпортуй ті, які хочеш вивчати ще й мовою {language}.} other{У тебе {count} слова мовою {source}. Імпортуй ті, які хочеш вивчати ще й мовою {language}.}}",
   "homeChooseWordsButton": "Обрати слова",
-  "settingsLanguagesTitle": "Мови",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Картки питають мовою {askMeIn} замість {main}. Ви завжди можете показати слово мовою {main}. Так ваша {askMeIn} залишається активною, поки ви вивчаєте {learned}.",
   "detailsPausedLanguagesTitle": "{count, plural, one{{count} мова на паузі} few{{count} мови на паузі} many{{count} мов на паузі} other{{count} мови на паузі}}",
   "detailsLearnSwitchLabel": "Вивчати мовою {language}",

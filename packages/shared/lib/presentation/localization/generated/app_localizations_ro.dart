@@ -1101,9 +1101,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get homeChooseWordsButton => 'Alegeți cuvinte';
 
   @override
-  String get settingsLanguagesTitle => 'Limbi';
-
-  @override
   String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
     return 'Cartonașele întreabă în $askMeIn în loc de $main. Puteți afișa oricând cuvântul în $main. Astfel, $askMeIn rămâne activă cât învățați $learned.';
   }

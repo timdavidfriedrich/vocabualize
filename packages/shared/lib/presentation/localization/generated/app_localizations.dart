@@ -1800,12 +1800,6 @@ abstract class AppLocalizations {
   /// **'Choose words'**
   String get homeChooseWordsButton;
 
-  /// No description provided for @settingsLanguagesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Languages'**
-  String get settingsLanguagesTitle;
-
   /// No description provided for @learnedLanguageAskMeInAlwaysHelpMessage.
   ///
   /// In en, this message translates to:

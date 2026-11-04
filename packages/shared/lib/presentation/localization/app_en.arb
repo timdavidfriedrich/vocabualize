@@ -556,7 +556,6 @@
     }
   },
   "homeChooseWordsButton": "Choose words",
-  "settingsLanguagesTitle": "Languages",
   "learnedLanguageAskMeInAlwaysHelpMessage": "Cards ask in {askMeIn} instead of {main}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.",
   "@learnedLanguageAskMeInAlwaysHelpMessage": {
     "placeholders": {
