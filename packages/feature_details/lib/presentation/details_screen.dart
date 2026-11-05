@@ -3,14 +3,14 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
+import 'package:feature_details/presentation/widgets/collections_row.dart';
+import 'package:feature_details/presentation/widgets/details_header.dart';
 import 'package:feature_details/presentation/widgets/duplicate_dialog.dart';
 import 'package:feature_details/presentation/widgets/existing_dialog.dart';
 import 'package:feature_details/presentation/widgets/image_chooser.dart';
-import 'package:feature_details/presentation/widgets/language_rows.dart';
-import 'package:feature_details/presentation/widgets/source_to_target.dart';
-import 'package:feature_details/presentation/widgets/tag_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
@@ -110,66 +110,36 @@ class const DetailsScreen({
   }
 }
 
-class const _EditingScreen() extends StatelessWidget {
+class const _EditingScreen() extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final picked = useState<Language?>(null);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const SourceToTarget(),
-        actions: const [_SpeakButton()],
-      ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: Spacing.l),
+      body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Expanded(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.xxs, vertical: Spacing.xs),
+              child: DetailsHeader(
+                picked: picked.value,
+                onPicked: (language) => picked.value = language,
+              ),
+            ),
+            const Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: Spacing.xs),
                     _ImageSection(),
-                    SizedBox(height: Spacing.s),
-                    LanguageRows(),
-                    SizedBox(height: Spacing.m),
-                    TagWrap(),
+                    CollectionsRow(),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: Spacing.m),
-            _Actions(),
-            SizedBox(height: Spacing.xxl),
+            const Padding(padding: EdgeInsets.all(Spacing.m), child: _Actions()),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class const _SpeakButton() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: kToolbarHeight,
-      child: BlocSelector<DetailsBloc, DetailsState, Language?>(
-        selector: (state) => switch (state) {
-          final DetailsEditing editing when editing.textOf(editing.setup.selected).isNotEmpty =>
-            editing.setup.selected,
-          _ => null,
-        },
-        builder: (context, language) => IconButton(
-          onPressed: switch (language) {
-            final language? => () => context.read<DetailsBloc>().add(
-              DetailsSpeakRequested(language: language),
-            ),
-            null => null,
-          },
-          tooltip: context.s.vocabularySpeakTooltip,
-          icon: const Icon(Icons.volume_up_rounded),
         ),
       ),
     );
@@ -189,17 +159,17 @@ class const _Actions() extends StatelessWidget {
             ],
             Expanded(
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Spacing.radiusXxl),
+                  ),
+                ),
                 onPressed: runningAction != null || !state.canSave
                     ? null
                     : () => context.read<DetailsBloc>().add(const DetailsSaveRequested()),
                 child: runningAction == DetailsAction.save
                     ? const ButtonProgress()
-                    : Text(switch (state.selectedImage) {
-                        DetailsNoImage() => context.s.detailsSaveWithoutImageButton,
-                        DetailsNewPhoto() ||
-                        DetailsStockPhoto() ||
-                        DetailsSavedImage() => context.s.detailsSaveButton,
-                      }),
+                    : Text(context.s.detailsSaveButton),
               ),
             ),
           ],
@@ -219,7 +189,7 @@ class const _DeleteButton({
     return IconActionButton(
       icon: _runningAction == DetailsAction.delete
           ? const ButtonProgress()
-          : const Icon(Icons.delete_rounded),
+          : const Icon(Icons.delete_outline_rounded),
       tooltip: context.s.delete,
       isDestructive: true,
       onPressed: _runningAction != null ? null : () => _delete(context),
@@ -264,12 +234,9 @@ class const _ImageSection() extends StatelessWidget {
       selector: (preferences) => preferences.areImagesHidden,
       builder: (context, areImagesHidden) => switch (areImagesHidden) {
         true => const SizedBox.shrink(),
-        false => const Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ImageChooser(),
-            SizedBox(height: Spacing.m),
-          ],
+        false => const Padding(
+          padding: EdgeInsets.fromLTRB(Spacing.m, 0, Spacing.m, Spacing.m),
+          child: ImageChooser(),
         ),
       },
     );

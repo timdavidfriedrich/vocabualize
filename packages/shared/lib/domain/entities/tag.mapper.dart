@@ -26,6 +26,8 @@ class TagMapper extends ClassMapperBase<Tag> {
   static const Field<Tag, String> _f$id = Field('id', _$id);
   static String _$name(Tag v) => v.name;
   static const Field<Tag, String> _f$name = Field('name', _$name);
+  static String? _$emoji(Tag v) => v.emoji;
+  static const Field<Tag, String> _f$emoji = Field('emoji', _$emoji);
   static DateTime _$createdAt(Tag v) => v.createdAt;
   static const Field<Tag, DateTime> _f$createdAt = Field(
     'createdAt',
@@ -36,6 +38,7 @@ class TagMapper extends ClassMapperBase<Tag> {
   final MappableFields<Tag> fields = const {
     #id: _f$id,
     #name: _f$name,
+    #emoji: _f$emoji,
     #createdAt: _f$createdAt,
   };
 
@@ -43,6 +46,7 @@ class TagMapper extends ClassMapperBase<Tag> {
     return Tag(
       id: data.dec(_f$id),
       name: data.dec(_f$name),
+      emoji: data.dec(_f$emoji),
       createdAt: data.dec(_f$createdAt),
     );
   }
@@ -93,7 +97,7 @@ extension TagValueCopy<$R, $Out> on ObjectCopyWith<$R, Tag, $Out> {
 
 abstract class TagCopyWith<$R, $In extends Tag, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? name, DateTime? createdAt});
+  $R call({String? id, String? name, String? emoji, DateTime? createdAt});
   TagCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -104,10 +108,16 @@ class _TagCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Tag, $Out>
   @override
   late final ClassMapperBase<Tag> $mapper = TagMapper.ensureInitialized();
   @override
-  $R call({String? id, String? name, DateTime? createdAt}) => $apply(
+  $R call({
+    String? id,
+    String? name,
+    Object? emoji = $none,
+    DateTime? createdAt,
+  }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (name != null) #name: name,
+      if (emoji != $none) #emoji: emoji,
       if (createdAt != null) #createdAt: createdAt,
     }),
   );
@@ -115,6 +125,7 @@ class _TagCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Tag, $Out>
   Tag $make(CopyWithData data) => Tag(
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
+    emoji: data.get(#emoji, or: $value.emoji),
     createdAt: data.get(#createdAt, or: $value.createdAt),
   );
 

@@ -60,10 +60,15 @@ class const TagRepositoryImpl(
   }
 
   @override
-  Future<AppResult<Tag>> createTag(String name) async {
+  Future<AppResult<Tag>> createTag({required String name, required String? emoji}) async {
     try {
       final tag = await _tagDataSource.insertTag(
-        LocalTag(id: const Uuid().v7obj(), name: name, createdAt: DateTime.now().toUtc()),
+        LocalTag(
+          id: const Uuid().v7obj(),
+          name: name,
+          createdAt: DateTime.now().toUtc(),
+          extras: emoji.toTagExtras(),
+        ),
       );
       return Success(tag.toTag());
     } on Object catch (error) {

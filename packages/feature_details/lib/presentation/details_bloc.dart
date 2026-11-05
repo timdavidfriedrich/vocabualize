@@ -307,7 +307,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     if (state case final DetailsEditing editing when editing.runningAction == null) {
       final busy = editing.copyWith(runningAction: DetailsAction.tagCreation, error: null);
       emit(busy);
-      final result = await _tagRepository.createTag(event.name.trim());
+      final result = await _tagRepository.createTag(name: event.name.trim(), emoji: event.emoji);
       emit(switch (result) {
         Success(:final data) => busy.copyWith(
           tags: [...busy.tags, data],

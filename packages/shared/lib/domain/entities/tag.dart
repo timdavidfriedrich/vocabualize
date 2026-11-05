@@ -6,5 +6,6 @@ part 'tag.mapper.dart';
 class const Tag({
   required final String id,
   required final String name,
+  required final String? emoji,
   required final DateTime createdAt,
 }) with TagMappable;

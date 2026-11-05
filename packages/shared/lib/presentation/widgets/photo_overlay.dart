@@ -2,30 +2,54 @@ import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
-const _overlayOpacity = 0.5;
-const _overlayFadeEnd = Alignment(0, -1 / 12);
+const _pillOpacity = 0.6;
 
-class const PhotoOverlay({
+class const PhotoPillButton({
   super.key,
-  required final Widget _child,
-  final BorderRadius _borderRadius = BorderRadius.zero,
+  required final String _label,
+  required final VoidCallback? _onPressed,
+  final IconData? _leadingIcon,
+  final IconData? _trailingIcon,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: _borderRadius,
-        backgroundBlendMode: BlendMode.darken,
-        gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: _overlayFadeEnd,
-          colors: [
-            context.overlay.scrim.withValues(alpha: _overlayOpacity),
-            context.overlay.scrim.withValues(alpha: 0),
-          ],
+    final color = context.overlay.onScrim;
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: const EdgeInsets.all(Spacing.s),
+        child: Material(
+          color: context.overlay.scrim.withValues(alpha: _pillOpacity),
+          shape: const StadiumBorder(),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: _onPressed,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.m, vertical: Spacing.xs),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_leadingIcon case final icon?) ...[
+                    Icon(icon, color: color),
+                    const SizedBox(width: Spacing.xs),
+                  ],
+                  Flexible(
+                    child: Text(
+                      _label,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.t.bodyLarge?.copyWith(color: color),
+                    ),
+                  ),
+                  if (_trailingIcon case final icon?) ...[
+                    const SizedBox(width: Spacing.xs),
+                    Icon(icon, color: color),
+                  ],
+                ],
+              ),
+            ),
+          ),
         ),
       ),
-      child: Align(alignment: Alignment.bottomCenter, child: _child),
     );
   }
 }
@@ -34,30 +58,16 @@ class const PhotoCreditButton({
   super.key,
   required final String? _photographer,
   required final VoidCallback _onPressed,
-  final BorderRadius _borderRadius = BorderRadius.zero,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return PhotoOverlay(
-      borderRadius: _borderRadius,
-      child: TextButton(
-        onPressed: _onPressed,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(width: Spacing.xs),
-            Flexible(
-              child: Text(
-                context.s.vocabularyPhotoByLabel(_photographer ?? context.s.unknown),
-                style: context.t.bodySmall?.copyWith(color: context.overlay.onScrim),
-              ),
-            ),
-            const SizedBox(width: Spacing.xs),
-            Icon(Icons.launch_rounded, size: Spacing.iconS, color: context.overlay.onScrim),
-            const SizedBox(width: Spacing.xs),
-          ],
-        ),
-      ),
+    return PhotoPillButton(
+      label: switch (_photographer) {
+        final photographer? => context.s.vocabularyPhotoByLabel(photographer),
+        null => context.s.vocabularyPhotoOnPexelsLabel,
+      },
+      trailingIcon: Icons.open_in_new_rounded,
+      onPressed: _onPressed,
     );
   }
 }

@@ -140,9 +140,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get detailsReportTranslationButton => 'Αναφορά λανθασμένης μετάφρασης';
 
   @override
-  String get detailsAddCollectionButton => 'Προσθήκη σε συλλογή';
-
-  @override
   String get detailsReplaceTitle => 'Αντικατάσταση;';
 
   @override
@@ -155,22 +152,16 @@ class AppLocalizationsEl extends AppLocalizations {
   String get detailsDuplicateAddButton => 'Προσθήκη';
 
   @override
-  String get detailsNoImageMessage => 'Επιλέξτε μια εικόνα\nή αποθηκεύστε χωρίς';
-
-  @override
-  String get detailsOpenGalleryButton => 'Άνοιγμα γκαλερί';
+  String get detailsOpenGalleryButton => 'Από τη γκαλερί';
 
   @override
   String get detailsRemoveImageButton => 'Αφαίρεση εικόνας';
 
   @override
-  String get detailsPexelsAttribution => 'Εικόνες από το Pexels.';
+  String get detailsPexelsAttribution => 'Εικόνες από το Pexels';
 
   @override
   String get detailsSaveButton => 'Αποθήκευση';
-
-  @override
-  String get detailsSaveWithoutImageButton => 'Αποθήκευση χωρίς';
 
   @override
   String get detailsTakePictureButton => 'Λήψη φωτογραφίας';
@@ -1077,17 +1068,6 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String detailsPausedLanguagesTitle(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count γλώσσες σε παύση',
-      one: '1 γλώσσα σε παύση',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String detailsLearnSwitchLabel(String language) {
     return 'Εκμάθηση στα $language';
   }
@@ -1459,9 +1439,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get customPracticeDoneButton => 'Τέλος';
 
   @override
-  String get detailsLanguagesTitle => 'Γλώσσες';
-
-  @override
   String detailsNotLearningLabel(String language) {
     return '$language, δεν μαθαίνω αυτή τη λέξη';
   }
@@ -1496,4 +1473,65 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get homeWriteLearningLabel => 'Μαθαίνω';
+
+  @override
+  String get vocabularyPhotoOnPexelsLabel => 'Φωτογραφία στο Pexels';
+
+  @override
+  String get detailsAddPictureTitle => 'Προσθέστε μια εικόνα';
+
+  @override
+  String get detailsNoPictureTitle => 'Καμία εικόνα για αυτή τη λέξη';
+
+  @override
+  String get detailsCameraButton => 'Κάμερα';
+
+  @override
+  String get detailsGalleryButton => 'Γκαλερί';
+
+  @override
+  String get detailsUseOwnPhotoButton => 'Ξανά η δική σας';
+
+  @override
+  String get detailsPexelsHint => 'Ή επιλέξτε μία από το Pexels παρακάτω';
+
+  @override
+  String get detailsRemovePictureTooltip => 'Αφαίρεση εικόνας';
+
+  @override
+  String get detailsMorePicturesTooltip => 'Περισσότερες εικόνες';
+
+  @override
+  String get detailsNewCollectionTitle => 'Νέα συλλογή';
+
+  @override
+  String get detailsCreateCollectionButton => 'Δημιουργία';
+
+  @override
+  String get detailsEmojiSearchHint => 'Αναζήτηση emoji (στα αγγλικά)';
+
+  @override
+  String get detailsEmojiNoResultsMessage => 'Δεν βρέθηκε emoji';
+
+  @override
+  String get detailsEditWordTitle => 'Επεξεργασία λέξης';
+
+  @override
+  String get detailsEditWordsTitle => 'Επεξεργασία λέξεων';
+
+  @override
+  String get detailsDoneButton => 'Τέλος';
+
+  @override
+  String get detailsAddLanguageButton => 'Προσθήκη άλλης γλώσσας';
+
+  @override
+  String detailsPausedRoleLabel(String language) {
+    return '$language, σε παύση';
+  }
+
+  @override
+  String detailsAsksInLabel(String language, String askMeIn) {
+    return '$language, ρωτά στα $askMeIn';
+  }
 }

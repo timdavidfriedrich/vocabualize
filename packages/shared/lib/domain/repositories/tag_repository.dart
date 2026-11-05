@@ -9,7 +9,7 @@ abstract class TagRepository {
 
   Stream<AppResult<List<CollectionPreview>>> watchCollectionPreviews();
 
-  Future<AppResult<Tag>> createTag(String name);
+  Future<AppResult<Tag>> createTag({required String name, required String? emoji});
 
   Future<AppResult<()>> renameTag(Tag tag, {required String name});
 

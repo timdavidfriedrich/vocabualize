@@ -113,6 +113,21 @@ extension DetailsEditingExtensions on DetailsEditing {
 
   bool canSwitchOff(Language language) =>
       !enabledLanguages.contains(language) || enabledLanguages.length > 1;
+
+  List<Language> get learnedLanguages => [...activeLanguages, ...pausedLanguages];
+
+  bool get hasSeveralLanguages => learnedLanguages.length + askMeInLanguages.length > 1;
+
+  Language shownLanguage(Language? picked) {
+    final candidates = [?picked, setup.selected, ...learnedLanguages];
+    return candidates.where(enabledLanguages.contains).firstOrNull ?? setup.main;
+  }
+
+  List<Language> shownFlags(Language shown) => [
+    if (enabledLanguages.contains(shown)) shown,
+    for (final language in learnedLanguages)
+      if (language != shown && enabledLanguages.contains(language)) language,
+  ];
 }
 
 @MappableClass()

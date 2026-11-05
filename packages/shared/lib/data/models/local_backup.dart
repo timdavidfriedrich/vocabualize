@@ -63,6 +63,7 @@ class const LocalBackupImage({
 class const LocalBackupTag({
   required final String id,
   required final String name,
+  required final String? emoji,
 }) with LocalBackupTagMappable;
 
 @MappableClass()

@@ -12,6 +12,7 @@ class const FilledTextField({
   final bool _autofocus = false,
   final TextInputAction? _textInputAction,
   final ValueChanged<String>? _onSubmitted,
+  final ValueChanged<String>? _onChanged,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class const FilledTextField({
       style: _style,
       textInputAction: _textInputAction,
       onSubmitted: _onSubmitted,
+      onChanged: _onChanged,
       decoration: InputDecoration(
         hintText: _hintText,
         filled: true,

@@ -140,9 +140,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get detailsReportTranslationButton => 'Segnala una traduzione errata';
 
   @override
-  String get detailsAddCollectionButton => 'Aggiungi a una raccolta';
-
-  @override
   String get detailsReplaceTitle => 'Sostituire?';
 
   @override
@@ -155,22 +152,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get detailsDuplicateAddButton => 'Aggiungi';
 
   @override
-  String get detailsNoImageMessage => 'Scegli un\'immagine\no salva senza';
-
-  @override
-  String get detailsOpenGalleryButton => 'Apri la galleria';
+  String get detailsOpenGalleryButton => 'Dalla galleria';
 
   @override
   String get detailsRemoveImageButton => 'Rimuovi immagine';
 
   @override
-  String get detailsPexelsAttribution => 'Immagini fornite da Pexels.';
+  String get detailsPexelsAttribution => 'Immagini fornite da Pexels';
 
   @override
   String get detailsSaveButton => 'Salva';
-
-  @override
-  String get detailsSaveWithoutImageButton => 'Salva senza';
 
   @override
   String get detailsTakePictureButton => 'Scatta una foto';
@@ -1074,17 +1065,6 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String detailsPausedLanguagesTitle(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count lingue in pausa',
-      one: '1 lingua in pausa',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String detailsLearnSwitchLabel(String language) {
     return 'Impara in $language';
   }
@@ -1456,9 +1436,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get customPracticeDoneButton => 'Fatto';
 
   @override
-  String get detailsLanguagesTitle => 'Lingue';
-
-  @override
   String detailsNotLearningLabel(String language) {
     return '$language, non imparo questa parola';
   }
@@ -1493,4 +1470,65 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get homeWriteLearningLabel => 'Imparo';
+
+  @override
+  String get vocabularyPhotoOnPexelsLabel => 'Foto su Pexels';
+
+  @override
+  String get detailsAddPictureTitle => 'Aggiungi un\'immagine';
+
+  @override
+  String get detailsNoPictureTitle => 'Nessuna immagine per questa parola';
+
+  @override
+  String get detailsCameraButton => 'Fotocamera';
+
+  @override
+  String get detailsGalleryButton => 'Galleria';
+
+  @override
+  String get detailsUseOwnPhotoButton => 'Usa di nuovo la tua';
+
+  @override
+  String get detailsPexelsHint => 'Oppure scegline una da Pexels qui sotto';
+
+  @override
+  String get detailsRemovePictureTooltip => 'Rimuovi immagine';
+
+  @override
+  String get detailsMorePicturesTooltip => 'Altre immagini';
+
+  @override
+  String get detailsNewCollectionTitle => 'Nuova raccolta';
+
+  @override
+  String get detailsCreateCollectionButton => 'Crea';
+
+  @override
+  String get detailsEmojiSearchHint => 'Cerca emoji (in inglese)';
+
+  @override
+  String get detailsEmojiNoResultsMessage => 'Nessuna emoji trovata';
+
+  @override
+  String get detailsEditWordTitle => 'Modifica la parola';
+
+  @override
+  String get detailsEditWordsTitle => 'Modifica le parole';
+
+  @override
+  String get detailsDoneButton => 'Fatto';
+
+  @override
+  String get detailsAddLanguageButton => 'Aggiungi un\'altra lingua';
+
+  @override
+  String detailsPausedRoleLabel(String language) {
+    return '$language, in pausa';
+  }
+
+  @override
+  String detailsAsksInLabel(String language, String askMeIn) {
+    return '$language, chiede in $askMeIn';
+  }
 }

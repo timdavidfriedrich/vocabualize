@@ -360,12 +360,6 @@ abstract class AppLocalizations {
   /// **'Report faulty translation'**
   String get detailsReportTranslationButton;
 
-  /// No description provided for @detailsAddCollectionButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Add to collection'**
-  String get detailsAddCollectionButton;
-
   /// No description provided for @detailsReplaceTitle.
   ///
   /// In en, this message translates to:
@@ -390,16 +384,10 @@ abstract class AppLocalizations {
   /// **'Add'**
   String get detailsDuplicateAddButton;
 
-  /// No description provided for @detailsNoImageMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose an image\nor save without one'**
-  String get detailsNoImageMessage;
-
   /// No description provided for @detailsOpenGalleryButton.
   ///
   /// In en, this message translates to:
-  /// **'Open Gallery'**
+  /// **'From gallery'**
   String get detailsOpenGalleryButton;
 
   /// No description provided for @detailsRemoveImageButton.
@@ -411,7 +399,7 @@ abstract class AppLocalizations {
   /// No description provided for @detailsPexelsAttribution.
   ///
   /// In en, this message translates to:
-  /// **'Images provided by Pexels.'**
+  /// **'Pictures provided by Pexels'**
   String get detailsPexelsAttribution;
 
   /// No description provided for @detailsSaveButton.
@@ -420,16 +408,10 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get detailsSaveButton;
 
-  /// No description provided for @detailsSaveWithoutImageButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Save without'**
-  String get detailsSaveWithoutImageButton;
-
   /// No description provided for @detailsTakePictureButton.
   ///
   /// In en, this message translates to:
-  /// **'Take picture'**
+  /// **'Take a photo'**
   String get detailsTakePictureButton;
 
   /// No description provided for @detailsCollectionNameHint.
@@ -1179,7 +1161,7 @@ abstract class AppLocalizations {
   /// No description provided for @detailsRetakeImageButton.
   ///
   /// In en, this message translates to:
-  /// **'Retake image'**
+  /// **'Retake picture'**
   String get detailsRetakeImageButton;
 
   /// No description provided for @errorTranslationQuotaExceeded.
@@ -1788,12 +1770,6 @@ abstract class AppLocalizations {
   /// **'Cards ask in {askMeIn} instead of {main}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.'**
   String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned);
 
-  /// No description provided for @detailsPausedLanguagesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 paused language} other{{count} paused languages}}'**
-  String detailsPausedLanguagesTitle(int count);
-
   /// No description provided for @detailsLearnSwitchLabel.
   ///
   /// In en, this message translates to:
@@ -2262,12 +2238,6 @@ abstract class AppLocalizations {
   /// **'Done'**
   String get customPracticeDoneButton;
 
-  /// No description provided for @detailsLanguagesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Languages'**
-  String get detailsLanguagesTitle;
-
   /// No description provided for @detailsNotLearningLabel.
   ///
   /// In en, this message translates to:
@@ -2315,6 +2285,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Learning'**
   String get homeWriteLearningLabel;
+
+  /// No description provided for @vocabularyPhotoOnPexelsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo on Pexels'**
+  String get vocabularyPhotoOnPexelsLabel;
+
+  /// No description provided for @detailsAddPictureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a picture'**
+  String get detailsAddPictureTitle;
+
+  /// No description provided for @detailsNoPictureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No picture for this word'**
+  String get detailsNoPictureTitle;
+
+  /// No description provided for @detailsCameraButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get detailsCameraButton;
+
+  /// No description provided for @detailsGalleryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get detailsGalleryButton;
+
+  /// No description provided for @detailsUseOwnPhotoButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Use yours again'**
+  String get detailsUseOwnPhotoButton;
+
+  /// No description provided for @detailsPexelsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Or pick one from Pexels below'**
+  String get detailsPexelsHint;
+
+  /// No description provided for @detailsRemovePictureTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove picture'**
+  String get detailsRemovePictureTooltip;
+
+  /// No description provided for @detailsMorePicturesTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'More pictures'**
+  String get detailsMorePicturesTooltip;
+
+  /// No description provided for @detailsNewCollectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New collection'**
+  String get detailsNewCollectionTitle;
+
+  /// No description provided for @detailsCreateCollectionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get detailsCreateCollectionButton;
+
+  /// No description provided for @detailsEmojiSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search emoji'**
+  String get detailsEmojiSearchHint;
+
+  /// No description provided for @detailsEmojiNoResultsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No emoji found'**
+  String get detailsEmojiNoResultsMessage;
+
+  /// No description provided for @detailsEditWordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the word'**
+  String get detailsEditWordTitle;
+
+  /// No description provided for @detailsEditWordsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the words'**
+  String get detailsEditWordsTitle;
+
+  /// No description provided for @detailsDoneButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get detailsDoneButton;
+
+  /// No description provided for @detailsAddLanguageButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another language'**
+  String get detailsAddLanguageButton;
+
+  /// No description provided for @detailsPausedRoleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{language}, paused'**
+  String detailsPausedRoleLabel(String language);
+
+  /// No description provided for @detailsAsksInLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{language}, asks in {askMeIn}'**
+  String detailsAsksInLabel(String language, String askMeIn);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

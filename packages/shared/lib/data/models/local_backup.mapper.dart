@@ -1198,15 +1198,22 @@ class LocalBackupTagMapper extends ClassMapperBase<LocalBackupTag> {
   static const Field<LocalBackupTag, String> _f$id = Field('id', _$id);
   static String _$name(LocalBackupTag v) => v.name;
   static const Field<LocalBackupTag, String> _f$name = Field('name', _$name);
+  static String? _$emoji(LocalBackupTag v) => v.emoji;
+  static const Field<LocalBackupTag, String> _f$emoji = Field('emoji', _$emoji);
 
   @override
   final MappableFields<LocalBackupTag> fields = const {
     #id: _f$id,
     #name: _f$name,
+    #emoji: _f$emoji,
   };
 
   static LocalBackupTag _instantiate(DecodingData data) {
-    return LocalBackupTag(id: data.dec(_f$id), name: data.dec(_f$name));
+    return LocalBackupTag(
+      id: data.dec(_f$id),
+      name: data.dec(_f$name),
+      emoji: data.dec(_f$emoji),
+    );
   }
 
   @override
@@ -1271,7 +1278,7 @@ extension LocalBackupTagValueCopy<$R, $Out>
 
 abstract class LocalBackupTagCopyWith<$R, $In extends LocalBackupTag, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? name});
+  $R call({String? id, String? name, String? emoji});
   LocalBackupTagCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -1286,13 +1293,18 @@ class _LocalBackupTagCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LocalBackupTag> $mapper =
       LocalBackupTagMapper.ensureInitialized();
   @override
-  $R call({String? id, String? name}) => $apply(
-    FieldCopyWithData({if (id != null) #id: id, if (name != null) #name: name}),
+  $R call({String? id, String? name, Object? emoji = $none}) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (name != null) #name: name,
+      if (emoji != $none) #emoji: emoji,
+    }),
   );
   @override
   LocalBackupTag $make(CopyWithData data) => LocalBackupTag(
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
+    emoji: data.get(#emoji, or: $value.emoji),
   );
 
   @override

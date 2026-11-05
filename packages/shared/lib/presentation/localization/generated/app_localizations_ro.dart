@@ -139,9 +139,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get detailsReportTranslationButton => 'Raportați o traducere greșită';
 
   @override
-  String get detailsAddCollectionButton => 'Adaugă într-o colecție';
-
-  @override
   String get detailsReplaceTitle => 'Înlocuiți?';
 
   @override
@@ -154,22 +151,16 @@ class AppLocalizationsRo extends AppLocalizations {
   String get detailsDuplicateAddButton => 'Adăugați';
 
   @override
-  String get detailsNoImageMessage => 'Alegeți o imagine\nsau salvați fără';
-
-  @override
-  String get detailsOpenGalleryButton => 'Deschideți galeria';
+  String get detailsOpenGalleryButton => 'Din galerie';
 
   @override
   String get detailsRemoveImageButton => 'Eliminați imaginea';
 
   @override
-  String get detailsPexelsAttribution => 'Imagini oferite de Pexels.';
+  String get detailsPexelsAttribution => 'Imagini oferite de Pexels';
 
   @override
   String get detailsSaveButton => 'Salvați';
-
-  @override
-  String get detailsSaveWithoutImageButton => 'Salvați fără';
 
   @override
   String get detailsTakePictureButton => 'Faceți o fotografie';
@@ -1096,18 +1087,6 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String detailsPausedLanguagesTitle(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count de limbi pe pauză',
-      few: '$count limbi pe pauză',
-      one: '1 limbă pe pauză',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String detailsLearnSwitchLabel(String language) {
     return 'Învățați în $language';
   }
@@ -1489,9 +1468,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get customPracticeDoneButton => 'Gata';
 
   @override
-  String get detailsLanguagesTitle => 'Limbi';
-
-  @override
   String detailsNotLearningLabel(String language) {
     return '$language, nu învăț acest cuvânt';
   }
@@ -1527,4 +1503,65 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get homeWriteLearningLabel => 'Învăț';
+
+  @override
+  String get vocabularyPhotoOnPexelsLabel => 'Fotografie pe Pexels';
+
+  @override
+  String get detailsAddPictureTitle => 'Adăugați o imagine';
+
+  @override
+  String get detailsNoPictureTitle => 'Nicio imagine pentru acest cuvânt';
+
+  @override
+  String get detailsCameraButton => 'Cameră';
+
+  @override
+  String get detailsGalleryButton => 'Galerie';
+
+  @override
+  String get detailsUseOwnPhotoButton => 'Folosiți-o pe a dvs.';
+
+  @override
+  String get detailsPexelsHint => 'Sau alegeți una de pe Pexels mai jos';
+
+  @override
+  String get detailsRemovePictureTooltip => 'Eliminați imaginea';
+
+  @override
+  String get detailsMorePicturesTooltip => 'Mai multe imagini';
+
+  @override
+  String get detailsNewCollectionTitle => 'Colecție nouă';
+
+  @override
+  String get detailsCreateCollectionButton => 'Creați';
+
+  @override
+  String get detailsEmojiSearchHint => 'Căutați emoji (în engleză)';
+
+  @override
+  String get detailsEmojiNoResultsMessage => 'Nu s-a găsit niciun emoji';
+
+  @override
+  String get detailsEditWordTitle => 'Editați cuvântul';
+
+  @override
+  String get detailsEditWordsTitle => 'Editați cuvintele';
+
+  @override
+  String get detailsDoneButton => 'Gata';
+
+  @override
+  String get detailsAddLanguageButton => 'Adăugați altă limbă';
+
+  @override
+  String detailsPausedRoleLabel(String language) {
+    return '$language, în pauză';
+  }
+
+  @override
+  String detailsAsksInLabel(String language, String askMeIn) {
+    return '$language, întreabă în $askMeIn';
+  }
 }

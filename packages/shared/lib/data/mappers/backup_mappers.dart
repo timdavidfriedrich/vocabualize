@@ -1,4 +1,5 @@
 import 'package:shared/data/mappers/language_mappers.dart';
+import 'package:shared/data/mappers/tag_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/data/models/local_backup.dart';
 import 'package:shared/data/models/local_language_settings.dart';
@@ -132,7 +133,7 @@ extension LocalBackupImageMappers on LocalBackupImage {
 }
 
 extension LocalTagBackupMappers on LocalTag {
-  LocalBackupTag toLocalBackupTag() => LocalBackupTag(id: id.toString(), name: name);
+  LocalBackupTag toLocalBackupTag() => LocalBackupTag(id: id.toString(), name: name, emoji: emoji);
 }
 
 extension LocalBackupTagMappers on LocalBackupTag {
@@ -140,7 +141,7 @@ extension LocalBackupTagMappers on LocalBackupTag {
     required UuidValue id,
     required DateTime createdAt,
   }) {
-    return LocalTag(id: id, name: name, createdAt: createdAt);
+    return LocalTag(id: id, name: name, createdAt: createdAt, extras: emoji.toTagExtras());
   }
 }
 

@@ -49,18 +49,15 @@
   "homeWriteButton": "Write",
   "homeWriteHint": "Type in word...",
   "detailsReportTranslationButton": "Report faulty translation",
-  "detailsAddCollectionButton": "Add to collection",
   "detailsReplaceTitle": "Replace",
   "detailsReplaceMessage": "Retranslate and replace the vocabulary?",
   "detailsDuplicateTitle": "Duplicate!",
   "detailsDuplicateAddButton": "Add",
-  "detailsNoImageMessage": "Choose an image\nor save without one",
-  "detailsOpenGalleryButton": "Open Gallery",
+  "detailsOpenGalleryButton": "From gallery",
   "detailsRemoveImageButton": "Remove image",
-  "detailsPexelsAttribution": "Images provided by Pexels.",
+  "detailsPexelsAttribution": "Pictures provided by Pexels",
   "detailsSaveButton": "Save",
-  "detailsSaveWithoutImageButton": "Save without",
-  "detailsTakePictureButton": "Take picture",
+  "detailsTakePictureButton": "Take a photo",
   "detailsCollectionNameHint": "Untitled",
   "detailsCollectionNameLabel": "Tag name",
   "practiceDoneTitle": "Congratulations!",
@@ -315,7 +312,7 @@
       }
     }
   },
-  "detailsRetakeImageButton": "Retake image",
+  "detailsRetakeImageButton": "Retake picture",
   "errorTranslationQuotaExceeded": "{limit, plural, one{You've used your {limit} translation for the last 24 hours. Type the translation yourself or try again later.} other{You've used your {limit} translations for the last 24 hours. Type the translation yourself or try again later.}}",
   "errorStockImageQuotaExceeded": "{limit, plural, one{You've used your {limit} photo search for the last 24 hours. Take your own photo or try again later.} other{You've used your {limit} photo searches for the last 24 hours. Take your own photo or try again later.}}",
   "errorServiceUnavailable": "Automatic suggestions aren't available right now.",
@@ -564,14 +561,6 @@
       },
       "learned": {
         "type": "String"
-      }
-    }
-  },
-  "detailsPausedLanguagesTitle": "{count, plural, =1{1 paused language} other{{count} paused languages}}",
-  "@detailsPausedLanguagesTitle": {
-    "placeholders": {
-      "count": {
-        "type": "int"
       }
     }
   },
@@ -987,7 +976,6 @@
   "customPracticeFewerTooltip": "Fewer",
   "customPracticeMoreTooltip": "More",
   "customPracticeDoneButton": "Done",
-  "detailsLanguagesTitle": "Languages",
   "detailsNotLearningLabel": "{language}, not learning this word",
   "@detailsNotLearningLabel": {
     "placeholders": {
@@ -1019,5 +1007,41 @@
   "streakCurrentLabel": "Current streak",
   "homeWriteTitle": "New word",
   "homeWriteLanguageTitle": "Type the word in",
-  "homeWriteLearningLabel": "Learning"
+  "homeWriteLearningLabel": "Learning",
+  "vocabularyPhotoOnPexelsLabel": "Photo on Pexels",
+  "detailsAddPictureTitle": "Add a picture",
+  "detailsNoPictureTitle": "No picture for this word",
+  "detailsCameraButton": "Camera",
+  "detailsGalleryButton": "Gallery",
+  "detailsUseOwnPhotoButton": "Use yours again",
+  "detailsPexelsHint": "Or pick one from Pexels below",
+  "detailsRemovePictureTooltip": "Remove picture",
+  "detailsMorePicturesTooltip": "More pictures",
+  "detailsNewCollectionTitle": "New collection",
+  "detailsCreateCollectionButton": "Create",
+  "detailsEmojiSearchHint": "Search emoji",
+  "detailsEmojiNoResultsMessage": "No emoji found",
+  "detailsEditWordTitle": "Edit the word",
+  "detailsEditWordsTitle": "Edit the words",
+  "detailsDoneButton": "Done",
+  "detailsAddLanguageButton": "Add another language",
+  "detailsPausedRoleLabel": "{language}, paused",
+  "@detailsPausedRoleLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "detailsAsksInLabel": "{language}, asks in {askMeIn}",
+  "@detailsAsksInLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      },
+      "askMeIn": {
+        "type": "String"
+      }
+    }
+  }
 }

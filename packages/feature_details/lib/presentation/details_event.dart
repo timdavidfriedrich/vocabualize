@@ -63,6 +63,7 @@ class const DetailsTagToggled({
 
 class const DetailsTagCreated({
   required final String name,
+  required final String? emoji,
 }) extends DetailsEvent;
 
 class const DetailsPhotographerLinkOpened() extends DetailsEvent;

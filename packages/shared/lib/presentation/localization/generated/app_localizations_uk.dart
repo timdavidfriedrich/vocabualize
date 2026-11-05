@@ -140,9 +140,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsReportTranslationButton => 'Повідомити про неправильний переклад';
 
   @override
-  String get detailsAddCollectionButton => 'Додати до колекції';
-
-  @override
   String get detailsReplaceTitle => 'Замінити';
 
   @override
@@ -155,22 +152,16 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsDuplicateAddButton => 'Додати';
 
   @override
-  String get detailsNoImageMessage => 'Виберіть зображення\nабо збережіть без нього';
-
-  @override
-  String get detailsOpenGalleryButton => 'Відкрити галерею';
+  String get detailsOpenGalleryButton => 'З галереї';
 
   @override
   String get detailsRemoveImageButton => 'Видалити зображення';
 
   @override
-  String get detailsPexelsAttribution => 'Зображення надані Pexels.';
+  String get detailsPexelsAttribution => 'Зображення надані Pexels';
 
   @override
   String get detailsSaveButton => 'Зберегти';
-
-  @override
-  String get detailsSaveWithoutImageButton => 'Зберегти без';
 
   @override
   String get detailsTakePictureButton => 'Зробити фото';
@@ -1120,19 +1111,6 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String detailsPausedLanguagesTitle(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count мови на паузі',
-      many: '$count мов на паузі',
-      few: '$count мови на паузі',
-      one: '$count мова на паузі',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String detailsLearnSwitchLabel(String language) {
     return 'Вивчати мовою $language';
   }
@@ -1520,9 +1498,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get customPracticeDoneButton => 'Готово';
 
   @override
-  String get detailsLanguagesTitle => 'Мови';
-
-  @override
   String detailsNotLearningLabel(String language) {
     return '$language, не вивчаю це слово';
   }
@@ -1559,4 +1534,65 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get homeWriteLearningLabel => 'Вивчаю';
+
+  @override
+  String get vocabularyPhotoOnPexelsLabel => 'Фото на Pexels';
+
+  @override
+  String get detailsAddPictureTitle => 'Додайте зображення';
+
+  @override
+  String get detailsNoPictureTitle => 'Немає зображення для цього слова';
+
+  @override
+  String get detailsCameraButton => 'Камера';
+
+  @override
+  String get detailsGalleryButton => 'Галерея';
+
+  @override
+  String get detailsUseOwnPhotoButton => 'Повернути ваше';
+
+  @override
+  String get detailsPexelsHint => 'Або виберіть одне з Pexels нижче';
+
+  @override
+  String get detailsRemovePictureTooltip => 'Прибрати зображення';
+
+  @override
+  String get detailsMorePicturesTooltip => 'Більше зображень';
+
+  @override
+  String get detailsNewCollectionTitle => 'Нова колекція';
+
+  @override
+  String get detailsCreateCollectionButton => 'Створити';
+
+  @override
+  String get detailsEmojiSearchHint => 'Пошук емодзі (англійською)';
+
+  @override
+  String get detailsEmojiNoResultsMessage => 'Емодзі не знайдено';
+
+  @override
+  String get detailsEditWordTitle => 'Редагувати слово';
+
+  @override
+  String get detailsEditWordsTitle => 'Редагувати слова';
+
+  @override
+  String get detailsDoneButton => 'Готово';
+
+  @override
+  String get detailsAddLanguageButton => 'Додати іншу мову';
+
+  @override
+  String detailsPausedRoleLabel(String language) {
+    return '$language, на паузі';
+  }
+
+  @override
+  String detailsAsksInLabel(String language, String askMeIn) {
+    return '$language, питає мовою $askMeIn';
+  }
 }
