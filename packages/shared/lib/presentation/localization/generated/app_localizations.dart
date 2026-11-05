@@ -1464,24 +1464,6 @@ abstract class AppLocalizations {
   /// **'{count, plural, =0{No streak yet} one{{count}-day streak} other{{count}-day streak}}'**
   String streakTitle(int count);
 
-  /// No description provided for @streakStartMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Practice or add a word to start a streak.'**
-  String get streakStartMessage;
-
-  /// No description provided for @streakDoneMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'You\'re done for today. See you tomorrow!'**
-  String get streakDoneMessage;
-
-  /// No description provided for @streakPendingMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Practice or add a word today to keep your streak.'**
-  String get streakPendingMessage;
-
   /// No description provided for @streakLongestLabel.
   ///
   /// In en, this message translates to:
@@ -1497,7 +1479,7 @@ abstract class AppLocalizations {
   /// No description provided for @streakFreezesLabel.
   ///
   /// In en, this message translates to:
-  /// **'Freezes'**
+  /// **'Streak freezes'**
   String get streakFreezesLabel;
 
   /// No description provided for @streakFreezesValue.
@@ -1509,7 +1491,7 @@ abstract class AppLocalizations {
   /// No description provided for @streakFreezeExplanation.
   ///
   /// In en, this message translates to:
-  /// **'Every {days} active days in a row earn a freeze (max. {max}). A freeze saves your streak on a day you miss.'**
+  /// **'Every {days} active days in a row earn you a streak freeze, up to {max}. A freeze saves your streak on a day you miss.'**
   String streakFreezeExplanation(int days, int max);
 
   /// No description provided for @streakDayActive.
@@ -2309,6 +2291,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{remaining, plural, =1{1 word is still left.} other{{remaining} words are still left.}} Your answers so far are saved.'**
   String homeCustomPracticeEndMessage(int remaining);
+
+  /// No description provided for @streakCurrentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current streak'**
+  String get streakCurrentLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -849,16 +849,6 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get streakStartMessage => 'Esercitati o aggiungi una parola per iniziare una serie.';
-
-  @override
-  String get streakDoneMessage => 'Per oggi hai finito. A domani!';
-
-  @override
-  String get streakPendingMessage =>
-      'Esercitati o aggiungi una parola oggi per mantenere la serie.';
-
-  @override
   String get streakLongestLabel => 'Serie più lunga';
 
   @override
@@ -882,7 +872,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String streakFreezeExplanation(int days, int max) {
-    return 'Ogni $days giorni attivi di fila ottieni una protezione (max. $max). Una protezione salva la tua serie in un giorno che salti.';
+    return 'Ogni $days giorni attivi di fila ottieni una protezione serie, fino a $max. Una protezione salva la tua serie in un giorno che salti.';
   }
 
   @override
@@ -1491,4 +1481,7 @@ class AppLocalizationsIt extends AppLocalizations {
     );
     return '$_temp0 Le tue risposte finora restano salvate.';
   }
+
+  @override
+  String get streakCurrentLabel => 'Serie attuale';
 }

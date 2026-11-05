@@ -226,14 +226,11 @@
   "settingsDeleteConfirmButton": "Supprimer",
   "settingsDeleteAccountOfflineMessage": "La suppression de votre compte nécessite une connexion internet.",
   "streakTitle": "{count, plural, =0{Pas encore de série} one{Série de {count} jour} other{Série de {count} jours}}",
-  "streakStartMessage": "Révisez ou ajoutez un mot pour commencer une série.",
-  "streakDoneMessage": "C'est fait pour aujourd'hui. À demain !",
-  "streakPendingMessage": "Révisez ou ajoutez un mot aujourd'hui pour garder votre série.",
   "streakLongestLabel": "Plus longue série",
   "streakDays": "{count, plural, one{{count} jour} other{{count} jours}}",
   "streakFreezesLabel": "Gels de série",
   "streakFreezesValue": "{count} sur {max}",
-  "streakFreezeExplanation": "Tous les {days} jours actifs d'affilée, vous gagnez un gel de série (max. {max}). Il protège votre série un jour où vous ne pratiquez pas.",
+  "streakFreezeExplanation": "Tous les {days} jours actifs d'affilée, vous gagnez un gel de série, jusqu'à {max}. Il protège votre série un jour où vous ne pratiquez pas.",
   "streakDayActive": "Actif",
   "streakDayFrozen": "Sauvé par un gel",
   "streakDayPending": "Encore ouvert",
@@ -366,5 +363,6 @@
   "detailsNotLearningLabel": "{language}, je n'apprends pas ce mot",
   "detailsLanguageRoleLabel": "{language}, {role}",
   "homeCustomPracticeEndTitle": "Terminer votre exercice personnalisé ?",
-  "homeCustomPracticeEndMessage": "{remaining, plural, =1{Il reste encore 1 mot.} other{Il reste encore {remaining} mots.}} Vos réponses jusqu'ici restent enregistrées."
+  "homeCustomPracticeEndMessage": "{remaining, plural, =1{Il reste encore 1 mot.} other{Il reste encore {remaining} mots.}} Vos réponses jusqu'ici restent enregistrées.",
+  "streakCurrentLabel": "Série actuelle"
 }

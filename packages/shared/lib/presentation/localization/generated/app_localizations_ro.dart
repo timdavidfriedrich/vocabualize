@@ -862,16 +862,6 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get streakStartMessage => 'Exersați sau adăugați un cuvânt pentru a începe o serie.';
-
-  @override
-  String get streakDoneMessage => 'Ați terminat pe azi. Pe mâine!';
-
-  @override
-  String get streakPendingMessage =>
-      'Exersați sau adăugați un cuvânt azi pentru a vă păstra seria.';
-
-  @override
   String get streakLongestLabel => 'Cea mai lungă serie';
 
   @override
@@ -887,7 +877,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get streakFreezesLabel => 'Protecții';
+  String get streakFreezesLabel => 'Protecții de serie';
 
   @override
   String streakFreezesValue(int count, int max) {
@@ -896,7 +886,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String streakFreezeExplanation(int days, int max) {
-    return 'La fiecare $days zile active la rând primiți o protecție (max. $max). O protecție vă salvează seria într-o zi ratată.';
+    return 'La fiecare $days zile active la rând primiți o protecție de serie, până la $max. O protecție vă salvează seria într-o zi ratată.';
   }
 
   @override
@@ -1525,4 +1515,7 @@ class AppLocalizationsRo extends AppLocalizations {
     );
     return '$_temp0 Răspunsurile de până acum rămân salvate.';
   }
+
+  @override
+  String get streakCurrentLabel => 'Seria actuală';
 }

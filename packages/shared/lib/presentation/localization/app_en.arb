@@ -412,9 +412,6 @@
       }
     }
   },
-  "streakStartMessage": "Practice or add a word to start a streak.",
-  "streakDoneMessage": "You're done for today. See you tomorrow!",
-  "streakPendingMessage": "Practice or add a word today to keep your streak.",
   "streakLongestLabel": "Longest streak",
   "streakDays": "{count, plural, one{{count} day} other{{count} days}}",
   "@streakDays": {
@@ -424,7 +421,7 @@
       }
     }
   },
-  "streakFreezesLabel": "Freezes",
+  "streakFreezesLabel": "Streak freezes",
   "streakFreezesValue": "{count} of {max}",
   "@streakFreezesValue": {
     "placeholders": {
@@ -436,7 +433,7 @@
       }
     }
   },
-  "streakFreezeExplanation": "Every {days} active days in a row earn a freeze (max. {max}). A freeze saves your streak on a day you miss.",
+  "streakFreezeExplanation": "Every {days} active days in a row earn you a streak freeze, up to {max}. A freeze saves your streak on a day you miss.",
   "@streakFreezeExplanation": {
     "placeholders": {
       "days": {
@@ -1018,5 +1015,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "streakCurrentLabel": "Current streak"
 }

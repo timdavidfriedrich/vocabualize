@@ -226,14 +226,11 @@
   "settingsDeleteConfirmButton": "Ștergeți",
   "settingsDeleteAccountOfflineMessage": "Ștergerea contului necesită o conexiune la internet.",
   "streakTitle": "{count, plural, =0{Nicio serie încă} one{{count} zi la rând} few{{count} zile la rând} other{{count} de zile la rând}}",
-  "streakStartMessage": "Exersați sau adăugați un cuvânt pentru a începe o serie.",
-  "streakDoneMessage": "Ați terminat pe azi. Pe mâine!",
-  "streakPendingMessage": "Exersați sau adăugați un cuvânt azi pentru a vă păstra seria.",
   "streakLongestLabel": "Cea mai lungă serie",
   "streakDays": "{count, plural, one{{count} zi} few{{count} zile} other{{count} de zile}}",
-  "streakFreezesLabel": "Protecții",
+  "streakFreezesLabel": "Protecții de serie",
   "streakFreezesValue": "{count} din {max}",
-  "streakFreezeExplanation": "La fiecare {days} zile active la rând primiți o protecție (max. {max}). O protecție vă salvează seria într-o zi ratată.",
+  "streakFreezeExplanation": "La fiecare {days} zile active la rând primiți o protecție de serie, până la {max}. O protecție vă salvează seria într-o zi ratată.",
   "streakDayActive": "Activă",
   "streakDayFrozen": "Salvată de o protecție",
   "streakDayPending": "Încă deschisă",
@@ -366,5 +363,6 @@
   "detailsNotLearningLabel": "{language}, nu învăț acest cuvânt",
   "detailsLanguageRoleLabel": "{language}, {role}",
   "homeCustomPracticeEndTitle": "Încheiați exercițiul personalizat?",
-  "homeCustomPracticeEndMessage": "{remaining, plural, =1{A mai rămas 1 cuvânt.} few{Au mai rămas {remaining} cuvinte.} other{Au mai rămas {remaining} de cuvinte.}} Răspunsurile de până acum rămân salvate."
+  "homeCustomPracticeEndMessage": "{remaining, plural, =1{A mai rămas 1 cuvânt.} few{Au mai rămas {remaining} cuvinte.} other{Au mai rămas {remaining} de cuvinte.}} Răspunsurile de până acum rămân salvate.",
+  "streakCurrentLabel": "Seria actuală"
 }

@@ -849,15 +849,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get streakStartMessage => 'Practica o añade una palabra para empezar una racha.';
-
-  @override
-  String get streakDoneMessage => 'Ya has terminado por hoy. ¡Hasta mañana!';
-
-  @override
-  String get streakPendingMessage => 'Practica o añade una palabra hoy para mantener tu racha.';
-
-  @override
   String get streakLongestLabel => 'Racha más larga';
 
   @override
@@ -881,7 +872,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String streakFreezeExplanation(int days, int max) {
-    return 'Cada $days días activos seguidos ganas un protector de racha (máx. $max). Salva tu racha si un día no practicas.';
+    return 'Cada $days días activos seguidos ganas un protector de racha, hasta $max. Salva tu racha si un día no practicas.';
   }
 
   @override
@@ -1491,4 +1482,7 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0 Tus respuestas hasta ahora siguen guardadas.';
   }
+
+  @override
+  String get streakCurrentLabel => 'Racha actual';
 }

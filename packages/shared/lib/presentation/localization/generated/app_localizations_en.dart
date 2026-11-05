@@ -836,15 +836,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get streakStartMessage => 'Practice or add a word to start a streak.';
-
-  @override
-  String get streakDoneMessage => 'You\'re done for today. See you tomorrow!';
-
-  @override
-  String get streakPendingMessage => 'Practice or add a word today to keep your streak.';
-
-  @override
   String get streakLongestLabel => 'Longest streak';
 
   @override
@@ -859,7 +850,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get streakFreezesLabel => 'Freezes';
+  String get streakFreezesLabel => 'Streak freezes';
 
   @override
   String streakFreezesValue(int count, int max) {
@@ -868,7 +859,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String streakFreezeExplanation(int days, int max) {
-    return 'Every $days active days in a row earn a freeze (max. $max). A freeze saves your streak on a day you miss.';
+    return 'Every $days active days in a row earn you a streak freeze, up to $max. A freeze saves your streak on a day you miss.';
   }
 
   @override
@@ -1476,4 +1467,7 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0 Your answers so far are saved.';
   }
+
+  @override
+  String get streakCurrentLabel => 'Current streak';
 }

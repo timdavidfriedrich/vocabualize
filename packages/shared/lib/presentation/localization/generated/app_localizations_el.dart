@@ -851,17 +851,6 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get streakStartMessage =>
-      'Κάντε εξάσκηση ή προσθέστε μια λέξη για να ξεκινήσετε ένα σερί.';
-
-  @override
-  String get streakDoneMessage => 'Τελειώσατε για σήμερα. Τα λέμε αύριο!';
-
-  @override
-  String get streakPendingMessage =>
-      'Κάντε εξάσκηση ή προσθέστε μια λέξη σήμερα για να κρατήσετε το σερί σας.';
-
-  @override
   String get streakLongestLabel => 'Μεγαλύτερο σερί';
 
   @override
@@ -885,7 +874,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String streakFreezeExplanation(int days, int max) {
-    return 'Κάθε $days συνεχόμενες ενεργές ημέρες κερδίζετε μια προστασία (έως $max). Μια προστασία σώζει το σερί σας μια μέρα που το χάνετε.';
+    return 'Κάθε $days συνεχόμενες ενεργές ημέρες κερδίζετε μια προστασία σερί, έως $max. Μια προστασία σώζει το σερί σας μια μέρα που το χάνετε.';
   }
 
   @override
@@ -1495,4 +1484,7 @@ class AppLocalizationsEl extends AppLocalizations {
     );
     return '$_temp0 Οι απαντήσεις σας μέχρι τώρα παραμένουν αποθηκευμένες.';
   }
+
+  @override
+  String get streakCurrentLabel => 'Τρέχον σερί';
 }

@@ -226,14 +226,11 @@
   "settingsDeleteConfirmButton": "Elimina",
   "settingsDeleteAccountOfflineMessage": "Per eliminare l'account serve una connessione a Internet.",
   "streakTitle": "{count, plural, =0{Ancora nessuna serie} one{{count} giorno di fila} other{{count} giorni di fila}}",
-  "streakStartMessage": "Esercitati o aggiungi una parola per iniziare una serie.",
-  "streakDoneMessage": "Per oggi hai finito. A domani!",
-  "streakPendingMessage": "Esercitati o aggiungi una parola oggi per mantenere la serie.",
   "streakLongestLabel": "Serie più lunga",
   "streakDays": "{count, plural, one{{count} giorno} other{{count} giorni}}",
   "streakFreezesLabel": "Protezioni serie",
   "streakFreezesValue": "{count} su {max}",
-  "streakFreezeExplanation": "Ogni {days} giorni attivi di fila ottieni una protezione (max. {max}). Una protezione salva la tua serie in un giorno che salti.",
+  "streakFreezeExplanation": "Ogni {days} giorni attivi di fila ottieni una protezione serie, fino a {max}. Una protezione salva la tua serie in un giorno che salti.",
   "streakDayActive": "Attivo",
   "streakDayFrozen": "Salvato da una protezione",
   "streakDayPending": "Ancora aperto",
@@ -366,5 +363,6 @@
   "detailsNotLearningLabel": "{language}, non imparo questa parola",
   "detailsLanguageRoleLabel": "{language}, {role}",
   "homeCustomPracticeEndTitle": "Terminare il tuo esercizio personalizzato?",
-  "homeCustomPracticeEndMessage": "{remaining, plural, =1{Resta ancora 1 parola.} other{Restano ancora {remaining} parole.}} Le tue risposte finora restano salvate."
+  "homeCustomPracticeEndMessage": "{remaining, plural, =1{Resta ancora 1 parola.} other{Restano ancora {remaining} parole.}} Le tue risposte finora restano salvate.",
+  "streakCurrentLabel": "Serie attuale"
 }

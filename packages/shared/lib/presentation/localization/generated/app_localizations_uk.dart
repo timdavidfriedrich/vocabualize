@@ -877,16 +877,6 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get streakStartMessage => 'Попрактикуйтеся або додайте слово, щоб почати серію.';
-
-  @override
-  String get streakDoneMessage => 'На сьогодні все. До завтра!';
-
-  @override
-  String get streakPendingMessage =>
-      'Попрактикуйтеся або додайте слово сьогодні, щоб зберегти серію.';
-
-  @override
   String get streakLongestLabel => 'Найдовша серія';
 
   @override
@@ -903,7 +893,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get streakFreezesLabel => 'Заморозки';
+  String get streakFreezesLabel => 'Заморозки серії';
 
   @override
   String streakFreezesValue(int count, int max) {
@@ -912,7 +902,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String streakFreezeExplanation(int days, int max) {
-    return 'Кожні $days активних днів поспіль ви отримуєте заморозку (макс. $max). Вона зберігає серію в день, який ви пропустили.';
+    return 'Кожні $days активних днів поспіль ви отримуєте заморозку серії, до $max. Вона зберігає серію в день, який ви пропустили.';
   }
 
   @override
@@ -1557,4 +1547,7 @@ class AppLocalizationsUk extends AppLocalizations {
     );
     return '$_temp0 Відповіді, які ви вже дали, збережено.';
   }
+
+  @override
+  String get streakCurrentLabel => 'Поточна серія';
 }
