@@ -14,6 +14,7 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
+import 'package:shared/presentation/widgets/send_text_field.dart';
 
 class const ScanScreen({
   super.key,
@@ -72,8 +73,8 @@ class const _ReviewView({
           ),
         ),
         const SizedBox(height: Spacing.xxl),
-        TextField(
-          decoration: InputDecoration(hintText: context.s.scanTypeHint),
+        SendTextField(
+          hintText: context.s.scanTypeHint,
           onSubmitted: (word) =>
               _openDetails(context, word: word, photo: _photo, labelContext: null),
         ),
