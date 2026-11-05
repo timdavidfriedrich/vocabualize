@@ -30,6 +30,7 @@ import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/google_logo.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 
 class const SettingsScreen({
   super.key,
@@ -183,7 +184,7 @@ class const _ChoiceButton<T>({
             child: Text(_labelOf(option)),
           ),
       ],
-      builder: (context, controller, child) => OutlinedButton(
+      builder: (context, controller, child) => TonalButton(
         onPressed: () => controller.isOpen ? controller.close() : controller.open(),
         child: Text(_labelOf(_value)),
       ),

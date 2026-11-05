@@ -5,6 +5,7 @@ import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile_leading.dart';
 
 Future<bool> confirmsVocabularyDelete(
@@ -56,8 +57,8 @@ class const _DeleteVocabularyDialog({
           spacing: Spacing.xs,
           stackedSpacing: Spacing.xxs,
           children: [
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(Spacing.s)),
+            TonalButton(
+              isCompact: true,
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(context.s.cancel),
             ),

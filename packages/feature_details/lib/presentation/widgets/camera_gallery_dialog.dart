@@ -2,6 +2,7 @@ import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/image_pick_source.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 
 Future<ImagePickSource?> requestsImagePickSource(BuildContext context) {
   return showDialog<ImagePickSource>(
@@ -31,7 +32,7 @@ class const _CameraGalleryDialog() extends StatelessWidget {
             label: context.s.detailsOpenGalleryButton,
           ),
           const SizedBox(height: Spacing.s),
-          OutlinedButton(
+          TonalButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(context.s.cancel),
           ),

@@ -5,6 +5,7 @@ import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 
 Future<bool> confirmsAddingLanguage(
   BuildContext context, {
@@ -31,7 +32,7 @@ Future<bool> confirmsAddingLanguage(
           spacing: Spacing.xs,
           stackedSpacing: Spacing.xxs,
           children: [
-            OutlinedButton(
+            TonalButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
               child: Text(context.s.cancel),
             ),

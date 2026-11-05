@@ -17,6 +17,7 @@ import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/practice_button.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 import 'package:shared/presentation/widgets/vocabulary_info_dialog.dart';
 import 'package:shared/presentation/widgets/vocabulary_search_view.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile.dart';
@@ -223,7 +224,7 @@ class const _EmptyLanguageHint() extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: Spacing.m),
-              OutlinedButton(
+              TonalButton(
                 onPressed: () => context.pushLanguageWords(language: language, isAdding: false),
                 child: Text(context.s.homeChooseWordsButton),
               ),

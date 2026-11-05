@@ -2,6 +2,7 @@ import 'package:adaptive_actions/adaptive_actions.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 
 Future<bool> confirmsRetranslation(BuildContext context) async {
   final retranslates = await showDialog<bool>(
@@ -22,7 +23,7 @@ class const _ReplaceDialog() extends StatelessWidget {
           spacing: Spacing.xs,
           stackedSpacing: Spacing.xxs,
           children: [
-            OutlinedButton(
+            TonalButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(context.s.no),
             ),

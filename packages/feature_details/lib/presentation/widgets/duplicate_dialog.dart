@@ -2,6 +2,7 @@ import 'package:adaptive_actions/adaptive_actions.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 
 Future<bool> confirmsAddingDuplicate(BuildContext context, String source) async {
   final addsAnyway = await showDialog<bool>(
@@ -26,9 +27,9 @@ class const _DuplicateDialog({
           spacing: Spacing.xs,
           stackedSpacing: Spacing.xxs,
           children: [
-            OutlinedButton(
+            TonalButton(
+              isCompact: true,
               onPressed: () => Navigator.of(context).pop(true),
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(Spacing.s)),
               child: Text(context.s.detailsDuplicateAddButton),
             ),
             ElevatedButton(

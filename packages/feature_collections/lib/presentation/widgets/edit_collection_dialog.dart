@@ -3,6 +3,7 @@ import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 
 sealed class CollectionEdit {
   const CollectionEdit();
@@ -94,8 +95,8 @@ class const _DeleteCollectionDialog() extends StatelessWidget {
           spacing: Spacing.xs,
           stackedSpacing: Spacing.xxs,
           children: [
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(Spacing.s)),
+            TonalButton(
+              isCompact: true,
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(context.s.cancel),
             ),

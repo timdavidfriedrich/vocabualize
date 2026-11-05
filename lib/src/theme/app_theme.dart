@@ -195,24 +195,6 @@ abstract final class AppTheme {
           textStyle: textTheme.labelLarge,
         ),
       ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ButtonStyle(
-          foregroundColor: WidgetStateProperty.resolveWith(
-            (states) => states.contains(WidgetState.disabled) ? colors.outline : colors.onSurface,
-          ),
-          padding: const WidgetStatePropertyAll(_buttonPadding),
-          minimumSize: const WidgetStatePropertyAll(_buttonMinimumSize),
-          textStyle: WidgetStatePropertyAll(textTheme.labelLarge),
-          elevation: const WidgetStatePropertyAll(0),
-          shape: const WidgetStatePropertyAll(_roundedShape),
-          side: WidgetStateProperty.resolveWith(
-            (states) => BorderSide(
-              color: states.contains(WidgetState.disabled) ? colors.outline : colors.primary,
-              width: Spacing.borderWidthMedium,
-            ),
-          ),
-        ),
-      ),
       searchBarTheme: SearchBarThemeData(
         elevation: const WidgetStatePropertyAll(0),
         backgroundColor: WidgetStatePropertyAll(colors.surfaceContainerLow),
