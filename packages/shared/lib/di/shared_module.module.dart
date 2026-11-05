@@ -35,6 +35,8 @@ import 'package:shared/data/data_sources/device_data_source.dart' as _i931;
 import 'package:shared/data/data_sources/external_link_data_source.dart'
     as _i515;
 import 'package:shared/data/data_sources/image_file_data_source.dart' as _i532;
+import 'package:shared/data/data_sources/image_picker_data_source.dart'
+    as _i198;
 import 'package:shared/data/data_sources/image_processing_data_source.dart'
     as _i179;
 import 'package:shared/data/data_sources/image_sync_data_source.dart' as _i61;
@@ -77,6 +79,8 @@ import 'package:shared/data/repositories/custom_practice_repository_impl.dart'
     as _i863;
 import 'package:shared/data/repositories/external_link_repository_impl.dart'
     as _i22;
+import 'package:shared/data/repositories/image_picker_repository_impl.dart'
+    as _i435;
 import 'package:shared/data/repositories/image_repository_impl.dart' as _i816;
 import 'package:shared/data/repositories/language_repository_impl.dart'
     as _i850;
@@ -112,6 +116,8 @@ import 'package:shared/domain/repositories/custom_practice_repository.dart'
     as _i472;
 import 'package:shared/domain/repositories/external_link_repository.dart'
     as _i711;
+import 'package:shared/domain/repositories/image_picker_repository.dart'
+    as _i162;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/language_repository.dart' as _i308;
 import 'package:shared/domain/repositories/language_words_repository.dart'
@@ -195,6 +201,10 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => const _i460.BackupFileDataSourceImpl());
     gh.factory<_i154.ConnectivityDataSource>(
         () => const _i154.ConnectivityDataSourceImpl());
+    gh.factory<_i198.ImagePickerDataSource>(
+        () => const _i198.ImagePickerDataSourceImpl());
+    gh.factory<_i162.ImagePickerRepository>(() =>
+        _i435.ImagePickerRepositoryImpl(gh<_i198.ImagePickerDataSource>()));
     gh.factory<_i320.ReportRemoteDataSource>(
         () => _i320.ReportRemoteDataSourceImpl(gh<_i1040.Client>()));
     gh.factory<_i223.AppConfigRemoteDataSource>(

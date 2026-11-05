@@ -1,8 +1,8 @@
 import 'package:core/error/app_result.dart';
-import 'package:feature_details/domain/repositories/image_picker_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/image_pick_source.dart';
 import 'package:shared/domain/entities/processed_image.dart';
+import 'package:shared/domain/repositories/image_picker_repository.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
 
 @injectable
