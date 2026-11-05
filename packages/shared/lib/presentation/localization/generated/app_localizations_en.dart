@@ -1470,4 +1470,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get streakCurrentLabel => 'Current streak';
+
+  @override
+  String get homeWriteTitle => 'New word';
+
+  @override
+  String get homeWriteLanguageTitle => 'Type the word in';
+
+  @override
+  String get homeWriteLearningLabel => 'Learning';
 }

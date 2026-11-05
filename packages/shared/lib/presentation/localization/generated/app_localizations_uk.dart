@@ -1550,4 +1550,13 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get streakCurrentLabel => 'Поточна серія';
+
+  @override
+  String get homeWriteTitle => 'Нове слово';
+
+  @override
+  String get homeWriteLanguageTitle => 'Напишіть слово мовою';
+
+  @override
+  String get homeWriteLearningLabel => 'Вивчаю';
 }

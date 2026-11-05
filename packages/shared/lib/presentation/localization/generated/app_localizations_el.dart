@@ -1487,4 +1487,13 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get streakCurrentLabel => 'Τρέχον σερί';
+
+  @override
+  String get homeWriteTitle => 'Νέα λέξη';
+
+  @override
+  String get homeWriteLanguageTitle => 'Γράψτε τη λέξη στα';
+
+  @override
+  String get homeWriteLearningLabel => 'Μαθαίνω';
 }

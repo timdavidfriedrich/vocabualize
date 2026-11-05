@@ -364,5 +364,8 @@
   "detailsLanguageRoleLabel": "{language}, {role}",
   "homeCustomPracticeEndTitle": "Завершити ваше власне тренування?",
   "homeCustomPracticeEndMessage": "{remaining, plural, one{Залишилось ще {remaining} слово.} few{Залишилось ще {remaining} слова.} many{Залишилось ще {remaining} слів.} other{Залишилось ще {remaining} слова.}} Відповіді, які ви вже дали, збережено.",
-  "streakCurrentLabel": "Поточна серія"
+  "streakCurrentLabel": "Поточна серія",
+  "homeWriteTitle": "Нове слово",
+  "homeWriteLanguageTitle": "Напишіть слово мовою",
+  "homeWriteLearningLabel": "Вивчаю"
 }

@@ -364,5 +364,8 @@
   "detailsLanguageRoleLabel": "{language}, {role}",
   "homeCustomPracticeEndTitle": "Eigene Übung beenden?",
   "homeCustomPracticeEndMessage": "{remaining, plural, =1{Es ist noch 1 Wort übrig.} other{Es sind noch {remaining} Wörter übrig.}} Deine bisherigen Antworten bleiben gespeichert.",
-  "streakCurrentLabel": "Aktuelle Serie"
+  "streakCurrentLabel": "Aktuelle Serie",
+  "homeWriteTitle": "Neues Wort",
+  "homeWriteLanguageTitle": "Schreibe das Wort auf",
+  "homeWriteLearningLabel": "Lerne ich"
 }

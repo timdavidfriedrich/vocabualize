@@ -2297,6 +2297,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Current streak'**
   String get streakCurrentLabel;
+
+  /// No description provided for @homeWriteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New word'**
+  String get homeWriteTitle;
+
+  /// No description provided for @homeWriteLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the word in'**
+  String get homeWriteLanguageTitle;
+
+  /// No description provided for @homeWriteLearningLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning'**
+  String get homeWriteLearningLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

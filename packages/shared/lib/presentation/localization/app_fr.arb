@@ -364,5 +364,8 @@
   "detailsLanguageRoleLabel": "{language}, {role}",
   "homeCustomPracticeEndTitle": "Terminer votre exercice personnalisé ?",
   "homeCustomPracticeEndMessage": "{remaining, plural, =1{Il reste encore 1 mot.} other{Il reste encore {remaining} mots.}} Vos réponses jusqu'ici restent enregistrées.",
-  "streakCurrentLabel": "Série actuelle"
+  "streakCurrentLabel": "Série actuelle",
+  "homeWriteTitle": "Nouveau mot",
+  "homeWriteLanguageTitle": "Écrivez le mot en",
+  "homeWriteLearningLabel": "J'apprends"
 }

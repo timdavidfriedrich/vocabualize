@@ -1494,4 +1494,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get streakCurrentLabel => 'Série actuelle';
+
+  @override
+  String get homeWriteTitle => 'Nouveau mot';
+
+  @override
+  String get homeWriteLanguageTitle => 'Écrivez le mot en';
+
+  @override
+  String get homeWriteLearningLabel => 'J\'apprends';
 }

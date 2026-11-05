@@ -1518,4 +1518,13 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get streakCurrentLabel => 'Seria actuală';
+
+  @override
+  String get homeWriteTitle => 'Cuvânt nou';
+
+  @override
+  String get homeWriteLanguageTitle => 'Scrieți cuvântul în';
+
+  @override
+  String get homeWriteLearningLabel => 'Învăț';
 }

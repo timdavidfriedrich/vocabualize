@@ -364,5 +364,8 @@
   "detailsLanguageRoleLabel": "{language}, {role}",
   "homeCustomPracticeEndTitle": "¿Terminar tu práctica personalizada?",
   "homeCustomPracticeEndMessage": "{remaining, plural, =1{Aún queda 1 palabra.} other{Aún quedan {remaining} palabras.}} Tus respuestas hasta ahora siguen guardadas.",
-  "streakCurrentLabel": "Racha actual"
+  "streakCurrentLabel": "Racha actual",
+  "homeWriteTitle": "Palabra nueva",
+  "homeWriteLanguageTitle": "Escribe la palabra en",
+  "homeWriteLearningLabel": "Aprendo"
 }

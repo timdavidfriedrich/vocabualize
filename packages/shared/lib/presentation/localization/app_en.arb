@@ -1016,5 +1016,8 @@
       }
     }
   },
-  "streakCurrentLabel": "Current streak"
+  "streakCurrentLabel": "Current streak",
+  "homeWriteTitle": "New word",
+  "homeWriteLanguageTitle": "Type the word in",
+  "homeWriteLearningLabel": "Learning"
 }
