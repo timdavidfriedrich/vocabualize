@@ -14,7 +14,6 @@ import 'package:shared/presentation/preferences/preferences_cubit.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 const _overlayOpacity = 0.5;
-const _openButtonOpacity = 0.25;
 const _openIconTurns = 0.125;
 
 class const RecordFab({
@@ -38,6 +37,7 @@ class const RecordFab({
     }, [isOpen.value]);
     final overlayOpacity = Curves.easeOut.transform(useAnimation(overlay));
     final buttonKey = useMemoized(GlobalKey.new);
+    final openElevation = isOpen.value ? 0.0 : null;
     final button = KeyedSubtree(
       key: buttonKey,
       child: DecoratedBox(
@@ -101,10 +101,14 @@ class const RecordFab({
                     (false, DefaultGatherOption.write) => () => _write(context),
                   },
                   isExtended: isOpen.value,
-                  foregroundColor: context.c.onPrimary,
-                  backgroundColor: isOpen.value
-                      ? context.c.primary.withValues(alpha: _openButtonOpacity)
-                      : context.c.primary,
+                  foregroundColor: isOpen.value
+                      ? context.c.onPrimaryContainer
+                      : context.c.onPrimary,
+                  backgroundColor: isOpen.value ? context.c.primaryContainer : context.c.primary,
+                  elevation: openElevation,
+                  focusElevation: openElevation,
+                  hoverElevation: openElevation,
+                  highlightElevation: openElevation,
                   icon: AnimatedRotation(
                     turns: isOpen.value ? _openIconTurns : 0,
                     duration: _animationDuration,
