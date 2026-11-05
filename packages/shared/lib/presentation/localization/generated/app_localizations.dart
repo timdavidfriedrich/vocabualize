@@ -2399,6 +2399,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{language}, asks in {askMeIn}'**
   String detailsAsksInLabel(String language, String askMeIn);
+
+  /// No description provided for @scanFocusLockedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus locked'**
+  String get scanFocusLockedLabel;
+
+  /// No description provided for @scanFlashTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Flash'**
+  String get scanFlashTooltip;
+
+  /// No description provided for @scanSwitchCameraTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch camera'**
+  String get scanSwitchCameraTooltip;
+
+  /// No description provided for @scanGalleryTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from gallery'**
+  String get scanGalleryTooltip;
+
+  /// No description provided for @scanShutterTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get scanShutterTooltip;
+
+  /// No description provided for @scanResetCropTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get scanResetCropTooltip;
+
+  /// No description provided for @scanUsePhotoButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Use photo'**
+  String get scanUsePhotoButton;
+
+  /// No description provided for @scanRetakeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake'**
+  String get scanRetakeButton;
+
+  /// No description provided for @scanZoomLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{zoom}×'**
+  String scanZoomLabel(String zoom);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

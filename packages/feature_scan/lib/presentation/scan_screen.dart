@@ -5,8 +5,10 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_scan/presentation/scan_bloc.dart';
 import 'package:feature_scan/presentation/scan_event.dart';
 import 'package:feature_scan/presentation/scan_state.dart';
+import 'package:feature_scan/presentation/widgets/photo_adjust_view.dart';
 import 'package:feature_scan/presentation/widgets/scan_camera_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
@@ -23,33 +25,51 @@ class const ScanScreen({
   Widget build(BuildContext context) {
     return BlocListener<ScanBloc, ScanState>(
       listenWhen: (previous, current) => switch ((previous, current)) {
-        (ScanCapturing(error: final previousError), ScanCapturing(error: AppError())) =>
-          previousError == null,
-        (_, ScanCapturing(error: AppError())) => true,
+        (ScanCapturing(error: final previousError), ScanCapturing(error: AppError())) ||
+        (
+          ScanAdjusting(error: final previousError),
+          ScanAdjusting(error: AppError()),
+        ) => previousError == null,
+        (_, ScanCapturing(error: AppError()) || ScanAdjusting(error: AppError())) => true,
         _ => false,
       },
       listener: (context, state) {
-        if (state case ScanCapturing(error: final error?)) {
+        if (state case ScanCapturing(error: final error?) || ScanAdjusting(error: final error?)) {
           context.showToast(error.toMessage(context));
         }
       },
       child: BlocBuilder<ScanBloc, ScanState>(
         builder: (context, state) => PopScope(
-          canPop: state is! ScanReviewing,
+          canPop: state is ScanCapturing,
           onPopInvokedWithResult: (didPop, _) {
             if (!didPop) context.read<ScanBloc>().add(const ScanRetakeRequested());
           },
-          child: Scaffold(
-            appBar: AppBar(),
-            body: switch (state) {
-              ScanCapturing(:final isProcessing) => ScanCameraView(isProcessing: isProcessing),
-              ScanReviewing(:final photo, :final suggestions) => _ReviewView(
-                photo: photo,
-                suggestions: suggestions,
-              ),
-            },
-          ),
+          child: switch (state) {
+            ScanCapturing() => const _CameraScaffold(child: ScanCameraView()),
+            ScanAdjusting(:final path, :final isProcessing) => _CameraScaffold(
+              child: PhotoAdjustView(path: path, isProcessing: isProcessing),
+            ),
+            ScanReviewing(:final photo, :final suggestions) => Scaffold(
+              appBar: AppBar(),
+              body: _ReviewView(photo: photo, suggestions: suggestions),
+            ),
+          },
         ),
+      ),
+    );
+  }
+}
+
+class const _CameraScaffold({
+  required final Widget _child,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        backgroundColor: context.overlay.scrim,
+        body: SafeArea(child: _child),
       ),
     );
   }

@@ -381,5 +381,14 @@
   "detailsDoneButton": "Listo",
   "detailsAddLanguageButton": "Añadir otro idioma",
   "detailsPausedRoleLabel": "{language}, en pausa",
-  "detailsAsksInLabel": "{language}, pregunta en {askMeIn}"
+  "detailsAsksInLabel": "{language}, pregunta en {askMeIn}",
+  "scanFocusLockedLabel": "Enfoque bloqueado",
+  "scanFlashTooltip": "Flash",
+  "scanSwitchCameraTooltip": "Cambiar de cámara",
+  "scanGalleryTooltip": "Elegir de la galería",
+  "scanShutterTooltip": "Hacer foto",
+  "scanResetCropTooltip": "Restablecer",
+  "scanUsePhotoButton": "Usar foto",
+  "scanRetakeButton": "Repetir",
+  "scanZoomLabel": "{zoom}×"
 }

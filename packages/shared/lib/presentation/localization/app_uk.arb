@@ -381,5 +381,14 @@
   "detailsDoneButton": "Готово",
   "detailsAddLanguageButton": "Додати іншу мову",
   "detailsPausedRoleLabel": "{language}, на паузі",
-  "detailsAsksInLabel": "{language}, питає мовою {askMeIn}"
+  "detailsAsksInLabel": "{language}, питає мовою {askMeIn}",
+  "scanFocusLockedLabel": "Фокус зафіксовано",
+  "scanFlashTooltip": "Спалах",
+  "scanSwitchCameraTooltip": "Змінити камеру",
+  "scanGalleryTooltip": "Вибрати з галереї",
+  "scanShutterTooltip": "Зробити фото",
+  "scanResetCropTooltip": "Скинути",
+  "scanUsePhotoButton": "Використати фото",
+  "scanRetakeButton": "Перезняти",
+  "scanZoomLabel": "{zoom}×"
 }

@@ -1595,4 +1595,33 @@ class AppLocalizationsUk extends AppLocalizations {
   String detailsAsksInLabel(String language, String askMeIn) {
     return '$language, питає мовою $askMeIn';
   }
+
+  @override
+  String get scanFocusLockedLabel => 'Фокус зафіксовано';
+
+  @override
+  String get scanFlashTooltip => 'Спалах';
+
+  @override
+  String get scanSwitchCameraTooltip => 'Змінити камеру';
+
+  @override
+  String get scanGalleryTooltip => 'Вибрати з галереї';
+
+  @override
+  String get scanShutterTooltip => 'Зробити фото';
+
+  @override
+  String get scanResetCropTooltip => 'Скинути';
+
+  @override
+  String get scanUsePhotoButton => 'Використати фото';
+
+  @override
+  String get scanRetakeButton => 'Перезняти';
+
+  @override
+  String scanZoomLabel(String zoom) {
+    return '$zoom×';
+  }
 }

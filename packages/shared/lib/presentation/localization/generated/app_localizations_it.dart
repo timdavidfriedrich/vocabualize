@@ -1531,4 +1531,33 @@ class AppLocalizationsIt extends AppLocalizations {
   String detailsAsksInLabel(String language, String askMeIn) {
     return '$language, chiede in $askMeIn';
   }
+
+  @override
+  String get scanFocusLockedLabel => 'Messa a fuoco bloccata';
+
+  @override
+  String get scanFlashTooltip => 'Flash';
+
+  @override
+  String get scanSwitchCameraTooltip => 'Cambia fotocamera';
+
+  @override
+  String get scanGalleryTooltip => 'Scegli dalla galleria';
+
+  @override
+  String get scanShutterTooltip => 'Scatta foto';
+
+  @override
+  String get scanResetCropTooltip => 'Ripristina';
+
+  @override
+  String get scanUsePhotoButton => 'Usa foto';
+
+  @override
+  String get scanRetakeButton => 'Riscatta';
+
+  @override
+  String scanZoomLabel(String zoom) {
+    return '$zoom×';
+  }
 }

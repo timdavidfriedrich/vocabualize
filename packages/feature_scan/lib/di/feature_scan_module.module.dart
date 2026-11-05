@@ -21,6 +21,8 @@ import 'package:shared/data/data_sources/service_access_data_source.dart'
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
 import 'package:shared/domain/repositories/connectivity_repository.dart'
     as _i689;
+import 'package:shared/domain/repositories/image_picker_repository.dart'
+    as _i162;
 import 'package:shared/domain/repositories/image_repository.dart' as _i204;
 import 'package:shared/domain/repositories/language_repository.dart' as _i308;
 import 'package:vocabualize_client/vocabualize_client.dart' as _i1040;
@@ -45,6 +47,7 @@ class FeatureScanPackageModule extends _i526.MicroPackageModule {
           gh<_i308.LanguageRepository>(),
           gh<_i328.AppInfoRepository>(),
           gh<_i689.ConnectivityRepository>(),
+          gh<_i162.ImagePickerRepository>(),
         ));
   }
 }

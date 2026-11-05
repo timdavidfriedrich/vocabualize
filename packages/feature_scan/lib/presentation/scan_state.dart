@@ -12,9 +12,15 @@ sealed class ScanState with ScanStateMappable {
 
 @MappableClass()
 class const ScanCapturing({
-  required final bool isProcessing,
   required final AppError? error,
 }) extends ScanState with ScanCapturingMappable;
+
+@MappableClass()
+class const ScanAdjusting({
+  required final String path,
+  required final bool isProcessing,
+  required final AppError? error,
+}) extends ScanState with ScanAdjustingMappable;
 
 @MappableClass()
 class const ScanReviewing({

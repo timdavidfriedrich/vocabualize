@@ -1564,4 +1564,33 @@ class AppLocalizationsRo extends AppLocalizations {
   String detailsAsksInLabel(String language, String askMeIn) {
     return '$language, întreabă în $askMeIn';
   }
+
+  @override
+  String get scanFocusLockedLabel => 'Focalizare blocată';
+
+  @override
+  String get scanFlashTooltip => 'Bliț';
+
+  @override
+  String get scanSwitchCameraTooltip => 'Schimbați camera';
+
+  @override
+  String get scanGalleryTooltip => 'Alegeți din galerie';
+
+  @override
+  String get scanShutterTooltip => 'Faceți fotografia';
+
+  @override
+  String get scanResetCropTooltip => 'Resetați';
+
+  @override
+  String get scanUsePhotoButton => 'Folosiți fotografia';
+
+  @override
+  String get scanRetakeButton => 'Refaceți';
+
+  @override
+  String scanZoomLabel(String zoom) {
+    return '$zoom×';
+  }
 }

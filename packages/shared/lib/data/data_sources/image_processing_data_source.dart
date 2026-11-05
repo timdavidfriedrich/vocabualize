@@ -14,6 +14,11 @@ const _labelingQuality = 70;
 abstract class ImageProcessingDataSource {
   Future<({Uint8List full, Uint8List thumbnail})> processImage(String sourcePath);
 
+  Future<({Uint8List full, Uint8List thumbnail})> processCroppedImage(
+    String sourcePath, {
+    required ({double left, double top, double width, double height}) crop,
+  });
+
   Future<({Uint8List full, Uint8List thumbnail})> processBytes(Uint8List bytes);
 
   Future<Uint8List> createLabelingImage(Uint8List fullBytes, {required int longEdge});
@@ -44,6 +49,42 @@ class const ImageProcessingDataSourceImpl() implements ImageProcessingDataSource
       CompressFormat.webp,
     );
     return (full: full, thumbnail: thumbnail);
+  }
+
+  @override
+  Future<({Uint8List full, Uint8List thumbnail})> processCroppedImage(
+    String sourcePath, {
+    required ({double left, double top, double width, double height}) crop,
+  }) async {
+    final codec = await ui.instantiateImageCodecFromBuffer(
+      await ui.ImmutableBuffer.fromFilePath(sourcePath),
+    );
+    final image = (await codec.getNextFrame()).image;
+    codec.dispose();
+    final source = ui.Rect.fromLTWH(
+      image.width * crop.left,
+      image.height * crop.top,
+      image.width * crop.width,
+      image.height * crop.height,
+    );
+    final scale = min(1.0, _fullLongEdge / max(source.width, source.height));
+    final width = max(1, (source.width * scale).round());
+    final height = max(1, (source.height * scale).round());
+    final recorder = ui.PictureRecorder();
+    ui.Canvas(recorder).drawImageRect(
+      image,
+      source,
+      ui.Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble()),
+      ui.Paint()..filterQuality = ui.FilterQuality.high,
+    );
+    final picture = recorder.endRecording();
+    final cropped = await picture.toImage(width, height);
+    picture.dispose();
+    image.dispose();
+    final bytes = await cropped.toByteData(format: ui.ImageByteFormat.png);
+    cropped.dispose();
+    if (bytes == null) throw StateError("The image could not be cropped.");
+    return processBytes(bytes.buffer.asUint8List());
   }
 
   @override

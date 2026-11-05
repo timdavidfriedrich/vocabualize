@@ -16,6 +16,7 @@ class ScanStateMapper extends ClassMapperBase<ScanState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ScanStateMapper._());
       ScanCapturingMapper.ensureInitialized();
+      ScanAdjustingMapper.ensureInitialized();
       ScanReviewingMapper.ensureInitialized();
     }
     return _instance!;
@@ -70,11 +71,6 @@ class ScanCapturingMapper extends ClassMapperBase<ScanCapturing> {
   @override
   final String id = 'ScanCapturing';
 
-  static bool _$isProcessing(ScanCapturing v) => v.isProcessing;
-  static const Field<ScanCapturing, bool> _f$isProcessing = Field(
-    'isProcessing',
-    _$isProcessing,
-  );
   static AppError? _$error(ScanCapturing v) => v.error;
   static const Field<ScanCapturing, AppError> _f$error = Field(
     'error',
@@ -82,16 +78,10 @@ class ScanCapturingMapper extends ClassMapperBase<ScanCapturing> {
   );
 
   @override
-  final MappableFields<ScanCapturing> fields = const {
-    #isProcessing: _f$isProcessing,
-    #error: _f$error,
-  };
+  final MappableFields<ScanCapturing> fields = const {#error: _f$error};
 
   static ScanCapturing _instantiate(DecodingData data) {
-    return ScanCapturing(
-      isProcessing: data.dec(_f$isProcessing),
-      error: data.dec(_f$error),
-    );
+    return ScanCapturing(error: data.dec(_f$error));
   }
 
   @override
@@ -157,7 +147,7 @@ extension ScanCapturingValueCopy<$R, $Out>
 abstract class ScanCapturingCopyWith<$R, $In extends ScanCapturing, $Out>
     implements ScanStateCopyWith<$R, $In, $Out> {
   @override
-  $R call({bool? isProcessing, AppError? error});
+  $R call({AppError? error});
   ScanCapturingCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -170,22 +160,155 @@ class _ScanCapturingCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ScanCapturing> $mapper =
       ScanCapturingMapper.ensureInitialized();
   @override
-  $R call({bool? isProcessing, Object? error = $none}) => $apply(
-    FieldCopyWithData({
-      if (isProcessing != null) #isProcessing: isProcessing,
-      if (error != $none) #error: error,
-    }),
-  );
+  $R call({Object? error = $none}) =>
+      $apply(FieldCopyWithData({if (error != $none) #error: error}));
   @override
-  ScanCapturing $make(CopyWithData data) => ScanCapturing(
-    isProcessing: data.get(#isProcessing, or: $value.isProcessing),
-    error: data.get(#error, or: $value.error),
-  );
+  ScanCapturing $make(CopyWithData data) =>
+      ScanCapturing(error: data.get(#error, or: $value.error));
 
   @override
   ScanCapturingCopyWith<$R2, ScanCapturing, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _ScanCapturingCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class ScanAdjustingMapper extends ClassMapperBase<ScanAdjusting> {
+  ScanAdjustingMapper._();
+
+  static ScanAdjustingMapper? _instance;
+  static ScanAdjustingMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ScanAdjustingMapper._());
+      ScanStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ScanAdjusting';
+
+  static String _$path(ScanAdjusting v) => v.path;
+  static const Field<ScanAdjusting, String> _f$path = Field('path', _$path);
+  static bool _$isProcessing(ScanAdjusting v) => v.isProcessing;
+  static const Field<ScanAdjusting, bool> _f$isProcessing = Field(
+    'isProcessing',
+    _$isProcessing,
+  );
+  static AppError? _$error(ScanAdjusting v) => v.error;
+  static const Field<ScanAdjusting, AppError> _f$error = Field(
+    'error',
+    _$error,
+  );
+
+  @override
+  final MappableFields<ScanAdjusting> fields = const {
+    #path: _f$path,
+    #isProcessing: _f$isProcessing,
+    #error: _f$error,
+  };
+
+  static ScanAdjusting _instantiate(DecodingData data) {
+    return ScanAdjusting(
+      path: data.dec(_f$path),
+      isProcessing: data.dec(_f$isProcessing),
+      error: data.dec(_f$error),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ScanAdjusting fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ScanAdjusting>(map);
+  }
+
+  static ScanAdjusting fromJson(String json) {
+    return ensureInitialized().decodeJson<ScanAdjusting>(json);
+  }
+}
+
+mixin ScanAdjustingMappable {
+  String toJson() {
+    return ScanAdjustingMapper.ensureInitialized().encodeJson<ScanAdjusting>(
+      this as ScanAdjusting,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return ScanAdjustingMapper.ensureInitialized().encodeMap<ScanAdjusting>(
+      this as ScanAdjusting,
+    );
+  }
+
+  ScanAdjustingCopyWith<ScanAdjusting, ScanAdjusting, ScanAdjusting>
+  get copyWith => _ScanAdjustingCopyWithImpl<ScanAdjusting, ScanAdjusting>(
+    this as ScanAdjusting,
+    $identity,
+    $identity,
+  );
+  @override
+  String toString() {
+    return ScanAdjustingMapper.ensureInitialized().stringifyValue(
+      this as ScanAdjusting,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ScanAdjustingMapper.ensureInitialized().equalsValue(
+      this as ScanAdjusting,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return ScanAdjustingMapper.ensureInitialized().hashValue(
+      this as ScanAdjusting,
+    );
+  }
+}
+
+extension ScanAdjustingValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ScanAdjusting, $Out> {
+  ScanAdjustingCopyWith<$R, ScanAdjusting, $Out> get $asScanAdjusting =>
+      $base.as((v, t, t2) => _ScanAdjustingCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class ScanAdjustingCopyWith<$R, $In extends ScanAdjusting, $Out>
+    implements ScanStateCopyWith<$R, $In, $Out> {
+  @override
+  $R call({String? path, bool? isProcessing, AppError? error});
+  ScanAdjustingCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _ScanAdjustingCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ScanAdjusting, $Out>
+    implements ScanAdjustingCopyWith<$R, ScanAdjusting, $Out> {
+  _ScanAdjustingCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ScanAdjusting> $mapper =
+      ScanAdjustingMapper.ensureInitialized();
+  @override
+  $R call({String? path, bool? isProcessing, Object? error = $none}) => $apply(
+    FieldCopyWithData({
+      if (path != null) #path: path,
+      if (isProcessing != null) #isProcessing: isProcessing,
+      if (error != $none) #error: error,
+    }),
+  );
+  @override
+  ScanAdjusting $make(CopyWithData data) => ScanAdjusting(
+    path: data.get(#path, or: $value.path),
+    isProcessing: data.get(#isProcessing, or: $value.isProcessing),
+    error: data.get(#error, or: $value.error),
+  );
+
+  @override
+  ScanAdjustingCopyWith<$R2, ScanAdjusting, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _ScanAdjustingCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ScanReviewingMapper extends ClassMapperBase<ScanReviewing> {

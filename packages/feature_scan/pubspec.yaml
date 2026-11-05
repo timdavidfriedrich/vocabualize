@@ -15,6 +15,7 @@ dependencies:
   dart_mappable: ^4.10.0
   camera: ^0.12.1
   flutter_hooks: ^0.21.3+1
+  intl: ^0.20.3
 dev_dependencies:
   build_runner: ^2.16.1
   dart_mappable_builder: ^4.10.0

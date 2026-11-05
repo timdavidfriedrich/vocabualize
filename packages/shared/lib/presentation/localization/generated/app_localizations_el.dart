@@ -1534,4 +1534,33 @@ class AppLocalizationsEl extends AppLocalizations {
   String detailsAsksInLabel(String language, String askMeIn) {
     return '$language, ρωτά στα $askMeIn';
   }
+
+  @override
+  String get scanFocusLockedLabel => 'Κλείδωμα εστίασης';
+
+  @override
+  String get scanFlashTooltip => 'Φλας';
+
+  @override
+  String get scanSwitchCameraTooltip => 'Αλλαγή κάμερας';
+
+  @override
+  String get scanGalleryTooltip => 'Επιλογή από τη γκαλερί';
+
+  @override
+  String get scanShutterTooltip => 'Λήψη φωτογραφίας';
+
+  @override
+  String get scanResetCropTooltip => 'Επαναφορά';
+
+  @override
+  String get scanUsePhotoButton => 'Χρήση φωτογραφίας';
+
+  @override
+  String get scanRetakeButton => 'Νέα λήψη';
+
+  @override
+  String scanZoomLabel(String zoom) {
+    return '$zoom×';
+  }
 }

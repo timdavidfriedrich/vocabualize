@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_processing_data_source.dart';
 import 'package:shared/data/data_sources/image_transfer_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
+import 'package:shared/domain/entities/image_crop.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
@@ -17,6 +18,26 @@ class const ImageRepositoryImpl(
   Future<AppResult<ProcessedImage>> processImage(String sourcePath) async {
     try {
       final processed = await _processingDataSource.processImage(sourcePath);
+      return Success(
+        ProcessedImage(
+          fullBytes: processed.full,
+          thumbnailBytes: processed.thumbnail,
+          photographer: null,
+          photographerUrl: null,
+        ),
+      );
+    } on Object catch (error) {
+      return Failure(UnexpectedError(error.toString()));
+    }
+  }
+
+  @override
+  Future<AppResult<ProcessedImage>> processCroppedImage(String sourcePath, ImageCrop crop) async {
+    try {
+      final processed = await _processingDataSource.processCroppedImage(
+        sourcePath,
+        crop: (left: crop.left, top: crop.top, width: crop.width, height: crop.height),
+      );
       return Success(
         ProcessedImage(
           fullBytes: processed.full,

@@ -1,328 +1,142 @@
-import 'dart:async';
-
-import 'package:camera/camera.dart';
-import 'package:core/error/app_error.dart';
 import 'package:core/theme/spacing.dart';
-import 'package:feature_scan/presentation/extensions/camera_exception_extensions.dart';
 import 'package:feature_scan/presentation/scan_bloc.dart';
 import 'package:feature_scan/presentation/scan_event.dart';
+import 'package:feature_scan/presentation/widgets/camera_preview_box.dart';
+import 'package:feature_scan/presentation/widgets/camera_round_button.dart';
+import 'package:feature_scan/presentation/widgets/scan_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
-const _resolution = ResolutionPreset.high;
-const _minZoom = 1.0;
-const _controlsOpacity = 0.25;
+const _shutterSize = Spacing.xxxxl + Spacing.l;
+const _sideButtonSize = Spacing.xxxl + Spacing.xs;
+const _controlOpacity = 0.12;
 
 class const ScanCameraView({
   super.key,
-  required final bool _isProcessing,
 }) extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final camera = _useScanCamera();
+    final camera = useScanCamera();
+    final bloc = context.read<ScanBloc>();
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: Spacing.xxl),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Spacing.m, vertical: Spacing.xs),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(height: Spacing.m),
-              AspectRatio(
-                aspectRatio: 1,
-                child: _CameraBox(camera: camera),
+              CameraRoundButton(
+                icon: Icons.arrow_back_rounded,
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                onPressed: () => Navigator.of(context).maybePop(),
               ),
-              const SizedBox(height: Spacing.xxl),
-              IntrinsicHeight(
-                child: Row(
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 1,
-                      child: _SwitchCameraButton(
-                        onPressed: camera.canSwitch ? camera.switchLens : null,
-                      ),
-                    ),
-                    const SizedBox(width: Spacing.m),
-                    Expanded(
-                      child: _ZoomSlider(
-                        zoom: camera.zoom,
-                        maxZoom: camera.maxZoom,
-                        onChanged: camera.isReady ? camera.setZoom : null,
-                      ),
-                    ),
-                  ],
-                ),
+              CameraRoundButton(
+                icon: camera.isFlashOn ? Icons.flash_on_rounded : Icons.flash_off_rounded,
+                tooltip: context.s.scanFlashTooltip,
+                isActive: camera.isFlashOn,
+                onPressed: camera.isReady ? camera.toggleFlash : null,
               ),
             ],
           ),
         ),
-        FloatingActionButton.large(
-          heroTag: null,
-          backgroundColor: context.c.surfaceContainerLow,
-          onPressed: camera.isReady && !_isProcessing ? () => _takePhoto(context, camera) : null,
-          child: _isProcessing
-              ? const CircularProgressIndicator()
-              : const Icon(Icons.camera_alt_rounded),
+        const SizedBox(height: Spacing.s),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Spacing.s),
+          child: AspectRatio(aspectRatio: 1, child: CameraPreviewBox(camera: camera)),
         ),
-        const SizedBox(height: Spacing.xxl),
+        const Spacer(),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(Spacing.xxl, 0, Spacing.xxl, Spacing.xxl),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _GalleryButton(onPressed: () => bloc.add(const ScanGalleryRequested())),
+              _ShutterButton(
+                isBusy: camera.isTakingPicture,
+                onPressed: camera.isReady ? () => _takePhoto(context, camera) : null,
+              ),
+              CameraRoundButton(
+                icon: Icons.cameraswitch_outlined,
+                tooltip: context.s.scanSwitchCameraTooltip,
+                size: _sideButtonSize,
+                onPressed: camera.canSwitch ? camera.switchLens : null,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
-  Future<void> _takePhoto(BuildContext context, _ScanCamera camera) async {
+  Future<void> _takePhoto(BuildContext context, ScanCamera camera) async {
     final bloc = context.read<ScanBloc>();
     final path = await camera.takePicture();
     if (path != null) bloc.add(ScanPhotoTaken(path: path));
   }
 }
 
-class const _CameraBox({
-  required final _ScanCamera _camera,
+class const _GalleryButton({
+  required final VoidCallback _onPressed,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(Spacing.radiusXxxl),
-      child: ColoredBox(
-        color: context.c.surfaceContainerLow,
-        child: switch ((_camera.error, _camera.controller)) {
-          (final AppError error, _) => _CameraFailure(error: error, onRetried: _camera.retry),
-          (null, final CameraController controller) when controller.value.isInitialized =>
-            FittedBox(
-              fit: BoxFit.cover,
-              child: SizedBox(
-                width: controller.value.previewSize?.height,
-                height: controller.value.previewSize?.width,
-                child: CameraPreview(controller),
-              ),
-            ),
-          _ => const Center(child: CircularProgressIndicator()),
-        },
-      ),
-    );
-  }
-}
-
-class const _CameraFailure({
-  required final AppError _error,
-  required final VoidCallback _onRetried,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(Spacing.xl),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(_error.toMessage(context), textAlign: TextAlign.center),
-          const SizedBox(height: Spacing.m),
-          switch (_error) {
-            CameraPermissionError() => ElevatedButton(
-              onPressed: () => context.read<ScanBloc>().add(const ScanSettingsOpened()),
-              child: Text(context.s.scanOpenSettingsButton),
-            ),
-            _ => ElevatedButton(
-              onPressed: _onRetried,
-              child: Text(context.s.tryAgain),
-            ),
-          },
-        ],
-      ),
-    );
-  }
-}
-
-class const _SwitchCameraButton({
-  required final VoidCallback? _onPressed,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: context.c.surfaceContainerLow.withValues(alpha: _controlsOpacity),
-      clipBehavior: Clip.hardEdge,
-      borderRadius: BorderRadius.circular(Spacing.radiusXxxl),
-      child: InkWell(
-        onTap: _onPressed,
-        child: Padding(
-          padding: const EdgeInsets.all(Spacing.m),
-          child: Icon(Icons.cameraswitch_rounded, color: context.c.primary),
+    return SizedBox.square(
+      dimension: _sideButtonSize,
+      child: Material(
+        color: context.overlay.onScrim.withValues(alpha: _controlOpacity),
+        borderRadius: BorderRadius.circular(Spacing.radiusL),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: _onPressed,
+          child: Icon(
+            Icons.photo_library_outlined,
+            color: context.overlay.onScrim,
+            semanticLabel: context.s.scanGalleryTooltip,
+          ),
         ),
       ),
     );
   }
 }
 
-class const _ZoomSlider({
-  required final double _zoom,
-  required final double _maxZoom,
-  required final ValueChanged<double>? _onChanged,
+class const _ShutterButton({
+  required final bool _isBusy,
+  required final VoidCallback? _onPressed,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.xs, vertical: Spacing.m),
-      decoration: BoxDecoration(
-        color: context.c.surfaceContainerLow.withValues(alpha: _controlsOpacity),
-        borderRadius: BorderRadius.circular(Spacing.radiusXxxl),
-      ),
-      child: Slider.adaptive(
-        value: _zoom.clamp(_minZoom, _maxZoom),
-        min: _minZoom,
-        max: _maxZoom,
-        onChanged: _onChanged,
+    return Semantics(
+      button: true,
+      label: context.s.scanShutterTooltip,
+      child: GestureDetector(
+        onTap: _isBusy ? null : _onPressed,
+        child: Container(
+          width: _shutterSize,
+          height: _shutterSize,
+          padding: const EdgeInsets.all(Spacing.xxs),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: context.overlay.onScrim, width: Spacing.borderWidthHeavy),
+          ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _onPressed == null
+                  ? context.overlay.onScrim.withValues(alpha: _controlOpacity)
+                  : context.overlay.onScrim,
+            ),
+            child: _isBusy
+                ? Padding(
+                    padding: const EdgeInsets.all(Spacing.m),
+                    child: CircularProgressIndicator(color: context.overlay.scrim),
+                  )
+                : null,
+          ),
+        ),
       ),
     );
-  }
-}
-
-_ScanCamera _useScanCamera() {
-  final camera = useMemoized(_ScanCamera.new);
-  useEffect(() {
-    unawaited(camera.start());
-    return camera.dispose;
-  }, [camera]);
-  useOnAppLifecycleStateChange((_, state) => camera.onLifecycleChanged(state));
-  return useListenable(camera);
-}
-
-class _ScanCamera extends ChangeNotifier {
-  CameraController? _controller;
-  AppError? _error;
-  List<CameraDescription> _cameras = const [];
-  int _cameraIndex = 0;
-  double _zoom = _minZoom;
-  double _maxZoom = _minZoom;
-  Future<void>? _starting;
-  bool _needsRestart = false;
-  bool _isDisposed = false;
-
-  CameraController? get controller => _controller;
-
-  AppError? get error => _error;
-
-  double get zoom => _zoom;
-
-  double get maxZoom => _maxZoom;
-
-  bool get isReady => _controller?.value.isInitialized ?? false;
-
-  bool get canSwitch => isReady && _cameras.length > 1;
-
-  Future<void> start() => _starting ??= _start().whenComplete(() => _starting = null);
-
-  Future<void> retry() async {
-    _error = null;
-    notifyListeners();
-    if (!isReady) await start();
-  }
-
-  Future<void> switchLens() async {
-    final controller = _controller;
-    if (controller == null || _cameras.length < 2) return;
-    _cameraIndex = (_cameraIndex + 1) % _cameras.length;
-    try {
-      await controller.setDescription(_cameras[_cameraIndex]);
-      _zoom = _minZoom;
-      _maxZoom = await controller.getMaxZoomLevel();
-      if (!_isDisposed) notifyListeners();
-    } on CameraException catch (exception) {
-      _fail(exception.toAppError());
-    }
-  }
-
-  Future<void> setZoom(double zoom) async {
-    _zoom = zoom;
-    notifyListeners();
-    try {
-      await _controller?.setZoomLevel(zoom);
-    } on CameraException catch (exception) {
-      _fail(exception.toAppError());
-    }
-  }
-
-  Future<String?> takePicture() async {
-    final controller = _controller;
-    if (controller == null || !controller.value.isInitialized || controller.value.isTakingPicture) {
-      return null;
-    }
-    try {
-      return (await controller.takePicture()).path;
-    } on CameraException catch (exception) {
-      _fail(exception.toAppError());
-      return null;
-    }
-  }
-
-  // * The permission dialog makes the app inactive while the camera is still starting, so only a
-  // * camera that is running is stopped on inactive. Leaving the app (for example to the system
-  // * settings) always restarts it on return, which picks up a permission granted there.
-  void onLifecycleChanged(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.resumed:
-        if (!_needsRestart) return;
-        _needsRestart = false;
-        _error = null;
-        unawaited(start());
-      case AppLifecycleState.inactive:
-        if (!isReady) return;
-        _needsRestart = true;
-        unawaited(_stop());
-      case AppLifecycleState.hidden || AppLifecycleState.paused:
-        _needsRestart = true;
-        if (isReady) unawaited(_stop());
-      case AppLifecycleState.detached:
-        return;
-    }
-  }
-
-  Future<void> _start() async {
-    if (isReady || _isDisposed) return;
-    CameraController? next;
-    try {
-      if (_cameras.isEmpty) _cameras = await availableCameras();
-      if (_cameras.isEmpty) {
-        _fail(const CameraUnavailableError());
-        return;
-      }
-      next = CameraController(_cameras[_cameraIndex], _resolution, enableAudio: false);
-      await next.initialize();
-      await next.setFlashMode(FlashMode.off);
-      final maxZoom = await next.getMaxZoomLevel();
-      if (_isDisposed) {
-        await next.dispose();
-        return;
-      }
-      _controller = next;
-      _zoom = _minZoom;
-      _maxZoom = maxZoom;
-      _error = null;
-      notifyListeners();
-    } on CameraException catch (exception) {
-      await next?.dispose();
-      _fail(exception.toAppError());
-    }
-  }
-
-  Future<void> _stop() async {
-    final controller = _controller;
-    _controller = null;
-    if (!_isDisposed) notifyListeners();
-    await controller?.dispose();
-  }
-
-  void _fail(AppError error) {
-    if (_isDisposed) return;
-    _error = error;
-    notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    _isDisposed = true;
-    unawaited(_controller?.dispose());
-    _controller = null;
-    super.dispose();
   }
 }

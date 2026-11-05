@@ -381,5 +381,14 @@
   "detailsDoneButton": "Gata",
   "detailsAddLanguageButton": "Adăugați altă limbă",
   "detailsPausedRoleLabel": "{language}, în pauză",
-  "detailsAsksInLabel": "{language}, întreabă în {askMeIn}"
+  "detailsAsksInLabel": "{language}, întreabă în {askMeIn}",
+  "scanFocusLockedLabel": "Focalizare blocată",
+  "scanFlashTooltip": "Bliț",
+  "scanSwitchCameraTooltip": "Schimbați camera",
+  "scanGalleryTooltip": "Alegeți din galerie",
+  "scanShutterTooltip": "Faceți fotografia",
+  "scanResetCropTooltip": "Resetați",
+  "scanUsePhotoButton": "Folosiți fotografia",
+  "scanRetakeButton": "Refaceți",
+  "scanZoomLabel": "{zoom}×"
 }

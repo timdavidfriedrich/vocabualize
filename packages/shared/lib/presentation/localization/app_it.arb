@@ -381,5 +381,14 @@
   "detailsDoneButton": "Fatto",
   "detailsAddLanguageButton": "Aggiungi un'altra lingua",
   "detailsPausedRoleLabel": "{language}, in pausa",
-  "detailsAsksInLabel": "{language}, chiede in {askMeIn}"
+  "detailsAsksInLabel": "{language}, chiede in {askMeIn}",
+  "scanFocusLockedLabel": "Messa a fuoco bloccata",
+  "scanFlashTooltip": "Flash",
+  "scanSwitchCameraTooltip": "Cambia fotocamera",
+  "scanGalleryTooltip": "Scegli dalla galleria",
+  "scanShutterTooltip": "Scatta foto",
+  "scanResetCropTooltip": "Ripristina",
+  "scanUsePhotoButton": "Usa foto",
+  "scanRetakeButton": "Riscatta",
+  "scanZoomLabel": "{zoom}×"
 }
