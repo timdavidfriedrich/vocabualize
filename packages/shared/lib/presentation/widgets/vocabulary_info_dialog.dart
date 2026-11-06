@@ -11,6 +11,7 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/date_time_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
+import 'package:shared/presentation/widgets/collection_chip.dart';
 import 'package:shared/presentation/widgets/icon_action_button.dart';
 import 'package:shared/presentation/widgets/level_indicator.dart';
 import 'package:shared/presentation/widgets/photo_overlay.dart';
@@ -135,8 +136,10 @@ class const _VocabularyInfoDialog({
               const SizedBox(height: Spacing.m),
               Wrap(
                 spacing: Spacing.xs,
-                runSpacing: -Spacing.xs,
-                children: [for (final tag in _tags) Chip(label: Text(tag.name))],
+                runSpacing: Spacing.xs,
+                children: [
+                  for (final tag in _tags) CollectionChip(tag: tag, isSelected: false, onTap: null),
+                ],
               ),
             ],
             const SizedBox(height: Spacing.m),
