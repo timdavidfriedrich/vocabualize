@@ -40,52 +40,54 @@ class const _LanguagesSheet({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DetailsBloc, DetailsState>(
-      builder: (context, state) => switch (state) {
-        final DetailsEditing editing => SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(
-            Spacing.m,
-            0,
-            Spacing.m,
-            Spacing.m + MediaQuery.paddingOf(context).bottom,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: Spacing.xs,
-            children: [
-              for (final language in editing.learnedLanguages)
-                _LearnedCard(
-                  editing: editing,
-                  language: language,
-                  isShown: language == _shown,
-                  onShown: () {
-                    _onShown(language);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              for (final language in editing.askMeInLanguages)
-                _LanguageRow(editing: editing, language: language, isAskMeIn: true),
-              _LanguageRow(editing: editing, language: editing.setup.main, isAskMeIn: false),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    context.pushLanguages();
-                  },
-                  icon: const Icon(Icons.add_rounded),
-                  label: Text(
-                    context.s.detailsAddLanguageButton,
-                    style: context.t.titleMedium?.copyWith(color: context.c.primary),
+    return SafeArea(
+      child: BlocBuilder<DetailsBloc, DetailsState>(
+        builder: (context, state) => switch (state) {
+          final DetailsEditing editing => SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(
+              Spacing.m,
+              0,
+              Spacing.m,
+              Spacing.m,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: Spacing.xs,
+              children: [
+                for (final language in editing.learnedLanguages)
+                  _LearnedCard(
+                    editing: editing,
+                    language: language,
+                    isShown: language == _shown,
+                    onShown: () {
+                      _onShown(language);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                for (final language in editing.askMeInLanguages)
+                  _LanguageRow(editing: editing, language: language, isAskMeIn: true),
+                _LanguageRow(editing: editing, language: editing.setup.main, isAskMeIn: false),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      context.pushLanguages();
+                    },
+                    icon: const Icon(Icons.add_rounded),
+                    label: Text(
+                      context.s.detailsAddLanguageButton,
+                      style: context.t.titleMedium?.copyWith(color: context.c.primary),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        _ => const SizedBox.shrink(),
-      },
+          _ => const SizedBox.shrink(),
+        },
+      ),
     );
   }
 }

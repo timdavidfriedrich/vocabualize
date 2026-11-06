@@ -26,31 +26,33 @@ Future<void> showStreakSheet(BuildContext context) {
 class const _StreakSheet() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, Streak?>(
-      selector: (state) => switch (state) {
-        HomeLoading(:final streak) || HomeLoaded(:final streak) => streak,
-        HomeFailure() => null,
-      },
-      builder: (context, streak) => switch (streak) {
-        final streak? => SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(
-            Spacing.l,
-            0,
-            Spacing.l,
-            Spacing.xxl + MediaQuery.paddingOf(context).bottom,
+    return SafeArea(
+      child: BlocSelector<HomeBloc, HomeState, Streak?>(
+        selector: (state) => switch (state) {
+          HomeLoading(:final streak) || HomeLoaded(:final streak) => streak,
+          HomeFailure() => null,
+        },
+        builder: (context, streak) => switch (streak) {
+          final streak? => SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(
+              Spacing.l,
+              0,
+              Spacing.l,
+              Spacing.xxl,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _StreakList(streak: streak),
+                const SizedBox(height: Spacing.xl),
+                _StreakCalendar(streak: streak),
+              ],
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _StreakList(streak: streak),
-              const SizedBox(height: Spacing.xl),
-              _StreakCalendar(streak: streak),
-            ],
-          ),
-        ),
-        null => const SizedBox.shrink(),
-      },
+          null => const SizedBox.shrink(),
+        },
+      ),
     );
   }
 }

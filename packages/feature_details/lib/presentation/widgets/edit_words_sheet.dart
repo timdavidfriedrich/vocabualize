@@ -95,53 +95,55 @@ class const _EditWordsSheet({
     final edits = useMemoized(() => <Language, String>{});
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
-      child: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(
-          Spacing.m,
-          0,
-          Spacing.m,
-          Spacing.m + MediaQuery.paddingOf(context).bottom,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Spacing.xxs),
-              child: Text(_title, style: context.t.titleLarge),
-            ),
-            const SizedBox(height: Spacing.m),
-            for (final field in _fields)
-              _WordInput(
-                field: field,
-                onChanged: (text) => edits[field.language] = text,
-                onSpeak: () => _onSpeak(field.language),
-                onReport: field.canReport ? () => _onReport(field.language) : null,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(
+            Spacing.m,
+            0,
+            Spacing.m,
+            Spacing.m,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.xxs),
+                child: Text(_title, style: context.t.titleLarge),
               ),
-            const SizedBox(height: Spacing.xs),
-            Row(
-              children: [
-                Expanded(
-                  child: TonalButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(context.s.cancel),
-                  ),
+              const SizedBox(height: Spacing.m),
+              for (final field in _fields)
+                _WordInput(
+                  field: field,
+                  onChanged: (text) => edits[field.language] = text,
+                  onSpeak: () => _onSpeak(field.language),
+                  onReport: field.canReport ? () => _onReport(field.language) : null,
                 ),
-                const SizedBox(width: Spacing.s),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop({
-                      for (final field in _fields)
-                        if (edits[field.language]?.trim() case final text?
-                            when text.isNotEmpty && text != field.text)
-                          field.language: text,
-                    }),
-                    child: Text(context.s.detailsDoneButton),
+              const SizedBox(height: Spacing.xs),
+              Row(
+                children: [
+                  Expanded(
+                    child: TonalButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(context.s.cancel),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(width: Spacing.s),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop({
+                        for (final field in _fields)
+                          if (edits[field.language]?.trim() case final text?
+                              when text.isNotEmpty && text != field.text)
+                            field.language: text,
+                      }),
+                      child: Text(context.s.detailsDoneButton),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

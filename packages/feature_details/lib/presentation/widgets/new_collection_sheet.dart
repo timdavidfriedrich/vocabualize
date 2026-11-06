@@ -39,74 +39,76 @@ class const _NewCollectionSheet({
     final emoji = useState<String?>(null);
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
-      child: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(
-          Spacing.l,
-          0,
-          Spacing.l,
-          Spacing.l + MediaQuery.paddingOf(context).bottom,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(context.s.detailsNewCollectionTitle, style: context.t.titleLarge),
-            const SizedBox(height: Spacing.m),
-            Row(
-              children: [
-                Container(
-                  width: _emojiButtonSize,
-                  height: _emojiButtonSize,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: context.c.primary,
-                    borderRadius: BorderRadius.circular(Spacing.radiusXl),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(
+            Spacing.l,
+            0,
+            Spacing.l,
+            Spacing.l,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(context.s.detailsNewCollectionTitle, style: context.t.titleLarge),
+              const SizedBox(height: Spacing.m),
+              Row(
+                children: [
+                  Container(
+                    width: _emojiButtonSize,
+                    height: _emojiButtonSize,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: context.c.primary,
+                      borderRadius: BorderRadius.circular(Spacing.radiusXl),
+                    ),
+                    child: switch (emoji.value) {
+                      final emoji? => Text(emoji, style: context.t.headlineMedium),
+                      null => Icon(Icons.add_reaction_outlined, color: context.c.onPrimary),
+                    },
                   ),
-                  child: switch (emoji.value) {
-                    final emoji? => Text(emoji, style: context.t.headlineMedium),
-                    null => Icon(Icons.add_reaction_outlined, color: context.c.onPrimary),
-                  },
-                ),
-                const SizedBox(width: Spacing.m),
-                Expanded(
-                  child: FilledTextField(
-                    controller: nameController,
-                    hintText: context.s.detailsCollectionNameHint,
-                    style: context.t.titleMedium,
-                    textInputAction: TextInputAction.done,
+                  const SizedBox(width: Spacing.m),
+                  Expanded(
+                    child: FilledTextField(
+                      controller: nameController,
+                      hintText: context.s.detailsCollectionNameHint,
+                      style: context.t.titleMedium,
+                      textInputAction: TextInputAction.done,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: Spacing.m),
-            _EmojiPicker(
-              usedEmojis: _usedEmojis,
-              selected: emoji.value,
-              onSelected: (selected) => emoji.value = selected,
-            ),
-            const SizedBox(height: Spacing.m),
-            Row(
-              children: [
-                Expanded(
-                  child: TonalButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(context.s.cancel),
+                ],
+              ),
+              const SizedBox(height: Spacing.m),
+              _EmojiPicker(
+                usedEmojis: _usedEmojis,
+                selected: emoji.value,
+                onSelected: (selected) => emoji.value = selected,
+              ),
+              const SizedBox(height: Spacing.m),
+              Row(
+                children: [
+                  Expanded(
+                    child: TonalButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(context.s.cancel),
+                    ),
                   ),
-                ),
-                const SizedBox(width: Spacing.s),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: hasName
-                        ? () => Navigator.of(
-                            context,
-                          ).pop((name: nameController.text.trim(), emoji: emoji.value))
-                        : null,
-                    child: Text(context.s.detailsCreateCollectionButton),
+                  const SizedBox(width: Spacing.s),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: hasName
+                          ? () => Navigator.of(
+                              context,
+                            ).pop((name: nameController.text.trim(), emoji: emoji.value))
+                          : null,
+                      child: Text(context.s.detailsCreateCollectionButton),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
