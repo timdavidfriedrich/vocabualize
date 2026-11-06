@@ -12,6 +12,7 @@ import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/widgets/app_menu.dart';
 import 'package:shared/presentation/widgets/language_label.dart';
 import 'package:shared/presentation/widgets/page_app_bar.dart';
 import 'package:shared/presentation/widgets/section_title.dart';
@@ -63,7 +64,7 @@ class const LearnedLanguageScreen({
       child: Scaffold(
         appBar: PageAppBar(
           title: LanguageLabel(language: _language, style: context.t.headlineSmall),
-          actions: const [_PausedChip()],
+          actions: const [_PausedChip(), _MoreMenu()],
         ),
         bottomNavigationBar: const _Actions(),
         body: BlocBuilder<LearnedLanguageBloc, LearnedLanguageState>(
@@ -163,53 +164,69 @@ class const _ActionButtons({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<LearnedLanguageBloc>();
     final learned = _state.learned;
-    final label = learned.language.toShortLabel(context);
-    final isLastActive = !learned.isPaused && _state.setup.active.length == 1;
+    if (!learned.isPaused) return const SizedBox.shrink();
     return SafeArea(
       minimum: const EdgeInsets.only(bottom: Spacing.m),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Spacing.m),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (learned.isPaused)
-              ElevatedButton(
-                onPressed: _state.isBusy
-                    ? null
-                    : () => bloc.add(const LearnedLanguageResumeRequested(startsOver: false)),
-                child: Text(context.s.learnedLanguageResumeButton(label)),
-              )
-            else ...[
-              TonalButton(
-                onPressed: _state.isBusy || isLastActive
-                    ? null
-                    : () => bloc.add(const LearnedLanguagePauseRequested()),
-                child: Text(context.s.learnedLanguagePauseButton(label)),
-              ),
-              if (isLastActive)
-                Padding(
-                  padding: const EdgeInsets.only(top: Spacing.xs),
-                  child: Text(
-                    context.s.learnedLanguageLastActiveHint,
-                    style: context.t.bodySmall?.copyWith(color: context.c.onSurfaceVariant),
-                    textAlign: TextAlign.center,
-                  ),
+        child: ElevatedButton(
+          onPressed: _state.isBusy
+              ? null
+              : () => context.read<LearnedLanguageBloc>().add(
+                  const LearnedLanguageResumeRequested(startsOver: false),
                 ),
-            ],
-            const SizedBox(height: Spacing.xs),
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: context.c.error,
-                textStyle: context.t.labelLarge,
-              ),
-              onPressed: _state.isBusy || isLastActive ? null : () => _delete(context),
-              child: Text(context.s.delete),
-            ),
-          ],
+          child: Text(
+            context.s.learnedLanguageResumeButton(learned.language.toShortLabel(context)),
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class const _MoreMenu() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LearnedLanguageBloc, LearnedLanguageState>(
+      builder: (context, state) => switch (state) {
+        final LearnedLanguageLoaded loaded => _MoreMenuButton(state: loaded),
+        _ => const SizedBox.shrink(),
+      },
+    );
+  }
+}
+
+class const _MoreMenuButton({
+  required final LearnedLanguageLoaded _state,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<LearnedLanguageBloc>();
+    final learned = _state.learned;
+    final label = learned.language.toShortLabel(context);
+    final isLastActive = !learned.isPaused && _state.setup.active.length == 1;
+    final canChange = !_state.isBusy && !isLastActive;
+    return AppMenuAnchor(
+      items: [
+        if (!learned.isPaused)
+          AppMenuItem(
+            leading: const Icon(Icons.pause_rounded),
+            title: context.s.learnedLanguagePauseButton(label),
+            subtitle: isLastActive ? context.s.learnedLanguageLastActiveHint : null,
+            onTap: canChange ? () => bloc.add(const LearnedLanguagePauseRequested()) : null,
+          ),
+        AppMenuItem(
+          leading: const Icon(Icons.delete_outline_rounded),
+          title: context.s.delete,
+          isDestructive: true,
+          onTap: canChange ? () => _delete(context) : null,
+        ),
+      ],
+      builder: (context, controller) => IconButton(
+        onPressed: () => controller.isOpen ? controller.close() : controller.open(),
+        tooltip: MaterialLocalizations.of(context).showMenuTooltip,
+        icon: const Icon(Icons.more_vert_rounded),
       ),
     );
   }
