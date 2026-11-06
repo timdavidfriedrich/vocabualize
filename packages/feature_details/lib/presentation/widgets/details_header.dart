@@ -86,7 +86,11 @@ class const DetailsHeader({
                                     shownText.isEmpty && state.translatingLanguages.contains(shown)
                                     ? const ButtonProgress()
                                     : Text(
-                                        shownText.isEmpty ? shown.toLabel(context) : shownText,
+                                        shownText.isEmpty
+                                            ? context.s.detailsMissingTextLabel(
+                                                shown.toLabel(context),
+                                              )
+                                            : shownText,
                                         textAlign: TextAlign.center,
                                         maxLines: _wordMaxLines,
                                         overflow: TextOverflow.ellipsis,

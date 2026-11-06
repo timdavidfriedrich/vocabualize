@@ -2244,6 +2244,12 @@ abstract class AppLocalizations {
   /// **'{language}, not learning this word'**
   String detailsNotLearningLabel(String language);
 
+  /// No description provided for @detailsMissingTextLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'({language})'**
+  String detailsMissingTextLabel(String language);
+
   /// No description provided for @detailsLanguageRoleLabel.
   ///
   /// In en, this message translates to:

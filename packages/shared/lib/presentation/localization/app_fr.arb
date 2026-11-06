@@ -356,6 +356,7 @@
   "customPracticeMoreTooltip": "Plus",
   "customPracticeDoneButton": "Terminé",
   "detailsNotLearningLabel": "{language}, je n'apprends pas ce mot",
+  "detailsMissingTextLabel": "({language})",
   "detailsLanguageRoleLabel": "{language}, {role}",
   "homeCustomPracticeEndTitle": "Terminer votre exercice personnalisé ?",
   "homeCustomPracticeEndMessage": "{remaining, plural, =1{Il reste encore 1 mot.} other{Il reste encore {remaining} mots.}} Vos réponses jusqu'ici restent enregistrées.",

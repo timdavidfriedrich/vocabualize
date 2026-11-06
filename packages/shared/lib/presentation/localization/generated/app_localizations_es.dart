@@ -1442,6 +1442,11 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String detailsMissingTextLabel(String language) {
+    return '($language)';
+  }
+
+  @override
   String detailsLanguageRoleLabel(String language, String role) {
     return '$language, $role';
   }

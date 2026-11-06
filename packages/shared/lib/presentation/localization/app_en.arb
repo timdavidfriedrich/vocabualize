@@ -984,6 +984,14 @@
       }
     }
   },
+  "detailsMissingTextLabel": "({language})",
+  "@detailsMissingTextLabel": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
   "detailsLanguageRoleLabel": "{language}, {role}",
   "@detailsLanguageRoleLabel": {
     "placeholders": {

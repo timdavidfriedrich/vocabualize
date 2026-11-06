@@ -208,7 +208,7 @@ class const _Texts({
           const ButtonProgress()
         else
           Text(
-            text.isEmpty ? _language.toLabel(context) : text,
+            text.isEmpty ? context.s.detailsMissingTextLabel(_language.toLabel(context)) : text,
             maxLines: _textMaxLines,
             overflow: TextOverflow.ellipsis,
             style: text.isEmpty ? _style?.copyWith(color: context.c.outline) : _style,
