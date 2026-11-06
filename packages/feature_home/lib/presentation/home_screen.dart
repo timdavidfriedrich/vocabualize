@@ -247,6 +247,7 @@ class const _RecentSection() extends StatelessWidget {
                 language: setup.selected,
                 mainLanguage: setup.main,
                 onTap: (vocabulary) => _showInfo(context, vocabulary),
+                onLongPress: (vocabulary) => _edit(context, vocabulary),
               ),
             ],
           ),

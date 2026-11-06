@@ -17,6 +17,7 @@ class const RecentVocabulariesSection({
   required final Language _language,
   required final Language _mainLanguage,
   required final ValueChanged<Vocabulary> _onTap,
+  required final ValueChanged<Vocabulary> _onLongPress,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class const RecentVocabulariesSection({
               language: _language,
               mainLanguage: _mainLanguage,
               onTap: () => _onTap(vocabulary),
+              onLongPress: () => _onLongPress(vocabulary),
             ),
           ],
           const SizedBox(width: Spacing.xl),
@@ -49,6 +51,7 @@ class const _RecentVocabularyCard({
   required final Language _language,
   required final Language _mainLanguage,
   required final VoidCallback _onTap,
+  required final VoidCallback _onLongPress,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,7 @@ class const _RecentVocabularyCard({
               : BorderSide.none,
         ),
         onPressed: _onTap,
+        onLongPress: _onLongPress,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
