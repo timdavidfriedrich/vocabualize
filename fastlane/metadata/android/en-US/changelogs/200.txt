@@ -1,0 +1,6 @@
+Smoother and clearer:
+• Word details: save right away, missing translations fill in later and no longer get stuck
+• Scan: the flash works, slide over the zoom buttons to zoom, and no more cropping after the photo
+• Collections: emojis everywhere and one dialog to create or edit them
+• Settings in clear sections, new menus and better contrast in light mode
+• Home: long press a new word to edit it

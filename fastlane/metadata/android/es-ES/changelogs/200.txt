@@ -1,0 +1,6 @@
+Más fluida y clara:
+• Detalles de la palabra: guarda al instante, las traducciones que faltan llegan después y ya no se quedan atascadas
+• Escanear: el flash funciona, desliza sobre los botones de zoom para acercar y ya no hay que recortar tras la foto
+• Colecciones: emojis en todas partes y un solo diálogo para crearlas o editarlas
+• Ajustes en secciones claras, menús nuevos y mejor contraste en modo claro
+• Inicio: mantén pulsada una palabra nueva para editarla

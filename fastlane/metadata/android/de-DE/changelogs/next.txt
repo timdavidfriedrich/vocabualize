@@ -1,6 +1,0 @@
-Flüssiger und klarer:
-• Wortdetails: sofort speichern, fehlende Übersetzungen kommen später und hängen nicht mehr fest
-• Scannen: Der Blitz funktioniert, wische über die Zoom-Knöpfe zum Zoomen, und kein Zuschneiden mehr nach dem Foto
-• Sammlungen: Emojis überall und ein Fenster zum Erstellen oder Bearbeiten
-• Einstellungen in klaren Abschnitten, neue Menüs und besserer Kontrast im hellen Modus
-• Startseite: Neues Wort lange drücken, um es zu bearbeiten
