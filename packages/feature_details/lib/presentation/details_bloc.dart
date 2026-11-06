@@ -77,6 +77,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final TextToSpeechRepository _textToSpeechRepository;
   final LanguageRepository _languageRepository;
   DetailsNewStarted? _newWord;
+  final _translationsInFlight = <Language>{};
 
   Future<void> _onNewStarted(DetailsNewStarted event, Emitter<DetailsState> emit) async {
     _newWord = event;
@@ -225,8 +226,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     Emitter<DetailsState> emit,
   ) async {
     if (state case final DetailsEditing editing when editing.runningAction == null) {
-      final busy = editing.copyWith(runningAction: DetailsAction.report, error: null);
-      emit(busy);
+      emit(editing.copyWith(runningAction: DetailsAction.report, error: null));
       final result = await _reportRepository.sendTranslationReport(
         source: editing.enteredText,
         target: editing.textOf(event.language),
@@ -235,10 +235,16 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       );
       switch (result) {
         case Success():
-          emit(busy.copyWith(runningAction: null, notice: DetailsNotice.translationReported));
-          emit(busy.copyWith(runningAction: null, notice: null));
+          _emitLatest(
+            emit,
+            (current) => current.copyWith(
+              runningAction: null,
+              notice: DetailsNotice.translationReported,
+            ),
+          );
+          _emitLatest(emit, (current) => current.copyWith(notice: null));
         case Failure(:final error):
-          emit(busy.copyWith(runningAction: null, error: error));
+          _emitLatest(emit, (current) => current.copyWith(runningAction: null, error: error));
       }
     }
   }
@@ -295,18 +301,20 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     Emitter<DetailsState> emit,
   ) async {
     if (state case final DetailsEditing editing when editing.runningAction == null) {
-      final busy = editing.copyWith(runningAction: DetailsAction.photoPick, error: null);
-      emit(busy);
+      emit(editing.copyWith(runningAction: DetailsAction.photoPick, error: null));
       final result = await _pickImage(event.source);
-      emit(switch (result) {
-        Success(data: final image?) => busy.copyWith(
-          selectedImage: DetailsNewPhoto(image: image),
-          ownPhoto: DetailsNewPhoto(image: image),
-          runningAction: null,
-        ),
-        Success(data: null) => busy.copyWith(runningAction: null),
-        Failure(:final error) => busy.copyWith(runningAction: null, error: error),
-      });
+      _emitLatest(
+        emit,
+        (current) => switch (result) {
+          Success(data: final image?) => current.copyWith(
+            selectedImage: DetailsNewPhoto(image: image),
+            ownPhoto: DetailsNewPhoto(image: image),
+            runningAction: null,
+          ),
+          Success(data: null) => current.copyWith(runningAction: null),
+          Failure(:final error) => current.copyWith(runningAction: null, error: error),
+        },
+      );
     }
   }
 
@@ -344,17 +352,19 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   Future<void> _onTagCreated(DetailsTagCreated event, Emitter<DetailsState> emit) async {
     if (state case final DetailsEditing editing when editing.runningAction == null) {
-      final busy = editing.copyWith(runningAction: DetailsAction.tagCreation, error: null);
-      emit(busy);
+      emit(editing.copyWith(runningAction: DetailsAction.tagCreation, error: null));
       final result = await _tagRepository.createTag(name: event.name.trim(), emoji: event.emoji);
-      emit(switch (result) {
-        Success(:final data) => busy.copyWith(
-          tags: [...busy.tags, data],
-          selectedTagIds: {...busy.selectedTagIds, data.id},
-          runningAction: null,
-        ),
-        Failure(:final error) => busy.copyWith(runningAction: null, error: error),
-      });
+      _emitLatest(
+        emit,
+        (current) => switch (result) {
+          Success(:final data) => current.copyWith(
+            tags: [...current.tags, data],
+            selectedTagIds: {...current.selectedTagIds, data.id},
+            runningAction: null,
+          ),
+          Failure(:final error) => current.copyWith(runningAction: null, error: error),
+        },
+      );
     }
   }
 
@@ -384,25 +394,26 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       emit(editing.copyWith(error: const ValidationError()));
       return;
     }
-    final busy = editing.copyWith(runningAction: DetailsAction.save, error: null);
-    emit(busy);
-    final result = await _save(editing);
-    emit(switch (result) {
-      Success() when editing.original == null => const DetailsAdded(),
-      Success() => const DetailsClosed(),
-      Failure(:final error) => busy.copyWith(runningAction: null, error: error),
-    });
+    emit(editing.copyWith(runningAction: DetailsAction.save, error: null));
+    switch (await _save(editing)) {
+      case Success() when editing.original == null:
+        emit(const DetailsAdded());
+      case Success():
+        emit(const DetailsClosed());
+      case Failure(:final error):
+        _emitLatest(emit, (current) => current.copyWith(runningAction: null, error: error));
+    }
   }
 
   Future<void> _onDeleteRequested(DetailsDeleteRequested event, Emitter<DetailsState> emit) async {
     if (state case DetailsEditing(:final original?, runningAction: null) && final editing) {
-      final busy = editing.copyWith(runningAction: DetailsAction.delete, error: null);
-      emit(busy);
-      final result = await _vocabularyRepository.deleteVocabulary(original.id);
-      emit(switch (result) {
-        Success() => const DetailsClosed(),
-        Failure(:final error) => busy.copyWith(runningAction: null, error: error),
-      });
+      emit(editing.copyWith(runningAction: DetailsAction.delete, error: null));
+      switch (await _vocabularyRepository.deleteVocabulary(original.id)) {
+        case Success():
+          emit(const DetailsClosed());
+        case Failure(:final error):
+          _emitLatest(emit, (current) => current.copyWith(runningAction: null, error: error));
+      }
     }
   }
 
@@ -548,7 +559,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     DetailsEditing editing, {
     required DetailsPendingLookup pending,
   }) async {
-    final missing = editing.missingLanguages.difference(editing.translatingLanguages);
+    final missing = editing.missingLanguages.difference(_translationsInFlight);
     final selected = editing.setup.selected;
     final targets = switch (pending) {
       DetailsPendingLookup.photos => const <Language>{},
@@ -558,22 +569,23 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       },
     };
     final wantsPhotos = pending != DetailsPendingLookup.translations;
+    _translationsInFlight.addAll(targets);
     emit(
       editing.copyWith(
-        translatingLanguages: {...editing.translatingLanguages, ...targets},
+        translatingLanguages: {..._translationsInFlight},
         isSearchingPhotos: editing.isSearchingPhotos || wantsPhotos,
         pendingLookup: null,
       ),
     );
     final searchesPhotos = wantsPhotos && !await _areImagesHidden();
     if (targets.isEmpty && !searchesPhotos) {
-      _finishLookup(emit, targets: targets, wantsPhotos: wantsPhotos, error: null, pending: null);
+      _finishLookup(emit, wantsPhotos: wantsPhotos, error: null, pending: null);
       return;
     }
     if (!await _isConnected()) {
+      _translationsInFlight.removeAll(targets);
       _finishLookup(
         emit,
-        targets: targets,
         wantsPhotos: wantsPhotos,
         error: null,
         pending: pending,
@@ -588,7 +600,6 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     final isOffline = error is ConnectionError && !await _isConnected();
     _finishLookup(
       emit,
-      targets: targets,
       wantsPhotos: wantsPhotos,
       error: isOffline ? null : error,
       pending: isOffline ? pending : null,
@@ -597,7 +608,6 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   void _finishLookup(
     Emitter<DetailsState> emit, {
-    required Set<Language> targets,
     required bool wantsPhotos,
     required AppError? error,
     required DetailsPendingLookup? pending,
@@ -605,7 +615,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     if (state case final DetailsEditing current) {
       emit(
         current.copyWith(
-          translatingLanguages: current.translatingLanguages.difference(targets),
+          translatingLanguages: {..._translationsInFlight},
           isSearchingPhotos: current.isSearchingPhotos && !wantsPhotos,
           pendingLookup: pending ?? current.pendingLookup,
           error: error ?? current.error,
@@ -620,6 +630,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     Language target,
   ) async {
     final result = await _translate(editing, target);
+    _translationsInFlight.remove(target);
     if (state case final DetailsEditing current) {
       final isCurrent =
           current.enteredLanguage == editing.enteredLanguage &&
@@ -632,7 +643,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
             if (result case Success(:final data) when isCurrent)
               target: DetailsText(text: data, origin: TranslationOrigin.translated),
           },
-          translatingLanguages: current.translatingLanguages.difference({target}),
+          translatingLanguages: {..._translationsInFlight},
         ),
       );
     }
@@ -650,10 +661,19 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       to: target,
       context: editing.context,
     );
-    return switch (await request()) {
-      Failure(error: ServiceUnavailableError()) => request(),
-      final result => result,
+    final result = await request();
+    return switch (result) {
+      Failure(error: ServiceUnavailableError()) => await request(),
+      Failure(error: ConnectionError()) when await _isConnected() => await request(),
+      Success() || Failure() => result,
     };
+  }
+
+  void _emitLatest(
+    Emitter<DetailsState> emit,
+    DetailsEditing Function(DetailsEditing current) update,
+  ) {
+    if (state case final DetailsEditing current) emit(update(current));
   }
 
   Future<AppError?> _searchPhotosAndApply(
