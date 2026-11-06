@@ -10,6 +10,8 @@ const _freeHost = "api-free.deepl.com";
 const _proHost = "api.deepl.com";
 const _freeKeySuffix = ":fx";
 const _translatePath = "/v2/translate";
+const _retryDelays = [Duration(milliseconds: 500), Duration(seconds: 1)];
+const _deeplBusyStatus = 529;
 
 class const DeeplTranslationProvider(
   final http.Client _client,
@@ -22,19 +24,18 @@ class const DeeplTranslationProvider(
     required String targetLanguage,
     required String? context,
   }) async {
-    final response = await _client.post(
-      Uri.https(_apiKey.endsWith(_freeKeySuffix) ? _freeHost : _proHost, _translatePath),
-      headers: {
-        HttpHeaders.authorizationHeader: "DeepL-Auth-Key $_apiKey",
-        HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
-      },
-      body: jsonEncode({
-        "text": texts,
-        "context": ?context,
-        "source_lang": ?supportedLanguages[sourceLanguage]?.deeplSource,
-        "target_lang": ?supportedLanguages[targetLanguage]?.deeplTarget,
-      }),
-    );
+    final body = jsonEncode({
+      "text": texts,
+      "context": ?context,
+      "source_lang": ?supportedLanguages[sourceLanguage]?.deeplSource,
+      "target_lang": ?supportedLanguages[targetLanguage]?.deeplTarget,
+    });
+    var response = await _post(body);
+    for (final delay in _retryDelays) {
+      if (!_isTransient(response.statusCode)) break;
+      await Future<void>.delayed(delay);
+      response = await _post(body);
+    }
     if (response.statusCode != HttpStatus.ok) {
       throw TranslationFailure("DeepL answered ${response.statusCode}");
     }
@@ -50,4 +51,18 @@ class const DeeplTranslationProvider(
     }
     return translations;
   }
+
+  Future<http.Response> _post(String body) => _client.post(
+    Uri.https(_apiKey.endsWith(_freeKeySuffix) ? _freeHost : _proHost, _translatePath),
+    headers: {
+      HttpHeaders.authorizationHeader: "DeepL-Auth-Key $_apiKey",
+      HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+    },
+    body: body,
+  );
+
+  bool _isTransient(int statusCode) =>
+      statusCode == HttpStatus.tooManyRequests ||
+      statusCode == _deeplBusyStatus ||
+      statusCode >= HttpStatus.internalServerError;
 }
