@@ -139,7 +139,10 @@ class const _EditingScreen() extends HookWidget {
                 ),
               ),
             ),
-            const Padding(padding: EdgeInsets.all(Spacing.m), child: _Actions()),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: Spacing.xxl, vertical: Spacing.m),
+              child: _Actions(),
+            ),
           ],
         ),
       ),
@@ -236,7 +239,7 @@ class const _ImageSection() extends StatelessWidget {
       builder: (context, areImagesHidden) => switch (areImagesHidden) {
         true => const SizedBox.shrink(),
         false => const Padding(
-          padding: EdgeInsets.fromLTRB(Spacing.m, 0, Spacing.m, Spacing.m),
+          padding: EdgeInsets.fromLTRB(Spacing.xxl, 0, Spacing.xxl, Spacing.m),
           child: ImageChooser(),
         ),
       },

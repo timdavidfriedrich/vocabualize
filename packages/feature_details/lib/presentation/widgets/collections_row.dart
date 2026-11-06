@@ -29,7 +29,7 @@ class const CollectionsRow({
         height: _chipHeight,
         child: ListView(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: Spacing.m),
+          padding: const EdgeInsets.symmetric(horizontal: Spacing.xxl),
           children: [
             _AddButton(tags: choice.tags),
             for (final tag in choice.tags)
