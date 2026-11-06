@@ -3,6 +3,7 @@ import 'package:core/error/app_result.dart';
 import 'package:feature_details/domain/use_cases/pick_image_use_case.dart';
 import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
+import 'package:feature_details/presentation/extensions/details_editing_extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/language.dart';

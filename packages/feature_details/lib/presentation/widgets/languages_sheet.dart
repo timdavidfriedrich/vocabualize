@@ -2,6 +2,7 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
+import 'package:feature_details/presentation/extensions/details_editing_extensions.dart';
 import 'package:feature_details/presentation/extensions/details_language_extensions.dart';
 import 'package:feature_details/presentation/widgets/edit_words_sheet.dart';
 import 'package:flutter/material.dart';

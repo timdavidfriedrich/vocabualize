@@ -3,6 +3,7 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
+import 'package:feature_details/presentation/extensions/details_editing_extensions.dart';
 import 'package:feature_details/presentation/widgets/collections_row.dart';
 import 'package:feature_details/presentation/widgets/details_header.dart';
 import 'package:feature_details/presentation/widgets/duplicate_dialog.dart';

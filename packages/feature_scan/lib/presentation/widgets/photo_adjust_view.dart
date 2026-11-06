@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:core/theme/spacing.dart';
+import 'package:feature_scan/presentation/extensions/image_provider_extensions.dart';
 import 'package:feature_scan/presentation/scan_bloc.dart';
 import 'package:feature_scan/presentation/scan_event.dart';
 import 'package:feature_scan/presentation/widgets/camera_round_button.dart';
@@ -25,7 +25,7 @@ class const PhotoAdjustView({
   @override
   Widget build(BuildContext context) {
     final image = useMemoized(() => FileImage(File(_path)), [_path]);
-    final imageSize = useFuture(useMemoized(() => _sizeOf(image), [image])).data;
+    final imageSize = useFuture(useMemoized(image.resolveSize, [image])).data;
     return LayoutBuilder(
       builder: (context, constraints) => _AdjustContent(
         image: image,
@@ -163,22 +163,4 @@ class const _AdjustContent({
       ],
     );
   }
-}
-
-Future<Size> _sizeOf(ImageProvider image) {
-  final completer = Completer<Size>();
-  final stream = image.resolve(ImageConfiguration.empty);
-  late final ImageStreamListener listener;
-  listener = ImageStreamListener(
-    (info, _) {
-      completer.complete(Size(info.image.width.toDouble(), info.image.height.toDouble()));
-      stream.removeListener(listener);
-    },
-    onError: (error, stackTrace) {
-      completer.completeError(error, stackTrace);
-      stream.removeListener(listener);
-    },
-  );
-  stream.addListener(listener);
-  return completer.future;
 }
