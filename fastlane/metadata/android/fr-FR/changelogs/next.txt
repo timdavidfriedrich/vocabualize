@@ -1,0 +1,6 @@
+Plus fluide et plus clair :
+• Détails du mot : enregistre tout de suite, les traductions manquantes arrivent ensuite et ne restent plus bloquées
+• Scan : le flash marche, glisse sur les boutons de zoom pour zoomer, et plus de recadrage après la photo
+• Collections : des emojis partout et une seule fenêtre pour les créer ou les modifier
+• Réglages en sections claires, nouveaux menus et meilleur contraste en mode clair
+• Accueil : appui long sur un nouveau mot pour le modifier
