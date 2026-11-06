@@ -33,12 +33,12 @@ extension DetailsEditingExtensions on DetailsEditing {
       if (language != enteredLanguage && textOf(language).isEmpty) language,
   };
 
-  bool get canSave =>
-      enteredText.isNotEmpty &&
-      enabledLanguages.isNotEmpty &&
-      activeLanguages.every(
-        (language) => !enabledLanguages.contains(language) || textOf(language).isNotEmpty,
-      );
+  List<Language> get untranslatedLanguages => [
+    for (final language in activeLanguages)
+      if (enabledLanguages.contains(language) && textOf(language).isEmpty) language,
+  ];
+
+  bool get canSave => enteredText.isNotEmpty && enabledLanguages.isNotEmpty;
 
   bool get canEditTexts => runningAction == null && translatingLanguages.isEmpty;
 

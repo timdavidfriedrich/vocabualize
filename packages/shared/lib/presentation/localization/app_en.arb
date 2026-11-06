@@ -999,6 +999,17 @@
       }
     }
   },
+  "detailsUntranslatedHint": "{count, plural, =1{You'll practice this word in {language} once its translation is ready.} other{You'll practice this word in {count} languages once their translations are ready.}}",
+  "@detailsUntranslatedHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "language": {
+        "type": "String"
+      }
+    }
+  },
   "detailsLanguageRoleLabel": "{language}, {role}",
   "@detailsLanguageRoleLabel": {
     "placeholders": {

@@ -1510,6 +1510,18 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
+  String detailsUntranslatedHint(int count, String language) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Щойно всі переклади будуть готові, ви практикуватимете це слово ще кількома мовами ($count).',
+      one: 'Щойно переклад ($language) буде готовий, ви практикуватимете це слово цією мовою.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String detailsLanguageRoleLabel(String language, String role) {
     return '$language, $role';
   }

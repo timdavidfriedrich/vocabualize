@@ -428,14 +428,17 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     ];
     final active = editing.activeLanguages.toSet();
     final paused = editing.pausedLanguages.toSet();
+    final untranslated = editing.untranslatedLanguages.toSet();
     final enabled = editing.enabledLanguages;
+    final started = enabled.intersection(active).difference(untranslated);
+    final waiting = enabled.intersection({...paused, ...untranslated});
     if (editing.original case final original?) {
       final existing = original.progress.keys.toSet();
       return _vocabularyRepository.updateVocabulary(
         id: original.id,
         translations: translations,
-        startedLanguages: enabled.intersection(active).difference(existing),
-        waitingLanguages: enabled.intersection(paused).difference(existing),
+        startedLanguages: started.difference(existing),
+        waitingLanguages: waiting.difference(existing),
         removedLanguages: existing.intersection({...active, ...paused}).difference(enabled),
         image: switch ((editing.selectedImage, newImage)) {
           (_, final image?) => ReplaceImage(image: image),
@@ -447,8 +450,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     }
     return _vocabularyRepository.addVocabulary(
       translations: translations,
-      startedLanguages: enabled.intersection(active),
-      waitingLanguages: enabled.intersection(paused),
+      startedLanguages: started,
+      waitingLanguages: waiting,
       image: newImage,
       tagIds: editing.selectedTagIds,
     );

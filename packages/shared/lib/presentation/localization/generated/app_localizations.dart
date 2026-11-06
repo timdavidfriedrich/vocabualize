@@ -2250,6 +2250,12 @@ abstract class AppLocalizations {
   /// **'({language})'**
   String detailsMissingTextLabel(String language);
 
+  /// No description provided for @detailsUntranslatedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{You\'ll practice this word in {language} once its translation is ready.} other{You\'ll practice this word in {count} languages once their translations are ready.}}'**
+  String detailsUntranslatedHint(int count, String language);
+
   /// No description provided for @detailsLanguageRoleLabel.
   ///
   /// In en, this message translates to:

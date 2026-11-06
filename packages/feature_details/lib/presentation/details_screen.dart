@@ -9,6 +9,7 @@ import 'package:feature_details/presentation/widgets/details_header.dart';
 import 'package:feature_details/presentation/widgets/duplicate_dialog.dart';
 import 'package:feature_details/presentation/widgets/existing_dialog.dart';
 import 'package:feature_details/presentation/widgets/image_chooser.dart';
+import 'package:feature_details/presentation/widgets/untranslated_hint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -23,6 +24,8 @@ import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/delete_vocabulary_dialog.dart';
 import 'package:shared/presentation/widgets/icon_action_button.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
+
+const _hintResizeDuration = Duration(milliseconds: 200);
 
 class const DetailsScreen({
   super.key,
@@ -155,26 +158,42 @@ class const _Actions() extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DetailsBloc, DetailsState>(
       builder: (context, state) => switch (state) {
-        DetailsEditing(:final original, :final runningAction) => Row(
+        DetailsEditing(:final original, :final runningAction) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (original != null) ...[
-              _DeleteButton(original: original, runningAction: runningAction),
-              const SizedBox(width: Spacing.s),
-            ],
-            Expanded(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(Spacing.radiusXxl),
+            AnimatedSize(
+              duration: _hintResizeDuration,
+              alignment: Alignment.bottomCenter,
+              child: switch (state.untranslatedLanguages) {
+                [] => const SizedBox.shrink(),
+                final languages => UntranslatedHint(
+                  languages: languages,
+                  isTranslating: languages.any(state.translatingLanguages.contains),
+                ),
+              },
+            ),
+            Row(
+              children: [
+                if (original != null) ...[
+                  _DeleteButton(original: original, runningAction: runningAction),
+                  const SizedBox(width: Spacing.s),
+                ],
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(Spacing.radiusXxl),
+                      ),
+                    ),
+                    onPressed: runningAction != null || !state.canSave
+                        ? null
+                        : () => context.read<DetailsBloc>().add(const DetailsSaveRequested()),
+                    child: runningAction == DetailsAction.save
+                        ? const ButtonProgress()
+                        : Text(context.s.detailsSaveButton),
                   ),
                 ),
-                onPressed: runningAction != null || !state.canSave
-                    ? null
-                    : () => context.read<DetailsBloc>().add(const DetailsSaveRequested()),
-                child: runningAction == DetailsAction.save
-                    ? const ButtonProgress()
-                    : Text(context.s.detailsSaveButton),
-              ),
+              ],
             ),
           ],
         ),

@@ -1449,6 +1449,17 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String detailsUntranslatedHint(int count, String language) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Practicarás esta palabra en $count idiomas cuando sus traducciones estén listas.',
+      one: 'Practicarás esta palabra en $language cuando su traducción esté lista.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String detailsLanguageRoleLabel(String language, String role) {
     return '$language, $role';
   }

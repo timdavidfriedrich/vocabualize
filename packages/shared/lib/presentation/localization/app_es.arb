@@ -357,6 +357,7 @@
   "customPracticeDoneButton": "Listo",
   "detailsNotLearningLabel": "{language}, no aprendo esta palabra",
   "detailsMissingTextLabel": "({language})",
+  "detailsUntranslatedHint": "{count, plural, =1{Practicarás esta palabra en {language} cuando su traducción esté lista.} other{Practicarás esta palabra en {count} idiomas cuando sus traducciones estén listas.}}",
   "detailsLanguageRoleLabel": "{language}, {role}",
   "homeCustomPracticeEndTitle": "¿Terminar tu práctica personalizada?",
   "homeCustomPracticeEndMessage": "{remaining, plural, =1{Aún queda 1 palabra.} other{Aún quedan {remaining} palabras.}} Tus respuestas hasta ahora siguen guardadas.",
