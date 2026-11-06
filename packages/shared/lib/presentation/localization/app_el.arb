@@ -52,7 +52,6 @@
   "detailsSaveButton": "Αποθήκευση",
   "detailsTakePictureButton": "Λήψη φωτογραφίας",
   "detailsCollectionNameHint": "Χωρίς τίτλο",
-  "detailsCollectionNameLabel": "Όνομα συλλογής",
   "practiceDoneTitle": "Συγχαρητήρια!",
   "practiceDoneMessage": "Κάνατε εξάσκηση σε όλες\nτις λέξεις που περίμεναν.",
   "practiceDoneButton": "Τέλος",
@@ -373,7 +372,6 @@
   "detailsRemovePictureTooltip": "Αφαίρεση εικόνας",
   "detailsMorePicturesTooltip": "Περισσότερες εικόνες",
   "detailsNewCollectionTitle": "Νέα συλλογή",
-  "detailsCreateCollectionButton": "Δημιουργία",
   "detailsEmojiSearchHint": "Αναζήτηση emoji (στα αγγλικά)",
   "detailsEmojiNoResultsMessage": "Δεν βρέθηκε emoji",
   "detailsEditWordTitle": "Επεξεργασία λέξης",
@@ -392,5 +390,7 @@
   "settingsLearningSectionTitle": "Μάθηση",
   "settingsNotificationsSectionTitle": "Ειδοποιήσεις",
   "settingsBackupSectionTitle": "Αντίγραφο ασφαλείας",
-  "settingsAboutSectionTitle": "Σχετικά"
+  "settingsAboutSectionTitle": "Σχετικά",
+  "collectionsEditTitle": "Επεξεργασία συλλογής",
+  "collectionsEmojiTooltip": "Επιλογή emoji"
 }

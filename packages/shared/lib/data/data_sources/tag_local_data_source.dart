@@ -15,7 +15,7 @@ abstract class TagLocalDataSource {
 
   Future<LocalTag> insertTag(LocalTag tag);
 
-  Future<void> renameTag(LocalTag tag);
+  Future<void> updateTag(LocalTag tag);
 
   Future<void> deleteTag(UuidValue id);
 }
@@ -73,11 +73,11 @@ class const TagLocalDataSourceImpl(
   }
 
   @override
-  Future<void> renameTag(LocalTag tag) async {
+  Future<void> updateTag(LocalTag tag) async {
     await LocalTag.db.updateRow(
       _sessions.requireWritableSession(),
       tag,
-      columns: (t) => [t.name],
+      columns: (t) => [t.name, t.extras],
     );
   }
 

@@ -52,7 +52,6 @@
   "detailsSaveButton": "Speichern",
   "detailsTakePictureButton": "Foto aufnehmen",
   "detailsCollectionNameHint": "Unbenannt",
-  "detailsCollectionNameLabel": "Tag-Name",
   "practiceDoneTitle": "Gut gemacht!",
   "practiceDoneMessage": "Du hast alle\nfälligen Wörter geübt.",
   "practiceDoneButton": "Startseite",
@@ -373,7 +372,6 @@
   "detailsRemovePictureTooltip": "Bild entfernen",
   "detailsMorePicturesTooltip": "Weitere Bilder",
   "detailsNewCollectionTitle": "Neue Sammlung",
-  "detailsCreateCollectionButton": "Erstellen",
   "detailsEmojiSearchHint": "Emoji suchen (Englisch)",
   "detailsEmojiNoResultsMessage": "Kein Emoji gefunden",
   "detailsEditWordTitle": "Wort bearbeiten",
@@ -392,5 +390,7 @@
   "settingsLearningSectionTitle": "Lernen",
   "settingsNotificationsSectionTitle": "Benachrichtigungen",
   "settingsBackupSectionTitle": "Sicherung",
-  "settingsAboutSectionTitle": "Über die App"
+  "settingsAboutSectionTitle": "Über die App",
+  "collectionsEditTitle": "Sammlung bearbeiten",
+  "collectionsEmojiTooltip": "Emoji auswählen"
 }

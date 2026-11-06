@@ -24,8 +24,9 @@ class const CollectionFilterChanged({
   required final VocabularyFilter filter,
 }) extends CollectionFeedEvent;
 
-class const CollectionRenamed({
+class const CollectionEdited({
   required final String name,
+  required final String? emoji,
 }) extends CollectionEvent;
 
 class const CollectionDeleteRequested() extends CollectionEvent;

@@ -52,7 +52,6 @@
   "detailsSaveButton": "Salvați",
   "detailsTakePictureButton": "Faceți o fotografie",
   "detailsCollectionNameHint": "Fără titlu",
-  "detailsCollectionNameLabel": "Numele colecției",
   "practiceDoneTitle": "Felicitări!",
   "practiceDoneMessage": "Ați exersat toate\ncuvintele programate.",
   "practiceDoneButton": "Gata",
@@ -373,7 +372,6 @@
   "detailsRemovePictureTooltip": "Eliminați imaginea",
   "detailsMorePicturesTooltip": "Mai multe imagini",
   "detailsNewCollectionTitle": "Colecție nouă",
-  "detailsCreateCollectionButton": "Creați",
   "detailsEmojiSearchHint": "Căutați emoji (în engleză)",
   "detailsEmojiNoResultsMessage": "Nu s-a găsit niciun emoji",
   "detailsEditWordTitle": "Editați cuvântul",
@@ -392,5 +390,7 @@
   "settingsLearningSectionTitle": "Învățare",
   "settingsNotificationsSectionTitle": "Notificări",
   "settingsBackupSectionTitle": "Backup",
-  "settingsAboutSectionTitle": "Despre"
+  "settingsAboutSectionTitle": "Despre",
+  "collectionsEditTitle": "Editați colecția",
+  "collectionsEmojiTooltip": "Alegeți un emoji"
 }

@@ -170,9 +170,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get detailsCollectionNameHint => 'Χωρίς τίτλο';
 
   @override
-  String get detailsCollectionNameLabel => 'Όνομα συλλογής';
-
-  @override
   String get practiceDoneTitle => 'Συγχαρητήρια!';
 
   @override
@@ -1505,9 +1502,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get detailsNewCollectionTitle => 'Νέα συλλογή';
 
   @override
-  String get detailsCreateCollectionButton => 'Δημιουργία';
-
-  @override
   String get detailsEmojiSearchHint => 'Αναζήτηση emoji (στα αγγλικά)';
 
   @override
@@ -1569,4 +1563,10 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get settingsAboutSectionTitle => 'Σχετικά';
+
+  @override
+  String get collectionsEditTitle => 'Επεξεργασία συλλογής';
+
+  @override
+  String get collectionsEmojiTooltip => 'Επιλογή emoji';
 }

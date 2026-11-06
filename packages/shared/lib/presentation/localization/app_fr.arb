@@ -52,7 +52,6 @@
   "detailsSaveButton": "Enregistrer",
   "detailsTakePictureButton": "Prendre une photo",
   "detailsCollectionNameHint": "Sans titre",
-  "detailsCollectionNameLabel": "Nom du tag",
   "practiceDoneTitle": "Félicitations !",
   "practiceDoneMessage": "Vous avez pratiqué tous\nvos mots à réviser.",
   "practiceDoneButton": "Terminé",
@@ -373,7 +372,6 @@
   "detailsRemovePictureTooltip": "Retirer l'image",
   "detailsMorePicturesTooltip": "Plus d'images",
   "detailsNewCollectionTitle": "Nouvelle collection",
-  "detailsCreateCollectionButton": "Créer",
   "detailsEmojiSearchHint": "Chercher un emoji (en anglais)",
   "detailsEmojiNoResultsMessage": "Aucun emoji trouvé",
   "detailsEditWordTitle": "Modifier le mot",
@@ -392,5 +390,7 @@
   "settingsLearningSectionTitle": "Apprentissage",
   "settingsNotificationsSectionTitle": "Notifications",
   "settingsBackupSectionTitle": "Sauvegarde",
-  "settingsAboutSectionTitle": "À propos"
+  "settingsAboutSectionTitle": "À propos",
+  "collectionsEditTitle": "Modifier la collection",
+  "collectionsEmojiTooltip": "Choisir un emoji"
 }

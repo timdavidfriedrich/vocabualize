@@ -11,11 +11,13 @@ class const SendTextField({
   required final ValueChanged<String> _onSubmitted,
   final String? _hintText,
   final Widget? _prefix,
+  final String? _initialText,
+  final FocusNode? _focusNode,
   final bool _autofocus = false,
 }) extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController();
+    final controller = useTextEditingController(text: _initialText);
     final hasText = useListenableSelector(controller, () => controller.text.trim().isNotEmpty);
     void submit() {
       if (hasText) _onSubmitted(controller.text.trim());
@@ -30,6 +32,7 @@ class const SendTextField({
             child: Center(
               child: FilledTextField(
                 controller: controller,
+                focusNode: _focusNode,
                 hintText: _hintText,
                 prefix: _prefix,
                 autofocus: _autofocus,

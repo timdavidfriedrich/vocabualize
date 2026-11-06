@@ -2,12 +2,12 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
-import 'package:feature_details/presentation/widgets/new_collection_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/widgets/collection_chip.dart';
+import 'package:shared/presentation/widgets/collection_dialog.dart';
 
 typedef _TagChoice = ({List<Tag> tags, Set<String> selected});
 
@@ -77,7 +77,7 @@ class const _AddButton({
       context,
       usedEmojis: [for (final tag in _tags) ?tag.emoji],
     );
-    if (collection case (:final name, :final emoji)) {
+    if (collection case CollectionSaved(:final name, :final emoji)) {
       bloc.add(DetailsTagCreated(name: name, emoji: emoji));
     }
   }

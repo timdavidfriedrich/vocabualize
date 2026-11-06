@@ -43,7 +43,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     on<CollectionStarted>(_onStarted);
     on<CollectionLanguageChanged>(_onLanguageChanged, transformer: restartable());
     on<CollectionFeedEvent>(_onFeedEvent, transformer: restartable());
-    on<CollectionRenamed>(_onRenamed);
+    on<CollectionEdited>(_onEdited);
     on<CollectionDeleteRequested>(_onDeleteRequested);
     on<CollectionVocabularySpeakRequested>(_onVocabularySpeakRequested);
     on<CollectionPhotographerLinkOpened>(_onPhotographerLinkOpened);
@@ -150,10 +150,14 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     );
   }
 
-  Future<void> _onRenamed(CollectionRenamed event, Emitter<CollectionState> emit) async {
+  Future<void> _onEdited(CollectionEdited event, Emitter<CollectionState> emit) async {
     if (state case final CollectionLoaded loaded) {
       _emitError(emit, null);
-      final result = await _tagRepository.renameTag(loaded.tag, name: event.name.trim());
+      final result = await _tagRepository.updateTag(
+        loaded.tag,
+        name: event.name.trim(),
+        emoji: event.emoji,
+      );
       if (result case Failure(:final error)) _emitError(emit, error);
     }
   }

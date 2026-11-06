@@ -169,9 +169,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get detailsCollectionNameHint => 'Sin título';
 
   @override
-  String get detailsCollectionNameLabel => 'Nombre de la etiqueta';
-
-  @override
   String get practiceDoneTitle => '¡Muy bien!';
 
   @override
@@ -1503,9 +1500,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get detailsNewCollectionTitle => 'Nueva colección';
 
   @override
-  String get detailsCreateCollectionButton => 'Crear';
-
-  @override
   String get detailsEmojiSearchHint => 'Buscar emoji (en inglés)';
 
   @override
@@ -1567,4 +1561,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsAboutSectionTitle => 'Acerca de';
+
+  @override
+  String get collectionsEditTitle => 'Editar colección';
+
+  @override
+  String get collectionsEmojiTooltip => 'Elegir emoji';
 }

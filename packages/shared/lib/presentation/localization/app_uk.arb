@@ -52,7 +52,6 @@
   "detailsSaveButton": "Зберегти",
   "detailsTakePictureButton": "Зробити фото",
   "detailsCollectionNameHint": "Без назви",
-  "detailsCollectionNameLabel": "Назва тегу",
   "practiceDoneTitle": "Вітаємо!",
   "practiceDoneMessage": "Ви відпрацювали всі\nзаплановані слова.",
   "practiceDoneButton": "Готово",
@@ -373,7 +372,6 @@
   "detailsRemovePictureTooltip": "Прибрати зображення",
   "detailsMorePicturesTooltip": "Більше зображень",
   "detailsNewCollectionTitle": "Нова колекція",
-  "detailsCreateCollectionButton": "Створити",
   "detailsEmojiSearchHint": "Пошук емодзі (англійською)",
   "detailsEmojiNoResultsMessage": "Емодзі не знайдено",
   "detailsEditWordTitle": "Редагувати слово",
@@ -392,5 +390,7 @@
   "settingsLearningSectionTitle": "Навчання",
   "settingsNotificationsSectionTitle": "Сповіщення",
   "settingsBackupSectionTitle": "Резервна копія",
-  "settingsAboutSectionTitle": "Про застосунок"
+  "settingsAboutSectionTitle": "Про застосунок",
+  "collectionsEditTitle": "Редагувати колекцію",
+  "collectionsEmojiTooltip": "Вибрати емодзі"
 }

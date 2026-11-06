@@ -59,7 +59,6 @@
   "detailsSaveButton": "Save",
   "detailsTakePictureButton": "Take a photo",
   "detailsCollectionNameHint": "Untitled",
-  "detailsCollectionNameLabel": "Tag name",
   "practiceDoneTitle": "Congratulations!",
   "practiceDoneMessage": "You’ve practiced all\nof your due words.",
   "practiceDoneButton": "Done",
@@ -1018,7 +1017,6 @@
   "detailsRemovePictureTooltip": "Remove picture",
   "detailsMorePicturesTooltip": "More pictures",
   "detailsNewCollectionTitle": "New collection",
-  "detailsCreateCollectionButton": "Create",
   "detailsEmojiSearchHint": "Search emoji",
   "detailsEmojiNoResultsMessage": "No emoji found",
   "detailsEditWordTitle": "Edit the word",
@@ -1061,5 +1059,7 @@
   "settingsLearningSectionTitle": "Learning",
   "settingsNotificationsSectionTitle": "Notifications",
   "settingsBackupSectionTitle": "Backup",
-  "settingsAboutSectionTitle": "About"
+  "settingsAboutSectionTitle": "About",
+  "collectionsEditTitle": "Edit collection",
+  "collectionsEmojiTooltip": "Choose an emoji"
 }

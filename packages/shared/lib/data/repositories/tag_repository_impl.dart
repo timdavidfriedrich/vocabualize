@@ -1,3 +1,4 @@
+import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
@@ -77,10 +78,12 @@ class const TagRepositoryImpl(
   }
 
   @override
-  Future<AppResult<()>> renameTag(Tag tag, {required String name}) async {
+  Future<AppResult<()>> updateTag(Tag tag, {required String name, required String? emoji}) async {
     try {
-      await _tagDataSource.renameTag(
-        LocalTag(id: UuidValue.withValidation(tag.id), name: name, createdAt: tag.createdAt),
+      final local = await _tagDataSource.watchTag(UuidValue.withValidation(tag.id)).first;
+      if (local == null) return const Failure(NotFoundError());
+      await _tagDataSource.updateTag(
+        local.copyWith(name: name, extras: local.extrasWithEmoji(emoji)),
       );
       return const Success(());
     } on Object catch (error) {

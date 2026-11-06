@@ -5,6 +5,7 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 class const FilledTextField({
   super.key,
   final TextEditingController? _controller,
+  final FocusNode? _focusNode,
   final String? _hintText,
   final Widget? _prefix,
   final Widget? _suffix,
@@ -22,6 +23,7 @@ class const FilledTextField({
     );
     return TextField(
       controller: _controller,
+      focusNode: _focusNode,
       autofocus: _autofocus,
       style: _style,
       textInputAction: _textInputAction,

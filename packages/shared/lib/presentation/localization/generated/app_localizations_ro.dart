@@ -169,9 +169,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get detailsCollectionNameHint => 'Fără titlu';
 
   @override
-  String get detailsCollectionNameLabel => 'Numele colecției';
-
-  @override
   String get practiceDoneTitle => 'Felicitări!';
 
   @override
@@ -1535,9 +1532,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get detailsNewCollectionTitle => 'Colecție nouă';
 
   @override
-  String get detailsCreateCollectionButton => 'Creați';
-
-  @override
   String get detailsEmojiSearchHint => 'Căutați emoji (în engleză)';
 
   @override
@@ -1599,4 +1593,10 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get settingsAboutSectionTitle => 'Despre';
+
+  @override
+  String get collectionsEditTitle => 'Editați colecția';
+
+  @override
+  String get collectionsEmojiTooltip => 'Alegeți un emoji';
 }

@@ -420,12 +420,6 @@ abstract class AppLocalizations {
   /// **'Untitled'**
   String get detailsCollectionNameHint;
 
-  /// No description provided for @detailsCollectionNameLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Tag name'**
-  String get detailsCollectionNameLabel;
-
   /// No description provided for @practiceDoneTitle.
   ///
   /// In en, this message translates to:
@@ -2346,12 +2340,6 @@ abstract class AppLocalizations {
   /// **'New collection'**
   String get detailsNewCollectionTitle;
 
-  /// No description provided for @detailsCreateCollectionButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Create'**
-  String get detailsCreateCollectionButton;
-
   /// No description provided for @detailsEmojiSearchHint.
   ///
   /// In en, this message translates to:
@@ -2465,6 +2453,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About'**
   String get settingsAboutSectionTitle;
+
+  /// No description provided for @collectionsEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit collection'**
+  String get collectionsEditTitle;
+
+  /// No description provided for @collectionsEmojiTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an emoji'**
+  String get collectionsEmojiTooltip;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

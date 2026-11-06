@@ -11,7 +11,7 @@ abstract class TagRepository {
 
   Future<AppResult<Tag>> createTag({required String name, required String? emoji});
 
-  Future<AppResult<()>> renameTag(Tag tag, {required String name});
+  Future<AppResult<()>> updateTag(Tag tag, {required String name, required String? emoji});
 
   Future<AppResult<()>> deleteTag(String id);
 }

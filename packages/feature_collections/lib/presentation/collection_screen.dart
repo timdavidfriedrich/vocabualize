@@ -3,7 +3,7 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_collections/presentation/collection_bloc.dart';
 import 'package:feature_collections/presentation/collection_event.dart';
 import 'package:feature_collections/presentation/collection_state.dart';
-import 'package:feature_collections/presentation/widgets/edit_collection_dialog.dart';
+import 'package:feature_collections/presentation/widgets/delete_collection_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,6 +16,7 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/tag_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/widgets/collection_dialog.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/practice_button.dart';
 import 'package:shared/presentation/widgets/tonal_button.dart';
@@ -181,20 +182,21 @@ class const _Overview({
 
   Future<void> _edit(BuildContext context) async {
     final bloc = context.read<CollectionBloc>();
-    final name = switch (bloc.state) {
-      CollectionLoaded(:final tag) => tag.name,
-      _ => null,
-    };
-    if (name == null) return;
-    final edit = await requestsCollectionEdit(context, name: name);
-    if (!context.mounted) return;
-    switch (edit) {
-      case CollectionRename(:final name):
-        bloc.add(CollectionRenamed(name: name));
-      case CollectionDelete():
-        if (await confirmsCollectionDelete(context)) bloc.add(const CollectionDeleteRequested());
-      case null:
-        return;
+    if (bloc.state case CollectionLoaded(:final tag, :final tags)) {
+      final edit = await requestsCollectionEdit(
+        context,
+        tag: tag,
+        usedEmojis: [for (final tag in tags) ?tag.emoji],
+      );
+      if (!context.mounted) return;
+      switch (edit) {
+        case CollectionSaved(:final name, :final emoji):
+          bloc.add(CollectionEdited(name: name, emoji: emoji));
+        case CollectionDeleteChosen():
+          if (await confirmsCollectionDelete(context)) bloc.add(const CollectionDeleteRequested());
+        case null:
+          return;
+      }
     }
   }
 }

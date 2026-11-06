@@ -170,9 +170,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsCollectionNameHint => 'Без назви';
 
   @override
-  String get detailsCollectionNameLabel => 'Назва тегу';
-
-  @override
   String get practiceDoneTitle => 'Вітаємо!';
 
   @override
@@ -1566,9 +1563,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsNewCollectionTitle => 'Нова колекція';
 
   @override
-  String get detailsCreateCollectionButton => 'Створити';
-
-  @override
   String get detailsEmojiSearchHint => 'Пошук емодзі (англійською)';
 
   @override
@@ -1630,4 +1624,10 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get settingsAboutSectionTitle => 'Про застосунок';
+
+  @override
+  String get collectionsEditTitle => 'Редагувати колекцію';
+
+  @override
+  String get collectionsEmojiTooltip => 'Вибрати емодзі';
 }
