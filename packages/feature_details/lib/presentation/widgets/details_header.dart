@@ -14,9 +14,6 @@ import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/widgets/button_progress.dart';
 
 const _wordMaxLines = 2;
-const _maxFlags = 2;
-const _flagOverlap = Spacing.xxs;
-const _moreCircleSize = Spacing.l + Spacing.borderWidthMedium * 2;
 
 class const DetailsHeader({
   super.key,
@@ -104,10 +101,7 @@ class const DetailsHeader({
                               ),
                               if (state.hasSeveralLanguages) ...[
                                 const SizedBox(width: Spacing.xs),
-                                _FlagChip(
-                                  flags: state.shownFlags(shown),
-                                  isOpen: isOpen.value,
-                                ),
+                                _FlagChip(language: shown, isOpen: isOpen.value),
                               ],
                             ],
                           ),
@@ -133,7 +127,7 @@ class const DetailsHeader({
 }
 
 class const _FlagChip({
-  required final List<Language> _flags,
+  required final Language _language,
   required final bool _isOpen,
 }) extends StatelessWidget {
   @override
@@ -147,21 +141,7 @@ class const _FlagChip({
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Stack(
-            alignment: Alignment.centerRight,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  right: _flags.length > _maxFlags ? _moreCircleSize - _flagOverlap : 0,
-                ),
-                child: Text(
-                  [for (final language in _flags.take(_maxFlags)) language.toFlag()].join(),
-                  style: context.t.titleSmall?.copyWith(letterSpacing: -_flagOverlap),
-                ),
-              ),
-              if (_flags.length > _maxFlags) const _MoreCircle(),
-            ],
-          ),
+          Text(_language.toFlag(), style: context.t.titleSmall),
           const SizedBox(width: Spacing.xxxs),
           Icon(
             _isOpen ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
@@ -169,23 +149,6 @@ class const _FlagChip({
           ),
         ],
       ),
-    );
-  }
-}
-
-class const _MoreCircle() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: _moreCircleSize,
-      height: _moreCircleSize,
-      decoration: ShapeDecoration(
-        color: context.c.surface,
-        shape: CircleBorder(
-          side: BorderSide(color: context.c.primaryContainer, width: Spacing.borderWidthMedium),
-        ),
-      ),
-      child: Icon(Icons.add_rounded, size: Spacing.iconS, color: context.c.onSurface),
     );
   }
 }

@@ -53,10 +53,4 @@ extension DetailsEditingExtensions on DetailsEditing {
     final candidates = [?picked, setup.selected, ...learnedLanguages];
     return candidates.where(enabledLanguages.contains).firstOrNull ?? setup.main;
   }
-
-  List<Language> shownFlags(Language shown) => [
-    if (enabledLanguages.contains(shown)) shown,
-    for (final language in learnedLanguages)
-      if (language != shown && enabledLanguages.contains(language)) language,
-  ];
 }
