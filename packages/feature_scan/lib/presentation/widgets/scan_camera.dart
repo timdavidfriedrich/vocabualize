@@ -99,7 +99,7 @@ class ScanCamera extends ChangeNotifier {
     if (controller == null) return;
     final isOn = !_isFlashOn;
     try {
-      await controller.setFlashMode(isOn ? FlashMode.always : FlashMode.off);
+      await controller.setFlashMode(isOn ? FlashMode.torch : FlashMode.off);
       _isFlashOn = isOn;
       if (!_isDisposed) notifyListeners();
     } on CameraException {
