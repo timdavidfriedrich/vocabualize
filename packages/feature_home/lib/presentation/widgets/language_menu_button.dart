@@ -9,6 +9,7 @@ import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/app_menu.dart';
+import 'package:shared/presentation/widgets/asks_in_tag.dart';
 import 'package:shared/presentation/widgets/count_badge.dart';
 import 'package:shared/presentation/widgets/language_label.dart';
 
@@ -77,6 +78,10 @@ class const _LanguageItem({
     return AppMenuItem(
       leading: Text(_learned.language.toFlag(), style: context.t.titleLarge),
       title: _learned.language.toLabel(context),
+      tag: switch (_learned.askMeIn) {
+        final askMeIn? => AsksInTag(language: askMeIn),
+        null => null,
+      },
       subtitle: context.s.languagesWordCount(_overview?.totalCount ?? 0),
       trailing: practiceCount > 0
           ? CountBadge(

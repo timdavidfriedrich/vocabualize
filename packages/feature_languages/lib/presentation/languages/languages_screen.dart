@@ -14,6 +14,7 @@ import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/widgets/asks_in_tag.dart';
 import 'package:shared/presentation/widgets/page_app_bar.dart';
 import 'package:shared/presentation/widgets/section_title.dart';
 import 'package:shared/presentation/widgets/tonal_button.dart';
@@ -201,7 +202,7 @@ class const _LearnedRow({
                       ),
                       if (_learned.askMeIn case final askMeIn?) ...[
                         const SizedBox(width: Spacing.xs),
-                        _AsksInChip(language: askMeIn),
+                        AsksInTag(language: askMeIn),
                       ],
                     ],
                   ),
@@ -216,25 +217,6 @@ class const _LearnedRow({
             Icon(Icons.chevron_right_rounded, color: context.c.onSurfaceVariant),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class const _AsksInChip({
-  required final Language _language,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.xs, vertical: Spacing.xxxs),
-      decoration: BoxDecoration(
-        color: context.c.primaryContainer,
-        borderRadius: BorderRadius.circular(Spacing.radiusS),
-      ),
-      child: Text(
-        context.s.languagesAsksInLabel(_language.toFlag()),
-        style: context.t.labelMedium?.copyWith(color: context.c.primary),
       ),
     );
   }
