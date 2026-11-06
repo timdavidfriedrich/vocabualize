@@ -9,6 +9,9 @@ import 'package:feature_scan/presentation/widgets/scan_camera_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shared/domain/entities/language.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
@@ -16,6 +19,7 @@ import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/send_text_field.dart';
+import 'package:shared/presentation/widgets/word_language_chip.dart';
 
 class const ScanScreen({
   super.key,
@@ -71,9 +75,11 @@ class const _CameraScaffold({
 class const _ReviewView({
   required final ProcessedImage _photo,
   required final ScanSuggestions _suggestions,
-}) extends StatelessWidget {
+}) extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final setup = context.watch<LanguageSetupCubit>().state;
+    final language = useState<Language?>(null);
     return ListView(
       padding: const EdgeInsets.fromLTRB(Spacing.xxl, 0, Spacing.xxl, Spacing.xxl),
       children: [
@@ -88,8 +94,21 @@ class const _ReviewView({
         const SizedBox(height: Spacing.xxl),
         SendTextField(
           hintText: context.s.scanTypeHint,
-          onSubmitted: (word) =>
-              _openDetails(context, word: word, photo: _photo, labelContext: null),
+          prefix: switch (setup) {
+            final setup? when setup.writingLanguages.length > 1 => WordLanguageChip(
+              setup: setup,
+              selected: language.value ?? setup.main,
+              onSelected: (selected) => language.value = selected,
+            ),
+            _ => null,
+          },
+          onSubmitted: (word) => _openDetails(
+            context,
+            word: word,
+            language: language.value,
+            photo: _photo,
+            labelContext: null,
+          ),
         ),
         const SizedBox(height: Spacing.xl),
         Align(
@@ -119,6 +138,7 @@ class const _ReviewView({
                     onTap: () => _openDetails(
                       context,
                       word: label.text,
+                      language: null,
                       photo: _photo,
                       labelContext: label.context,
                     ),
@@ -156,6 +176,7 @@ class const _SuggestionsHint({
 void _openDetails(
   BuildContext context, {
   required String word,
+  required Language? language,
   required ProcessedImage photo,
   required String? labelContext,
 }) {
@@ -165,7 +186,7 @@ void _openDetails(
   unawaited(
     context.pushNewVocabularyDetails(
       text: text,
-      language: setup.main,
+      language: language ?? setup.main,
       photo: photo,
       context: labelContext,
     ),

@@ -63,6 +63,12 @@ extension LanguageSetupExtensions on LanguageSetup {
 
   bool isLearning(Language language) => learnedOf(language) != null;
 
+  List<Language> get writingLanguages => {
+    main,
+    for (final learnedLanguage in active) learnedLanguage.language,
+    for (final learnedLanguage in active) ?learnedLanguage.askMeIn,
+  }.toList();
+
   Language? promptFor(Vocabulary vocabulary, Language language) {
     final candidates = [
       if (learnedOf(language) case LearnedLanguage(:final askMeIn?, :final askMeInFromLevel)
