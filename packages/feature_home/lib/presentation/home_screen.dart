@@ -99,6 +99,7 @@ class const _ContentScreen() extends HookWidget {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: isSearching.value,
+        appBar: isSearching.value ? null : const _HomeAppBar(),
         floatingActionButton: isSearching.value ? null : const RecordFab(),
         body: Stack(
           children: [
@@ -153,9 +154,7 @@ class const _Overview({
                 sliver: SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      SizedBox(height: Spacing.xxl),
-                      _TitleRow(),
-                      SizedBox(height: Spacing.m),
+                      SizedBox(height: Spacing.s),
                       _StatusArea(),
                     ],
                   ),
@@ -316,43 +315,43 @@ class const _FeedEndLoader() extends HookWidget {
   }
 }
 
-class const _TitleRow() extends StatelessWidget {
+class const _HomeAppBar() extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child:
-                BlocSelector<
-                  HomeBloc,
-                  HomeState,
-                  ({LanguageSetup setup, Map<Language, VocabularyOverview> overviews})?
-                >(
-                  selector: (state) => switch (state) {
-                    HomeLoaded(:final setup, :final overviews) => (
-                      setup: setup,
-                      overviews: overviews,
-                    ),
-                    HomeLoading(setup: final setup?, :final overviews) => (
-                      setup: setup,
-                      overviews: overviews,
-                    ),
-                    _ => null,
-                  },
-                  builder: (context, menu) => switch (menu) {
-                    final menu? => LanguageMenuButton(setup: menu.setup, overviews: menu.overviews),
-                    null => const SizedBox.shrink(),
-                  },
-                ),
-          ),
-        ),
-        const SizedBox(width: Spacing.s),
-        const _StreakButton(),
-        const SizedBox(width: Spacing.xs),
-        const _AccountButton(),
+    return AppBar(
+      automaticallyImplyLeading: false,
+      centerTitle: false,
+      title: const _LanguageButton(),
+      actionsPadding: const EdgeInsets.only(right: Spacing.m),
+      actions: const [
+        _StreakButton(),
+        SizedBox(width: Spacing.xs),
+        _AccountButton(),
       ],
+    );
+  }
+}
+
+class const _LanguageButton() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<
+      HomeBloc,
+      HomeState,
+      ({LanguageSetup setup, Map<Language, VocabularyOverview> overviews})?
+    >(
+      selector: (state) => switch (state) {
+        HomeLoaded(:final setup, :final overviews) => (setup: setup, overviews: overviews),
+        HomeLoading(setup: final setup?, :final overviews) => (setup: setup, overviews: overviews),
+        _ => null,
+      },
+      builder: (context, menu) => switch (menu) {
+        final menu? => LanguageMenuButton(setup: menu.setup, overviews: menu.overviews),
+        null => const SizedBox.shrink(),
+      },
     );
   }
 }
@@ -486,14 +485,13 @@ class const _EmptyScreen() extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: const _HomeAppBar(),
       floatingActionButton: const RecordFab(),
       body: SafeArea(
         child: Padding(
           padding: _pagePadding,
           child: Column(
             children: [
-              const SizedBox(height: Spacing.xl),
-              const _TitleRow(),
               const SizedBox(height: Spacing.xxl),
               Text(
                 context.s.homeLookAroundTitle,
