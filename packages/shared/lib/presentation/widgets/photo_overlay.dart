@@ -37,7 +37,7 @@ class const PhotoPillButton({
                     child: Text(
                       _label,
                       overflow: TextOverflow.ellipsis,
-                      style: context.t.bodyLarge?.copyWith(color: color),
+                      style: context.t.bodySmall?.copyWith(color: color),
                     ),
                   ),
                   if (_trailingIcon case final icon?) ...[

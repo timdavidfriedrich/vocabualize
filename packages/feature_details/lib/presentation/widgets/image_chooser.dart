@@ -470,7 +470,7 @@ class const _ProviderHint({
           Expanded(
             child: Text(
               context.s.detailsPexelsAttribution,
-              style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
+              style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
             ),
           ),
           IconButton(
