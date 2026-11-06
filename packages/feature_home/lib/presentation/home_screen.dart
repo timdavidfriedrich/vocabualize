@@ -36,7 +36,9 @@ import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.m);
 const _scrollEndSpacing = Spacing.xxxxl * 2;
-const _mascotScreenHeightFactor = 0.4;
+const _backdropWidthFactor = 0.71;
+const _searchingMascotAspectRatio = 0.756;
+const _mascotHeightFactor = 0.944;
 const _avatarRadius = Spacing.m;
 
 class const HomeScreen({
@@ -491,12 +493,25 @@ class const _EmptyScreen() extends StatelessWidget {
             children: [
               const SizedBox(height: Spacing.xl),
               const _TitleRow(),
-              const Spacer(),
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height * _mascotScreenHeightFactor,
-                child: const Mascot(pose: MascotPose.search),
+              const SizedBox(height: Spacing.xxl),
+              Text(
+                context.s.homeLookAroundTitle,
+                style: context.t.headlineSmall,
+                textAlign: TextAlign.center,
               ),
-              const Spacer(),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: Spacing.xl),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.sizeOf(context).width * _backdropWidthFactor,
+                      ),
+                      child: const _SearchingMascot(),
+                    ),
+                  ),
+                ),
+              ),
               Text(
                 context.s.homeAddFirstWordMessage,
                 style: context.t.bodyLarge,
@@ -506,6 +521,38 @@ class const _EmptyScreen() extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class const _SearchingMascot() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: _searchingMascotAspectRatio,
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: DecoratedBox(
+                decoration: ShapeDecoration(
+                  color: context.mascot.backdrop,
+                  shape: const CircleBorder(),
+                ),
+              ),
+            ),
+          ),
+          const Align(
+            alignment: Alignment.bottomCenter,
+            child: FractionallySizedBox(
+              heightFactor: _mascotHeightFactor,
+              child: Mascot(pose: MascotPose.search),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -17,6 +17,8 @@ extension ContextExtensions on BuildContext {
 
   AccountProviderColors get accountProviders => Theme.of(this).extension<AccountProviderColors>()!;
 
+  MascotColors get mascot => Theme.of(this).extension<MascotColors>()!;
+
   void showToast(String message, {SnackBarAction? action}) {
     ScaffoldMessenger.of(this).showSnackBar(SnackBar(content: Text(message), action: action));
   }

@@ -118,6 +118,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get homeAddFirstWordMessage => 'Atingeți butonul\npentru a adăuga primul cuvânt';
 
   @override
+  String get homeLookAroundTitle => 'Uitați-vă în jur!\nCe vedeți?';
+
+  @override
   String get homeAllWordsTitle => 'Toate cuvintele';
 
   @override

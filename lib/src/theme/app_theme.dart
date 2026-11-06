@@ -82,6 +82,8 @@ const _overlayColors = OverlayColors(scrim: _black, onScrim: _white);
 const _accountProviderColors = AccountProviderColors(google: _white, onGoogle: _black);
 const _darkStatusColors = StatusColors(success: Color(0xFF81C784), warning: Color(0xFFFFB74D));
 const _lightStatusColors = StatusColors(success: Color(0xFF2E7D32), warning: Color(0xFFEF6C00));
+const _darkMascotColors = MascotColors(backdrop: Color(0xFF00355A));
+const _lightMascotColors = MascotColors(backdrop: Color(0xFF53A3DD));
 
 const _splashOpacity = 0.5;
 const _pressedOpacity = 0.6;
@@ -104,11 +106,17 @@ const _inputRadius = BorderRadius.all(Radius.circular(Spacing.radiusL));
 abstract final class AppTheme {
   const AppTheme._();
 
-  static ThemeData get dark => _theme(_darkColorScheme, status: _darkStatusColors);
+  static ThemeData get dark =>
+      _theme(_darkColorScheme, status: _darkStatusColors, mascot: _darkMascotColors);
 
-  static ThemeData get light => _theme(_lightColorScheme, status: _lightStatusColors);
+  static ThemeData get light =>
+      _theme(_lightColorScheme, status: _lightStatusColors, mascot: _lightMascotColors);
 
-  static ThemeData _theme(ColorScheme colors, {required StatusColors status}) {
+  static ThemeData _theme(
+    ColorScheme colors, {
+    required StatusColors status,
+    required MascotColors mascot,
+  }) {
     final baseTextTheme = ThemeData(brightness: colors.brightness).textTheme;
     final textTheme = baseTextTheme
         .copyWith(
@@ -135,7 +143,7 @@ abstract final class AppTheme {
       scaffoldBackgroundColor: colors.surface,
       hintColor: colors.outline,
       splashColor: colors.surfaceContainerLow.withValues(alpha: _splashOpacity),
-      extensions: [status, _levelColors, _overlayColors, _accountProviderColors],
+      extensions: [status, mascot, _levelColors, _overlayColors, _accountProviderColors],
       appBarTheme: AppBarTheme(
         backgroundColor: colors.surface,
         foregroundColor: colors.onSurface,

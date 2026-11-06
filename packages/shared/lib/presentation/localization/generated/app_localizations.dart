@@ -318,6 +318,12 @@ abstract class AppLocalizations {
   /// **'Click the button\nto add your first word'**
   String get homeAddFirstWordMessage;
 
+  /// No description provided for @homeLookAroundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Look around!\nWhat do you see?'**
+  String get homeLookAroundTitle;
+
   /// No description provided for @homeAllWordsTitle.
   ///
   /// In en, this message translates to:

@@ -87,3 +87,18 @@ class const AccountProviderColors({
     );
   }
 }
+
+class const MascotColors({
+  required final Color backdrop,
+}) extends ThemeExtension<MascotColors> {
+  @override
+  MascotColors copyWith({Color? backdrop}) {
+    return MascotColors(backdrop: backdrop ?? this.backdrop);
+  }
+
+  @override
+  MascotColors lerp(MascotColors? other, double t) {
+    if (other == null) return this;
+    return MascotColors(backdrop: Color.lerp(backdrop, other.backdrop, t)!);
+  }
+}
