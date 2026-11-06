@@ -48,6 +48,10 @@ class const _CollectionsPicker({
                         padding: const EdgeInsets.symmetric(vertical: Spacing.s),
                         child: Row(
                           children: [
+                            if (tag.emoji case final emoji?) ...[
+                              Text(emoji, style: context.t.titleMedium),
+                              const SizedBox(width: Spacing.s),
+                            ],
                             Expanded(child: Text(tag.name, style: context.t.titleMedium)),
                             CheckIndicator(isChecked: selection.value.contains(tag.id)),
                           ],
