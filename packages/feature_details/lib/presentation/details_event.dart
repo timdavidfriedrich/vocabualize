@@ -1,6 +1,7 @@
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:shared/domain/entities/image_pick_source.dart';
 import 'package:shared/domain/entities/language.dart';
+import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 
 sealed class DetailsEvent {
@@ -19,6 +20,10 @@ class const DetailsEditStarted({
 }) extends DetailsEvent;
 
 class const DetailsConnectionRestored() extends DetailsEvent;
+
+class const DetailsLanguageSetupChanged({
+  required final LanguageSetup setup,
+}) extends DetailsEvent;
 
 class const DetailsSpeakRequested({
   required final Language language,

@@ -47,6 +47,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     on<DetailsNewStarted>(_onNewStarted);
     on<DetailsEditStarted>(_onEditStarted);
     on<DetailsConnectionRestored>(_onConnectionRestored);
+    on<DetailsLanguageSetupChanged>(_onLanguageSetupChanged);
     on<DetailsSpeakRequested>(_onSpeakRequested);
     on<DetailsTranslationReported>(_onTranslationReported);
     on<DetailsDuplicateResolved>(_onDuplicateResolved);
@@ -112,7 +113,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       case Failure(:final error):
         emit(DetailsFailure(error: error));
     }
-    await _watchConnectivity(emit);
+    await Future.wait([_watchConnectivity(emit), _watchLanguageSetup(emit)]);
   }
 
   Future<void> _onEditStarted(DetailsEditStarted event, Emitter<DetailsState> emit) async {
@@ -122,7 +123,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       case Failure(:final error):
         emit(DetailsFailure(error: error));
     }
-    await _watchConnectivity(emit);
+    await Future.wait([_watchConnectivity(emit), _watchLanguageSetup(emit)]);
   }
 
   Future<void> _onDuplicateResolved(
@@ -159,6 +160,50 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   ) async {
     if (state case DetailsEditing(:final pendingLookup?, runningAction: null) && final editing) {
       await _lookUpAndApply(emit, editing, pending: pendingLookup);
+    }
+  }
+
+  Future<void> _onLanguageSetupChanged(
+    DetailsLanguageSetupChanged event,
+    Emitter<DetailsState> emit,
+  ) async {
+    final previous = switch (state) {
+      DetailsEditing(:final setup) => setup,
+      _ => null,
+    };
+    if (previous == null || previous == event.setup) return;
+    final original = switch (state) {
+      DetailsEditing(:final original?) => switch (await _vocabularyRepository.findVocabulary(
+        original.id,
+      )) {
+        Success(:final data) => data,
+        Failure() => original,
+      },
+      _ => null,
+    };
+    if (state case final DetailsEditing editing) {
+      final learned = {for (final learned in event.setup.learned) learned.language};
+      final added = learned.difference({
+        for (final learned in previous.learned) learned.language,
+      });
+      final changed = editing.copyWith(
+        setup: event.setup,
+        original: original,
+        texts: {
+          for (final translation in original?.translations.values ?? const <Translation>[])
+            translation.language: DetailsText(text: translation.text, origin: translation.origin),
+          ...editing.texts,
+        },
+        enabledLanguages: {
+          ...editing.enabledLanguages.intersection(learned),
+          ...switch (original) {
+            final original? => added.intersection(original.progress.keys.toSet()),
+            null => added,
+          },
+        },
+        error: null,
+      );
+      await _lookUpAndApply(emit, changed, pending: DetailsPendingLookup.translations);
     }
   }
 
@@ -633,6 +678,15 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       Success(:final data) => data,
       Failure() => null,
     };
+  }
+
+  Future<void> _watchLanguageSetup(Emitter<DetailsState> emit) {
+    return emit.onEach(
+      _languageRepository.watchLanguageSetup(),
+      onData: (result) {
+        if (result case Success(data: final setup?)) add(DetailsLanguageSetupChanged(setup: setup));
+      },
+    );
   }
 
   Future<void> _watchConnectivity(Emitter<DetailsState> emit) {
