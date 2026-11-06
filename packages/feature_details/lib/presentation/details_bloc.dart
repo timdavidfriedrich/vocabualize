@@ -395,25 +395,21 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       return;
     }
     emit(editing.copyWith(runningAction: DetailsAction.save, error: null));
-    switch (await _save(editing)) {
-      case Success() when editing.original == null:
-        emit(const DetailsAdded());
-      case Success():
-        emit(const DetailsClosed());
-      case Failure(:final error):
-        _emitLatest(emit, (current) => current.copyWith(runningAction: null, error: error));
+    if (await _save(editing) case Failure(:final error)) {
+      _emitLatest(emit, (current) => current.copyWith(runningAction: null, error: error));
+      return;
     }
+    emit(editing.original == null ? const DetailsAdded() : const DetailsClosed());
   }
 
   Future<void> _onDeleteRequested(DetailsDeleteRequested event, Emitter<DetailsState> emit) async {
     if (state case DetailsEditing(:final original?, runningAction: null) && final editing) {
       emit(editing.copyWith(runningAction: DetailsAction.delete, error: null));
-      switch (await _vocabularyRepository.deleteVocabulary(original.id)) {
-        case Success():
-          emit(const DetailsClosed());
-        case Failure(:final error):
-          _emitLatest(emit, (current) => current.copyWith(runningAction: null, error: error));
+      if (await _vocabularyRepository.deleteVocabulary(original.id) case Failure(:final error)) {
+        _emitLatest(emit, (current) => current.copyWith(runningAction: null, error: error));
+        return;
       }
+      emit(const DetailsClosed());
     }
   }
 
