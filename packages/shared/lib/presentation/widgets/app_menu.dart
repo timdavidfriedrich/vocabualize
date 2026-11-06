@@ -4,13 +4,6 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 
 const _menuWidth = Spacing.xxxxl * 4 + Spacing.xxxl;
 const _disabledOpacity = 0.38;
-const _anchorStyle = MenuStyle(
-  padding: WidgetStatePropertyAll(EdgeInsets.zero),
-  backgroundColor: WidgetStatePropertyAll(Colors.transparent),
-  shadowColor: WidgetStatePropertyAll(Colors.transparent),
-  surfaceTintColor: WidgetStatePropertyAll(Colors.transparent),
-  elevation: WidgetStatePropertyAll(0),
-);
 
 class const AppMenuAnchor({
   super.key,
@@ -23,7 +16,6 @@ class const AppMenuAnchor({
     return MenuAnchor(
       clipBehavior: Clip.none,
       alignmentOffset: const Offset(0, Spacing.xxxs),
-      style: _anchorStyle,
       menuChildren: [AppMenu(title: _title, items: _items)],
       builder: (context, controller, child) => _builder(context, controller),
     );

@@ -227,6 +227,15 @@ abstract final class AppTheme {
         overlayColor: Colors.transparent,
         valueIndicatorShape: const RoundedRectSliderValueIndicatorShape(),
       ),
+      menuTheme: const MenuThemeData(
+        style: MenuStyle(
+          padding: WidgetStatePropertyAll(EdgeInsets.zero),
+          backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+          shadowColor: WidgetStatePropertyAll(Colors.transparent),
+          surfaceTintColor: WidgetStatePropertyAll(Colors.transparent),
+          elevation: WidgetStatePropertyAll(0),
+        ),
+      ),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: colors.primary,
         selectionColor: colors.outline,
