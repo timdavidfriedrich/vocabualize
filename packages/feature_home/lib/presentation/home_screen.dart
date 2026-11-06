@@ -36,7 +36,7 @@ import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.m);
 const _scrollEndSpacing = Spacing.xxxxl * 2;
-const _backdropWidthFactor = 0.71;
+const _backdropWidthFactor = 0.77;
 const _plusSymbol = "+";
 const _searchingMascotAspectRatio = 0.756;
 const _mascotHeightFactor = 0.944;
@@ -500,16 +500,12 @@ class const _EmptyScreen() extends StatelessWidget {
                 style: context.t.headlineSmall,
                 textAlign: TextAlign.center,
               ),
-              Expanded(
+              const Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: Spacing.xl),
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.sizeOf(context).width * _backdropWidthFactor,
-                      ),
-                      child: const _SearchingMascot(),
-                    ),
+                  padding: EdgeInsets.symmetric(vertical: Spacing.xl),
+                  child: FractionallySizedBox(
+                    widthFactor: _backdropWidthFactor,
+                    child: Center(child: _SearchingMascot()),
                   ),
                 ),
               ),
