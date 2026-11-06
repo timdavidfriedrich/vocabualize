@@ -10,6 +10,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/practice_session.dart';
 import 'package:shared/domain/repositories/custom_practice_repository.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
+import 'package:shared/domain/repositories/language_words_repository.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 
 @injectable
@@ -17,6 +18,7 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
   CustomPracticeBloc(
     this._languageRepository,
     this._tagRepository,
+    this._languageWordsRepository,
     this._customPracticeRepository,
     this._buildCustomPractice,
     this._countCustomPractice,
@@ -33,26 +35,41 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
 
   final LanguageRepository _languageRepository;
   final TagRepository _tagRepository;
+  final LanguageWordsRepository _languageWordsRepository;
   final CustomPracticeRepository _customPracticeRepository;
   final BuildCustomPracticeUseCase _buildCustomPractice;
   final CountCustomPracticeUseCase _countCustomPractice;
 
   Future<void> _onStarted(CustomPracticeStarted event, Emitter<CustomPracticeState> emit) async {
-    final (setup, tags, session) = await (
+    final (setup, previews, session) = await (
       _languageRepository.readLanguageSetup(),
-      _tagRepository.watchTags().first,
+      _tagRepository.watchCollectionPreviews().first,
       _customPracticeRepository.readSession(),
     ).wait;
-    switch ((setup, tags, session)) {
+    switch ((setup, previews, session)) {
       case (Failure(:final error), _, _) ||
           (_, Failure(:final error), _) ||
           (_, _, Failure(:final error)):
         emit(CustomPracticeFailure(error: error));
-      case (Success(data: final setup?), Success(data: final tags), Success(data: final session)):
+      case (
+        Success(data: final setup?),
+        Success(data: final previews),
+        Success(data: final session),
+      ):
+        final coverage = await _languageWordsRepository.watchLanguageCoverage(setup.selected).first;
         emit(
           CustomPracticeEditing(
             setup: setup,
-            tags: tags,
+            tags: [for (final preview in previews) preview.tag],
+            collectionImages: {
+              for (final preview in previews) preview.tag.id: ?preview.images.firstOrNull,
+            },
+            collectionCounts: switch (coverage) {
+              Success(:final data) => {
+                for (final collection in data.collections) collection.tag.id: collection.totalCount,
+              },
+              Failure() => const {},
+            },
             tagIds: {?event.tagId},
             enabledLanguages: {setup.selected},
             allWordsLanguages: const {},

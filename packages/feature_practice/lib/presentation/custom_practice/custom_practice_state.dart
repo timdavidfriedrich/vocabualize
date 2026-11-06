@@ -22,6 +22,8 @@ class const CustomPracticeLoading() extends CustomPracticeState with CustomPract
 class const CustomPracticeEditing({
   required final LanguageSetup setup,
   required final List<Tag> tags,
+  required final Map<String, VocabularyImage> collectionImages,
+  required final Map<String, int> collectionCounts,
   required final Set<String> tagIds,
   required final Set<Language> enabledLanguages,
   required final Set<Language> allWordsLanguages,

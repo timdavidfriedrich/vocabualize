@@ -15,6 +15,7 @@ import 'package:feature_practice/presentation/practice/practice_bloc.dart' as _i
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared/domain/repositories/custom_practice_repository.dart' as _i472;
 import 'package:shared/domain/repositories/language_repository.dart' as _i308;
+import 'package:shared/domain/repositories/language_words_repository.dart' as _i1019;
 import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
 import 'package:shared/domain/repositories/tag_repository.dart' as _i836;
 import 'package:shared/domain/repositories/text_to_speech_repository.dart' as _i839;
@@ -40,6 +41,7 @@ class FeaturePracticePackageModule extends _i526.MicroPackageModule {
       () => _i431.CustomPracticeBloc(
         gh<_i308.LanguageRepository>(),
         gh<_i836.TagRepository>(),
+        gh<_i1019.LanguageWordsRepository>(),
         gh<_i472.CustomPracticeRepository>(),
         gh<_i191.BuildCustomPracticeUseCase>(),
         gh<_i6.CountCustomPracticeUseCase>(),

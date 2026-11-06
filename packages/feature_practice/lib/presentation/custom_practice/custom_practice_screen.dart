@@ -461,6 +461,8 @@ class const _CollectionsRow({
     final tagIds = await requestsCollections(
       context,
       tags: _state.tags,
+      images: _state.collectionImages,
+      counts: _state.collectionCounts,
       selected: _state.tagIds,
     );
     if (tagIds != null) bloc.add(CustomPracticeCollectionsChanged(tagIds: tagIds));

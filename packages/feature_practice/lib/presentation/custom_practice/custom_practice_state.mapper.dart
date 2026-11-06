@@ -198,8 +198,8 @@ class CustomPracticeEditingMapper
       CustomPracticeStateMapper.ensureInitialized();
       LanguageSetupMapper.ensureInitialized();
       TagMapper.ensureInitialized();
-      CustomPracticeCountsMapper.ensureInitialized();
       VocabularyImageMapper.ensureInitialized();
+      CustomPracticeCountsMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -217,6 +217,15 @@ class CustomPracticeEditingMapper
     'tags',
     _$tags,
   );
+  static Map<String, VocabularyImage> _$collectionImages(
+    CustomPracticeEditing v,
+  ) => v.collectionImages;
+  static const Field<CustomPracticeEditing, Map<String, VocabularyImage>>
+  _f$collectionImages = Field('collectionImages', _$collectionImages);
+  static Map<String, int> _$collectionCounts(CustomPracticeEditing v) =>
+      v.collectionCounts;
+  static const Field<CustomPracticeEditing, Map<String, int>>
+  _f$collectionCounts = Field('collectionCounts', _$collectionCounts);
   static Set<String> _$tagIds(CustomPracticeEditing v) => v.tagIds;
   static const Field<CustomPracticeEditing, Set<String>> _f$tagIds = Field(
     'tagIds',
@@ -262,6 +271,8 @@ class CustomPracticeEditingMapper
   final MappableFields<CustomPracticeEditing> fields = const {
     #setup: _f$setup,
     #tags: _f$tags,
+    #collectionImages: _f$collectionImages,
+    #collectionCounts: _f$collectionCounts,
     #tagIds: _f$tagIds,
     #enabledLanguages: _f$enabledLanguages,
     #allWordsLanguages: _f$allWordsLanguages,
@@ -277,6 +288,8 @@ class CustomPracticeEditingMapper
     return CustomPracticeEditing(
       setup: data.dec(_f$setup),
       tags: data.dec(_f$tags),
+      collectionImages: data.dec(_f$collectionImages),
+      collectionCounts: data.dec(_f$collectionCounts),
       tagIds: data.dec(_f$tagIds),
       enabledLanguages: data.dec(_f$enabledLanguages),
       allWordsLanguages: data.dec(_f$allWordsLanguages),
@@ -361,6 +374,15 @@ abstract class CustomPracticeEditingCopyWith<
     implements CustomPracticeStateCopyWith<$R, $In, $Out> {
   LanguageSetupCopyWith<$R, LanguageSetup, LanguageSetup> get setup;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get tags;
+  MapCopyWith<
+    $R,
+    String,
+    VocabularyImage,
+    VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage>
+  >
+  get collectionImages;
+  MapCopyWith<$R, String, int, ObjectCopyWith<$R, int, int>>
+  get collectionCounts;
   MapCopyWith<$R, Language, int, ObjectCopyWith<$R, int, int>>
   get newWordCounts;
   MapCopyWith<
@@ -380,6 +402,8 @@ abstract class CustomPracticeEditingCopyWith<
   $R call({
     LanguageSetup? setup,
     List<Tag>? tags,
+    Map<String, VocabularyImage>? collectionImages,
+    Map<String, int>? collectionCounts,
     Set<String>? tagIds,
     Set<Language>? enabledLanguages,
     Set<Language>? allWordsLanguages,
@@ -411,6 +435,25 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
     $value.tags,
     (v, t) => v.copyWith.$chain(t),
     (v) => call(tags: v),
+  );
+  @override
+  MapCopyWith<
+    $R,
+    String,
+    VocabularyImage,
+    VocabularyImageCopyWith<$R, VocabularyImage, VocabularyImage>
+  >
+  get collectionImages => MapCopyWith(
+    $value.collectionImages,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(collectionImages: v),
+  );
+  @override
+  MapCopyWith<$R, String, int, ObjectCopyWith<$R, int, int>>
+  get collectionCounts => MapCopyWith(
+    $value.collectionCounts,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(collectionCounts: v),
   );
   @override
   MapCopyWith<$R, Language, int, ObjectCopyWith<$R, int, int>>
@@ -448,6 +491,8 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
   $R call({
     LanguageSetup? setup,
     List<Tag>? tags,
+    Map<String, VocabularyImage>? collectionImages,
+    Map<String, int>? collectionCounts,
     Set<String>? tagIds,
     Set<Language>? enabledLanguages,
     Set<Language>? allWordsLanguages,
@@ -461,6 +506,8 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (setup != null) #setup: setup,
       if (tags != null) #tags: tags,
+      if (collectionImages != null) #collectionImages: collectionImages,
+      if (collectionCounts != null) #collectionCounts: collectionCounts,
       if (tagIds != null) #tagIds: tagIds,
       if (enabledLanguages != null) #enabledLanguages: enabledLanguages,
       if (allWordsLanguages != null) #allWordsLanguages: allWordsLanguages,
@@ -477,6 +524,8 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
   CustomPracticeEditing $make(CopyWithData data) => CustomPracticeEditing(
     setup: data.get(#setup, or: $value.setup),
     tags: data.get(#tags, or: $value.tags),
+    collectionImages: data.get(#collectionImages, or: $value.collectionImages),
+    collectionCounts: data.get(#collectionCounts, or: $value.collectionCounts),
     tagIds: data.get(#tagIds, or: $value.tagIds),
     enabledLanguages: data.get(#enabledLanguages, or: $value.enabledLanguages),
     allWordsLanguages: data.get(

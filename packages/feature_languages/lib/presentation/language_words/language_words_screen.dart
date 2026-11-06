@@ -5,20 +5,18 @@ import 'package:feature_languages/presentation/language_words/language_words_sta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/language.dart';
-import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/int_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
+import 'package:shared/presentation/extensions/tag_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/button_progress.dart';
+import 'package:shared/presentation/widgets/collection_select_tile.dart';
 import 'package:shared/presentation/widgets/page_app_bar.dart';
 import 'package:shared/presentation/widgets/segmented_bar.dart';
 import 'package:shared/presentation/widgets/selection_indicators.dart';
-import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
-const _importThumbnailSize = Spacing.xxxl - Spacing.xs;
-const _manageThumbnailSize = Spacing.xxxl;
 const _addedTint = 0.5;
 
 class const LanguageWordsScreen({
@@ -122,8 +120,7 @@ class const _ImportContent({
             onTap: () =>
                 bloc.add(const LanguageWordsOptionChanged(option: LanguageWordsOption.choose)),
             children: [
-              if (_state.option == LanguageWordsOption.choose)
-                _Collections(state: _state, thumbnailSize: _importThumbnailSize),
+              if (_state.option == LanguageWordsOption.choose) _Collections(state: _state),
             ],
           ),
           const SizedBox(height: Spacing.xs),
@@ -156,7 +153,7 @@ class const _ManageContent({
       children: [
         _SummaryCard(state: _state),
         const SizedBox(height: Spacing.l),
-        _Collections(state: _state, thumbnailSize: _manageThumbnailSize),
+        _Collections(state: _state),
       ],
     );
   }
@@ -338,22 +335,18 @@ class const _ChangeChip({
 
 class const _Collections({
   required final LanguageWordsEditing _state,
-  required final double _thumbnailSize,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<LanguageWordsBloc>();
     final label = _state.language.toShortLabel(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return CollectionSelectGroup(
       children: [
         for (final collection in _state.coverage.collections)
           if (collection.totalCount > 0)
-            _CollectionRow(
-              name: collection.tag.name,
+            CollectionSelectTile(
+              title: collection.tag.toLabel(),
               image: _state.images[collection.tag.id],
-              thumbnailSize: _thumbnailSize,
-              isCompact: _state.isAdding,
               subtitle: _countLabel(
                 context,
                 collection.totalCount,
@@ -365,11 +358,10 @@ class const _Collections({
               onTap: () => bloc.add(LanguageWordsCollectionToggled(tagId: collection.tag.id)),
             ),
         if (_state.coverage.untaggedCount > 0)
-          _CollectionRow(
-            name: context.s.languageWordsUntaggedLabel,
+          CollectionSelectTile(
+            title: context.s.languageWordsUntaggedLabel,
             image: null,
-            thumbnailSize: _thumbnailSize,
-            isCompact: _state.isAdding,
+            placeholderIcon: Icons.folder_off_outlined,
             subtitle: _countLabel(
               context,
               _state.coverage.untaggedCount,
@@ -390,71 +382,7 @@ class const _Collections({
     required bool isRemoving,
     required String label,
   }) {
-    if (_state.isAdding) return count.toCountLabel(context);
-    if (isRemoving) return context.s.languageWordsRemovedWarning(count, label);
+    if (!_state.isAdding && isRemoving) return context.s.languageWordsRemovedWarning(count, label);
     return context.s.languagesWordCount(count);
-  }
-}
-
-class const _CollectionRow({
-  required final String _name,
-  required final VocabularyImage? _image,
-  required final double _thumbnailSize,
-  required final bool _isCompact,
-  required final String _subtitle,
-  required final bool _isWarning,
-  required final bool? _isChecked,
-  required final VoidCallback _onTap,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final subtitleStyle = context.t.bodyLarge?.copyWith(
-      color: _isWarning ? context.c.error : context.c.onSurfaceVariant,
-    );
-    return InkWell(
-      onTap: _onTap,
-      borderRadius: BorderRadius.circular(Spacing.radiusM),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
-        child: Row(
-          children: [
-            SizedBox.square(
-              dimension: _thumbnailSize,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(Spacing.radiusM),
-                child: switch (_image) {
-                  final image? => VocabularyImageView(
-                    image: image,
-                    variant: VocabularyImageVariant.thumbnail,
-                    displayWidth: _thumbnailSize,
-                  ),
-                  null => ColoredBox(
-                    color: context.c.surfaceContainerHigh,
-                    child: Icon(Icons.folder_outlined, color: context.c.onSurfaceVariant),
-                  ),
-                },
-              ),
-            ),
-            const SizedBox(width: Spacing.m),
-            Expanded(
-              child: _isCompact
-                  ? Text(_name, style: context.t.titleMedium, overflow: TextOverflow.ellipsis)
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(_name, style: context.t.titleMedium, overflow: TextOverflow.ellipsis),
-                        Text(_subtitle, style: subtitleStyle),
-                      ],
-                    ),
-            ),
-            if (_isCompact) ...[
-              Text(_subtitle, style: subtitleStyle),
-              const SizedBox(width: Spacing.m),
-            ],
-            CheckIndicator(isChecked: _isChecked),
-          ],
-        ),
-      ),
-    );
   }
 }
