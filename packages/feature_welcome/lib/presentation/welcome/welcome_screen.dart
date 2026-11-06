@@ -12,7 +12,8 @@ import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/google_logo.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
-import 'package:shared/presentation/widgets/tonal_button.dart';
+
+const _disabledOpacity = 0.6;
 
 class const WelcomeScreen({
   super.key,
@@ -85,7 +86,12 @@ class const _Content({
         ),
         _GoogleSignInButton(isBusy: _isBusy, isSigningIn: _isSigningIn),
         const SizedBox(height: Spacing.m),
-        TonalButton(
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: context.c.onPrimary,
+            disabledForegroundColor: context.c.onPrimary.withValues(alpha: _disabledOpacity),
+            padding: const EdgeInsets.all(Spacing.m),
+          ),
           onPressed: _isBusy
               ? null
               : () => context.read<WelcomeBloc>().add(const WelcomeLocalUseChosen()),
