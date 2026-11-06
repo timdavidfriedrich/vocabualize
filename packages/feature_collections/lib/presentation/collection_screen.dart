@@ -14,6 +14,7 @@ import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
+import 'package:shared/presentation/extensions/tag_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/practice_button.dart';
@@ -119,7 +120,7 @@ class const _Overview({
       appBar: AppBar(
         title: BlocSelector<CollectionBloc, CollectionState, String>(
           selector: (state) => switch (state) {
-            CollectionLoaded(:final tag) => tag.name,
+            CollectionLoaded(:final tag) => tag.toLabel(),
             _ => "",
           },
           builder: (context, name) => Text(name, style: context.t.headlineSmall),

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/tag_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
@@ -126,7 +127,7 @@ class const _CollectionCardContent({
             width: _cardWidth,
             padding: const EdgeInsets.symmetric(horizontal: Spacing.xxxs),
             child: Text(
-              _collection.tag.name,
+              _collection.tag.toLabel(),
               style: context.t.bodyLarge,
               textAlign: _areImagesHidden ? TextAlign.center : TextAlign.start,
             ),
