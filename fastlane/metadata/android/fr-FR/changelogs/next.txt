@@ -1,6 +1,0 @@
-Encore plus de refonte :
-• Détails du mot : touche le mot pour voir ses langues, un nouveau cadre photo et des collections avec emojis
-• Scan : zoom, flash, mise au point en touchant, photos de la galerie et recadrage avant de les utiliser
-• Nouveau mot : choisis la langue directement dans le champ
-• Série : une liste claire et tes quatre dernières semaines
-• Le bouton d'ajout de l'accueil n'affiche plus d'ombre à l'intérieur

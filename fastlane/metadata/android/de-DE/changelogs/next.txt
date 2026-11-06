@@ -1,6 +1,0 @@
-Mehr vom Redesign:
-• Wortdetails: Tippe auf das Wort für seine Sprachen, neues Bildfeld und Sammlungen mit Emojis
-• Scannen: Zoom, Blitz, Fokus per Tippen, Fotos aus der Galerie und Zuschneiden vor dem Verwenden
-• Neues Wort: Wähle die Sprache direkt im Feld
-• Serie: eine übersichtliche Liste und deine letzten vier Wochen
-• Der Hinzufügen-Knopf auf der Startseite zeigt keinen Schatten mehr im Inneren
