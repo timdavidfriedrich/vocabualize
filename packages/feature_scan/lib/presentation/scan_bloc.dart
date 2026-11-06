@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:feature_scan/domain/repositories/image_labeling_repository.dart';
@@ -24,12 +22,11 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
     this._appInfoRepository,
     this._connectivityRepository,
     this._imagePickerRepository,
-  ) : super(const ScanCapturing(error: null)) {
+  ) : super(const ScanCapturing(isProcessing: false, error: null)) {
     on<ScanStarted>(_onStarted);
     on<ScanConnectionRestored>(_onConnectionRestored);
     on<ScanPhotoTaken>(_onPhotoTaken);
     on<ScanGalleryRequested>(_onGalleryRequested);
-    on<ScanPhotoConfirmed>(_onPhotoConfirmed);
     on<ScanRetakeRequested>(_onRetakeRequested);
     on<ScanSettingsOpened>(_onSettingsOpened);
   }
@@ -60,48 +57,36 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
   }
 
   Future<void> _onPhotoTaken(ScanPhotoTaken event, Emitter<ScanState> emit) async {
-    if (state is! ScanCapturing) {
+    if (state case ScanCapturing(isProcessing: false) && final capturing) {
+      emit(capturing.copyWith(isProcessing: true, error: null));
+      final result = await _imageRepository.processSquareImage(event.path);
       await _imageRepository.discardSourceImage(event.path);
-      return;
+      switch (result) {
+        case Failure(:final error):
+          emit(capturing.copyWith(isProcessing: false, error: error));
+        case Success(data: final photo):
+          await _suggest(photo, emit);
+      }
+    } else {
+      await _imageRepository.discardSourceImage(event.path);
     }
-    emit(ScanAdjusting(path: event.path, isProcessing: false, error: null));
   }
 
   Future<void> _onGalleryRequested(ScanGalleryRequested event, Emitter<ScanState> emit) async {
-    if (state is! ScanCapturing) return;
-    switch (await _imagePickerRepository.pickImage(ImagePickSource.gallery)) {
-      case Success(data: final path?):
-        add(ScanPhotoTaken(path: path));
-      case Success(data: null):
-        return;
-      case Failure(:final error):
-        if (state is ScanCapturing) emit(ScanCapturing(error: error));
-    }
-  }
-
-  Future<void> _onPhotoConfirmed(ScanPhotoConfirmed event, Emitter<ScanState> emit) async {
-    if (state case ScanAdjusting(:final path, isProcessing: false) && final adjusting) {
-      emit(adjusting.copyWith(isProcessing: true, error: null));
-      switch (await _imageRepository.processCroppedImage(path, event.crop)) {
+    if (state case ScanCapturing(isProcessing: false)) {
+      switch (await _imagePickerRepository.pickImage(ImagePickSource.gallery)) {
+        case Success(data: final path?):
+          add(ScanPhotoTaken(path: path));
+        case Success(data: null):
+          return;
         case Failure(:final error):
-          emit(adjusting.copyWith(isProcessing: false, error: error));
-        case Success(data: final photo):
-          await _imageRepository.discardSourceImage(path);
-          await _suggest(photo, emit);
+          if (state case final ScanCapturing capturing) emit(capturing.copyWith(error: error));
       }
     }
   }
 
-  Future<void> _onRetakeRequested(ScanRetakeRequested event, Emitter<ScanState> emit) async {
-    switch (state) {
-      case ScanAdjusting(:final path, isProcessing: false):
-        emit(const ScanCapturing(error: null));
-        await _imageRepository.discardSourceImage(path);
-      case ScanReviewing():
-        emit(const ScanCapturing(error: null));
-      case ScanAdjusting() || ScanCapturing():
-        return;
-    }
+  void _onRetakeRequested(ScanRetakeRequested event, Emitter<ScanState> emit) {
+    if (state is ScanReviewing) emit(const ScanCapturing(isProcessing: false, error: null));
   }
 
   Future<void> _onSettingsOpened(ScanSettingsOpened event, Emitter<ScanState> emit) async {
@@ -138,14 +123,6 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
       Success(data: null) => const ScanSuggestionsFailed(error: ValidationError()),
       Failure(:final error) => ScanSuggestionsFailed(error: error),
     };
-  }
-
-  @override
-  Future<void> close() {
-    if (state case ScanAdjusting(:final path)) {
-      unawaited(_imageRepository.discardSourceImage(path));
-    }
-    return super.close();
   }
 
   Future<bool> _isConnected() async => switch (await _connectivityRepository.isConnected()) {

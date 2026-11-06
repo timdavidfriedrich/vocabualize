@@ -1558,15 +1558,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get scanShutterTooltip => 'Prendre la photo';
 
   @override
-  String get scanResetCropTooltip => 'Réinitialiser';
-
-  @override
-  String get scanUsePhotoButton => 'Utiliser la photo';
-
-  @override
-  String get scanRetakeButton => 'Reprendre';
-
-  @override
   String scanZoomLabel(String zoom) {
     return '$zoom×';
   }

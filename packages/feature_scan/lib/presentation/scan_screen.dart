@@ -5,7 +5,6 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_scan/presentation/scan_bloc.dart';
 import 'package:feature_scan/presentation/scan_event.dart';
 import 'package:feature_scan/presentation/scan_state.dart';
-import 'package:feature_scan/presentation/widgets/photo_adjust_view.dart';
 import 'package:feature_scan/presentation/widgets/scan_camera_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,16 +24,13 @@ class const ScanScreen({
   Widget build(BuildContext context) {
     return BlocListener<ScanBloc, ScanState>(
       listenWhen: (previous, current) => switch ((previous, current)) {
-        (ScanCapturing(error: final previousError), ScanCapturing(error: AppError())) ||
-        (
-          ScanAdjusting(error: final previousError),
-          ScanAdjusting(error: AppError()),
-        ) => previousError == null,
-        (_, ScanCapturing(error: AppError()) || ScanAdjusting(error: AppError())) => true,
+        (ScanCapturing(error: final previousError), ScanCapturing(error: AppError())) =>
+          previousError == null,
+        (_, ScanCapturing(error: AppError())) => true,
         _ => false,
       },
       listener: (context, state) {
-        if (state case ScanCapturing(error: final error?) || ScanAdjusting(error: final error?)) {
+        if (state case ScanCapturing(error: final error?)) {
           context.showToast(error.toMessage(context));
         }
       },
@@ -46,9 +42,6 @@ class const ScanScreen({
           },
           child: switch (state) {
             ScanCapturing() => const _CameraScaffold(child: ScanCameraView()),
-            ScanAdjusting(:final path, :final isProcessing) => _CameraScaffold(
-              child: PhotoAdjustView(path: path, isProcessing: isProcessing),
-            ),
             ScanReviewing(:final photo, :final suggestions) => Scaffold(
               appBar: AppBar(),
               body: _ReviewView(photo: photo, suggestions: suggestions),

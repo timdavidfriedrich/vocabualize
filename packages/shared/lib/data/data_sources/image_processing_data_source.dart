@@ -14,10 +14,7 @@ const _labelingQuality = 70;
 abstract class ImageProcessingDataSource {
   Future<({Uint8List full, Uint8List thumbnail})> processImage(String sourcePath);
 
-  Future<({Uint8List full, Uint8List thumbnail})> processCroppedImage(
-    String sourcePath, {
-    required ({double left, double top, double width, double height}) crop,
-  });
+  Future<({Uint8List full, Uint8List thumbnail})> processSquareImage(String sourcePath);
 
   Future<({Uint8List full, Uint8List thumbnail})> processBytes(Uint8List bytes);
 
@@ -52,20 +49,18 @@ class const ImageProcessingDataSourceImpl() implements ImageProcessingDataSource
   }
 
   @override
-  Future<({Uint8List full, Uint8List thumbnail})> processCroppedImage(
-    String sourcePath, {
-    required ({double left, double top, double width, double height}) crop,
-  }) async {
+  Future<({Uint8List full, Uint8List thumbnail})> processSquareImage(String sourcePath) async {
     final codec = await ui.instantiateImageCodecFromBuffer(
       await ui.ImmutableBuffer.fromFilePath(sourcePath),
     );
     final image = (await codec.getNextFrame()).image;
     codec.dispose();
+    final side = min(image.width, image.height).toDouble();
     final source = ui.Rect.fromLTWH(
-      image.width * crop.left,
-      image.height * crop.top,
-      image.width * crop.width,
-      image.height * crop.height,
+      (image.width - side) / 2,
+      (image.height - side) / 2,
+      side,
+      side,
     );
     final scale = min(1.0, _fullLongEdge / max(source.width, source.height));
     final width = max(1, (source.width * scale).round());

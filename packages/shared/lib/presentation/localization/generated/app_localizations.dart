@@ -2430,24 +2430,6 @@ abstract class AppLocalizations {
   /// **'Take photo'**
   String get scanShutterTooltip;
 
-  /// No description provided for @scanResetCropTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset'**
-  String get scanResetCropTooltip;
-
-  /// No description provided for @scanUsePhotoButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Use photo'**
-  String get scanUsePhotoButton;
-
-  /// No description provided for @scanRetakeButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Retake'**
-  String get scanRetakeButton;
-
   /// No description provided for @scanZoomLabel.
   ///
   /// In en, this message translates to:

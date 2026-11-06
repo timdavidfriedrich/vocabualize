@@ -1,6 +1,7 @@
 import 'package:core/theme/spacing.dart';
 import 'package:feature_scan/presentation/scan_bloc.dart';
 import 'package:feature_scan/presentation/scan_event.dart';
+import 'package:feature_scan/presentation/scan_state.dart';
 import 'package:feature_scan/presentation/widgets/camera_preview_box.dart';
 import 'package:feature_scan/presentation/widgets/camera_round_button.dart';
 import 'package:feature_scan/presentation/widgets/scan_camera.dart';
@@ -20,6 +21,12 @@ class const ScanCameraView({
   Widget build(BuildContext context) {
     final camera = useScanCamera();
     final bloc = context.read<ScanBloc>();
+    final isProcessing = context.select<ScanBloc, bool>(
+      (bloc) => switch (bloc.state) {
+        ScanCapturing(:final isProcessing) => isProcessing,
+        ScanReviewing() => false,
+      },
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -53,9 +60,11 @@ class const ScanCameraView({
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _GalleryButton(onPressed: () => bloc.add(const ScanGalleryRequested())),
+              _GalleryButton(
+                onPressed: isProcessing ? null : () => bloc.add(const ScanGalleryRequested()),
+              ),
               _ShutterButton(
-                isBusy: camera.isTakingPicture,
+                isBusy: camera.isTakingPicture || isProcessing,
                 onPressed: camera.isReady ? () => _takePhoto(context, camera) : null,
               ),
               CameraRoundButton(
@@ -79,7 +88,7 @@ class const ScanCameraView({
 }
 
 class const _GalleryButton({
-  required final VoidCallback _onPressed,
+  required final VoidCallback? _onPressed,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

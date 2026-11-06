@@ -1049,9 +1049,6 @@
   "scanSwitchCameraTooltip": "Switch camera",
   "scanGalleryTooltip": "Pick from gallery",
   "scanShutterTooltip": "Take photo",
-  "scanResetCropTooltip": "Reset",
-  "scanUsePhotoButton": "Use photo",
-  "scanRetakeButton": "Retake",
   "scanZoomLabel": "{zoom}×",
   "@scanZoomLabel": {
     "placeholders": {

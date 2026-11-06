@@ -1,5 +1,3 @@
-import 'package:shared/domain/entities/image_crop.dart';
-
 sealed class ScanEvent {
   const ScanEvent();
 }
@@ -13,10 +11,6 @@ class const ScanPhotoTaken({
 }) extends ScanEvent;
 
 class const ScanGalleryRequested() extends ScanEvent;
-
-class const ScanPhotoConfirmed({
-  required final ImageCrop crop,
-}) extends ScanEvent;
 
 class const ScanRetakeRequested() extends ScanEvent;
 

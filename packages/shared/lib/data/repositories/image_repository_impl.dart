@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_processing_data_source.dart';
 import 'package:shared/data/data_sources/image_transfer_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
-import 'package:shared/domain/entities/image_crop.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/repositories/image_repository.dart';
@@ -32,12 +31,9 @@ class const ImageRepositoryImpl(
   }
 
   @override
-  Future<AppResult<ProcessedImage>> processCroppedImage(String sourcePath, ImageCrop crop) async {
+  Future<AppResult<ProcessedImage>> processSquareImage(String sourcePath) async {
     try {
-      final processed = await _processingDataSource.processCroppedImage(
-        sourcePath,
-        crop: (left: crop.left, top: crop.top, width: crop.width, height: crop.height),
-      );
+      final processed = await _processingDataSource.processSquareImage(sourcePath);
       return Success(
         ProcessedImage(
           fullBytes: processed.full,
