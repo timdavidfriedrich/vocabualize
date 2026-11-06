@@ -1,0 +1,3 @@
+Petites retouches :
+• Accueil : le bouton de langue, ta série et ton profil restent en haut quand tu fais défiler
+• Détails du mot : le bouton de langue n'affiche plus que le drapeau de la langue que tu regardes

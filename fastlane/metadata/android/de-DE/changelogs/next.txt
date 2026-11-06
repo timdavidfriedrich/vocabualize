@@ -1,3 +1,0 @@
-Feinschliff:
-• Startseite: Sprachknopf, Serie und Profil bleiben beim Scrollen oben
-• Wortdetails: Der Sprachknopf zeigt nur noch die Flagge der Sprache, die du gerade ansiehst

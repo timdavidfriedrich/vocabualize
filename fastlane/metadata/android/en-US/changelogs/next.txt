@@ -1,3 +1,0 @@
-Small polish:
-• Home: the language button, your streak and your profile stay at the top while you scroll
-• Word details: the language button shows only the flag of the language you're looking at

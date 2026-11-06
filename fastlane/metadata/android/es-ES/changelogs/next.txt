@@ -1,3 +1,0 @@
-Pequeños retoques:
-• Inicio: el botón de idioma, tu racha y tu perfil se quedan arriba al desplazarte
-• Detalles de la palabra: el botón de idioma muestra solo la bandera del idioma que estás viendo
