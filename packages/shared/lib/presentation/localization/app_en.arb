@@ -1059,5 +1059,10 @@
         "type": "String"
       }
     }
-  }
+  },
+  "settingsDisplaySectionTitle": "Display",
+  "settingsLearningSectionTitle": "Learning",
+  "settingsNotificationsSectionTitle": "Notifications",
+  "settingsBackupSectionTitle": "Backup",
+  "settingsAboutSectionTitle": "About"
 }

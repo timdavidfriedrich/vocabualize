@@ -390,5 +390,10 @@
   "scanResetCropTooltip": "Επαναφορά",
   "scanUsePhotoButton": "Χρήση φωτογραφίας",
   "scanRetakeButton": "Νέα λήψη",
-  "scanZoomLabel": "{zoom}×"
+  "scanZoomLabel": "{zoom}×",
+  "settingsDisplaySectionTitle": "Προβολή",
+  "settingsLearningSectionTitle": "Μάθηση",
+  "settingsNotificationsSectionTitle": "Ειδοποιήσεις",
+  "settingsBackupSectionTitle": "Αντίγραφο ασφαλείας",
+  "settingsAboutSectionTitle": "Σχετικά"
 }

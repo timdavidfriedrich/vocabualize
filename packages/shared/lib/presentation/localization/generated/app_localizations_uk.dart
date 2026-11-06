@@ -1624,4 +1624,19 @@ class AppLocalizationsUk extends AppLocalizations {
   String scanZoomLabel(String zoom) {
     return '$zoom×';
   }
+
+  @override
+  String get settingsDisplaySectionTitle => 'Відображення';
+
+  @override
+  String get settingsLearningSectionTitle => 'Навчання';
+
+  @override
+  String get settingsNotificationsSectionTitle => 'Сповіщення';
+
+  @override
+  String get settingsBackupSectionTitle => 'Резервна копія';
+
+  @override
+  String get settingsAboutSectionTitle => 'Про застосунок';
 }

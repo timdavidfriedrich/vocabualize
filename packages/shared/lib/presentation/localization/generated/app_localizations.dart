@@ -2453,6 +2453,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{zoom}×'**
   String scanZoomLabel(String zoom);
+
+  /// No description provided for @settingsDisplaySectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Display'**
+  String get settingsDisplaySectionTitle;
+
+  /// No description provided for @settingsLearningSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning'**
+  String get settingsLearningSectionTitle;
+
+  /// No description provided for @settingsNotificationsSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsNotificationsSectionTitle;
+
+  /// No description provided for @settingsBackupSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get settingsBackupSectionTitle;
+
+  /// No description provided for @settingsAboutSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsAboutSectionTitle;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

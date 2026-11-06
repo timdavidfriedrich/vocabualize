@@ -390,5 +390,10 @@
   "scanResetCropTooltip": "Restablecer",
   "scanUsePhotoButton": "Usar foto",
   "scanRetakeButton": "Repetir",
-  "scanZoomLabel": "{zoom}×"
+  "scanZoomLabel": "{zoom}×",
+  "settingsDisplaySectionTitle": "Visualización",
+  "settingsLearningSectionTitle": "Aprendizaje",
+  "settingsNotificationsSectionTitle": "Notificaciones",
+  "settingsBackupSectionTitle": "Copia de seguridad",
+  "settingsAboutSectionTitle": "Acerca de"
 }

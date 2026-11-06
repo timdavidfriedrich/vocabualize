@@ -390,5 +390,10 @@
   "scanResetCropTooltip": "Скинути",
   "scanUsePhotoButton": "Використати фото",
   "scanRetakeButton": "Перезняти",
-  "scanZoomLabel": "{zoom}×"
+  "scanZoomLabel": "{zoom}×",
+  "settingsDisplaySectionTitle": "Відображення",
+  "settingsLearningSectionTitle": "Навчання",
+  "settingsNotificationsSectionTitle": "Сповіщення",
+  "settingsBackupSectionTitle": "Резервна копія",
+  "settingsAboutSectionTitle": "Про застосунок"
 }

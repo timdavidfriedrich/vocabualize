@@ -1546,4 +1546,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String scanZoomLabel(String zoom) {
     return '$zoom×';
   }
+
+  @override
+  String get settingsDisplaySectionTitle => 'Display';
+
+  @override
+  String get settingsLearningSectionTitle => 'Learning';
+
+  @override
+  String get settingsNotificationsSectionTitle => 'Notifications';
+
+  @override
+  String get settingsBackupSectionTitle => 'Backup';
+
+  @override
+  String get settingsAboutSectionTitle => 'About';
 }

@@ -9,6 +9,12 @@ extension DefaultGatherOptionExtensions on DefaultGatherOption {
     DefaultGatherOption.write => context.s.homeWriteButton,
   };
 
+  IconData? toIcon() => switch (this) {
+    DefaultGatherOption.none => null,
+    DefaultGatherOption.scan => Icons.camera_alt_rounded,
+    DefaultGatherOption.write => Icons.edit_rounded,
+  };
+
   DefaultGatherOption withImagesHidden(bool areImagesHidden) => switch (this) {
     DefaultGatherOption.scan when areImagesHidden => DefaultGatherOption.none,
     _ => this,

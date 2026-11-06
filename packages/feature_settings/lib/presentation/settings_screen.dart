@@ -26,11 +26,14 @@ import 'package:shared/presentation/reminders/reminder_cubit.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/account_status_avatar.dart';
+import 'package:shared/presentation/widgets/app_dropdown.dart';
 import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/google_logo.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
-import 'package:shared/presentation/widgets/tonal_button.dart';
+import 'package:shared/presentation/widgets/section_title.dart';
+
+const _tileGap = Spacing.borderWidthMedium;
 
 class const SettingsScreen({
   super.key,
@@ -101,49 +104,49 @@ class const SettingsScreen({
             SettingsLoaded(:final account, :final runningAction) => ListTileTheme(
               data: ListTileThemeData(
                 contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.m),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(Spacing.radiusL)),
-                ),
+                tileColor: context.c.surfaceContainerLowest,
                 subtitleTextStyle: context.t.bodyMedium?.copyWith(color: context.c.outline),
               ),
               child: ListView(
-                padding: const EdgeInsets.all(Spacing.m),
+                padding: const EdgeInsets.fromLTRB(Spacing.m, Spacing.m, Spacing.m, Spacing.xxl),
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Spacing.m),
-                    child: switch (account) {
-                      LocalAccount() => _SignInCard(runningAction: runningAction),
-                      GoogleAccount(:final name, :final email, :final picturePath) => _AccountCard(
-                        name: name,
-                        email: email,
-                        picturePath: picturePath,
-                        runningAction: runningAction,
-                      ),
-                    },
-                  ),
-                  const SizedBox(height: Spacing.xl),
-                  const _LearningSection(),
-                  const SizedBox(height: Spacing.m),
-                  const _NotificationsSection(),
-                  const SizedBox(height: Spacing.m),
-                  _BackupSection(runningAction: runningAction),
-                  ListTile(
-                    title: Text(context.s.reportFeedbackTitle),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: context.pushFeedback,
-                  ),
-                  ListTile(
-                    title: Text(context.s.settingsPrivacyPolicyButton),
-                    trailing: const Icon(Icons.open_in_new_rounded),
-                    onTap: () => context.read<SettingsBloc>().add(
-                      SettingsPrivacyPolicyOpened(
-                        languageCode: Localizations.localeOf(context).languageCode,
-                      ),
+                  switch (account) {
+                    LocalAccount() => _SignInCard(runningAction: runningAction),
+                    GoogleAccount(:final name, :final email, :final picturePath) => _AccountCard(
+                      name: name,
+                      email: email,
+                      picturePath: picturePath,
+                      runningAction: runningAction,
                     ),
+                  },
+                  const SizedBox(height: Spacing.xl),
+                  const _DisplaySection(),
+                  const _LearningSection(),
+                  const _NotificationsSection(),
+                  _BackupSection(runningAction: runningAction),
+                  _Group(
+                    title: context.s.settingsAboutSectionTitle,
+                    children: [
+                      ListTile(
+                        title: Text(context.s.reportFeedbackTitle),
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: context.pushFeedback,
+                      ),
+                      ListTile(
+                        title: Text(context.s.settingsPrivacyPolicyButton),
+                        trailing: const Icon(Icons.open_in_new_rounded),
+                        onTap: () => context.read<SettingsBloc>().add(
+                          SettingsPrivacyPolicyOpened(
+                            languageCode: Localizations.localeOf(context).languageCode,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: Spacing.m),
-                  _DeleteTile(account: account, runningAction: runningAction),
-                  const SizedBox(height: Spacing.xxl),
+                  _Group(
+                    title: null,
+                    children: [_DeleteTile(account: account, runningAction: runningAction)],
+                  ),
                 ],
               ),
             ),
@@ -167,26 +170,65 @@ class const SettingsScreen({
   }
 }
 
-class const _ChoiceButton<T>({
-  required final T _value,
-  required final List<T> _options,
-  required final String Function(T option) _labelOf,
-  required final ValueChanged<T> _onSelected,
+class const _Group({
+  required final String? _title,
+  required final List<Widget> _children,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MenuAnchor(
-      menuChildren: [
-        for (final option in _options)
-          MenuItemButton(
-            onPressed: () => _onSelected(option),
-            trailingIcon: option == _value ? const Icon(Icons.check_rounded) : null,
-            child: Text(_labelOf(option)),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Spacing.xl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (_title case final title?)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(Spacing.xxxs, 0, Spacing.xxxs, Spacing.s),
+              child: SectionTitle(title: title),
+            ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(Spacing.radiusXxl),
+            child: Material(
+              type: MaterialType.transparency,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: _tileGap,
+                children: _children,
+              ),
+            ),
           ),
-      ],
-      builder: (context, controller, child) => TonalButton(
-        onPressed: () => controller.isOpen ? controller.close() : controller.open(),
-        child: Text(_labelOf(_value)),
+        ],
+      ),
+    );
+  }
+}
+
+class const _DisplaySection() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<SettingsBloc>();
+    return BlocBuilder<PreferencesCubit, Preferences>(
+      builder: (context, preferences) => _Group(
+        title: context.s.settingsDisplaySectionTitle,
+        children: [
+          ListTile(
+            title: Text(context.s.settingsAppearanceTitle),
+            subtitle: Text(context.s.settingsAppearanceHint),
+            trailing: AppDropdown(
+              title: context.s.settingsAppearanceTitle,
+              value: preferences.appearanceMode,
+              options: AppearanceMode.values,
+              labelOf: (mode) => mode.toLabel(context),
+              onSelected: (mode) => bloc.add(SettingsAppearanceModeChanged(mode: mode)),
+            ),
+          ),
+          SwitchListTile(
+            title: Text(context.s.settingsImagesHiddenTitle),
+            subtitle: Text(context.s.settingsImagesHiddenHint),
+            value: preferences.areImagesHidden,
+            onChanged: (areHidden) => bloc.add(SettingsImagesHiddenChanged(areHidden: areHidden)),
+          ),
+        ],
       ),
     );
   }
@@ -197,16 +239,22 @@ class const _LearningSection() extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<SettingsBloc>();
     return BlocBuilder<PreferencesCubit, Preferences>(
-      builder: (context, preferences) => Column(
+      builder: (context, preferences) => _Group(
+        title: context.s.settingsLearningSectionTitle,
         children: [
           ListTile(
-            title: Text(context.s.settingsAppearanceTitle),
-            subtitle: Text(context.s.settingsAppearanceHint),
-            trailing: _ChoiceButton(
-              value: preferences.appearanceMode,
-              options: AppearanceMode.values,
-              labelOf: (mode) => mode.toLabel(context),
-              onSelected: (mode) => bloc.add(SettingsAppearanceModeChanged(mode: mode)),
+            title: Text(context.s.settingsDefaultGatherTitle),
+            subtitle: Text(context.s.settingsDefaultGatherHint),
+            trailing: AppDropdown(
+              title: context.s.settingsDefaultGatherTitle,
+              value: preferences.defaultGatherOption.withImagesHidden(preferences.areImagesHidden),
+              options: [
+                for (final option in DefaultGatherOption.values)
+                  if (option.withImagesHidden(preferences.areImagesHidden) == option) option,
+              ],
+              labelOf: (option) => option.toLabel(context),
+              iconOf: (option) => option.toIcon(),
+              onSelected: (option) => bloc.add(SettingsDefaultGatherOptionChanged(option: option)),
             ),
           ),
           SwitchListTile(
@@ -224,25 +272,6 @@ class const _LearningSection() extends StatelessWidget {
                 ? null
                 : (isEnabled) => bloc.add(SettingsStrictCorrectionChanged(isEnabled: isEnabled)),
           ),
-          SwitchListTile(
-            title: Text(context.s.settingsImagesHiddenTitle),
-            subtitle: Text(context.s.settingsImagesHiddenHint),
-            value: preferences.areImagesHidden,
-            onChanged: (areHidden) => bloc.add(SettingsImagesHiddenChanged(areHidden: areHidden)),
-          ),
-          ListTile(
-            title: Text(context.s.settingsDefaultGatherTitle),
-            subtitle: Text(context.s.settingsDefaultGatherHint),
-            trailing: _ChoiceButton(
-              value: preferences.defaultGatherOption.withImagesHidden(preferences.areImagesHidden),
-              options: [
-                for (final option in DefaultGatherOption.values)
-                  if (option.withImagesHidden(preferences.areImagesHidden) == option) option,
-              ],
-              labelOf: (option) => option.toLabel(context),
-              onSelected: (option) => bloc.add(SettingsDefaultGatherOptionChanged(option: option)),
-            ),
-          ),
         ],
       ),
     );
@@ -258,7 +287,8 @@ class const _NotificationsSection() extends StatelessWidget {
         builder: (context, isPermitted) {
           final (practiceReminder, streakReminder) = reminders;
           final isAnyEnabled = practiceReminder.isEnabled || streakReminder.isEnabled;
-          return Column(
+          return _Group(
+            title: context.s.settingsNotificationsSectionTitle,
             children: [
               _ReminderSettings(
                 kind: ReminderKind.practice,
@@ -301,6 +331,8 @@ class const _ReminderSettings({
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: _tileGap,
       children: [
         SwitchListTile(
           title: Text(_title),
@@ -340,7 +372,8 @@ class const _BackupSection({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return _Group(
+      title: context.s.settingsBackupSectionTitle,
       children: [
         ListTile(
           enabled: _runningAction == null,
@@ -409,7 +442,7 @@ class const _Card({
       padding: const EdgeInsets.all(Spacing.m),
       decoration: BoxDecoration(
         color: context.c.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(Spacing.radiusL),
+        borderRadius: BorderRadius.circular(Spacing.radiusXxl),
       ),
       child: _child,
     );

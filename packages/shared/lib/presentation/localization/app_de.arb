@@ -390,5 +390,10 @@
   "scanResetCropTooltip": "Zurücksetzen",
   "scanUsePhotoButton": "Foto verwenden",
   "scanRetakeButton": "Neu aufnehmen",
-  "scanZoomLabel": "{zoom}×"
+  "scanZoomLabel": "{zoom}×",
+  "settingsDisplaySectionTitle": "Anzeige",
+  "settingsLearningSectionTitle": "Lernen",
+  "settingsNotificationsSectionTitle": "Benachrichtigungen",
+  "settingsBackupSectionTitle": "Sicherung",
+  "settingsAboutSectionTitle": "Über die App"
 }

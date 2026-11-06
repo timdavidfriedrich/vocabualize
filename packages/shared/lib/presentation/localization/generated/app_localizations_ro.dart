@@ -1593,4 +1593,19 @@ class AppLocalizationsRo extends AppLocalizations {
   String scanZoomLabel(String zoom) {
     return '$zoom×';
   }
+
+  @override
+  String get settingsDisplaySectionTitle => 'Afișare';
+
+  @override
+  String get settingsLearningSectionTitle => 'Învățare';
+
+  @override
+  String get settingsNotificationsSectionTitle => 'Notificări';
+
+  @override
+  String get settingsBackupSectionTitle => 'Backup';
+
+  @override
+  String get settingsAboutSectionTitle => 'Despre';
 }

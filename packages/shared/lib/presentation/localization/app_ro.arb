@@ -390,5 +390,10 @@
   "scanResetCropTooltip": "Resetați",
   "scanUsePhotoButton": "Folosiți fotografia",
   "scanRetakeButton": "Refaceți",
-  "scanZoomLabel": "{zoom}×"
+  "scanZoomLabel": "{zoom}×",
+  "settingsDisplaySectionTitle": "Afișare",
+  "settingsLearningSectionTitle": "Învățare",
+  "settingsNotificationsSectionTitle": "Notificări",
+  "settingsBackupSectionTitle": "Backup",
+  "settingsAboutSectionTitle": "Despre"
 }
