@@ -18,7 +18,10 @@ class const CheckIndicator({
       width: _indicatorSize,
       height: _indicatorSize,
       decoration: BoxDecoration(
-        color: isFilled ? context.c.primary : context.c.surfaceContainer,
+        color: isFilled ? context.c.primary : null,
+        border: isFilled
+            ? null
+            : Border.all(color: context.c.outline, width: Spacing.borderWidthMedium),
         borderRadius: BorderRadius.circular(Spacing.radiusS),
       ),
       child: switch (_isChecked) {
@@ -43,7 +46,10 @@ class const RadioIndicator({
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: _isSelected ? context.c.primary : context.c.surfaceContainer,
+        color: _isSelected ? context.c.primary : null,
+        border: _isSelected
+            ? null
+            : Border.all(color: context.c.outline, width: Spacing.borderWidthMedium),
       ),
       child: _isSelected
           ? Container(

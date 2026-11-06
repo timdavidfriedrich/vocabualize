@@ -86,7 +86,7 @@ class const _LanguageItem({
       trailing: practiceCount > 0
           ? CountBadge(
               count: practiceCount,
-              color: _isSelected ? context.c.primary : context.c.surfaceContainerHighest,
+              color: _isSelected ? context.c.primary : context.c.surface,
               textColor: _isSelected ? context.c.onPrimary : context.c.onSurface,
             )
           : null,

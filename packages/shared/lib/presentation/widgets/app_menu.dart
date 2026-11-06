@@ -31,7 +31,10 @@ class const AppMenu({
   Widget build(BuildContext context) {
     return Material(
       color: context.c.surfaceContainerHigh,
-      borderRadius: BorderRadius.circular(Spacing.radiusXxl),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Spacing.radiusXxl),
+        side: BorderSide(color: context.c.outlineVariant),
+      ),
       elevation: Spacing.elevationM,
       clipBehavior: Clip.antiAlias,
       child: SizedBox(
@@ -77,7 +80,7 @@ class const AppMenuItem({
     return Opacity(
       opacity: onTap == null ? _disabledOpacity : 1,
       child: Material(
-        color: _isSelected ? context.c.surfaceContainerHighest : context.c.surfaceContainerHigh,
+        color: _isSelected ? context.c.surface : context.c.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(Spacing.radiusXl),
         clipBehavior: Clip.antiAlias,
         child: InkWell(

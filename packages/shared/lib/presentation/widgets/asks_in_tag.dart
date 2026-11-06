@@ -13,7 +13,7 @@ class const AsksInTag({
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.xs, vertical: Spacing.xxxs),
       decoration: BoxDecoration(
-        color: context.c.primaryContainer,
+        border: Border.all(color: context.c.primary),
         borderRadius: BorderRadius.circular(Spacing.radiusS),
       ),
       child: Text(
