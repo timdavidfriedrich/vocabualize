@@ -28,13 +28,6 @@ import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/translation_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 
-typedef _Lookup = ({
-  Map<Language, String> translations,
-  List<StockImage>? stockImages,
-  AppError? error,
-  DetailsPendingLookup? pending,
-});
-
 @injectable
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   DetailsBloc(
@@ -206,7 +199,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   Future<void> _onTextChanged(DetailsTextChanged event, Emitter<DetailsState> emit) async {
-    if (state case final DetailsEditing editing when editing.runningAction == null) {
+    if (state case final DetailsEditing editing when editing.canEditTexts) {
       final text = event.text.trim();
       final isEntered = event.language == editing.enteredLanguage;
       final changed = editing.copyWith(
@@ -509,93 +502,130 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }) async {
     final targets = switch (pending) {
       DetailsPendingLookup.photos => const <Language>{},
-      DetailsPendingLookup.translationAndPhotos ||
-      DetailsPendingLookup.translations => editing.missingLanguages,
+      DetailsPendingLookup.translationAndPhotos || DetailsPendingLookup.translations =>
+        editing.missingLanguages.difference(editing.translatingLanguages),
     };
+    final wantsPhotos = pending != DetailsPendingLookup.translations;
     emit(
       editing.copyWith(
-        translatingLanguages: targets,
-        runningAction: targets.isEmpty ? editing.runningAction : DetailsAction.lookup,
+        translatingLanguages: {...editing.translatingLanguages, ...targets},
+        isSearchingPhotos: editing.isSearchingPhotos || wantsPhotos,
+        pendingLookup: null,
       ),
     );
-    final lookup = await _lookUp(editing, targets: targets, pending: pending);
+    final searchesPhotos = wantsPhotos && !await _areImagesHidden();
+    if (targets.isEmpty && !searchesPhotos) {
+      _finishLookup(emit, targets: targets, wantsPhotos: wantsPhotos, error: null, pending: null);
+      return;
+    }
+    if (!await _isConnected()) {
+      _finishLookup(
+        emit,
+        targets: targets,
+        wantsPhotos: wantsPhotos,
+        error: null,
+        pending: pending,
+      );
+      return;
+    }
+    final errors = await Future.wait([
+      for (final target in targets) _translateAndApply(emit, editing, target),
+      if (searchesPhotos) _searchPhotosAndApply(emit, editing),
+    ]);
+    final error = errors.nonNulls.firstOrNull;
+    final isOffline = error is ConnectionError && !await _isConnected();
+    _finishLookup(
+      emit,
+      targets: targets,
+      wantsPhotos: wantsPhotos,
+      error: isOffline ? null : error,
+      pending: isOffline ? pending : null,
+    );
+  }
+
+  void _finishLookup(
+    Emitter<DetailsState> emit, {
+    required Set<Language> targets,
+    required bool wantsPhotos,
+    required AppError? error,
+    required DetailsPendingLookup? pending,
+  }) {
     if (state case final DetailsEditing current) {
       emit(
         current.copyWith(
-          texts: {
-            ...current.texts,
-            for (final MapEntry(key: language, value: text) in lookup.translations.entries)
-              if (current.textOf(language).isEmpty)
-                language: DetailsText(text: text, origin: TranslationOrigin.translated),
-          },
-          translatingLanguages: const {},
-          stockImages: lookup.stockImages ?? current.stockImages,
-          stockPage: lookup.stockImages == null ? current.stockPage : 0,
-          pendingLookup: lookup.pending,
-          isSearchingPhotos: false,
-          runningAction: targets.isEmpty ? current.runningAction : null,
-          error: lookup.error ?? current.error,
+          translatingLanguages: current.translatingLanguages.difference(targets),
+          isSearchingPhotos: current.isSearchingPhotos && !wantsPhotos,
+          pendingLookup: pending ?? current.pendingLookup,
+          error: error ?? current.error,
         ),
       );
     }
   }
 
-  Future<_Lookup> _lookUp(
-    DetailsEditing editing, {
-    required Set<Language> targets,
-    required DetailsPendingLookup pending,
-  }) async {
-    final searchesPhotos =
-        pending != DetailsPendingLookup.translations && !await _areImagesHidden();
-    if (targets.isEmpty && !searchesPhotos) {
-      return (
-        translations: const <Language, String>{},
-        stockImages: null,
-        error: null,
-        pending: null,
+  Future<AppError?> _translateAndApply(
+    Emitter<DetailsState> emit,
+    DetailsEditing editing,
+    Language target,
+  ) async {
+    final result = await _translate(editing, target);
+    if (state case final DetailsEditing current) {
+      final isCurrent =
+          current.enteredLanguage == editing.enteredLanguage &&
+          current.enteredText == editing.enteredText &&
+          current.textOf(target).isEmpty;
+      emit(
+        current.copyWith(
+          texts: {
+            ...current.texts,
+            if (result case Success(:final data) when isCurrent)
+              target: DetailsText(text: data, origin: TranslationOrigin.translated),
+          },
+          translatingLanguages: current.translatingLanguages.difference({target}),
+        ),
       );
     }
-    if (!await _isConnected()) {
-      return (
-        translations: const <Language, String>{},
-        stockImages: null,
-        error: null,
-        pending: pending,
-      );
-    }
-    final source = editing.enteredLanguage;
-    final text = editing.enteredText;
-    final (translations, stockImages) = await (
-      Future.wait([
-        for (final target in targets)
-          target.isSameLanguageAs(source)
-              ? Future<(Language, AppResult<String>)>.value((target, Success(text)))
-              : _translationRepository
-                    .translate(text: text, from: source, to: target, context: editing.context)
-                    .then((result) => (target, result)),
-      ]),
-      searchesPhotos
-          ? _stockImageRepository.search(query: text, language: source)
-          : Future<AppResult<List<StockImage>>?>.value(),
-    ).wait;
-    final error = [
-      for (final (_, result) in translations)
-        if (result case Failure(:final error)) error,
-      if (stockImages case Failure(:final error)) error,
-    ].firstOrNull;
-    final isOffline = error is ConnectionError && !await _isConnected();
-    return (
-      translations: {
-        for (final (target, result) in translations)
-          if (result case Success(:final data)) target: data,
-      },
-      stockImages: switch (stockImages) {
-        Success(:final data) => data,
-        Failure() || null => null,
-      },
-      error: isOffline ? null : error,
-      pending: isOffline ? pending : null,
+    return switch (result) {
+      Success() => null,
+      Failure(:final error) => error,
+    };
+  }
+
+  Future<AppResult<String>> _translate(DetailsEditing editing, Language target) async {
+    if (target.isSameLanguageAs(editing.enteredLanguage)) return Success(editing.enteredText);
+    Future<AppResult<String>> request() => _translationRepository.translate(
+      text: editing.enteredText,
+      from: editing.enteredLanguage,
+      to: target,
+      context: editing.context,
     );
+    return switch (await request()) {
+      Failure(error: ServiceUnavailableError()) => request(),
+      final result => result,
+    };
+  }
+
+  Future<AppError?> _searchPhotosAndApply(
+    Emitter<DetailsState> emit,
+    DetailsEditing editing,
+  ) async {
+    final result = await _stockImageRepository.search(
+      query: editing.enteredText,
+      language: editing.enteredLanguage,
+    );
+    if (state case final DetailsEditing current) {
+      emit(switch (result) {
+        Success(:final data) => current.copyWith(
+          stockImages: data,
+          stockPage: 0,
+          isSearchingPhotos: false,
+        ),
+        Failure() => current.copyWith(isSearchingPhotos: false),
+      });
+    }
+    return switch (result) {
+      Success() => null,
+      Failure(:final error) => error,
+    };
   }
 
   Future<LanguageSetup?> _setup() async {

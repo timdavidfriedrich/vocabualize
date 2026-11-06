@@ -229,7 +229,7 @@ class const _EditButton({
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: _editing.runningAction == null
+      onPressed: _editing.canEditTexts
           ? () => editWords(context, _editing, languages: [_language])
           : null,
       tooltip: context.s.edit,

@@ -120,8 +120,6 @@ class DetailsActionMapper extends EnumMapper<DetailsAction> {
   @override
   DetailsAction decode(dynamic value) {
     switch (value) {
-      case r'lookup':
-        return DetailsAction.lookup;
       case r'photoPick':
         return DetailsAction.photoPick;
       case r'report':
@@ -140,8 +138,6 @@ class DetailsActionMapper extends EnumMapper<DetailsAction> {
   @override
   dynamic encode(DetailsAction self) {
     switch (self) {
-      case DetailsAction.lookup:
-        return r'lookup';
       case DetailsAction.photoPick:
         return r'photoPick';
       case DetailsAction.report:

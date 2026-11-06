@@ -40,6 +40,8 @@ extension DetailsEditingExtensions on DetailsEditing {
         (language) => !enabledLanguages.contains(language) || textOf(language).isNotEmpty,
       );
 
+  bool get canEditTexts => runningAction == null && translatingLanguages.isEmpty;
+
   bool canSwitchOff(Language language) =>
       !enabledLanguages.contains(language) || enabledLanguages.length > 1;
 

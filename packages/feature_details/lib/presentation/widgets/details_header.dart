@@ -52,7 +52,11 @@ class const DetailsHeader({
                   borderRadius: BorderRadius.circular(Spacing.radiusXxl),
                   clipBehavior: Clip.antiAlias,
                   child: InkWell(
-                    onTap: state.runningAction == null ? open : null,
+                    onTap:
+                        state.canEditTexts ||
+                            (state.runningAction == null && state.hasSeveralLanguages)
+                        ? open
+                        : null,
                     highlightColor: context.c.surfaceContainerHigh,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

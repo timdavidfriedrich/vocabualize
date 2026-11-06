@@ -19,7 +19,7 @@ enum DetailsPendingLookup { translationAndPhotos, translations, photos }
 enum DetailsNotice { translationReported }
 
 @MappableEnum()
-enum DetailsAction { lookup, photoPick, report, tagCreation, save, delete }
+enum DetailsAction { photoPick, report, tagCreation, save, delete }
 
 @MappableClass()
 sealed class DetailsState with DetailsStateMappable {

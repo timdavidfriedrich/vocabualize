@@ -6,6 +6,7 @@ import 'package:feature_details/presentation/extensions/details_image_extensions
 import 'package:feature_details/presentation/widgets/image_source_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/image_pick_source.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
@@ -18,11 +19,13 @@ const _selectedInset = Spacing.borderWidthThick + Spacing.borderWidthMedium;
 const _emptyIconSize = Spacing.xxxl;
 const _ownPhotoThumbSize = Spacing.xxl;
 
+const _skeletonPulse = Duration(milliseconds: 900);
+
 typedef _ImageChoice = ({
   DetailsImage selected,
   DetailsImage? ownPhoto,
-  List<StockImage> pageImages,
-  bool hasStockImages,
+  List<StockImage> stockImages,
+  int stockPage,
   bool isWaitingForConnection,
   bool isSearchingPhotos,
   bool isBusy,
@@ -48,66 +51,89 @@ class const ImageChooser({
           (
             selected: selectedImage,
             ownPhoto: ownPhoto,
-            pageImages: stockImages
-                .skip(stockPage * stockImagesPerPage)
-                .take(stockImagesPerPage)
-                .toList(),
-            hasStockImages: stockImages.isNotEmpty,
+            stockImages: stockImages,
+            stockPage: stockPage,
             isWaitingForConnection: pendingLookup != null,
             isSearchingPhotos: isSearchingPhotos,
             isBusy: runningAction != null,
-            isLoadingImage:
-                runningAction == DetailsAction.lookup || runningAction == DetailsAction.photoPick,
+            isLoadingImage: runningAction == DetailsAction.photoPick,
           ),
         _ => null,
       },
       builder: (context, choice) => switch (choice) {
         null => const SizedBox.shrink(),
-        final choice => Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AspectRatio(aspectRatio: 1, child: _SelectedImageBox(choice: choice)),
-            const SizedBox(height: Spacing.s),
-            if (choice.hasStockImages)
-              const _ProviderHint()
-            else if (choice.isSearchingPhotos) ...[
-              LinearProgressIndicator(
-                borderRadius: BorderRadius.circular(Spacing.radiusS),
-                backgroundColor: context.c.surfaceContainerLow,
-              ),
-              const SizedBox(height: Spacing.m),
-            ],
-            GridView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              clipBehavior: Clip.none,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: _gridColumns,
-                mainAxisSpacing: Spacing.xxs,
-                crossAxisSpacing: Spacing.xxs,
-              ),
-              itemCount: 1 + choice.pageImages.length,
-              itemBuilder: (context, index) => switch (index) {
-                0 => _OwnPhotoTile(choice: choice),
-                _ => _StockImageTile(
-                  image: choice.pageImages[index - 1],
-                  isSelected: switch (choice.selected) {
-                    DetailsStockPhoto(:final image) => image == choice.pageImages[index - 1],
-                    _ => false,
-                  },
-                  isBusy: choice.isBusy,
-                ),
-              },
-            ),
-            if (choice.isWaitingForConnection) ...[
-              const SizedBox(height: Spacing.m),
-              ConnectionRequiredNotice(message: context.s.detailsOfflineMessage),
-            ],
-          ],
-        ),
+        final choice => _Content(choice: choice),
       },
+    );
+  }
+}
+
+class const _Content({
+  required final _ImageChoice _choice,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final choice = _choice;
+    final pageImages = choice.stockImages
+        .skip(choice.stockPage * stockImagesPerPage)
+        .take(stockImagesPerPage)
+        .toList();
+    final isLoadingStock = choice.stockImages.isEmpty && choice.isSearchingPhotos;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AspectRatio(aspectRatio: 1, child: _SelectedImageBox(choice: choice)),
+        const SizedBox(height: Spacing.s),
+        if (choice.stockImages.isNotEmpty || isLoadingStock)
+          _ProviderHint(canAdvance: choice.stockImages.isNotEmpty),
+        GridView.builder(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          clipBehavior: Clip.none,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: _gridColumns,
+            mainAxisSpacing: Spacing.xxs,
+            crossAxisSpacing: Spacing.xxs,
+          ),
+          itemCount: 1 + (isLoadingStock ? stockImagesPerPage : pageImages.length),
+          itemBuilder: (context, index) => switch (index) {
+            0 => _OwnPhotoTile(choice: choice),
+            _ when isLoadingStock => const _SkeletonTile(),
+            _ => _StockImageTile(
+              image: pageImages[index - 1],
+              isSelected: switch (choice.selected) {
+                DetailsStockPhoto(:final image) => image == pageImages[index - 1],
+                _ => false,
+              },
+              isBusy: choice.isBusy,
+            ),
+          },
+        ),
+        if (choice.isWaitingForConnection) ...[
+          const SizedBox(height: Spacing.m),
+          ConnectionRequiredNotice(message: context.s.detailsOfflineMessage),
+        ],
+      ],
+    );
+  }
+}
+
+class const _SkeletonTile() extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final controller = useAnimationController(duration: _skeletonPulse);
+    useEffect(() {
+      controller.repeat(reverse: true);
+      return null;
+    }, [controller]);
+    final pulse = useAnimation(controller);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(Spacing.radiusL),
+        color: Color.lerp(context.c.surfaceContainerLow, context.c.surfaceContainerHighest, pulse),
+      ),
     );
   }
 }
@@ -432,7 +458,9 @@ Future<void> _pickPhoto(BuildContext context) async {
   if (source != null) bloc.add(DetailsPhotoPickRequested(source: source));
 }
 
-class const _ProviderHint() extends StatelessWidget {
+class const _ProviderHint({
+  required final bool _canAdvance,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -446,7 +474,9 @@ class const _ProviderHint() extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () => context.read<DetailsBloc>().add(const DetailsStockPageAdvanced()),
+            onPressed: _canAdvance
+                ? () => context.read<DetailsBloc>().add(const DetailsStockPageAdvanced())
+                : null,
             tooltip: context.s.detailsMorePicturesTooltip,
             icon: const Icon(Icons.find_replace_rounded),
           ),
