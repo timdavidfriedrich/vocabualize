@@ -5,9 +5,10 @@ import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
+import 'package:shared/presentation/widgets/app_dropdown.dart';
+import 'package:shared/presentation/widgets/app_menu.dart';
 import 'package:shared/presentation/widgets/send_text_field.dart';
 
-const _menuWidth = Spacing.xxxxl * 4 + Spacing.xxl;
 const _menuOffset = Offset(-Spacing.xs, -Spacing.l);
 
 typedef WrittenWord = ({String text, Language language});
@@ -93,7 +94,6 @@ class const _LanguageChip({
       value ? portal.show() : portal.hide();
     }
 
-    final foreground = isOpen.value ? context.c.onPrimary : context.c.onSurface;
     return TapRegion(
       groupId: link,
       onTapOutside: (_) => setOpen(false),
@@ -125,33 +125,11 @@ class const _LanguageChip({
           link: link,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(Spacing.xs, Spacing.xs, Spacing.s, Spacing.xs),
-            child: Material(
-              color: isOpen.value ? context.c.primary : context.c.surfaceContainer,
-              borderRadius: BorderRadius.circular(Spacing.radiusL),
-              clipBehavior: Clip.antiAlias,
-              child: InkWell(
-                onTap: () => setOpen(!isOpen.value),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Spacing.s),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _selected.toFlag(),
-                        style: context.t.titleMedium,
-                        semanticsLabel: _selected.toLabel(context),
-                      ),
-                      const SizedBox(width: Spacing.xxs),
-                      Icon(
-                        isOpen.value
-                            ? Icons.keyboard_arrow_up_rounded
-                            : Icons.keyboard_arrow_down_rounded,
-                        color: foreground,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            child: DropdownChip(
+              leading: Text(_selected.toFlag(), style: context.t.titleMedium),
+              semanticsLabel: _selected.toLabel(context),
+              isOpen: isOpen.value,
+              onPressed: () => setOpen(!isOpen.value),
             ),
           ),
         ),
@@ -167,77 +145,18 @@ class const _LanguageMenu({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: context.c.surfaceContainerHigh,
-      borderRadius: BorderRadius.circular(Spacing.radiusXxl),
-      elevation: Spacing.elevationM,
-      clipBehavior: Clip.antiAlias,
-      child: SizedBox(
-        width: _menuWidth,
-        child: Padding(
-          padding: const EdgeInsets.all(Spacing.xs),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(Spacing.m, Spacing.xs, Spacing.m, Spacing.xs),
-                child: Text(
-                  context.s.homeWriteLanguageTitle,
-                  style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
-                ),
-              ),
-              for (final option in _options)
-                _LanguageMenuRow(
-                  option: option,
-                  isSelected: option.language == _selected,
-                  onTap: () => _onSelected(option.language),
-                ),
-            ],
+    return AppMenu(
+      title: context.s.homeWriteLanguageTitle,
+      items: [
+        for (final option in _options)
+          AppMenuItem(
+            leading: Text(option.language.toFlag(), style: context.t.titleLarge),
+            title: option.language.toLabel(context),
+            subtitle: option.role,
+            isSelected: option.language == _selected,
+            onTap: () => _onSelected(option.language),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class const _LanguageMenuRow({
-  required final _LanguageOption _option,
-  required final bool _isSelected,
-  required final VoidCallback _onTap,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: _isSelected ? context.c.surfaceContainerHighest : context.c.surfaceContainerHigh,
-      borderRadius: BorderRadius.circular(Spacing.radiusXl),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: _onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(Spacing.s),
-          child: Row(
-            children: [
-              Text(_option.language.toFlag(), style: context.t.titleLarge),
-              const SizedBox(width: Spacing.m),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(_option.language.toLabel(context), style: context.t.titleMedium),
-                    if (_option.role case final role?)
-                      Text(
-                        role,
-                        style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
-                      ),
-                  ],
-                ),
-              ),
-              if (_isSelected) Icon(Icons.check_rounded, color: context.c.primary),
-            ],
-          ),
-        ),
-      ),
+      ],
     );
   }
 }
