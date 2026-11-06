@@ -34,7 +34,7 @@
   "welcomeContinueWithoutAccountButton": "Weiter ohne Konto",
   "welcomeSignInFailedTitle": "Anmeldung fehlgeschlagen",
   "homeCollectionsTitle": "Sammlungen",
-  "homeAddFirstWordMessage": "Klicke auf den Button,\num dein erstes Wort hinzuzufügen!",
+  "homeAddFirstWordMessage": "Klicke auf den {plus}-Button,\num dein erstes Wort hinzuzufügen!",
   "homeLookAroundTitle": "Schau dich um!\nWas siehst du?",
   "homeAllWordsTitle": "Alle Wörter",
   "homeNewWordsTitle": "Neue Wörter",

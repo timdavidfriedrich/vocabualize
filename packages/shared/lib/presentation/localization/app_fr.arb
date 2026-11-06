@@ -34,7 +34,7 @@
   "welcomeContinueWithoutAccountButton": "Continuer sans compte",
   "welcomeSignInFailedTitle": "Échec de la connexion",
   "homeCollectionsTitle": "Collections",
-  "homeAddFirstWordMessage": "Cliquez sur le bouton\npour ajouter votre premier mot",
+  "homeAddFirstWordMessage": "Cliquez sur le bouton {plus}\npour ajouter votre premier mot",
   "homeLookAroundTitle": "Regardez autour de vous !\nQue voyez-vous ?",
   "homeAllWordsTitle": "Tous les mots",
   "homeNewWordsTitle": "Nouveaux mots",

@@ -34,7 +34,7 @@
   "welcomeContinueWithoutAccountButton": "Continuați fără cont",
   "welcomeSignInFailedTitle": "Conectarea a eșuat",
   "homeCollectionsTitle": "Colecții",
-  "homeAddFirstWordMessage": "Atingeți butonul\npentru a adăuga primul cuvânt",
+  "homeAddFirstWordMessage": "Atingeți butonul {plus}\npentru a adăuga primul cuvânt",
   "homeLookAroundTitle": "Uitați-vă în jur!\nCe vedeți?",
   "homeAllWordsTitle": "Toate cuvintele",
   "homeNewWordsTitle": "Cuvinte noi",

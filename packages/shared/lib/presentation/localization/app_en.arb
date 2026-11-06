@@ -41,7 +41,14 @@
   "welcomeContinueWithoutAccountButton": "Continue without account",
   "welcomeSignInFailedTitle": "Sign in failed",
   "homeCollectionsTitle": "Collections",
-  "homeAddFirstWordMessage": "Click the button\nto add your first word",
+  "homeAddFirstWordMessage": "Click the {plus} button\nto add your first word",
+  "@homeAddFirstWordMessage": {
+    "placeholders": {
+      "plus": {
+        "type": "String"
+      }
+    }
+  },
   "homeLookAroundTitle": "Look around!\nWhat do you see?",
   "homeAllWordsTitle": "All words",
   "homeNewWordsTitle": "New words",

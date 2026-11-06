@@ -37,6 +37,7 @@ import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.m);
 const _scrollEndSpacing = Spacing.xxxxl * 2;
 const _backdropWidthFactor = 0.71;
+const _plusSymbol = "+";
 const _searchingMascotAspectRatio = 0.756;
 const _mascotHeightFactor = 0.944;
 const _avatarRadius = Spacing.m;
@@ -512,16 +513,36 @@ class const _EmptyScreen() extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
-                context.s.homeAddFirstWordMessage,
-                style: context.t.bodyLarge,
-                textAlign: TextAlign.center,
-              ),
+              const _AddFirstWordHint(),
               const SizedBox(height: _scrollEndSpacing),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class const _AddFirstWordHint() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final message = context.s.homeAddFirstWordMessage(_plusSymbol);
+    final plusStart = message.indexOf(_plusSymbol);
+    return Text.rich(
+      plusStart < 0
+          ? TextSpan(text: message)
+          : TextSpan(
+              children: [
+                TextSpan(text: message.substring(0, plusStart)),
+                TextSpan(
+                  text: _plusSymbol,
+                  style: TextStyle(fontWeight: FontWeight.bold, color: context.c.primary),
+                ),
+                TextSpan(text: message.substring(plusStart + _plusSymbol.length)),
+              ],
+            ),
+      style: context.t.bodyLarge,
+      textAlign: TextAlign.center,
     );
   }
 }

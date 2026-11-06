@@ -116,7 +116,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homeCollectionsTitle => 'Колекції';
 
   @override
-  String get homeAddFirstWordMessage => 'Натисніть кнопку,\nщоб додати ваше перше слово';
+  String homeAddFirstWordMessage(String plus) {
+    return 'Натисніть кнопку $plus,\nщоб додати ваше перше слово';
+  }
 
   @override
   String get homeLookAroundTitle => 'Роззирніться навколо!\nЩо ви бачите?';

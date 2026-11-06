@@ -116,7 +116,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get homeCollectionsTitle => 'Συλλογές';
 
   @override
-  String get homeAddFirstWordMessage => 'Πατήστε το κουμπί\nγια να προσθέσετε την πρώτη σας λέξη';
+  String homeAddFirstWordMessage(String plus) {
+    return 'Πατήστε το κουμπί $plus\nγια να προσθέσετε την πρώτη σας λέξη';
+  }
 
   @override
   String get homeLookAroundTitle => 'Κοιτάξτε γύρω σας!\nΤι βλέπετε;';

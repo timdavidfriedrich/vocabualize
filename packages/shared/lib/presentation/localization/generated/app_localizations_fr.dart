@@ -116,7 +116,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeCollectionsTitle => 'Collections';
 
   @override
-  String get homeAddFirstWordMessage => 'Cliquez sur le bouton\npour ajouter votre premier mot';
+  String homeAddFirstWordMessage(String plus) {
+    return 'Cliquez sur le bouton $plus\npour ajouter votre premier mot';
+  }
 
   @override
   String get homeLookAroundTitle => 'Regardez autour de vous !\nQue voyez-vous ?';

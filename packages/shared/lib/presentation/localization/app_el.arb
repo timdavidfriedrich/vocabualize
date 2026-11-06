@@ -34,7 +34,7 @@
   "welcomeContinueWithoutAccountButton": "Συνέχεια χωρίς λογαριασμό",
   "welcomeSignInFailedTitle": "Η σύνδεση απέτυχε",
   "homeCollectionsTitle": "Συλλογές",
-  "homeAddFirstWordMessage": "Πατήστε το κουμπί\nγια να προσθέσετε την πρώτη σας λέξη",
+  "homeAddFirstWordMessage": "Πατήστε το κουμπί {plus}\nγια να προσθέσετε την πρώτη σας λέξη",
   "homeLookAroundTitle": "Κοιτάξτε γύρω σας!\nΤι βλέπετε;",
   "homeAllWordsTitle": "Όλες οι λέξεις",
   "homeNewWordsTitle": "Νέες λέξεις",

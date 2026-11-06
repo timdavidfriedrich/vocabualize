@@ -34,7 +34,7 @@
   "welcomeContinueWithoutAccountButton": "Продовжити без облікового запису",
   "welcomeSignInFailedTitle": "Не вдалося увійти",
   "homeCollectionsTitle": "Колекції",
-  "homeAddFirstWordMessage": "Натисніть кнопку,\nщоб додати ваше перше слово",
+  "homeAddFirstWordMessage": "Натисніть кнопку {plus},\nщоб додати ваше перше слово",
   "homeLookAroundTitle": "Роззирніться навколо!\nЩо ви бачите?",
   "homeAllWordsTitle": "Усі слова",
   "homeNewWordsTitle": "Нові слова",

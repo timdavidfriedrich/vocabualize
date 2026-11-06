@@ -315,8 +315,8 @@ abstract class AppLocalizations {
   /// No description provided for @homeAddFirstWordMessage.
   ///
   /// In en, this message translates to:
-  /// **'Click the button\nto add your first word'**
-  String get homeAddFirstWordMessage;
+  /// **'Click the {plus} button\nto add your first word'**
+  String homeAddFirstWordMessage(String plus);
 
   /// No description provided for @homeLookAroundTitle.
   ///

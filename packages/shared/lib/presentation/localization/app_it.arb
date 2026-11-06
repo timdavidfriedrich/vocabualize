@@ -34,7 +34,7 @@
   "welcomeContinueWithoutAccountButton": "Continua senza account",
   "welcomeSignInFailedTitle": "Accesso non riuscito",
   "homeCollectionsTitle": "Raccolte",
-  "homeAddFirstWordMessage": "Tocca il pulsante\nper aggiungere la tua prima parola",
+  "homeAddFirstWordMessage": "Tocca il pulsante {plus}\nper aggiungere la tua prima parola",
   "homeLookAroundTitle": "Guardati intorno!\nCosa vedi?",
   "homeAllWordsTitle": "Tutte le parole",
   "homeNewWordsTitle": "Parole nuove",
