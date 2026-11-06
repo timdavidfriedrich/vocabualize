@@ -44,8 +44,14 @@ class const TranslationFillRepositoryImpl(
   }
 
   List<_FillTask> _tasksOf(LanguageSetup setup) {
+    final active = [
+      for (final learned in setup.active)
+        if (learned.language == setup.selected) learned,
+      for (final learned in setup.active)
+        if (learned.language != setup.selected) learned,
+    ];
     return [
-      for (final learned in setup.active) (target: learned.language, scope: learned.language),
+      for (final learned in active) (target: learned.language, scope: learned.language),
       (target: setup.main, scope: null),
       for (final learned in setup.learned)
         if (learned.askMeIn case final askMeIn?

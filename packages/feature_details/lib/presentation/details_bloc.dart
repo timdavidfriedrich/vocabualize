@@ -545,10 +545,14 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     DetailsEditing editing, {
     required DetailsPendingLookup pending,
   }) async {
+    final missing = editing.missingLanguages.difference(editing.translatingLanguages);
+    final selected = editing.setup.selected;
     final targets = switch (pending) {
       DetailsPendingLookup.photos => const <Language>{},
-      DetailsPendingLookup.translationAndPhotos || DetailsPendingLookup.translations =>
-        editing.missingLanguages.difference(editing.translatingLanguages),
+      DetailsPendingLookup.translationAndPhotos || DetailsPendingLookup.translations => {
+        if (missing.contains(selected)) selected,
+        ...missing,
+      },
     };
     final wantsPhotos = pending != DetailsPendingLookup.translations;
     emit(
