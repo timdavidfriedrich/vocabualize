@@ -28,6 +28,7 @@ const _rulerTicks = 9;
 const _rulerTickHeight = Spacing.s;
 const _rulerCenterTickHeight = Spacing.l;
 const _shadowBlur = Spacing.xxs;
+const _slidePerDoubling = Spacing.xxxxl;
 
 class const CameraPreviewBox({
   super.key,
@@ -140,7 +141,10 @@ class const _LivePreview({
                         _ZoomIndicator(zoom: _camera.zoom),
                         const SizedBox(height: Spacing.xs),
                       ],
-                      _ZoomPresets(camera: _camera),
+                      _ZoomPresets(
+                        camera: _camera,
+                        onSliding: (isSliding) => isZooming.value = isSliding,
+                      ),
                     ],
                   ),
                 ),
@@ -282,32 +286,49 @@ class const _ZoomIndicator({
 
 class const _ZoomPresets({
   required final ScanCamera _camera,
-}) extends StatelessWidget {
+  required final ValueChanged<bool> _onSliding,
+}) extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final startZoom = useRef(_camera.zoom);
+    final slide = useRef(0.0);
     final presets = [
       for (final preset in _zoomPresets)
         if (preset >= _camera.minZoom - _zoomTolerance && preset <= _camera.maxZoom) preset,
     ];
     if (presets.length < 2) return const SizedBox.shrink();
-    return DecoratedBox(
-      decoration: ShapeDecoration(
-        color: context.overlay.scrim.withValues(alpha: _barOpacity),
-        shape: const StadiumBorder(),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(Spacing.xxxs),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          spacing: Spacing.xs,
-          children: [
-            for (final preset in presets)
-              _PresetButton(
-                preset: preset,
-                isSelected: (_camera.zoom - preset).abs() < _zoomTolerance,
-                onPressed: () => _camera.setZoom(preset),
-              ),
-          ],
+    void endSlide() => _onSliding(false);
+    return GestureDetector(
+      onHorizontalDragStart: (_) {
+        startZoom.value = _camera.zoom;
+        slide.value = 0;
+        _onSliding(true);
+      },
+      onHorizontalDragUpdate: (details) {
+        slide.value += details.delta.dx;
+        unawaited(_camera.setZoom(startZoom.value * pow(2, slide.value / _slidePerDoubling)));
+      },
+      onHorizontalDragEnd: (_) => endSlide(),
+      onHorizontalDragCancel: endSlide,
+      child: DecoratedBox(
+        decoration: ShapeDecoration(
+          color: context.overlay.scrim.withValues(alpha: _barOpacity),
+          shape: const StadiumBorder(),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(Spacing.xxxs),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: Spacing.xs,
+            children: [
+              for (final preset in presets)
+                _PresetButton(
+                  preset: preset,
+                  isSelected: (_camera.zoom - preset).abs() < _zoomTolerance,
+                  onPressed: () => _camera.setZoom(preset),
+                ),
+            ],
+          ),
         ),
       ),
     );
