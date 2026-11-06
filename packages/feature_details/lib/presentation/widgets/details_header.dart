@@ -14,6 +14,8 @@ import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/widgets/button_progress.dart';
 
 const _wordMaxLines = 2;
+const _maxFlags = 2;
+const _flagOverlap = Spacing.xxs;
 
 class const DetailsHeader({
   super.key,
@@ -130,9 +132,13 @@ class const _FlagChip({
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            [for (final language in _flags) language.toFlag()].join(),
-            style: context.t.titleSmall,
+            [for (final language in _flags.take(_maxFlags)) language.toFlag()].join(),
+            style: context.t.titleSmall?.copyWith(letterSpacing: -_flagOverlap),
           ),
+          if (_flags.length > _maxFlags) ...[
+            const SizedBox(width: Spacing.xxxs),
+            Icon(Icons.add_rounded, size: Spacing.iconS, color: context.c.onPrimaryContainer),
+          ],
           const SizedBox(width: Spacing.xxxs),
           Icon(
             _isOpen ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
