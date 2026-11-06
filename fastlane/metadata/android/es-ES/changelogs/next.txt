@@ -1,0 +1,6 @@
+Más del rediseño:
+• Detalles de la palabra: toca la palabra para ver sus idiomas, un nuevo cuadro de imagen y colecciones con emojis
+• Escanear: zoom, flash, enfoque al tocar, fotos de la galería y recorte antes de usarlas
+• Palabra nueva: elige el idioma en el mismo campo
+• Racha: una lista clara y tus últimas cuatro semanas
+• El botón de añadir del inicio ya no muestra una sombra por dentro

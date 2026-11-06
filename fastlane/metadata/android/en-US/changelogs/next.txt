@@ -1,0 +1,6 @@
+More of the redesign:
+• Word details: tap the word for its languages, a new picture box and collections with emojis
+• Scan: zoom, flash, tap to focus, photos from the gallery and cropping before you use one
+• New word: pick the language right in the field
+• Streak: one clear list and your last four weeks
+• The add button on Home no longer shows a shadow inside
