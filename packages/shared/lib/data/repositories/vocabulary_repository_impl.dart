@@ -393,6 +393,23 @@ class const VocabularyRepositoryImpl(
   }
 
   @override
+  Future<AppResult<Vocabulary>> saveTranslations({
+    required String vocabularyId,
+    required List<Translation> translations,
+  }) async {
+    final id = UuidValue.withValidation(vocabularyId);
+    try {
+      final saved = await _localDataSource.saveTranslations(id, [
+        for (final translation in translations) translation.toLocalTranslation(vocabularyId: id),
+      ]);
+      if (saved == null) return const Failure(NotFoundError());
+      return Success((await _toVocabularies([saved])).single);
+    } on Object catch (error) {
+      return Failure(error.toAppError());
+    }
+  }
+
+  @override
   Future<AppResult<()>> deleteVocabulary(String id) async {
     try {
       final deleted = await _localDataSource.deleteVocabulary(UuidValue.withValidation(id));

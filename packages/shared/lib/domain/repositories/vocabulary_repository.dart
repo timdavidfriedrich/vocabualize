@@ -104,5 +104,10 @@ abstract class VocabularyRepository {
     required Set<String> tagIds,
   });
 
+  Future<AppResult<Vocabulary>> saveTranslations({
+    required String vocabularyId,
+    required List<Translation> translations,
+  });
+
   Future<AppResult<()>> deleteVocabulary(String id);
 }

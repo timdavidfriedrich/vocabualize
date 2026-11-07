@@ -114,6 +114,11 @@ abstract class VocabularyLocalDataSource {
     required Set<UuidValue> tagIds,
   });
 
+  Future<LocalVocabulary?> saveTranslations(
+    UuidValue vocabularyId,
+    List<LocalTranslation> translations,
+  );
+
   Future<List<LocalVocabulary>> deleteVocabulary(UuidValue id);
 
   Future<List<LocalVocabulary>> findVocabulariesMissingTranslation({
@@ -588,30 +593,7 @@ class const VocabularyLocalDataSourceImpl(
           transaction: transaction,
         );
       }
-      final existingTranslations = {
-        for (final translation in await LocalTranslation.db.find(
-          session,
-          where: (t) => t.vocabularyId.equals(id),
-          transaction: transaction,
-        ))
-          translation.id: translation,
-      };
-      for (final translation in translations) {
-        switch (existingTranslations[translation.id]) {
-          case null:
-            await LocalTranslation.db.insertRow(session, translation, transaction: transaction);
-          case final existing
-              when existing.text != translation.text || existing.origin != translation.origin:
-            await LocalTranslation.db.updateRow(
-              session,
-              translation,
-              columns: (t) => [t.text, t.origin],
-              transaction: transaction,
-            );
-          case _:
-            break;
-        }
-      }
+      await _upsertTranslations(session, id, translations, transaction);
       final existingProgressIds = {
         for (final progress in await LocalProgress.db.find(
           session,
@@ -637,6 +619,20 @@ class const VocabularyLocalDataSourceImpl(
       await _replaceTagLinks(session, id, tagIds, transaction);
     });
     return _requireVocabulary(session, id);
+  }
+
+  @override
+  Future<LocalVocabulary?> saveTranslations(
+    UuidValue vocabularyId,
+    List<LocalTranslation> translations,
+  ) async {
+    final session = _sessions.requireWritableSession();
+    final exists = await LocalVocabulary.db.findById(session, vocabularyId) != null;
+    if (!exists) return null;
+    await session.db.transaction(
+      (transaction) => _upsertTranslations(session, vocabularyId, translations, transaction),
+    );
+    return _requireVocabulary(session, vocabularyId);
   }
 
   @override
@@ -808,6 +804,38 @@ class const VocabularyLocalDataSourceImpl(
     final vocabulary = await LocalVocabulary.db.findById(session, id, include: _withLanguages());
     if (vocabulary == null) throw StateError("The vocabulary $id is missing.");
     return vocabulary;
+  }
+
+  Future<void> _upsertTranslations(
+    DatabaseSession session,
+    UuidValue vocabularyId,
+    List<LocalTranslation> translations,
+    Transaction transaction,
+  ) async {
+    final existing = {
+      for (final translation in await LocalTranslation.db.find(
+        session,
+        where: (t) => t.vocabularyId.equals(vocabularyId),
+        transaction: transaction,
+      ))
+        translation.id: translation,
+    };
+    for (final translation in translations) {
+      switch (existing[translation.id]) {
+        case null:
+          await LocalTranslation.db.insertRow(session, translation, transaction: transaction);
+        case final stored
+            when stored.text != translation.text || stored.origin != translation.origin:
+          await LocalTranslation.db.updateRow(
+            session,
+            translation,
+            columns: (t) => [t.text, t.origin],
+            transaction: transaction,
+          );
+        case _:
+          break;
+      }
+    }
   }
 
   Future<void> _replaceTagLinks(
