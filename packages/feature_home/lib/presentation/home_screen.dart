@@ -491,6 +491,7 @@ class const _EmptyScreen() extends StatelessWidget {
         child: Padding(
           padding: _pagePadding,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: Spacing.xxl),
               Text(
