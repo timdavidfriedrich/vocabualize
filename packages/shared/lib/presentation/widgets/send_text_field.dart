@@ -41,7 +41,6 @@ class const SendTextField({
                 hintText: _hintText,
                 prefix: _prefix,
                 autofocus: _autofocus,
-                isRound: true,
                 isCorrectionDisabled: _isCorrectionDisabled,
                 textInputAction: TextInputAction.go,
                 onSubmitted: (_) => submit(),

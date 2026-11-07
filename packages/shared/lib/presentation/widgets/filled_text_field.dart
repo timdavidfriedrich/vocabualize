@@ -11,7 +11,6 @@ class const FilledTextField({
   final Widget? _suffix,
   final TextStyle? _style,
   final bool _autofocus = false,
-  final bool _isRound = false,
   final bool _isCorrectionDisabled = false,
   final TextInputAction? _textInputAction,
   final ValueChanged<String>? _onSubmitted,
@@ -22,7 +21,7 @@ class const FilledTextField({
   @override
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(_isRound ? Spacing.radiusFull : Spacing.radiusXl),
+      borderRadius: BorderRadius.circular(Spacing.radiusXl),
       borderSide: BorderSide.none,
     );
     return TextField(
