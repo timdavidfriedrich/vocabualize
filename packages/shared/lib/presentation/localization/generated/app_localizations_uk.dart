@@ -1462,6 +1462,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get practiceSolutionLabel => 'Правильна відповідь';
 
   @override
+  String get practiceSuggestedLabel => 'Рекомендовано';
+
+  @override
   String get practiceEditTitle => 'Редагувати слово';
 
   @override

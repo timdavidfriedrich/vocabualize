@@ -1405,6 +1405,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get practiceSolutionLabel => 'Λύση';
 
   @override
+  String get practiceSuggestedLabel => 'Προτείνεται';
+
+  @override
   String get practiceEditTitle => 'Επεξεργασία λέξης';
 
   @override

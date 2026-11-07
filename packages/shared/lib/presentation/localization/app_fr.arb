@@ -347,6 +347,7 @@
   "practiceIntroTitle": "Nouveau mot en {language}",
   "practiceAnswerTitle": "Votre réponse en {language}",
   "practiceSolutionLabel": "Solution",
+  "practiceSuggestedLabel": "Suggéré",
   "practiceEditTitle": "Modifier le mot",
   "practiceEditFullButton": "Modification complète",
   "practiceEditSaveButton": "Enregistrer",

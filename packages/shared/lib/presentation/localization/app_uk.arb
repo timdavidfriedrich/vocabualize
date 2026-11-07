@@ -347,6 +347,7 @@
   "practiceIntroTitle": "Нове слово: {language}",
   "practiceAnswerTitle": "Ваша відповідь мовою {language}",
   "practiceSolutionLabel": "Правильна відповідь",
+  "practiceSuggestedLabel": "Рекомендовано",
   "practiceEditTitle": "Редагувати слово",
   "practiceEditFullButton": "Повне редагування",
   "practiceEditSaveButton": "Зберегти",

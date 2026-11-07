@@ -1403,6 +1403,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get practiceSolutionLabel => 'Solución';
 
   @override
+  String get practiceSuggestedLabel => 'Sugerido';
+
+  @override
   String get practiceEditTitle => 'Editar palabra';
 
   @override

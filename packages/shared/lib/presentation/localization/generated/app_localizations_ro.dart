@@ -1433,6 +1433,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get practiceSolutionLabel => 'Soluție';
 
   @override
+  String get practiceSuggestedLabel => 'Sugerat';
+
+  @override
   String get practiceEditTitle => 'Editați cuvântul';
 
   @override

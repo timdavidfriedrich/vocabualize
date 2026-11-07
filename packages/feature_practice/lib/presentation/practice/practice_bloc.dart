@@ -4,7 +4,6 @@ import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:feature_practice/domain/use_cases/answer_vocabulary_use_case.dart';
 import 'package:feature_practice/domain/use_cases/introduce_vocabulary_use_case.dart';
-import 'package:feature_practice/presentation/extensions/practice_answer_extensions.dart';
 import 'package:feature_practice/presentation/extensions/typed_answer_extensions.dart';
 import 'package:feature_practice/presentation/practice/practice_event.dart';
 import 'package:feature_practice/presentation/practice/practice_state.dart';
@@ -172,7 +171,7 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
 
   Future<void> _onAnswered(PracticeAnswered event, Emitter<PracticeState> emit) async {
     final active = state;
-    if (active is! PracticeActive || active.isBusy || !active.grade.allows(event.answer)) return;
+    if (active is! PracticeActive || active.isBusy) return;
     await _step(
       emit,
       active,

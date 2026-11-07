@@ -2190,6 +2190,12 @@ abstract class AppLocalizations {
   /// **'Solution'**
   String get practiceSolutionLabel;
 
+  /// No description provided for @practiceSuggestedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested'**
+  String get practiceSuggestedLabel;
+
   /// No description provided for @practiceEditTitle.
   ///
   /// In en, this message translates to:

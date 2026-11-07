@@ -347,6 +347,7 @@
   "practiceIntroTitle": "Νέα λέξη στα {language}",
   "practiceAnswerTitle": "Η απάντησή σας στα {language}",
   "practiceSolutionLabel": "Λύση",
+  "practiceSuggestedLabel": "Προτείνεται",
   "practiceEditTitle": "Επεξεργασία λέξης",
   "practiceEditFullButton": "Πλήρης επεξεργασία",
   "practiceEditSaveButton": "Αποθήκευση",

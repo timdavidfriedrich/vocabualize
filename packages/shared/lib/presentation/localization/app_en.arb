@@ -954,6 +954,7 @@
     }
   },
   "practiceSolutionLabel": "Solution",
+  "practiceSuggestedLabel": "Suggested",
   "practiceEditTitle": "Edit word",
   "practiceEditFullButton": "Full editing",
   "practiceEditSaveButton": "Save",

@@ -1405,6 +1405,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get practiceSolutionLabel => 'Lösung';
 
   @override
+  String get practiceSuggestedLabel => 'Empfohlen';
+
+  @override
   String get practiceEditTitle => 'Wort bearbeiten';
 
   @override

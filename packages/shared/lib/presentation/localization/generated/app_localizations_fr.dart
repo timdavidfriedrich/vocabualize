@@ -1412,6 +1412,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get practiceSolutionLabel => 'Solution';
 
   @override
+  String get practiceSuggestedLabel => 'Suggéré';
+
+  @override
   String get practiceEditTitle => 'Modifier le mot';
 
   @override

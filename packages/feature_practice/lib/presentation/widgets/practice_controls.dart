@@ -99,36 +99,37 @@ class const _RatingControls({
         children: [
           AdaptiveActions.stretched(
             spacing: Spacing.s,
-            stackedSpacing: Spacing.xxs,
+            stackedSpacing: Spacing.s,
             children: [
               _RateButton(
                 controls: _controls,
                 answer: PracticeAnswer.hard,
-                color: context.levels.beginner,
                 label: context.s.practiceHardButton,
               ),
               _RateButton(
                 controls: _controls,
                 answer: PracticeAnswer.good,
-                color: context.levels.advanced,
                 label: context.s.practiceGoodButton,
               ),
               _RateButton(
                 controls: _controls,
                 answer: PracticeAnswer.easy,
-                color: context.levels.expert,
                 label: context.s.practiceEasyButton,
               ),
             ],
           ),
           const SizedBox(height: Spacing.m),
-          TonalButton(
-            onPressed: !_controls.isBusy && _controls.grade.allows(PracticeAnswer.forgot)
-                ? () => context.read<PracticeBloc>().add(
-                    const PracticeAnswered(answer: PracticeAnswer.forgot),
-                  )
-                : null,
-            child: Text(context.s.practiceForgotButton),
+          _Suggestion(
+            answer: PracticeAnswer.forgot,
+            isShown: _controls.grade.suggests(PracticeAnswer.forgot),
+            child: TonalButton(
+              onPressed: _controls.isBusy
+                  ? null
+                  : () => context.read<PracticeBloc>().add(
+                      const PracticeAnswered(answer: PracticeAnswer.forgot),
+                    ),
+              child: Text(context.s.practiceForgotButton),
+            ),
           ),
         ],
       ),
@@ -139,22 +140,70 @@ class const _RatingControls({
 class const _RateButton({
   required final _Controls _controls,
   required final PracticeAnswer _answer,
-  required final Color _color,
   required final String _label,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: _color,
-        padding: const EdgeInsets.symmetric(horizontal: Spacing.s),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Spacing.radiusL)),
+    final grade = _controls.grade;
+    final isTonal = grade != null && !grade.suggests(_answer);
+    return _Suggestion(
+      answer: _answer,
+      isShown: grade.suggests(_answer),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isTonal ? _answer.toTint(context) : _answer.toColor(context),
+          foregroundColor: isTonal ? _answer.toTintTextColor(context) : context.c.onPrimary,
+          padding: const EdgeInsets.symmetric(horizontal: Spacing.s),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Spacing.radiusL)),
+        ),
+        onPressed: _controls.isBusy
+            ? null
+            : () => context.read<PracticeBloc>().add(PracticeAnswered(answer: _answer)),
+        child: Text(_label),
       ),
-      onPressed: !_controls.isBusy && _controls.grade.allows(_answer)
-          ? () => context.read<PracticeBloc>().add(PracticeAnswered(answer: _answer))
-          : null,
-      child: Text(_label),
     );
+  }
+}
+
+class const _Suggestion({
+  required final PracticeAnswer _answer,
+  required final bool _isShown,
+  required final Widget _child,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return switch (_isShown) {
+      false => _child,
+      true => Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.passthrough,
+        children: [
+          _child,
+          Positioned(
+            top: -Spacing.xs,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: DecoratedBox(
+                decoration: ShapeDecoration(
+                  color: _answer.toTint(context),
+                  shape: const StadiumBorder(),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+                  child: Text(
+                    context.s.practiceSuggestedLabel,
+                    style: context.t.labelSmall?.copyWith(
+                      color: _answer.toTintTextColor(context),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    };
   }
 }
 
