@@ -9,15 +9,20 @@ const _height = Spacing.xxxl + Spacing.xs;
 class const SendTextField({
   super.key,
   required final ValueChanged<String> _onSubmitted,
+  final TextEditingController? _controller,
   final String? _hintText,
   final Widget? _prefix,
   final String? _initialText,
   final FocusNode? _focusNode,
   final bool _autofocus = false,
+  final bool _isCorrectionDisabled = false,
+  final GestureTapCallback? _onTap,
+  final TapRegionCallback? _onTapOutside,
 }) extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController(text: _initialText);
+    final ownController = useTextEditingController(text: _initialText);
+    final controller = _controller ?? ownController;
     final hasText = useListenableSelector(controller, () => controller.text.trim().isNotEmpty);
     void submit() {
       if (hasText) _onSubmitted(controller.text.trim());
@@ -36,8 +41,12 @@ class const SendTextField({
                 hintText: _hintText,
                 prefix: _prefix,
                 autofocus: _autofocus,
+                isRound: true,
+                isCorrectionDisabled: _isCorrectionDisabled,
                 textInputAction: TextInputAction.go,
                 onSubmitted: (_) => submit(),
+                onTap: _onTap,
+                onTapOutside: _onTapOutside,
               ),
             ),
           ),
@@ -50,9 +59,7 @@ class const SendTextField({
                 foregroundColor: context.c.onPrimary,
                 disabledBackgroundColor: context.c.surfaceContainerHighest,
                 disabledForegroundColor: context.c.outline,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Spacing.radiusXl),
-                ),
+                shape: const CircleBorder(),
               ),
               onPressed: hasText ? submit : null,
               tooltip: context.s.submit,
