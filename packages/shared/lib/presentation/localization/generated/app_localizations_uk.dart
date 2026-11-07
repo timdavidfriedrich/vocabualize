@@ -1449,9 +1449,26 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String practiceIntroBadge(String language) {
-    return 'Нове: $language';
+  String practiceIntroTitle(String language) {
+    return 'Нове слово: $language';
   }
+
+  @override
+  String practiceAnswerTitle(String language) {
+    return 'Ваша відповідь мовою $language';
+  }
+
+  @override
+  String get practiceSolutionLabel => 'Правильна відповідь';
+
+  @override
+  String get practiceEditTitle => 'Редагувати слово';
+
+  @override
+  String get practiceEditFullButton => 'Повне редагування';
+
+  @override
+  String get practiceEditSaveButton => 'Зберегти';
 
   @override
   String customPracticeWordsLabel(int count) {

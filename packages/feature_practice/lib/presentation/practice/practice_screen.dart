@@ -45,30 +45,40 @@ class const _ActiveScreen() extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Spacing.xxxl),
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(height: Spacing.xxl),
-                    PracticeProgressBar(),
-                    SizedBox(height: Spacing.m),
-                    PracticeCardView(),
-                    SizedBox(height: Spacing.m),
-                  ],
-                ),
-              ),
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: PracticeControls(),
-              ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: Spacing.xxl),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: Spacing.xxxl),
+              child: PracticeProgressBar(),
+            ),
+            SizedBox(height: Spacing.m),
+            Expanded(child: _Body()),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class const _Body() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: PracticeCardView()),
+              SizedBox(height: Spacing.xl),
+              PracticeControls(),
             ],
           ),
         ),
-      ),
+      ],
     );
   }
 }

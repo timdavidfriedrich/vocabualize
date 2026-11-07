@@ -25,6 +25,9 @@ extension NavigationExtension on BuildContext {
   Future<void> pushEditVocabularyDetails({required String vocabularyId}) =>
       appRouter.push(EditVocabularyDetails(vocabularyId: vocabularyId));
 
+  Future<void> pushEditVocabularyDetailsUntilClosed({required String vocabularyId}) =>
+      appRouter.pushForResult<Object>(EditVocabularyDetails(vocabularyId: vocabularyId));
+
   Future<void> pushSettings() => appRouter.push(const Settings());
 
   Future<void> pushFeedback() => appRouter.push(const FeedbackForm());

@@ -18,7 +18,11 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
+import 'package:shared/presentation/widgets/send_text_field.dart';
 import 'package:shared/presentation/widgets/tonal_button.dart';
+
+const _nonBreakingSpace = " ";
+const _buttonsPadding = EdgeInsets.fromLTRB(Spacing.xxxl, 0, Spacing.xxxl, Spacing.xl);
 
 typedef _Controls = ({
   PracticeItem item,
@@ -50,72 +54,84 @@ class const PracticeControls({
           item: item,
           isBusy: isBusy,
         ),
-        final controls => Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Spacer(),
-            if (controls.isSolutionShown) _RateButtons(controls: controls),
-            const SizedBox(height: Spacing.m),
-            BlocSelector<PreferencesCubit, Preferences, bool>(
-              selector: (preferences) => preferences.isTypeAnswerDisabled,
-              builder: (context, isTypeAnswerDisabled) => switch (controls) {
-                (isSolutionShown: false, :final item, isBusy: _, grade: _, isIntro: _)
-                    when !isTypeAnswerDisabled &&
-                        item.vocabulary.levelOf(item.language) != VocabularyLevel.novice =>
-                  _AnswerField(key: ValueKey((item.vocabulary.id, item.language)), item: item),
-                (isSolutionShown: false, item: _, isBusy: _, grade: _, isIntro: _) =>
-                  ElevatedButton(
-                    onPressed: () =>
-                        context.read<PracticeBloc>().add(const PracticeSolutionRequested()),
-                    child: Text(context.s.practiceSolutionButton),
-                  ),
-                (isSolutionShown: true, :final grade, :final isBusy, item: _, isIntro: _) =>
-                  TonalButton(
-                    onPressed: !isBusy && grade.allows(PracticeAnswer.forgot)
-                        ? () => context.read<PracticeBloc>().add(
-                            const PracticeAnswered(answer: PracticeAnswer.forgot),
-                          )
-                        : null,
-                    child: Text(context.s.practiceForgotButton),
-                  ),
-              },
-            ),
-            const SizedBox(height: Spacing.xxxxl),
-          ],
+        (isSolutionShown: true, isIntro: _, item: _, grade: _, isBusy: _) => _RatingControls(
+          controls: controls,
+        ),
+        (:final item, isIntro: _, isSolutionShown: _, grade: _, isBusy: _) => _QuestionControls(
+          item: item,
         ),
       },
     );
   }
 }
 
-class const _RateButtons({
+class const _QuestionControls({
+  required final PracticeItem _item,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<PreferencesCubit, Preferences, bool>(
+      selector: (preferences) => preferences.isTypeAnswerDisabled,
+      builder: (context, isTypeAnswerDisabled) => switch (!isTypeAnswerDisabled &&
+          _item.vocabulary.levelOf(_item.language) != VocabularyLevel.novice) {
+        true => _AnswerBox(key: ValueKey((_item.vocabulary.id, _item.language)), item: _item),
+        false => Padding(
+          padding: _buttonsPadding,
+          child: ElevatedButton(
+            onPressed: () => context.read<PracticeBloc>().add(const PracticeSolutionRequested()),
+            child: Text(context.s.practiceSolutionButton),
+          ),
+        ),
+      },
+    );
+  }
+}
+
+class const _RatingControls({
   required final _Controls _controls,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AdaptiveActions.stretched(
-      spacing: Spacing.s,
-      stackedSpacing: Spacing.xxs,
-      children: [
-        _RateButton(
-          controls: _controls,
-          answer: PracticeAnswer.hard,
-          color: context.levels.beginner,
-          label: context.s.practiceHardButton,
-        ),
-        _RateButton(
-          controls: _controls,
-          answer: PracticeAnswer.good,
-          color: context.levels.advanced,
-          label: context.s.practiceGoodButton,
-        ),
-        _RateButton(
-          controls: _controls,
-          answer: PracticeAnswer.easy,
-          color: context.levels.expert,
-          label: context.s.practiceEasyButton,
-        ),
-      ],
+    return Padding(
+      padding: _buttonsPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AdaptiveActions.stretched(
+            spacing: Spacing.s,
+            stackedSpacing: Spacing.xxs,
+            children: [
+              _RateButton(
+                controls: _controls,
+                answer: PracticeAnswer.hard,
+                color: context.levels.beginner,
+                label: context.s.practiceHardButton,
+              ),
+              _RateButton(
+                controls: _controls,
+                answer: PracticeAnswer.good,
+                color: context.levels.advanced,
+                label: context.s.practiceGoodButton,
+              ),
+              _RateButton(
+                controls: _controls,
+                answer: PracticeAnswer.easy,
+                color: context.levels.expert,
+                label: context.s.practiceEasyButton,
+              ),
+            ],
+          ),
+          const SizedBox(height: Spacing.m),
+          TonalButton(
+            onPressed: !_controls.isBusy && _controls.grade.allows(PracticeAnswer.forgot)
+                ? () => context.read<PracticeBloc>().add(
+                    const PracticeAnswered(answer: PracticeAnswer.forgot),
+                  )
+                : null,
+            child: Text(context.s.practiceForgotButton),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -130,8 +146,9 @@ class const _RateButton({
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: Spacing.s),
         backgroundColor: _color,
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.s),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Spacing.radiusL)),
       ),
       onPressed: !_controls.isBusy && _controls.grade.allows(_answer)
           ? () => context.read<PracticeBloc>().add(PracticeAnswered(answer: _answer))
@@ -141,39 +158,53 @@ class const _RateButton({
   }
 }
 
-class const _AnswerField({
+class const _AnswerBox({
   super.key,
   required final PracticeItem _item,
 }) extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = useTextEditingController();
-    final hasText = useListenableSelector(controller, () => controller.text.isNotEmpty);
-    void submit() {
-      if (controller.text.isEmpty) return;
-      context.read<PracticeBloc>().add(PracticeAnswerTyped(text: controller.text));
-    }
-
-    return TextField(
-      controller: controller,
-      onTap: () {
-        if (controller.text.isNotEmpty) return;
-        final article = _item.vocabulary
-            .textIn(_item.language)
-            ?.leadingArticle(_item.language.articles);
-        if (article != null) controller.text = article;
-      },
-      onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-      onSubmitted: (_) => submit(),
-      autocorrect: false,
-      enableSuggestions: false,
-      decoration: InputDecoration(
-        label: Text(context.s.practiceAnswerLabel),
-        floatingLabelBehavior: FloatingLabelBehavior.auto,
-        suffixIcon: hasText
-            ? IconButton(onPressed: submit, icon: const Icon(Icons.done_rounded))
-            : null,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(Spacing.radiusS)),
+    final language = _item.language;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(Spacing.m, 0, Spacing.m, Spacing.m),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.c.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(Spacing.radiusXxxl),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(Spacing.m, Spacing.l, Spacing.m, Spacing.m),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+                child: Text(
+                  context.s.practiceAnswerTitle(
+                    "${language.toFlag()}$_nonBreakingSpace${language.toShortLabel(context)}",
+                  ),
+                  style: context.t.titleLarge,
+                ),
+              ),
+              const SizedBox(height: Spacing.m),
+              SendTextField(
+                controller: controller,
+                isCorrectionDisabled: true,
+                onTap: () {
+                  if (controller.text.isNotEmpty) return;
+                  final article = _item.vocabulary
+                      .textIn(language)
+                      ?.leadingArticle(language.articles);
+                  if (article != null) controller.text = article;
+                },
+                onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+                onSubmitted: (text) =>
+                    context.read<PracticeBloc>().add(PracticeAnswerTyped(text: text)),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -186,21 +217,22 @@ class const _IntroControls({
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<PracticeBloc>();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Spacer(),
-        ElevatedButton(
-          onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroConfirmed()),
-          child: Text(context.s.practiceIntroGotItButton),
-        ),
-        const SizedBox(height: Spacing.s),
-        TonalButton(
-          onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroSkipped()),
-          child: Text(context.s.practiceIntroSkipButton(_item.language.toShortLabel(context))),
-        ),
-        const SizedBox(height: Spacing.xxxxl),
-      ],
+    return Padding(
+      padding: _buttonsPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ElevatedButton(
+            onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroConfirmed()),
+            child: Text(context.s.practiceIntroGotItButton),
+          ),
+          const SizedBox(height: Spacing.s),
+          TonalButton(
+            onPressed: _isBusy ? null : () => bloc.add(const PracticeIntroSkipped()),
+            child: Text(context.s.practiceIntroSkipButton(_item.language.toShortLabel(context))),
+          ),
+        ],
+      ),
     );
   }
 }

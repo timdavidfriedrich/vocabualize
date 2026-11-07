@@ -1127,7 +1127,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String practiceShowMainButton(String language) {
-    return 'Show $language';
+    return 'Show in $language';
   }
 
   @override
@@ -1371,13 +1371,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String practiceQuestionTitle(String language) {
-    return 'What is this word in $language?';
+    return 'How do you say this word in $language?';
   }
 
   @override
-  String practiceIntroBadge(String language) {
-    return 'New in $language';
+  String practiceIntroTitle(String language) {
+    return 'New word in $language';
   }
+
+  @override
+  String practiceAnswerTitle(String language) {
+    return 'Your answer in $language';
+  }
+
+  @override
+  String get practiceSolutionLabel => 'Solution';
+
+  @override
+  String get practiceEditTitle => 'Edit word';
+
+  @override
+  String get practiceEditFullButton => 'Full editing';
+
+  @override
+  String get practiceEditSaveButton => 'Save';
 
   @override
   String customPracticeWordsLabel(int count) {

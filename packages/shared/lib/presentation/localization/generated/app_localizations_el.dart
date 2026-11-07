@@ -1392,9 +1392,26 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String practiceIntroBadge(String language) {
-    return 'Νέα στα $language';
+  String practiceIntroTitle(String language) {
+    return 'Νέα λέξη στα $language';
   }
+
+  @override
+  String practiceAnswerTitle(String language) {
+    return 'Η απάντησή σας στα $language';
+  }
+
+  @override
+  String get practiceSolutionLabel => 'Λύση';
+
+  @override
+  String get practiceEditTitle => 'Επεξεργασία λέξης';
+
+  @override
+  String get practiceEditFullButton => 'Πλήρης επεξεργασία';
+
+  @override
+  String get practiceEditSaveButton => 'Αποθήκευση';
 
   @override
   String customPracticeWordsLabel(int count) {

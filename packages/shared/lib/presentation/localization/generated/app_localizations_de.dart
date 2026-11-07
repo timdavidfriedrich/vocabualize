@@ -198,7 +198,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get practiceSolutionButton => 'Lösung';
 
   @override
-  String get practiceAnswerLabel => 'Lösung eingeben';
+  String get practiceAnswerLabel => 'Deine Antwort';
 
   @override
   String get scanAddButton => 'Okay';
@@ -1392,9 +1392,26 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String practiceIntroBadge(String language) {
-    return 'Neu auf $language';
+  String practiceIntroTitle(String language) {
+    return 'Neues Wort auf $language';
   }
+
+  @override
+  String practiceAnswerTitle(String language) {
+    return 'Deine Antwort auf $language';
+  }
+
+  @override
+  String get practiceSolutionLabel => 'Lösung';
+
+  @override
+  String get practiceEditTitle => 'Wort bearbeiten';
+
+  @override
+  String get practiceEditFullButton => 'Alles bearbeiten';
+
+  @override
+  String get practiceEditSaveButton => 'Speichern';
 
   @override
   String customPracticeWordsLabel(int count) {

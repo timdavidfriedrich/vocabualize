@@ -1,3 +1,4 @@
+import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
 
 sealed class PracticeEvent {
@@ -27,3 +28,14 @@ class const PracticeIntroConfirmed() extends PracticeEvent;
 class const PracticeIntroSkipped() extends PracticeEvent;
 
 class const PracticePromptRevealed() extends PracticeEvent;
+
+class const PracticeTextSpeakRequested({
+  required final String text,
+  required final Language language,
+}) extends PracticeEvent;
+
+class const PracticeTextsSaved({
+  required final Map<Language, String> texts,
+}) extends PracticeEvent;
+
+class const PracticeDetailsClosed() extends PracticeEvent;

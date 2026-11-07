@@ -1399,9 +1399,26 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String practiceIntroBadge(String language) {
-    return 'Nouveau en $language';
+  String practiceIntroTitle(String language) {
+    return 'Nouveau mot en $language';
   }
+
+  @override
+  String practiceAnswerTitle(String language) {
+    return 'Votre réponse en $language';
+  }
+
+  @override
+  String get practiceSolutionLabel => 'Solution';
+
+  @override
+  String get practiceEditTitle => 'Modifier le mot';
+
+  @override
+  String get practiceEditFullButton => 'Modification complète';
+
+  @override
+  String get practiceEditSaveButton => 'Enregistrer';
 
   @override
   String customPracticeWordsLabel(int count) {

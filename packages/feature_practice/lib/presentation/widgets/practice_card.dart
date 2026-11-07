@@ -1,7 +1,13 @@
 import 'package:core/theme/spacing.dart';
+import 'package:feature_practice/presentation/extensions/practice_answer_extensions.dart';
 import 'package:feature_practice/presentation/practice/practice_bloc.dart';
 import 'package:feature_practice/presentation/practice/practice_event.dart';
 import 'package:feature_practice/presentation/practice/practice_state.dart';
+import 'package:feature_practice/presentation/widgets/answer_tiles.dart';
+import 'package:feature_practice/presentation/widgets/intro_card.dart';
+import 'package:feature_practice/presentation/widgets/photo_actions.dart';
+import 'package:feature_practice/presentation/widgets/practice_text_row.dart';
+import 'package:feature_practice/presentation/widgets/shrinkable_box.dart';
 import 'package:feature_practice/presentation/widgets/solution_diff_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +22,10 @@ import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _solutionOpacity = 0.75;
-const _introOverlayOpacity = 0.8;
-const _solutionMaxLines = 7;
-const _promptMaxLines = 4;
-const _speakButtonSize = Spacing.xxxl;
-const _nonBreakingSpace = "\u00A0";
+const _photoMinimumHeight = Spacing.xxxxl * 2;
+const _solutionMaxLines = 5;
+const _solutionInset = Spacing.xxxl + Spacing.xs + Spacing.s;
+const _nonBreakingSpace = " ";
 
 typedef _CardView = ({
   PracticeCard card,
@@ -54,44 +59,28 @@ class const PracticeCardView({
         null => const SizedBox.shrink(),
         final view => BlocSelector<PreferencesCubit, Preferences, bool>(
           selector: (preferences) => preferences.areImagesHidden,
-          builder: (context, areImagesHidden) => _CardContent(
-            view: view,
-            areImagesHidden: areImagesHidden,
-          ),
+          builder: (context, areImagesHidden) => switch (view.card.isIntro) {
+            true => IntroCard(card: view.card, main: view.main, areImagesHidden: areImagesHidden),
+            false => _QuestionCard(view: view, areImagesHidden: areImagesHidden),
+          },
         ),
       },
     );
   }
 }
 
-class const _CardContent({
+class const _QuestionCard({
   required final _CardView _view,
   required final bool _areImagesHidden,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final card = _view.card;
-    final item = card.item;
-    final target = item.language;
-    final vocabulary = item.vocabulary;
-    final solution = vocabulary.textIn(target) ?? "";
-    final mainText = card.prompt == _view.main ? null : vocabulary.textIn(_view.main);
-    final overlay = switch ((card.isIntro, _view.isSolutionShown)) {
-      (true, _) => _IntroOverlay(language: target, text: solution),
-      (false, true) => _Solution(
-        solution: solution,
-        typedAnswer: _view.typedAnswer,
-        grade: _view.grade,
-        isStrictCorrection: _view.isStrictCorrection,
-      ),
-      (false, false) => null,
-    };
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (card.isIntro)
-          const SizedBox(height: Spacing.xxxxl)
-        else ...[
+    final target = _view.card.item.language;
+    final solution = _view.card.item.vocabulary.textIn(target) ?? "";
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.xxxl),
+      child: Column(
+        children: [
           Text(
             context.s.practiceQuestionTitle(
               "${target.toFlag()}$_nonBreakingSpace${target.toShortLabel(context)}",
@@ -100,152 +89,66 @@ class const _CardContent({
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Spacing.l),
-        ],
-        if (!_areImagesHidden)
-          AspectRatio(
-            aspectRatio: 1,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(Spacing.radiusXxl),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  VocabularyImageView(
-                    image: vocabulary.image,
-                    variant: VocabularyImageVariant.full,
-                    displayWidth: MediaQuery.sizeOf(context).width,
+          if (!_areImagesHidden || _view.isSolutionShown) ...[
+            Flexible(
+              child: ShrinkableBox(
+                minimumHeight: _photoMinimumHeight,
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: _Photo(
+                    view: _view,
+                    solution: solution,
+                    areImagesHidden: _areImagesHidden,
                   ),
-                  ?overlay,
-                ],
-              ),
-            ),
-          )
-        else if (overlay != null)
-          AspectRatio(
-            aspectRatio: 1,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(Spacing.radiusXxl),
-              child: ColoredBox(color: context.c.surfaceContainerLow, child: overlay),
-            ),
-          ),
-        const SizedBox(height: Spacing.xxl),
-        _FlaggedText(
-          language: mainText == null ? null : card.prompt,
-          text: vocabulary.textIn(card.prompt) ?? "",
-          style: context.t.bodyLarge,
-        ),
-        if (mainText != null) ...[
-          const SizedBox(height: Spacing.s),
-          if (_view.isPromptRevealed || _view.isSolutionShown)
-            _FlaggedText(
-              language: _view.main,
-              text: mainText,
-              style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
-            )
-          else
-            Center(
-              child: TextButton.icon(
-                style: TextButton.styleFrom(foregroundColor: context.c.onSurfaceVariant),
-                onPressed: () => context.read<PracticeBloc>().add(const PracticePromptRevealed()),
-                icon: const Icon(Icons.visibility_outlined, size: Spacing.iconS),
-                label: Text(
-                  context.s.practiceShowMainButton(_view.main.toShortLabel(context)),
-                  style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
                 ),
               ),
             ),
+            const SizedBox(height: Spacing.xl),
+          ],
+          _PromptRows(view: _view),
+          if ((_view.isSolutionShown, _view.typedAnswer) case (true, final typedAnswer?)) ...[
+            const SizedBox(height: Spacing.xl),
+            AnswerTiles(answer: typedAnswer, solution: solution, grade: _view.grade),
+          ],
         ],
-      ],
+      ),
     );
   }
 }
 
-class const _FlaggedText({
-  required final Language? _language,
-  required final String _text,
-  required final TextStyle? _style,
+class const _Photo({
+  required final _CardView _view,
+  required final String _solution,
+  required final bool _areImagesHidden,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (_language case final language?) ...[
-          Text(language.toFlag(), style: _style),
-          const SizedBox(width: Spacing.s),
-        ],
-        Flexible(
-          child: Text(
-            _text,
-            style: _style,
-            maxLines: _promptMaxLines,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class const _IntroOverlay({
-  required final Language _language,
-  required final String _text,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final background = context.c.surface.withValues(alpha: _introOverlayOpacity);
-    return Padding(
-      padding: const EdgeInsets.all(Spacing.s),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(Spacing.radiusXxl),
+      child: Stack(
+        fit: StackFit.expand,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: Spacing.s, vertical: Spacing.xxs),
-            decoration: BoxDecoration(
-              color: background,
-              borderRadius: BorderRadius.circular(Spacing.radiusM),
+          if (_areImagesHidden)
+            ColoredBox(color: context.c.surfaceContainerLow)
+          else
+            VocabularyImageView(
+              image: _view.card.item.vocabulary.image,
+              variant: VocabularyImageVariant.full,
+              displayWidth: MediaQuery.sizeOf(context).width,
             ),
-            child: Text(
-              context.s.practiceIntroBadge(
-                "${_language.toFlag()}$_nonBreakingSpace${_language.toShortLabel(context)}",
-              ),
-              style: context.t.labelLarge,
+          if (_view.isSolutionShown) ...[
+            _Solution(
+              solution: _solution,
+              typedAnswer: _view.typedAnswer,
+              grade: _view.grade,
+              isStrictCorrection: _view.isStrictCorrection,
             ),
-          ),
-          const Spacer(),
-          Container(
-            padding: const EdgeInsets.fromLTRB(Spacing.l, Spacing.s, Spacing.s, Spacing.s),
-            decoration: BoxDecoration(
-              color: background,
-              borderRadius: BorderRadius.circular(Spacing.radiusXl),
+            Positioned(
+              right: Spacing.s,
+              bottom: Spacing.s,
+              child: PhotoActions(card: _view.card, main: _view.main),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    _text,
-                    style: context.t.headlineSmall,
-                    maxLines: _promptMaxLines,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                const SizedBox(width: Spacing.s),
-                SizedBox.square(
-                  dimension: _speakButtonSize,
-                  child: IconButton.filled(
-                    style: IconButton.styleFrom(
-                      backgroundColor: context.c.primaryContainer,
-                      foregroundColor: context.c.onPrimaryContainer,
-                    ),
-                    onPressed: () =>
-                        context.read<PracticeBloc>().add(const PracticeSpeakRequested()),
-                    tooltip: context.s.vocabularySpeakTooltip,
-                    icon: const Icon(Icons.volume_up_rounded),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          ],
         ],
       ),
     );
@@ -260,42 +163,73 @@ class const _Solution({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final background = context.c.surfaceContainerLow;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: context.c.surfaceContainerLow.withValues(alpha: _solutionOpacity),
+        color: background.withValues(alpha: _solutionOpacity),
         border: Border.all(
-          color: switch (_grade) {
-            PracticeAnswer.forgot => context.levels.novice,
-            PracticeAnswer.hard => context.levels.beginner,
-            PracticeAnswer.good => context.levels.advanced,
-            PracticeAnswer.easy => context.levels.expert,
-            null => context.c.surfaceContainerLow.withValues(alpha: 0),
-          },
+          color: _grade.toGradeColor(context) ?? background.withValues(alpha: 0),
           width: Spacing.borderWidthHeavy,
         ),
         borderRadius: BorderRadius.circular(Spacing.radiusXxl),
       ),
-      child: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: SolutionDiffText(
-                givenAnswer: _typedAnswer ?? _solution,
-                solution: _solution,
-                isStrict: _isStrictCorrection,
-                maxLines: _solutionMaxLines,
-              ),
-            ),
-            const SizedBox(width: Spacing.xs),
-            IconButton(
-              onPressed: () => context.read<PracticeBloc>().add(const PracticeSpeakRequested()),
-              tooltip: context.s.vocabularySpeakTooltip,
-              icon: const Icon(Icons.volume_up_rounded, size: Spacing.iconXl),
-            ),
-          ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.m, vertical: _solutionInset),
+        child: Center(
+          child: SolutionDiffText(
+            givenAnswer: _typedAnswer ?? _solution,
+            solution: _solution,
+            isStrict: _isStrictCorrection,
+            maxLines: _solutionMaxLines,
+          ),
         ),
       ),
+    );
+  }
+}
+
+class const _PromptRows({
+  required final _CardView _view,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final card = _view.card;
+    final vocabulary = card.item.vocabulary;
+    final mainText = card.prompt == _view.main ? null : vocabulary.textIn(_view.main);
+    final style = context.t.bodyLarge;
+    final secondaryStyle = style?.copyWith(color: context.c.onSurfaceVariant);
+    return Column(
+      children: [
+        PracticeTextRow(
+          leading: mainText == null ? null : Text(card.prompt.toFlag(), style: style),
+          text: vocabulary.textIn(card.prompt) ?? "",
+          style: style,
+        ),
+        if (mainText != null) ...[
+          const SizedBox(height: Spacing.xs),
+          SizedBox(
+            height: Spacing.xxxl,
+            child: Center(
+              child: switch (_view.isPromptRevealed || _view.isSolutionShown) {
+                true => PracticeTextRow(
+                  leading: Text(_view.main.toFlag(), style: style),
+                  text: mainText,
+                  style: secondaryStyle,
+                ),
+                false => TextButton(
+                  style: TextButton.styleFrom(foregroundColor: context.c.onSurfaceVariant),
+                  onPressed: () => context.read<PracticeBloc>().add(const PracticePromptRevealed()),
+                  child: PracticeTextRow(
+                    leading: const Icon(Icons.visibility_outlined),
+                    text: context.s.practiceShowMainButton(_view.main.toShortLabel(context)),
+                    style: secondaryStyle,
+                  ),
+                ),
+              },
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

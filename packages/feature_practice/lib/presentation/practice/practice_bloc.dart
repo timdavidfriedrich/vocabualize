@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:feature_practice/domain/use_cases/answer_vocabulary_use_case.dart';
 import 'package:feature_practice/domain/use_cases/introduce_vocabulary_use_case.dart';
@@ -15,6 +16,7 @@ import 'package:shared/domain/entities/practice_card.dart';
 import 'package:shared/domain/entities/practice_item.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/progress.dart';
+import 'package:shared/domain/entities/translation.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/repositories/custom_practice_repository.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
@@ -44,6 +46,9 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
     on<PracticeIntroConfirmed>(_onIntroConfirmed);
     on<PracticeIntroSkipped>(_onIntroSkipped);
     on<PracticePromptRevealed>(_onPromptRevealed);
+    on<PracticeTextSpeakRequested>(_onTextSpeakRequested);
+    on<PracticeTextsSaved>(_onTextsSaved);
+    on<PracticeDetailsClosed>(_onDetailsClosed);
   }
 
   final VocabularyRepository _vocabularyRepository;
@@ -202,12 +207,102 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
   Future<void> _onSpeakRequested(PracticeSpeakRequested event, Emitter<PracticeState> emit) async {
     if (state case final PracticeActive active) {
       final item = active.current.item;
-      final text = item.vocabulary.textIn(item.language);
-      if (text == null) return;
-      final result = await _textToSpeechRepository.speak(text: text, language: item.language);
-      if (result case Failure(:final error)) {
-        if (state case final PracticeActive latest) emit(latest.copyWith(error: error));
+      if (item.vocabulary.textIn(item.language) case final text?) {
+        await _speak(emit, text: text, language: item.language);
       }
+    }
+  }
+
+  Future<void> _onTextSpeakRequested(
+    PracticeTextSpeakRequested event,
+    Emitter<PracticeState> emit,
+  ) async {
+    if (event.text.trim().isEmpty) return;
+    await _speak(emit, text: event.text.trim(), language: event.language);
+  }
+
+  Future<void> _onTextsSaved(PracticeTextsSaved event, Emitter<PracticeState> emit) async {
+    final active = state;
+    if (active is! PracticeActive || active.isBusy || event.texts.isEmpty) return;
+    final vocabulary = active.current.item.vocabulary;
+    final translations = [
+      for (final MapEntry(key: language, value: text) in event.texts.entries)
+        Translation(
+          language: language,
+          text: text,
+          origin: switch (vocabulary.translations[language]?.origin) {
+            TranslationOrigin.entered => TranslationOrigin.entered,
+            _ => TranslationOrigin.edited,
+          },
+        ),
+    ];
+    emit(active.copyWith(isBusy: true, error: null));
+    final result = await _vocabularyRepository.saveTranslations(
+      vocabularyId: vocabulary.id,
+      translations: translations,
+    );
+    if (state case final PracticeActive latest) {
+      emit(switch (result) {
+        Success(data: final saved) => _withVocabulary(latest.copyWith(isBusy: false), saved),
+        Failure(:final error) => latest.copyWith(isBusy: false, error: error),
+      });
+    }
+  }
+
+  Future<void> _onDetailsClosed(PracticeDetailsClosed event, Emitter<PracticeState> emit) async {
+    if (state case final PracticeActive active when !active.isBusy) {
+      final item = active.current.item;
+      final result = await _vocabularyRepository.findVocabulary(item.vocabulary.id);
+      if (state case final PracticeActive latest
+          when latest.current.item.vocabulary.id == item.vocabulary.id) {
+        switch (result) {
+          case Success(data: final vocabulary)
+              when vocabulary.progress.containsKey(item.language) &&
+                  vocabulary.textIn(item.language) != null &&
+                  latest.setup.promptFor(vocabulary, item.language) != null:
+            emit(_withVocabulary(latest, vocabulary));
+          case Success() || Failure(error: NotFoundError()):
+            emit(await _advanced(latest));
+          case Failure(:final error):
+            emit(latest.copyWith(error: error));
+        }
+      }
+    }
+  }
+
+  PracticeActive _withVocabulary(PracticeActive active, Vocabulary vocabulary) {
+    List<PracticeCard> updated(List<PracticeCard> cards) => [
+      for (final card in cards)
+        if (card.item.vocabulary.id == vocabulary.id)
+          card.copyWith(
+            item: card.item.copyWith(vocabulary: vocabulary),
+            prompt: active.setup.promptFor(vocabulary, card.item.language) ?? card.prompt,
+          )
+        else
+          card,
+    ];
+    final next = active.copyWith(queue: updated(active.queue), newCards: updated(active.newCards));
+    final item = next.current.item;
+    return next.copyWith(
+      grade: switch (next.typedAnswer) {
+        final typed? => typed.gradeAgainst(
+          item.vocabulary.textIn(item.language) ?? "",
+          articles: item.language.articles,
+          isStrict: next.isStrictCorrection,
+        ),
+        null => next.grade,
+      },
+    );
+  }
+
+  Future<void> _speak(
+    Emitter<PracticeState> emit, {
+    required String text,
+    required Language language,
+  }) async {
+    final result = await _textToSpeechRepository.speak(text: text, language: language);
+    if (result case Failure(:final error)) {
+      if (state case final PracticeActive latest) emit(latest.copyWith(error: error));
     }
   }
 

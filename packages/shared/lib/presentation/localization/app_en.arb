@@ -642,7 +642,7 @@
     }
   },
   "practiceIntroGotItButton": "Got it",
-  "practiceShowMainButton": "Show {language}",
+  "practiceShowMainButton": "Show in {language}",
   "@practiceShowMainButton": {
     "placeholders": {
       "language": {
@@ -929,7 +929,7 @@
       }
     }
   },
-  "practiceQuestionTitle": "What is this word in {language}?",
+  "practiceQuestionTitle": "How do you say this word in {language}?",
   "@practiceQuestionTitle": {
     "placeholders": {
       "language": {
@@ -937,14 +937,26 @@
       }
     }
   },
-  "practiceIntroBadge": "New in {language}",
-  "@practiceIntroBadge": {
+  "practiceIntroTitle": "New word in {language}",
+  "@practiceIntroTitle": {
     "placeholders": {
       "language": {
         "type": "String"
       }
     }
   },
+  "practiceAnswerTitle": "Your answer in {language}",
+  "@practiceAnswerTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceSolutionLabel": "Solution",
+  "practiceEditTitle": "Edit word",
+  "practiceEditFullButton": "Full editing",
+  "practiceEditSaveButton": "Save",
   "customPracticeWordsLabel": "{count, plural, =1{word} other{words}}",
   "@customPracticeWordsLabel": {
     "placeholders": {

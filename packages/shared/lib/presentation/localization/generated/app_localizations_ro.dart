@@ -1420,9 +1420,26 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String practiceIntroBadge(String language) {
-    return 'Nou în $language';
+  String practiceIntroTitle(String language) {
+    return 'Cuvânt nou în $language';
   }
+
+  @override
+  String practiceAnswerTitle(String language) {
+    return 'Răspunsul dvs. în $language';
+  }
+
+  @override
+  String get practiceSolutionLabel => 'Soluție';
+
+  @override
+  String get practiceEditTitle => 'Editați cuvântul';
+
+  @override
+  String get practiceEditFullButton => 'Editare completă';
+
+  @override
+  String get practiceEditSaveButton => 'Salvați';
 
   @override
   String customPracticeWordsLabel(int count) {

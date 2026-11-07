@@ -1875,7 +1875,7 @@ abstract class AppLocalizations {
   /// No description provided for @practiceShowMainButton.
   ///
   /// In en, this message translates to:
-  /// **'Show {language}'**
+  /// **'Show in {language}'**
   String practiceShowMainButton(String language);
 
   /// No description provided for @collectionEmptyLanguageMessage.
@@ -2169,14 +2169,44 @@ abstract class AppLocalizations {
   /// No description provided for @practiceQuestionTitle.
   ///
   /// In en, this message translates to:
-  /// **'What is this word in {language}?'**
+  /// **'How do you say this word in {language}?'**
   String practiceQuestionTitle(String language);
 
-  /// No description provided for @practiceIntroBadge.
+  /// No description provided for @practiceIntroTitle.
   ///
   /// In en, this message translates to:
-  /// **'New in {language}'**
-  String practiceIntroBadge(String language);
+  /// **'New word in {language}'**
+  String practiceIntroTitle(String language);
+
+  /// No description provided for @practiceAnswerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer in {language}'**
+  String practiceAnswerTitle(String language);
+
+  /// No description provided for @practiceSolutionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Solution'**
+  String get practiceSolutionLabel;
+
+  /// No description provided for @practiceEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit word'**
+  String get practiceEditTitle;
+
+  /// No description provided for @practiceEditFullButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Full editing'**
+  String get practiceEditFullButton;
+
+  /// No description provided for @practiceEditSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get practiceEditSaveButton;
 
   /// No description provided for @customPracticeWordsLabel.
   ///
