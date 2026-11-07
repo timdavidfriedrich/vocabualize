@@ -106,9 +106,13 @@ class const _QuestionCard({
             const SizedBox(height: Spacing.xl),
           ],
           _PromptRows(view: _view),
-          if ((_view.isSolutionShown, _view.typedAnswer) case (true, final typedAnswer?)) ...[
+          if ((_view.isSolutionShown, _view.typedAnswer, _view.grade) case (
+            true,
+            final typedAnswer?,
+            final grade?,
+          )) ...[
             const SizedBox(height: Spacing.xl),
-            AnswerTiles(answer: typedAnswer, solution: solution, grade: _view.grade),
+            AnswerTiles(answer: typedAnswer, solution: solution, grade: grade),
           ],
         ],
       ),
