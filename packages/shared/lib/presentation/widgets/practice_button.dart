@@ -5,7 +5,7 @@ import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/count_badge.dart';
 import 'package:shared/presentation/widgets/icon_action_button.dart';
 
-const _buttonHeight = Spacing.xxxl + Spacing.xxxs;
+const _buttonHeight = Spacing.xxxl + Spacing.xs;
 const _badgeOffset = -Spacing.xs;
 
 class const PracticeButton({
@@ -28,9 +28,6 @@ class const PracticeButton({
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: Spacing.s),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(Spacing.radiusXxl),
-                    ),
                   ),
                   onPressed: () => context.pushPractice(tagId: _tagId),
                   child: Text(context.s.homePracticeButton),

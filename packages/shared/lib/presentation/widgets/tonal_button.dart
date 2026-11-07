@@ -20,6 +20,7 @@ class const TonalButton({
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
         padding: _isCompact ? const EdgeInsets.symmetric(horizontal: Spacing.m) : null,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Spacing.radiusL)),
       ),
       onPressed: _onPressed,
       child: _child,

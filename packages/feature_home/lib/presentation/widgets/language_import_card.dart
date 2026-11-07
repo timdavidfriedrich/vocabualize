@@ -6,6 +6,7 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/photo_stack.dart';
+import 'package:shared/presentation/widgets/tonal_button.dart';
 
 const _photoSize = Spacing.xxxxl;
 
@@ -54,7 +55,7 @@ class const LanguageImportCard({
             style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
           ),
           const SizedBox(height: Spacing.l),
-          FilledButton.tonal(
+          TonalButton(
             onPressed: () => context.pushLanguageWords(language: _language, isAdding: false),
             child: Text(context.s.homeImportWordsButton),
           ),

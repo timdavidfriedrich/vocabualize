@@ -180,11 +180,6 @@ class const _Actions() extends StatelessWidget {
                 ],
                 Expanded(
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(Spacing.radiusXxl),
-                      ),
-                    ),
                     onPressed: runningAction != null || !state.canSave
                         ? null
                         : () => context.read<DetailsBloc>().add(const DetailsSaveRequested()),

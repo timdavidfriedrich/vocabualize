@@ -91,8 +91,8 @@ const _dialogElevation = 8.0;
 const _dialogWidth = 560.0;
 const _dimmedStates = {WidgetState.disabled, WidgetState.pressed, WidgetState.hovered};
 
-const _buttonPadding = EdgeInsets.symmetric(horizontal: Spacing.xxl, vertical: Spacing.s);
-const _buttonMinimumSize = Size(0, Spacing.xxxl);
+const _buttonPadding = EdgeInsets.symmetric(horizontal: Spacing.xxl, vertical: Spacing.m);
+const _buttonMinimumSize = Size(0, Spacing.xxxl + Spacing.xs);
 const _sliderTrackHeight = Spacing.m;
 const _sliderTrackGap = Spacing.xxs;
 const _sliderThumbSize = Size(4, 44);
@@ -131,6 +131,7 @@ abstract final class AppTheme {
           bodyColor: colors.onSurface,
           displayColor: colors.onSurface,
         );
+    final buttonTextStyle = textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold);
     BorderSide inputSide(Color color) {
       return BorderSide(color: color, width: Spacing.borderWidthMedium);
     }
@@ -190,17 +191,17 @@ abstract final class AppTheme {
           ),
           padding: const WidgetStatePropertyAll(_buttonPadding),
           minimumSize: const WidgetStatePropertyAll(_buttonMinimumSize),
-          textStyle: WidgetStatePropertyAll(textTheme.labelLarge),
+          textStyle: WidgetStatePropertyAll(buttonTextStyle),
           elevation: const WidgetStatePropertyAll(0),
-          shape: const WidgetStatePropertyAll(_roundedShape),
+          shape: const WidgetStatePropertyAll(StadiumBorder()),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           padding: _buttonPadding,
           minimumSize: _buttonMinimumSize,
-          shape: _roundedShape,
-          textStyle: textTheme.labelLarge,
+          shape: const StadiumBorder(),
+          textStyle: buttonTextStyle,
         ),
       ),
       searchBarTheme: SearchBarThemeData(
