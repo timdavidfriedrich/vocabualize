@@ -102,3 +102,23 @@ class const MascotColors({
     return MascotColors(backdrop: Color.lerp(backdrop, other.backdrop, t)!);
   }
 }
+
+class const SeriesColors({
+  required final List<Color> colors,
+}) extends ThemeExtension<SeriesColors> {
+  @override
+  SeriesColors copyWith({List<Color>? colors}) {
+    return SeriesColors(colors: colors ?? this.colors);
+  }
+
+  @override
+  SeriesColors lerp(SeriesColors? other, double t) {
+    if (other == null) return this;
+    return SeriesColors(
+      colors: [
+        for (final (index, color) in colors.indexed)
+          Color.lerp(color, other.colors.elementAtOrNull(index) ?? color, t)!,
+      ],
+    );
+  }
+}

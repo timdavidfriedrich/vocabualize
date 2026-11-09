@@ -78,6 +78,12 @@ const _levelColors = LevelColors(
   advanced: Color(0xFFFF9800),
   expert: Color(0xFF4CAF50),
 );
+const _lightSeriesColors = SeriesColors(
+  colors: [_brand, Color(0xFFEB6834), Color(0xFF6250D6), Color(0xFF1BAF7A)],
+);
+const _darkSeriesColors = SeriesColors(
+  colors: [Color(0xFF1C96F0), Color(0xFFD95926), Color(0xFF7A5CE0), Color(0xFF199E70)],
+);
 const _overlayColors = OverlayColors(scrim: _black, onScrim: _white);
 const _accountProviderColors = AccountProviderColors(google: _white, onGoogle: _black);
 const _darkStatusColors = StatusColors(success: Color(0xFF81C784), warning: Color(0xFFFFB74D));
@@ -107,16 +113,25 @@ const _inputRadius = BorderRadius.all(Radius.circular(Spacing.radiusL));
 abstract final class AppTheme {
   const AppTheme._();
 
-  static ThemeData get dark =>
-      _theme(_darkColorScheme, status: _darkStatusColors, mascot: _darkMascotColors);
+  static ThemeData get dark => _theme(
+    _darkColorScheme,
+    status: _darkStatusColors,
+    mascot: _darkMascotColors,
+    series: _darkSeriesColors,
+  );
 
-  static ThemeData get light =>
-      _theme(_lightColorScheme, status: _lightStatusColors, mascot: _lightMascotColors);
+  static ThemeData get light => _theme(
+    _lightColorScheme,
+    status: _lightStatusColors,
+    mascot: _lightMascotColors,
+    series: _lightSeriesColors,
+  );
 
   static ThemeData _theme(
     ColorScheme colors, {
     required StatusColors status,
     required MascotColors mascot,
+    required SeriesColors series,
   }) {
     final baseTextTheme = ThemeData(brightness: colors.brightness).textTheme;
     final textTheme = baseTextTheme
@@ -145,7 +160,7 @@ abstract final class AppTheme {
       scaffoldBackgroundColor: colors.surface,
       hintColor: colors.outline,
       splashColor: colors.surfaceContainerLow.withValues(alpha: _splashOpacity),
-      extensions: [status, mascot, _levelColors, _overlayColors, _accountProviderColors],
+      extensions: [status, mascot, series, _levelColors, _overlayColors, _accountProviderColors],
       appBarTheme: AppBarTheme(
         backgroundColor: colors.surface,
         foregroundColor: colors.onSurface,

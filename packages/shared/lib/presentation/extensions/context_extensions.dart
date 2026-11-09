@@ -13,6 +13,8 @@ extension ContextExtensions on BuildContext {
 
   LevelColors get levels => Theme.of(this).extension<LevelColors>()!;
 
+  SeriesColors get series => Theme.of(this).extension<SeriesColors>()!;
+
   OverlayColors get overlay => Theme.of(this).extension<OverlayColors>()!;
 
   AccountProviderColors get accountProviders => Theme.of(this).extension<AccountProviderColors>()!;

@@ -130,12 +130,7 @@ class const _Content({
 }
 
 Color _colorOf(BuildContext context, CustomPracticeEditing state, Language language) {
-  final colors = [
-    context.c.primary,
-    context.levels.advanced,
-    context.levels.expert,
-    context.levels.beginner,
-  ];
+  final colors = context.series.colors;
   final index = state.activeLanguages.indexOf(language);
   return colors[(index < 0 ? 0 : index) % colors.length];
 }
