@@ -1,7 +1,0 @@
-Exercices et modification repensés :
-• Exercices : nouveau design des cartes, et modifie un mot depuis la carte
-• Réponses tapées : choisis n'importe quelle note, et les bonnes réponses ont une coche
-• Détails du mot : modifie toutes les langues dans une seule fenêtre
-• Exercice personnalisé : plus et moins pour les mots à réviser, couleurs plus distinctes
-• Accueil : une note quand la limite quotidienne de traductions est atteinte
-• Boutons et champ de texte plus arrondis, corrections de bugs

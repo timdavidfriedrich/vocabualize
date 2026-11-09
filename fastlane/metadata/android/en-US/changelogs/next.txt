@@ -1,7 +1,0 @@
-Practice and editing, redesigned:
-• Practice: a new card design, and you can edit a word right from the card
-• After typing an answer, choose any rating; a correct answer shows a check mark
-• Word details: edit every language in one sheet
-• Custom practice: plus and minus for due words, and colors that are easier to tell apart
-• Home shows a note when the daily translation limit is reached
-• Rounder buttons and text field, plus bug fixes

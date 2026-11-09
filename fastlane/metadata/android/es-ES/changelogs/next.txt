@@ -1,7 +1,0 @@
-Práctica y edición rediseñadas:
-• Práctica: nuevo diseño de tarjetas, y puedes editar una palabra desde la tarjeta
-• Respuestas escritas: elige cualquier valoración, y las correctas llevan una marca
-• Detalles de la palabra: edita todos los idiomas en una sola ventana
-• Práctica personalizada: más y menos para las pendientes, y colores más fáciles de distinguir
-• Inicio: un aviso al alcanzar el límite diario de traducciones
-• Botones y campo de texto más redondeados, y correcciones de errores

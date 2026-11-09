@@ -1,7 +1,0 @@
-Üben und Bearbeiten neu gestaltet:
-• Üben: neues Kartendesign, und du kannst ein Wort direkt auf der Karte bearbeiten
-• Getippte Antworten: jede Bewertung wählbar, richtige Antworten mit Häkchen
-• Wortdetails: alle Sprachen in einem Fenster bearbeiten
-• Eigene Übung: Plus und Minus für fällige Wörter, besser unterscheidbare Farben
-• Startseite: ein Hinweis, wenn das tägliche Übersetzungslimit erreicht ist
-• Rundere Knöpfe und Textfelder, dazu Fehlerbehebungen
