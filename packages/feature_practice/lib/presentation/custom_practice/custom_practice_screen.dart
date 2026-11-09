@@ -211,11 +211,14 @@ class const _SummaryCard({
                     ),
                   ),
                   Expanded(
-                    child: _LegendEntry(
-                      color: _newColorOf(context, _colorOf(context, _state, language)),
-                      language: language,
-                      label: context.s.customPracticeNewLegend(_state.newCountOf(language)),
-                    ),
+                    child: switch (_state.waitingCountOf(language)) {
+                      0 => const SizedBox.shrink(),
+                      _ => _LegendEntry(
+                        color: _newColorOf(context, _colorOf(context, _state, language)),
+                        language: language,
+                        label: context.s.customPracticeNewLegend(_state.newCountOf(language)),
+                      ),
+                    },
                   ),
                 ],
               ),
@@ -296,9 +299,10 @@ class const _LanguageCard({
                   Expanded(
                     child: _ReviewBox(state: _state, language: _language),
                   ),
-                  Expanded(
-                    child: _NewBox(state: _state, language: _language),
-                  ),
+                  if (_state.waitingCountOf(_language) > 0)
+                    Expanded(
+                      child: _NewBox(state: _state, language: _language),
+                    ),
                 ],
               ),
             ),
