@@ -52,8 +52,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     on<DetailsTranslationReported>(_onTranslationReported);
     on<DetailsDuplicateResolved>(_onDuplicateResolved);
     on<DetailsExistingResolved>(_onExistingResolved);
-    on<DetailsTextChanged>(_onTextChanged);
-    on<DetailsLanguageToggled>(_onLanguageToggled);
+    on<DetailsWordEdited>(_onWordEdited);
     on<DetailsPhotoPickRequested>(_onPhotoPickRequested);
     on<DetailsImageToggled>(_onImageToggled);
     on<DetailsStockPageAdvanced>(_onStockPageAdvanced);
@@ -249,50 +248,45 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     }
   }
 
-  Future<void> _onTextChanged(DetailsTextChanged event, Emitter<DetailsState> emit) async {
-    if (state case final DetailsEditing editing when editing.canEditTexts) {
-      final text = event.text.trim();
-      final isEntered = event.language == editing.enteredLanguage;
-      final changed = editing.copyWith(
-        texts: {
-          ...editing.texts,
-          event.language: DetailsText(
-            text: text,
-            origin: isEntered ? TranslationOrigin.entered : TranslationOrigin.edited,
-          ),
-        },
+  Future<void> _onWordEdited(DetailsWordEdited event, Emitter<DetailsState> emit) async {
+    if (state case final DetailsEditing editing when editing.runningAction == null) {
+      final enabled = event.enabledLanguages.isEmpty
+          ? editing.enabledLanguages
+          : event.enabledLanguages;
+      final texts = {
+        ...editing.texts,
+        for (final MapEntry(key: language, value: text) in event.texts.entries)
+          if (text.trim().isNotEmpty)
+            language: DetailsText(
+              text: text.trim(),
+              origin: language == editing.enteredLanguage
+                  ? TranslationOrigin.entered
+                  : TranslationOrigin.edited,
+            ),
+      };
+      final retranslates = event.retranslates && event.texts.containsKey(editing.enteredLanguage);
+      final edited = editing.copyWith(
+        enabledLanguages: enabled,
+        texts: retranslates
+            ? {
+                for (final MapEntry(key: language, value: entry) in texts.entries)
+                  if (entry.origin.isFromUser) language: entry,
+              }
+            : texts,
         error: null,
       );
-      if (!isEntered || !event.retranslates) {
-        emit(changed);
+      final turnedOn = enabled.difference(editing.enabledLanguages);
+      if (!retranslates && !turnedOn.any(edited.missingLanguages.contains)) {
+        emit(edited);
         return;
       }
-      final retranslated = changed.copyWith(
-        texts: {
-          for (final MapEntry(key: language, value: entry) in changed.texts.entries)
-            if (entry.origin.isFromUser) language: entry,
-        },
-      );
       await _lookUpAndApply(
         emit,
-        retranslated,
-        pending: DetailsPendingLookup.translationAndPhotos,
+        edited,
+        pending: retranslates
+            ? DetailsPendingLookup.translationAndPhotos
+            : DetailsPendingLookup.translations,
       );
-    }
-  }
-
-  Future<void> _onLanguageToggled(DetailsLanguageToggled event, Emitter<DetailsState> emit) async {
-    if (state case final DetailsEditing editing
-        when editing.runningAction == null && editing.canSwitchOff(event.language)) {
-      final enabled = editing.enabledLanguages.contains(event.language)
-          ? editing.enabledLanguages.difference({event.language})
-          : {...editing.enabledLanguages, event.language};
-      final toggled = editing.copyWith(enabledLanguages: enabled, error: null);
-      if (toggled.missingLanguages.contains(event.language)) {
-        await _lookUpAndApply(emit, toggled, pending: DetailsPendingLookup.translations);
-      } else {
-        emit(toggled);
-      }
     }
   }
 

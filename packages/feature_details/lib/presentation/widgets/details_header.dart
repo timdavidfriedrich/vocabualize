@@ -4,7 +4,6 @@ import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:feature_details/presentation/extensions/details_editing_extensions.dart';
 import 'package:feature_details/presentation/widgets/edit_words_sheet.dart';
-import 'package:feature_details/presentation/widgets/languages_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -30,12 +29,8 @@ class const DetailsHeader({
         final mainText = state.textOf(state.setup.main);
         final shownText = state.textOf(shown);
         Future<void> open() async {
-          if (!state.hasSeveralLanguages) {
-            await editWords(context, state, languages: {shown, state.setup.main}.toList());
-            return;
-          }
           isOpen.value = true;
-          await showLanguagesSheet(context, shown: shown, onShown: _onPicked);
+          await editWords(context, state, shown: shown, onShown: _onPicked);
           if (context.mounted) isOpen.value = false;
         }
 
@@ -49,11 +44,7 @@ class const DetailsHeader({
                   borderRadius: BorderRadius.circular(Spacing.radiusXxl),
                   clipBehavior: Clip.antiAlias,
                   child: InkWell(
-                    onTap:
-                        state.canEditTexts ||
-                            (state.runningAction == null && state.hasSeveralLanguages)
-                        ? open
-                        : null,
+                    onTap: state.runningAction == null ? open : null,
                     highlightColor: context.c.surfaceContainerHigh,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

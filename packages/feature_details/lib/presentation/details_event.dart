@@ -42,14 +42,10 @@ class const DetailsExistingResolved({
   required final bool addsLanguage,
 }) extends DetailsEvent;
 
-class const DetailsTextChanged({
-  required final Language language,
-  required final String text,
+class const DetailsWordEdited({
+  required final Map<Language, String> texts,
+  required final Set<Language> enabledLanguages,
   required final bool retranslates,
-}) extends DetailsEvent;
-
-class const DetailsLanguageToggled({
-  required final Language language,
 }) extends DetailsEvent;
 
 class const DetailsPhotoPickRequested({

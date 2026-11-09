@@ -11,6 +11,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/translation.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/extensions/language_extensions.dart';
+import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/filled_text_field.dart';
 import 'package:shared/presentation/widgets/language_segments.dart';
 
@@ -19,28 +21,40 @@ typedef _WordField = ({
   bool canReport,
 });
 
+typedef _SheetResult = ({
+  Map<Language, String> texts,
+  Set<Language> enabledLanguages,
+  Language selected,
+  bool wantsNewLanguage,
+});
+
 Future<void> editWords(
   BuildContext context,
   DetailsEditing editing, {
-  required List<Language> languages,
+  required Language shown,
+  required ValueChanged<Language> onShown,
 }) async {
   final bloc = context.read<DetailsBloc>();
-  final ordered = [
-    if (languages.contains(editing.setup.main)) editing.setup.main,
-    for (final language in languages)
-      if (language != editing.setup.main) language,
-  ];
-  final edits = await showModalBottomSheet<Map<Language, String>>(
+  final isVertical = editing.hasSeveralLanguages;
+  final learned = editing.learnedLanguages.toSet();
+  final languages = {
+    editing.setup.main,
+    if (isVertical) ...[...editing.askMeInLanguages, ...editing.learnedLanguages] else shown,
+  }.toList();
+  final result = await showModalBottomSheet<_SheetResult>(
     context: context,
     showDragHandle: true,
     isScrollControlled: true,
     useSafeArea: true,
     backgroundColor: context.c.surfaceContainerLowest,
     builder: (sheetContext) => _EditWordsSheet(
-      languages: ordered,
-      initialLanguage: languages.first,
+      languages: languages,
+      initialLanguage: shown,
+      isVertical: isVertical,
+      learnedLanguages: learned,
+      enabledLanguages: editing.enabledLanguages,
       fields: {
-        for (final language in ordered)
+        for (final language in languages)
           language: (
             text: editing.textOf(language),
             canReport:
@@ -53,20 +67,22 @@ Future<void> editWords(
       onReport: (language) => _report(context, editing, language),
     ),
   );
-  if (edits == null || !context.mounted) return;
-  final changes = [
-    for (final entry in edits.entries)
-      if (entry.key != editing.enteredLanguage) entry,
-    for (final entry in edits.entries)
-      if (entry.key == editing.enteredLanguage) entry,
-  ];
-  for (final MapEntry(key: language, value: text) in changes) {
-    final retranslates =
-        language == editing.enteredLanguage &&
-        context.mounted &&
-        await confirmsRetranslation(context);
-    bloc.add(DetailsTextChanged(language: language, text: text, retranslates: retranslates));
+  if (result == null || !context.mounted) return;
+  if (learned.contains(result.selected) && result.enabledLanguages.contains(result.selected)) {
+    onShown(result.selected);
   }
+  final retranslates =
+      result.texts.containsKey(editing.enteredLanguage) &&
+      context.mounted &&
+      await confirmsRetranslation(context);
+  bloc.add(
+    DetailsWordEdited(
+      texts: result.texts,
+      enabledLanguages: result.enabledLanguages,
+      retranslates: retranslates,
+    ),
+  );
+  if (result.wantsNewLanguage && context.mounted) await context.pushLanguages();
 }
 
 Future<void> _report(BuildContext context, DetailsEditing editing, Language language) async {
@@ -82,6 +98,9 @@ Future<void> _report(BuildContext context, DetailsEditing editing, Language lang
 class const _EditWordsSheet({
   required final List<Language> _languages,
   required final Language _initialLanguage,
+  required final bool _isVertical,
+  required final Set<Language> _learnedLanguages,
+  required final Set<Language> _enabledLanguages,
   required final Map<Language, _WordField> _fields,
   required final ValueChanged<Language> _onSpeak,
   required final ValueChanged<Language> _onReport,
@@ -89,6 +108,7 @@ class const _EditWordsSheet({
   @override
   Widget build(BuildContext context) {
     final selected = useState(_initialLanguage);
+    final enabled = useState(_enabledLanguages);
     final edits = useMemoized(
       () => {for (final MapEntry(:key, :value) in _fields.entries) key: value.text},
     );
@@ -103,16 +123,23 @@ class const _EditWordsSheet({
       );
     }
 
-    Map<Language, String> changes() {
+    _SheetResult result({required bool wantsNewLanguage}) {
       edits[selected.value] = controller.text;
-      return {
-        for (final language in _languages)
-          if (edits[language]?.trim() case final text?
-              when text.isNotEmpty && text != _fields[language]?.text)
-            language: text,
-      };
+      return (
+        texts: {
+          for (final language in _languages)
+            if (edits[language]?.trim() case final text?
+                when text.isNotEmpty && text != _fields[language]?.text)
+              language: text,
+        },
+        enabledLanguages: enabled.value,
+        selected: selected.value,
+        wantsNewLanguage: wantsNewLanguage,
+      );
     }
 
+    final language = selected.value;
+    final isOn = enabled.value.contains(language);
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: SafeArea(
@@ -137,40 +164,84 @@ class const _EditWordsSheet({
               const SizedBox(height: Spacing.l),
               LanguageSegments(
                 languages: _languages,
-                selected: selected.value,
+                selected: language,
                 onSelected: select,
+                isVertical: _isVertical,
+                inactiveLanguages: _learnedLanguages.difference(enabled.value),
               ),
               const SizedBox(height: Spacing.m),
               FilledTextField(
                 controller: controller,
                 style: context.t.bodyLarge,
+                hintText: context.s.detailsMissingTextLabel(language.toLabel(context)),
                 suffix: Padding(
                   padding: const EdgeInsets.only(right: Spacing.xs),
-                  child: IconButton.filled(
-                    style: IconButton.styleFrom(
-                      backgroundColor: context.c.surface,
-                      foregroundColor: context.c.primary,
-                      shape: const CircleBorder(),
-                    ),
-                    onPressed: () => _onSpeak(selected.value),
-                    tooltip: context.s.vocabularySpeakTooltip,
-                    icon: const Icon(Icons.volume_up_rounded),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_fields[language]?.canReport ?? false)
+                        IconButton(
+                          style: IconButton.styleFrom(
+                            foregroundColor: context.c.onSurfaceVariant,
+                          ),
+                          onPressed: () => _onReport(language),
+                          tooltip: context.s.detailsReportTranslationButton,
+                          icon: const Icon(Icons.flag_outlined),
+                        ),
+                      IconButton.filled(
+                        style: IconButton.styleFrom(
+                          backgroundColor: context.c.surface,
+                          foregroundColor: context.c.primary,
+                          shape: const CircleBorder(),
+                        ),
+                        onPressed: () => _onSpeak(language),
+                        tooltip: context.s.vocabularySpeakTooltip,
+                        icon: const Icon(Icons.volume_up_rounded),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              if (_fields[selected.value]?.canReport ?? false)
+              if (_isVertical)
+                Visibility(
+                  visible: _learnedLanguages.contains(language),
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: Spacing.l, top: Spacing.xs),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            context.s.detailsLearnSwitchLabel(language.toShortLabel(context)),
+                            style: context.t.bodyLarge,
+                          ),
+                        ),
+                        Switch(
+                          value: isOn,
+                          onChanged: isOn && enabled.value.length == 1
+                              ? null
+                              : (isTurnedOn) => enabled.value = isTurnedOn
+                                    ? {...enabled.value, language}
+                                    : enabled.value.difference({language}),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (_isVertical)
                 Align(
                   alignment: Alignment.centerLeft,
                   child: TextButton.icon(
-                    style: TextButton.styleFrom(foregroundColor: context.c.onSurfaceVariant),
-                    onPressed: () => _onReport(selected.value),
-                    icon: const Icon(Icons.flag_outlined, size: Spacing.iconS),
-                    label: Text(context.s.detailsReportTranslationButton),
+                    onPressed: () => Navigator.of(context).pop(result(wantsNewLanguage: true)),
+                    icon: const Icon(Icons.add_rounded),
+                    label: Text(context.s.detailsAddLanguageButton),
                   ),
                 ),
               const SizedBox(height: Spacing.l),
               ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(changes()),
+                onPressed: () => Navigator.of(context).pop(result(wantsNewLanguage: false)),
                 child: Text(context.s.detailsDoneButton),
               ),
             ],

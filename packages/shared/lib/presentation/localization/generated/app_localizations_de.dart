@@ -1461,11 +1461,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get customPracticeDoneButton => 'Fertig';
 
   @override
-  String detailsNotLearningLabel(String language) {
-    return '$language, dieses Wort lerne ich nicht';
-  }
-
-  @override
   String detailsMissingTextLabel(String language) {
     return '($language)';
   }
@@ -1479,11 +1474,6 @@ class AppLocalizationsDe extends AppLocalizations {
       one: 'Auf $language übst du das Wort, sobald die Übersetzung da ist.',
     );
     return '$_temp0';
-  }
-
-  @override
-  String detailsLanguageRoleLabel(String language, String role) {
-    return '$language, $role';
   }
 
   @override
@@ -1556,16 +1546,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get detailsAddLanguageButton => 'Weitere Sprache hinzufügen';
-
-  @override
-  String detailsPausedRoleLabel(String language) {
-    return '$language, pausiert';
-  }
-
-  @override
-  String detailsAsksInLabel(String language, String askMeIn) {
-    return '$language, fragt auf $askMeIn';
-  }
 
   @override
   String get scanFocusLockedLabel => 'Fokus gesperrt';

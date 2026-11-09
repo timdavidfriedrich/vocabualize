@@ -1490,11 +1490,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get customPracticeDoneButton => 'Gata';
 
   @override
-  String detailsNotLearningLabel(String language) {
-    return '$language, nu învăț acest cuvânt';
-  }
-
-  @override
   String detailsMissingTextLabel(String language) {
     return '($language)';
   }
@@ -1508,11 +1503,6 @@ class AppLocalizationsRo extends AppLocalizations {
       one: 'Veți exersa acest cuvânt în $language imediat ce traducerea este gata.',
     );
     return '$_temp0';
-  }
-
-  @override
-  String detailsLanguageRoleLabel(String language, String role) {
-    return '$language, $role';
   }
 
   @override
@@ -1586,16 +1576,6 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get detailsAddLanguageButton => 'Adăugați altă limbă';
-
-  @override
-  String detailsPausedRoleLabel(String language) {
-    return '$language, în pauză';
-  }
-
-  @override
-  String detailsAsksInLabel(String language, String askMeIn) {
-    return '$language, întreabă în $askMeIn';
-  }
 
   @override
   String get scanFocusLockedLabel => 'Focalizare blocată';

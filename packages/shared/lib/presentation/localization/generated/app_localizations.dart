@@ -2274,12 +2274,6 @@ abstract class AppLocalizations {
   /// **'Done'**
   String get customPracticeDoneButton;
 
-  /// No description provided for @detailsNotLearningLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'{language}, not learning this word'**
-  String detailsNotLearningLabel(String language);
-
   /// No description provided for @detailsMissingTextLabel.
   ///
   /// In en, this message translates to:
@@ -2291,12 +2285,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{You\'ll practice this word in {language} once its translation is ready.} other{You\'ll practice this word in {count} languages once their translations are ready.}}'**
   String detailsUntranslatedHint(int count, String language);
-
-  /// No description provided for @detailsLanguageRoleLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'{language}, {role}'**
-  String detailsLanguageRoleLabel(String language, String role);
 
   /// No description provided for @homeCustomPracticeEndTitle.
   ///
@@ -2423,18 +2411,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add another language'**
   String get detailsAddLanguageButton;
-
-  /// No description provided for @detailsPausedRoleLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'{language}, paused'**
-  String detailsPausedRoleLabel(String language);
-
-  /// No description provided for @detailsAsksInLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'{language}, asks in {askMeIn}'**
-  String detailsAsksInLabel(String language, String askMeIn);
 
   /// No description provided for @scanFocusLockedLabel.
   ///

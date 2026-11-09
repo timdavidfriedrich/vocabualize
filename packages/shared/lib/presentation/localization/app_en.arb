@@ -996,14 +996,6 @@
   "customPracticeFewerTooltip": "Fewer",
   "customPracticeMoreTooltip": "More",
   "customPracticeDoneButton": "Done",
-  "detailsNotLearningLabel": "{language}, not learning this word",
-  "@detailsNotLearningLabel": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
   "detailsMissingTextLabel": "({language})",
   "@detailsMissingTextLabel": {
     "placeholders": {
@@ -1019,17 +1011,6 @@
         "type": "int"
       },
       "language": {
-        "type": "String"
-      }
-    }
-  },
-  "detailsLanguageRoleLabel": "{language}, {role}",
-  "@detailsLanguageRoleLabel": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      },
-      "role": {
         "type": "String"
       }
     }
@@ -1062,25 +1043,6 @@
   "detailsEditWordTitle": "Edit word",
   "detailsDoneButton": "Done",
   "detailsAddLanguageButton": "Add another language",
-  "detailsPausedRoleLabel": "{language}, paused",
-  "@detailsPausedRoleLabel": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
-  "detailsAsksInLabel": "{language}, asks in {askMeIn}",
-  "@detailsAsksInLabel": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      },
-      "askMeIn": {
-        "type": "String"
-      }
-    }
-  },
   "scanFocusLockedLabel": "Focus locked",
   "scanFlashTooltip": "Flash",
   "scanSwitchCameraTooltip": "Switch camera",

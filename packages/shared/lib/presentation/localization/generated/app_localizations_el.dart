@@ -1461,11 +1461,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get customPracticeDoneButton => 'Τέλος';
 
   @override
-  String detailsNotLearningLabel(String language) {
-    return '$language, δεν μαθαίνω αυτή τη λέξη';
-  }
-
-  @override
   String detailsMissingTextLabel(String language) {
     return '($language)';
   }
@@ -1479,11 +1474,6 @@ class AppLocalizationsEl extends AppLocalizations {
       one: 'Θα εξασκείτε αυτή τη λέξη στα $language μόλις είναι έτοιμη η μετάφραση.',
     );
     return '$_temp0';
-  }
-
-  @override
-  String detailsLanguageRoleLabel(String language, String role) {
-    return '$language, $role';
   }
 
   @override
@@ -1556,16 +1546,6 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get detailsAddLanguageButton => 'Προσθήκη άλλης γλώσσας';
-
-  @override
-  String detailsPausedRoleLabel(String language) {
-    return '$language, σε παύση';
-  }
-
-  @override
-  String detailsAsksInLabel(String language, String askMeIn) {
-    return '$language, ρωτά στα $askMeIn';
-  }
 
   @override
   String get scanFocusLockedLabel => 'Κλείδωμα εστίασης';

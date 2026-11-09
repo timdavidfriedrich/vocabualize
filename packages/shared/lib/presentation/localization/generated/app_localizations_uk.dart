@@ -1520,11 +1520,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get customPracticeDoneButton => 'Готово';
 
   @override
-  String detailsNotLearningLabel(String language) {
-    return '$language, не вивчаю це слово';
-  }
-
-  @override
   String detailsMissingTextLabel(String language) {
     return '($language)';
   }
@@ -1539,11 +1534,6 @@ class AppLocalizationsUk extends AppLocalizations {
       one: 'Щойно переклад ($language) буде готовий, ви практикуватимете це слово цією мовою.',
     );
     return '$_temp0';
-  }
-
-  @override
-  String detailsLanguageRoleLabel(String language, String role) {
-    return '$language, $role';
   }
 
   @override
@@ -1618,16 +1608,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get detailsAddLanguageButton => 'Додати іншу мову';
-
-  @override
-  String detailsPausedRoleLabel(String language) {
-    return '$language, на паузі';
-  }
-
-  @override
-  String detailsAsksInLabel(String language, String askMeIn) {
-    return '$language, питає мовою $askMeIn';
-  }
 
   @override
   String get scanFocusLockedLabel => 'Фокус зафіксовано';
