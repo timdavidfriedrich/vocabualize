@@ -27,6 +27,8 @@ import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
+import 'package:shared/presentation/translation_fill/translation_fill_cubit.dart';
+import 'package:shared/presentation/translation_fill/translation_fill_state.dart';
 import 'package:shared/presentation/widgets/account_status_avatar.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
@@ -156,6 +158,7 @@ class const _Overview({
                     children: [
                       SizedBox(height: Spacing.s),
                       _StatusArea(),
+                      _TranslationLimitNotice(),
                     ],
                   ),
                 ),
@@ -392,6 +395,36 @@ class const _StatusArea() extends StatelessWidget {
                 context.read<HomeBloc>().add(const HomeCustomPracticeEnded()),
           ),
         HomeLoading() || HomeFailure() => const SizedBox.shrink(),
+      },
+    );
+  }
+}
+
+class const _TranslationLimitNotice() extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TranslationFillCubit, TranslationFillState>(
+      builder: (context, state) => switch (state) {
+        TranslationFillState.idle => const SizedBox.shrink(),
+        TranslationFillState.limitReached => Padding(
+          padding: const EdgeInsets.fromLTRB(Spacing.xs, Spacing.s, Spacing.xs, 0),
+          child: Row(
+            children: [
+              Icon(
+                Icons.schedule_rounded,
+                size: Spacing.iconS,
+                color: context.c.onSurfaceVariant,
+              ),
+              const SizedBox(width: Spacing.xs),
+              Expanded(
+                child: Text(
+                  context.s.homeTranslationLimitMessage,
+                  style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
+                ),
+              ),
+            ],
+          ),
+        ),
       },
     );
   }

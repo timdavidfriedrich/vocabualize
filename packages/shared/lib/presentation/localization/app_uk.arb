@@ -396,5 +396,6 @@
   "settingsBackupSectionTitle": "Резервна копія",
   "settingsAboutSectionTitle": "Про застосунок",
   "collectionsEditTitle": "Редагувати колекцію",
-  "collectionsEmojiTooltip": "Вибрати емодзі"
+  "collectionsEmojiTooltip": "Вибрати емодзі",
+  "homeTranslationLimitMessage": "Досягнуто денного ліміту перекладів. Відсутні переклади продовжаться завтра."
 }

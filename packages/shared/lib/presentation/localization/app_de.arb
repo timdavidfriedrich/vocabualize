@@ -396,5 +396,6 @@
   "settingsBackupSectionTitle": "Sicherung",
   "settingsAboutSectionTitle": "Über die App",
   "collectionsEditTitle": "Sammlung bearbeiten",
-  "collectionsEmojiTooltip": "Emoji auswählen"
+  "collectionsEmojiTooltip": "Emoji auswählen",
+  "homeTranslationLimitMessage": "Tageslimit für Übersetzungen erreicht. Fehlende Übersetzungen folgen morgen."
 }

@@ -396,5 +396,6 @@
   "settingsBackupSectionTitle": "Αντίγραφο ασφαλείας",
   "settingsAboutSectionTitle": "Σχετικά",
   "collectionsEditTitle": "Επεξεργασία συλλογής",
-  "collectionsEmojiTooltip": "Επιλογή emoji"
+  "collectionsEmojiTooltip": "Επιλογή emoji",
+  "homeTranslationLimitMessage": "Συμπληρώθηκε το ημερήσιο όριο μεταφράσεων. Οι μεταφράσεις που λείπουν συνεχίζονται αύριο."
 }

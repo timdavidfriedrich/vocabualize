@@ -1,0 +1,1 @@
+enum TranslationFillState { idle, limitReached }

@@ -396,5 +396,6 @@
   "settingsBackupSectionTitle": "Sauvegarde",
   "settingsAboutSectionTitle": "À propos",
   "collectionsEditTitle": "Modifier la collection",
-  "collectionsEmojiTooltip": "Choisir un emoji"
+  "collectionsEmojiTooltip": "Choisir un emoji",
+  "homeTranslationLimitMessage": "Limite quotidienne de traductions atteinte. Les traductions manquantes reprendront demain."
 }

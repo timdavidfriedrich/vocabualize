@@ -1617,4 +1617,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get collectionsEmojiTooltip => 'Alegeți un emoji';
+
+  @override
+  String get homeTranslationLimitMessage =>
+      'Limita zilnică de traduceri a fost atinsă. Traducerile lipsă continuă mâine.';
 }

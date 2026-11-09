@@ -396,5 +396,6 @@
   "settingsBackupSectionTitle": "Backup",
   "settingsAboutSectionTitle": "Despre",
   "collectionsEditTitle": "Editați colecția",
-  "collectionsEmojiTooltip": "Alegeți un emoji"
+  "collectionsEmojiTooltip": "Alegeți un emoji",
+  "homeTranslationLimitMessage": "Limita zilnică de traduceri a fost atinsă. Traducerile lipsă continuă mâine."
 }

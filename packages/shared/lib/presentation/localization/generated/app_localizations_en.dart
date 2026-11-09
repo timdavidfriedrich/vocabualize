@@ -1570,4 +1570,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get collectionsEmojiTooltip => 'Choose an emoji';
+
+  @override
+  String get homeTranslationLimitMessage =>
+      'Daily translation limit reached. Missing translations continue tomorrow.';
 }

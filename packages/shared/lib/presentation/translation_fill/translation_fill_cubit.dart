@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -12,15 +13,16 @@ import 'package:shared/domain/repositories/connectivity_repository.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/translation_fill_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
+import 'package:shared/presentation/translation_fill/translation_fill_state.dart';
 
 @injectable
-class TranslationFillCubit extends Cubit<bool> {
+class TranslationFillCubit extends Cubit<TranslationFillState> {
   TranslationFillCubit(
     this._translationFillRepository,
     this._languageRepository,
     this._connectivityRepository,
     this._vocabularyRepository,
-  ) : super(false);
+  ) : super(TranslationFillState.idle);
 
   final TranslationFillRepository _translationFillRepository;
   final LanguageRepository _languageRepository;
@@ -74,17 +76,25 @@ class TranslationFillCubit extends Cubit<bool> {
 
   Future<void> _run() async {
     _isRunning = true;
-    emit(true);
+    AppResult<int>? last;
     do {
       _isRequested = false;
       while (!isClosed) {
-        final result = await _translationFillRepository.fillMissingTranslations();
-        if (result case Failure()) _isPaused = true;
-        if (result case Failure() || Success(data: 0)) break;
+        last = await _translationFillRepository.fillMissingTranslations();
+        if (last case Failure()) _isPaused = true;
+        if (last case Failure() || Success(data: 0)) break;
       }
     } while (_isRequested && !_isPaused && !isClosed);
     _isRunning = false;
-    if (!isClosed) emit(false);
+    if (isClosed) return;
+    switch (last) {
+      case Failure(error: TranslationQuotaExceededError()):
+        emit(TranslationFillState.limitReached);
+      case Success():
+        emit(TranslationFillState.idle);
+      case Failure() || null:
+        break;
+    }
   }
 
   @override

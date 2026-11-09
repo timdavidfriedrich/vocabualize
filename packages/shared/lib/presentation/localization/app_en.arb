@@ -1062,5 +1062,6 @@
   "settingsBackupSectionTitle": "Backup",
   "settingsAboutSectionTitle": "About",
   "collectionsEditTitle": "Edit collection",
-  "collectionsEmojiTooltip": "Choose an emoji"
+  "collectionsEmojiTooltip": "Choose an emoji",
+  "homeTranslationLimitMessage": "Daily translation limit reached. Missing translations continue tomorrow."
 }

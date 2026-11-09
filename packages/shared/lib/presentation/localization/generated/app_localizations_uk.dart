@@ -1649,4 +1649,8 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get collectionsEmojiTooltip => 'Вибрати емодзі';
+
+  @override
+  String get homeTranslationLimitMessage =>
+      'Досягнуто денного ліміту перекладів. Відсутні переклади продовжаться завтра.';
 }

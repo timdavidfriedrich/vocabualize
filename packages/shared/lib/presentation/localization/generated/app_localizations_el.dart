@@ -1587,4 +1587,8 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get collectionsEmojiTooltip => 'Επιλογή emoji';
+
+  @override
+  String get homeTranslationLimitMessage =>
+      'Συμπληρώθηκε το ημερήσιο όριο μεταφράσεων. Οι μεταφράσεις που λείπουν συνεχίζονται αύριο.';
 }

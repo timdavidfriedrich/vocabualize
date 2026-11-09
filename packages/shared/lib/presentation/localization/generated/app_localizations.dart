@@ -2489,6 +2489,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose an emoji'**
   String get collectionsEmojiTooltip;
+
+  /// No description provided for @homeTranslationLimitMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily translation limit reached. Missing translations continue tomorrow.'**
+  String get homeTranslationLimitMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
