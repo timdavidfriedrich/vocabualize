@@ -27,6 +27,8 @@ translation:
   provider: deepl
   maxTextLength: 100
   perDay: 1500
+  newcomerHours: 24
+  newcomerTranslationsPerDay: 1000
 
 stockImages:
   enabled: true

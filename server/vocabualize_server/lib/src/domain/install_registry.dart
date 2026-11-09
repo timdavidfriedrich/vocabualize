@@ -54,7 +54,7 @@ class const InstallRegistry() {
     return RemoteInstallKey(installId: install.id!.uuid, secret: secret);
   }
 
-  Future<UuidValue> verify(Session session, RemoteInstallKey key) async {
+  Future<Install> verify(Session session, RemoteInstallKey key) async {
     final install = await _find(session, key);
     if (install == null) throw InstallRejectedException(reason: _invalidKey);
     final now = DateTime.now().toUtc();
@@ -65,7 +65,7 @@ class const InstallRegistry() {
         columns: (t) => [t.lastUsedAt],
       );
     }
-    return install.id!;
+    return install;
   }
 
   Future<void> delete(Session session, RemoteInstallKey key) async {

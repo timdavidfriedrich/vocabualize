@@ -6,3 +6,5 @@ fields:
   provider: String
   maxTextLength: int
   perDay: int
+  newcomerHours: int?
+  newcomerTranslationsPerDay: int?

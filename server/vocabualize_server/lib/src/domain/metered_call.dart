@@ -23,12 +23,27 @@ class const MeteredCall() {
     int units = 1,
   }) async {
     if (!isEnabled) throw ServiceUnavailableException(reason: _disabled);
-    final tiers = const ConfigSource().read().tiers;
+    final config = const ConfigSource().read();
+    final tiers = config.tiers;
+    final newcomerPerDay = switch (kind) {
+      UsageKind.translation => config.translation.newcomerPerDay(
+        caller.createdAt,
+        DateTime.now().toUtc(),
+      ),
+      UsageKind.stockImageSearch || UsageKind.imageLabeling => null,
+    };
     final reservation = await const UsageQuota().reserve(
       session,
       caller.id,
       kind: kind,
-      limits: tiers.limitsFor(caller.tier, kind),
+      limits: [
+        for (final limit in tiers.limitsFor(caller.tier, kind))
+          if ((limit.period, newcomerPerDay) case (UsagePeriod.day, final perDay?)
+              when perDay > limit.limit)
+            UsageLimit(period: limit.period, limit: perDay)
+          else
+            limit,
+      ],
       perDay: perDay,
       units: units,
       inFlightTimeout: _providerTimeout,

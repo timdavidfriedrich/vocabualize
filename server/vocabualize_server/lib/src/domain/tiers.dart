@@ -42,3 +42,13 @@ extension TierConfigExtensions on TierConfig {
     ],
   };
 }
+
+extension TranslationConfigExtensions on TranslationConfig {
+  int? newcomerPerDay(DateTime? createdAt, DateTime now) =>
+      switch ((newcomerHours, newcomerTranslationsPerDay, createdAt)) {
+        (final hours?, final perDay?, final createdAt?)
+            when now.difference(createdAt) < Duration(hours: hours) =>
+          perDay,
+        _ => null,
+      };
+}

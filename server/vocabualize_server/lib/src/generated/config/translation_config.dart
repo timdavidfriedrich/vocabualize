@@ -18,6 +18,8 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
     required this.provider,
     required this.maxTextLength,
     required this.perDay,
+    this.newcomerHours,
+    this.newcomerTranslationsPerDay,
   });
 
   factory TranslationConfig({
@@ -25,6 +27,8 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
     required String provider,
     required int maxTextLength,
     required int perDay,
+    int? newcomerHours,
+    int? newcomerTranslationsPerDay,
   }) = _TranslationConfigImpl;
 
   factory TranslationConfig.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -33,6 +37,8 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
       provider: jsonSerialization['provider'] as String,
       maxTextLength: jsonSerialization['maxTextLength'] as int,
       perDay: jsonSerialization['perDay'] as int,
+      newcomerHours: jsonSerialization['newcomerHours'] as int?,
+      newcomerTranslationsPerDay: jsonSerialization['newcomerTranslationsPerDay'] as int?,
     );
   }
 
@@ -44,6 +50,10 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
 
   int perDay;
 
+  int? newcomerHours;
+
+  int? newcomerTranslationsPerDay;
+
   /// Returns a shallow copy of this [TranslationConfig]
   /// with some or all fields replaced by the given arguments.
   @_is.useResult
@@ -52,6 +62,8 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
     String? provider,
     int? maxTextLength,
     int? perDay,
+    int? newcomerHours,
+    int? newcomerTranslationsPerDay,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -61,6 +73,9 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
       'provider': provider,
       'maxTextLength': maxTextLength,
       'perDay': perDay,
+      if (newcomerHours != null) 'newcomerHours': newcomerHours,
+      if (newcomerTranslationsPerDay != null)
+        'newcomerTranslationsPerDay': newcomerTranslationsPerDay,
     };
   }
 
@@ -75,17 +90,23 @@ abstract class TranslationConfig implements _is.SerializableModel, _is.ProtocolS
   }
 }
 
+class _Undefined {}
+
 class _TranslationConfigImpl extends TranslationConfig {
   _TranslationConfigImpl({
     required bool enabled,
     required String provider,
     required int maxTextLength,
     required int perDay,
+    int? newcomerHours,
+    int? newcomerTranslationsPerDay,
   }) : super._(
          enabled: enabled,
          provider: provider,
          maxTextLength: maxTextLength,
          perDay: perDay,
+         newcomerHours: newcomerHours,
+         newcomerTranslationsPerDay: newcomerTranslationsPerDay,
        );
 
   /// Returns a shallow copy of this [TranslationConfig]
@@ -97,12 +118,18 @@ class _TranslationConfigImpl extends TranslationConfig {
     String? provider,
     int? maxTextLength,
     int? perDay,
+    Object? newcomerHours = _Undefined,
+    Object? newcomerTranslationsPerDay = _Undefined,
   }) {
     return TranslationConfig(
       enabled: enabled ?? this.enabled,
       provider: provider ?? this.provider,
       maxTextLength: maxTextLength ?? this.maxTextLength,
       perDay: perDay ?? this.perDay,
+      newcomerHours: newcomerHours is int? ? newcomerHours : this.newcomerHours,
+      newcomerTranslationsPerDay: newcomerTranslationsPerDay is int?
+          ? newcomerTranslationsPerDay
+          : this.newcomerTranslationsPerDay,
     );
   }
 }

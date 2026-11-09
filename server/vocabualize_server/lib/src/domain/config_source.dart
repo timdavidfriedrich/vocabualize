@@ -60,6 +60,11 @@ RuntimeConfig _parse(String source) {
       provider: _stringAt(translation["provider"], "translation.provider"),
       maxTextLength: _intAt(translation["maxTextLength"], "translation.maxTextLength"),
       perDay: _intAt(translation["perDay"], "translation.perDay"),
+      newcomerHours: _optionalIntAt(translation["newcomerHours"], "translation.newcomerHours"),
+      newcomerTranslationsPerDay: _optionalIntAt(
+        translation["newcomerTranslationsPerDay"],
+        "translation.newcomerTranslationsPerDay",
+      ),
     ),
     stockImages: StockImagesConfig(
       enabled: _boolAt(stockImages["enabled"], "stockImages.enabled"),
@@ -120,6 +125,8 @@ Map<dynamic, dynamic> _mapAt(Object? value, String path) =>
     value is Map ? value : _invalid(path, "a map");
 
 int _intAt(Object? value, String path) => value is int ? value : _invalid(path, "an integer");
+
+int? _optionalIntAt(Object? value, String path) => value == null ? null : _intAt(value, path);
 
 bool _boolAt(Object? value, String path) => value is bool ? value : _invalid(path, "true or false");
 

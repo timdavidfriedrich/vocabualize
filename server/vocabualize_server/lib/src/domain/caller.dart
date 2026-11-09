@@ -1,4 +1,5 @@
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_idp_server/core.dart';
 
 import '../generated/protocol.dart';
 import 'install_registry.dart';
@@ -9,6 +10,7 @@ const _unauthenticated = "unauthenticated";
 class const Caller({
   required final UuidValue id,
   required final String tier,
+  required final DateTime? createdAt,
 });
 
 class const CallerResolver() {
@@ -17,10 +19,8 @@ class const CallerResolver() {
       return _account(session, identifier);
     }
     if (installKey == null) throw ServiceUnavailableException(reason: _unauthenticated);
-    return Caller(
-      id: await const InstallRegistry().verify(session, installKey),
-      tier: tierAnonymous,
-    );
+    final install = await const InstallRegistry().verify(session, installKey);
+    return Caller(id: install.id!, tier: tierAnonymous, createdAt: install.createdAt);
   }
 
   Future<Caller> _account(Session session, String identifier) async {
@@ -35,11 +35,22 @@ class const CallerResolver() {
       where: (t) => t.authUserId.equals(userId),
     );
     final tier = accountTier?.tier ?? tierFree;
-    if (tier == tierFree || tier == tierPremium) return Caller(id: userId, tier: tier);
+    final createdAt = await _createdAt(session, userId);
+    if (tier == tierFree || tier == tierPremium) {
+      return Caller(id: userId, tier: tier, createdAt: createdAt);
+    }
     session.log(
       "Unknown tier \"$tier\" for account ${userId.uuid} in account_tier, using $tierFree",
       level: LogLevel.warning,
     );
-    return Caller(id: userId, tier: tierFree);
+    return Caller(id: userId, tier: tierFree, createdAt: createdAt);
+  }
+
+  Future<DateTime?> _createdAt(Session session, UuidValue userId) async {
+    try {
+      return (await const AuthUsers().get(session, authUserId: userId)).createdAt;
+    } on AuthUserNotFoundException {
+      return null;
+    }
   }
 }
