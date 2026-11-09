@@ -1466,17 +1466,17 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String customPracticeDueLegend(int count) {
-    return 'scadente $count';
+    return '$count scadente';
   }
 
   @override
   String customPracticeAllLegend(int count) {
-    return 'toate $count';
+    return '$count toate';
   }
 
   @override
   String customPracticeNewLegend(int count) {
-    return 'noi $count';
+    return '$count noi';
   }
 
   @override

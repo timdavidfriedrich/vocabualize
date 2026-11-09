@@ -1437,17 +1437,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String customPracticeDueLegend(int count) {
-    return 'fällig $count';
+    return '$count fällig';
   }
 
   @override
   String customPracticeAllLegend(int count) {
-    return 'alle $count';
+    return '$count alle';
   }
 
   @override
   String customPracticeNewLegend(int count) {
-    return 'neu $count';
+    return '$count neu';
   }
 
   @override

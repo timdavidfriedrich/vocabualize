@@ -1496,17 +1496,17 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String customPracticeDueLegend(int count) {
-    return 'до повторення $count';
+    return '$count до повторення';
   }
 
   @override
   String customPracticeAllLegend(int count) {
-    return 'усі $count';
+    return '$count усі';
   }
 
   @override
   String customPracticeNewLegend(int count) {
-    return 'нові $count';
+    return '$count нові';
   }
 
   @override

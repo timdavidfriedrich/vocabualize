@@ -2235,19 +2235,19 @@ abstract class AppLocalizations {
   /// No description provided for @customPracticeDueLegend.
   ///
   /// In en, this message translates to:
-  /// **'due {count}'**
+  /// **'{count} due'**
   String customPracticeDueLegend(int count);
 
   /// No description provided for @customPracticeAllLegend.
   ///
   /// In en, this message translates to:
-  /// **'all {count}'**
+  /// **'{count} all'**
   String customPracticeAllLegend(int count);
 
   /// No description provided for @customPracticeNewLegend.
   ///
   /// In en, this message translates to:
-  /// **'new {count}'**
+  /// **'{count} new'**
   String customPracticeNewLegend(int count);
 
   /// No description provided for @customPracticeDueLabel.

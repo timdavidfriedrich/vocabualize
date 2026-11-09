@@ -981,7 +981,7 @@
       }
     }
   },
-  "customPracticeDueLegend": "due {count}",
+  "customPracticeDueLegend": "{count} due",
   "@customPracticeDueLegend": {
     "placeholders": {
       "count": {
@@ -989,7 +989,7 @@
       }
     }
   },
-  "customPracticeAllLegend": "all {count}",
+  "customPracticeAllLegend": "{count} all",
   "@customPracticeAllLegend": {
     "placeholders": {
       "count": {
@@ -997,7 +997,7 @@
       }
     }
   },
-  "customPracticeNewLegend": "new {count}",
+  "customPracticeNewLegend": "{count} new",
   "@customPracticeNewLegend": {
     "placeholders": {
       "count": {
