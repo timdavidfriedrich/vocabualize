@@ -1108,8 +1108,8 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homeChooseWordsButton => 'Обрати слова';
 
   @override
-  String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
-    return 'Картки питають мовою $askMeIn замість $main. Ви завжди можете показати слово мовою $main. Так ваша $askMeIn залишається активною, поки ви вивчаєте $learned.';
+  String learnedLanguageAskMeInUnlearnedHelpMessage(String askMeIn, String main, String learned) {
+    return 'Картки питають мовою $askMeIn замість $main для слів, які ви вже добре знаєте мовою $learned. Ви завжди можете показати слово мовою $main. Так ваша $askMeIn залишається активною, поки ви вивчаєте $learned.';
   }
 
   @override

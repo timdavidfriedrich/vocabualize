@@ -276,7 +276,7 @@
   "homeManageLanguagesButton": "Gestionați limbile",
   "homeEmptyLanguageMessage": "{count, plural, =1{Ai 1 cuvânt în {source}. Importă-l dacă vrei să-l înveți și în {language}.} few{Ai {count} cuvinte în {source}. Importă-le pe cele pe care vrei să le înveți și în {language}.} other{Ai {count} de cuvinte în {source}. Importă-le pe cele pe care vrei să le înveți și în {language}.}}",
   "homeChooseWordsButton": "Alegeți cuvinte",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Cartonașele întreabă în {askMeIn} în loc de {main}. Puteți afișa oricând cuvântul în {main}. Astfel, {askMeIn} rămâne activă cât învățați {learned}.",
+  "learnedLanguageAskMeInUnlearnedHelpMessage": "Cartonașele întreabă în {askMeIn} în loc de {main}, pentru cuvintele pe care le cunoașteți deja bine în {learned}. Puteți afișa oricând cuvântul în {main}. Astfel, {askMeIn} rămâne activă cât învățați {learned}.",
   "detailsLearnSwitchLabel": "Învățați în {language}",
   "detailsExistingTitle": "Deja salvat",
   "detailsExistingMessage": "„{word}” este deja salvat ({language}: {translation}). Îl adăugați la {target}?",

@@ -276,7 +276,7 @@
   "homeManageLanguagesButton": "Διαχείριση γλωσσών",
   "homeEmptyLanguageMessage": "{count, plural, =1{Έχεις 1 λέξη στα {source}. Εισήγαγέ την αν θέλεις να τη μάθεις και στα {language}.} other{Έχεις {count} λέξεις στα {source}. Εισήγαγε όσες θέλεις να μάθεις και στα {language}.}}",
   "homeChooseWordsButton": "Επιλογή λέξεων",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Οι κάρτες ρωτούν στα {askMeIn} αντί για τα {main}. Μπορείτε πάντα να δείτε τη λέξη στα {main}. Έτσι τα {askMeIn} σας μένουν ενεργά όσο μαθαίνετε {learned}.",
+  "learnedLanguageAskMeInUnlearnedHelpMessage": "Οι κάρτες ρωτούν στα {askMeIn} αντί για τα {main}, για λέξεις που ήδη γνωρίζετε καλά στα {learned}. Μπορείτε πάντα να δείτε τη λέξη στα {main}. Έτσι τα {askMeIn} σας μένουν ενεργά όσο μαθαίνετε {learned}.",
   "detailsLearnSwitchLabel": "Εκμάθηση στα {language}",
   "detailsExistingTitle": "Έχει ήδη αποθηκευτεί",
   "detailsExistingMessage": "Το «{word}» έχει ήδη αποθηκευτεί ({language}: {translation}). Να προστεθεί στα {target};",

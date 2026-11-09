@@ -1764,11 +1764,11 @@ abstract class AppLocalizations {
   /// **'Choose words'**
   String get homeChooseWordsButton;
 
-  /// No description provided for @learnedLanguageAskMeInAlwaysHelpMessage.
+  /// No description provided for @learnedLanguageAskMeInUnlearnedHelpMessage.
   ///
   /// In en, this message translates to:
-  /// **'Cards ask in {askMeIn} instead of {main}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.'**
-  String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned);
+  /// **'Cards ask in {askMeIn} instead of {main}, for words you already know well in {learned}. You can always show the {main} word. This keeps your {askMeIn} active while you learn {learned}.'**
+  String learnedLanguageAskMeInUnlearnedHelpMessage(String askMeIn, String main, String learned);
 
   /// No description provided for @detailsLearnSwitchLabel.
   ///

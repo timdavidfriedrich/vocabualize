@@ -276,7 +276,7 @@
   "homeManageLanguagesButton": "Керувати мовами",
   "homeEmptyLanguageMessage": "{count, plural, one{У тебе {count} слово мовою {source}. Імпортуй ті, які хочеш вивчати ще й мовою {language}.} few{У тебе {count} слова мовою {source}. Імпортуй ті, які хочеш вивчати ще й мовою {language}.} many{У тебе {count} слів мовою {source}. Імпортуй ті, які хочеш вивчати ще й мовою {language}.} other{У тебе {count} слова мовою {source}. Імпортуй ті, які хочеш вивчати ще й мовою {language}.}}",
   "homeChooseWordsButton": "Обрати слова",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Картки питають мовою {askMeIn} замість {main}. Ви завжди можете показати слово мовою {main}. Так ваша {askMeIn} залишається активною, поки ви вивчаєте {learned}.",
+  "learnedLanguageAskMeInUnlearnedHelpMessage": "Картки питають мовою {askMeIn} замість {main} для слів, які ви вже добре знаєте мовою {learned}. Ви завжди можете показати слово мовою {main}. Так ваша {askMeIn} залишається активною, поки ви вивчаєте {learned}.",
   "detailsLearnSwitchLabel": "Вивчати мовою {language}",
   "detailsExistingTitle": "Уже збережено",
   "detailsExistingMessage": "«{word}» уже збережено ({language}: {translation}). Додати до мови {target}?",

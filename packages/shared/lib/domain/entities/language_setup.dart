@@ -73,7 +73,7 @@ extension LanguageSetupExtensions on LanguageSetup {
     final candidates = [
       if (learnedOf(language) case LearnedLanguage(:final askMeIn?, :final askMeInFromLevel)
           when switch (learnedOf(askMeIn)) {
-            null => true,
+            null => vocabulary.levelIn(language) >= askMeInFromLevel.floor,
             LearnedLanguage() => vocabulary.levelIn(askMeIn) >= askMeInFromLevel.floor,
           })
         askMeIn,

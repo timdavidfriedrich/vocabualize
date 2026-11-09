@@ -276,7 +276,7 @@
   "homeManageLanguagesButton": "Sprachen verwalten",
   "homeEmptyLanguageMessage": "{count, plural, =1{Du hast 1 Wort auf {source}. Importiere es, wenn du es auch auf {language} lernen möchtest.} other{Du hast {count} Wörter auf {source}. Importiere die, die du auch auf {language} lernen möchtest.}}",
   "homeChooseWordsButton": "Wörter wählen",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Karten fragen auf {askMeIn} statt auf {main}. Das Wort auf {main} kannst du jederzeit anzeigen. So bleibt dein {askMeIn} aktiv, während du {learned} lernst.",
+  "learnedLanguageAskMeInUnlearnedHelpMessage": "Karten fragen auf {askMeIn} statt auf {main}, bei Wörtern, die du auf {learned} schon gut kannst. Das Wort auf {main} kannst du jederzeit anzeigen. So bleibt dein {askMeIn} aktiv, während du {learned} lernst.",
   "detailsLearnSwitchLabel": "Auf {language} lernen",
   "detailsExistingTitle": "Schon gespeichert",
   "detailsExistingMessage": "„{word}“ ist schon gespeichert ({language}: {translation}). Zu {target} hinzufügen?",

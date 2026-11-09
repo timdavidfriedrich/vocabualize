@@ -276,7 +276,7 @@
   "homeManageLanguagesButton": "Gestisci lingue",
   "homeEmptyLanguageMessage": "{count, plural, =1{Hai 1 parola in {source}. Importala se vuoi impararla anche in {language}.} other{Hai {count} parole in {source}. Importa quelle che vuoi imparare anche in {language}.}}",
   "homeChooseWordsButton": "Scegli parole",
-  "learnedLanguageAskMeInAlwaysHelpMessage": "Le schede chiedono in {askMeIn} invece che in {main}. Puoi sempre mostrare la parola in {main}. Così il tuo {askMeIn} resta attivo mentre impari {learned}.",
+  "learnedLanguageAskMeInUnlearnedHelpMessage": "Le schede chiedono in {askMeIn} invece che in {main}, per le parole che conosci già bene in {learned}. Puoi sempre mostrare la parola in {main}. Così il tuo {askMeIn} resta attivo mentre impari {learned}.",
   "detailsLearnSwitchLabel": "Impara in {language}",
   "detailsExistingTitle": "Già salvata",
   "detailsExistingMessage": "«{word}» è già salvata ({language}: {translation}). Aggiungerla a {target}?",

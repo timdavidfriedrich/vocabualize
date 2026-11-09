@@ -49,11 +49,9 @@ class const LearnedLanguageRoute({
               (final askMeIn?, true) => _Stop(
                 language: askMeIn,
                 color: context.c.primaryContainer,
-                role: setup.isLearning(askMeIn)
-                    ? context.s.learnedLanguageAskMeInFromRole(
-                        learned.askMeInFromLevel.toLabel(context),
-                      )
-                    : context.s.learnedLanguageAskMeInLabel,
+                role: context.s.learnedLanguageAskMeInFromRole(
+                  learned.askMeInFromLevel.toLabel(context),
+                ),
               ),
               (final askMeIn?, false) => _AskMeInStop(askMeIn: askMeIn, state: _state),
               (null, true) => const SizedBox.shrink(),
@@ -226,14 +224,12 @@ class const _AskMeInStop({
                     ),
                   ],
                 ),
-                if (_state.setup.isLearning(_askMeIn)) ...[
-                  const SizedBox(height: Spacing.s),
-                  _LevelCard(
-                    level: _state.learned.askMeInFromLevel,
-                    main: _state.setup.main,
-                    isBusy: _state.isBusy,
-                  ),
-                ],
+                const SizedBox(height: Spacing.s),
+                _LevelCard(
+                  level: _state.learned.askMeInFromLevel,
+                  main: _state.setup.main,
+                  isBusy: _state.isBusy,
+                ),
               ],
             ),
           ),
@@ -350,7 +346,7 @@ void _explainAskMeIn(BuildContext context, LearnedLanguageLoaded state, Language
       content: Text(switch (askMeIn) {
         final askMeIn? when setup.isLearning(askMeIn) =>
           context.s.learnedLanguageAskMeInHelpMessage(askMeIn.toShortLabel(context), main, learned),
-        final askMeIn? => context.s.learnedLanguageAskMeInAlwaysHelpMessage(
+        final askMeIn? => context.s.learnedLanguageAskMeInUnlearnedHelpMessage(
           askMeIn.toShortLabel(context),
           main,
           learned,

@@ -1062,8 +1062,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get homeChooseWordsButton => 'Scegli parole';
 
   @override
-  String learnedLanguageAskMeInAlwaysHelpMessage(String askMeIn, String main, String learned) {
-    return 'Le schede chiedono in $askMeIn invece che in $main. Puoi sempre mostrare la parola in $main. Così il tuo $askMeIn resta attivo mentre impari $learned.';
+  String learnedLanguageAskMeInUnlearnedHelpMessage(String askMeIn, String main, String learned) {
+    return 'Le schede chiedono in $askMeIn invece che in $main, per le parole che conosci già bene in $learned. Puoi sempre mostrare la parola in $main. Così il tuo $askMeIn resta attivo mentre impari $learned.';
   }
 
   @override
