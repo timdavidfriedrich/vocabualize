@@ -185,22 +185,22 @@ class const _SummaryCard({
               ),
             ],
           ),
-          const SizedBox(height: Spacing.m),
-          SegmentedBar(
-            parts: [
-              for (final language in languages) ...[
-                SegmentedBarPart(
-                  value: _state.reviewCountOf(language),
-                  color: _colorOf(context, _state, language),
-                ),
-                SegmentedBarPart(
-                  value: _state.newCountOf(language),
-                  color: _newColorOf(context, _colorOf(context, _state, language)),
-                ),
-              ],
-            ],
-          ),
           if (legendCount > 1) ...[
+            const SizedBox(height: Spacing.m),
+            SegmentedBar(
+              parts: [
+                for (final language in languages) ...[
+                  SegmentedBarPart(
+                    value: _state.reviewCountOf(language),
+                    color: _colorOf(context, _state, language),
+                  ),
+                  SegmentedBarPart(
+                    value: _state.newCountOf(language),
+                    color: _newColorOf(context, _colorOf(context, _state, language)),
+                  ),
+                ],
+              ],
+            ),
             const SizedBox(height: Spacing.m),
             for (final language in languages)
               Padding(
