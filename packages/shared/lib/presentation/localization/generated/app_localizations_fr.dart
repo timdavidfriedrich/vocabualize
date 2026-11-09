@@ -1559,9 +1559,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get detailsEditWordTitle => 'Modifier le mot';
 
   @override
-  String get detailsEditWordsTitle => 'Modifier les mots';
-
-  @override
   String get detailsDoneButton => 'Terminé';
 
   @override

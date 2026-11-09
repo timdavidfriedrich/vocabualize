@@ -1532,10 +1532,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailsEmojiNoResultsMessage => 'No emoji found';
 
   @override
-  String get detailsEditWordTitle => 'Edit the word';
-
-  @override
-  String get detailsEditWordsTitle => 'Edit the words';
+  String get detailsEditWordTitle => 'Edit word';
 
   @override
   String get detailsDoneButton => 'Done';

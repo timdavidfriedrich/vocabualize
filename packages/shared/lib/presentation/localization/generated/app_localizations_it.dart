@@ -1549,9 +1549,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get detailsEditWordTitle => 'Modifica la parola';
 
   @override
-  String get detailsEditWordsTitle => 'Modifica le parole';
-
-  @override
   String get detailsDoneButton => 'Fatto';
 
   @override

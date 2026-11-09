@@ -1552,9 +1552,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get detailsEditWordTitle => 'Επεξεργασία λέξης';
 
   @override
-  String get detailsEditWordsTitle => 'Επεξεργασία λέξεων';
-
-  @override
   String get detailsDoneButton => 'Τέλος';
 
   @override

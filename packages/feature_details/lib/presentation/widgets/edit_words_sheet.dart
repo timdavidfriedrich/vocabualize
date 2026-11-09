@@ -3,25 +3,19 @@ import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:feature_details/presentation/extensions/details_editing_extensions.dart';
-import 'package:feature_details/presentation/extensions/details_language_extensions.dart';
 import 'package:feature_details/presentation/widgets/replace_dialog.dart';
 import 'package:feature_details/presentation/widgets/report_translation_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/language.dart';
-import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/translation.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
-import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/widgets/filled_text_field.dart';
-import 'package:shared/presentation/widgets/tonal_button.dart';
+import 'package:shared/presentation/widgets/language_segments.dart';
 
 typedef _WordField = ({
-  Language language,
-  String label,
   String text,
-  bool isLearned,
   bool canReport,
 });
 
@@ -31,18 +25,10 @@ Future<void> editWords(
   required List<Language> languages,
 }) async {
   final bloc = context.read<DetailsBloc>();
-  final fields = [
+  final ordered = [
+    if (languages.contains(editing.setup.main)) editing.setup.main,
     for (final language in languages)
-      (
-        language: language,
-        label: language.toRoleLabel(context, editing),
-        text: editing.textOf(language),
-        isLearned: editing.setup.isLearning(language),
-        canReport:
-            language != editing.enteredLanguage &&
-            editing.textOf(language).isNotEmpty &&
-            editing.texts[language]?.origin == TranslationOrigin.translated,
-      ),
+      if (language != editing.setup.main) language,
   ];
   final edits = await showModalBottomSheet<Map<Language, String>>(
     context: context,
@@ -51,22 +37,30 @@ Future<void> editWords(
     useSafeArea: true,
     backgroundColor: context.c.surfaceContainerLowest,
     builder: (sheetContext) => _EditWordsSheet(
-      title: languages.length == 1
-          ? context.s.detailsEditWordTitle
-          : context.s.detailsEditWordsTitle,
-      fields: fields,
+      languages: ordered,
+      initialLanguage: languages.first,
+      fields: {
+        for (final language in ordered)
+          language: (
+            text: editing.textOf(language),
+            canReport:
+                language != editing.enteredLanguage &&
+                editing.textOf(language).isNotEmpty &&
+                editing.texts[language]?.origin == TranslationOrigin.translated,
+          ),
+      },
       onSpeak: (language) => bloc.add(DetailsSpeakRequested(language: language)),
       onReport: (language) => _report(context, editing, language),
     ),
   );
   if (edits == null || !context.mounted) return;
-  final ordered = [
+  final changes = [
     for (final entry in edits.entries)
       if (entry.key != editing.enteredLanguage) entry,
     for (final entry in edits.entries)
       if (entry.key == editing.enteredLanguage) entry,
   ];
-  for (final MapEntry(key: language, value: text) in ordered) {
+  for (final MapEntry(key: language, value: text) in changes) {
     final retranslates =
         language == editing.enteredLanguage &&
         context.mounted &&
@@ -86,122 +80,102 @@ Future<void> _report(BuildContext context, DetailsEditing editing, Language lang
 }
 
 class const _EditWordsSheet({
-  required final String _title,
-  required final List<_WordField> _fields,
+  required final List<Language> _languages,
+  required final Language _initialLanguage,
+  required final Map<Language, _WordField> _fields,
   required final ValueChanged<Language> _onSpeak,
   required final ValueChanged<Language> _onReport,
 }) extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final edits = useMemoized(() => <Language, String>{});
+    final selected = useState(_initialLanguage);
+    final edits = useMemoized(
+      () => {for (final MapEntry(:key, :value) in _fields.entries) key: value.text},
+    );
+    final controller = useTextEditingController(text: _fields[_initialLanguage]?.text);
+    void select(Language language) {
+      edits[selected.value] = controller.text;
+      selected.value = language;
+      final text = edits[language] ?? "";
+      controller.value = TextEditingValue(
+        text: text,
+        selection: TextSelection.collapsed(offset: text.length),
+      );
+    }
+
+    Map<Language, String> changes() {
+      edits[selected.value] = controller.text;
+      return {
+        for (final language in _languages)
+          if (edits[language]?.trim() case final text?
+              when text.isNotEmpty && text != _fields[language]?.text)
+            language: text,
+      };
+    }
+
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(
-            Spacing.m,
-            0,
-            Spacing.m,
-            Spacing.m,
-          ),
+          padding: const EdgeInsets.fromLTRB(Spacing.xl, 0, Spacing.xl, Spacing.xl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Spacing.xxs),
-                child: Text(_title, style: context.t.titleLarge),
-              ),
-              const SizedBox(height: Spacing.m),
-              for (final field in _fields)
-                _WordInput(
-                  field: field,
-                  onChanged: (text) => edits[field.language] = text,
-                  onSpeak: () => _onSpeak(field.language),
-                  onReport: field.canReport ? () => _onReport(field.language) : null,
-                ),
-              const SizedBox(height: Spacing.xs),
               Row(
                 children: [
                   Expanded(
-                    child: TonalButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text(context.s.cancel),
-                    ),
+                    child: Text(context.s.detailsEditWordTitle, style: context.t.headlineSmall),
                   ),
-                  const SizedBox(width: Spacing.s),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop({
-                        for (final field in _fields)
-                          if (edits[field.language]?.trim() case final text?
-                              when text.isNotEmpty && text != field.text)
-                            field.language: text,
-                      }),
-                      child: Text(context.s.detailsDoneButton),
-                    ),
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    tooltip: context.s.close,
+                    icon: const Icon(Icons.close_rounded),
                   ),
                 ],
+              ),
+              const SizedBox(height: Spacing.l),
+              LanguageSegments(
+                languages: _languages,
+                selected: selected.value,
+                onSelected: select,
+              ),
+              const SizedBox(height: Spacing.m),
+              FilledTextField(
+                controller: controller,
+                style: context.t.bodyLarge,
+                suffix: Padding(
+                  padding: const EdgeInsets.only(right: Spacing.xs),
+                  child: IconButton.filled(
+                    style: IconButton.styleFrom(
+                      backgroundColor: context.c.surface,
+                      foregroundColor: context.c.primary,
+                      shape: const CircleBorder(),
+                    ),
+                    onPressed: () => _onSpeak(selected.value),
+                    tooltip: context.s.vocabularySpeakTooltip,
+                    icon: const Icon(Icons.volume_up_rounded),
+                  ),
+                ),
+              ),
+              if (_fields[selected.value]?.canReport ?? false)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton.icon(
+                    style: TextButton.styleFrom(foregroundColor: context.c.onSurfaceVariant),
+                    onPressed: () => _onReport(selected.value),
+                    icon: const Icon(Icons.flag_outlined, size: Spacing.iconS),
+                    label: Text(context.s.detailsReportTranslationButton),
+                  ),
+                ),
+              const SizedBox(height: Spacing.l),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(changes()),
+                child: Text(context.s.detailsDoneButton),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class const _WordInput({
-  required final _WordField _field,
-  required final ValueChanged<String> _onChanged,
-  required final VoidCallback _onSpeak,
-  required final VoidCallback? _onReport,
-}) extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    final controller = useTextEditingController(text: _field.text);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: Spacing.m),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Spacing.xxs),
-            child: Row(
-              children: [
-                Text(_field.language.toFlag(), style: context.t.bodyLarge),
-                const SizedBox(width: Spacing.s),
-                Expanded(
-                  child: Text(
-                    _field.label,
-                    style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: Spacing.xs),
-          FilledTextField(
-            controller: controller,
-            style: _field.isLearned ? context.t.titleMedium : context.t.bodyLarge,
-            onChanged: _onChanged,
-            suffix: IconButton(
-              onPressed: _onSpeak,
-              tooltip: context.s.vocabularySpeakTooltip,
-              icon: const Icon(Icons.volume_up_outlined),
-            ),
-          ),
-          if (_onReport case final onReport?)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton.icon(
-                style: TextButton.styleFrom(foregroundColor: context.c.onSurfaceVariant),
-                onPressed: onReport,
-                icon: const Icon(Icons.flag_outlined, size: Spacing.iconS),
-                label: Text(context.s.detailsReportTranslationButton),
-              ),
-            ),
-        ],
       ),
     );
   }

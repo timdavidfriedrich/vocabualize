@@ -1582,9 +1582,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get detailsEditWordTitle => 'Editați cuvântul';
 
   @override
-  String get detailsEditWordsTitle => 'Editați cuvintele';
-
-  @override
   String get detailsDoneButton => 'Gata';
 
   @override

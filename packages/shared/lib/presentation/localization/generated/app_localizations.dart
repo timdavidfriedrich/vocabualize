@@ -2409,14 +2409,8 @@ abstract class AppLocalizations {
   /// No description provided for @detailsEditWordTitle.
   ///
   /// In en, this message translates to:
-  /// **'Edit the word'**
+  /// **'Edit word'**
   String get detailsEditWordTitle;
-
-  /// No description provided for @detailsEditWordsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit the words'**
-  String get detailsEditWordsTitle;
 
   /// No description provided for @detailsDoneButton.
   ///

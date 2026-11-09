@@ -1550,9 +1550,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get detailsEditWordTitle => 'Editar la palabra';
 
   @override
-  String get detailsEditWordsTitle => 'Editar las palabras';
-
-  @override
   String get detailsDoneButton => 'Listo';
 
   @override

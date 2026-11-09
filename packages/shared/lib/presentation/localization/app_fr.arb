@@ -384,7 +384,6 @@
   "detailsEmojiSearchHint": "Chercher un emoji (en anglais)",
   "detailsEmojiNoResultsMessage": "Aucun emoji trouvé",
   "detailsEditWordTitle": "Modifier le mot",
-  "detailsEditWordsTitle": "Modifier les mots",
   "detailsDoneButton": "Terminé",
   "detailsAddLanguageButton": "Ajouter une autre langue",
   "detailsPausedRoleLabel": "{language}, en pause",

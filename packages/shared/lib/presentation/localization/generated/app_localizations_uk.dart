@@ -1614,9 +1614,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsEditWordTitle => 'Редагувати слово';
 
   @override
-  String get detailsEditWordsTitle => 'Редагувати слова';
-
-  @override
   String get detailsDoneButton => 'Готово';
 
   @override
