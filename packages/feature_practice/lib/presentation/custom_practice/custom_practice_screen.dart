@@ -149,6 +149,10 @@ class const _SummaryCard({
   @override
   Widget build(BuildContext context) {
     final languages = _state.shownEnabledLanguages;
+    final legendCount = languages.fold(
+      0,
+      (sum, language) => sum + (_state.waitingCountOf(language) > 0 ? 2 : 1),
+    );
     return Container(
       padding: const EdgeInsets.all(Spacing.l),
       decoration: BoxDecoration(
@@ -196,34 +200,36 @@ class const _SummaryCard({
               ],
             ],
           ),
-          if (languages.isNotEmpty) const SizedBox(height: Spacing.m),
-          for (final language in languages)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: Spacing.xxxs),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: _LegendEntry(
-                      color: _colorOf(context, _state, language),
-                      language: language,
-                      label: _state.includesAllWords(language)
-                          ? context.s.customPracticeAllLegend(_state.reviewCountOf(language))
-                          : context.s.customPracticeDueLegend(_state.reviewCountOf(language)),
-                    ),
-                  ),
-                  Expanded(
-                    child: switch (_state.waitingCountOf(language)) {
-                      0 => const SizedBox.shrink(),
-                      _ => _LegendEntry(
-                        color: _newColorOf(context, _colorOf(context, _state, language)),
+          if (legendCount > 1) ...[
+            const SizedBox(height: Spacing.m),
+            for (final language in languages)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: Spacing.xxxs),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _LegendEntry(
+                        color: _colorOf(context, _state, language),
                         language: language,
-                        label: context.s.customPracticeNewLegend(_state.newCountOf(language)),
+                        label: _state.includesAllWords(language)
+                            ? context.s.customPracticeAllLegend(_state.reviewCountOf(language))
+                            : context.s.customPracticeDueLegend(_state.reviewCountOf(language)),
                       ),
-                    },
-                  ),
-                ],
+                    ),
+                    Expanded(
+                      child: switch (_state.waitingCountOf(language)) {
+                        0 => const SizedBox.shrink(),
+                        _ => _LegendEntry(
+                          color: _newColorOf(context, _colorOf(context, _state, language)),
+                          language: language,
+                          label: context.s.customPracticeNewLegend(_state.newCountOf(language)),
+                        ),
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
+          ],
         ],
       ),
     );
