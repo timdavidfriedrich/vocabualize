@@ -21,6 +21,7 @@ class const SwipeActions({
   required final Color _color,
   required final Widget _child,
   final VoidCallback? _onTap,
+  final VoidCallback? _onBlockedSwipe,
 }) extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,10 @@ class const SwipeActions({
     void settle() => controller.animateTo(controller.value > _openThreshold ? 1 : 0);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
+      onHorizontalDragStart: switch (_onBlockedSwipe) {
+        final onBlockedSwipe? when _actions.isEmpty => (_) => onBlockedSwipe(),
+        _ => null,
+      },
       onHorizontalDragUpdate: _actions.isEmpty
           ? null
           : (details) => controller.value -= (details.primaryDelta ?? 0) / actionsWidth,

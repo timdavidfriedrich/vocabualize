@@ -159,10 +159,14 @@ class const _LearnedRow({
   Widget build(BuildContext context) {
     final bloc = context.read<LanguagesBloc>();
     final language = _learned.language;
-    final canLeave = _state.setup.active.length > 1 && !_state.isBusy;
+    final isLastActive = _state.setup.active.length == 1;
+    final canLeave = !isLastActive && !_state.isBusy;
     return SwipeActions(
       color: context.c.surfaceContainerLowest,
       onTap: () => context.pushLearnedLanguageDetails(language: language),
+      onBlockedSwipe: isLastActive
+          ? () => context.showToast(context.s.learnedLanguageLastActiveHint)
+          : null,
       actions: [
         if (canLeave) ...[
           SwipeAction(
