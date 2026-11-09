@@ -279,10 +279,11 @@ class const _LanguageCard({
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Switch(
-                value: isEnabled,
-                onChanged: (_) => bloc.add(CustomPracticeLanguageToggled(language: _language)),
-              ),
+              if (_state.activeLanguages.length > 1)
+                Switch(
+                  value: isEnabled,
+                  onChanged: (_) => bloc.add(CustomPracticeLanguageToggled(language: _language)),
+                ),
             ],
           ),
           if (isEnabled) ...[
