@@ -42,9 +42,6 @@ extension DetailsEditingExtensions on DetailsEditing {
 
   bool get canEditTexts => runningAction == null && translatingLanguages.isEmpty;
 
-  bool canSwitchOff(Language language) =>
-      !enabledLanguages.contains(language) || enabledLanguages.length > 1;
-
   List<Language> get learnedLanguages => [...activeLanguages, ...pausedLanguages];
 
   bool get hasSeveralLanguages => learnedLanguages.length + askMeInLanguages.length > 1;

@@ -278,6 +278,7 @@
   "homeChooseWordsButton": "Επιλογή λέξεων",
   "learnedLanguageAskMeInUnlearnedHelpMessage": "Οι κάρτες ρωτούν στα {askMeIn} αντί για τα {main}, για λέξεις που ήδη γνωρίζετε καλά στα {learned}. Μπορείτε πάντα να δείτε τη λέξη στα {main}. Έτσι τα {askMeIn} σας μένουν ενεργά όσο μαθαίνετε {learned}.",
   "detailsLearnSwitchLabel": "Εκμάθηση στα {language}",
+  "detailsLastLanguageHint": "Πρέπει να μαθαίνετε αυτή τη λέξη σε τουλάχιστον μία γλώσσα.",
   "detailsExistingTitle": "Έχει ήδη αποθηκευτεί",
   "detailsExistingMessage": "Το «{word}» έχει ήδη αποθηκευτεί ({language}: {translation}). Να προστεθεί στα {target};",
   "detailsExistingAddButton": "Προσθήκη στα {language}",

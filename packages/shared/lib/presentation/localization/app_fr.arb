@@ -278,6 +278,7 @@
   "homeChooseWordsButton": "Choisir des mots",
   "learnedLanguageAskMeInUnlearnedHelpMessage": "Les cartes posent la question en {askMeIn} au lieu de {main}, pour les mots que vous connaissez déjà bien en {learned}. Vous pouvez toujours afficher le mot en {main}. Votre {askMeIn} reste ainsi actif pendant que vous apprenez {learned}.",
   "detailsLearnSwitchLabel": "Apprendre en {language}",
+  "detailsLastLanguageHint": "Vous devez apprendre ce mot dans au moins une langue.",
   "detailsExistingTitle": "Déjà enregistré",
   "detailsExistingMessage": "« {word} » est déjà enregistré ({language} : {translation}). L'ajouter à {target} ?",
   "detailsExistingAddButton": "Ajouter à {language}",

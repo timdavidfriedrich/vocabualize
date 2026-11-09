@@ -1118,6 +1118,9 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
+  String get detailsLastLanguageHint => 'Потрібно вивчати це слово принаймні однією мовою.';
+
+  @override
   String get detailsExistingTitle => 'Уже збережено';
 
   @override

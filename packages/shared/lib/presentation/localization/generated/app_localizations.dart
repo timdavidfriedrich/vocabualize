@@ -1776,6 +1776,12 @@ abstract class AppLocalizations {
   /// **'Learn in {language}'**
   String detailsLearnSwitchLabel(String language);
 
+  /// No description provided for @detailsLastLanguageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You need to learn this word in at least one language.'**
+  String get detailsLastLanguageHint;
+
   /// No description provided for @detailsExistingTitle.
   ///
   /// In en, this message translates to:

@@ -278,6 +278,7 @@
   "homeChooseWordsButton": "Wörter wählen",
   "learnedLanguageAskMeInUnlearnedHelpMessage": "Karten fragen auf {askMeIn} statt auf {main}, bei Wörtern, die du auf {learned} schon gut kannst. Das Wort auf {main} kannst du jederzeit anzeigen. So bleibt dein {askMeIn} aktiv, während du {learned} lernst.",
   "detailsLearnSwitchLabel": "Auf {language} lernen",
+  "detailsLastLanguageHint": "Du musst dieses Wort in mindestens einer Sprache lernen.",
   "detailsExistingTitle": "Schon gespeichert",
   "detailsExistingMessage": "„{word}“ ist schon gespeichert ({language}: {translation}). Zu {target} hinzufügen?",
   "detailsExistingAddButton": "Zu {language} hinzufügen",

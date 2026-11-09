@@ -203,32 +203,28 @@ class const _EditWordsSheet({
                 ),
               ),
               if (_isVertical)
-                Visibility(
-                  visible: _learnedLanguages.contains(language),
-                  maintainSize: true,
-                  maintainAnimation: true,
-                  maintainState: true,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: Spacing.l, top: Spacing.xs),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            context.s.detailsLearnSwitchLabel(language.toShortLabel(context)),
-                            style: context.t.bodyLarge,
-                          ),
+                Stack(
+                  children: [
+                    for (final measured in _languages)
+                      Visibility.maintain(
+                        visible: false,
+                        child: _LanguageNotes(
+                          language: measured,
+                          isLearned: _learnedLanguages.contains(measured),
+                          isOn: true,
+                          isLastOn: true,
                         ),
-                        Switch(
-                          value: isOn,
-                          onChanged: isOn && enabled.value.length == 1
-                              ? null
-                              : (isTurnedOn) => enabled.value = isTurnedOn
-                                    ? {...enabled.value, language}
-                                    : enabled.value.difference({language}),
-                        ),
-                      ],
+                      ),
+                    _LanguageNotes(
+                      language: language,
+                      isLearned: _learnedLanguages.contains(language),
+                      isOn: isOn,
+                      isLastOn: isOn && enabled.value.length == 1,
+                      onChanged: (isTurnedOn) => enabled.value = isTurnedOn
+                          ? {...enabled.value, language}
+                          : enabled.value.difference({language}),
                     ),
-                  ),
+                  ],
                 ),
               if (_isVertical)
                 Align(
@@ -247,6 +243,42 @@ class const _EditWordsSheet({
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class const _LanguageNotes({
+  required final Language _language,
+  required final bool _isLearned,
+  required final bool _isOn,
+  required final bool _isLastOn,
+  final ValueChanged<bool>? _onChanged,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final noteStyle = context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant);
+    return Padding(
+      padding: const EdgeInsets.only(left: Spacing.l, top: Spacing.xs),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: Spacing.xxs,
+        children: [
+          if (_isLearned) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    context.s.detailsLearnSwitchLabel(_language.toShortLabel(context)),
+                    style: context.t.bodyLarge,
+                  ),
+                ),
+                Switch(value: _isOn, onChanged: _isLastOn ? null : _onChanged),
+              ],
+            ),
+            if (_isLastOn) Text(context.s.detailsLastLanguageHint, style: noteStyle),
+          ],
+        ],
       ),
     );
   }

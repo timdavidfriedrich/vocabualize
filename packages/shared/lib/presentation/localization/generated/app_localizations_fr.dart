@@ -1082,6 +1082,9 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get detailsLastLanguageHint => 'Vous devez apprendre ce mot dans au moins une langue.';
+
+  @override
   String get detailsExistingTitle => 'Déjà enregistré';
 
   @override

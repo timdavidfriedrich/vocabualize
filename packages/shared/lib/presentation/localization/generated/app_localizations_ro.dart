@@ -1094,6 +1094,9 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
+  String get detailsLastLanguageHint => 'Trebuie să învățați acest cuvânt în cel puțin o limbă.';
+
+  @override
   String get detailsExistingTitle => 'Deja salvat';
 
   @override

@@ -1075,6 +1075,10 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
+  String get detailsLastLanguageHint =>
+      'Πρέπει να μαθαίνετε αυτή τη λέξη σε τουλάχιστον μία γλώσσα.';
+
+  @override
   String get detailsExistingTitle => 'Έχει ήδη αποθηκευτεί';
 
   @override
