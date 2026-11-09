@@ -358,7 +358,7 @@
   "customPracticeAllLegend": "todas {count}",
   "customPracticeNewLegend": "nuevas {count}",
   "customPracticeDueLabel": "Pendientes",
-  "customPracticeAllWordsLabel": "Todas las palabras",
+  "customPracticeAllWordsOption": "Todas",
   "customPracticeNewLabel": "Nuevas",
   "customPracticeFewerTooltip": "Menos",
   "customPracticeMoreTooltip": "Más",

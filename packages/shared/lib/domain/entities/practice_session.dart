@@ -22,6 +22,7 @@ class const CustomPracticeFilter({
 class const CustomPracticeLanguagePlan({
   required final Language language,
   required final PracticeWords words,
+  required final int reviewWordCount,
   required final int newWordCount,
 }) with CustomPracticeLanguagePlanMappable;
 

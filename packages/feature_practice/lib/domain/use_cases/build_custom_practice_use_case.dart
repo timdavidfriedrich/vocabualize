@@ -44,7 +44,13 @@ class const BuildCustomPracticeUseCase(
           return Failure(error);
       }
     }
-    reviews.sort((first, second) => _nextReviewOf(first).compareTo(_nextReviewOf(second)));
+    reviews.sort(_byNextReview);
+    final chosenReviews = [
+      for (final language in plan.languages)
+        ...reviews
+            .where((item) => item.language == language.language)
+            .take(language.reviewWordCount),
+    ]..sort(_byNextReview);
     final newItems = <PracticeItem>[];
     for (final language in plan.languages) {
       if (language.newWordCount <= 0) continue;
@@ -61,10 +67,13 @@ class const BuildCustomPracticeUseCase(
       }
     }
     return Success([
-      for (final item in [...reviews, ...newItems])
+      for (final item in [...chosenReviews, ...newItems])
         PracticeItemKey(vocabularyId: item.vocabulary.id, language: item.language),
     ]);
   }
+
+  int _byNextReview(PracticeItem first, PracticeItem second) =>
+      _nextReviewOf(first).compareTo(_nextReviewOf(second));
 
   DateTime _nextReviewOf(PracticeItem item) =>
       item.vocabulary.progress[item.language]?.nextReviewAt ??

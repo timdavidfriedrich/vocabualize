@@ -1483,7 +1483,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get customPracticeDueLabel => 'Scadente';
 
   @override
-  String get customPracticeAllWordsLabel => 'Toate cuvintele';
+  String get customPracticeAllWordsOption => 'Toate';
 
   @override
   String get customPracticeNewLabel => 'Noi';

@@ -358,7 +358,7 @@
   "customPracticeAllLegend": "усі {count}",
   "customPracticeNewLegend": "нові {count}",
   "customPracticeDueLabel": "До повторення",
-  "customPracticeAllWordsLabel": "Усі слова",
+  "customPracticeAllWordsOption": "Усі",
   "customPracticeNewLabel": "Нові",
   "customPracticeFewerTooltip": "Менше",
   "customPracticeMoreTooltip": "Більше",

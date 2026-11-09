@@ -18,7 +18,8 @@ import 'package:shared/presentation/widgets/segmented_bar.dart';
 
 const _photoSize = Spacing.xxl + Spacing.xxxs;
 const _newTint = 0.5;
-const _newWordStep = 5;
+const _countStep = 5;
+const _countWidth = Spacing.xxxl;
 const _legendDotSize = Spacing.s;
 
 class const CustomPracticeScreen({
@@ -291,21 +292,31 @@ class const _LanguageCard({
           ),
           if (isEnabled) ...[
             const SizedBox(height: Spacing.s),
-            IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: Spacing.s,
-                children: [
-                  Expanded(
-                    child: _ReviewBox(state: _state, language: _language),
-                  ),
-                  if (_state.waitingCountOf(_language) > 0)
-                    Expanded(
-                      child: _NewBox(state: _state, language: _language),
-                    ),
-                ],
+            _CountRow(
+              leading: _WordsToggle(
+                isAll: _state.includesAllWords(_language),
+                onChanged: () => bloc.add(CustomPracticeAllWordsToggled(language: _language)),
+              ),
+              count: _state.reviewCountOf(_language),
+              maximum: _state.availableReviewCountOf(_language),
+              onChanged: (count) => bloc.add(
+                CustomPracticeReviewWordsChanged(language: _language, count: count),
               ),
             ),
+            if (_state.waitingCountOf(_language) > 0) ...[
+              const SizedBox(height: Spacing.xs),
+              _CountRow(
+                leading: Text(
+                  context.s.customPracticeNewLabel,
+                  style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
+                ),
+                count: _state.newCountOf(_language),
+                maximum: _state.waitingCountOf(_language),
+                onChanged: (count) => bloc.add(
+                  CustomPracticeNewWordsChanged(language: _language, count: count),
+                ),
+              ),
+            ],
           ],
         ],
       ),
@@ -313,83 +324,49 @@ class const _LanguageCard({
   }
 }
 
-class const _ReviewBox({
-  required final CustomPracticeEditing _state,
-  required final Language _language,
+class const _CountRow({
+  required final Widget _leading,
+  required final int _count,
+  required final int _maximum,
+  required final ValueChanged<int> _onChanged,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isAll = _state.includesAllWords(_language);
-    return _Box(
-      label: isAll ? context.s.customPracticeAllWordsLabel : context.s.customPracticeDueLabel,
+    return Container(
+      padding: const EdgeInsets.fromLTRB(Spacing.s, Spacing.xs, Spacing.xs, Spacing.xs),
+      decoration: BoxDecoration(
+        color: context.c.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(Spacing.radiusXl),
+      ),
       child: Row(
         children: [
           Expanded(
-            child: Text(
-              _state.reviewCountOf(_language).toCountLabel(context),
-              style: context.t.headlineSmall,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: AlignmentDirectional.centerStart,
+              child: _leading,
             ),
           ),
-          Material(
-            color: isAll ? context.c.primary : context.c.primaryContainer,
-            borderRadius: BorderRadius.circular(Spacing.radiusM),
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: () => context.read<CustomPracticeBloc>().add(
-                CustomPracticeAllWordsToggled(language: _language),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Spacing.s, vertical: Spacing.xxs),
-                child: Text(
-                  context.s.customPracticeAllOption,
-                  style: context.t.labelLarge?.copyWith(
-                    color: isAll ? context.c.onPrimary : context.c.primary,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class const _NewBox({
-  required final CustomPracticeEditing _state,
-  required final Language _language,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final bloc = context.read<CustomPracticeBloc>();
-    final count = _state.newCountOf(_language);
-    final waiting = _state.waitingCountOf(_language);
-    void change(int next) =>
-        bloc.add(CustomPracticeNewWordsChanged(language: _language, count: next));
-    return _Box(
-      label: context.s.customPracticeNewLabel,
-      child: Row(
-        children: [
           IconButton(
             visualDensity: VisualDensity.compact,
-            onPressed: count <= 0
+            onPressed: _count <= 0
                 ? null
-                : () => change(((count - 1) ~/ _newWordStep) * _newWordStep),
+                : () => _onChanged(((_count - 1) ~/ _countStep) * _countStep),
             tooltip: context.s.customPracticeFewerTooltip,
             icon: const Icon(Icons.remove_rounded),
           ),
-          Expanded(
-            child: Text(
-              count.toCountLabel(context),
-              style: context.t.headlineSmall,
-              textAlign: TextAlign.center,
+          SizedBox(
+            width: _countWidth,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(_count.toCountLabel(context), style: context.t.headlineSmall),
             ),
           ),
           IconButton(
             visualDensity: VisualDensity.compact,
-            onPressed: count >= waiting
+            onPressed: _count >= _maximum
                 ? null
-                : () => change((count ~/ _newWordStep + 1) * _newWordStep),
+                : () => _onChanged((_count ~/ _countStep + 1) * _countStep),
             tooltip: context.s.customPracticeMoreTooltip,
             icon: const Icon(Icons.add_rounded),
           ),
@@ -399,25 +376,58 @@ class const _NewBox({
   }
 }
 
-class const _Box({
-  required final String _label,
-  required final Widget _child,
+class const _WordsToggle({
+  required final bool _isAll,
+  required final VoidCallback _onChanged,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(Spacing.m, Spacing.s, Spacing.s, Spacing.s),
-      decoration: BoxDecoration(
-        color: context.c.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(Spacing.radiusXl),
+    return DecoratedBox(
+      decoration: ShapeDecoration(color: context.c.primaryContainer, shape: const StadiumBorder()),
+      child: Padding(
+        padding: const EdgeInsets.all(Spacing.xxxs),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _ToggleSegment(
+              label: context.s.customPracticeDueLabel,
+              isSelected: !_isAll,
+              onTap: _isAll ? _onChanged : null,
+            ),
+            _ToggleSegment(
+              label: context.s.customPracticeAllWordsOption,
+              isSelected: _isAll,
+              onTap: _isAll ? null : _onChanged,
+            ),
+          ],
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(_label, style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant)),
-          const SizedBox(height: Spacing.xxs),
-          _child,
-        ],
+    );
+  }
+}
+
+class const _ToggleSegment({
+  required final String _label,
+  required final bool _isSelected,
+  required final VoidCallback? _onTap,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: _isSelected ? context.c.primary : Colors.transparent,
+      shape: const StadiumBorder(),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: _onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Spacing.s, vertical: Spacing.xxs),
+          child: Text(
+            _label,
+            style: context.t.labelLarge?.copyWith(
+              color: _isSelected ? context.c.onPrimary : context.c.primary,
+            ),
+          ),
+        ),
       ),
     );
   }

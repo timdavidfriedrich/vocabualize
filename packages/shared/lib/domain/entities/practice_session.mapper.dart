@@ -354,6 +354,10 @@ class CustomPracticeLanguagePlanMapper
   static PracticeWords _$words(CustomPracticeLanguagePlan v) => v.words;
   static const Field<CustomPracticeLanguagePlan, PracticeWords> _f$words =
       Field('words', _$words);
+  static int _$reviewWordCount(CustomPracticeLanguagePlan v) =>
+      v.reviewWordCount;
+  static const Field<CustomPracticeLanguagePlan, int> _f$reviewWordCount =
+      Field('reviewWordCount', _$reviewWordCount);
   static int _$newWordCount(CustomPracticeLanguagePlan v) => v.newWordCount;
   static const Field<CustomPracticeLanguagePlan, int> _f$newWordCount = Field(
     'newWordCount',
@@ -364,6 +368,7 @@ class CustomPracticeLanguagePlanMapper
   final MappableFields<CustomPracticeLanguagePlan> fields = const {
     #language: _f$language,
     #words: _f$words,
+    #reviewWordCount: _f$reviewWordCount,
     #newWordCount: _f$newWordCount,
   };
 
@@ -371,6 +376,7 @@ class CustomPracticeLanguagePlanMapper
     return CustomPracticeLanguagePlan(
       language: data.dec(_f$language),
       words: data.dec(_f$words),
+      reviewWordCount: data.dec(_f$reviewWordCount),
       newWordCount: data.dec(_f$newWordCount),
     );
   }
@@ -449,7 +455,12 @@ abstract class CustomPracticeLanguagePlanCopyWith<
   $Out
 >
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({Language? language, PracticeWords? words, int? newWordCount});
+  $R call({
+    Language? language,
+    PracticeWords? words,
+    int? reviewWordCount,
+    int? newWordCount,
+  });
   CustomPracticeLanguagePlanCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -469,19 +480,25 @@ class _CustomPracticeLanguagePlanCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CustomPracticeLanguagePlan> $mapper =
       CustomPracticeLanguagePlanMapper.ensureInitialized();
   @override
-  $R call({Language? language, PracticeWords? words, int? newWordCount}) =>
-      $apply(
-        FieldCopyWithData({
-          if (language != null) #language: language,
-          if (words != null) #words: words,
-          if (newWordCount != null) #newWordCount: newWordCount,
-        }),
-      );
+  $R call({
+    Language? language,
+    PracticeWords? words,
+    int? reviewWordCount,
+    int? newWordCount,
+  }) => $apply(
+    FieldCopyWithData({
+      if (language != null) #language: language,
+      if (words != null) #words: words,
+      if (reviewWordCount != null) #reviewWordCount: reviewWordCount,
+      if (newWordCount != null) #newWordCount: newWordCount,
+    }),
+  );
   @override
   CustomPracticeLanguagePlan $make(CopyWithData data) =>
       CustomPracticeLanguagePlan(
         language: data.get(#language, or: $value.language),
         words: data.get(#words, or: $value.words),
+        reviewWordCount: data.get(#reviewWordCount, or: $value.reviewWordCount),
         newWordCount: data.get(#newWordCount, or: $value.newWordCount),
       );
 

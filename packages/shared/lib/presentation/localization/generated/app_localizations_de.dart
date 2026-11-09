@@ -1454,7 +1454,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get customPracticeDueLabel => 'Fällig';
 
   @override
-  String get customPracticeAllWordsLabel => 'Alle Wörter';
+  String get customPracticeAllWordsOption => 'Alle';
 
   @override
   String get customPracticeNewLabel => 'Neu';

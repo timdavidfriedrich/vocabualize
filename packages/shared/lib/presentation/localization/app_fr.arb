@@ -358,7 +358,7 @@
   "customPracticeAllLegend": "tous {count}",
   "customPracticeNewLegend": "nouveaux {count}",
   "customPracticeDueLabel": "À revoir",
-  "customPracticeAllWordsLabel": "Tous les mots",
+  "customPracticeAllWordsOption": "Tous",
   "customPracticeNewLabel": "Nouveaux",
   "customPracticeFewerTooltip": "Moins",
   "customPracticeMoreTooltip": "Plus",

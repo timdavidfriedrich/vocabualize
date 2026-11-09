@@ -1452,7 +1452,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get customPracticeDueLabel => 'Pendientes';
 
   @override
-  String get customPracticeAllWordsLabel => 'Todas las palabras';
+  String get customPracticeAllWordsOption => 'Todas';
 
   @override
   String get customPracticeNewLabel => 'Nuevas';

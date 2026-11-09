@@ -16,6 +16,11 @@ class const CustomPracticeAllWordsToggled({
   required final Language language,
 }) extends CustomPracticeEvent;
 
+class const CustomPracticeReviewWordsChanged({
+  required final Language language,
+  required final int count,
+}) extends CustomPracticeEvent;
+
 class const CustomPracticeNewWordsChanged({
   required final Language language,
   required final int count,

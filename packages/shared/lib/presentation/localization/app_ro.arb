@@ -358,7 +358,7 @@
   "customPracticeAllLegend": "toate {count}",
   "customPracticeNewLegend": "noi {count}",
   "customPracticeDueLabel": "Scadente",
-  "customPracticeAllWordsLabel": "Toate cuvintele",
+  "customPracticeAllWordsOption": "Toate",
   "customPracticeNewLabel": "Noi",
   "customPracticeFewerTooltip": "Mai puține",
   "customPracticeMoreTooltip": "Mai multe",

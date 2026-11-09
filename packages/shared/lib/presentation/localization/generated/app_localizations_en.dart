@@ -1437,7 +1437,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customPracticeDueLabel => 'Due';
 
   @override
-  String get customPracticeAllWordsLabel => 'All words';
+  String get customPracticeAllWordsOption => 'All';
 
   @override
   String get customPracticeNewLabel => 'New';

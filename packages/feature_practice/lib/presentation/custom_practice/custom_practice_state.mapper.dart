@@ -239,6 +239,10 @@ class CustomPracticeEditingMapper
       v.allWordsLanguages;
   static const Field<CustomPracticeEditing, Set<Language>>
   _f$allWordsLanguages = Field('allWordsLanguages', _$allWordsLanguages);
+  static Map<Language, int> _$reviewWordCounts(CustomPracticeEditing v) =>
+      v.reviewWordCounts;
+  static const Field<CustomPracticeEditing, Map<Language, int>>
+  _f$reviewWordCounts = Field('reviewWordCounts', _$reviewWordCounts);
   static Map<Language, int> _$newWordCounts(CustomPracticeEditing v) =>
       v.newWordCounts;
   static const Field<CustomPracticeEditing, Map<Language, int>>
@@ -276,6 +280,7 @@ class CustomPracticeEditingMapper
     #tagIds: _f$tagIds,
     #enabledLanguages: _f$enabledLanguages,
     #allWordsLanguages: _f$allWordsLanguages,
+    #reviewWordCounts: _f$reviewWordCounts,
     #newWordCounts: _f$newWordCounts,
     #counts: _f$counts,
     #previewImages: _f$previewImages,
@@ -293,6 +298,7 @@ class CustomPracticeEditingMapper
       tagIds: data.dec(_f$tagIds),
       enabledLanguages: data.dec(_f$enabledLanguages),
       allWordsLanguages: data.dec(_f$allWordsLanguages),
+      reviewWordCounts: data.dec(_f$reviewWordCounts),
       newWordCounts: data.dec(_f$newWordCounts),
       counts: data.dec(_f$counts),
       previewImages: data.dec(_f$previewImages),
@@ -384,6 +390,8 @@ abstract class CustomPracticeEditingCopyWith<
   MapCopyWith<$R, String, int, ObjectCopyWith<$R, int, int>>
   get collectionCounts;
   MapCopyWith<$R, Language, int, ObjectCopyWith<$R, int, int>>
+  get reviewWordCounts;
+  MapCopyWith<$R, Language, int, ObjectCopyWith<$R, int, int>>
   get newWordCounts;
   MapCopyWith<
     $R,
@@ -407,6 +415,7 @@ abstract class CustomPracticeEditingCopyWith<
     Set<String>? tagIds,
     Set<Language>? enabledLanguages,
     Set<Language>? allWordsLanguages,
+    Map<Language, int>? reviewWordCounts,
     Map<Language, int>? newWordCounts,
     Map<Language, CustomPracticeCounts>? counts,
     List<VocabularyImage>? previewImages,
@@ -457,6 +466,13 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
   );
   @override
   MapCopyWith<$R, Language, int, ObjectCopyWith<$R, int, int>>
+  get reviewWordCounts => MapCopyWith(
+    $value.reviewWordCounts,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(reviewWordCounts: v),
+  );
+  @override
+  MapCopyWith<$R, Language, int, ObjectCopyWith<$R, int, int>>
   get newWordCounts => MapCopyWith(
     $value.newWordCounts,
     (v, t) => ObjectCopyWith(v, $identity, t),
@@ -496,6 +512,7 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
     Set<String>? tagIds,
     Set<Language>? enabledLanguages,
     Set<Language>? allWordsLanguages,
+    Map<Language, int>? reviewWordCounts,
     Map<Language, int>? newWordCounts,
     Object? counts = $none,
     List<VocabularyImage>? previewImages,
@@ -511,6 +528,7 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
       if (tagIds != null) #tagIds: tagIds,
       if (enabledLanguages != null) #enabledLanguages: enabledLanguages,
       if (allWordsLanguages != null) #allWordsLanguages: allWordsLanguages,
+      if (reviewWordCounts != null) #reviewWordCounts: reviewWordCounts,
       if (newWordCounts != null) #newWordCounts: newWordCounts,
       if (counts != $none) #counts: counts,
       if (previewImages != null) #previewImages: previewImages,
@@ -532,6 +550,7 @@ class _CustomPracticeEditingCopyWithImpl<$R, $Out>
       #allWordsLanguages,
       or: $value.allWordsLanguages,
     ),
+    reviewWordCounts: data.get(#reviewWordCounts, or: $value.reviewWordCounts),
     newWordCounts: data.get(#newWordCounts, or: $value.newWordCounts),
     counts: data.get(#counts, or: $value.counts),
     previewImages: data.get(#previewImages, or: $value.previewImages),

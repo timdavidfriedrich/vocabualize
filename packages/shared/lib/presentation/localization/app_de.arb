@@ -358,7 +358,7 @@
   "customPracticeAllLegend": "alle {count}",
   "customPracticeNewLegend": "neu {count}",
   "customPracticeDueLabel": "Fällig",
-  "customPracticeAllWordsLabel": "Alle Wörter",
+  "customPracticeAllWordsOption": "Alle",
   "customPracticeNewLabel": "Neu",
   "customPracticeFewerTooltip": "Weniger",
   "customPracticeMoreTooltip": "Mehr",

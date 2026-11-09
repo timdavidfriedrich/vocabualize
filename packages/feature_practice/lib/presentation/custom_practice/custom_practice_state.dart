@@ -27,6 +27,7 @@ class const CustomPracticeEditing({
   required final Set<String> tagIds,
   required final Set<Language> enabledLanguages,
   required final Set<Language> allWordsLanguages,
+  required final Map<Language, int> reviewWordCounts,
   required final Map<Language, int> newWordCounts,
   required final Map<Language, CustomPracticeCounts>? counts,
   required final List<VocabularyImage> previewImages,
@@ -55,10 +56,15 @@ extension CustomPracticeEditingExtensions on CustomPracticeEditing {
 
   bool includesAllWords(Language language) => allWordsLanguages.contains(language);
 
-  int reviewCountOf(Language language) => switch (counts?[language]) {
+  int availableReviewCountOf(Language language) => switch (counts?[language]) {
     final counts? => includesAllWords(language) ? counts.startedCount : counts.dueCount,
     null => 0,
   };
+
+  int reviewCountOf(Language language) {
+    final available = availableReviewCountOf(language);
+    return min(reviewWordCounts[language] ?? available, available);
+  }
 
   int waitingCountOf(Language language) => counts?[language]?.waitingCount ?? 0;
 
@@ -84,6 +90,7 @@ extension CustomPracticeEditingExtensions on CustomPracticeEditing {
         CustomPracticeLanguagePlan(
           language: language,
           words: includesAllWords(language) ? PracticeWords.all : PracticeWords.due,
+          reviewWordCount: reviewCountOf(language),
           newWordCount: newCountOf(language),
         ),
     ],

@@ -1455,7 +1455,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get customPracticeDueLabel => 'Οφειλόμενες';
 
   @override
-  String get customPracticeAllWordsLabel => 'Όλες οι λέξεις';
+  String get customPracticeAllWordsOption => 'Όλες';
 
   @override
   String get customPracticeNewLabel => 'Νέες';

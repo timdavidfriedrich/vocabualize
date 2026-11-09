@@ -358,7 +358,7 @@
   "customPracticeAllLegend": "όλες {count}",
   "customPracticeNewLegend": "νέες {count}",
   "customPracticeDueLabel": "Οφειλόμενες",
-  "customPracticeAllWordsLabel": "Όλες οι λέξεις",
+  "customPracticeAllWordsOption": "Όλες",
   "customPracticeNewLabel": "Νέες",
   "customPracticeFewerTooltip": "Λιγότερες",
   "customPracticeMoreTooltip": "Περισσότερες",

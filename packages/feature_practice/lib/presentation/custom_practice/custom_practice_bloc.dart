@@ -26,6 +26,7 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
     on<CustomPracticeStarted>(_onStarted);
     on<CustomPracticeLanguageToggled>(_onLanguageToggled);
     on<CustomPracticeAllWordsToggled>(_onAllWordsToggled);
+    on<CustomPracticeReviewWordsChanged>(_onReviewWordsChanged);
     on<CustomPracticeNewWordsChanged>(_onNewWordsChanged);
     on<CustomPracticeCollectionsChanged>(_onCollectionsChanged);
     on<CustomPracticeCountsRequested>(_onCountsRequested, transformer: restartable());
@@ -73,6 +74,7 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
             tagIds: {?event.tagId},
             enabledLanguages: {setup.selected},
             allWordsLanguages: const {},
+            reviewWordCounts: const {},
             newWordCounts: const {},
             counts: null,
             previewImages: const [],
@@ -110,6 +112,27 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
           allWordsLanguages: languages.contains(event.language)
               ? languages.difference({event.language})
               : {...languages, event.language},
+          reviewWordCounts: {
+            for (final MapEntry(:key, :value) in editing.reviewWordCounts.entries)
+              if (key != event.language) key: value,
+          },
+        ),
+      );
+    }
+  }
+
+  void _onReviewWordsChanged(
+    CustomPracticeReviewWordsChanged event,
+    Emitter<CustomPracticeState> emit,
+  ) {
+    if (state case final CustomPracticeEditing editing when !editing.isStarting) {
+      final available = editing.availableReviewCountOf(event.language);
+      emit(
+        editing.copyWith(
+          reviewWordCounts: {
+            ...editing.reviewWordCounts,
+            event.language: event.count.clamp(0, available),
+          },
         ),
       );
     }
@@ -134,7 +157,14 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
     Emitter<CustomPracticeState> emit,
   ) {
     if (state case final CustomPracticeEditing editing when !editing.isStarting) {
-      emit(editing.copyWith(tagIds: event.tagIds, counts: null, newWordCounts: const {}));
+      emit(
+        editing.copyWith(
+          tagIds: event.tagIds,
+          counts: null,
+          reviewWordCounts: const {},
+          newWordCounts: const {},
+        ),
+      );
       add(const CustomPracticeCountsRequested());
       add(const CustomPracticePreviewRequested());
     }

@@ -1006,7 +1006,7 @@
     }
   },
   "customPracticeDueLabel": "Due",
-  "customPracticeAllWordsLabel": "All words",
+  "customPracticeAllWordsOption": "All",
   "customPracticeNewLabel": "New",
   "customPracticeFewerTooltip": "Fewer",
   "customPracticeMoreTooltip": "More",

@@ -2256,11 +2256,11 @@ abstract class AppLocalizations {
   /// **'Due'**
   String get customPracticeDueLabel;
 
-  /// No description provided for @customPracticeAllWordsLabel.
+  /// No description provided for @customPracticeAllWordsOption.
   ///
   /// In en, this message translates to:
-  /// **'All words'**
-  String get customPracticeAllWordsLabel;
+  /// **'All'**
+  String get customPracticeAllWordsOption;
 
   /// No description provided for @customPracticeNewLabel.
   ///

@@ -1461,7 +1461,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get customPracticeDueLabel => 'À revoir';
 
   @override
-  String get customPracticeAllWordsLabel => 'Tous les mots';
+  String get customPracticeAllWordsOption => 'Tous';
 
   @override
   String get customPracticeNewLabel => 'Nouveaux';

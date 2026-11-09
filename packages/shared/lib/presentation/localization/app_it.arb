@@ -358,7 +358,7 @@
   "customPracticeAllLegend": "tutte {count}",
   "customPracticeNewLegend": "nuove {count}",
   "customPracticeDueLabel": "Da ripassare",
-  "customPracticeAllWordsLabel": "Tutte le parole",
+  "customPracticeAllWordsOption": "Tutte",
   "customPracticeNewLabel": "Nuove",
   "customPracticeFewerTooltip": "Meno",
   "customPracticeMoreTooltip": "Di più",

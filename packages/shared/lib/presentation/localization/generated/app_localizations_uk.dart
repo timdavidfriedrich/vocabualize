@@ -1513,7 +1513,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get customPracticeDueLabel => 'До повторення';
 
   @override
-  String get customPracticeAllWordsLabel => 'Усі слова';
+  String get customPracticeAllWordsOption => 'Усі';
 
   @override
   String get customPracticeNewLabel => 'Нові';
