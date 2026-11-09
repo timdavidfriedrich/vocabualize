@@ -1121,6 +1121,11 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsLastLanguageHint => 'Потрібно вивчати це слово принаймні однією мовою.';
 
   @override
+  String detailsAskMeInNote(String learned, String askMeIn, String main) {
+    return 'Картки для $learned питають мовою $askMeIn замість $main.';
+  }
+
+  @override
   String get detailsExistingTitle => 'Уже збережено';
 
   @override

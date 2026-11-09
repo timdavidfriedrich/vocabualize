@@ -279,6 +279,7 @@
   "learnedLanguageAskMeInUnlearnedHelpMessage": "Le schede chiedono in {askMeIn} invece che in {main}, per le parole che conosci già bene in {learned}. Puoi sempre mostrare la parola in {main}. Così il tuo {askMeIn} resta attivo mentre impari {learned}.",
   "detailsLearnSwitchLabel": "Impara in {language}",
   "detailsLastLanguageHint": "Devi imparare questa parola in almeno una lingua.",
+  "detailsAskMeInNote": "Le schede di {learned} chiedono in {askMeIn} invece che in {main}.",
   "detailsExistingTitle": "Già salvata",
   "detailsExistingMessage": "«{word}» è già salvata ({language}: {translation}). Aggiungerla a {target}?",
   "detailsExistingAddButton": "Aggiungi a {language}",

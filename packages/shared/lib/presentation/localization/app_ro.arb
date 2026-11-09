@@ -279,6 +279,7 @@
   "learnedLanguageAskMeInUnlearnedHelpMessage": "Cartonașele întreabă în {askMeIn} în loc de {main}, pentru cuvintele pe care le cunoașteți deja bine în {learned}. Puteți afișa oricând cuvântul în {main}. Astfel, {askMeIn} rămâne activă cât învățați {learned}.",
   "detailsLearnSwitchLabel": "Învățați în {language}",
   "detailsLastLanguageHint": "Trebuie să învățați acest cuvânt în cel puțin o limbă.",
+  "detailsAskMeInNote": "Cartonașele pentru {learned} întreabă în {askMeIn} în loc de {main}.",
   "detailsExistingTitle": "Deja salvat",
   "detailsExistingMessage": "„{word}” este deja salvat ({language}: {translation}). Îl adăugați la {target}?",
   "detailsExistingAddButton": "Adăugați la {language}",

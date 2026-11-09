@@ -1079,6 +1079,11 @@ class AppLocalizationsEl extends AppLocalizations {
       'Πρέπει να μαθαίνετε αυτή τη λέξη σε τουλάχιστον μία γλώσσα.';
 
   @override
+  String detailsAskMeInNote(String learned, String askMeIn, String main) {
+    return 'Οι κάρτες για τα $learned ρωτούν στα $askMeIn αντί για τα $main.';
+  }
+
+  @override
   String get detailsExistingTitle => 'Έχει ήδη αποθηκευτεί';
 
   @override

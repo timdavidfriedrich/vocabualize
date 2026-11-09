@@ -1782,6 +1782,12 @@ abstract class AppLocalizations {
   /// **'You need to learn this word in at least one language.'**
   String get detailsLastLanguageHint;
 
+  /// No description provided for @detailsAskMeInNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards for {learned} ask in {askMeIn} instead of {main}.'**
+  String detailsAskMeInNote(String learned, String askMeIn, String main);
+
   /// No description provided for @detailsExistingTitle.
   ///
   /// In en, this message translates to:

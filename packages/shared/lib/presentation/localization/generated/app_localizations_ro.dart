@@ -1097,6 +1097,11 @@ class AppLocalizationsRo extends AppLocalizations {
   String get detailsLastLanguageHint => 'Trebuie să învățați acest cuvânt în cel puțin o limbă.';
 
   @override
+  String detailsAskMeInNote(String learned, String askMeIn, String main) {
+    return 'Cartonașele pentru $learned întreabă în $askMeIn în loc de $main.';
+  }
+
+  @override
   String get detailsExistingTitle => 'Deja salvat';
 
   @override

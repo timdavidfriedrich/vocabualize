@@ -1076,6 +1076,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get detailsLastLanguageHint => 'Tienes que aprender esta palabra en al menos un idioma.';
 
   @override
+  String detailsAskMeInNote(String learned, String askMeIn, String main) {
+    return 'Las tarjetas de $learned preguntan en $askMeIn en lugar de $main.';
+  }
+
+  @override
   String get detailsExistingTitle => 'Ya guardada';
 
   @override

@@ -1063,6 +1063,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailsLastLanguageHint => 'You need to learn this word in at least one language.';
 
   @override
+  String detailsAskMeInNote(String learned, String askMeIn, String main) {
+    return 'Cards for $learned ask in $askMeIn instead of $main.';
+  }
+
+  @override
   String get detailsExistingTitle => 'Already saved';
 
   @override

@@ -580,6 +580,20 @@
     }
   },
   "detailsLastLanguageHint": "You need to learn this word in at least one language.",
+  "detailsAskMeInNote": "Cards for {learned} ask in {askMeIn} instead of {main}.",
+  "@detailsAskMeInNote": {
+    "placeholders": {
+      "learned": {
+        "type": "String"
+      },
+      "askMeIn": {
+        "type": "String"
+      },
+      "main": {
+        "type": "String"
+      }
+    }
+  },
   "detailsExistingTitle": "Already saved",
   "detailsExistingMessage": "“{word}” is already saved ({language}: {translation}). Add it to {target}?",
   "@detailsExistingMessage": {

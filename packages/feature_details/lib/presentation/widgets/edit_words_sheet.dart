@@ -51,8 +51,16 @@ Future<void> editWords(
       languages: languages,
       initialLanguage: shown,
       isVertical: isVertical,
+      main: editing.setup.main,
       learnedLanguages: learned,
       enabledLanguages: editing.enabledLanguages,
+      askedFor: {
+        for (final language in languages)
+          language: [
+            for (final learnedLanguage in editing.setup.learned)
+              if (learnedLanguage.askMeIn == language) learnedLanguage.language,
+          ],
+      },
       fields: {
         for (final language in languages)
           language: (
@@ -99,8 +107,10 @@ class const _EditWordsSheet({
   required final List<Language> _languages,
   required final Language _initialLanguage,
   required final bool _isVertical,
+  required final Language _main,
   required final Set<Language> _learnedLanguages,
   required final Set<Language> _enabledLanguages,
+  required final Map<Language, List<Language>> _askedFor,
   required final Map<Language, _WordField> _fields,
   required final ValueChanged<Language> _onSpeak,
   required final ValueChanged<Language> _onReport,
@@ -210,6 +220,8 @@ class const _EditWordsSheet({
                         visible: false,
                         child: _LanguageNotes(
                           language: measured,
+                          main: _main,
+                          askedFor: _askedFor[measured] ?? const [],
                           isLearned: _learnedLanguages.contains(measured),
                           isOn: true,
                           isLastOn: true,
@@ -217,6 +229,8 @@ class const _EditWordsSheet({
                       ),
                     _LanguageNotes(
                       language: language,
+                      main: _main,
+                      askedFor: _askedFor[language] ?? const [],
                       isLearned: _learnedLanguages.contains(language),
                       isOn: isOn,
                       isLastOn: isOn && enabled.value.length == 1,
@@ -250,6 +264,8 @@ class const _EditWordsSheet({
 
 class const _LanguageNotes({
   required final Language _language,
+  required final Language _main,
+  required final List<Language> _askedFor,
   required final bool _isLearned,
   required final bool _isOn,
   required final bool _isLastOn,
@@ -278,6 +294,15 @@ class const _LanguageNotes({
             ),
             if (_isLastOn) Text(context.s.detailsLastLanguageHint, style: noteStyle),
           ],
+          if (_askedFor.isNotEmpty)
+            Text(
+              context.s.detailsAskMeInNote(
+                [for (final learned in _askedFor) learned.toShortLabel(context)].join(", "),
+                _language.toShortLabel(context),
+                _main.toShortLabel(context),
+              ),
+              style: noteStyle,
+            ),
         ],
       ),
     );

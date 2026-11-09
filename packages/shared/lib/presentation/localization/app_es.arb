@@ -279,6 +279,7 @@
   "learnedLanguageAskMeInUnlearnedHelpMessage": "Las tarjetas preguntan en {askMeIn} en lugar de {main}, para las palabras que ya conoces bien en {learned}. Siempre puedes ver la palabra en {main}. Así mantienes activo tu {askMeIn} mientras aprendes {learned}.",
   "detailsLearnSwitchLabel": "Aprender en {language}",
   "detailsLastLanguageHint": "Tienes que aprender esta palabra en al menos un idioma.",
+  "detailsAskMeInNote": "Las tarjetas de {learned} preguntan en {askMeIn} en lugar de {main}.",
   "detailsExistingTitle": "Ya guardada",
   "detailsExistingMessage": "«{word}» ya está guardada ({language}: {translation}). ¿Añadirla a {target}?",
   "detailsExistingAddButton": "Añadir a {language}",
