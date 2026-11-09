@@ -93,6 +93,7 @@ const _dimmedStates = {WidgetState.disabled, WidgetState.pressed, WidgetState.ho
 
 const _buttonPadding = EdgeInsets.symmetric(horizontal: Spacing.xxl, vertical: Spacing.m);
 const _buttonMinimumSize = Size(0, Spacing.xxxl + Spacing.xs);
+const _disabledSwitchAlpha = 0.38;
 const _sliderTrackHeight = Spacing.m;
 const _sliderTrackGap = Spacing.xxs;
 const _sliderThumbSize = Size(4, 44);
@@ -213,12 +214,24 @@ abstract final class AppTheme {
       ),
       switchTheme: SwitchThemeData(
         trackColor: WidgetStateProperty.resolveWith(
-          (states) =>
-              states.contains(WidgetState.selected) ? colors.primary : colors.surfaceContainer,
+          (states) => switch ((
+            states.contains(WidgetState.selected),
+            states.contains(WidgetState.disabled),
+          )) {
+            (true, false) => colors.primary,
+            (true, true) => colors.primary.withValues(alpha: _disabledSwitchAlpha),
+            (false, _) => colors.surfaceContainer,
+          },
         ),
         thumbColor: WidgetStateProperty.resolveWith(
-          (states) =>
-              states.contains(WidgetState.selected) ? colors.onPrimary : colors.onSurfaceVariant,
+          (states) => switch ((
+            states.contains(WidgetState.selected),
+            states.contains(WidgetState.disabled),
+          )) {
+            (true, _) => colors.onPrimary,
+            (false, false) => colors.onSurfaceVariant,
+            (false, true) => colors.onSurfaceVariant.withValues(alpha: _disabledSwitchAlpha),
+          },
         ),
       ),
       sliderTheme: SliderThemeData(
