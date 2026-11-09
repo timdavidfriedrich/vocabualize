@@ -15,6 +15,7 @@ import 'package:shared/presentation/widgets/button_progress.dart';
 import 'package:shared/presentation/widgets/page_app_bar.dart';
 import 'package:shared/presentation/widgets/photo_stack.dart';
 import 'package:shared/presentation/widgets/segmented_bar.dart';
+import 'package:shared/presentation/widgets/striped_fill.dart';
 
 const _photoSize = Spacing.xxl + Spacing.xxxs;
 const _newTint = 0.5;
@@ -192,6 +193,7 @@ class const _SummaryCard({
                   SegmentedBarPart(
                     value: _state.newCountOf(language),
                     color: _newColorOf(context, _colorOf(context, _state, language)),
+                    stripeColor: _colorOf(context, _state, language),
                   ),
                 ],
               ],
@@ -216,6 +218,7 @@ class const _SummaryCard({
                         0 => const SizedBox.shrink(),
                         _ => _LegendEntry(
                           color: _newColorOf(context, _colorOf(context, _state, language)),
+                          stripeColor: _colorOf(context, _state, language),
                           language: language,
                           label: context.s.customPracticeNewLegend(_state.newCountOf(language)),
                         ),
@@ -235,15 +238,20 @@ class const _LegendEntry({
   required final Color _color,
   required final Language _language,
   required final String _label,
+  final Color? _stripeColor,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          width: _legendDotSize,
-          height: _legendDotSize,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: _color),
+        SizedBox.square(
+          dimension: _legendDotSize,
+          child: ClipOval(
+            child: switch (_stripeColor) {
+              final stripeColor? => StripedFill(color: stripeColor, background: _color),
+              null => ColoredBox(color: _color),
+            },
+          ),
         ),
         const SizedBox(width: Spacing.s),
         Text(_language.toFlag(), style: context.t.bodyMedium),
