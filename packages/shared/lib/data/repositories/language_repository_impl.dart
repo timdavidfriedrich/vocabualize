@@ -128,7 +128,7 @@ class const LanguageRepositoryImpl(
         mainLanguage: mainLanguage,
         selectedLanguage: selectedLanguage,
         learnedLanguages: learnedLanguages,
-        changedAt: DateTime.now(),
+        changedAt: DateTime.now().toUtc(),
       );
       return const Success(());
     } on Object catch (error) {

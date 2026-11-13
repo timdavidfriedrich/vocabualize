@@ -70,7 +70,7 @@ class const SettingsRepositoryImpl(
 
   Future<AppResult<()>> _savePreference(LocalPreferenceKey key, String value) async {
     try {
-      await _dataSource.savePreference(key, value, changedAt: DateTime.now());
+      await _dataSource.savePreference(key, value, changedAt: DateTime.now().toUtc());
       return const Success(());
     } on Object catch (error) {
       return Failure(error.toAppError());

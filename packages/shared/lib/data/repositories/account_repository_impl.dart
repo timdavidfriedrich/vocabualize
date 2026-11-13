@@ -259,7 +259,7 @@ class AccountRepositoryImpl(
               ...snapshot.settings,
               _settingDataSource.createAdoptionRecord(
                 localOwnerId: localOwnerId,
-                adoptedAt: DateTime.now(),
+                adoptedAt: DateTime.now().toUtc(),
               ),
             ],
           ),
