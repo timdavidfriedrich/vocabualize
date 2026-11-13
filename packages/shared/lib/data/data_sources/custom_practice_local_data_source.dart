@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
 import 'package:shared/data/data_sources/space_storage_data_source.dart';
-import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/models/local_custom_practice.dart';
+import 'package:shared/domain/extensions/stream_extensions.dart';
 
 abstract class CustomPracticeLocalDataSource {
   Stream<LocalCustomPractice?> watchCustomPractice();

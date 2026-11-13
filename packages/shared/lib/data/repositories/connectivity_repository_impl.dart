@@ -1,8 +1,8 @@
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/connectivity_data_source.dart';
+import 'package:shared/data/extensions/app_result_stream_extensions.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
-import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/domain/repositories/connectivity_repository.dart';
 
 @Injectable(as: ConnectivityRepository)

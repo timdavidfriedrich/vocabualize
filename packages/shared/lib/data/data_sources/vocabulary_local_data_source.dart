@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:serverpod_database/serverpod_database.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
-import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/extensions/table_extensions.dart';
 import 'package:shared/data/models/local_activity_day.dart';
 import 'package:shared/data/models/local_language_membership.dart';
@@ -12,6 +11,7 @@ import 'package:shared/data/models/local_level_range.dart';
 import 'package:shared/data/models/local_progress_stage.dart';
 import 'package:shared/data/models/local_translation_origin.dart';
 import 'package:shared/data/models/local_vocabulary_overview.dart';
+import 'package:shared/domain/extensions/stream_extensions.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
 typedef _TimedResult<T> = ({T value, DateTime? validUntil});

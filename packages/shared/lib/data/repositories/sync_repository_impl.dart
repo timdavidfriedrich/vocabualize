@@ -2,11 +2,12 @@ import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_sync_data_source.dart';
 import 'package:shared/data/data_sources/sync_data_source.dart';
+import 'package:shared/data/extensions/app_result_stream_extensions.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
-import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/sync_status_mappers.dart';
 import 'package:shared/domain/entities/data_readiness.dart';
 import 'package:shared/domain/entities/sync_status.dart';
+import 'package:shared/domain/extensions/stream_extensions.dart';
 import 'package:shared/domain/repositories/sync_repository.dart';
 
 @Injectable(as: SyncRepository)

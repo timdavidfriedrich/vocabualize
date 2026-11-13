@@ -1,8 +1,8 @@
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/setting_local_data_source.dart';
+import 'package:shared/data/extensions/app_result_stream_extensions.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
-import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/preferences_mappers.dart';
 import 'package:shared/data/models/local_preference_key.dart';
 import 'package:shared/domain/entities/appearance_mode.dart';

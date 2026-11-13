@@ -2,9 +2,10 @@ import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/activity_local_data_source.dart';
 import 'package:shared/data/data_sources/calendar_data_source.dart';
-import 'package:shared/data/extensions/stream_extensions.dart';
+import 'package:shared/data/extensions/app_result_stream_extensions.dart';
 import 'package:shared/data/mappers/activity_mappers.dart';
 import 'package:shared/domain/entities/activity_history.dart';
+import 'package:shared/domain/extensions/stream_extensions.dart';
 import 'package:shared/domain/repositories/activity_repository.dart';
 
 @Injectable(as: ActivityRepository)

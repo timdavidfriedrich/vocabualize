@@ -3,12 +3,13 @@ import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/tag_local_data_source.dart';
+import 'package:shared/data/extensions/app_result_stream_extensions.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
-import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/tag_mappers.dart';
 import 'package:shared/data/mappers/vocabulary_mappers.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/tag.dart';
+import 'package:shared/domain/extensions/stream_extensions.dart';
 import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 

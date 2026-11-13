@@ -1,8 +1,8 @@
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/notification_data_source.dart';
+import 'package:shared/data/extensions/app_result_stream_extensions.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
-import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/reminder_notification_mappers.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/reminder_notification.dart';

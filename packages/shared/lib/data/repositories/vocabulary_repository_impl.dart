@@ -4,8 +4,8 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/device_data_source.dart';
 import 'package:shared/data/data_sources/image_file_data_source.dart';
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart';
+import 'package:shared/data/extensions/app_result_stream_extensions.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
-import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/extensions/uuid_extensions.dart';
 import 'package:shared/data/mappers/activity_mappers.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
@@ -26,6 +26,7 @@ import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/entities/vocabulary_image_change.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
+import 'package:shared/domain/extensions/stream_extensions.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
