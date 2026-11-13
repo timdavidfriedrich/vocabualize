@@ -7,13 +7,11 @@ const _precisePattern = "0.0";
 
 extension ZoomExtensions on double {
   String toZoomPresetLabel(BuildContext context, {required bool isSelected}) {
-    final value = NumberFormat(_presetPattern, _localeOf(context)).format(this);
+    final value = NumberFormat(_presetPattern, context.localeTag).format(this);
     return isSelected ? context.s.scanZoomLabel(value) : value;
   }
 
   String toZoomLabel(BuildContext context) {
-    return context.s.scanZoomLabel(NumberFormat(_precisePattern, _localeOf(context)).format(this));
+    return context.s.scanZoomLabel(NumberFormat(_precisePattern, context.localeTag).format(this));
   }
-
-  String _localeOf(BuildContext context) => Localizations.localeOf(context).toLanguageTag();
 }

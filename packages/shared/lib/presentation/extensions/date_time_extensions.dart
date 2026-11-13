@@ -7,10 +7,9 @@ const _relativeDaysLimit = 7;
 extension DateTimeExtensions on DateTime {
   String toNextDueLabel(BuildContext context) {
     final local = toLocal();
-    final locale = _locale(context);
     return DateUtils.isSameDay(local, DateTime.now())
-        ? context.s.homeNextDueTodayMessage(DateFormat.jm(locale).format(local))
-        : context.s.homeNextDueLaterMessage(DateFormat.MMMEd(locale).format(local));
+        ? context.s.homeNextDueTodayMessage(DateFormat.jm(context.localeTag).format(local))
+        : context.s.homeNextDueLaterMessage(DateFormat.MMMEd(context.localeTag).format(local));
   }
 
   String toReappearsLabel(BuildContext context) {
@@ -21,16 +20,9 @@ extension DateTimeExtensions on DateTime {
       Duration(:final inHours, inDays: < 1) => context.s.vocabularyReappearsInHours(inHours),
       Duration(:final inDays) when inDays <= _relativeDaysLimit =>
         context.s.vocabularyReappearsInDays(inDays),
-      Duration() => DateFormat.yMd(_locale(context)).add_jm().format(toLocal()),
+      Duration() => DateFormat.yMd(context.localeTag).add_jm().format(toLocal()),
     };
   }
 
-  String toDateLabel(BuildContext context) => DateFormat.yMd(_locale(context)).format(toLocal());
-
-  String toDayOfMonthLabel(BuildContext context) => DateFormat.d(_locale(context)).format(this);
-
-  String toWeekdayDateLabel(BuildContext context) =>
-      DateFormat.MMMEd(_locale(context)).format(this);
-
-  String _locale(BuildContext context) => Localizations.localeOf(context).toLanguageTag();
+  String toDateLabel(BuildContext context) => DateFormat.yMd(context.localeTag).format(toLocal());
 }

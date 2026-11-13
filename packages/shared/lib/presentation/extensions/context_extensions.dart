@@ -9,6 +9,8 @@ extension ContextExtensions on BuildContext {
 
   TextTheme get t => Theme.of(this).textTheme;
 
+  String get localeTag => Localizations.localeOf(this).toLanguageTag();
+
   StatusColors get status => Theme.of(this).extension<StatusColors>()!;
 
   LevelColors get levels => Theme.of(this).extension<LevelColors>()!;

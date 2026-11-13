@@ -4,8 +4,8 @@ import 'package:feature_home/presentation/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/streak.dart';
+import 'package:shared/presentation/extensions/calendar_day_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
-import 'package:shared/presentation/extensions/date_time_extensions.dart';
 
 const _calendarWeeks = 4;
 const _daysPerWeek = 7;
