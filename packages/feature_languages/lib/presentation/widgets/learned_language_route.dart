@@ -13,10 +13,10 @@ import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_level_extensions.dart';
+import 'package:shared/presentation/widgets/round_icon_button.dart';
 
 const _lineWidth = Spacing.borderWidthThick;
 const _stopSpacing = Spacing.m;
-const _roundButtonSize = Spacing.xxxl;
 
 class const LearnedLanguageRoute({
   super.key,
@@ -209,13 +209,13 @@ class const _AskMeInStop({
                         ),
                       ),
                     ),
-                    _RoundButton(
+                    RoundIconButton(
                       icon: Icons.help_outline_rounded,
                       tooltip: context.s.learnedLanguageAskMeInHelpTooltip,
                       onPressed: () => _explainAskMeIn(context, _state, _askMeIn),
                     ),
                     const SizedBox(width: Spacing.xs),
-                    _RoundButton(
+                    RoundIconButton(
                       icon: Icons.close_rounded,
                       tooltip: context.s.learnedLanguageRemoveAskMeInTooltip,
                       onPressed: _state.isBusy
@@ -235,28 +235,6 @@ class const _AskMeInStop({
           ),
         ),
       ],
-    );
-  }
-}
-
-class const _RoundButton({
-  required final IconData _icon,
-  required final String _tooltip,
-  required final VoidCallback? _onPressed,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: _roundButtonSize,
-      child: IconButton.filled(
-        style: IconButton.styleFrom(
-          backgroundColor: context.c.surfaceContainerHighest,
-          foregroundColor: context.c.onSurface,
-        ),
-        onPressed: _onPressed,
-        tooltip: _tooltip,
-        icon: Icon(_icon),
-      ),
     );
   }
 }

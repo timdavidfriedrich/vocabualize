@@ -15,11 +15,11 @@ import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_level_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/practice_button.dart';
+import 'package:shared/presentation/widgets/round_icon_button.dart';
 
 const _shownLevels = [VocabularyLevel.beginner, VocabularyLevel.advanced, VocabularyLevel.expert];
 const _manyAddedToday = 3;
 const _manyWordsInTotal = 10;
-const _roundButtonSize = Spacing.xxxl;
 const _flagSize = Spacing.xl;
 const _flagOverlap = Spacing.xxs;
 const _progressHeight = Spacing.xxs;
@@ -135,7 +135,7 @@ class const _CustomSessionCard({
       ),
       child: Row(
         children: [
-          _RoundButton(
+          RoundIconButton(
             icon: Icons.playlist_play_rounded,
             tooltip: context.s.homeCustomPracticeContinueButton,
             color: context.c.primary,
@@ -178,11 +178,9 @@ class const _CustomSessionCard({
             ),
           ),
           const SizedBox(width: Spacing.m),
-          _RoundButton(
+          RoundIconButton(
             icon: Icons.close_rounded,
             tooltip: context.s.homeCustomPracticeEndButton,
-            color: context.c.surfaceContainerHighest,
-            iconColor: context.c.onSurface,
             onPressed: () => _end(context),
           ),
         ],
@@ -238,27 +236,6 @@ class const _FlagStack({
               ),
             ),
         ],
-      ),
-    );
-  }
-}
-
-class const _RoundButton({
-  required final IconData _icon,
-  required final String _tooltip,
-  required final Color _color,
-  required final Color _iconColor,
-  required final VoidCallback _onPressed,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: _roundButtonSize,
-      child: IconButton.filled(
-        style: IconButton.styleFrom(backgroundColor: _color, foregroundColor: _iconColor),
-        onPressed: _onPressed,
-        tooltip: _tooltip,
-        icon: Icon(_icon),
       ),
     );
   }
