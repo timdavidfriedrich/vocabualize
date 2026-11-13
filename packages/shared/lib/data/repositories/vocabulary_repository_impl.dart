@@ -220,7 +220,7 @@ class const VocabularyRepositoryImpl(
   Future<AppResult<List<PracticeItem>>> findDueItems({
     required Set<Language> languages,
     required DateTime dueBy,
-    required int? limit,
+    required int limit,
     Set<String> tagIds = const {},
   }) => _practiceItems(
     () => _localDataSource.findDueProgress(
@@ -234,12 +234,14 @@ class const VocabularyRepositoryImpl(
   @override
   Future<AppResult<List<PracticeItem>>> findWaitingItems({
     required Language language,
-    required int? limit,
+    required int limit,
+    int offset = 0,
     Set<String> tagIds = const {},
   }) => _practiceItems(
     () => _localDataSource.findWaitingProgress(
       languageCode: language.toLanguageCode(),
       limit: limit,
+      offset: offset,
       tagIds: _uuids(tagIds),
     ),
   );
@@ -247,10 +249,12 @@ class const VocabularyRepositoryImpl(
   @override
   Future<AppResult<List<PracticeItem>>> findStartedItems({
     required Set<Language> languages,
+    required int limit,
     Set<String> tagIds = const {},
   }) => _practiceItems(
     () => _localDataSource.findStartedProgress(
       languageCodes: _languageCodes(languages),
+      limit: limit,
       tagIds: _uuids(tagIds),
     ),
   );

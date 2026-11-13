@@ -9,35 +9,24 @@ class const BuildCustomPracticeUseCase(
   final VocabularyRepository _vocabularyRepository,
 ) {
   Future<AppResult<List<PracticeItemKey>>> call(CustomPracticePlan plan) async {
-    final dueLanguages = {
-      for (final language in plan.languages)
-        if (language.words == PracticeWords.due) language.language,
-    };
-    final allLanguages = {
-      for (final language in plan.languages)
-        if (language.words == PracticeWords.all) language.language,
-    };
+    final dueBy = DateTime.now().toUtc();
     final reviews = <PracticeItem>[];
-    if (dueLanguages.isNotEmpty) {
-      final due = await _vocabularyRepository.findDueItems(
-        languages: dueLanguages,
-        dueBy: DateTime.now().toUtc(),
-        limit: null,
-        tagIds: plan.tagIds,
-      );
-      switch (due) {
-        case Success(:final data):
-          reviews.addAll(data);
-        case Failure(:final error):
-          return Failure(error);
-      }
-    }
-    if (allLanguages.isNotEmpty) {
-      final started = await _vocabularyRepository.findStartedItems(
-        languages: allLanguages,
-        tagIds: plan.tagIds,
-      );
-      switch (started) {
+    for (final language in plan.languages) {
+      if (language.reviewWordCount <= 0) continue;
+      final found = await switch (language.words) {
+        PracticeWords.due => _vocabularyRepository.findDueItems(
+          languages: {language.language},
+          dueBy: dueBy,
+          limit: language.reviewWordCount,
+          tagIds: plan.tagIds,
+        ),
+        PracticeWords.all => _vocabularyRepository.findStartedItems(
+          languages: {language.language},
+          limit: language.reviewWordCount,
+          tagIds: plan.tagIds,
+        ),
+      };
+      switch (found) {
         case Success(:final data):
           reviews.addAll(data);
         case Failure(:final error):
@@ -45,12 +34,6 @@ class const BuildCustomPracticeUseCase(
       }
     }
     reviews.sort(_byNextReview);
-    final chosenReviews = [
-      for (final language in plan.languages)
-        ...reviews
-            .where((item) => item.language == language.language)
-            .take(language.reviewWordCount),
-    ]..sort(_byNextReview);
     final newItems = <PracticeItem>[];
     for (final language in plan.languages) {
       if (language.newWordCount <= 0) continue;
@@ -67,7 +50,7 @@ class const BuildCustomPracticeUseCase(
       }
     }
     return Success([
-      for (final item in [...chosenReviews, ...newItems])
+      for (final item in [...reviews, ...newItems])
         PracticeItemKey(vocabularyId: item.vocabulary.id, language: item.language),
     ]);
   }

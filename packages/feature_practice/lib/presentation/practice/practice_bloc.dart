@@ -72,35 +72,35 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
         limit: _batchSize,
         tagIds: tagIds,
       ),
-      _vocabularyRepository.findWaitingItems(
-        language: language,
-        limit: switch (setup.learnedOf(language)?.newWords) {
-          NewWordsUpTo(:final count) => count,
-          AllNewWords() || null => null,
-        },
-        tagIds: tagIds,
-      ),
+      _vocabularyRepository.countWaitingItems(language: language, tagIds: tagIds),
     ).wait;
     switch ((count, batch, waiting)) {
       case (Failure(:final error), _, _) ||
           (_, Failure(:final error), _) ||
           (_, _, Failure(:final error)):
         emit(PracticeFailure(error: error));
-      case (Success(data: final total), Success(data: final due), Success(data: final fresh)):
+      case (
+        Success(data: final total),
+        Success(data: final due),
+        Success(data: final waitingCount),
+      ):
         final queue = _cardsOf(due, setup);
-        final newCards = _cardsOf(fresh, setup);
-        await _emitStart(
-          emit,
+        final newWordCount = switch (setup.learnedOf(language)?.newWords) {
+          NewWordsUpTo(:final count) => min(waitingCount, count),
+          AllNewWords() || null => waitingCount,
+        };
+        final start = await _withNewCards(
           PracticeActive(
             tagId: event.tagId,
             isCustom: false,
             setup: setup,
             languages: {language},
             dueBy: dueBy,
-            totalCount: max(total, queue.length) + newCards.length,
+            totalCount: max(total, queue.length) + newWordCount,
             doneCount: 0,
-            queue: queue.isEmpty ? newCards : queue,
-            newCards: queue.isEmpty ? const [] : newCards,
+            queue: queue,
+            newWordsLeft: newWordCount,
+            newWordsSkipped: 0,
             pendingKeys: const [],
             isStrictCorrection: await _isStrictCorrection(),
             typedAnswer: null,
@@ -111,6 +111,12 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
             error: null,
           ),
         );
+        switch (start) {
+          case PracticeActive(queue: [], :final error?):
+            emit(PracticeFailure(error: error));
+          case PracticeActive():
+            await _emitStart(emit, start);
+        }
     }
   }
 
@@ -132,7 +138,8 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
           totalCount: session.items.length,
           doneCount: session.doneCount,
           queue: const [],
-          newCards: const [],
+          newWordsLeft: 0,
+          newWordsSkipped: 0,
           pendingKeys: session.items.skip(session.doneCount).toList(),
           isStrictCorrection: await _isStrictCorrection(),
           typedAnswer: null,
@@ -283,7 +290,7 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
         else
           card,
     ];
-    final next = active.copyWith(queue: updated(active.queue), newCards: updated(active.newCards));
+    final next = active.copyWith(queue: updated(active.queue));
     final item = next.current.item;
     return next.copyWith(
       grade: switch (next.typedAnswer) {
@@ -369,10 +376,37 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
           Success(:final data) => _cardsOf(data, current.setup),
           Failure() => const <PracticeCard>[],
         };
-        current = cards.isNotEmpty
-            ? current.copyWith(queue: cards)
-            : current.copyWith(queue: current.newCards, newCards: const []);
+        current = cards.isNotEmpty ? current.copyWith(queue: cards) : await _withNewCards(current);
         if (current.queue.isEmpty) return current;
+      }
+    }
+    return current;
+  }
+
+  // * introduced and skipped words leave the waiting words, so every batch starts behind the
+  // * words that could not be shown
+  Future<PracticeActive> _withNewCards(PracticeActive active) async {
+    var current = active;
+    while (current.queue.isEmpty && current.newWordsLeft > 0) {
+      final limit = min(_batchSize, current.newWordsLeft);
+      final result = await _vocabularyRepository.findWaitingItems(
+        language: current.languages.first,
+        limit: limit,
+        offset: current.newWordsSkipped,
+        tagIds: {?current.tagId},
+      );
+      switch (result) {
+        case Success(:final data):
+          final cards = _cardsOf(data, current.setup);
+          final skipped = data.length - cards.length;
+          current = current.copyWith(
+            queue: cards,
+            newWordsLeft: data.length < limit ? 0 : current.newWordsLeft - data.length,
+            newWordsSkipped: current.newWordsSkipped + skipped,
+            doneCount: current.doneCount + skipped,
+          );
+        case Failure(:final error):
+          return current.copyWith(newWordsLeft: 0, error: error);
       }
     }
     return current;

@@ -65,18 +65,20 @@ abstract class VocabularyRepository {
   Future<AppResult<List<PracticeItem>>> findDueItems({
     required Set<Language> languages,
     required DateTime dueBy,
-    required int? limit,
+    required int limit,
     Set<String> tagIds = const {},
   });
 
   Future<AppResult<List<PracticeItem>>> findWaitingItems({
     required Language language,
-    required int? limit,
+    required int limit,
+    int offset = 0,
     Set<String> tagIds = const {},
   });
 
   Future<AppResult<List<PracticeItem>>> findStartedItems({
     required Set<Language> languages,
+    required int limit,
     Set<String> tagIds = const {},
   });
 

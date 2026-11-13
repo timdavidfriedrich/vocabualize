@@ -223,10 +223,15 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     'queue',
     _$queue,
   );
-  static List<PracticeCard> _$newCards(PracticeActive v) => v.newCards;
-  static const Field<PracticeActive, List<PracticeCard>> _f$newCards = Field(
-    'newCards',
-    _$newCards,
+  static int _$newWordsLeft(PracticeActive v) => v.newWordsLeft;
+  static const Field<PracticeActive, int> _f$newWordsLeft = Field(
+    'newWordsLeft',
+    _$newWordsLeft,
+  );
+  static int _$newWordsSkipped(PracticeActive v) => v.newWordsSkipped;
+  static const Field<PracticeActive, int> _f$newWordsSkipped = Field(
+    'newWordsSkipped',
+    _$newWordsSkipped,
   );
   static List<PracticeItemKey> _$pendingKeys(PracticeActive v) => v.pendingKeys;
   static const Field<PracticeActive, List<PracticeItemKey>> _f$pendingKeys =
@@ -277,7 +282,8 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
     #totalCount: _f$totalCount,
     #doneCount: _f$doneCount,
     #queue: _f$queue,
-    #newCards: _f$newCards,
+    #newWordsLeft: _f$newWordsLeft,
+    #newWordsSkipped: _f$newWordsSkipped,
     #pendingKeys: _f$pendingKeys,
     #isStrictCorrection: _f$isStrictCorrection,
     #typedAnswer: _f$typedAnswer,
@@ -298,7 +304,8 @@ class PracticeActiveMapper extends ClassMapperBase<PracticeActive> {
       totalCount: data.dec(_f$totalCount),
       doneCount: data.dec(_f$doneCount),
       queue: data.dec(_f$queue),
-      newCards: data.dec(_f$newCards),
+      newWordsLeft: data.dec(_f$newWordsLeft),
+      newWordsSkipped: data.dec(_f$newWordsSkipped),
       pendingKeys: data.dec(_f$pendingKeys),
       isStrictCorrection: data.dec(_f$isStrictCorrection),
       typedAnswer: data.dec(_f$typedAnswer),
@@ -381,12 +388,6 @@ abstract class PracticeActiveCopyWith<$R, $In extends PracticeActive, $Out>
   get queue;
   ListCopyWith<
     $R,
-    PracticeCard,
-    PracticeCardCopyWith<$R, PracticeCard, PracticeCard>
-  >
-  get newCards;
-  ListCopyWith<
-    $R,
     PracticeItemKey,
     PracticeItemKeyCopyWith<$R, PracticeItemKey, PracticeItemKey>
   >
@@ -401,7 +402,8 @@ abstract class PracticeActiveCopyWith<$R, $In extends PracticeActive, $Out>
     int? totalCount,
     int? doneCount,
     List<PracticeCard>? queue,
-    List<PracticeCard>? newCards,
+    int? newWordsLeft,
+    int? newWordsSkipped,
     List<PracticeItemKey>? pendingKeys,
     bool? isStrictCorrection,
     String? typedAnswer,
@@ -441,17 +443,6 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<
     $R,
-    PracticeCard,
-    PracticeCardCopyWith<$R, PracticeCard, PracticeCard>
-  >
-  get newCards => ListCopyWith(
-    $value.newCards,
-    (v, t) => v.copyWith.$chain(t),
-    (v) => call(newCards: v),
-  );
-  @override
-  ListCopyWith<
-    $R,
     PracticeItemKey,
     PracticeItemKeyCopyWith<$R, PracticeItemKey, PracticeItemKey>
   >
@@ -470,7 +461,8 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
     int? totalCount,
     int? doneCount,
     List<PracticeCard>? queue,
-    List<PracticeCard>? newCards,
+    int? newWordsLeft,
+    int? newWordsSkipped,
     List<PracticeItemKey>? pendingKeys,
     bool? isStrictCorrection,
     Object? typedAnswer = $none,
@@ -489,7 +481,8 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
       if (totalCount != null) #totalCount: totalCount,
       if (doneCount != null) #doneCount: doneCount,
       if (queue != null) #queue: queue,
-      if (newCards != null) #newCards: newCards,
+      if (newWordsLeft != null) #newWordsLeft: newWordsLeft,
+      if (newWordsSkipped != null) #newWordsSkipped: newWordsSkipped,
       if (pendingKeys != null) #pendingKeys: pendingKeys,
       if (isStrictCorrection != null) #isStrictCorrection: isStrictCorrection,
       if (typedAnswer != $none) #typedAnswer: typedAnswer,
@@ -510,7 +503,8 @@ class _PracticeActiveCopyWithImpl<$R, $Out>
     totalCount: data.get(#totalCount, or: $value.totalCount),
     doneCount: data.get(#doneCount, or: $value.doneCount),
     queue: data.get(#queue, or: $value.queue),
-    newCards: data.get(#newCards, or: $value.newCards),
+    newWordsLeft: data.get(#newWordsLeft, or: $value.newWordsLeft),
+    newWordsSkipped: data.get(#newWordsSkipped, or: $value.newWordsSkipped),
     pendingKeys: data.get(#pendingKeys, or: $value.pendingKeys),
     isStrictCorrection: data.get(
       #isStrictCorrection,

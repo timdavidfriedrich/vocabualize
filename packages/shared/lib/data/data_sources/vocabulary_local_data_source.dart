@@ -63,13 +63,14 @@ abstract class VocabularyLocalDataSource {
   Future<List<LocalProgress>> findDueProgress({
     required Set<String> languageCodes,
     required DateTime dueBy,
-    required int? limit,
+    required int limit,
     required Set<UuidValue> tagIds,
   });
 
   Future<List<LocalProgress>> findWaitingProgress({
     required String languageCode,
-    required int? limit,
+    required int limit,
+    required int offset,
     required Set<UuidValue> tagIds,
   });
 
@@ -85,6 +86,7 @@ abstract class VocabularyLocalDataSource {
 
   Future<List<LocalProgress>> findStartedProgress({
     required Set<String> languageCodes,
+    required int limit,
     required Set<UuidValue> tagIds,
   });
 
@@ -406,7 +408,7 @@ class const VocabularyLocalDataSourceImpl(
   Future<List<LocalProgress>> findDueProgress({
     required Set<String> languageCodes,
     required DateTime dueBy,
-    required int? limit,
+    required int limit,
     required Set<UuidValue> tagIds,
   }) async {
     final session = _requireSession();
@@ -427,7 +429,8 @@ class const VocabularyLocalDataSourceImpl(
   @override
   Future<List<LocalProgress>> findWaitingProgress({
     required String languageCode,
-    required int? limit,
+    required int limit,
+    required int offset,
     required Set<UuidValue> tagIds,
   }) async {
     final session = _requireSession();
@@ -449,6 +452,7 @@ class const VocabularyLocalDataSourceImpl(
         progress.vocabulary.createdAt.asc(),
       ],
       limit: limit,
+      offset: offset,
       include: LocalProgress.include(vocabulary: _withLanguages()),
     );
   }
@@ -495,6 +499,7 @@ class const VocabularyLocalDataSourceImpl(
   @override
   Future<List<LocalProgress>> findStartedProgress({
     required Set<String> languageCodes,
+    required int limit,
     required Set<UuidValue> tagIds,
   }) async {
     final session = _requireSession();
@@ -507,6 +512,7 @@ class const VocabularyLocalDataSourceImpl(
         scope,
       ),
       orderBy: (progress) => progress.nextReviewAt.asc(),
+      limit: limit,
       include: LocalProgress.include(vocabulary: _withLanguages()),
     );
   }
