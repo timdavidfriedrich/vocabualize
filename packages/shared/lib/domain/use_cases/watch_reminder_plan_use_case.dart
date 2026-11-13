@@ -1,11 +1,11 @@
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/reminder_plan.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
+import 'package:shared/domain/extensions/language_setup_stream_extensions.dart';
 import 'package:shared/domain/extensions/stream_extensions.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/reminder_repository.dart';
@@ -52,30 +52,13 @@ class const WatchReminderPlanUseCase(
   Stream<AppResult<VocabularyOverview>> _watchOverview() {
     return _languageRepository
         .watchLanguageSetup()
-        .map(
-          (result) => switch (result) {
-            Success(:final data) => Success({
-              for (final learnedLanguage in data?.active ?? const <LearnedLanguage>[])
-                learnedLanguage.language,
-            }),
-            Failure(:final error) => Failure<Set<Language>>(error),
-          },
-        )
-        .distinct(_isSameSelection)
+        .toDistinctLanguages((setup) => setup.active)
         .switchMap(
           (result) => switch (result) {
             Success(:final data) => _vocabularyRepository.watchVocabularyOverview(languages: data),
             Failure(:final error) => Stream.value(Failure(error)),
           },
         );
-  }
-
-  bool _isSameSelection(AppResult<Set<Language>> previous, AppResult<Set<Language>> next) {
-    return switch ((previous, next)) {
-      (Success(data: final previous), Success(data: final next)) =>
-        previous.length == next.length && previous.containsAll(next),
-      (_, _) => false,
-    };
   }
 
   ReminderPlan _planOf({
