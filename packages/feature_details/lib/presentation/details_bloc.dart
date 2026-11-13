@@ -169,7 +169,13 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   ) async {
     final previous = switch (state) {
       DetailsEditing(:final setup) => setup,
-      _ => null,
+      DetailsLoading() ||
+      DetailsDuplicateFound() ||
+      DetailsExistingFound() ||
+      DetailsText() ||
+      DetailsAdded() ||
+      DetailsClosed() ||
+      DetailsFailure() => null,
     };
     if (previous == null || previous == event.setup) return;
     final original = switch (state) {
@@ -179,7 +185,14 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         Success(:final data) => data,
         Failure() => original,
       },
-      _ => null,
+      DetailsEditing() ||
+      DetailsLoading() ||
+      DetailsDuplicateFound() ||
+      DetailsExistingFound() ||
+      DetailsText() ||
+      DetailsAdded() ||
+      DetailsClosed() ||
+      DetailsFailure() => null,
     };
     if (state case final DetailsEditing editing) {
       final learned = {for (final learned in event.setup.learned) learned.language};
@@ -373,7 +386,14 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
             DetailsSavedImage(image: CustomImage(:final photographerUrl)),
       ) =>
         photographerUrl,
-      _ => null,
+      DetailsEditing() ||
+      DetailsLoading() ||
+      DetailsDuplicateFound() ||
+      DetailsExistingFound() ||
+      DetailsText() ||
+      DetailsAdded() ||
+      DetailsClosed() ||
+      DetailsFailure() => null,
     };
     if (url == null) return;
     if (await _externalLinkRepository.open(url) case Failure(:final error)) {

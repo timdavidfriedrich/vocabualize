@@ -270,7 +270,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
           filter: filter,
           error: null,
         ),
-      _ => loading,
+      CollectionLoading() => loading,
     };
   }
 }

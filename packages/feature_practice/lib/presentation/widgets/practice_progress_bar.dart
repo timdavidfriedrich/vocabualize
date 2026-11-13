@@ -14,7 +14,7 @@ class const PracticeProgressBar({
     return BlocSelector<PracticeBloc, PracticeState, ({int done, int total})>(
       selector: (state) => switch (state) {
         PracticeActive(:final doneCount, :final totalCount) => (done: doneCount, total: totalCount),
-        _ => (done: 0, total: 0),
+        PracticeLoading() || PracticeDone() || PracticeFailure() => (done: 0, total: 0),
       },
       builder: (context, progress) => Row(
         children: [

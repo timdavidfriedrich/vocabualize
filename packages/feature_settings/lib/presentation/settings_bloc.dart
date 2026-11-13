@@ -73,7 +73,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           accountConflict: null,
           error: null,
         ),
-        _ => state,
+        (Success(data: AuthUnknown() || AuthUnauthenticated()), _) || (Failure(), _) => state,
       },
     );
   }
@@ -269,7 +269,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           importProgress: null,
           error: error,
         ),
-        _ => state,
+        (Success() || Failure(), SettingsLoading()) => state,
       },
     );
   }

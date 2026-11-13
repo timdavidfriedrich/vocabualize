@@ -53,7 +53,7 @@ class const PracticeCardView({
           typedAnswer: active.typedAnswer,
           grade: active.grade,
         ),
-        _ => null,
+        PracticeLoading() || PracticeDone() || PracticeFailure() => null,
       },
       builder: (context, view) => switch (view) {
         null => const SizedBox.shrink(),

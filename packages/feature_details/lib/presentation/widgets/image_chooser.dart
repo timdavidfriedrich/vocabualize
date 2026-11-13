@@ -58,7 +58,13 @@ class const ImageChooser({
             isBusy: runningAction != null,
             isLoadingImage: runningAction == DetailsAction.photoPick,
           ),
-        _ => null,
+        DetailsLoading() ||
+        DetailsDuplicateFound() ||
+        DetailsExistingFound() ||
+        DetailsText() ||
+        DetailsAdded() ||
+        DetailsClosed() ||
+        DetailsFailure() => null,
       },
       builder: (context, choice) => switch (choice) {
         null => const SizedBox.shrink(),
@@ -105,7 +111,7 @@ class const _Content({
               image: pageImages[index - 1],
               isSelected: switch (choice.selected) {
                 DetailsStockPhoto(:final image) => image == pageImages[index - 1],
-                _ => false,
+                DetailsNoImage() || DetailsNewPhoto() || DetailsSavedImage() => false,
               },
               isBusy: choice.isBusy,
             ),

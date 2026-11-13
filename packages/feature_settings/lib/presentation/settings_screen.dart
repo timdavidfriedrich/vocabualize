@@ -549,7 +549,13 @@ class const _AccountCard({
                   SyncStatus.offline => const _ConnectButton(),
                   SyncStatus.signInRequired => _SignInAgainButton(runningAction: _runningAction),
                   SyncStatus.updateRequired => const _UpdateButton(),
-                  _ => null,
+                  SyncStatus.disabled ||
+                  SyncStatus.connecting ||
+                  SyncStatus.syncing ||
+                  SyncStatus.synced ||
+                  SyncStatus.serverUnreachable ||
+                  SyncStatus.clockWrong ||
+                  SyncStatus.failed => null,
                 },
               ),
               _ => const SizedBox.shrink(),

@@ -46,7 +46,7 @@ class const PracticeControls({
           grade: grade,
           isBusy: isBusy,
         ),
-        _ => null,
+        PracticeLoading() || PracticeDone() || PracticeFailure() => null,
       },
       builder: (context, controls) => switch (controls) {
         null => const SizedBox.shrink(),

@@ -17,6 +17,6 @@ extension DefaultGatherOptionExtensions on DefaultGatherOption {
 
   DefaultGatherOption withImagesHidden(bool areImagesHidden) => switch (this) {
     DefaultGatherOption.scan when areImagesHidden => DefaultGatherOption.none,
-    _ => this,
+    DefaultGatherOption.none || DefaultGatherOption.scan || DefaultGatherOption.write => this,
   };
 }

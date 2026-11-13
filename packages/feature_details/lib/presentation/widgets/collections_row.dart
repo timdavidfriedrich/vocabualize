@@ -22,7 +22,13 @@ class const CollectionsRow({
           tags: tags,
           selected: selectedTagIds,
         ),
-        _ => (tags: const [], selected: const {}),
+        DetailsLoading() ||
+        DetailsDuplicateFound() ||
+        DetailsExistingFound() ||
+        DetailsText() ||
+        DetailsAdded() ||
+        DetailsClosed() ||
+        DetailsFailure() => (tags: const [], selected: const {}),
       },
       builder: (context, choice) => SizedBox(
         height: collectionChipHeight,

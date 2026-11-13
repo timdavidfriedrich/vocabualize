@@ -67,11 +67,11 @@ extension VocabularyMappers on Vocabulary {
   LocalVocabulary toLocalVocabulary() {
     final customImage = switch (image) {
       final CustomImage customImage => customImage,
-      _ => null,
+      StockImage() || NoImage() => null,
     };
     final stockImage = switch (image) {
       final StockImage stockImage => stockImage,
-      _ => null,
+      CustomImage() || NoImage() => null,
     };
     return LocalVocabulary(
       id: UuidValue.withValidation(id),

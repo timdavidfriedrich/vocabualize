@@ -52,7 +52,7 @@ class LanguageWordsBloc extends Bloc<LanguageWordsEvent, LanguageWordsState> {
           }
           return switch (state) {
             final LanguageWordsEditing editing => editing.copyWith(images: _images),
-            _ => state,
+            LanguageWordsLoading() || LanguageWordsSaved() || LanguageWordsFailure() => state,
           };
         },
       ),

@@ -64,7 +64,7 @@ class const _VocabularyInfoDialog({
         photographer: photographer,
         url: url,
       ),
-      _ => null,
+      StockImage() || CustomImage() || NoImage() => null,
     };
     return AlertDialog.adaptive(
       title: IntrinsicHeight(

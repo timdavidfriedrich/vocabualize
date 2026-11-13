@@ -122,7 +122,7 @@ class const _Overview({
         title: BlocSelector<CollectionBloc, CollectionState, String>(
           selector: (state) => switch (state) {
             CollectionLoaded(:final tag) => tag.toLabel(),
-            _ => "",
+            CollectionLoading() || CollectionClosed() || CollectionFailure() => "",
           },
           builder: (context, name) => Text(name, style: context.t.headlineSmall),
         ),
@@ -155,7 +155,7 @@ class const _Overview({
                             tagId: tag.id,
                             count: practiceCount,
                           ),
-                          _ => null,
+                          CollectionLoading() || CollectionClosed() || CollectionFailure() => null,
                         },
                         builder: (context, practice) => switch (practice) {
                           final practice? => PracticeButton(
@@ -214,7 +214,10 @@ class const _EmptyLanguageHint() extends StatelessWidget {
         )
             when tagWordCount > 0 && filter == emptyVocabularyFilter =>
           setup.selected,
-        _ => null,
+        CollectionLoading() ||
+        CollectionLoaded() ||
+        CollectionClosed() ||
+        CollectionFailure() => null,
       },
       builder: (context, language) => switch (language) {
         final language? => Padding(
@@ -256,7 +259,9 @@ class const _Feed({
           hasMore: vocabularies.length >= feedLimit,
           setup: setup,
         ),
-        _ => (vocabularies: const [], hasMore: false, setup: null),
+        CollectionLoading() ||
+        CollectionClosed() ||
+        CollectionFailure() => (vocabularies: const [], hasMore: false, setup: null),
       },
       builder: (context, feed) => switch (feed) {
         (vocabularies: [], hasMore: false, setup: _) when _showsNoResults =>

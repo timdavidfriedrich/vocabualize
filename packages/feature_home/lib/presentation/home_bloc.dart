@@ -210,7 +210,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeState _withImportSource(HomeState next) {
     final source = switch (next) {
       final HomeLoaded loaded when loaded.isLanguageEmpty => loaded.importSource,
-      _ => null,
+      HomeLoading() || HomeLoaded() || HomeFailure() => null,
     };
     if (source != _importSource) {
       _importSource = source;
@@ -354,7 +354,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           streak: streak,
           error: null,
         ),
-      _ => loading,
+      HomeLoading() => loading,
     };
   }
 }

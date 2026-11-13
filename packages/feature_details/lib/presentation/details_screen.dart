@@ -192,7 +192,13 @@ class const _Actions() extends StatelessWidget {
             ),
           ],
         ),
-        _ => const SizedBox.shrink(),
+        DetailsLoading() ||
+        DetailsDuplicateFound() ||
+        DetailsExistingFound() ||
+        DetailsText() ||
+        DetailsAdded() ||
+        DetailsClosed() ||
+        DetailsFailure() => const SizedBox.shrink(),
       },
     );
   }

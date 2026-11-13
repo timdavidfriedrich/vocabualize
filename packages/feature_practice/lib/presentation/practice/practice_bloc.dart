@@ -231,7 +231,10 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
           text: text,
           origin: switch (vocabulary.translations[language]?.origin) {
             TranslationOrigin.entered => TranslationOrigin.entered,
-            _ => TranslationOrigin.edited,
+            TranslationOrigin.translated ||
+            TranslationOrigin.edited ||
+            TranslationOrigin.unknown ||
+            null => TranslationOrigin.edited,
           },
         ),
     ];

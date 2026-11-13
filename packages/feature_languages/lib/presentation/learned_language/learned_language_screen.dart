@@ -92,7 +92,7 @@ class const _PausedChip() extends StatelessWidget {
     return BlocSelector<LearnedLanguageBloc, LearnedLanguageState, bool>(
       selector: (state) => switch (state) {
         LearnedLanguageLoaded(:final learned) => learned.isPaused,
-        _ => false,
+        LearnedLanguageLoading() || LearnedLanguageClosed() || LearnedLanguageFailure() => false,
       },
       builder: (context, isPaused) => !isPaused
           ? const SizedBox.shrink()
@@ -153,7 +153,9 @@ class const _Actions() extends StatelessWidget {
     return BlocBuilder<LearnedLanguageBloc, LearnedLanguageState>(
       builder: (context, state) => switch (state) {
         final LearnedLanguageLoaded loaded => _ActionButtons(state: loaded),
-        _ => const SizedBox.shrink(),
+        LearnedLanguageLoading() ||
+        LearnedLanguageClosed() ||
+        LearnedLanguageFailure() => const SizedBox.shrink(),
       },
     );
   }
@@ -191,7 +193,9 @@ class const _MoreMenu() extends StatelessWidget {
     return BlocBuilder<LearnedLanguageBloc, LearnedLanguageState>(
       builder: (context, state) => switch (state) {
         final LearnedLanguageLoaded loaded => _MoreMenuButton(state: loaded),
-        _ => const SizedBox.shrink(),
+        LearnedLanguageLoading() ||
+        LearnedLanguageClosed() ||
+        LearnedLanguageFailure() => const SizedBox.shrink(),
       },
     );
   }

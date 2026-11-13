@@ -198,7 +198,7 @@ class const _CollectionsRow() extends StatelessWidget {
     return BlocSelector<HomeBloc, HomeState, List<CollectionPreview>>(
       selector: (state) => switch (state) {
         final HomeLoaded loaded when !loaded.isLanguageEmpty => loaded.collections,
-        _ => const [],
+        HomeLoading() || HomeLoaded() || HomeFailure() => const [],
       },
       builder: (context, collections) => SliverToBoxAdapter(
         child: collections.isEmpty
@@ -233,7 +233,7 @@ class const _RecentSection() extends StatelessWidget {
           vocabularies: recentVocabularies,
           setup: setup,
         ),
-        _ => (vocabularies: const [], setup: null),
+        HomeLoading() || HomeFailure() => (vocabularies: const [], setup: null),
       },
       builder: (context, recent) => SliverToBoxAdapter(
         child: switch (recent) {
@@ -278,7 +278,7 @@ class const _Feed({
           hasMore: vocabularies.length >= feedLimit,
           setup: setup,
         ),
-        _ => (vocabularies: const [], hasMore: false, setup: null),
+        HomeLoading() || HomeFailure() => (vocabularies: const [], hasMore: false, setup: null),
       },
       builder: (context, feed) => switch (feed) {
         (vocabularies: [], hasMore: false, setup: _) when _showsNoResults =>
@@ -349,7 +349,7 @@ class const _LanguageButton() extends StatelessWidget {
       selector: (state) => switch (state) {
         HomeLoaded(:final setup, :final overviews) => (setup: setup, overviews: overviews),
         HomeLoading(setup: final setup?, :final overviews) => (setup: setup, overviews: overviews),
-        _ => null,
+        HomeLoading() || HomeFailure() => null,
       },
       builder: (context, menu) => switch (menu) {
         final menu? => LanguageMenuButton(setup: menu.setup, overviews: menu.overviews),
@@ -438,7 +438,7 @@ class const _AllWordsHeader({
     return BlocSelector<HomeBloc, HomeState, Language?>(
       selector: (state) => switch (state) {
         final HomeLoaded loaded when loaded.isLanguageEmpty => loaded.setup.selected,
-        _ => null,
+        HomeLoading() || HomeLoaded() || HomeFailure() => null,
       },
       builder: (context, emptyLanguage) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,

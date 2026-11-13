@@ -100,7 +100,19 @@ class NavigationRouter(
     final current = router.current;
     final isOnEntryRoute = switch (current) {
       Loading() || Welcome() || WaitForData() || LanguageOnboarding() => true,
-      _ => false,
+      Languages() ||
+      MainLanguage() ||
+      LearnedLanguageDetails() ||
+      LanguageWords() ||
+      Home() ||
+      NewVocabularyDetails() ||
+      Scan() ||
+      EditVocabularyDetails() ||
+      Practice() ||
+      CustomPractice() ||
+      Collection() ||
+      Settings() ||
+      FeedbackForm() => false,
     };
     final target = switch (state) {
       (Success(data: AuthUnknown()), _, _) => null,
