@@ -59,4 +59,21 @@ extension StreamExtensions<S> on Stream<S> {
     );
     return controller.stream;
   }
+
+  Stream<S> mergeWith(Stream<S> other) {
+    StreamSubscription<S>? firstSubscription;
+    StreamSubscription<S>? secondSubscription;
+    late final StreamController<S> controller;
+    controller = StreamController<S>(
+      onListen: () {
+        firstSubscription = listen(controller.add, onError: controller.addError);
+        secondSubscription = other.listen(controller.add, onError: controller.addError);
+      },
+      onCancel: () async {
+        await firstSubscription?.cancel();
+        await secondSubscription?.cancel();
+      },
+    );
+    return controller.stream;
+  }
 }

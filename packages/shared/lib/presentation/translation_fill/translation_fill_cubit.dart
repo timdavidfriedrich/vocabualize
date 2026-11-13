@@ -2,67 +2,41 @@ import 'dart:async';
 
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared/domain/entities/language.dart';
-import 'package:shared/domain/entities/language_setup.dart';
-import 'package:shared/domain/entities/vocabulary_overview.dart';
-import 'package:shared/domain/repositories/connectivity_repository.dart';
-import 'package:shared/domain/repositories/language_repository.dart';
-import 'package:shared/domain/repositories/translation_fill_repository.dart';
-import 'package:shared/domain/repositories/vocabulary_repository.dart';
+import 'package:shared/domain/entities/translation_fill_trigger.dart';
+import 'package:shared/domain/use_cases/fill_missing_translations_use_case.dart';
+import 'package:shared/domain/use_cases/watch_translation_fill_triggers_use_case.dart';
 import 'package:shared/presentation/translation_fill/translation_fill_state.dart';
 
 @injectable
 class TranslationFillCubit extends Cubit<TranslationFillState> {
   TranslationFillCubit(
-    this._translationFillRepository,
-    this._languageRepository,
-    this._connectivityRepository,
-    this._vocabularyRepository,
+    this._watchTranslationFillTriggers,
+    this._fillMissingTranslations,
   ) : super(TranslationFillState.idle);
 
-  final TranslationFillRepository _translationFillRepository;
-  final LanguageRepository _languageRepository;
-  final ConnectivityRepository _connectivityRepository;
-  final VocabularyRepository _vocabularyRepository;
-  final _subscriptions = <StreamSubscription<Object?>>[];
-  StreamSubscription<AppResult<VocabularyOverview>>? _changeSubscription;
-  AppLifecycleListener? _lifecycleListener;
-  Set<Language>? _languages;
+  final WatchTranslationFillTriggersUseCase _watchTranslationFillTriggers;
+  final FillMissingTranslationsUseCase _fillMissingTranslations;
+  StreamSubscription<AppResult<TranslationFillTrigger>>? _subscription;
   var _isRunning = false;
   var _isRequested = false;
   var _isPaused = false;
 
   void start() {
-    if (_subscriptions.isNotEmpty) return;
-    _lifecycleListener = AppLifecycleListener(onResume: () => _request(isFresh: true));
-    _subscriptions.addAll([
-      _languageRepository.watchLanguageSetup().listen((result) {
-        if (result case Success(:final data)) {
-          _watchChanges(data);
+    _subscription ??= _watchTranslationFillTriggers().listen((result) {
+      switch (result) {
+        case Success(data: TranslationFillTrigger.conditionsChanged):
           _request(isFresh: true);
-        }
-      }),
-      _connectivityRepository.watchIsConnected().listen((result) {
-        if (result case Success(data: true)) _request(isFresh: true);
-      }),
-    ]);
+        case Success(data: TranslationFillTrigger.wordsChanged):
+          _request(isFresh: false);
+        case Failure():
+          break;
+      }
+    });
   }
 
-  void _watchChanges(LanguageSetup? setup) {
-    final languages = {
-      for (final learned in setup?.learned ?? const <LearnedLanguage>[]) learned.language,
-    };
-    if (setEquals(languages, _languages)) return;
-    _languages = languages;
-    unawaited(_changeSubscription?.cancel());
-    _changeSubscription = _vocabularyRepository
-        .watchVocabularyOverview(languages: languages)
-        .listen((_) => _request(isFresh: false));
-  }
+  void resume() => _request(isFresh: true);
 
   void _request({required bool isFresh}) {
     if (isFresh) _isPaused = false;
@@ -76,14 +50,11 @@ class TranslationFillCubit extends Cubit<TranslationFillState> {
 
   Future<void> _run() async {
     _isRunning = true;
-    AppResult<int>? last;
+    AppResult<()> last;
     do {
       _isRequested = false;
-      while (!isClosed) {
-        last = await _translationFillRepository.fillMissingTranslations();
-        if (last case Failure()) _isPaused = true;
-        if (last case Failure() || Success(data: 0)) break;
-      }
+      last = await _fillMissingTranslations();
+      if (last case Failure()) _isPaused = true;
     } while (_isRequested && !_isPaused && !isClosed);
     _isRunning = false;
     if (isClosed) return;
@@ -92,18 +63,14 @@ class TranslationFillCubit extends Cubit<TranslationFillState> {
         emit(TranslationFillState.limitReached);
       case Success():
         emit(TranslationFillState.idle);
-      case Failure() || null:
+      case Failure():
         break;
     }
   }
 
   @override
   Future<void> close() async {
-    for (final subscription in _subscriptions) {
-      await subscription.cancel();
-    }
-    await _changeSubscription?.cancel();
-    _lifecycleListener?.dispose();
+    await _subscription?.cancel();
     return super.close();
   }
 }

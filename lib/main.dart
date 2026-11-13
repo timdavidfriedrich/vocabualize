@@ -6,6 +6,7 @@ import 'package:feature_gate/presentation/gate/gate_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/preferences.dart';
@@ -54,18 +55,7 @@ class const App({
         selector: (preferences) => preferences.appearanceMode,
         builder: (context, appearanceMode) => MaterialApp.router(
           routerConfig: sl<NavigationRouter>().config,
-          builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
-            value: switch (Theme.of(context).brightness) {
-              Brightness.dark => SystemUiOverlayStyle.light,
-              Brightness.light => SystemUiOverlayStyle.dark,
-            },
-            child: BlocListener<SystemActionCubit, AppError?>(
-              listener: (context, error) {
-                if (error != null) context.showToast(error.toMessage(context));
-              },
-              child: GateOverlay(child: child ?? const SizedBox.shrink()),
-            ),
-          ),
+          builder: (context, child) => _AppFrame(child: child ?? const SizedBox.shrink()),
           onGenerateTitle: (context) => context.s.appTitle,
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
@@ -78,6 +68,29 @@ class const App({
           ],
           supportedLocales: AppLocalizations.supportedLocales,
         ),
+      ),
+    );
+  }
+}
+
+class const _AppFrame({
+  required final Widget _child,
+}) extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    useOnAppLifecycleStateChange((previous, current) {
+      if (current == AppLifecycleState.resumed) context.read<TranslationFillCubit>().resume();
+    });
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: switch (Theme.of(context).brightness) {
+        Brightness.dark => SystemUiOverlayStyle.light,
+        Brightness.light => SystemUiOverlayStyle.dark,
+      },
+      child: BlocListener<SystemActionCubit, AppError?>(
+        listener: (context, error) {
+          if (error != null) context.showToast(error.toMessage(context));
+        },
+        child: GateOverlay(child: _child),
       ),
     );
   }

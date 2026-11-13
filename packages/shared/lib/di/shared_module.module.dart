@@ -136,9 +136,13 @@ import 'package:shared/domain/repositories/translation_fill_repository.dart'
 import 'package:shared/domain/repositories/translation_repository.dart'
     as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
+import 'package:shared/domain/use_cases/fill_missing_translations_use_case.dart'
+    as _i675;
 import 'package:shared/domain/use_cases/watch_reminder_plan_use_case.dart'
     as _i957;
 import 'package:shared/domain/use_cases/watch_streak_use_case.dart' as _i76;
+import 'package:shared/domain/use_cases/watch_translation_fill_triggers_use_case.dart'
+    as _i733;
 import 'package:shared/presentation/account/account_cubit.dart' as _i346;
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart'
     as _i855;
@@ -337,12 +341,9 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         ));
     gh.factory<_i218.PreferencesCubit>(
         () => _i218.PreferencesCubit(gh<_i0.SettingsRepository>()));
-    gh.factory<_i709.TranslationFillCubit>(() => _i709.TranslationFillCubit(
-          gh<_i307.TranslationFillRepository>(),
-          gh<_i308.LanguageRepository>(),
-          gh<_i689.ConnectivityRepository>(),
-          gh<_i208.VocabularyRepository>(),
-        ));
+    gh.factory<_i675.FillMissingTranslationsUseCase>(() =>
+        _i675.FillMissingTranslationsUseCase(
+            gh<_i307.TranslationFillRepository>()));
     gh.factory<_i523.SyncRepository>(() => _i368.SyncRepositoryImpl(
           gh<_i1034.SyncDataSource>(),
           gh<_i61.ImageSyncDataSource>(),
@@ -378,8 +379,18 @@ class SharedPackageModule extends _i526.MicroPackageModule {
             gh<_i791.CustomPracticeLocalDataSource>()));
     gh.factory<_i827.LanguageSetupCubit>(
         () => _i827.LanguageSetupCubit(gh<_i308.LanguageRepository>()));
+    gh.factory<_i733.WatchTranslationFillTriggersUseCase>(
+        () => _i733.WatchTranslationFillTriggersUseCase(
+              gh<_i308.LanguageRepository>(),
+              gh<_i689.ConnectivityRepository>(),
+              gh<_i208.VocabularyRepository>(),
+            ));
     gh.factory<_i346.AccountCubit>(
         () => _i346.AccountCubit(gh<_i923.AccountRepository>()));
+    gh.factory<_i709.TranslationFillCubit>(() => _i709.TranslationFillCubit(
+          gh<_i733.WatchTranslationFillTriggersUseCase>(),
+          gh<_i675.FillMissingTranslationsUseCase>(),
+        ));
     gh.factory<_i957.WatchReminderPlanUseCase>(
         () => _i957.WatchReminderPlanUseCase(
               gh<_i821.ReminderRepository>(),
