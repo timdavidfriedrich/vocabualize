@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/gate_status.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/system_action/system_action_cubit.dart';
 
 class const GateOverlay({
   super.key,
@@ -26,7 +27,7 @@ class const GateOverlay({
           title: context.s.gateUpdateTitle,
           message: context.s.gateUpdateMessage,
           action: FilledButton(
-            onPressed: context.read<GateCubit>().openStore,
+            onPressed: context.read<SystemActionCubit>().openStoreListing,
             child: Text(context.s.gateUpdateButton),
           ),
         ),
@@ -36,7 +37,7 @@ class const GateOverlay({
           message: context.s.gateClockWrongMessage,
           action: switch (defaultTargetPlatform) {
             TargetPlatform.android => FilledButton(
-              onPressed: context.read<GateCubit>().openDateSettings,
+              onPressed: context.read<SystemActionCubit>().openDateSettings,
               child: Text(context.s.gateOpenTimeSettingsButton),
             ),
             _ => null,

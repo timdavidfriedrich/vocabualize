@@ -4,9 +4,9 @@ import 'package:feature_gate/presentation/wait_for_data/wait_for_data_state.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/data_readiness.dart';
-import 'package:shared/presentation/connectivity/connectivity_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
+import 'package:shared/presentation/system_action/system_action_cubit.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
 
@@ -50,7 +50,7 @@ class const WaitForDataScreen({
                   message: context.s.dataOfflineMessage,
                   action: (
                     label: context.s.connectToInternet,
-                    onPressed: context.read<ConnectivityCubit>().openInternetSettings,
+                    onPressed: context.read<SystemActionCubit>().openInternetSettings,
                   ),
                 ),
                 DataUnavailableReason.serverUnreachable => _Content(
@@ -77,7 +77,9 @@ class const WaitForDataScreen({
                   message: context.s.gateUpdateMessage,
                   action: (
                     label: context.s.gateUpdateButton,
-                    onPressed: state.isBusy ? null : cubit.openStore,
+                    onPressed: state.isBusy
+                        ? null
+                        : context.read<SystemActionCubit>().openStoreListing,
                   ),
                 ),
                 DataUnavailableReason.syncFailed => _Content(

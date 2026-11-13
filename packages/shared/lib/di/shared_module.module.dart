@@ -147,6 +147,8 @@ import 'package:shared/presentation/preferences/preferences_cubit.dart'
 import 'package:shared/presentation/reminders/reminder_cubit.dart' as _i902;
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart'
     as _i765;
+import 'package:shared/presentation/system_action/system_action_cubit.dart'
+    as _i259;
 import 'package:shared/presentation/translation_fill/translation_fill_cubit.dart'
     as _i709;
 import 'package:vocabualize_client/vocabualize_client.dart' as _i1040;
@@ -209,6 +211,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => _i320.ReportRemoteDataSourceImpl(gh<_i1040.Client>()));
     gh.factory<_i223.AppConfigRemoteDataSource>(
         () => _i223.AppConfigRemoteDataSourceImpl(gh<_i1040.Client>()));
+    gh.factory<_i259.SystemActionCubit>(
+        () => _i259.SystemActionCubit(gh<_i328.AppInfoRepository>()));
     gh.factory<_i204.ImageRepository>(() => _i816.ImageRepositoryImpl(
           gh<_i179.ImageProcessingDataSource>(),
           gh<_i28.ImageTransferDataSource>(),
@@ -240,10 +244,6 @@ class SharedPackageModule extends _i526.MicroPackageModule {
               gh<_i1040.Client>(),
               gh<_i228.ServiceAccessDataSource>(),
             ));
-    gh.factory<_i855.ConnectivityCubit>(() => _i855.ConnectivityCubit(
-          gh<_i689.ConnectivityRepository>(),
-          gh<_i328.AppInfoRepository>(),
-        ));
     gh.factory<_i317.StockImageRemoteDataSource>(
         () => _i317.StockImageRemoteDataSourceImpl(
               gh<_i1040.Client>(),
@@ -257,6 +257,8 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i753.SpaceStorageDataSource>(),
           gh<_i44.ClockDataSource>(),
         ));
+    gh.factory<_i855.ConnectivityCubit>(
+        () => _i855.ConnectivityCubit(gh<_i689.ConnectivityRepository>()));
     gh.lazySingleton<_i862.DatabaseSessionDataSource>(
         () => _i862.DatabaseSessionDataSourceImpl(
               gh<_i1040.Client>(),

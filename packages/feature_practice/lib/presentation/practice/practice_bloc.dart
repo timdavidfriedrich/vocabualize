@@ -331,8 +331,12 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
         isBusy: false,
       ),
     );
-    if (next.isCustom) await _saveProgress(next);
-    return next.queue.isEmpty ? const PracticeDone() : next;
+    final saved = next.isCustom ? await _saveProgress(next) : const Success(());
+    if (next.queue.isEmpty) return const PracticeDone();
+    return switch (saved) {
+      Success() => next,
+      Failure(:final error) => next.copyWith(error: error),
+    };
   }
 
   Future<PracticeActive> _filled(PracticeActive active) async {
@@ -371,14 +375,18 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
     return current;
   }
 
-  Future<void> _saveProgress(PracticeActive active) async {
+  Future<AppResult<()>> _saveProgress(PracticeActive active) async {
     switch (await _customPracticeRepository.readSession()) {
+      case Failure(:final error):
+        return Failure(error);
+      case Success(data: null):
+        return const Success(());
       case Success(data: _?) when active.queue.isEmpty && active.pendingKeys.isEmpty:
-        await _customPracticeRepository.endSession();
+        return _customPracticeRepository.endSession();
       case Success(data: final session?):
-        await _customPracticeRepository.saveSession(session.copyWith(doneCount: active.doneCount));
-      case Success() || Failure():
-        break;
+        return _customPracticeRepository.saveSession(
+          session.copyWith(doneCount: active.doneCount),
+        );
     }
   }
 

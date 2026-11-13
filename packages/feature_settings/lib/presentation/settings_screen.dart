@@ -24,6 +24,7 @@ import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/reminders/reminder_cubit.dart';
 import 'package:shared/presentation/sync_status/sync_status_cubit.dart';
+import 'package:shared/presentation/system_action/system_action_cubit.dart';
 import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/account_status_avatar.dart';
 import 'package:shared/presentation/widgets/app_dropdown.dart';
@@ -610,7 +611,7 @@ class const _ConnectButton() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: context.read<ConnectivityCubit>().openInternetSettings,
+      onPressed: context.read<SystemActionCubit>().openInternetSettings,
       icon: const Icon(Icons.wifi_rounded),
       label: Text(context.s.connectToInternet),
     );

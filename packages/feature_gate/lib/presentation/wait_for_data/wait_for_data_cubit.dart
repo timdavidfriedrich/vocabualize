@@ -4,17 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
-import 'package:shared/domain/repositories/app_info_repository.dart';
 import 'package:shared/domain/repositories/sync_repository.dart';
 
 @injectable
 class WaitForDataCubit extends Cubit<WaitForDataState> {
-  WaitForDataCubit(this._syncRepository, this._accountRepository, this._appInfoRepository)
+  WaitForDataCubit(this._syncRepository, this._accountRepository)
     : super(const WaitForDataState(isBusy: false, accountConflict: null, error: null));
 
   final SyncRepository _syncRepository;
   final AccountRepository _accountRepository;
-  final AppInfoRepository _appInfoRepository;
 
   void retry() {
     if (_syncRepository.retryInitialSync() case Failure(:final error)) {
@@ -45,11 +43,5 @@ class WaitForDataCubit extends Cubit<WaitForDataState> {
       Success() => state.copyWith(isBusy: false),
       Failure(:final error) => state.copyWith(isBusy: false, error: error),
     });
-  }
-
-  Future<void> openStore() async {
-    if (await _appInfoRepository.openStoreListing() case Failure(:final error)) {
-      emit(state.copyWith(error: error));
-    }
   }
 }

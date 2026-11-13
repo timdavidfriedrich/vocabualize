@@ -7,7 +7,6 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/clock_status.dart';
 import 'package:shared/domain/entities/gate_status.dart';
 import 'package:shared/domain/repositories/app_config_repository.dart';
-import 'package:shared/domain/repositories/app_info_repository.dart';
 import 'package:shared/domain/repositories/clock_repository.dart';
 
 @injectable
@@ -16,13 +15,11 @@ class GateCubit extends Cubit<GateStatus> {
     this._watchGateStatus,
     this._clockRepository,
     this._appConfigRepository,
-    this._appInfoRepository,
   ) : super(const GateOpen());
 
   final WatchGateStatusUseCase _watchGateStatus;
   final ClockRepository _clockRepository;
   final AppConfigRepository _appConfigRepository;
-  final AppInfoRepository _appInfoRepository;
   StreamSubscription<AppResult<GateStatus>>? _configSubscription;
   StreamSubscription<AppResult<ClockStatus>>? _clockSubscription;
   GateStatus _configStatus = const GateOpen();
@@ -47,14 +44,6 @@ class GateCubit extends Cubit<GateStatus> {
 
   Future<void> refresh() async {
     await _appConfigRepository.refresh();
-  }
-
-  Future<void> openStore() async {
-    await _appInfoRepository.openStoreListing();
-  }
-
-  Future<void> openDateSettings() async {
-    await _appInfoRepository.openDateSettings();
   }
 
   GateStatus _combinedStatus() => switch ((_configStatus, _clockStatus)) {

@@ -1,4 +1,6 @@
 import 'package:core/theme/spacing.dart';
+import 'package:feature_home/presentation/home_bloc.dart';
+import 'package:feature_home/presentation/home_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/language.dart';
@@ -6,7 +8,6 @@ import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
-import 'package:shared/presentation/language_setup/language_setup_cubit.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/app_menu.dart';
 import 'package:shared/presentation/widgets/asks_in_tag.dart';
@@ -20,7 +21,7 @@ class const LanguageMenuButton({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<LanguageSetupCubit>();
+    final bloc = context.read<HomeBloc>();
     return AppMenuAnchor(
       items: [
         for (final learned in _setup.active)
@@ -28,7 +29,7 @@ class const LanguageMenuButton({
             learned: learned,
             overview: _overviews[learned.language],
             isSelected: learned.language == _setup.selected,
-            onTap: () => cubit.select(learned.language),
+            onTap: () => bloc.add(HomeLanguageSelected(language: learned.language)),
           ),
         AppMenuItem(
           leading: const Icon(Icons.tune_rounded),

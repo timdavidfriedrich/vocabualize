@@ -53,6 +53,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ) {
     on<HomeStarted>(_onStarted);
     on<HomeCustomPracticeEnded>(_onCustomPracticeEnded);
+    on<HomeLanguageSelected>(_onLanguageSelected);
     on<HomeLanguageChanged>(_onLanguageChanged, transformer: restartable());
     on<HomeActiveLanguagesChanged>(_onActiveLanguagesChanged, transformer: restartable());
     on<HomeImportSourceChanged>(_onImportSourceChanged, transformer: restartable());
@@ -134,6 +135,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (await _customPracticeRepository.endSession() case Failure(:final error)) {
       _emitError(emit, error);
     }
+  }
+
+  Future<void> _onLanguageSelected(HomeLanguageSelected event, Emitter<HomeState> emit) async {
+    _emitError(emit, null);
+    final result = await _languageRepository.selectLanguage(event.language);
+    if (result case Failure(:final error)) _emitError(emit, error);
   }
 
   Future<void> _onLanguageChanged(HomeLanguageChanged event, Emitter<HomeState> emit) async {

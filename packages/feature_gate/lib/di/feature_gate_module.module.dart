@@ -25,7 +25,6 @@ class FeatureGatePackageModule extends _i526.MicroPackageModule {
     gh.factory<_i822.WaitForDataCubit>(() => _i822.WaitForDataCubit(
           gh<_i523.SyncRepository>(),
           gh<_i923.AccountRepository>(),
-          gh<_i328.AppInfoRepository>(),
         ));
     gh.factory<_i460.WatchGateStatusUseCase>(() => _i460.WatchGateStatusUseCase(
           gh<_i541.AppConfigRepository>(),
@@ -35,7 +34,6 @@ class FeatureGatePackageModule extends _i526.MicroPackageModule {
           gh<_i460.WatchGateStatusUseCase>(),
           gh<_i946.ClockRepository>(),
           gh<_i541.AppConfigRepository>(),
-          gh<_i328.AppInfoRepository>(),
         ));
   }
 }
