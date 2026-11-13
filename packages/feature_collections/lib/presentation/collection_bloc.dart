@@ -17,8 +17,6 @@ import 'package:shared/domain/repositories/tag_repository.dart';
 import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 
-const _feedPageSize = 50;
-
 @injectable
 class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   CollectionBloc(
@@ -130,8 +128,11 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
             CollectionLoaded(:final feedLimit, :final filter),
         CollectionFeedEndReached(),
       ) =>
-        (limit: feedLimit + _feedPageSize, filter: filter),
-      (_, CollectionFilterChanged(:final filter)) => (limit: _feedPageSize, filter: filter),
+        (limit: feedLimit + vocabularyFeedPageSize, filter: filter),
+      (_, CollectionFilterChanged(:final filter)) => (
+        limit: vocabularyFeedPageSize,
+        filter: filter,
+      ),
     };
     final language = _setup?.selected;
     if (tagId == null || feed == null || language == null) return;

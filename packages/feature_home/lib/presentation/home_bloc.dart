@@ -20,7 +20,6 @@ import 'package:shared/domain/repositories/text_to_speech_repository.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 import 'package:shared/domain/use_cases/watch_streak_use_case.dart';
 
-const _feedPageSize = 50;
 const _recentMaxAge = Duration(days: 7);
 const _recentLimit = 10;
 const _importPreviewCount = 3;
@@ -226,8 +225,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         HomeLoading(:final feedLimit, :final filter) || HomeLoaded(:final feedLimit, :final filter),
         HomeFeedEndReached(),
       ) =>
-        (limit: feedLimit + _feedPageSize, filter: filter),
-      (_, HomeFilterChanged(:final filter)) => (limit: _feedPageSize, filter: filter),
+        (limit: feedLimit + vocabularyFeedPageSize, filter: filter),
+      (_, HomeFilterChanged(:final filter)) => (limit: vocabularyFeedPageSize, filter: filter),
     };
     final language = _setup?.selected;
     if (feed == null || language == null) return;

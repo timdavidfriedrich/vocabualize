@@ -3,6 +3,7 @@ import 'package:shared/domain/entities/vocabulary_level.dart';
 
 part 'vocabulary_filter.mapper.dart';
 
+const vocabularyFeedPageSize = 50;
 const emptyVocabularyFilter = VocabularyFilter(query: "", levels: {}, isDueOnly: false);
 
 @MappableClass()
