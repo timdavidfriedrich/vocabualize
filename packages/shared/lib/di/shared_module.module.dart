@@ -136,6 +136,8 @@ import 'package:shared/domain/repositories/translation_fill_repository.dart'
 import 'package:shared/domain/repositories/translation_repository.dart'
     as _i582;
 import 'package:shared/domain/repositories/vocabulary_repository.dart' as _i208;
+import 'package:shared/domain/use_cases/watch_reminder_plan_use_case.dart'
+    as _i957;
 import 'package:shared/domain/use_cases/watch_streak_use_case.dart' as _i76;
 import 'package:shared/presentation/account/account_cubit.dart' as _i346;
 import 'package:shared/presentation/connectivity/connectivity_cubit.dart'
@@ -378,12 +380,17 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => _i827.LanguageSetupCubit(gh<_i308.LanguageRepository>()));
     gh.factory<_i346.AccountCubit>(
         () => _i346.AccountCubit(gh<_i923.AccountRepository>()));
+    gh.factory<_i957.WatchReminderPlanUseCase>(
+        () => _i957.WatchReminderPlanUseCase(
+              gh<_i821.ReminderRepository>(),
+              gh<_i0.SettingsRepository>(),
+              gh<_i208.VocabularyRepository>(),
+              gh<_i308.LanguageRepository>(),
+              gh<_i76.WatchStreakUseCase>(),
+            ));
     gh.factory<_i902.ReminderCubit>(() => _i902.ReminderCubit(
+          gh<_i957.WatchReminderPlanUseCase>(),
           gh<_i821.ReminderRepository>(),
-          gh<_i0.SettingsRepository>(),
-          gh<_i208.VocabularyRepository>(),
-          gh<_i308.LanguageRepository>(),
-          gh<_i76.WatchStreakUseCase>(),
         ));
   }
 }
