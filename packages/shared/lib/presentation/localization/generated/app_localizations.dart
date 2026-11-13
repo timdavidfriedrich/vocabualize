@@ -192,18 +192,6 @@ abstract class AppLocalizations {
   /// **'No'**
   String get no;
 
-  /// No description provided for @yes.
-  ///
-  /// In en, this message translates to:
-  /// **'Yes'**
-  String get yes;
-
-  /// No description provided for @okay.
-  ///
-  /// In en, this message translates to:
-  /// **'Okay'**
-  String get okay;
-
   /// No description provided for @submit.
   ///
   /// In en, this message translates to:
@@ -227,12 +215,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete?'**
   String get vocabularyDeleteTitle;
-
-  /// No description provided for @vocabularyDeleteMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Do you really want to delete this vocabulary?'**
-  String get vocabularyDeleteMessage;
 
   /// No description provided for @vocabularyCreatedLabel.
   ///
@@ -258,36 +240,6 @@ abstract class AppLocalizations {
   /// **'In less than a minute'**
   String get vocabularyReappearsLessThanMinute;
 
-  /// No description provided for @notificationPracticeChannelName.
-  ///
-  /// In en, this message translates to:
-  /// **'Practice vocabulary'**
-  String get notificationPracticeChannelName;
-
-  /// No description provided for @notificationPracticeChannelDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Let’s practice 🎯'**
-  String get notificationPracticeChannelDescription;
-
-  /// No description provided for @notificationPracticeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Let’s practice 🎯'**
-  String get notificationPracticeTitle;
-
-  /// No description provided for @notificationPracticeBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Some vocabulary may be due. You’ll rock this! :D'**
-  String get notificationPracticeBody;
-
-  /// No description provided for @welcomeStartButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Let’s start!'**
-  String get welcomeStartButton;
-
   /// No description provided for @welcomeGoogleSignInButton.
   ///
   /// In en, this message translates to:
@@ -299,12 +251,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue without account'**
   String get welcomeContinueWithoutAccountButton;
-
-  /// No description provided for @welcomeSignInFailedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in failed'**
-  String get welcomeSignInFailedTitle;
 
   /// No description provided for @homeCollectionsTitle.
   ///
@@ -396,12 +342,6 @@ abstract class AppLocalizations {
   /// **'From gallery'**
   String get detailsOpenGalleryButton;
 
-  /// No description provided for @detailsRemoveImageButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove image'**
-  String get detailsRemoveImageButton;
-
   /// No description provided for @detailsPexelsAttribution.
   ///
   /// In en, this message translates to:
@@ -480,12 +420,6 @@ abstract class AppLocalizations {
   /// **'Your answer'**
   String get practiceAnswerLabel;
 
-  /// No description provided for @scanAddButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Add'**
-  String get scanAddButton;
-
   /// No description provided for @scanSuggestionsTitle.
   ///
   /// In en, this message translates to:
@@ -551,18 +485,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Accents and special characters must be typed exactly'**
   String get settingsStrictCorrectionHint;
-
-  /// No description provided for @settingsCollectionsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable collections'**
-  String get settingsCollectionsTitle;
-
-  /// No description provided for @settingsCollectionsHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Categorise words in collections'**
-  String get settingsCollectionsHint;
 
   /// No description provided for @settingsImagesHiddenTitle.
   ///

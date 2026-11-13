@@ -55,12 +55,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get no => 'Όχι';
 
   @override
-  String get yes => 'Ναι';
-
-  @override
-  String get okay => 'OK';
-
-  @override
   String get submit => 'Υποβολή';
 
   @override
@@ -71,9 +65,6 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get vocabularyDeleteTitle => 'Διαγραφή;';
-
-  @override
-  String get vocabularyDeleteMessage => 'Θέλετε σίγουρα να διαγράψετε αυτή τη λέξη;';
 
   @override
   String get vocabularyCreatedLabel => 'Δημιουργήθηκε:';
@@ -88,29 +79,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get vocabularyReappearsLessThanMinute => 'Σε λιγότερο από ένα λεπτό';
 
   @override
-  String get notificationPracticeChannelName => 'Εξάσκηση λεξιλογίου';
-
-  @override
-  String get notificationPracticeChannelDescription => 'Ώρα για εξάσκηση 🎯';
-
-  @override
-  String get notificationPracticeTitle => 'Ώρα για εξάσκηση 🎯';
-
-  @override
-  String get notificationPracticeBody =>
-      'Κάποιες λέξεις περιμένουν επανάληψη. Θα τα πάτε τέλεια! :D';
-
-  @override
-  String get welcomeStartButton => 'Ας ξεκινήσουμε!';
-
-  @override
   String get welcomeGoogleSignInButton => 'Σύνδεση με Google';
 
   @override
   String get welcomeContinueWithoutAccountButton => 'Συνέχεια χωρίς λογαριασμό';
-
-  @override
-  String get welcomeSignInFailedTitle => 'Η σύνδεση απέτυχε';
 
   @override
   String get homeCollectionsTitle => 'Συλλογές';
@@ -160,9 +132,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get detailsOpenGalleryButton => 'Από τη γκαλερί';
 
   @override
-  String get detailsRemoveImageButton => 'Αφαίρεση εικόνας';
-
-  @override
   String get detailsPexelsAttribution => 'Εικόνες από το Pexels';
 
   @override
@@ -202,9 +171,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get practiceAnswerLabel => 'Η απάντησή σας';
 
   @override
-  String get scanAddButton => 'Προσθήκη';
-
-  @override
   String get scanSuggestionsTitle => 'Προτάσεις';
 
   @override
@@ -238,12 +204,6 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String get settingsStrictCorrectionHint =>
       'Οι τόνοι και οι ειδικοί χαρακτήρες πρέπει να γράφονται ακριβώς';
-
-  @override
-  String get settingsCollectionsTitle => 'Ενεργοποίηση συλλογών';
-
-  @override
-  String get settingsCollectionsHint => 'Οργανώστε τις λέξεις σε συλλογές';
 
   @override
   String get settingsImagesHiddenTitle => 'Απόκρυψη εικόνων';

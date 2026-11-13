@@ -55,12 +55,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get no => 'No';
 
   @override
-  String get yes => 'Sí';
-
-  @override
-  String get okay => 'Vale';
-
-  @override
   String get submit => 'Enviar';
 
   @override
@@ -71,9 +65,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get vocabularyDeleteTitle => '¿Borrar?';
-
-  @override
-  String get vocabularyDeleteMessage => '¿Estás seguro de que quieres borrar esta palabra?';
 
   @override
   String get vocabularyCreatedLabel => 'Creado:';
@@ -88,28 +79,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vocabularyReappearsLessThanMinute => 'En menos de un minuto';
 
   @override
-  String get notificationPracticeChannelName => 'Recordatorio de práctica';
-
-  @override
-  String get notificationPracticeChannelDescription => '¡A practicar! 🎯';
-
-  @override
-  String get notificationPracticeTitle => '¡A practicar! 🎯';
-
-  @override
-  String get notificationPracticeBody => 'Algunas palabras están pendientes. ¡Vamos! :D';
-
-  @override
-  String get welcomeStartButton => '¡Vamos!';
-
-  @override
   String get welcomeGoogleSignInButton => 'Seguir con Google';
 
   @override
   String get welcomeContinueWithoutAccountButton => 'Continuar sin cuenta';
-
-  @override
-  String get welcomeSignInFailedTitle => 'Error de inicio de sesión';
 
   @override
   String get homeCollectionsTitle => 'Colecciones';
@@ -159,9 +132,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get detailsOpenGalleryButton => 'De la galería';
 
   @override
-  String get detailsRemoveImageButton => 'Quitar imagen';
-
-  @override
   String get detailsPexelsAttribution => 'Imágenes proporcionadas por Pexels';
 
   @override
@@ -201,9 +171,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get practiceAnswerLabel => 'Tu respuesta';
 
   @override
-  String get scanAddButton => 'Añadir';
-
-  @override
   String get scanSuggestionsTitle => 'Sugerencias';
 
   @override
@@ -237,12 +204,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get settingsStrictCorrectionHint =>
       'Los acentos y caracteres especiales deben escribirse exactamente';
-
-  @override
-  String get settingsCollectionsTitle => 'Activar colecciones';
-
-  @override
-  String get settingsCollectionsHint => 'Categoriza palabras en colecciones';
 
   @override
   String get settingsImagesHiddenTitle => 'Ocultar imágenes';

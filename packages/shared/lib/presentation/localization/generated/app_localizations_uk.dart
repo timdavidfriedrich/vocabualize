@@ -55,12 +55,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get no => 'Ні';
 
   @override
-  String get yes => 'Так';
-
-  @override
-  String get okay => 'Добре';
-
-  @override
   String get submit => 'Надіслати';
 
   @override
@@ -71,9 +65,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get vocabularyDeleteTitle => 'Видалити?';
-
-  @override
-  String get vocabularyDeleteMessage => 'Ви впевнені, що хочете видалити це слово?';
 
   @override
   String get vocabularyCreatedLabel => 'Створено:';
@@ -88,29 +79,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get vocabularyReappearsLessThanMinute => 'Менше ніж за хвилину';
 
   @override
-  String get notificationPracticeChannelName => 'Тренувати словниковий запас';
-
-  @override
-  String get notificationPracticeChannelDescription => 'Давайте тренуватися 🎯';
-
-  @override
-  String get notificationPracticeTitle => 'Давайте тренуватися 🎯';
-
-  @override
-  String get notificationPracticeBody =>
-      'Можливо, деякі слова потребують повторення. Ви впораєтеся! :D';
-
-  @override
-  String get welcomeStartButton => 'Почнемо!';
-
-  @override
   String get welcomeGoogleSignInButton => 'Увійти через Google';
 
   @override
   String get welcomeContinueWithoutAccountButton => 'Продовжити без облікового запису';
-
-  @override
-  String get welcomeSignInFailedTitle => 'Не вдалося увійти';
 
   @override
   String get homeCollectionsTitle => 'Колекції';
@@ -160,9 +132,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsOpenGalleryButton => 'З галереї';
 
   @override
-  String get detailsRemoveImageButton => 'Видалити зображення';
-
-  @override
   String get detailsPexelsAttribution => 'Зображення надані Pexels';
 
   @override
@@ -202,9 +171,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get practiceAnswerLabel => 'Ваша відповідь';
 
   @override
-  String get scanAddButton => 'Додати';
-
-  @override
   String get scanSuggestionsTitle => 'Пропозиції';
 
   @override
@@ -239,12 +205,6 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get settingsStrictCorrectionHint =>
       'Наголоси та спеціальні символи потрібно вводити точно';
-
-  @override
-  String get settingsCollectionsTitle => 'Увімкнути колекції';
-
-  @override
-  String get settingsCollectionsHint => 'Групувати слова у колекції';
 
   @override
   String get settingsImagesHiddenTitle => 'Приховати зображення';

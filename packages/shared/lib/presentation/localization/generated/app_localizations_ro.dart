@@ -55,12 +55,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get no => 'Nu';
 
   @override
-  String get yes => 'Da';
-
-  @override
-  String get okay => 'OK';
-
-  @override
   String get submit => 'Trimiteți';
 
   @override
@@ -71,9 +65,6 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get vocabularyDeleteTitle => 'Ștergeți?';
-
-  @override
-  String get vocabularyDeleteMessage => 'Sigur doriți să ștergeți acest cuvânt?';
 
   @override
   String get vocabularyCreatedLabel => 'Creat:';
@@ -88,28 +79,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get vocabularyReappearsLessThanMinute => 'În mai puțin de un minut';
 
   @override
-  String get notificationPracticeChannelName => 'Exersarea vocabularului';
-
-  @override
-  String get notificationPracticeChannelDescription => 'Hai să exersăm 🎯';
-
-  @override
-  String get notificationPracticeTitle => 'Hai să exersăm 🎯';
-
-  @override
-  String get notificationPracticeBody => 'Unele cuvinte așteaptă să fie repetate. Veți reuși! :D';
-
-  @override
-  String get welcomeStartButton => 'Să începem!';
-
-  @override
   String get welcomeGoogleSignInButton => 'Conectați-vă cu Google';
 
   @override
   String get welcomeContinueWithoutAccountButton => 'Continuați fără cont';
-
-  @override
-  String get welcomeSignInFailedTitle => 'Conectarea a eșuat';
 
   @override
   String get homeCollectionsTitle => 'Colecții';
@@ -159,9 +132,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get detailsOpenGalleryButton => 'Din galerie';
 
   @override
-  String get detailsRemoveImageButton => 'Eliminați imaginea';
-
-  @override
   String get detailsPexelsAttribution => 'Imagini oferite de Pexels';
 
   @override
@@ -201,9 +171,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get practiceAnswerLabel => 'Răspunsul dvs.';
 
   @override
-  String get scanAddButton => 'Adăugați';
-
-  @override
   String get scanSuggestionsTitle => 'Sugestii';
 
   @override
@@ -238,12 +205,6 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get settingsStrictCorrectionHint =>
       'Diacriticele și caracterele speciale trebuie scrise exact';
-
-  @override
-  String get settingsCollectionsTitle => 'Activați colecțiile';
-
-  @override
-  String get settingsCollectionsHint => 'Organizați cuvintele în colecții';
 
   @override
   String get settingsImagesHiddenTitle => 'Ascundeți imaginile';
