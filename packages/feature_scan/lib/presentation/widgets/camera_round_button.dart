@@ -1,9 +1,9 @@
+import 'package:core/theme/opacities.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
 const _controlOpacity = 0.12;
-const _disabledOpacity = 0.5;
 
 class const CameraRoundButton({
   super.key,
@@ -24,7 +24,7 @@ class const CameraRoundButton({
               : context.overlay.onScrim.withValues(alpha: _controlOpacity),
           foregroundColor: context.overlay.onScrim,
           disabledBackgroundColor: context.overlay.onScrim.withValues(alpha: _controlOpacity),
-          disabledForegroundColor: context.overlay.onScrim.withValues(alpha: _disabledOpacity),
+          disabledForegroundColor: context.overlay.onScrim.withValues(alpha: Opacities.disabled),
         ),
         onPressed: _onPressed,
         tooltip: _tooltip,

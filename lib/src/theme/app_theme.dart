@@ -1,3 +1,4 @@
+import 'package:core/theme/opacities.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:core/theme/theme_extensions.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,6 @@ const _dimmedStates = {WidgetState.disabled, WidgetState.pressed, WidgetState.ho
 
 const _buttonPadding = EdgeInsets.symmetric(horizontal: Spacing.xxl, vertical: Spacing.m);
 const _buttonMinimumSize = Size(0, Spacing.xxxl + Spacing.xs);
-const _disabledSwitchAlpha = 0.38;
 const _sliderTrackHeight = Spacing.m;
 const _sliderTrackGap = Spacing.xxs;
 const _sliderThumbSize = Size(4, 44);
@@ -234,7 +234,7 @@ abstract final class AppTheme {
             states.contains(WidgetState.disabled),
           )) {
             (true, false) => colors.primary,
-            (true, true) => colors.primary.withValues(alpha: _disabledSwitchAlpha),
+            (true, true) => colors.primary.withValues(alpha: Opacities.disabled),
             (false, _) => colors.surfaceContainer,
           },
         ),
@@ -245,7 +245,7 @@ abstract final class AppTheme {
           )) {
             (true, _) => colors.onPrimary,
             (false, false) => colors.onSurfaceVariant,
-            (false, true) => colors.onSurfaceVariant.withValues(alpha: _disabledSwitchAlpha),
+            (false, true) => colors.onSurfaceVariant.withValues(alpha: Opacities.disabled),
           },
         ),
       ),

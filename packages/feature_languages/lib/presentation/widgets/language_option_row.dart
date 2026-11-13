@@ -1,3 +1,4 @@
+import 'package:core/theme/opacities.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/language.dart';
@@ -5,7 +6,6 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 
 const _rowHeight = Spacing.xxxl + Spacing.s;
-const _disabledOpacity = 0.5;
 
 class const LanguageOptionRow({
   super.key,
@@ -20,7 +20,7 @@ class const LanguageOptionRow({
         ? (context.c.secondaryContainer, context.c.onSecondaryContainer)
         : (context.c.surfaceContainerLowest, context.c.onSurface);
     return Opacity(
-      opacity: _onTap == null && !_isSelected ? _disabledOpacity : 1,
+      opacity: _onTap == null && !_isSelected ? Opacities.disabled : 1,
       child: Material(
         color: background,
         borderRadius: BorderRadius.circular(Spacing.radiusXl),

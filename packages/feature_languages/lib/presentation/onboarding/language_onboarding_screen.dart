@@ -1,3 +1,4 @@
+import 'package:core/theme/opacities.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:feature_languages/presentation/onboarding/language_onboarding_bloc.dart';
 import 'package:feature_languages/presentation/onboarding/language_onboarding_event.dart';
@@ -14,7 +15,6 @@ import 'package:shared/presentation/widgets/button_progress.dart';
 
 const _gridColumns = 3;
 const _tileHeight = Spacing.xxxxl + Spacing.xxxl + Spacing.xxxs;
-const _disabledOpacity = 0.5;
 const _stepBarHeight = Spacing.xxs;
 const _fadeStart = 0.9;
 const _nameMaxLines = 3;
@@ -226,7 +226,7 @@ class const _LearnTile({
     final bloc = context.read<LanguageOnboardingBloc>();
     final foreground = _isSelected ? context.c.onPrimary : context.c.onSurface;
     return Opacity(
-      opacity: _isEnabled ? 1 : _disabledOpacity,
+      opacity: _isEnabled ? 1 : Opacities.disabled,
       child: Material(
         color: _isSelected ? context.c.primary : context.c.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(Spacing.radiusXl),

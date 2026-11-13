@@ -1,3 +1,4 @@
+import 'package:core/theme/opacities.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:feature_welcome/presentation/welcome/welcome_bloc.dart';
 import 'package:feature_welcome/presentation/welcome/welcome_event.dart';
@@ -12,8 +13,6 @@ import 'package:shared/presentation/widgets/account_conflict_dialog.dart';
 import 'package:shared/presentation/widgets/connection_required_notice.dart';
 import 'package:shared/presentation/widgets/google_logo.dart';
 import 'package:shared/presentation/widgets/mascot.dart';
-
-const _disabledOpacity = 0.6;
 
 class const WelcomeScreen({
   super.key,
@@ -89,7 +88,7 @@ class const _Content({
         TextButton(
           style: TextButton.styleFrom(
             foregroundColor: context.c.onPrimary,
-            disabledForegroundColor: context.c.onPrimary.withValues(alpha: _disabledOpacity),
+            disabledForegroundColor: context.c.onPrimary.withValues(alpha: Opacities.disabled),
             padding: const EdgeInsets.all(Spacing.m),
           ),
           onPressed: _isBusy

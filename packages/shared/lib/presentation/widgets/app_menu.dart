@@ -1,9 +1,9 @@
+import 'package:core/theme/opacities.dart';
 import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
 const _menuWidth = Spacing.xxxxl * 4 + Spacing.xxxl;
-const _disabledOpacity = 0.38;
 
 class const AppMenuAnchor({
   super.key,
@@ -75,7 +75,7 @@ class const AppMenuItem({
     final onTap = _onTap;
     final foreground = _isDestructive ? context.c.error : context.c.onSurface;
     return Opacity(
-      opacity: onTap == null ? _disabledOpacity : 1,
+      opacity: onTap == null ? Opacities.disabled : 1,
       child: Material(
         type: _isSelected ? MaterialType.canvas : MaterialType.transparency,
         color: context.c.surfaceContainerHigh,
