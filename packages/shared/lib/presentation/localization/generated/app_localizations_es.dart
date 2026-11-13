@@ -79,6 +79,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vocabularyReappearsLessThanMinute => 'En menos de un minuto';
 
   @override
+  String get vocabularyReappearsNotStarted => 'Aún sin practicar';
+
+  @override
   String get welcomeGoogleSignInButton => 'Seguir con Google';
 
   @override

@@ -79,6 +79,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get vocabularyReappearsLessThanMinute => 'Менше ніж за хвилину';
 
   @override
+  String get vocabularyReappearsNotStarted => 'Ще не повторювалося';
+
+  @override
   String get welcomeGoogleSignInButton => 'Увійти через Google';
 
   @override

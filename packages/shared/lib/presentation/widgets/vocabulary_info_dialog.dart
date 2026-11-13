@@ -195,7 +195,7 @@ class const _DatesInformationRow({
               final progress? when progress.isStarted => progress.nextReviewAt.toReappearsLabel(
                 context,
               ),
-              _ => context.s.vocabularyLevelNovice,
+              Progress() || null => context.s.vocabularyReappearsNotStarted,
             },
             textAlign: TextAlign.right,
           ),

@@ -22,6 +22,7 @@
   "vocabularyReappearsLabel": "Réapparait :",
   "vocabularyReappearsNow": "Maintenant",
   "vocabularyReappearsLessThanMinute": "En moins d'une minute",
+  "vocabularyReappearsNotStarted": "Pas encore pratiqué",
   "welcomeGoogleSignInButton": "Se connecter avec Google",
   "welcomeContinueWithoutAccountButton": "Continuer sans compte",
   "homeCollectionsTitle": "Collections",

@@ -22,6 +22,7 @@
   "vocabularyReappearsLabel": "Prossimo ripasso:",
   "vocabularyReappearsNow": "Ora",
   "vocabularyReappearsLessThanMinute": "Tra meno di un minuto",
+  "vocabularyReappearsNotStarted": "Nessun ripasso finora",
   "welcomeGoogleSignInButton": "Accedi con Google",
   "welcomeContinueWithoutAccountButton": "Continua senza account",
   "homeCollectionsTitle": "Raccolte",

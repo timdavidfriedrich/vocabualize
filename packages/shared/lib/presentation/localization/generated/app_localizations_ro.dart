@@ -79,6 +79,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get vocabularyReappearsLessThanMinute => 'În mai puțin de un minut';
 
   @override
+  String get vocabularyReappearsNotStarted => 'Încă neexersat';
+
+  @override
   String get welcomeGoogleSignInButton => 'Conectați-vă cu Google';
 
   @override

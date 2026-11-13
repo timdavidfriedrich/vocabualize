@@ -240,6 +240,12 @@ abstract class AppLocalizations {
   /// **'In less than a minute'**
   String get vocabularyReappearsLessThanMinute;
 
+  /// No description provided for @vocabularyReappearsNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not practiced yet'**
+  String get vocabularyReappearsNotStarted;
+
   /// No description provided for @welcomeGoogleSignInButton.
   ///
   /// In en, this message translates to:
