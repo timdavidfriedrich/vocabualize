@@ -3,6 +3,7 @@ import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:feature_practice/domain/use_cases/build_custom_practice_use_case.dart';
 import 'package:feature_practice/domain/use_cases/count_custom_practice_use_case.dart';
+import 'package:feature_practice/domain/use_cases/preview_custom_practice_use_case.dart';
 import 'package:feature_practice/presentation/custom_practice/custom_practice_event.dart';
 import 'package:feature_practice/presentation/custom_practice/custom_practice_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
     this._customPracticeRepository,
     this._buildCustomPractice,
     this._countCustomPractice,
+    this._previewCustomPractice,
   ) : super(const CustomPracticeLoading()) {
     on<CustomPracticeStarted>(_onStarted);
     on<CustomPracticeLanguageToggled>(_onLanguageToggled);
@@ -40,6 +42,7 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
   final CustomPracticeRepository _customPracticeRepository;
   final BuildCustomPracticeUseCase _buildCustomPractice;
   final CountCustomPracticeUseCase _countCustomPractice;
+  final PreviewCustomPracticeUseCase _previewCustomPractice;
 
   Future<void> _onStarted(CustomPracticeStarted event, Emitter<CustomPracticeState> emit) async {
     final (setup, previews, session) = await (
@@ -193,7 +196,7 @@ class CustomPracticeBloc extends Bloc<CustomPracticeEvent, CustomPracticeState> 
     Emitter<CustomPracticeState> emit,
   ) async {
     if (state case final CustomPracticeEditing editing) {
-      final result = await _countCustomPractice.previewImages(
+      final result = await _previewCustomPractice(
         languages: editing.enabledLanguages,
         tagIds: editing.tagIds,
       );
