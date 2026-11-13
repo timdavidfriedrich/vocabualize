@@ -91,7 +91,7 @@ packages:
     source: hosted
     version: "9.2.1"
   bloc_concurrency:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: bloc_concurrency
       sha256: "86b7b17a0a78f77fca0d7c030632b59b593b22acea2d96972588f40d4ef53a94"
@@ -307,7 +307,7 @@ packages:
     source: hosted
     version: "3.0.7"
   dart_mappable:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dart_mappable
       sha256: "9515fee2997a47c22a7e55d7c38c63ff395688c0f8152a7b9bd2831b082a6d55"
@@ -315,7 +315,7 @@ packages:
     source: hosted
     version: "4.10.0"
   dart_mappable_builder:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: dart_mappable_builder
       sha256: "30c48c842a616011c691af4993031b7ea7a9ff3230690af871a3bf803cc59a48"
@@ -379,7 +379,7 @@ packages:
     source: hosted
     version: "0.4.1"
   dio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio
       sha256: "852ec3b48cc431ac04fff978413c541502b67ffc3e26921e74e3d994694192c1"
@@ -536,7 +536,7 @@ packages:
     source: hosted
     version: "9.1.1"
   flutter_hooks:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_hooks
       sha256: "8ae1f090e5f4ef5cfa6670ce1ab5dddadd33f3533a7f9ba19d9f958aa2a89f42"
