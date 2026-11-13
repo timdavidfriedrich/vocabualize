@@ -399,7 +399,7 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
           PracticeCard(
             item: item,
             prompt: prompt,
-            isIntro: item.vocabulary.progress[item.language]?.stage == ProgressStage.waiting,
+            isIntro: item.vocabulary.progress[item.language]?.isUnpracticed ?? false,
           ),
     ];
   }

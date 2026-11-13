@@ -51,5 +51,11 @@ extension ProgressExtensions on Progress {
     ProgressStage.waiting || ProgressStage.unknown => false,
   };
 
+  bool get isUnpracticed => switch (stage) {
+    ProgressStage.waiting => true,
+    ProgressStage.shortTerm => nextReviewAt.isAtSameMomentAs(createdAt),
+    ProgressStage.longTerm || ProgressStage.unknown => false,
+  };
+
   bool isDueAt(DateTime moment) => isStarted && !nextReviewAt.isAfter(moment);
 }
