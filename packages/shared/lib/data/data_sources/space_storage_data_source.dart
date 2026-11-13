@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:klog/klog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared/data/models/local_account_metadata.dart';
 import 'package:shared/data/models/local_custom_practice.dart';
@@ -102,7 +103,8 @@ class const SpaceStorageDataSourceImpl() implements SpaceStorageDataSource {
     if (!await file.exists()) return null;
     try {
       return LocalAccountMetadataMapper.fromJson(await file.readAsString());
-    } on MapperException {
+    } on MapperException catch (error) {
+      Klog.warning("Account file unreadable: ${error.message}");
       return null;
     }
   }
@@ -191,7 +193,8 @@ class const SpaceStorageDataSourceImpl() implements SpaceStorageDataSource {
     if (!await file.exists()) return null;
     try {
       return LocalCustomPracticeMapper.fromJson(await file.readAsString());
-    } on MapperException {
+    } on MapperException catch (error) {
+      Klog.warning("Custom practice file unreadable: ${error.message}");
       return null;
     }
   }

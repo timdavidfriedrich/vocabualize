@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
+import 'package:klog/klog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -37,7 +38,8 @@ class AppConfigLocalDataSourceImpl() implements AppConfigLocalDataSource {
       return RemoteAppConfig.fromJson(
         jsonDecode(await file.readAsString()) as Map<String, dynamic>,
       );
-    } on FormatException {
+    } on FormatException catch (error) {
+      Klog.warning("Config cache unreadable: ${error.message}");
       return null;
     }
   }

@@ -1,8 +1,8 @@
-import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/app_config_local_data_source.dart';
 import 'package:shared/data/data_sources/app_config_remote_data_source.dart';
+import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/app_config_mappers.dart';
 import 'package:shared/domain/entities/app_config.dart';
@@ -26,8 +26,8 @@ class const AppConfigRepositoryImpl(
     try {
       await _localDataSource.writeCache(await _remoteDataSource.fetchConfig());
       return const Success(());
-    } on Object {
-      return const Failure(ConnectionError());
+    } on Object catch (error) {
+      return Failure(error.toAppError());
     }
   }
 }

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
+import 'package:klog/klog.dart';
 import 'package:shared/data/data_sources/backup_archive_data_source.dart';
 import 'package:shared/data/data_sources/backup_file_data_source.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
@@ -204,7 +205,8 @@ class const BackupRepositoryImpl(
     final ({Uint8List full, Uint8List thumbnail}) processed;
     try {
       processed = await _imageProcessingDataSource.processImage(sourcePath);
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Backup photo could not be processed", exception: error);
       return const NoImage();
     }
     final imageId = _newId().uuid;

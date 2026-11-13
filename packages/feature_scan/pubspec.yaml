@@ -1,5 +1,6 @@
 name: feature_scan
 version: 0.0.1
+publish_to: 'none'
 environment:
   sdk: ^3.13.5
 resolution: workspace
@@ -16,6 +17,10 @@ dependencies:
   camera: ^0.12.1
   flutter_hooks: ^0.21.3+1
   intl: ^0.20.3
+  klog:
+    git:
+      url: https://github.com/timdavidfriedrich/klog.git
+      ref: v1.0.0
 dev_dependencies:
   build_runner: ^2.16.1
   dart_mappable_builder: ^4.10.0

@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:klog/klog.dart';
 import 'package:shared/data/models/local_daily_reminder_setting.dart';
 import 'package:shared/data/models/local_preference_key.dart';
 import 'package:shared/domain/entities/appearance_mode.dart';
@@ -42,7 +43,8 @@ extension LocalPreferencesMappers on Map<LocalPreferenceKey, String> {
     if (json == null) return fallback;
     try {
       return LocalDailyReminderSettingMapper.fromJson(json).toDailyReminder();
-    } on MapperException {
+    } on MapperException catch (error) {
+      Klog.warning("Reminder setting unreadable: ${error.message}");
       return fallback;
     }
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
+import 'package:klog/klog.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
 import 'package:shared/data/data_sources/auth_data_source.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
@@ -84,7 +85,8 @@ class AccountRepositoryImpl(
     final RemoteAccount? remoteAccount;
     try {
       remoteAccount = await _authDataSource.signInWithGoogle();
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Google sign-in failed", exception: error);
       return const Failure(AuthError());
     }
     if (remoteAccount == null) return const Success(SignInCancelled());
@@ -223,7 +225,8 @@ class AccountRepositoryImpl(
     try {
       await _syncDataSource.syncOnce(session);
       return true;
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Sync before sign-out failed", exception: error);
       return false;
     }
   }
@@ -276,7 +279,8 @@ class AccountRepositoryImpl(
       final metadata = await _rememberAccount(remoteAccount);
       _emit(AuthAuthenticated(account: await _toGoogleAccount(metadata)));
       await _updateProfilePicture(remoteAccount);
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Account refresh failed", exception: error);
       return;
     }
   }
@@ -314,7 +318,8 @@ class AccountRepositoryImpl(
           when id == userId.uuid) {
         _emit(AuthAuthenticated(account: await _toGoogleAccount(metadata)));
       }
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Profile picture update failed", exception: error);
       return;
     }
   }
@@ -349,7 +354,8 @@ class AccountRepositoryImpl(
   Future<void> _attempt(Future<void> Function() step) async {
     try {
       await step();
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Space removal step failed", exception: error);
       return;
     }
   }

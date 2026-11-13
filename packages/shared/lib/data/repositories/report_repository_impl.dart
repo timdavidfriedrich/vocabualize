@@ -1,5 +1,6 @@
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
+import 'package:klog/klog.dart';
 import 'package:shared/data/data_sources/app_info_data_source.dart';
 import 'package:shared/data/data_sources/report_remote_data_source.dart';
 import 'package:shared/data/data_sources/setting_local_data_source.dart';
@@ -74,7 +75,8 @@ class const ReportRepositoryImpl(
   Future<LanguageSetup?> _readLanguageSetup() async {
     try {
       return (await _settingDataSource.readLanguageSettings()).toLanguageSetup();
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Language setup unreadable for report", exception: error);
       return null;
     }
   }

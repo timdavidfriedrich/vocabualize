@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:klog/klog.dart';
 import 'package:serverpod_database/serverpod_database.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
 import 'package:shared/data/data_sources/database_session_data_source.dart';
@@ -67,7 +68,8 @@ class ImageSyncDataSourceImpl(
   Future<bool> uploadPending(OfflineSyncDatabaseSession session) async {
     try {
       return await _uploadPending(session);
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Image upload failed", exception: error);
       return false;
     }
   }
@@ -121,7 +123,8 @@ class ImageSyncDataSourceImpl(
           await _downloadMissing(session);
         }
       }
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Image transfer failed", exception: error);
       _isUploadRequested = false;
       _isDownloadRequested = false;
     } finally {
@@ -204,7 +207,8 @@ class ImageSyncDataSourceImpl(
         try {
           final bytes = await _imageTransferDataSource.download(download.url);
           await _imageFileDataSource.writeImage(download.imageId, variant, bytes);
-        } on DioException {
+        } on DioException catch (error) {
+          Klog.warning("Image download failed: ${error.type}");
           failedIds.add(download.imageId);
         }
       }

@@ -5,6 +5,7 @@ import 'package:core/error/app_error.dart';
 import 'package:feature_scan/presentation/extensions/camera_exception_extensions.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:klog/klog.dart';
 
 const _resolution = ResolutionPreset.high;
 const _defaultZoom = 1.0;
@@ -102,7 +103,8 @@ class ScanCamera extends ChangeNotifier {
       await controller.setFlashMode(isOn ? FlashMode.torch : FlashMode.off);
       _isFlashOn = isOn;
       if (!_isDisposed) notifyListeners();
-    } on CameraException {
+    } on CameraException catch (error) {
+      Klog.warning("Flash toggle failed: ${error.code}");
       return;
     }
   }
@@ -115,7 +117,8 @@ class ScanCamera extends ChangeNotifier {
       if (controller.value.focusPointSupported) await controller.setFocusPoint(point);
       await controller.setFocusMode(locks ? FocusMode.locked : FocusMode.auto);
       await controller.setExposureMode(locks ? ExposureMode.locked : ExposureMode.auto);
-    } on CameraException {
+    } on CameraException catch (error) {
+      Klog.warning("Focus failed: ${error.code}");
       return;
     }
   }
@@ -125,7 +128,8 @@ class ScanCamera extends ChangeNotifier {
     notifyListeners();
     try {
       await _controller?.setExposureOffset(_exposure);
-    } on CameraException {
+    } on CameraException catch (error) {
+      Klog.warning("Exposure change failed: ${error.code}");
       return;
     }
   }

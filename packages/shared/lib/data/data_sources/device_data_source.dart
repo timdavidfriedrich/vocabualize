@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
+import 'package:klog/klog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -41,7 +42,8 @@ class DeviceDataSourceImpl() implements DeviceDataSource {
     if (!await file.exists()) return null;
     try {
       return UuidValue.withValidation((await file.readAsString()).trim());
-    } on FormatException {
+    } on FormatException catch (error) {
+      Klog.warning("Device id unreadable: ${error.message}");
       return null;
     }
   }

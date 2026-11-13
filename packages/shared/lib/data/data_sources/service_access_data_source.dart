@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
+import 'package:klog/klog.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -66,7 +67,8 @@ class ServiceAccessDataSourceImpl(
     if (stored == null) return null;
     try {
       return RemoteInstallKey.fromJson(jsonDecode(stored) as Map<String, dynamic>);
-    } on Object {
+    } on Object catch (error) {
+      Klog.warning("Stored install key unreadable: ${error.runtimeType}");
       return null;
     }
   }
@@ -79,7 +81,8 @@ class ServiceAccessDataSourceImpl(
   Future<void> _deleteRemoteInstall(RemoteInstallKey installKey) async {
     try {
       await _client.install.delete(installKey);
-    } on Object {
+    } on Object catch (error) {
+      Klog.error("Remote install delete failed", exception: error);
       return;
     }
   }

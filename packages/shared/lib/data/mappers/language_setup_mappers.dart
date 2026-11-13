@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:klog/klog.dart';
 import 'package:shared/data/mappers/language_mappers.dart';
 import 'package:shared/data/models/local_language_settings.dart';
 import 'package:shared/data/models/local_learned_language_setting.dart';
@@ -72,7 +73,8 @@ extension LearnedLanguageValueMappers on String {
   LocalLearnedLanguageSetting? toLocalLearnedLanguageSetting() {
     try {
       return LocalLearnedLanguageSettingMapper.fromJson(this);
-    } on MapperException {
+    } on MapperException catch (error) {
+      Klog.warning("Learned language setting unreadable: ${error.message}");
       return null;
     }
   }

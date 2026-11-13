@@ -1,3 +1,4 @@
+import 'package:klog/klog.dart';
 import 'package:shared/data/models/local_tag_extras.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
@@ -14,7 +15,8 @@ extension LocalTagMappers on LocalTag {
     if (extras case final json?) {
       try {
         return LocalTagExtrasMapper.fromJson(json);
-      } on Object {
+      } on Object catch (error) {
+        Klog.warning("Tag extras unreadable: ${error.runtimeType}");
         return null;
       }
     }

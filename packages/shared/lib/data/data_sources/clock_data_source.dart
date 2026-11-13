@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
+import 'package:klog/klog.dart';
 import 'package:shared/data/models/remote_clock_state.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -61,7 +62,8 @@ class ClockDataSourceImpl(
       _setState(
         _isDrifted(serverNow) ? RemoteClockState.wrong : RemoteClockState.correct,
       );
-    } on Object {
+    } on Object catch (error) {
+      Klog.warning("Server time check failed: $error");
       if (generation == _generation) {
         _reference = null;
         _setState(RemoteClockState.unknown);
