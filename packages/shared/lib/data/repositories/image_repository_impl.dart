@@ -1,4 +1,3 @@
-import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_processing_data_source.dart';
@@ -26,7 +25,7 @@ class const ImageRepositoryImpl(
         ),
       );
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -43,7 +42,7 @@ class const ImageRepositoryImpl(
         ),
       );
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -72,7 +71,7 @@ class const ImageRepositoryImpl(
       await _processingDataSource.deleteSourceImage(sourcePath);
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 }

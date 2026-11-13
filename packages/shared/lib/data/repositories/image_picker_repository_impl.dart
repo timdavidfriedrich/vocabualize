@@ -3,6 +3,7 @@ import 'package:core/error/app_result.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_picker_data_source.dart';
+import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/domain/entities/image_pick_source.dart';
 import 'package:shared/domain/repositories/image_picker_repository.dart';
 
@@ -19,10 +20,10 @@ class const ImagePickerRepositoryImpl(
     } on PlatformException catch (exception) {
       return Failure(switch (exception.code) {
         _cameraAccessDenied => const CameraPermissionError(),
-        _ => UnexpectedError(exception.toString()),
+        _ => exception.toAppError(),
       });
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 }

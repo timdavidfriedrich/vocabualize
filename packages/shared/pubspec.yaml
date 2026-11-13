@@ -19,6 +19,10 @@ dependencies:
   injectable: ^3.0.0
   dart_mappable: ^4.10.0
   kaisel: ^1.1.0
+  klog:
+    git:
+      url: https://github.com/timdavidfriedrich/klog.git
+      ref: v1.0.0
   vocabualize_client:
   serverpod_flutter: 4.1.0-beta.3
   serverpod_auth_idp_flutter: 4.1.0-beta.3

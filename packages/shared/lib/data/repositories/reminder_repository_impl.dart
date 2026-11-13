@@ -1,7 +1,7 @@
-import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/notification_data_source.dart';
+import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/reminder_notification_mappers.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
@@ -21,7 +21,7 @@ class const ReminderRepositoryImpl(
     try {
       return Success(await _dataSource.requestPermission());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -36,7 +36,7 @@ class const ReminderRepositoryImpl(
       ]);
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 }

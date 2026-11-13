@@ -2,6 +2,7 @@ import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/app_info_data_source.dart';
+import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/domain/repositories/app_info_repository.dart';
 
 @Injectable(as: AppInfoRepository)
@@ -13,7 +14,7 @@ class const AppInfoRepositoryImpl(
     try {
       return Success(await _dataSource.buildNumber());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -24,7 +25,7 @@ class const AppInfoRepositoryImpl(
           ? const Success(())
           : const Failure(UnexpectedError());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -34,7 +35,7 @@ class const AppInfoRepositoryImpl(
       await _dataSource.openDateSettings();
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -44,7 +45,7 @@ class const AppInfoRepositoryImpl(
       await _dataSource.openAppSettings();
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -54,7 +55,7 @@ class const AppInfoRepositoryImpl(
       await _dataSource.openNotificationSettings();
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 
@@ -64,7 +65,7 @@ class const AppInfoRepositoryImpl(
       await _dataSource.openInternetSettings();
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 }

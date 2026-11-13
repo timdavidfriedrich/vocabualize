@@ -1,8 +1,8 @@
-import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_sync_data_source.dart';
 import 'package:shared/data/data_sources/sync_data_source.dart';
+import 'package:shared/data/extensions/error_extensions.dart';
 import 'package:shared/data/extensions/stream_extensions.dart';
 import 'package:shared/data/mappers/sync_status_mappers.dart';
 import 'package:shared/domain/entities/data_readiness.dart';
@@ -44,7 +44,7 @@ class const SyncRepositoryImpl(
       _syncDataSource.retryInitialSync();
       return const Success(());
     } on Object catch (error) {
-      return Failure(UnexpectedError(error.toString()));
+      return Failure(error.toAppError());
     }
   }
 }

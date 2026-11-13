@@ -1,4 +1,5 @@
 import 'package:core/error/app_error.dart';
+import 'package:klog/klog.dart';
 import 'package:shared/data/data_sources/clock_data_source.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
@@ -10,7 +11,18 @@ const _freeTier = "free";
 const _reportLimited = "limited";
 
 extension ErrorExtensions on Object {
-  AppError toAppError() => switch (this) {
+  AppError toAppError() {
+    final error = _toMappedError();
+    if (error case UnexpectedError()) Klog.error("Unexpected error", exception: this);
+    return error;
+  }
+
+  AppError toServiceError() => switch (toAppError()) {
+    UnexpectedError() => const ServiceUnavailableError(),
+    final error => error,
+  };
+
+  AppError _toMappedError() => switch (this) {
     ClockWrongException() => const ClockWrongError(),
     QuotaExceededException(kind: _translationKind, :final limit, :final upgradeTier) =>
       TranslationQuotaExceededError(limit: limit, canSignInForMore: upgradeTier == _freeTier),
@@ -34,10 +46,5 @@ extension ErrorExtensions on Object {
     ReportRejectedException(reason: _reportLimited) => const ReportLimitError(),
     ReportRejectedException() => const ReportUnavailableError(),
     _ => UnexpectedError(toString()),
-  };
-
-  AppError toServiceError() => switch (toAppError()) {
-    UnexpectedError() => const ServiceUnavailableError(),
-    final error => error,
   };
 }
