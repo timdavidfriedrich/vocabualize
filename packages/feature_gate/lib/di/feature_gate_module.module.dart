@@ -22,17 +22,17 @@ class FeatureGatePackageModule extends _i526.MicroPackageModule {
 // initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
+    gh.factory<_i460.WatchGateStatusUseCase>(() => _i460.WatchGateStatusUseCase(
+          gh<_i541.AppConfigRepository>(),
+          gh<_i328.AppInfoRepository>(),
+          gh<_i946.ClockRepository>(),
+        ));
     gh.factory<_i822.WaitForDataCubit>(() => _i822.WaitForDataCubit(
           gh<_i523.SyncRepository>(),
           gh<_i923.AccountRepository>(),
         ));
-    gh.factory<_i460.WatchGateStatusUseCase>(() => _i460.WatchGateStatusUseCase(
-          gh<_i541.AppConfigRepository>(),
-          gh<_i328.AppInfoRepository>(),
-        ));
     gh.factory<_i357.GateCubit>(() => _i357.GateCubit(
           gh<_i460.WatchGateStatusUseCase>(),
-          gh<_i946.ClockRepository>(),
           gh<_i541.AppConfigRepository>(),
         ));
   }
