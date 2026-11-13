@@ -1,7 +1,7 @@
 import 'package:diff_match_patch/diff_match_patch.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/domain/extensions/string_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
-import 'package:shared/presentation/extensions/string_extensions.dart';
 
 const _strikeThickness = 2.0;
 

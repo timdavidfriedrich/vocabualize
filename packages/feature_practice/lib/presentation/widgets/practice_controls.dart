@@ -1,7 +1,7 @@
 import 'package:adaptive_actions/adaptive_actions.dart';
 import 'package:core/theme/spacing.dart';
+import 'package:feature_practice/domain/extensions/typed_answer_extensions.dart';
 import 'package:feature_practice/presentation/extensions/practice_answer_extensions.dart';
-import 'package:feature_practice/presentation/extensions/typed_answer_extensions.dart';
 import 'package:feature_practice/presentation/practice/practice_bloc.dart';
 import 'package:feature_practice/presentation/practice/practice_event.dart';
 import 'package:feature_practice/presentation/practice/practice_state.dart';

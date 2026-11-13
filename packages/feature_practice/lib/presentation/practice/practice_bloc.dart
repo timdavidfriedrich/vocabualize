@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
+import 'package:feature_practice/domain/extensions/typed_answer_extensions.dart';
 import 'package:feature_practice/domain/use_cases/answer_vocabulary_use_case.dart';
 import 'package:feature_practice/domain/use_cases/introduce_vocabulary_use_case.dart';
-import 'package:feature_practice/presentation/extensions/typed_answer_extensions.dart';
 import 'package:feature_practice/presentation/practice/practice_event.dart';
 import 'package:feature_practice/presentation/practice/practice_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

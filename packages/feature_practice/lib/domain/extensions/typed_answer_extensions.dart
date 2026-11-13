@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:diff_match_patch/diff_match_patch.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
-import 'package:shared/presentation/extensions/string_extensions.dart';
+import 'package:shared/domain/extensions/string_extensions.dart';
 
 const _apostrophe = "'";
 const _goodMistakeLimit = 2;
