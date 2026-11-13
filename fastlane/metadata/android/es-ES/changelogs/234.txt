@@ -1,0 +1,1 @@
+Cada palabra nueva empieza ahora con su tarjeta de presentación la primera vez que la practicas, no solo las importadas.
