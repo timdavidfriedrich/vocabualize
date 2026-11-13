@@ -19,78 +19,75 @@ class const WaitForDataScreen({
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<WaitForDataCubit>();
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<WaitForDataCubit, WaitForDataState>(
-          listenWhen: (previous, current) => previous.error == null && current.error != null,
-          listener: (context, state) {
-            if (state.error case final error?) context.showToast(error.toMessage(context));
-          },
-        ),
-        BlocListener<WaitForDataCubit, WaitForDataState>(
-          listenWhen: (previous, current) =>
-              previous.accountConflict == null && current.accountConflict != null,
-          listener: (context, state) async {
-            if (state.accountConflict case final conflict?) {
-              final switchesAccount = await confirmsAccountSwitch(context, conflict);
-              await cubit.resolveAccountConflict(keepsPreviousAccount: !switchesAccount);
-            }
-          },
-        ),
-      ],
+    return BlocListener<WaitForDataCubit, WaitForDataState>(
+      listener: (context, state) async {
+        switch (state) {
+          case WaitForDataIdle(:final error?):
+            context.showToast(error.toMessage(context));
+          case WaitForDataIdle(:final accountConflict?):
+            final switchesAccount = await confirmsAccountSwitch(context, accountConflict);
+            await cubit.resolveAccountConflict(keepsPreviousAccount: !switchesAccount);
+          case WaitForDataIdle() || WaitForDataBusy():
+            break;
+        }
+      },
       child: Scaffold(
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(Spacing.xl),
             child: BlocBuilder<WaitForDataCubit, WaitForDataState>(
-              builder: (context, state) => switch (_reason) {
-                DataUnavailableReason.offline => _Content(
-                  pose: MascotPose.offline,
-                  title: context.s.dataOfflineTitle,
-                  message: context.s.dataOfflineMessage,
-                  action: (
-                    label: context.s.connectToInternet,
-                    onPressed: context.read<SystemActionCubit>().openInternetSettings,
+              builder: (context, state) {
+                final isBusy = switch (state) {
+                  WaitForDataBusy() => true,
+                  WaitForDataIdle() => false,
+                };
+                return switch (_reason) {
+                  DataUnavailableReason.offline => _Content(
+                    pose: MascotPose.offline,
+                    title: context.s.dataOfflineTitle,
+                    message: context.s.dataOfflineMessage,
+                    action: (
+                      label: context.s.connectToInternet,
+                      onPressed: context.read<SystemActionCubit>().openInternetSettings,
+                    ),
                   ),
-                ),
-                DataUnavailableReason.serverUnreachable => _Content(
-                  pose: MascotPose.offline,
-                  title: context.s.dataServerUnreachableTitle,
-                  message: context.s.dataServerUnreachableMessage,
-                  action: (
-                    label: context.s.dataRetryButton,
-                    onPressed: state.isBusy ? null : cubit.retry,
+                  DataUnavailableReason.serverUnreachable => _Content(
+                    pose: MascotPose.offline,
+                    title: context.s.dataServerUnreachableTitle,
+                    message: context.s.dataServerUnreachableMessage,
+                    action: (
+                      label: context.s.dataRetryButton,
+                      onPressed: isBusy ? null : cubit.retry,
+                    ),
                   ),
-                ),
-                DataUnavailableReason.signInRequired => _Content(
-                  pose: MascotPose.idle,
-                  title: context.s.dataSignInRequiredTitle,
-                  message: context.s.dataSignInRequiredMessage,
-                  action: (
-                    label: context.s.dataSignInButton,
-                    onPressed: state.isBusy ? null : cubit.signIn,
+                  DataUnavailableReason.signInRequired => _Content(
+                    pose: MascotPose.idle,
+                    title: context.s.dataSignInRequiredTitle,
+                    message: context.s.dataSignInRequiredMessage,
+                    action: (
+                      label: context.s.dataSignInButton,
+                      onPressed: isBusy ? null : cubit.signIn,
+                    ),
                   ),
-                ),
-                DataUnavailableReason.updateRequired => _Content(
-                  pose: MascotPose.idle,
-                  title: context.s.gateUpdateTitle,
-                  message: context.s.gateUpdateMessage,
-                  action: (
-                    label: context.s.gateUpdateButton,
-                    onPressed: state.isBusy
-                        ? null
-                        : context.read<SystemActionCubit>().openStoreListing,
+                  DataUnavailableReason.updateRequired => _Content(
+                    pose: MascotPose.idle,
+                    title: context.s.gateUpdateTitle,
+                    message: context.s.gateUpdateMessage,
+                    action: (
+                      label: context.s.gateUpdateButton,
+                      onPressed: isBusy ? null : context.read<SystemActionCubit>().openStoreListing,
+                    ),
                   ),
-                ),
-                DataUnavailableReason.syncFailed => _Content(
-                  pose: MascotPose.idle,
-                  title: context.s.dataSyncFailedTitle,
-                  message: context.s.dataSyncFailedMessage,
-                  action: (
-                    label: context.s.dataRetryButton,
-                    onPressed: state.isBusy ? null : cubit.retry,
+                  DataUnavailableReason.syncFailed => _Content(
+                    pose: MascotPose.idle,
+                    title: context.s.dataSyncFailedTitle,
+                    message: context.s.dataSyncFailedMessage,
+                    action: (
+                      label: context.s.dataRetryButton,
+                      onPressed: isBusy ? null : cubit.retry,
+                    ),
                   ),
-                ),
+                };
               },
             ),
           ),

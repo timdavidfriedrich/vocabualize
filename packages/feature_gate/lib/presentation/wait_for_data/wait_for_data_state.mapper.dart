@@ -15,7 +15,8 @@ class WaitForDataStateMapper extends ClassMapperBase<WaitForDataState> {
   static WaitForDataStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = WaitForDataStateMapper._());
-      AccountConflictMapper.ensureInitialized();
+      WaitForDataIdleMapper.ensureInitialized();
+      WaitForDataBusyMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -23,34 +24,11 @@ class WaitForDataStateMapper extends ClassMapperBase<WaitForDataState> {
   @override
   final String id = 'WaitForDataState';
 
-  static bool _$isBusy(WaitForDataState v) => v.isBusy;
-  static const Field<WaitForDataState, bool> _f$isBusy = Field(
-    'isBusy',
-    _$isBusy,
-  );
-  static AccountConflict? _$accountConflict(WaitForDataState v) =>
-      v.accountConflict;
-  static const Field<WaitForDataState, AccountConflict> _f$accountConflict =
-      Field('accountConflict', _$accountConflict);
-  static AppError? _$error(WaitForDataState v) => v.error;
-  static const Field<WaitForDataState, AppError> _f$error = Field(
-    'error',
-    _$error,
-  );
-
   @override
-  final MappableFields<WaitForDataState> fields = const {
-    #isBusy: _f$isBusy,
-    #accountConflict: _f$accountConflict,
-    #error: _f$error,
-  };
+  final MappableFields<WaitForDataState> fields = const {};
 
   static WaitForDataState _instantiate(DecodingData data) {
-    return WaitForDataState(
-      isBusy: data.dec(_f$isBusy),
-      accountConflict: data.dec(_f$accountConflict),
-      error: data.dec(_f$error),
-    );
+    throw MapperException.missingConstructor('WaitForDataState');
   }
 
   @override
@@ -66,97 +44,268 @@ class WaitForDataStateMapper extends ClassMapperBase<WaitForDataState> {
 }
 
 mixin WaitForDataStateMappable {
+  String toJson();
+  Map<String, dynamic> toMap();
+  WaitForDataStateCopyWith<WaitForDataState, WaitForDataState, WaitForDataState>
+  get copyWith;
+}
+
+abstract class WaitForDataStateCopyWith<$R, $In extends WaitForDataState, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call();
+  WaitForDataStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class WaitForDataIdleMapper extends ClassMapperBase<WaitForDataIdle> {
+  WaitForDataIdleMapper._();
+
+  static WaitForDataIdleMapper? _instance;
+  static WaitForDataIdleMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = WaitForDataIdleMapper._());
+      WaitForDataStateMapper.ensureInitialized();
+      AccountConflictMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'WaitForDataIdle';
+
+  static AccountConflict? _$accountConflict(WaitForDataIdle v) =>
+      v.accountConflict;
+  static const Field<WaitForDataIdle, AccountConflict> _f$accountConflict =
+      Field('accountConflict', _$accountConflict);
+  static AppError? _$error(WaitForDataIdle v) => v.error;
+  static const Field<WaitForDataIdle, AppError> _f$error = Field(
+    'error',
+    _$error,
+  );
+
+  @override
+  final MappableFields<WaitForDataIdle> fields = const {
+    #accountConflict: _f$accountConflict,
+    #error: _f$error,
+  };
+
+  static WaitForDataIdle _instantiate(DecodingData data) {
+    return WaitForDataIdle(
+      accountConflict: data.dec(_f$accountConflict),
+      error: data.dec(_f$error),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static WaitForDataIdle fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WaitForDataIdle>(map);
+  }
+
+  static WaitForDataIdle fromJson(String json) {
+    return ensureInitialized().decodeJson<WaitForDataIdle>(json);
+  }
+}
+
+mixin WaitForDataIdleMappable {
   String toJson() {
-    return WaitForDataStateMapper.ensureInitialized()
-        .encodeJson<WaitForDataState>(this as WaitForDataState);
+    return WaitForDataIdleMapper.ensureInitialized()
+        .encodeJson<WaitForDataIdle>(this as WaitForDataIdle);
   }
 
   Map<String, dynamic> toMap() {
-    return WaitForDataStateMapper.ensureInitialized()
-        .encodeMap<WaitForDataState>(this as WaitForDataState);
+    return WaitForDataIdleMapper.ensureInitialized().encodeMap<WaitForDataIdle>(
+      this as WaitForDataIdle,
+    );
   }
 
-  WaitForDataStateCopyWith<WaitForDataState, WaitForDataState, WaitForDataState>
+  WaitForDataIdleCopyWith<WaitForDataIdle, WaitForDataIdle, WaitForDataIdle>
   get copyWith =>
-      _WaitForDataStateCopyWithImpl<WaitForDataState, WaitForDataState>(
-        this as WaitForDataState,
+      _WaitForDataIdleCopyWithImpl<WaitForDataIdle, WaitForDataIdle>(
+        this as WaitForDataIdle,
         $identity,
         $identity,
       );
   @override
   String toString() {
-    return WaitForDataStateMapper.ensureInitialized().stringifyValue(
-      this as WaitForDataState,
+    return WaitForDataIdleMapper.ensureInitialized().stringifyValue(
+      this as WaitForDataIdle,
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return WaitForDataStateMapper.ensureInitialized().equalsValue(
-      this as WaitForDataState,
+    return WaitForDataIdleMapper.ensureInitialized().equalsValue(
+      this as WaitForDataIdle,
       other,
     );
   }
 
   @override
   int get hashCode {
-    return WaitForDataStateMapper.ensureInitialized().hashValue(
-      this as WaitForDataState,
+    return WaitForDataIdleMapper.ensureInitialized().hashValue(
+      this as WaitForDataIdle,
     );
   }
 }
 
-extension WaitForDataStateValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, WaitForDataState, $Out> {
-  WaitForDataStateCopyWith<$R, WaitForDataState, $Out>
-  get $asWaitForDataState =>
-      $base.as((v, t, t2) => _WaitForDataStateCopyWithImpl<$R, $Out>(v, t, t2));
+extension WaitForDataIdleValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, WaitForDataIdle, $Out> {
+  WaitForDataIdleCopyWith<$R, WaitForDataIdle, $Out> get $asWaitForDataIdle =>
+      $base.as((v, t, t2) => _WaitForDataIdleCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class WaitForDataStateCopyWith<$R, $In extends WaitForDataState, $Out>
-    implements ClassCopyWith<$R, $In, $Out> {
+abstract class WaitForDataIdleCopyWith<$R, $In extends WaitForDataIdle, $Out>
+    implements WaitForDataStateCopyWith<$R, $In, $Out> {
   AccountConflictCopyWith<$R, AccountConflict, AccountConflict>?
   get accountConflict;
-  $R call({bool? isBusy, AccountConflict? accountConflict, AppError? error});
-  WaitForDataStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+  @override
+  $R call({AccountConflict? accountConflict, AppError? error});
+  WaitForDataIdleCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
 }
 
-class _WaitForDataStateCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, WaitForDataState, $Out>
-    implements WaitForDataStateCopyWith<$R, WaitForDataState, $Out> {
-  _WaitForDataStateCopyWithImpl(super.value, super.then, super.then2);
+class _WaitForDataIdleCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, WaitForDataIdle, $Out>
+    implements WaitForDataIdleCopyWith<$R, WaitForDataIdle, $Out> {
+  _WaitForDataIdleCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<WaitForDataState> $mapper =
-      WaitForDataStateMapper.ensureInitialized();
+  late final ClassMapperBase<WaitForDataIdle> $mapper =
+      WaitForDataIdleMapper.ensureInitialized();
   @override
   AccountConflictCopyWith<$R, AccountConflict, AccountConflict>?
   get accountConflict =>
       $value.accountConflict?.copyWith.$chain((v) => call(accountConflict: v));
   @override
-  $R call({
-    bool? isBusy,
-    Object? accountConflict = $none,
-    Object? error = $none,
-  }) => $apply(
+  $R call({Object? accountConflict = $none, Object? error = $none}) => $apply(
     FieldCopyWithData({
-      if (isBusy != null) #isBusy: isBusy,
       if (accountConflict != $none) #accountConflict: accountConflict,
       if (error != $none) #error: error,
     }),
   );
   @override
-  WaitForDataState $make(CopyWithData data) => WaitForDataState(
-    isBusy: data.get(#isBusy, or: $value.isBusy),
+  WaitForDataIdle $make(CopyWithData data) => WaitForDataIdle(
     accountConflict: data.get(#accountConflict, or: $value.accountConflict),
     error: data.get(#error, or: $value.error),
   );
 
   @override
-  WaitForDataStateCopyWith<$R2, WaitForDataState, $Out2> $chain<$R2, $Out2>(
+  WaitForDataIdleCopyWith<$R2, WaitForDataIdle, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _WaitForDataStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _WaitForDataIdleCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class WaitForDataBusyMapper extends ClassMapperBase<WaitForDataBusy> {
+  WaitForDataBusyMapper._();
+
+  static WaitForDataBusyMapper? _instance;
+  static WaitForDataBusyMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = WaitForDataBusyMapper._());
+      WaitForDataStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'WaitForDataBusy';
+
+  @override
+  final MappableFields<WaitForDataBusy> fields = const {};
+
+  static WaitForDataBusy _instantiate(DecodingData data) {
+    return WaitForDataBusy();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static WaitForDataBusy fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<WaitForDataBusy>(map);
+  }
+
+  static WaitForDataBusy fromJson(String json) {
+    return ensureInitialized().decodeJson<WaitForDataBusy>(json);
+  }
+}
+
+mixin WaitForDataBusyMappable {
+  String toJson() {
+    return WaitForDataBusyMapper.ensureInitialized()
+        .encodeJson<WaitForDataBusy>(this as WaitForDataBusy);
+  }
+
+  Map<String, dynamic> toMap() {
+    return WaitForDataBusyMapper.ensureInitialized().encodeMap<WaitForDataBusy>(
+      this as WaitForDataBusy,
+    );
+  }
+
+  WaitForDataBusyCopyWith<WaitForDataBusy, WaitForDataBusy, WaitForDataBusy>
+  get copyWith =>
+      _WaitForDataBusyCopyWithImpl<WaitForDataBusy, WaitForDataBusy>(
+        this as WaitForDataBusy,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return WaitForDataBusyMapper.ensureInitialized().stringifyValue(
+      this as WaitForDataBusy,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return WaitForDataBusyMapper.ensureInitialized().equalsValue(
+      this as WaitForDataBusy,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return WaitForDataBusyMapper.ensureInitialized().hashValue(
+      this as WaitForDataBusy,
+    );
+  }
+}
+
+extension WaitForDataBusyValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, WaitForDataBusy, $Out> {
+  WaitForDataBusyCopyWith<$R, WaitForDataBusy, $Out> get $asWaitForDataBusy =>
+      $base.as((v, t, t2) => _WaitForDataBusyCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class WaitForDataBusyCopyWith<$R, $In extends WaitForDataBusy, $Out>
+    implements WaitForDataStateCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  WaitForDataBusyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _WaitForDataBusyCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, WaitForDataBusy, $Out>
+    implements WaitForDataBusyCopyWith<$R, WaitForDataBusy, $Out> {
+  _WaitForDataBusyCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<WaitForDataBusy> $mapper =
+      WaitForDataBusyMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  WaitForDataBusy $make(CopyWithData data) => WaitForDataBusy();
+
+  @override
+  WaitForDataBusyCopyWith<$R2, WaitForDataBusy, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _WaitForDataBusyCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

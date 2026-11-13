@@ -6,42 +6,45 @@ import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';
 import 'package:shared/domain/repositories/sync_repository.dart';
 
+const _idle = WaitForDataIdle(accountConflict: null, error: null);
+
 @injectable
 class WaitForDataCubit extends Cubit<WaitForDataState> {
-  WaitForDataCubit(this._syncRepository, this._accountRepository)
-    : super(const WaitForDataState(isBusy: false, accountConflict: null, error: null));
+  WaitForDataCubit(this._syncRepository, this._accountRepository) : super(_idle);
 
   final SyncRepository _syncRepository;
   final AccountRepository _accountRepository;
 
   void retry() {
+    if (state case WaitForDataBusy()) return;
+    emit(_idle);
     if (_syncRepository.retryInitialSync() case Failure(:final error)) {
-      emit(state.copyWith(error: error));
+      emit(WaitForDataIdle(accountConflict: null, error: error));
     }
   }
 
   Future<void> signIn() async {
-    if (state.isBusy) return;
-    emit(state.copyWith(isBusy: true, accountConflict: null, error: null));
+    if (state case WaitForDataBusy()) return;
+    emit(const WaitForDataBusy());
     final result = await _accountRepository.signInWithGoogle();
     emit(switch (result) {
-      Success(data: SignedIn() || SignInCancelled()) => state.copyWith(isBusy: false),
-      Success(data: final AccountConflict conflict) => state.copyWith(
-        isBusy: false,
+      Success(data: SignedIn() || SignInCancelled()) => _idle,
+      Success(data: final AccountConflict conflict) => WaitForDataIdle(
         accountConflict: conflict,
+        error: null,
       ),
-      Failure(:final error) => state.copyWith(isBusy: false, error: error),
+      Failure(:final error) => WaitForDataIdle(accountConflict: null, error: error),
     });
   }
 
   Future<void> resolveAccountConflict({required bool keepsPreviousAccount}) async {
-    emit(state.copyWith(isBusy: true, accountConflict: null, error: null));
+    emit(const WaitForDataBusy());
     final result = await _accountRepository.resolveAccountConflict(
       keepsPreviousAccount: keepsPreviousAccount,
     );
     emit(switch (result) {
-      Success() => state.copyWith(isBusy: false),
-      Failure(:final error) => state.copyWith(isBusy: false, error: error),
+      Success() => _idle,
+      Failure(:final error) => WaitForDataIdle(accountConflict: null, error: error),
     });
   }
 }
