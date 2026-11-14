@@ -2,103 +2,20 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_languages/presentation/learned_language/learned_language_bloc.dart';
 import 'package:feature_languages/presentation/learned_language/learned_language_event.dart';
 import 'package:feature_languages/presentation/learned_language/learned_language_state.dart';
+import 'package:feature_languages/presentation/widgets/ask_me_in_level_card.dart';
 import 'package:feature_languages/presentation/widgets/flag_circle.dart';
 import 'package:feature_languages/presentation/widgets/language_picker_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_extensions.dart';
 import 'package:shared/domain/entities/language_setup_extensions.dart';
-import 'package:shared/domain/entities/vocabulary_level.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
-import 'package:shared/presentation/extensions/vocabulary_level_extensions.dart';
 import 'package:shared/presentation/widgets/round_icon_button.dart';
 
-const _lineWidth = Spacing.borderWidthThick;
-const _stopSpacing = Spacing.m;
-
-class const LearnedLanguageRoute({
+class const AddAskMeInStop({
   super.key,
-  required final LearnedLanguageLoaded _state,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final setup = _state.setup;
-    final learned = _state.learned;
-    final askMeIn = learned.askMeIn;
-    return Stack(
-      children: [
-        Positioned(
-          left: (flagCircleSize - _lineWidth) / 2,
-          top: flagCircleSize / 2,
-          bottom: flagCircleSize / 2,
-          width: _lineWidth,
-          child: ColoredBox(color: context.c.primaryContainer),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: _stopSpacing,
-          children: [
-            _Stop(
-              language: setup.main,
-              color: context.c.primaryContainer,
-              role: context.s.languagesSpeakTitle,
-            ),
-            switch ((askMeIn, learned.isPaused)) {
-              (final askMeIn?, true) => _Stop(
-                language: askMeIn,
-                color: context.c.primaryContainer,
-                role: context.s.learnedLanguageAskMeInFromRole(
-                  learned.askMeInFromLevel.toLabel(context),
-                ),
-              ),
-              (final askMeIn?, false) => _AskMeInStop(askMeIn: askMeIn, state: _state),
-              (null, true) => const SizedBox.shrink(),
-              (null, false) => _AddAskMeInStop(state: _state),
-            },
-            _Stop(
-              language: learned.language,
-              color: learned.isPaused ? context.c.onSurfaceVariant : context.c.secondaryContainer,
-              role: context.s.languagesLearnTitle,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class const _Stop({
-  required final Language _language,
-  required final Color _color,
-  required final String _role,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        FlagCircle(language: _language, color: _color),
-        const SizedBox(width: Spacing.m),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(_language.toLabel(context), style: context.t.titleMedium),
-              Text(
-                _role,
-                style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class const _AddAskMeInStop({
   required final LearnedLanguageLoaded _state,
 }) extends StatelessWidget {
   @override
@@ -169,7 +86,8 @@ class const _AddAskMeInStop({
   }
 }
 
-class const _AskMeInStop({
+class const AskMeInStop({
+  super.key,
   required final Language _askMeIn,
   required final LearnedLanguageLoaded _state,
 }) extends StatelessWidget {
@@ -226,7 +144,7 @@ class const _AskMeInStop({
                   ],
                 ),
                 const SizedBox(height: Spacing.s),
-                _LevelCard(
+                AskMeInLevelCard(
                   level: _state.learned.askMeInFromLevel,
                   main: _state.setup.main,
                   isBusy: _state.isBusy,
@@ -236,80 +154,6 @@ class const _AskMeInStop({
           ),
         ),
       ],
-    );
-  }
-}
-
-class const _LevelCard({
-  required final VocabularyLevel _level,
-  required final Language _main,
-  required final bool _isBusy,
-}) extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    final level = useState(_level);
-    useEffect(() {
-      level.value = _level;
-      return null;
-    }, [_level]);
-    final color = level.value.toColor(context);
-    return Container(
-      padding: const EdgeInsets.fromLTRB(Spacing.m, Spacing.s, Spacing.m, Spacing.m),
-      decoration: BoxDecoration(
-        color: context.c.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(Spacing.radiusXl),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  context.s.learnedLanguageFromLevelTitle,
-                  style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: Spacing.m, vertical: Spacing.xxs),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(Spacing.radiusFull),
-                ),
-                child: Text(
-                  level.value.toLabel(context),
-                  style: context.t.labelLarge?.copyWith(color: context.c.onSecondaryContainer),
-                ),
-              ),
-            ],
-          ),
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              activeTrackColor: color,
-              inactiveTrackColor: context.c.surfaceContainerHighest,
-              thumbColor: context.c.onSurface,
-              activeTickMarkColor: context.c.surfaceContainerLow,
-              inactiveTickMarkColor: color,
-            ),
-            child: Slider(
-              padding: const EdgeInsets.symmetric(vertical: Spacing.m),
-              value: level.value.index.toDouble(),
-              max: (VocabularyLevel.values.length - 1).toDouble(),
-              divisions: VocabularyLevel.values.length - 1,
-              onChanged: _isBusy
-                  ? null
-                  : (value) => level.value = VocabularyLevel.values[value.round()],
-              onChangeEnd: (value) => context.read<LearnedLanguageBloc>().add(
-                LearnedLanguageAskMeInLevelChanged(level: VocabularyLevel.values[value.round()]),
-              ),
-            ),
-          ),
-          Text(
-            context.s.learnedLanguageBelowLevelHint(_main.toShortLabel(context)),
-            style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
-          ),
-        ],
-      ),
     );
   }
 }

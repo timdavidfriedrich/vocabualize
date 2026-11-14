@@ -2,22 +2,22 @@ import 'package:core/theme/spacing.dart';
 import 'package:feature_languages/presentation/learned_language/learned_language_bloc.dart';
 import 'package:feature_languages/presentation/learned_language/learned_language_event.dart';
 import 'package:feature_languages/presentation/learned_language/learned_language_state.dart';
-import 'package:feature_languages/presentation/widgets/delete_language_dialog.dart';
-import 'package:feature_languages/presentation/widgets/learned_language_route.dart';
+import 'package:feature_languages/presentation/widgets/imported_words_card.dart';
+import 'package:feature_languages/presentation/widgets/learned_language_actions.dart';
+import 'package:feature_languages/presentation/widgets/learned_language_more_menu.dart';
+import 'package:feature_languages/presentation/widgets/learned_language_path.dart';
+import 'package:feature_languages/presentation/widgets/new_words_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_setup.dart';
-import 'package:shared/domain/entities/language_setup_extensions.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
-import 'package:shared/presentation/widgets/app_menu.dart';
 import 'package:shared/presentation/widgets/language_label.dart';
 import 'package:shared/presentation/widgets/page_app_bar.dart';
 import 'package:shared/presentation/widgets/section_title.dart';
-import 'package:shared/presentation/widgets/tonal_button.dart';
 
 const _pausedOpacity = 0.5;
 
@@ -65,9 +65,9 @@ class const LearnedLanguageScreen({
       child: Scaffold(
         appBar: PageAppBar(
           title: LanguageLabel(language: _language, style: context.t.headlineSmall),
-          actions: const [_PausedChip(), _MoreMenu()],
+          actions: const [_PausedChip(), LearnedLanguageMoreMenu()],
         ),
-        bottomNavigationBar: const _Actions(),
+        bottomNavigationBar: const LearnedLanguageActions(),
         body: BlocBuilder<LearnedLanguageBloc, LearnedLanguageState>(
           builder: (context, state) => switch (state) {
             LearnedLanguageLoaded() => _Content(state: state),
@@ -125,7 +125,7 @@ class const _Content({
       children: [
         Opacity(
           opacity: learned.isPaused ? _pausedOpacity : 1,
-          child: LearnedLanguageRoute(state: _state),
+          child: LearnedLanguagePath(state: _state),
         ),
         const SizedBox(height: Spacing.xl),
         if (learned.isPaused)
@@ -138,117 +138,13 @@ class const _Content({
           )
         else ...[
           _Section(title: context.s.learnedLanguageNewWordsTitle),
-          _NewWordsSelector(selected: learned.newWords, isBusy: _state.isBusy),
+          NewWordsSelector(selected: learned.newWords, isBusy: _state.isBusy),
           const SizedBox(height: Spacing.xl),
           _Section(title: context.s.learnedLanguageImportedWordsTitle),
-          _ImportedWordsCard(state: _state),
+          ImportedWordsCard(state: _state),
         ],
       ],
     );
-  }
-}
-
-class const _Actions() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LearnedLanguageBloc, LearnedLanguageState>(
-      builder: (context, state) => switch (state) {
-        final LearnedLanguageLoaded loaded => _ActionButtons(state: loaded),
-        LearnedLanguageLoading() ||
-        LearnedLanguageClosed() ||
-        LearnedLanguageFailure() => const SizedBox.shrink(),
-      },
-    );
-  }
-}
-
-class const _ActionButtons({
-  required final LearnedLanguageLoaded _state,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final learned = _state.learned;
-    if (!learned.isPaused) return const SizedBox.shrink();
-    return SafeArea(
-      minimum: const EdgeInsets.only(bottom: Spacing.m),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Spacing.m),
-        child: ElevatedButton(
-          onPressed: _state.isBusy
-              ? null
-              : () => context.read<LearnedLanguageBloc>().add(
-                  const LearnedLanguageResumeRequested(startsOver: false),
-                ),
-          child: Text(
-            context.s.learnedLanguageResumeButton(learned.language.toShortLabel(context)),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class const _MoreMenu() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LearnedLanguageBloc, LearnedLanguageState>(
-      builder: (context, state) => switch (state) {
-        final LearnedLanguageLoaded loaded => _MoreMenuButton(state: loaded),
-        LearnedLanguageLoading() ||
-        LearnedLanguageClosed() ||
-        LearnedLanguageFailure() => const SizedBox.shrink(),
-      },
-    );
-  }
-}
-
-class const _MoreMenuButton({
-  required final LearnedLanguageLoaded _state,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final bloc = context.read<LearnedLanguageBloc>();
-    final learned = _state.learned;
-    final label = learned.language.toShortLabel(context);
-    final isLastActive = !learned.isPaused && _state.setup.active.length == 1;
-    final canChange = !_state.isBusy && !isLastActive;
-    return AppMenuAnchor(
-      items: [
-        if (!learned.isPaused)
-          AppMenuItem(
-            leading: const Icon(Icons.pause_rounded),
-            title: context.s.learnedLanguagePauseButton(label),
-            subtitle: isLastActive ? context.s.learnedLanguageLastActiveHint : null,
-            onTap: canChange ? () => bloc.add(const LearnedLanguagePauseRequested()) : null,
-          ),
-        AppMenuItem(
-          leading: const Icon(Icons.delete_outline_rounded),
-          title: context.s.delete,
-          isDestructive: true,
-          onTap: canChange ? () => _delete(context) : null,
-        ),
-      ],
-      builder: (context, controller) => IconButton(
-        onPressed: () => controller.isOpen ? controller.close() : controller.open(),
-        tooltip: MaterialLocalizations.of(context).showMenuTooltip,
-        icon: const Icon(Icons.more_vert_rounded),
-      ),
-    );
-  }
-
-  Future<void> _delete(BuildContext context) async {
-    final bloc = context.read<LearnedLanguageBloc>();
-    final language = _state.learned.language;
-    final isConfirmed = await confirmsLanguageDelete(
-      context,
-      language: language,
-      wordCount: _state.coverage?.inLanguageCount,
-      keptLanguages: [
-        for (final learned in _state.setup.learned)
-          if (learned.language != language) learned.language,
-      ],
-    );
-    if (isConfirmed) bloc.add(const LearnedLanguageDeleteRequested());
   }
 }
 
@@ -260,98 +156,6 @@ class const _Section({
     return Padding(
       padding: const EdgeInsets.fromLTRB(Spacing.xxxs, 0, Spacing.xxxs, Spacing.s),
       child: SectionTitle(title: _title),
-    );
-  }
-}
-
-class const _NewWordsSelector({
-  required final NewWordLimit _selected,
-  required final bool _isBusy,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final bloc = context.read<LearnedLanguageBloc>();
-    return Container(
-      padding: const EdgeInsets.all(Spacing.xxs),
-      decoration: BoxDecoration(
-        color: context.c.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(Spacing.radiusXxl),
-      ),
-      child: Row(
-        children: [
-          for (final limit in newWordLimits)
-            Expanded(
-              child: Material(
-                color: limit == _selected
-                    ? context.c.secondaryContainer
-                    : context.c.surfaceContainerLowest,
-                borderRadius: BorderRadius.circular(Spacing.radiusXl),
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: _isBusy || limit == _selected
-                      ? null
-                      : () => bloc.add(LearnedLanguageNewWordsChanged(newWords: limit)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: Spacing.s),
-                    child: Text(
-                      switch (limit) {
-                        NewWordsUpTo(:final count) => "$count",
-                        AllNewWords() => context.s.learnedLanguageAllNewWords,
-                      },
-                      textAlign: TextAlign.center,
-                      style: context.t.titleMedium?.copyWith(
-                        color: limit == _selected
-                            ? context.c.onSecondaryContainer
-                            : context.c.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class const _ImportedWordsCard({
-  required final LearnedLanguageLoaded _state,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final coverage = _state.coverage;
-    return Container(
-      padding: const EdgeInsets.fromLTRB(Spacing.m, Spacing.s, Spacing.s, Spacing.s),
-      decoration: BoxDecoration(
-        color: context.c.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(Spacing.radiusXxl),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  context.s.languagesWordCount(coverage?.inLanguageCount ?? 0),
-                  style: context.t.titleMedium,
-                ),
-                Text(
-                  context.s.learnedLanguageTotalWordsHint(coverage?.totalCount ?? 0),
-                  style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
-                ),
-              ],
-            ),
-          ),
-          TonalButton(
-            isCompact: true,
-            onPressed: () =>
-                context.pushLanguageWords(language: _state.learned.language, isAdding: false),
-            child: Text(context.s.languageWordsManageTitle),
-          ),
-        ],
-      ),
     );
   }
 }
