@@ -7,6 +7,8 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile_leading.dart';
 
+const _textMaxLines = 2;
+
 class const VocabularyTile({
   super.key,
   required final Vocabulary _vocabulary,
@@ -26,12 +28,12 @@ class const VocabularyTile({
       leading: VocabularyTileLeading(vocabulary: _vocabulary, language: _language),
       title: Text(
         _vocabulary.titleIn(context, _language),
-        maxLines: 2,
+        maxLines: _textMaxLines,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
         _vocabulary.promptIn(_mainLanguage),
-        maxLines: 2,
+        maxLines: _textMaxLines,
         overflow: TextOverflow.ellipsis,
         style: context.t.bodyLarge?.copyWith(color: context.c.outline),
       ),

@@ -15,11 +15,11 @@ import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
 const _focusRingSize = Spacing.xxxxl + Spacing.s;
-const _exposureTrackHeight = Spacing.xxxxl * 2 - Spacing.m;
+const _exposureTrackHeight = Spacing.xxxxxl - Spacing.m;
 const _focusHideDelay = Duration(seconds: 3);
 const _zoomPresets = [0.5, 1.0, 2.0, 5.0];
 const _zoomTolerance = 0.05;
-const _presetSize = Spacing.xxxl - Spacing.xs;
+const _presetSize = Spacing.controlHeightS;
 const _barOpacity = 0.4;
 const _pillOpacity = 0.6;
 const _selectedPresetOpacity = 0.2;

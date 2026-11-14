@@ -99,7 +99,7 @@ const _dialogWidth = 560.0;
 const _dimmedStates = {WidgetState.disabled, WidgetState.pressed, WidgetState.hovered};
 
 const _buttonPadding = EdgeInsets.symmetric(horizontal: Spacing.xxl, vertical: Spacing.m);
-const _buttonMinimumSize = Size(0, Spacing.xxxl + Spacing.xs);
+const _buttonMinimumSize = Size(0, Spacing.controlHeight);
 const _sliderTrackHeight = Spacing.m;
 const _sliderTrackGap = Spacing.xxs;
 const _sliderThumbSize = Size(4, 44);

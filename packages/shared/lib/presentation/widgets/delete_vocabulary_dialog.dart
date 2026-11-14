@@ -9,6 +9,8 @@ import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/widgets/tonal_button.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile_leading.dart';
 
+const _textMaxLines = 2;
+
 Future<bool> confirmsVocabularyDelete(
   BuildContext context, {
   required Vocabulary vocabulary,
@@ -41,12 +43,12 @@ class const _DeleteVocabularyDialog({
         leading: VocabularyTileLeading(vocabulary: _vocabulary, language: _language),
         title: Text(
           _vocabulary.titleIn(context, _language),
-          maxLines: 2,
+          maxLines: _textMaxLines,
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
           _vocabulary.promptIn(_mainLanguage),
-          maxLines: 2,
+          maxLines: _textMaxLines,
           overflow: TextOverflow.ellipsis,
           style: context.t.bodyLarge?.copyWith(color: context.c.outline),
         ),

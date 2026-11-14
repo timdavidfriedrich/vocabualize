@@ -19,7 +19,7 @@ class const CollectionSelectGroup({
         type: MaterialType.transparency,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: Spacing.borderWidthMedium,
+          spacing: Spacing.tileGap,
           children: _children,
         ),
       ),

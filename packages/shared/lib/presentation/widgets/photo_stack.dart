@@ -6,6 +6,7 @@ import 'package:shared/presentation/extensions/int_extensions.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _overlapFactor = 0.22;
+const _radiusFactor = 0.25;
 
 class const PhotoStack({
   super.key,
@@ -18,7 +19,7 @@ class const PhotoStack({
   Widget build(BuildContext context) {
     final tileCount = _images.length + (_moreCount > 0 ? 1 : 0);
     final step = _size * (1 - _overlapFactor);
-    final radius = BorderRadius.circular(_size / 4);
+    final radius = BorderRadius.circular(_size * _radiusFactor);
     return SizedBox(
       height: _size,
       width: tileCount == 0 ? 0 : step * (tileCount - 1) + _size,

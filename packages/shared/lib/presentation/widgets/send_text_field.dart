@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/widgets/filled_text_field.dart';
 
-const _height = Spacing.xxxl + Spacing.xs;
+const _height = Spacing.controlHeight;
 
 class const SendTextField({
   super.key,

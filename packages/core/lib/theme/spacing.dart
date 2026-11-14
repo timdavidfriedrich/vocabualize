@@ -11,6 +11,12 @@ abstract final class Spacing {
   static const double xxl = 32;
   static const double xxxl = 48;
   static const double xxxxl = 64;
+  static const double xxxxxl = 128;
+
+  static const double tileGap = 2;
+
+  static const double controlHeightS = 40;
+  static const double controlHeight = 56;
 
   static const double radiusS = 8;
   static const double radiusM = 12;

@@ -23,9 +23,9 @@ import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _solutionOpacity = 0.75;
-const _photoMinimumHeight = Spacing.xxxxl * 2;
+const _photoMinimumHeight = Spacing.xxxxxl;
 const _solutionMaxLines = 5;
-const _solutionInset = Spacing.xxxl + Spacing.xs + Spacing.s;
+const _solutionInset = Spacing.controlHeight + Spacing.s;
 const _nonBreakingSpace = " ";
 
 typedef _CardView = ({

@@ -10,7 +10,8 @@ import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
-const _cardWidth = Spacing.xxxxl * 2 + Spacing.xl;
+const _cardWidth = Spacing.xxxxxl + Spacing.xl;
+const _wordMaxLines = 2;
 
 class const RecentVocabulariesSection({
   super.key,
@@ -121,7 +122,7 @@ class const _Label({
       child: Text(
         _text,
         style: _style,
-        maxLines: 2,
+        maxLines: _wordMaxLines,
         overflow: TextOverflow.ellipsis,
         textAlign: _isCentered ? TextAlign.center : TextAlign.start,
       ),

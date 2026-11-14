@@ -7,7 +7,6 @@ import 'package:shared/presentation/extensions/int_extensions.dart';
 const _activeBackgroundOpacity = 0.2;
 const _inactiveBackgroundOpacity = 0.1;
 const _mutedOpacity = 0.6;
-const _activeBorderWidth = 1.5;
 
 class const StreakChip({
   super.key,
@@ -31,7 +30,7 @@ class const StreakChip({
                 : context.c.onSurface.withValues(alpha: _inactiveBackgroundOpacity),
             borderRadius: BorderRadius.circular(Spacing.radiusXxxl),
             border: isActive
-                ? Border.all(color: context.c.primary, width: _activeBorderWidth)
+                ? Border.all(color: context.c.primary, width: Spacing.borderWidthMedium)
                 : null,
           ),
           child: Row(

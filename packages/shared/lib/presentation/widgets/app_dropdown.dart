@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/widgets/app_menu.dart';
 
-const _chipMinHeight = Spacing.xxl + Spacing.xs;
+const _chipMinHeight = Spacing.controlHeightS;
 
 class const AppDropdown<T>({
   super.key,

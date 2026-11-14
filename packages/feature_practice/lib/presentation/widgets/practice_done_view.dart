@@ -38,7 +38,7 @@ class const PracticeDoneView({
               style: context.t.bodyLarge,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: Spacing.xxxxl * 2),
+            const SizedBox(height: Spacing.xxxxxl),
             ElevatedButton(
               onPressed: context.closeScreen,
               child: Text(context.s.practiceDoneButton),

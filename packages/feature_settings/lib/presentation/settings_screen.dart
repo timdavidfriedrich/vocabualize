@@ -34,8 +34,6 @@ import 'package:shared/presentation/widgets/google_logo.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
 import 'package:shared/presentation/widgets/section_title.dart';
 
-const _tileGap = Spacing.borderWidthMedium;
-
 class const SettingsScreen({
   super.key,
 }) extends StatelessWidget {
@@ -193,7 +191,7 @@ class const _Group({
               type: MaterialType.transparency,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: _tileGap,
+                spacing: Spacing.tileGap,
                 children: _children,
               ),
             ),
@@ -333,7 +331,7 @@ class const _ReminderSettings({
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: _tileGap,
+      spacing: Spacing.tileGap,
       children: [
         SwitchListTile(
           title: Text(_title),

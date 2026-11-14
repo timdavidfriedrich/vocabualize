@@ -11,7 +11,7 @@ import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
 const _targetMaxLines = 3;
-const _photoMinimumHeight = Spacing.xxxxl * 2;
+const _photoMinimumHeight = Spacing.xxxxxl;
 const _nonBreakingSpace = " ";
 
 class const IntroCard({

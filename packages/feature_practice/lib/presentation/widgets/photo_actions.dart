@@ -8,7 +8,7 @@ import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_card.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
-const _buttonSize = Spacing.xxxl + Spacing.xs;
+const _buttonSize = Spacing.controlHeight;
 
 class const PhotoActions({
   super.key,

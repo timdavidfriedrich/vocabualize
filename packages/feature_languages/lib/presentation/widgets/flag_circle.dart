@@ -5,7 +5,7 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 
 const flagCircleSize = Spacing.xxxl;
-const largeFlagCircleSize = Spacing.xxxl + Spacing.xs;
+const largeFlagCircleSize = Spacing.controlHeight;
 
 class const FlagCircle({
   super.key,

@@ -5,7 +5,7 @@ import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/count_badge.dart';
 import 'package:shared/presentation/widgets/icon_action_button.dart';
 
-const _buttonHeight = Spacing.xxxl + Spacing.xs;
+const _buttonHeight = Spacing.controlHeight;
 const _badgeOffset = -Spacing.xs;
 
 class const PracticeButton({

@@ -11,7 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
 const _shutterSize = Spacing.xxxxl + Spacing.l;
-const _sideButtonSize = Spacing.xxxl + Spacing.xs;
+const _sideButtonSize = Spacing.controlHeight;
 const _controlOpacity = 0.12;
 
 class const ScanCameraView({

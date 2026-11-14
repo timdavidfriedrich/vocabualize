@@ -75,7 +75,7 @@ class const _Content({
           borderRadius: BorderRadius.circular(Spacing.radiusXxl),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: Spacing.borderWidthMedium,
+            spacing: Spacing.tileGap,
             children: [
               for (final learned in setup.active)
                 _LearnedRow(

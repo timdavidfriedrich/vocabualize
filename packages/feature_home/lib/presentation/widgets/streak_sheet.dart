@@ -10,8 +10,7 @@ import 'package:shared/presentation/extensions/context_extensions.dart';
 const _calendarWeeks = 4;
 const _daysPerWeek = 7;
 const _frozenBackgroundOpacity = 0.2;
-const _iconTileSize = Spacing.xxxl - Spacing.xs;
-const _rowGap = Spacing.borderWidthMedium;
+const _iconTileSize = Spacing.controlHeightS;
 
 Future<void> showStreakSheet(BuildContext context) {
   final bloc = context.read<HomeBloc>();
@@ -66,7 +65,7 @@ class const _StreakList({
       borderRadius: BorderRadius.circular(Spacing.radiusXxl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: _rowGap,
+        spacing: Spacing.tileGap,
         children: [
           _StreakRow(
             icon: Icons.local_fire_department_rounded,

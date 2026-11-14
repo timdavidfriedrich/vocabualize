@@ -25,7 +25,7 @@ import 'package:shared/presentation/widgets/vocabulary_search_view.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.xxl);
-const _scrollEndSpacing = Spacing.xxxxl * 2;
+const _scrollEndSpacing = Spacing.xxxxxl;
 
 class const CollectionScreen({
   super.key,

@@ -39,7 +39,7 @@ import 'package:shared/presentation/widgets/vocabulary_search_view.dart';
 import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.m);
-const _scrollEndSpacing = Spacing.xxxxl * 2;
+const _scrollEndSpacing = Spacing.xxxxxl;
 const _backdropWidthFactor = 0.77;
 const _plusSymbol = "+";
 const _searchingMascotAspectRatio = 0.756;

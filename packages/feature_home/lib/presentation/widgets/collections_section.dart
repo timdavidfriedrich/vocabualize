@@ -9,7 +9,7 @@ import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';
 
-const _cardWidth = Spacing.xxxxl * 2;
+const _cardWidth = Spacing.xxxxxl;
 const _secondRowThreshold = 8;
 const _gridColumns = 2;
 
