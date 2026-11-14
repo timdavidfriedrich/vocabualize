@@ -1,4 +1,3 @@
-import 'package:core/config/build_config.dart';
 import 'package:core/error/app_error.dart';
 import 'package:core/error/app_result.dart';
 import 'package:feature_settings/presentation/settings_event.dart';
@@ -18,6 +17,7 @@ import 'package:shared/domain/repositories/external_link_repository.dart';
 import 'package:shared/domain/repositories/reminder_repository.dart';
 import 'package:shared/domain/repositories/settings_repository.dart';
 
+const _websiteUrl = "https://vocabualize.timdavidfriedrich.de";
 const _germanLanguageCode = "de";
 const _privacyPolicyPath = "/privacy/";
 const _germanPrivacyPolicyPath = "/de/datenschutz/";
@@ -202,7 +202,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   ) => _savePreference(
     emit,
     () => _externalLinkRepository.open(
-      "$websiteUrl${event.languageCode == _germanLanguageCode ? _germanPrivacyPolicyPath : _privacyPolicyPath}",
+      "$_websiteUrl${event.languageCode == _germanLanguageCode ? _germanPrivacyPolicyPath : _privacyPolicyPath}",
     ),
   );
 
