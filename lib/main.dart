@@ -82,7 +82,7 @@ class const _AppFrame({
       if (current == AppLifecycleState.resumed) context.read<TranslationFillCubit>().resume();
     });
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: switch (Theme.of(context).brightness) {
+      value: switch (context.c.brightness) {
         Brightness.dark => SystemUiOverlayStyle.light,
         Brightness.light => SystemUiOverlayStyle.dark,
       },

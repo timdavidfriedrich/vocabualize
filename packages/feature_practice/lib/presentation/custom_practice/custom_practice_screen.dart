@@ -164,7 +164,7 @@ class const _SummaryCard({
             children: [
               Text(
                 _state.totalCount.toCountLabel(context),
-                style: context.t.displayMedium?.copyWith(fontWeight: FontWeight.bold),
+                style: context.t.displayMedium,
               ),
               const SizedBox(width: Spacing.s),
               Padding(

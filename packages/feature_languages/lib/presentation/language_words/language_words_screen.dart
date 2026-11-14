@@ -260,10 +260,7 @@ class const _SummaryCard({
             children: [
               Text(
                 coverage.inLanguageCount.toCountLabel(context),
-                style: context.t.displaySmall?.copyWith(
-                  color: context.c.outline,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: context.t.displaySmall?.copyWith(color: context.c.outline),
               ),
               const SizedBox(width: Spacing.m),
               Icon(Icons.arrow_forward_rounded, color: context.c.primary, size: Spacing.iconXl),
@@ -271,7 +268,7 @@ class const _SummaryCard({
               Expanded(
                 child: Text(
                   result.toCountLabel(context),
-                  style: context.t.displaySmall?.copyWith(fontWeight: FontWeight.bold),
+                  style: context.t.displaySmall,
                 ),
               ),
               Column(

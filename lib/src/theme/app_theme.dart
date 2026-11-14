@@ -136,6 +136,9 @@ abstract final class AppTheme {
     final baseTextTheme = ThemeData(brightness: colors.brightness).textTheme;
     final textTheme = baseTextTheme
         .copyWith(
+          displayLarge: baseTextTheme.displayLarge?.copyWith(fontWeight: FontWeight.bold),
+          displayMedium: baseTextTheme.displayMedium?.copyWith(fontWeight: FontWeight.bold),
+          displaySmall: baseTextTheme.displaySmall?.copyWith(fontWeight: FontWeight.bold),
           headlineLarge: baseTextTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
           headlineMedium: baseTextTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
           headlineSmall: baseTextTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
