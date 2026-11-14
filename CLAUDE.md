@@ -27,6 +27,38 @@ These were decided on purpose; do not "fix" them:
    - **Composition:** `NavigationRouter` (`@lazySingleton`, `lib/src/navigation/navigation_router.dart`) owns the `KaiselRouterConfig`, and its exhaustive page switch is the only place that creates `BlocProvider`s for routes.
    - **Gating:** auth and app-status redirects are kaisel guards, or an app-status listener that calls `router.set(...)`. There is no refresh stream.
 
+## Additions to the styleguide
+
+The guide leaves these open; the code settles them this way.
+
+1. **Data layer.**
+   - Mappers of stored rows may skip a row: `toLocalDate()`, `toLocalLearnedLanguageSetting()` and `toLearnedLanguage()` return `null` for a row this app version cannot read (unreadable date or JSON, unknown language), and list mappers drop it. `toLanguageSetup()` returns `null` for "not set up yet".
+   - A JSON column is decoded in its mapper. An unreadable value is logged (`error.runtimeType` only) and replaced by the declared default.
+   - `LocalSnapshot` and `LocalLanguageMembership` stay plain classes, because they only bundle generated rows, which dart_mappable can't map.
+   - `Local*` enums carry their wire value (`LocalTranslationOrigin.entered("entered")`) instead of private string consts.
+   - Serverpod query closures keep Serverpod's `(t)` parameter name.
+   - `RemoteClockState`, `RemoteSyncState` and `RemoteDataReadiness` are computed on the device; `Remote` means they describe the server side.
+   - `StorageSpace` has no `Local` prefix, because `Local` already names the local-only space (`LocalOnlySpace`, `LocalAccount`).
+2. **Calendar days.** Days (streak, activity, practice day) are wall-clock dates in the user's time zone. `DateTime.toLocalDateString()` and `String.toLocalDate()` (`activity_mappers.dart`) are the only codec for stored days. Instants stay UTC; `.toLocal()` happens only where a day boundary or a wall-clock time is computed (that codec, the due query in `vocabulary_local_data_source_impl.dart`, the reminder times in `preferences_extensions.dart`).
+3. **Singletons.** `AccountRepositoryImpl` is the only `@LazySingleton` repository, because it owns the in-memory auth status. Data sources that hold a session, a cache, a stream or a platform handle are lazy singletons too.
+4. **Extensions.** Entity extensions live next to the entity (`domain/entities/<entity>_extensions.dart`). Extensions on other domain types go to `domain/extensions/`, those on states, `BuildContext` and UI-only types to `presentation/extensions/`.
+5. **Widgets.**
+   - A result type or view record that a widget returns lives in its own file next to the widget (`collection_edit.dart`, `image_choice.dart`). Constants that two widget files share are public consts of the unit.
+   - The `languages` unit has two screens, `languages_screen.dart` and `main_language_screen.dart`, sharing `LanguagesBloc`.
+   - Camera exceptions are mapped to errors in `scan_camera.dart`, because the camera controller lives in the widget.
+6. **Theme.**
+   - Project tokens on top of the guide: `Spacing.xxxxxl` (128), `tileGap` (2), `controlHeightS` (40), `controlHeight` (56), `radiusXxxl` (32) and `Opacities` (`core/theme/opacities.dart`).
+   - Dimensions that only the theme uses are private consts in `lib/src/theme/app_theme.dart`.
+   - Partial `TextStyle` overrides inside the `TextSpan`s of a `Text.rich` are fine; they inherit the span's theme style.
+7. **Localization.**
+   - Key suffixes on top of the guide: `...Tooltip`, `...Option`, `...Legend`, `...Count`, `...Channel`, `...Role` (the caption naming a language's role on the language path), `...Emphasis` (the highlighted word of a sentence), `...Value` and `...Progress` (formatted numbers such as "3 of 5").
+   - Members of a value set are variants without a suffix (`settingsAppearanceDark`, `syncStatusOffline`, `vocabularyLevelExpert`, `languageGreek`).
+   - Global strings without prefix: `cancel`, `close`, `back`, `tryAgain`, `error`, `no`, `submit`, `delete`, `edit`, `undo`, `unknown`, `connectToInternet`.
+   - Each locale addresses the user in one form throughout: German, Italian and Spanish informal (du, tu, tú), French `vous`, Romanian formal plural, Greek plural, Ukrainian `ви`. French and Ukrainian buttons are infinitives, Greek buttons mostly nouns, Romanian buttons formal imperatives.
+8. **Packages.**
+   - `packages/shared/assets/` holds the shared images (`fallback`, `logos`, `mascot`).
+   - Git dependencies (`klog`, `adaptive_actions`) are repeated in each member that uses them, and those members set `publish_to: 'none'`.
+
 ## Data model
 
 - **Words:** `vocabulary` holds the photo and creation date, `translation` one text per language (`origin`: entered, translated, edited), `progress` the review state per learned language (`stage`: waiting, shortTerm, longTerm).
