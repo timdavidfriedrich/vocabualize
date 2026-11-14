@@ -1,50 +1,24 @@
 import 'package:core/error/app_error.dart';
 import 'package:core/theme/spacing.dart';
-import 'package:feature_home/presentation/extensions/home_loaded_extensions.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_state.dart';
-import 'package:feature_home/presentation/widgets/collections_section.dart';
-import 'package:feature_home/presentation/widgets/language_import_card.dart';
-import 'package:feature_home/presentation/widgets/language_menu_button.dart';
-import 'package:feature_home/presentation/widgets/recent_vocabularies_section.dart';
+import 'package:feature_home/presentation/widgets/home_app_bar.dart';
+import 'package:feature_home/presentation/widgets/home_empty_screen.dart';
+import 'package:feature_home/presentation/widgets/home_feed.dart';
+import 'package:feature_home/presentation/widgets/home_overview.dart';
 import 'package:feature_home/presentation/widgets/record_fab.dart';
-import 'package:feature_home/presentation/widgets/status_card.dart';
-import 'package:feature_home/presentation/widgets/streak_chip.dart';
-import 'package:feature_home/presentation/widgets/streak_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:shared/domain/entities/account.dart';
-import 'package:shared/domain/entities/collection_preview.dart';
-import 'package:shared/domain/entities/language.dart';
-import 'package:shared/domain/entities/language_setup.dart';
-import 'package:shared/domain/entities/language_setup_extensions.dart';
-import 'package:shared/domain/entities/streak.dart';
-import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
-import 'package:shared/presentation/account/account_cubit.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
-import 'package:shared/presentation/extensions/language_extensions.dart';
-import 'package:shared/presentation/navigation/navigation_extensions.dart';
-import 'package:shared/presentation/translation_fill/translation_fill_cubit.dart';
-import 'package:shared/presentation/translation_fill/translation_fill_state.dart';
-import 'package:shared/presentation/widgets/account_status_avatar.dart';
 import 'package:shared/presentation/widgets/loading_screen.dart';
-import 'package:shared/presentation/widgets/mascot.dart';
-import 'package:shared/presentation/widgets/vocabulary_info_dialog.dart';
 import 'package:shared/presentation/widgets/vocabulary_search_view.dart';
-import 'package:shared/presentation/widgets/vocabulary_tile.dart';
 
 const _pagePadding = EdgeInsets.symmetric(horizontal: Spacing.m);
-const _scrollEndSpacing = Spacing.xxxxxl;
-const _backdropWidthFactor = 0.77;
-const _plusSymbol = "+";
-const _searchingMascotAspectRatio = 0.756;
-const _mascotHeightFactor = 0.944;
-const _avatarRadius = Spacing.m;
 
 class const HomeScreen({
   super.key,
@@ -69,7 +43,7 @@ class const HomeScreen({
             HomeFailure(:final error) => _FailureScreen(error: error),
             HomeLoading() || HomeLoaded() => const LoadingScreen(),
           },
-          _HomeScreenKind.empty => const _EmptyScreen(),
+          _HomeScreenKind.empty => const HomeEmptyScreen(),
           _HomeScreenKind.content => const _ContentScreen(),
         },
       ),
@@ -103,13 +77,13 @@ class const _ContentScreen() extends HookWidget {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: isSearching.value,
-        appBar: isSearching.value ? null : const _HomeAppBar(),
+        appBar: isSearching.value ? null : const HomeAppBar(),
         floatingActionButton: isSearching.value ? null : const RecordFab(),
         body: Stack(
           children: [
             Offstage(
               offstage: isSearching.value,
-              child: _Overview(onSearchOpened: () => isSearching.value = true),
+              child: HomeOverview(onSearchOpened: () => isSearching.value = true),
             ),
             if (isSearching.value) _SearchView(onClosed: closeSearch),
           ],
@@ -134,476 +108,7 @@ class const _SearchView({
         onFilterChanged: (filter) =>
             context.read<HomeBloc>().add(HomeFilterChanged(filter: filter)),
         onClosed: _onClosed,
-        results: const _Feed(showsNoResults: true),
-      ),
-    );
-  }
-}
-
-class const _Overview({
-  required final VoidCallback _onSearchOpened,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        SliverSafeArea(
-          left: false,
-          right: false,
-          sliver: SliverMainAxisGroup(
-            slivers: [
-              const SliverPadding(
-                padding: _pagePadding,
-                sliver: SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      SizedBox(height: Spacing.s),
-                      _StatusArea(),
-                      _TranslationLimitNotice(),
-                    ],
-                  ),
-                ),
-              ),
-              const _RecentSection(),
-              const _CollectionsRow(),
-              SliverPadding(
-                padding: _pagePadding,
-                sliver: SliverMainAxisGroup(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: Spacing.xxl),
-                          _AllWordsHeader(onSearchOpened: _onSearchOpened),
-                          const SizedBox(height: Spacing.xs),
-                        ],
-                      ),
-                    ),
-                    const _Feed(showsNoResults: false),
-                  ],
-                ),
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: _scrollEndSpacing)),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class const _CollectionsRow() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, List<CollectionPreview>>(
-      selector: (state) => switch (state) {
-        final HomeLoaded loaded when !loaded.isLanguageEmpty => loaded.collections,
-        HomeLoading() || HomeLoaded() || HomeFailure() => const [],
-      },
-      builder: (context, collections) => SliverToBoxAdapter(
-        child: collections.isEmpty
-            ? null
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: Spacing.xxl),
-                  Padding(
-                    padding: _pagePadding,
-                    child: _SectionTitle(title: context.s.homeCollectionsTitle),
-                  ),
-                  const SizedBox(height: Spacing.m),
-                  CollectionsSection(collections: collections),
-                ],
-              ),
-      ),
-    );
-  }
-}
-
-class const _RecentSection() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<
-      HomeBloc,
-      HomeState,
-      ({List<Vocabulary> vocabularies, LanguageSetup? setup})
-    >(
-      selector: (state) => switch (state) {
-        HomeLoaded(:final recentVocabularies, :final setup) => (
-          vocabularies: recentVocabularies,
-          setup: setup,
-        ),
-        HomeLoading() || HomeFailure() => (vocabularies: const [], setup: null),
-      },
-      builder: (context, recent) => SliverToBoxAdapter(
-        child: switch (recent) {
-          (vocabularies: [], setup: _) || (setup: null, vocabularies: _) => null,
-          (:final vocabularies, :final setup?) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: Spacing.xxl),
-              Padding(
-                padding: _pagePadding,
-                child: _SectionTitle(title: context.s.homeNewWordsTitle),
-              ),
-              const SizedBox(height: Spacing.m),
-              RecentVocabulariesSection(
-                vocabularies: vocabularies,
-                language: setup.selected,
-                mainLanguage: setup.main,
-                onTap: (vocabulary) => _showInfo(context, vocabulary),
-                onLongPress: (vocabulary) => _edit(context, vocabulary),
-              ),
-            ],
-          ),
-        },
-      ),
-    );
-  }
-}
-
-class const _Feed({
-  required final bool _showsNoResults,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<
-      HomeBloc,
-      HomeState,
-      ({List<Vocabulary> vocabularies, bool hasMore, LanguageSetup? setup})
-    >(
-      selector: (state) => switch (state) {
-        HomeLoaded(:final vocabularies, :final feedLimit, :final setup) => (
-          vocabularies: vocabularies,
-          hasMore: vocabularies.length >= feedLimit,
-          setup: setup,
-        ),
-        HomeLoading() || HomeFailure() => (vocabularies: const [], hasMore: false, setup: null),
-      },
-      builder: (context, feed) => switch (feed) {
-        (vocabularies: [], hasMore: false, setup: _) when _showsNoResults =>
-          const SliverToBoxAdapter(child: VocabularySearchEmpty()),
-        (setup: null, vocabularies: _, hasMore: _) => const SliverToBoxAdapter(),
-        (:final setup?, vocabularies: _, hasMore: _) => SliverList.builder(
-          itemCount: feed.vocabularies.length + (feed.hasMore ? 1 : 0),
-          itemBuilder: (_, index) => switch (feed.vocabularies.elementAtOrNull(index)) {
-            final vocabulary? => VocabularyTile(
-              key: ValueKey(vocabulary.id),
-              vocabulary: vocabulary,
-              language: setup.selected,
-              mainLanguage: setup.main,
-              onTap: () => _showInfo(context, vocabulary),
-              onLongPress: () => _edit(context, vocabulary),
-              onSpeak: () => _speak(context, vocabulary),
-            ),
-            null => const _FeedEndLoader(),
-          },
-        ),
-      },
-    );
-  }
-}
-
-class const _FeedEndLoader() extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    useEffect(() {
-      context.read<HomeBloc>().add(const HomeFeedEndReached());
-      return null;
-    }, const []);
-    return const Padding(
-      padding: EdgeInsets.all(Spacing.m),
-      child: Center(child: CircularProgressIndicator()),
-    );
-  }
-}
-
-class const _HomeAppBar() extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      centerTitle: false,
-      title: const _LanguageButton(),
-      actionsPadding: const EdgeInsets.only(right: Spacing.m),
-      actions: const [
-        _StreakButton(),
-        SizedBox(width: Spacing.xs),
-        _AccountButton(),
-      ],
-    );
-  }
-}
-
-class const _LanguageButton() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<
-      HomeBloc,
-      HomeState,
-      ({LanguageSetup setup, Map<Language, VocabularyOverview> overviews})?
-    >(
-      selector: (state) => switch (state) {
-        HomeLoaded(:final setup, :final overviews) => (setup: setup, overviews: overviews),
-        HomeLoading(setup: final setup?, :final overviews) => (setup: setup, overviews: overviews),
-        HomeLoading() || HomeFailure() => null,
-      },
-      builder: (context, menu) => switch (menu) {
-        final menu? => LanguageMenuButton(setup: menu.setup, overviews: menu.overviews),
-        null => const SizedBox.shrink(),
-      },
-    );
-  }
-}
-
-class const _StatusArea() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) => switch ((previous, current)) {
-        (final HomeLoaded before, final HomeLoaded after) =>
-          before.overview != after.overview ||
-              before.setup != after.setup ||
-              before.customSession != after.customSession ||
-              before.collections != after.collections ||
-              before.overviews != after.overviews ||
-              before.importWords != after.importWords ||
-              before.isLanguageEmpty != after.isLanguageEmpty,
-        _ => true,
-      },
-      builder: (context, state) => switch (state) {
-        final HomeLoaded loaded when loaded.isLanguageEmpty => LanguageImportCard(
-          language: loaded.setup.selected,
-          source: loaded.importSource,
-          sourceCount: switch (loaded.importSource) {
-            final source? => loaded.overviews[source]?.totalCount ?? 0,
-            null => loaded.allWordsCount,
-          },
-          words: loaded.importWords,
-        ),
-        HomeLoaded(:final overview, :final setup, :final customSession, :final collections) =>
-          StatusCard(
-            overview: overview,
-            language: setup.selected,
-            newWordLimit: setup.learnedOf(setup.selected)?.newWords,
-            customSession: customSession,
-            tags: [for (final collection in collections) collection.tag],
-            onCustomPracticeEnded: () =>
-                context.read<HomeBloc>().add(const HomeCustomPracticeEnded()),
-          ),
-        HomeLoading() || HomeFailure() => const SizedBox.shrink(),
-      },
-    );
-  }
-}
-
-class const _TranslationLimitNotice() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<TranslationFillCubit, TranslationFillState>(
-      builder: (context, state) => switch (state) {
-        TranslationFillState.idle => const SizedBox.shrink(),
-        TranslationFillState.limitReached => Padding(
-          padding: const EdgeInsets.fromLTRB(Spacing.xs, Spacing.s, Spacing.xs, 0),
-          child: Row(
-            children: [
-              Icon(
-                Icons.schedule_rounded,
-                size: Spacing.iconS,
-                color: context.c.onSurfaceVariant,
-              ),
-              const SizedBox(width: Spacing.xs),
-              Expanded(
-                child: Text(
-                  context.s.homeTranslationLimitMessage,
-                  style: context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant),
-                ),
-              ),
-            ],
-          ),
-        ),
-      },
-    );
-  }
-}
-
-class const _AllWordsHeader({
-  required final VoidCallback _onSearchOpened,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, Language?>(
-      selector: (state) => switch (state) {
-        final HomeLoaded loaded when loaded.isLanguageEmpty => loaded.setup.selected,
-        HomeLoading() || HomeLoaded() || HomeFailure() => null,
-      },
-      builder: (context, emptyLanguage) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(child: _SectionTitle(title: context.s.homeAllWordsTitle)),
-              if (emptyLanguage == null)
-                IconButton(
-                  onPressed: _onSearchOpened,
-                  tooltip: context.s.vocabularySearchTooltip,
-                  icon: const Icon(Icons.search_rounded),
-                ),
-            ],
-          ),
-          if (emptyLanguage case final language?) ...[
-            const SizedBox(height: Spacing.m),
-            Text(
-              context.s.homeEmptyLanguageFeedHint(language.toShortLabel(context)),
-              style: context.t.bodyLarge?.copyWith(color: context.c.onSurfaceVariant),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class const _AccountButton() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AccountCubit, Account?>(
-      builder: (context, account) => switch (account) {
-        GoogleAccount(:final picturePath) => IconButton(
-          onPressed: context.pushSettings,
-          tooltip: context.s.settingsTitle,
-          padding: const EdgeInsets.all(Spacing.xxxs),
-          icon: AccountStatusAvatar(picturePath: picturePath, radius: _avatarRadius),
-        ),
-        LocalAccount() || null => IconButton(
-          onPressed: context.pushSettings,
-          tooltip: context.s.settingsTitle,
-          icon: const Icon(Icons.settings_rounded),
-        ),
-      },
-    );
-  }
-}
-
-class const _StreakButton() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, Streak?>(
-      selector: (state) => switch (state) {
-        HomeLoading(:final streak) || HomeLoaded(:final streak) => streak,
-        HomeFailure() => null,
-      },
-      builder: (context, streak) => switch (streak) {
-        final streak? => StreakChip(streak: streak, onPressed: () => showStreakSheet(context)),
-        null => const SizedBox.shrink(),
-      },
-    );
-  }
-}
-
-class const _SectionTitle({
-  required final String _title,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text(_title, style: context.t.headlineSmall);
-  }
-}
-
-class const _EmptyScreen() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: const _HomeAppBar(),
-      floatingActionButton: const RecordFab(),
-      body: SafeArea(
-        child: Padding(
-          padding: _pagePadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: Spacing.xxl),
-              Text(
-                context.s.homeLookAroundTitle,
-                style: context.t.headlineSmall,
-                textAlign: TextAlign.center,
-              ),
-              const Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: Spacing.xl),
-                  child: FractionallySizedBox(
-                    widthFactor: _backdropWidthFactor,
-                    child: Center(child: _SearchingMascot()),
-                  ),
-                ),
-              ),
-              const _AddFirstWordHint(),
-              const SizedBox(height: _scrollEndSpacing),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class const _AddFirstWordHint() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final message = context.s.homeAddFirstWordMessage(_plusSymbol);
-    final plusStart = message.indexOf(_plusSymbol);
-    return Text.rich(
-      plusStart < 0
-          ? TextSpan(text: message)
-          : TextSpan(
-              children: [
-                TextSpan(text: message.substring(0, plusStart)),
-                TextSpan(
-                  text: _plusSymbol,
-                  style: TextStyle(fontWeight: FontWeight.bold, color: context.c.primary),
-                ),
-                TextSpan(text: message.substring(plusStart + _plusSymbol.length)),
-              ],
-            ),
-      style: context.t.bodyLarge,
-      textAlign: TextAlign.center,
-    );
-  }
-}
-
-class const _SearchingMascot() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: _searchingMascotAspectRatio,
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: DecoratedBox(
-                decoration: ShapeDecoration(
-                  color: context.mascot.backdrop,
-                  shape: const CircleBorder(),
-                ),
-              ),
-            ),
-          ),
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: FractionallySizedBox(
-              heightFactor: _mascotHeightFactor,
-              child: Mascot(pose: MascotPose.search),
-            ),
-          ),
-        ],
+        results: const HomeFeed(showsNoResults: true),
       ),
     );
   }
@@ -623,28 +128,4 @@ class const _FailureScreen({
       ),
     );
   }
-}
-
-void _showInfo(BuildContext context, Vocabulary vocabulary) {
-  final bloc = context.read<HomeBloc>();
-  if (bloc.state case HomeLoaded(:final setup, :final collections)) {
-    showVocabularyInfoDialog(
-      context,
-      vocabulary: vocabulary,
-      language: setup.selected,
-      mainLanguage: setup.main,
-      tags: [for (final collection in collections) collection.tag],
-      onSpeak: () => bloc.add(HomeVocabularySpeakRequested(vocabulary: vocabulary)),
-      onEdit: () => _edit(context, vocabulary),
-      onPhotographerOpened: (url) => bloc.add(HomePhotographerLinkOpened(url: url)),
-    );
-  }
-}
-
-void _edit(BuildContext context, Vocabulary vocabulary) {
-  context.pushEditVocabularyDetails(vocabularyId: vocabulary.id);
-}
-
-void _speak(BuildContext context, Vocabulary vocabulary) {
-  context.read<HomeBloc>().add(HomeVocabularySpeakRequested(vocabulary: vocabulary));
 }
