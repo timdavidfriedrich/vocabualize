@@ -86,7 +86,7 @@ class ScanBloc extends Bloc<ScanEvent, ScanState> {
   }
 
   void _onRetakeRequested(ScanRetakeRequested event, Emitter<ScanState> emit) {
-    if (state is ScanReviewing) emit(const ScanCapturing(isProcessing: false, error: null));
+    if (state case ScanReviewing()) emit(const ScanCapturing(isProcessing: false, error: null));
   }
 
   Future<void> _onSettingsOpened(ScanSettingsOpened event, Emitter<ScanState> emit) async {

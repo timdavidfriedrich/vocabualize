@@ -40,7 +40,10 @@ class const ScanScreen({
       },
       child: BlocBuilder<ScanBloc, ScanState>(
         builder: (context, state) => PopScope(
-          canPop: state is ScanCapturing,
+          canPop: switch (state) {
+            ScanCapturing() => true,
+            ScanReviewing() => false,
+          },
           onPopInvokedWithResult: (didPop, _) {
             if (!didPop) context.read<ScanBloc>().add(const ScanRetakeRequested());
           },

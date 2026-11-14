@@ -181,13 +181,13 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
   }
 
   Future<void> _onAnswered(PracticeAnswered event, Emitter<PracticeState> emit) async {
-    final active = state;
-    if (active is! PracticeActive || active.isBusy) return;
-    await _step(
-      emit,
-      active,
-      () => _answerVocabulary(item: active.current.item, answer: event.answer),
-    );
+    if (state case final PracticeActive active when !active.isBusy) {
+      await _step(
+        emit,
+        active,
+        () => _answerVocabulary(item: active.current.item, answer: event.answer),
+      );
+    }
   }
 
   Future<void> _onIntroConfirmed(PracticeIntroConfirmed event, Emitter<PracticeState> emit) async {
@@ -232,33 +232,33 @@ class PracticeBloc extends Bloc<PracticeEvent, PracticeState> {
   }
 
   Future<void> _onTextsSaved(PracticeTextsSaved event, Emitter<PracticeState> emit) async {
-    final active = state;
-    if (active is! PracticeActive || active.isBusy || event.texts.isEmpty) return;
-    final vocabulary = active.current.item.vocabulary;
-    final translations = [
-      for (final MapEntry(key: language, value: text) in event.texts.entries)
-        Translation(
-          language: language,
-          text: text,
-          origin: switch (vocabulary.translations[language]?.origin) {
-            TranslationOrigin.entered => TranslationOrigin.entered,
-            TranslationOrigin.translated ||
-            TranslationOrigin.edited ||
-            TranslationOrigin.unknown ||
-            null => TranslationOrigin.edited,
-          },
-        ),
-    ];
-    emit(active.copyWith(isBusy: true, error: null));
-    final result = await _vocabularyRepository.saveTranslations(
-      vocabularyId: vocabulary.id,
-      translations: translations,
-    );
-    if (state case final PracticeActive latest) {
-      emit(switch (result) {
-        Success(data: final saved) => _withVocabulary(latest.copyWith(isBusy: false), saved),
-        Failure(:final error) => latest.copyWith(isBusy: false, error: error),
-      });
+    if (state case final PracticeActive active when !active.isBusy && event.texts.isNotEmpty) {
+      final vocabulary = active.current.item.vocabulary;
+      final translations = [
+        for (final MapEntry(key: language, value: text) in event.texts.entries)
+          Translation(
+            language: language,
+            text: text,
+            origin: switch (vocabulary.translations[language]?.origin) {
+              TranslationOrigin.entered => TranslationOrigin.entered,
+              TranslationOrigin.translated ||
+              TranslationOrigin.edited ||
+              TranslationOrigin.unknown ||
+              null => TranslationOrigin.edited,
+            },
+          ),
+      ];
+      emit(active.copyWith(isBusy: true, error: null));
+      final result = await _vocabularyRepository.saveTranslations(
+        vocabularyId: vocabulary.id,
+        translations: translations,
+      );
+      if (state case final PracticeActive latest) {
+        emit(switch (result) {
+          Success(data: final saved) => _withVocabulary(latest.copyWith(isBusy: false), saved),
+          Failure(:final error) => latest.copyWith(isBusy: false, error: error),
+        });
+      }
     }
   }
 

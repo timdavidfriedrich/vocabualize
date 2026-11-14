@@ -20,7 +20,10 @@ class const DeleteTile({
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isAccount = _account is GoogleAccount;
+    final isAccount = switch (_account) {
+      GoogleAccount() => true,
+      LocalAccount() => false,
+    };
     return ListTile(
       enabled: _runningAction == null,
       iconColor: context.c.error,

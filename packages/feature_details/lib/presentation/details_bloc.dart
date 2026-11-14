@@ -405,18 +405,18 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   Future<void> _onSaveRequested(DetailsSaveRequested event, Emitter<DetailsState> emit) async {
-    final editing = state;
-    if (editing is! DetailsEditing || editing.runningAction != null) return;
-    if (!editing.canSave) {
-      emit(editing.copyWith(error: const ValidationError()));
-      return;
+    if (state case DetailsEditing(runningAction: null) && final editing) {
+      if (!editing.canSave) {
+        emit(editing.copyWith(error: const ValidationError()));
+        return;
+      }
+      emit(editing.copyWith(runningAction: DetailsAction.save, error: null));
+      if (await _save(editing) case Failure(:final error)) {
+        _emitLatest(emit, (current) => current.copyWith(runningAction: null, error: error));
+        return;
+      }
+      emit(editing.original == null ? const DetailsAdded() : const DetailsClosed());
     }
-    emit(editing.copyWith(runningAction: DetailsAction.save, error: null));
-    if (await _save(editing) case Failure(:final error)) {
-      _emitLatest(emit, (current) => current.copyWith(runningAction: null, error: error));
-      return;
-    }
-    emit(editing.original == null ? const DetailsAdded() : const DetailsClosed());
   }
 
   Future<void> _onDeleteRequested(DetailsDeleteRequested event, Emitter<DetailsState> emit) async {
