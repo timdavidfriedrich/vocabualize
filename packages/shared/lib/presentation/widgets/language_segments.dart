@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
+import 'package:shared/presentation/widgets/pill_segment.dart';
 
 const _inactiveOpacity = 0.45;
 
@@ -68,35 +69,29 @@ class const _Segment({
     final style = context.t.labelLarge?.copyWith(
       color: _isSelected ? context.c.onPrimary : context.c.onSurface,
     );
-    return Material(
-      color: _isSelected ? context.c.primary : Colors.transparent,
-      shape: const StadiumBorder(),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: _onTap,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: _isVertical ? Spacing.m : Spacing.xs,
-            vertical: Spacing.s,
-          ),
-          child: Opacity(
-            opacity: _isInactive ? _inactiveOpacity : 1,
-            child: Row(
-              mainAxisAlignment: _isVertical ? MainAxisAlignment.start : MainAxisAlignment.center,
-              children: [
-                Text(_language.toFlag(), style: style),
-                SizedBox(width: _isVertical ? Spacing.s : Spacing.xs),
-                Flexible(
-                  child: Text(
-                    _isVertical ? _language.toLabel(context) : _language.toShortLabel(context),
-                    style: style,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+    return PillSegment(
+      isSelected: _isSelected,
+      onTap: _onTap,
+      padding: EdgeInsets.symmetric(
+        horizontal: _isVertical ? Spacing.m : Spacing.xs,
+        vertical: Spacing.s,
+      ),
+      child: Opacity(
+        opacity: _isInactive ? _inactiveOpacity : 1,
+        child: Row(
+          mainAxisAlignment: _isVertical ? MainAxisAlignment.start : MainAxisAlignment.center,
+          children: [
+            Text(_language.toFlag(), style: style),
+            SizedBox(width: _isVertical ? Spacing.s : Spacing.xs),
+            Flexible(
+              child: Text(
+                _isVertical ? _language.toLabel(context) : _language.toShortLabel(context),
+                style: style,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
