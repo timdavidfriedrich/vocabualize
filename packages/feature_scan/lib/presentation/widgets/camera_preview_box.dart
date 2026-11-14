@@ -4,31 +4,21 @@ import 'dart:math';
 import 'package:camera/camera.dart';
 import 'package:core/error/app_error.dart';
 import 'package:core/theme/spacing.dart';
-import 'package:feature_scan/presentation/extensions/zoom_extensions.dart';
 import 'package:feature_scan/presentation/scan_bloc.dart';
 import 'package:feature_scan/presentation/scan_event.dart';
+import 'package:feature_scan/presentation/widgets/exposure_slider.dart';
+import 'package:feature_scan/presentation/widgets/focus_locked_pill.dart';
+import 'package:feature_scan/presentation/widgets/focus_ring.dart';
 import 'package:feature_scan/presentation/widgets/scan_camera.dart';
+import 'package:feature_scan/presentation/widgets/zoom_indicator.dart';
+import 'package:feature_scan/presentation/widgets/zoom_presets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/presentation/extensions/app_error_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
-const _focusRingSize = Spacing.xxxxl + Spacing.s;
-const _exposureTrackHeight = Spacing.xxxxxl - Spacing.m;
 const _focusHideDelay = Duration(seconds: 3);
-const _zoomPresets = [0.5, 1.0, 2.0, 5.0];
-const _zoomTolerance = 0.05;
-const _presetSize = Spacing.controlHeightS;
-const _barOpacity = 0.4;
-const _pillOpacity = 0.6;
-const _selectedPresetOpacity = 0.2;
-const _trackOpacity = 0.7;
-const _rulerTicks = 9;
-const _rulerTickHeight = Spacing.s;
-const _rulerCenterTickHeight = Spacing.l;
-const _shadowBlur = Spacing.xxs;
-const _slidePerDoubling = Spacing.xxxxl;
 
 class const CameraPreviewBox({
   super.key,
@@ -114,21 +104,21 @@ class const _LivePreview({
               ),
               if (focus.value case final point?) ...[
                 Positioned(
-                  left: point.dx - _focusRingSize / 2,
-                  top: point.dy - _focusRingSize / 2,
-                  child: IgnorePointer(child: _FocusRing(isLocked: isLocked.value)),
+                  left: point.dx - focusRingSize / 2,
+                  top: point.dy - focusRingSize / 2,
+                  child: IgnorePointer(child: FocusRing(isLocked: isLocked.value)),
                 ),
                 if (_camera.canAdjustExposure)
                   Positioned(
-                    left: min(point.dx + _focusRingSize / 2 + Spacing.xs, side - Spacing.xl),
-                    top: point.dy - _exposureTrackHeight / 2,
-                    child: _ExposureSlider(camera: _camera, onUsed: () => focusTick.value++),
+                    left: min(point.dx + focusRingSize / 2 + Spacing.xs, side - Spacing.xl),
+                    top: point.dy - exposureTrackHeight / 2,
+                    child: ExposureSlider(camera: _camera, onUsed: () => focusTick.value++),
                   ),
               ],
               if (isLocked.value)
                 const Align(
                   alignment: Alignment.topCenter,
-                  child: Padding(padding: EdgeInsets.all(Spacing.s), child: _FocusLockedPill()),
+                  child: Padding(padding: EdgeInsets.all(Spacing.s), child: FocusLockedPill()),
                 ),
               Align(
                 alignment: Alignment.bottomCenter,
@@ -138,10 +128,10 @@ class const _LivePreview({
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (isZooming.value) ...[
-                        _ZoomIndicator(zoom: _camera.zoom),
+                        ZoomIndicator(zoom: _camera.zoom),
                         const SizedBox(height: Spacing.xs),
                       ],
-                      _ZoomPresets(
+                      ZoomPresets(
                         camera: _camera,
                         onSliding: (isSliding) => isZooming.value = isSliding,
                       ),
@@ -153,215 +143,6 @@ class const _LivePreview({
           ),
         );
       },
-    );
-  }
-}
-
-class const _FocusRing({
-  required final bool _isLocked,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: _focusRingSize,
-      height: _focusRingSize,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: _isLocked ? context.c.primary : context.overlay.onScrim,
-          width: Spacing.borderWidthMedium,
-        ),
-      ),
-    );
-  }
-}
-
-class const _ExposureSlider({
-  required final ScanCamera _camera,
-  required final VoidCallback _onUsed,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final range = _camera.maxExposure - _camera.minExposure;
-    final position = (_camera.exposure - _camera.minExposure) / range;
-    return GestureDetector(
-      onVerticalDragUpdate: (details) {
-        final delta = -details.delta.dy / (_exposureTrackHeight - Spacing.iconM) * range;
-        unawaited(_camera.setExposure(_camera.exposure + delta));
-        _onUsed();
-      },
-      child: SizedBox(
-        width: Spacing.iconM,
-        height: _exposureTrackHeight,
-        child: Stack(
-          children: [
-            Center(
-              child: Container(
-                width: Spacing.borderWidthThin,
-                color: context.overlay.onScrim.withValues(alpha: _trackOpacity),
-              ),
-            ),
-            Positioned(
-              top: (1 - position) * (_exposureTrackHeight - Spacing.iconM),
-              child: Icon(
-                Icons.wb_sunny_outlined,
-                color: context.overlay.onScrim,
-                shadows: [Shadow(color: context.overlay.scrim, blurRadius: _shadowBlur)],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class const _FocusLockedPill() extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: ShapeDecoration(
-        color: context.overlay.scrim.withValues(alpha: _pillOpacity),
-        shape: const StadiumBorder(),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Spacing.m, vertical: Spacing.xs),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.lock_outline_rounded, size: Spacing.iconS, color: context.c.primary),
-            const SizedBox(width: Spacing.xs),
-            Text(
-              context.s.scanFocusLockedLabel,
-              style: context.t.labelLarge?.copyWith(color: context.c.primary),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class const _ZoomIndicator({
-  required final double _zoom,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        DecoratedBox(
-          decoration: ShapeDecoration(
-            color: context.overlay.scrim.withValues(alpha: _pillOpacity),
-            shape: const StadiumBorder(),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Spacing.s, vertical: Spacing.xxxs),
-            child: Text(
-              _zoom.toZoomLabel(context),
-              style: context.t.labelLarge?.copyWith(color: context.overlay.onScrim),
-            ),
-          ),
-        ),
-        const SizedBox(height: Spacing.xs),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          spacing: Spacing.xs,
-          children: [
-            for (var index = 0; index < _rulerTicks; index++)
-              Container(
-                width: Spacing.borderWidthMedium,
-                height: index == _rulerTicks ~/ 2 ? _rulerCenterTickHeight : _rulerTickHeight,
-                color: index == _rulerTicks ~/ 2
-                    ? context.c.primary
-                    : context.overlay.onScrim.withValues(alpha: _trackOpacity),
-              ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class const _ZoomPresets({
-  required final ScanCamera _camera,
-  required final ValueChanged<bool> _onSliding,
-}) extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    final startZoom = useRef(_camera.zoom);
-    final slide = useRef(0.0);
-    final presets = [
-      for (final preset in _zoomPresets)
-        if (preset >= _camera.minZoom - _zoomTolerance && preset <= _camera.maxZoom) preset,
-    ];
-    if (presets.length < 2) return const SizedBox.shrink();
-    void endSlide() => _onSliding(false);
-    return GestureDetector(
-      onHorizontalDragStart: (_) {
-        startZoom.value = _camera.zoom;
-        slide.value = 0;
-        _onSliding(true);
-      },
-      onHorizontalDragUpdate: (details) {
-        slide.value += details.delta.dx;
-        unawaited(_camera.setZoom(startZoom.value * pow(2, slide.value / _slidePerDoubling)));
-      },
-      onHorizontalDragEnd: (_) => endSlide(),
-      onHorizontalDragCancel: endSlide,
-      child: DecoratedBox(
-        decoration: ShapeDecoration(
-          color: context.overlay.scrim.withValues(alpha: _barOpacity),
-          shape: const StadiumBorder(),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(Spacing.xxxs),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            spacing: Spacing.xs,
-            children: [
-              for (final preset in presets)
-                _PresetButton(
-                  preset: preset,
-                  isSelected: (_camera.zoom - preset).abs() < _zoomTolerance,
-                  onPressed: () => _camera.setZoom(preset),
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class const _PresetButton({
-  required final double _preset,
-  required final bool _isSelected,
-  required final VoidCallback _onPressed,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: _presetSize,
-      child: Material(
-        color: _isSelected
-            ? context.overlay.onScrim.withValues(alpha: _selectedPresetOpacity)
-            : context.overlay.onScrim.withValues(alpha: 0),
-        shape: const CircleBorder(),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: _onPressed,
-          child: Center(
-            child: Text(
-              _preset.toZoomPresetLabel(context, isSelected: _isSelected),
-              style: context.t.labelLarge?.copyWith(
-                color: _isSelected ? context.c.primary : context.overlay.onScrim,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

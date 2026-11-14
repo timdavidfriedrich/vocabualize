@@ -3,8 +3,10 @@ import 'package:feature_details/presentation/details_bloc.dart';
 import 'package:feature_details/presentation/details_event.dart';
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:feature_details/presentation/extensions/details_editing_extensions.dart';
+import 'package:feature_details/presentation/widgets/language_notes.dart';
 import 'package:feature_details/presentation/widgets/replace_dialog.dart';
 import 'package:feature_details/presentation/widgets/report_translation_dialog.dart';
+import 'package:feature_details/presentation/widgets/word_field_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -184,32 +186,10 @@ class const _EditWordsSheet({
                 controller: controller,
                 style: context.t.bodyLarge,
                 hintText: context.s.detailsMissingTextLabel(language.toLabel(context)),
-                suffix: Padding(
-                  padding: const EdgeInsets.only(right: Spacing.xs),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (_fields[language]?.canReport ?? false)
-                        IconButton(
-                          style: IconButton.styleFrom(
-                            foregroundColor: context.c.onSurfaceVariant,
-                          ),
-                          onPressed: () => _onReport(language),
-                          tooltip: context.s.detailsReportTranslationButton,
-                          icon: const Icon(Icons.flag_outlined),
-                        ),
-                      IconButton.filled(
-                        style: IconButton.styleFrom(
-                          backgroundColor: context.c.surface,
-                          foregroundColor: context.c.primary,
-                          shape: const CircleBorder(),
-                        ),
-                        onPressed: () => _onSpeak(language),
-                        tooltip: context.s.vocabularySpeakTooltip,
-                        icon: const Icon(Icons.volume_up_rounded),
-                      ),
-                    ],
-                  ),
+                suffix: WordFieldActions(
+                  canReport: _fields[language]?.canReport ?? false,
+                  onReport: () => _onReport(language),
+                  onSpeak: () => _onSpeak(language),
                 ),
               ),
               if (_isVertical)
@@ -218,7 +198,7 @@ class const _EditWordsSheet({
                     for (final measured in _languages)
                       Visibility.maintain(
                         visible: false,
-                        child: _LanguageNotes(
+                        child: LanguageNotes(
                           language: measured,
                           main: _main,
                           askedFor: _askedFor[measured] ?? const [],
@@ -227,7 +207,7 @@ class const _EditWordsSheet({
                           isLastOn: true,
                         ),
                       ),
-                    _LanguageNotes(
+                    LanguageNotes(
                       language: language,
                       main: _main,
                       askedFor: _askedFor[language] ?? const [],
@@ -257,53 +237,6 @@ class const _EditWordsSheet({
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class const _LanguageNotes({
-  required final Language _language,
-  required final Language _main,
-  required final List<Language> _askedFor,
-  required final bool _isLearned,
-  required final bool _isOn,
-  required final bool _isLastOn,
-  final ValueChanged<bool>? _onChanged,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final noteStyle = context.t.bodyMedium?.copyWith(color: context.c.onSurfaceVariant);
-    return Padding(
-      padding: const EdgeInsets.only(left: Spacing.l, top: Spacing.xs),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: Spacing.xxs,
-        children: [
-          if (_isLearned) ...[
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    context.s.detailsLearnSwitchLabel(_language.toShortLabel(context)),
-                    style: context.t.bodyLarge,
-                  ),
-                ),
-                Switch(value: _isOn, onChanged: _isLastOn ? null : _onChanged),
-              ],
-            ),
-            if (_isLastOn) Text(context.s.detailsLastLanguageHint, style: noteStyle),
-          ],
-          if (_askedFor.isNotEmpty)
-            Text(
-              context.s.detailsAskMeInNote(
-                [for (final learned in _askedFor) learned.toShortLabel(context)].join(", "),
-                _language.toShortLabel(context),
-                _main.toShortLabel(context),
-              ),
-              style: noteStyle,
-            ),
-        ],
       ),
     );
   }
