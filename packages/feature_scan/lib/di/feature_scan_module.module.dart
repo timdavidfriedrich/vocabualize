@@ -8,6 +8,8 @@ import 'dart:async' as _i687;
 
 import 'package:feature_scan/data/data_sources/image_labeling_remote_data_source.dart'
     as _i892;
+import 'package:feature_scan/data/data_sources/image_labeling_remote_data_source_impl.dart'
+    as _i68;
 import 'package:feature_scan/data/repositories/image_labeling_repository_impl.dart'
     as _i345;
 import 'package:feature_scan/domain/repositories/image_labeling_repository.dart'
@@ -32,7 +34,7 @@ class FeatureScanPackageModule extends _i526.MicroPackageModule {
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
     gh.factory<_i892.ImageLabelingRemoteDataSource>(
-        () => _i892.ImageLabelingRemoteDataSourceImpl(
+        () => _i68.ImageLabelingRemoteDataSourceImpl(
               gh<_i1040.Client>(),
               gh<_i228.ServiceAccessDataSource>(),
             ));

@@ -14,56 +14,114 @@ import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart
     as _i654;
 import 'package:shared/data/data_sources/activity_local_data_source.dart'
     as _i347;
+import 'package:shared/data/data_sources/activity_local_data_source_impl.dart'
+    as _i507;
 import 'package:shared/data/data_sources/app_config_local_data_source.dart'
     as _i49;
+import 'package:shared/data/data_sources/app_config_local_data_source_impl.dart'
+    as _i147;
 import 'package:shared/data/data_sources/app_config_remote_data_source.dart'
     as _i223;
+import 'package:shared/data/data_sources/app_config_remote_data_source_impl.dart'
+    as _i155;
 import 'package:shared/data/data_sources/app_info_data_source.dart' as _i394;
+import 'package:shared/data/data_sources/app_info_data_source_impl.dart'
+    as _i842;
 import 'package:shared/data/data_sources/auth_data_source.dart' as _i535;
+import 'package:shared/data/data_sources/auth_data_source_impl.dart' as _i12;
 import 'package:shared/data/data_sources/backup_archive_data_source.dart'
     as _i100;
+import 'package:shared/data/data_sources/backup_archive_data_source_impl.dart'
+    as _i587;
 import 'package:shared/data/data_sources/backup_file_data_source.dart' as _i460;
+import 'package:shared/data/data_sources/backup_file_data_source_impl.dart'
+    as _i337;
 import 'package:shared/data/data_sources/calendar_data_source.dart' as _i4;
+import 'package:shared/data/data_sources/calendar_data_source_impl.dart'
+    as _i941;
 import 'package:shared/data/data_sources/clock_data_source.dart' as _i44;
+import 'package:shared/data/data_sources/clock_data_source_impl.dart' as _i1030;
 import 'package:shared/data/data_sources/connectivity_data_source.dart'
     as _i154;
+import 'package:shared/data/data_sources/connectivity_data_source_impl.dart'
+    as _i407;
 import 'package:shared/data/data_sources/custom_practice_local_data_source.dart'
     as _i791;
+import 'package:shared/data/data_sources/custom_practice_local_data_source_impl.dart'
+    as _i221;
 import 'package:shared/data/data_sources/database_session_data_source.dart'
     as _i862;
+import 'package:shared/data/data_sources/database_session_data_source_impl.dart'
+    as _i923;
 import 'package:shared/data/data_sources/device_data_source.dart' as _i931;
+import 'package:shared/data/data_sources/device_data_source_impl.dart' as _i793;
 import 'package:shared/data/data_sources/external_link_data_source.dart'
     as _i515;
+import 'package:shared/data/data_sources/external_link_data_source_impl.dart'
+    as _i153;
 import 'package:shared/data/data_sources/image_file_data_source.dart' as _i532;
+import 'package:shared/data/data_sources/image_file_data_source_impl.dart'
+    as _i759;
 import 'package:shared/data/data_sources/image_picker_data_source.dart'
     as _i198;
+import 'package:shared/data/data_sources/image_picker_data_source_impl.dart'
+    as _i160;
 import 'package:shared/data/data_sources/image_processing_data_source.dart'
     as _i179;
+import 'package:shared/data/data_sources/image_processing_data_source_impl.dart'
+    as _i0;
 import 'package:shared/data/data_sources/image_sync_data_source.dart' as _i61;
+import 'package:shared/data/data_sources/image_sync_data_source_impl.dart'
+    as _i882;
 import 'package:shared/data/data_sources/image_transfer_data_source.dart'
     as _i28;
+import 'package:shared/data/data_sources/image_transfer_data_source_impl.dart'
+    as _i601;
 import 'package:shared/data/data_sources/local_import_data_source.dart'
     as _i843;
+import 'package:shared/data/data_sources/local_import_data_source_impl.dart'
+    as _i506;
 import 'package:shared/data/data_sources/notification_data_source.dart'
     as _i877;
+import 'package:shared/data/data_sources/notification_data_source_impl.dart'
+    as _i146;
 import 'package:shared/data/data_sources/report_remote_data_source.dart'
     as _i320;
+import 'package:shared/data/data_sources/report_remote_data_source_impl.dart'
+    as _i482;
 import 'package:shared/data/data_sources/service_access_data_source.dart'
     as _i228;
+import 'package:shared/data/data_sources/service_access_data_source_impl.dart'
+    as _i192;
 import 'package:shared/data/data_sources/setting_local_data_source.dart'
     as _i555;
+import 'package:shared/data/data_sources/setting_local_data_source_impl.dart'
+    as _i911;
 import 'package:shared/data/data_sources/space_storage_data_source.dart'
     as _i753;
+import 'package:shared/data/data_sources/space_storage_data_source_impl.dart'
+    as _i1051;
 import 'package:shared/data/data_sources/stock_image_remote_data_source.dart'
     as _i317;
+import 'package:shared/data/data_sources/stock_image_remote_data_source_impl.dart'
+    as _i50;
 import 'package:shared/data/data_sources/sync_data_source.dart' as _i1034;
+import 'package:shared/data/data_sources/sync_data_source_impl.dart' as _i603;
 import 'package:shared/data/data_sources/tag_local_data_source.dart' as _i452;
+import 'package:shared/data/data_sources/tag_local_data_source_impl.dart'
+    as _i1048;
 import 'package:shared/data/data_sources/text_to_speech_data_source.dart'
     as _i820;
+import 'package:shared/data/data_sources/text_to_speech_data_source_impl.dart'
+    as _i824;
 import 'package:shared/data/data_sources/translation_remote_data_source.dart'
     as _i906;
+import 'package:shared/data/data_sources/translation_remote_data_source_impl.dart'
+    as _i423;
 import 'package:shared/data/data_sources/vocabulary_local_data_source.dart'
     as _i397;
+import 'package:shared/data/data_sources/vocabulary_local_data_source_impl.dart'
+    as _i521;
 import 'package:shared/data/repositories/account_repository_impl.dart' as _i631;
 import 'package:shared/data/repositories/activity_repository_impl.dart'
     as _i351;
@@ -104,7 +162,7 @@ import 'package:shared/data/repositories/translation_repository_impl.dart'
 import 'package:shared/data/repositories/vocabulary_repository_impl.dart'
     as _i24;
 import 'package:shared/di/serverpod_client_module.dart' as _i74;
-import 'package:shared/domain/repositories/account_repository.dart' as _i923;
+import 'package:shared/domain/repositories/account_repository.dart' as _i924;
 import 'package:shared/domain/repositories/activity_repository.dart' as _i503;
 import 'package:shared/domain/repositories/app_config_repository.dart' as _i541;
 import 'package:shared/domain/repositories/app_info_repository.dart' as _i328;
@@ -124,7 +182,7 @@ import 'package:shared/domain/repositories/language_words_repository.dart'
     as _i1019;
 import 'package:shared/domain/repositories/reminder_repository.dart' as _i821;
 import 'package:shared/domain/repositories/report_repository.dart' as _i522;
-import 'package:shared/domain/repositories/settings_repository.dart' as _i0;
+import 'package:shared/domain/repositories/settings_repository.dart' as _i1;
 import 'package:shared/domain/repositories/stock_image_repository.dart'
     as _i934;
 import 'package:shared/domain/repositories/sync_repository.dart' as _i523;
@@ -170,74 +228,82 @@ class SharedPackageModule extends _i526.MicroPackageModule {
         () => serverpodClientModule.secureStorage());
     gh.lazySingleton<_i90.ConnectivityMonitor>(
         () => serverpodClientModule.connectivityMonitor());
-    gh.lazySingleton<_i931.DeviceDataSource>(
-        () => _i931.DeviceDataSourceImpl());
-    gh.factory<_i100.BackupArchiveDataSource>(
-        () => const _i100.BackupArchiveDataSourceImpl());
-    gh.factory<_i394.AppInfoDataSource>(
-        () => const _i394.AppInfoDataSourceImpl());
+    gh.factory<_i198.ImagePickerDataSource>(
+        () => const _i160.ImagePickerDataSourceImpl());
+    gh.factory<_i460.BackupFileDataSource>(
+        () => const _i337.BackupFileDataSourceImpl());
     gh.lazySingleton<_i877.NotificationDataSource>(
-        () => _i877.NotificationDataSourceImpl());
-    gh.factory<_i179.ImageProcessingDataSource>(
-        () => const _i179.ImageProcessingDataSourceImpl());
-    gh.factory<_i4.CalendarDataSource>(
-        () => const _i4.CalendarDataSourceImpl());
-    gh.lazySingleton<_i49.AppConfigLocalDataSource>(
-        () => _i49.AppConfigLocalDataSourceImpl());
+        () => _i146.NotificationDataSourceImpl());
     gh.factory<_i821.ReminderRepository>(
         () => _i899.ReminderRepositoryImpl(gh<_i877.NotificationDataSource>()));
-    gh.lazySingleton<_i820.TextToSpeechDataSource>(
-        () => _i820.TextToSpeechDataSourceImpl());
-    gh.factory<_i753.SpaceStorageDataSource>(
-        () => const _i753.SpaceStorageDataSourceImpl());
-    gh.factory<_i515.ExternalLinkDataSource>(
-        () => const _i515.ExternalLinkDataSourceImpl());
+    gh.factory<_i394.AppInfoDataSource>(
+        () => const _i842.AppInfoDataSourceImpl());
+    gh.factory<_i154.ConnectivityDataSource>(
+        () => const _i407.ConnectivityDataSourceImpl());
     gh.lazySingleton<_i1040.Client>(() => serverpodClientModule.client(
           gh<_i90.FlutterAuthSessionManager>(),
           gh<_i90.ConnectivityMonitor>(),
         ));
+    gh.lazySingleton<_i931.DeviceDataSource>(
+        () => _i793.DeviceDataSourceImpl());
     gh.factory<_i328.AppInfoRepository>(
         () => _i1026.AppInfoRepositoryImpl(gh<_i394.AppInfoDataSource>()));
+    gh.factory<_i515.ExternalLinkDataSource>(
+        () => const _i153.ExternalLinkDataSourceImpl());
+    gh.factory<_i4.CalendarDataSource>(
+        () => const _i941.CalendarDataSourceImpl());
+    gh.lazySingleton<_i49.AppConfigLocalDataSource>(
+        () => _i147.AppConfigLocalDataSourceImpl());
+    gh.lazySingleton<_i820.TextToSpeechDataSource>(
+        () => _i824.TextToSpeechDataSourceImpl());
     gh.factory<_i711.ExternalLinkRepository>(() =>
         _i22.ExternalLinkRepositoryImpl(gh<_i515.ExternalLinkDataSource>()));
-    gh.factory<_i28.ImageTransferDataSource>(
-        () => _i28.ImageTransferDataSourceImpl(
-              gh<_i1040.Client>(),
-              gh<_i361.Dio>(),
-            ));
-    gh.factory<_i460.BackupFileDataSource>(
-        () => const _i460.BackupFileDataSourceImpl());
-    gh.factory<_i154.ConnectivityDataSource>(
-        () => const _i154.ConnectivityDataSourceImpl());
-    gh.factory<_i198.ImagePickerDataSource>(
-        () => const _i198.ImagePickerDataSourceImpl());
+    gh.factory<_i179.ImageProcessingDataSource>(
+        () => const _i0.ImageProcessingDataSourceImpl());
+    gh.factory<_i100.BackupArchiveDataSource>(
+        () => const _i587.BackupArchiveDataSourceImpl());
+    gh.factory<_i753.SpaceStorageDataSource>(
+        () => const _i1051.SpaceStorageDataSourceImpl());
+    gh.factory<_i223.AppConfigRemoteDataSource>(
+        () => _i155.AppConfigRemoteDataSourceImpl(gh<_i1040.Client>()));
+    gh.factory<_i320.ReportRemoteDataSource>(
+        () => _i482.ReportRemoteDataSourceImpl(gh<_i1040.Client>()));
     gh.factory<_i162.ImagePickerRepository>(() =>
         _i435.ImagePickerRepositoryImpl(gh<_i198.ImagePickerDataSource>()));
-    gh.factory<_i320.ReportRemoteDataSource>(
-        () => _i320.ReportRemoteDataSourceImpl(gh<_i1040.Client>()));
-    gh.factory<_i223.AppConfigRemoteDataSource>(
-        () => _i223.AppConfigRemoteDataSourceImpl(gh<_i1040.Client>()));
+    gh.lazySingleton<_i44.ClockDataSource>(() => _i1030.ClockDataSourceImpl(
+          gh<_i1040.Client>(),
+          gh<_i1040.ConnectivityMonitor>(),
+        )..listenToEvents());
     gh.factory<_i259.SystemActionCubit>(
         () => _i259.SystemActionCubit(gh<_i328.AppInfoRepository>()));
-    gh.factory<_i204.ImageRepository>(() => _i816.ImageRepositoryImpl(
-          gh<_i179.ImageProcessingDataSource>(),
-          gh<_i28.ImageTransferDataSource>(),
+    gh.lazySingleton<_i1034.SyncDataSource>(() => _i603.SyncDataSourceImpl(
+          gh<_i1040.Client>(),
+          gh<_i654.ConnectivityMonitor>(),
+          gh<_i753.SpaceStorageDataSource>(),
+          gh<_i44.ClockDataSource>(),
         ));
+    gh.lazySingleton<_i862.DatabaseSessionDataSource>(
+        () => _i923.DatabaseSessionDataSourceImpl(
+              gh<_i1040.Client>(),
+              gh<_i44.ClockDataSource>(),
+              gh<_i753.SpaceStorageDataSource>(),
+            ));
     gh.lazySingleton<_i228.ServiceAccessDataSource>(
-        () => _i228.ServiceAccessDataSourceImpl(
+        () => _i192.ServiceAccessDataSourceImpl(
               gh<_i1040.Client>(),
               gh<_i90.FlutterAuthSessionManager>(),
               gh<_i90.FlutterSecureStorage>(),
             ));
+    gh.factory<_i843.LocalImportDataSource>(() =>
+        _i506.LocalImportDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i689.ConnectivityRepository>(() =>
         _i951.ConnectivityRepositoryImpl(gh<_i154.ConnectivityDataSource>()));
-    gh.lazySingleton<_i44.ClockDataSource>(() => _i44.ClockDataSourceImpl(
-          gh<_i1040.Client>(),
-          gh<_i1040.ConnectivityMonitor>(),
-        )..listenToEvents());
     gh.factory<_i839.TextToSpeechRepository>(() =>
         _i905.TextToSpeechRepositoryImpl(gh<_i820.TextToSpeechDataSource>()));
-    gh.factory<_i535.AuthDataSource>(() => _i535.AuthDataSourceImpl(
+    gh.factory<_i347.ActivityLocalDataSource>(() =>
+        _i507.ActivityLocalDataSourceImpl(
+            gh<_i862.DatabaseSessionDataSource>()));
+    gh.factory<_i535.AuthDataSource>(() => _i12.AuthDataSourceImpl(
           gh<_i1040.Client>(),
           gh<_i90.FlutterAuthSessionManager>(),
         ));
@@ -245,66 +311,44 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i223.AppConfigRemoteDataSource>(),
           gh<_i49.AppConfigLocalDataSource>(),
         ));
-    gh.factory<_i906.TranslationRemoteDataSource>(
-        () => _i906.TranslationRemoteDataSourceImpl(
-              gh<_i1040.Client>(),
-              gh<_i228.ServiceAccessDataSource>(),
-            ));
     gh.factory<_i317.StockImageRemoteDataSource>(
-        () => _i317.StockImageRemoteDataSourceImpl(
+        () => _i50.StockImageRemoteDataSourceImpl(
               gh<_i1040.Client>(),
               gh<_i228.ServiceAccessDataSource>(),
             ));
-    gh.factory<_i946.ClockRepository>(
-        () => _i314.ClockRepositoryImpl(gh<_i44.ClockDataSource>()));
-    gh.lazySingleton<_i1034.SyncDataSource>(() => _i1034.SyncDataSourceImpl(
-          gh<_i1040.Client>(),
-          gh<_i654.ConnectivityMonitor>(),
-          gh<_i753.SpaceStorageDataSource>(),
-          gh<_i44.ClockDataSource>(),
-        ));
-    gh.factory<_i855.ConnectivityCubit>(
-        () => _i855.ConnectivityCubit(gh<_i689.ConnectivityRepository>()));
-    gh.lazySingleton<_i862.DatabaseSessionDataSource>(
-        () => _i862.DatabaseSessionDataSourceImpl(
+    gh.factory<_i28.ImageTransferDataSource>(
+        () => _i601.ImageTransferDataSourceImpl(
               gh<_i1040.Client>(),
-              gh<_i44.ClockDataSource>(),
-              gh<_i753.SpaceStorageDataSource>(),
+              gh<_i361.Dio>(),
             ));
-    gh.factory<_i582.TranslationRepository>(() =>
-        _i542.TranslationRepositoryImpl(
-            gh<_i906.TranslationRemoteDataSource>()));
-    gh.factory<_i452.TagLocalDataSource>(() =>
-        _i452.TagLocalDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i934.StockImageRepository>(() =>
         _i645.StockImageRepositoryImpl(gh<_i317.StockImageRemoteDataSource>()));
-    gh.factory<_i397.VocabularyLocalDataSource>(() =>
-        _i397.VocabularyLocalDataSourceImpl(
-            gh<_i862.DatabaseSessionDataSource>()));
-    gh.factory<_i347.ActivityLocalDataSource>(() =>
-        _i347.ActivityLocalDataSourceImpl(
-            gh<_i862.DatabaseSessionDataSource>()));
-    gh.factory<_i555.SettingLocalDataSource>(() =>
-        _i555.SettingLocalDataSourceImpl(
-            gh<_i862.DatabaseSessionDataSource>()));
-    gh.factory<_i0.SettingsRepository>(
-        () => _i921.SettingsRepositoryImpl(gh<_i555.SettingLocalDataSource>()));
-    gh.factory<_i522.ReportRepository>(() => _i296.ReportRepositoryImpl(
-          gh<_i320.ReportRemoteDataSource>(),
-          gh<_i394.AppInfoDataSource>(),
-          gh<_i555.SettingLocalDataSource>(),
-        ));
-    gh.lazySingleton<_i791.CustomPracticeLocalDataSource>(
-        () => _i791.CustomPracticeLocalDataSourceImpl(
-              gh<_i862.DatabaseSessionDataSource>(),
-              gh<_i753.SpaceStorageDataSource>(),
+    gh.factory<_i906.TranslationRemoteDataSource>(
+        () => _i423.TranslationRemoteDataSourceImpl(
+              gh<_i1040.Client>(),
+              gh<_i228.ServiceAccessDataSource>(),
             ));
+    gh.factory<_i452.TagLocalDataSource>(() =>
+        _i1048.TagLocalDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
+    gh.factory<_i946.ClockRepository>(
+        () => _i314.ClockRepositoryImpl(gh<_i44.ClockDataSource>()));
     gh.factory<_i503.ActivityRepository>(() => _i351.ActivityRepositoryImpl(
           gh<_i347.ActivityLocalDataSource>(),
           gh<_i4.CalendarDataSource>(),
         ));
     gh.lazySingleton<_i532.ImageFileDataSource>(
-        () => _i532.ImageFileDataSourceImpl(
+        () => _i759.ImageFileDataSourceImpl(
+              gh<_i862.DatabaseSessionDataSource>(),
+              gh<_i753.SpaceStorageDataSource>(),
+            ));
+    gh.factory<_i555.SettingLocalDataSource>(() =>
+        _i911.SettingLocalDataSourceImpl(
+            gh<_i862.DatabaseSessionDataSource>()));
+    gh.factory<_i397.VocabularyLocalDataSource>(() =>
+        _i521.VocabularyLocalDataSourceImpl(
+            gh<_i862.DatabaseSessionDataSource>()));
+    gh.lazySingleton<_i791.CustomPracticeLocalDataSource>(
+        () => _i221.CustomPracticeLocalDataSourceImpl(
               gh<_i862.DatabaseSessionDataSource>(),
               gh<_i753.SpaceStorageDataSource>(),
             ));
@@ -314,23 +358,30 @@ class SharedPackageModule extends _i526.MicroPackageModule {
               gh<_i555.SettingLocalDataSource>(),
               gh<_i906.TranslationRemoteDataSource>(),
             ));
-    gh.lazySingleton<_i61.ImageSyncDataSource>(
-        () => _i61.ImageSyncDataSourceImpl(
-              gh<_i1034.SyncDataSource>(),
-              gh<_i862.DatabaseSessionDataSource>(),
-              gh<_i532.ImageFileDataSource>(),
-              gh<_i28.ImageTransferDataSource>(),
-            ));
+    gh.factory<_i204.ImageRepository>(() => _i816.ImageRepositoryImpl(
+          gh<_i179.ImageProcessingDataSource>(),
+          gh<_i28.ImageTransferDataSource>(),
+        ));
+    gh.factory<_i855.ConnectivityCubit>(
+        () => _i855.ConnectivityCubit(gh<_i689.ConnectivityRepository>()));
     gh.factory<_i1019.LanguageWordsRepository>(() =>
         _i23.LanguageWordsRepositoryImpl(
             gh<_i397.VocabularyLocalDataSource>()));
-    gh.factory<_i843.LocalImportDataSource>(() =>
-        _i843.LocalImportDataSourceImpl(gh<_i862.DatabaseSessionDataSource>()));
     gh.factory<_i208.VocabularyRepository>(() => _i24.VocabularyRepositoryImpl(
           gh<_i397.VocabularyLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
           gh<_i931.DeviceDataSource>(),
         ));
+    gh.factory<_i582.TranslationRepository>(() =>
+        _i542.TranslationRepositoryImpl(
+            gh<_i906.TranslationRemoteDataSource>()));
+    gh.lazySingleton<_i61.ImageSyncDataSource>(
+        () => _i882.ImageSyncDataSourceImpl(
+              gh<_i1034.SyncDataSource>(),
+              gh<_i862.DatabaseSessionDataSource>(),
+              gh<_i532.ImageFileDataSource>(),
+              gh<_i28.ImageTransferDataSource>(),
+            ));
     gh.factory<_i308.LanguageRepository>(() => _i850.LanguageRepositoryImpl(
           gh<_i555.SettingLocalDataSource>(),
           gh<_i394.AppInfoDataSource>(),
@@ -339,8 +390,6 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i452.TagLocalDataSource>(),
           gh<_i532.ImageFileDataSource>(),
         ));
-    gh.factory<_i218.PreferencesCubit>(
-        () => _i218.PreferencesCubit(gh<_i0.SettingsRepository>()));
     gh.factory<_i675.FillMissingTranslationsUseCase>(() =>
         _i675.FillMissingTranslationsUseCase(
             gh<_i307.TranslationFillRepository>()));
@@ -348,7 +397,7 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i1034.SyncDataSource>(),
           gh<_i61.ImageSyncDataSource>(),
         ));
-    gh.lazySingleton<_i923.AccountRepository>(() => _i631.AccountRepositoryImpl(
+    gh.lazySingleton<_i924.AccountRepository>(() => _i631.AccountRepositoryImpl(
           gh<_i535.AuthDataSource>(),
           gh<_i862.DatabaseSessionDataSource>(),
           gh<_i753.SpaceStorageDataSource>(),
@@ -372,6 +421,13 @@ class SharedPackageModule extends _i526.MicroPackageModule {
           gh<_i460.BackupFileDataSource>(),
           gh<_i555.SettingLocalDataSource>(),
         ));
+    gh.factory<_i1.SettingsRepository>(
+        () => _i921.SettingsRepositoryImpl(gh<_i555.SettingLocalDataSource>()));
+    gh.factory<_i522.ReportRepository>(() => _i296.ReportRepositoryImpl(
+          gh<_i320.ReportRemoteDataSource>(),
+          gh<_i394.AppInfoDataSource>(),
+          gh<_i555.SettingLocalDataSource>(),
+        ));
     gh.factory<_i76.WatchStreakUseCase>(
         () => _i76.WatchStreakUseCase(gh<_i503.ActivityRepository>()));
     gh.factory<_i472.CustomPracticeRepository>(() =>
@@ -386,7 +442,9 @@ class SharedPackageModule extends _i526.MicroPackageModule {
               gh<_i208.VocabularyRepository>(),
             ));
     gh.factory<_i346.AccountCubit>(
-        () => _i346.AccountCubit(gh<_i923.AccountRepository>()));
+        () => _i346.AccountCubit(gh<_i924.AccountRepository>()));
+    gh.factory<_i218.PreferencesCubit>(
+        () => _i218.PreferencesCubit(gh<_i1.SettingsRepository>()));
     gh.factory<_i709.TranslationFillCubit>(() => _i709.TranslationFillCubit(
           gh<_i733.WatchTranslationFillTriggersUseCase>(),
           gh<_i675.FillMissingTranslationsUseCase>(),
@@ -394,7 +452,7 @@ class SharedPackageModule extends _i526.MicroPackageModule {
     gh.factory<_i957.WatchReminderPlanUseCase>(
         () => _i957.WatchReminderPlanUseCase(
               gh<_i821.ReminderRepository>(),
-              gh<_i0.SettingsRepository>(),
+              gh<_i1.SettingsRepository>(),
               gh<_i208.VocabularyRepository>(),
               gh<_i308.LanguageRepository>(),
               gh<_i76.WatchStreakUseCase>(),
