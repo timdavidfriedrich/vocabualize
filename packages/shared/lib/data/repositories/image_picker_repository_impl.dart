@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/data/data_sources/image_picker_data_source.dart';
 import 'package:shared/data/extensions/error_extensions.dart';
+import 'package:shared/data/mappers/image_pick_source_mappers.dart';
 import 'package:shared/domain/entities/image_pick_source.dart';
 import 'package:shared/domain/repositories/image_picker_repository.dart';
 
@@ -16,7 +17,7 @@ class const ImagePickerRepositoryImpl(
   @override
   Future<AppResult<String?>> pickImage(ImagePickSource source) async {
     try {
-      return Success(await _dataSource.pickImage(source));
+      return Success(await _dataSource.pickImage(source.toImageSource()));
     } on PlatformException catch (exception) {
       return Failure(switch (exception.code) {
         _cameraAccessDenied => const CameraPermissionError(),

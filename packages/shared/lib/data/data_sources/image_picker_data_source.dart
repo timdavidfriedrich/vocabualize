@@ -1,5 +1,5 @@
-import 'package:shared/domain/entities/image_pick_source.dart';
+import 'package:image_picker/image_picker.dart';
 
 abstract class ImagePickerDataSource {
-  Future<String?> pickImage(ImagePickSource source);
+  Future<String?> pickImage(ImageSource source);
 }
