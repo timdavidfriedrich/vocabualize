@@ -537,9 +537,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Ai adăugat deja $count de cuvinte în $language, super!',
-      few: 'Ai adăugat deja $count cuvinte în $language, super!',
-      one: 'Ai adăugat deja $count cuvânt în $language, super!',
+      other: 'Ați adăugat deja $count de cuvinte în $language, super!',
+      few: 'Ați adăugat deja $count cuvinte în $language, super!',
+      one: 'Ați adăugat deja $count cuvânt în $language, super!',
     );
     return '$_temp0';
   }
@@ -549,9 +549,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Ai $count de cuvinte în $language.',
-      few: 'Ai $count cuvinte în $language.',
-      one: 'Ai $count cuvânt în $language.',
+      other: 'Aveți $count de cuvinte în $language.',
+      few: 'Aveți $count cuvinte în $language.',
+      one: 'Aveți $count cuvânt în $language.',
     );
     return '$_temp0';
   }
@@ -944,7 +944,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get languagesLearnTitle => 'Învăț';
 
   @override
-  String get languagesLearnHint => 'Alege una sau mai multe';
+  String get languagesLearnHint => 'Alegeți una sau mai multe';
 
   @override
   String get languagesContinueButton => 'Continuați';
@@ -998,12 +998,12 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String learnedLanguagePauseButton(String language) {
-    return 'Pune $language pe pauză';
+    return 'Puneți $language pe pauză';
   }
 
   @override
   String learnedLanguageResumeButton(String language) {
-    return 'Reia $language';
+    return 'Reluați $language';
   }
 
   @override
@@ -1038,10 +1038,10 @@ class AppLocalizationsRo extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          'Ai $count de cuvinte în $source. Importă-le pe cele pe care vrei să le înveți și în $language.',
+          'Aveți $count de cuvinte în $source. Importați-le pe cele pe care vreți să le învățați și în $language.',
       few:
-          'Ai $count cuvinte în $source. Importă-le pe cele pe care vrei să le înveți și în $language.',
-      one: 'Ai 1 cuvânt în $source. Importă-l dacă vrei să-l înveți și în $language.',
+          'Aveți $count cuvinte în $source. Importați-le pe cele pe care vreți să le învățați și în $language.',
+      one: 'Aveți 1 cuvânt în $source. Importați-l dacă vreți să-l învățați și în $language.',
     );
     return '$_temp0';
   }
@@ -1097,9 +1097,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Exersează $count de cuvinte',
-      few: 'Exersează $count cuvinte',
-      one: 'Exersează 1 cuvânt',
+      other: 'Exersați $count de cuvinte',
+      few: 'Exersați $count cuvinte',
+      one: 'Exersați 1 cuvânt',
       zero: 'Niciun cuvânt de exersat',
     );
     return '$_temp0';
@@ -1162,14 +1162,14 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get languageOnboardingSpeakTitle => 'Ce limbă vorbești?';
+  String get languageOnboardingSpeakTitle => 'Ce limbă vorbiți?';
 
   @override
-  String get languageOnboardingLearnTitle => 'Ce vrei să înveți?';
+  String get languageOnboardingLearnTitle => 'Ce vreți să învățați?';
 
   @override
   String languageOnboardingContinueWithButton(int count) {
-    return 'Continuă cu $count';
+    return 'Continuați cu $count';
   }
 
   @override
@@ -1197,12 +1197,12 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String languageDeleteButton(String language) {
-    return 'Șterge $language';
+    return 'Ștergeți $language';
   }
 
   @override
   String languageDeleteTitle(String language) {
-    return 'Ștergi $language?';
+    return 'Ștergeți $language?';
   }
 
   @override
@@ -1228,15 +1228,15 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String languageDeleteKeptProgressMessage(String language) {
-    return 'Progresul tău în $language';
+    return 'Progresul dvs. în $language';
   }
 
   @override
-  String get mainLanguageClashEmphasis => 'înveți';
+  String get mainLanguageClashEmphasis => 'învățați';
 
   @override
   String mainLanguageClashTitle(String emphasis, String language) {
-    return 'Tu $emphasis $language';
+    return 'Deja $emphasis $language';
   }
 
   @override
@@ -1245,28 +1245,28 @@ class AppLocalizationsRo extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          'Ca să vorbești $language, $language trece pe pauză ca limbă învățată. Cele $count de cuvinte ale tale și progresul lor se păstrează.',
+          'Ca să vorbiți $language, $language trece pe pauză ca limbă învățată. Cele $count de cuvinte ale dvs. și progresul lor se păstrează.',
       few:
-          'Ca să vorbești $language, $language trece pe pauză ca limbă învățată. Cele $count cuvinte ale tale și progresul lor se păstrează.',
+          'Ca să vorbiți $language, $language trece pe pauză ca limbă învățată. Cele $count cuvinte ale dvs. și progresul lor se păstrează.',
       one:
-          'Ca să vorbești $language, $language trece pe pauză ca limbă învățată. Cuvântul tău și progresul lui se păstrează.',
+          'Ca să vorbiți $language, $language trece pe pauză ca limbă învățată. Cuvântul dvs. și progresul lui se păstrează.',
     );
     return '$_temp0';
   }
 
   @override
   String mainLanguageClashSwitchButton(String language) {
-    return 'Pune $language pe pauză și schimbă';
+    return 'Puneți $language pe pauză și schimbați';
   }
 
   @override
   String mainLanguageClashKeepButton(String language) {
-    return 'Păstrează $language';
+    return 'Păstrați $language';
   }
 
   @override
   String learnedLanguageAskMeInFromRole(String level) {
-    return 'Întreabă-mă în, de la $level';
+    return 'Întrebați-mă în, de la $level';
   }
 
   @override
@@ -1279,7 +1279,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String learnedLanguageAskMeInIntroMessage(String main, String learned) {
-    return 'Cardurile pot întreba în altă limbă în loc de $main. Poți afișa oricând cuvântul în $main. Așa o altă limbă rămâne activă cât înveți $learned.';
+    return 'Cardurile pot întreba în altă limbă în loc de $main. Puteți afișa oricând cuvântul în $main. Așa o altă limbă rămâne activă cât învățați $learned.';
   }
 
   @override
@@ -1310,38 +1310,38 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String learnedLanguageTotalWordsHint(int count) {
-    return 'Ai $count în total';
+    return 'Aveți $count în total';
   }
 
   @override
-  String get languageWordsManageTitle => 'Gestionează cuvintele';
+  String get languageWordsManageTitle => 'Gestionați cuvintele';
 
   @override
   String languageWordsImportButton(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Importă $count de cuvinte',
-      few: 'Importă $count cuvinte',
-      one: 'Importă 1 cuvânt',
-      zero: 'Începe fără cuvinte',
+      other: 'Importați $count de cuvinte',
+      few: 'Importați $count cuvinte',
+      one: 'Importați 1 cuvânt',
+      zero: 'Începeți fără cuvinte',
     );
     return '$_temp0';
   }
 
   @override
   String languageWordsImportTitle(String language) {
-    return 'Ce cuvinte vrei să imporți în $language?';
+    return 'Ce cuvinte vreți să importați în $language?';
   }
 
   @override
-  String get languageWordsImportHint => 'Poți schimba asta mai târziu.';
+  String get languageWordsImportHint => 'Puteți schimba asta mai târziu.';
 
   @override
   String get languageWordsSomeCollectionsOption => 'Unele colecții';
 
   @override
-  String get languageWordsNoneHint => 'Începe cu o listă goală';
+  String get languageWordsNoneHint => 'Începeți cu o listă goală';
 
   @override
   String languageWordsAddedLabel(String count) {
@@ -1372,20 +1372,20 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String homeEmptyLanguageTitle(String language) {
-    return 'Niciunul dintre cuvintele tale nu e încă în $language';
+    return 'Niciunul dintre cuvintele dvs. nu e încă în $language';
   }
 
   @override
   String homeEmptyLanguageNoSourceMessage(String language) {
-    return 'Importă cuvintele pe care vrei să le înveți în $language.';
+    return 'Importați cuvintele pe care vreți să le învățați în $language.';
   }
 
   @override
-  String get homeImportWordsButton => 'Importă cuvinte';
+  String get homeImportWordsButton => 'Importați cuvinte';
 
   @override
   String homeEmptyLanguageFeedHint(String language) {
-    return 'Cuvintele pe care le adaugi cât e selectată $language apar aici.';
+    return 'Cuvintele pe care le adăugați cât e selectată $language apar aici.';
   }
 
   @override

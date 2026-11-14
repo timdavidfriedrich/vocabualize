@@ -29,7 +29,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorConnection =>
-      'No se pudo conectar con el servidor. Compruebe su conexión a internet e inténtelo de nuevo.';
+      'No se pudo conectar con el servidor. Comprueba tu conexión a internet e inténtalo de nuevo.';
 
   @override
   String errorApi(String message) {
@@ -326,7 +326,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gateUpdateMessage =>
-      'Esta versión de Vocabualize ya no es compatible. Actualice la aplicación para seguir aprendiendo.';
+      'Esta versión de Vocabualize ya no es compatible. Actualiza la aplicación para seguir aprendiendo.';
 
   @override
   String get gateUpdateButton => 'Actualizar';
@@ -336,7 +336,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gateMaintenanceMessage =>
-      'Vocabualize se está actualizando. Inténtelo de nuevo más tarde.';
+      'Vocabualize se está actualizando. Inténtalo de nuevo más tarde.';
 
   @override
   String get settingsExportBackupButton => 'Exportar copia de seguridad';
@@ -355,7 +355,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsImportBackupConfirmMessage =>
-      'Todas las palabras, colecciones e imágenes de la copia se añaden a su colección. Sus palabras actuales no cambian.';
+      'Todas las palabras, colecciones e imágenes de la copia se añaden a tu colección. Tus palabras actuales no cambian.';
 
   @override
   String get settingsImportBackupConfirmButton => 'Importar';
@@ -419,17 +419,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dataOfflineTitle => 'Sin conexión';
 
   @override
-  String get dataOfflineMessage => 'Sus palabras se descargarán en cuanto tenga conexión.';
+  String get dataOfflineMessage => 'Tus palabras se descargarán en cuanto tengas conexión.';
 
   @override
   String get dataRetryButton => 'Reintentar';
 
   @override
-  String get dataSignInRequiredTitle => 'Inicie sesión de nuevo';
+  String get dataSignInRequiredTitle => 'Inicia sesión de nuevo';
 
   @override
   String get dataSignInRequiredMessage =>
-      'Su sesión ha caducado. Inicie sesión para cargar sus palabras.';
+      'Tu sesión ha caducado. Inicia sesión para cargar tus palabras.';
 
   @override
   String get dataSignInButton => 'Iniciar sesión';
@@ -440,25 +440,25 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get syncStatusClockWrong =>
-      'El reloj de su teléfono no es correcto. Active la hora automática para seguir sincronizando.';
+      'El reloj de tu teléfono no es correcto. Activa la hora automática para seguir sincronizando.';
 
   @override
   String get syncStatusFailed =>
-      'La sincronización falló. Sus palabras están seguras en este teléfono.';
+      'La sincronización falló. Tus palabras están seguras en este teléfono.';
 
   @override
   String get dataServerUnreachableTitle => 'Servidor no disponible';
 
   @override
   String get dataServerUnreachableMessage =>
-      'No se puede acceder al servidor de Vocabualize en este momento. Sus palabras están seguras en este teléfono.';
+      'No se puede acceder al servidor de Vocabualize en este momento. Tus palabras están seguras en este teléfono.';
 
   @override
-  String get gateClockWrongTitle => 'El reloj de su teléfono no es correcto';
+  String get gateClockWrongTitle => 'El reloj de tu teléfono no es correcto';
 
   @override
   String get gateClockWrongMessage =>
-      'La sincronización necesita la hora correcta. Active la fecha y hora automáticas y luego vuelva.';
+      'La sincronización necesita la hora correcta. Activa la fecha y hora automáticas y luego vuelve.';
 
   @override
   String get gateOpenTimeSettingsButton => 'Abrir ajustes de hora';
@@ -468,14 +468,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get dataSyncFailedMessage =>
-      'Algo salió mal al sincronizar. Sus palabras están seguras en este teléfono.';
+      'Algo salió mal al sincronizar. Tus palabras están seguras en este teléfono.';
 
   @override
   String get accountConflictTitle => '¿Cambiar de cuenta?';
 
   @override
   String accountConflictMessage(String previous, String next) {
-    return 'En este teléfono había iniciado sesión como $previous. Los cambios que aún no se subieron pertenecen a esa cuenta. Se perderán si cambia a $next.';
+    return 'En este teléfono habías iniciado sesión como $previous. Los cambios que aún no se subieron pertenecen a esa cuenta. Se perderán si cambias a $next.';
   }
 
   @override
@@ -501,7 +501,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorClockWrong =>
-      'El reloj de su teléfono no es correcto. Active la fecha y hora automáticas e inténtelo de nuevo.';
+      'El reloj de tu teléfono no es correcto. Activa la fecha y hora automáticas e inténtalo de nuevo.';
 
   @override
   String get homeAllDoneMessage => 'Todo listo por ahora';
@@ -606,9 +606,9 @@ class AppLocalizationsEs extends AppLocalizations {
       limit,
       locale: localeName,
       other:
-          'Ha usado sus $limit traducciones de las últimas 24 horas. Escriba la traducción usted mismo o vuelva a intentarlo más tarde.',
+          'Has usado tus $limit traducciones de las últimas 24 horas. Escribe la traducción tú mismo o vuelve a intentarlo más tarde.',
       one:
-          'Ha usado su $limit traducción de las últimas 24 horas. Escriba la traducción usted mismo o vuelva a intentarlo más tarde.',
+          'Has usado tu $limit traducción de las últimas 24 horas. Escribe la traducción tú mismo o vuelve a intentarlo más tarde.',
     );
     return '$_temp0';
   }
@@ -619,9 +619,9 @@ class AppLocalizationsEs extends AppLocalizations {
       limit,
       locale: localeName,
       other:
-          'Ha usado sus $limit búsquedas de fotos de las últimas 24 horas. Tome su propia foto o vuelva a intentarlo más tarde.',
+          'Has usado tus $limit búsquedas de fotos de las últimas 24 horas. Haz tu propia foto o vuelve a intentarlo más tarde.',
       one:
-          'Ha usado su $limit búsqueda de fotos de las últimas 24 horas. Tome su propia foto o vuelva a intentarlo más tarde.',
+          'Has usado tu $limit búsqueda de fotos de las últimas 24 horas. Haz tu propia foto o vuelve a intentarlo más tarde.',
     );
     return '$_temp0';
   }
@@ -657,9 +657,9 @@ class AppLocalizationsEs extends AppLocalizations {
       limit,
       locale: localeName,
       other:
-          'Ha usado sus $limit escaneos de las últimas 24 horas. Escriba la palabra usted mismo o vuelva a intentarlo más tarde.',
+          'Has usado tus $limit escaneos de las últimas 24 horas. Escribe la palabra tú mismo o vuelve a intentarlo más tarde.',
       one:
-          'Ha usado su $limit escaneo de las últimas 24 horas. Escriba la palabra usted mismo o vuelva a intentarlo más tarde.',
+          'Has usado tu $limit escaneo de las últimas 24 horas. Escribe la palabra tú mismo o vuelve a intentarlo más tarde.',
     );
     return '$_temp0';
   }
@@ -670,16 +670,16 @@ class AppLocalizationsEs extends AppLocalizations {
       limit,
       locale: localeName,
       other:
-          'Ha usado sus $limit escaneos de este mes. Escriba la palabra usted mismo o vuelva a intentarlo el próximo mes.',
+          'Has usado tus $limit escaneos de este mes. Escribe la palabra tú mismo o vuelve a intentarlo el próximo mes.',
       one:
-          'Ha usado su $limit escaneo de este mes. Escriba la palabra usted mismo o vuelva a intentarlo el próximo mes.',
+          'Has usado tu $limit escaneo de este mes. Escribe la palabra tú mismo o vuelve a intentarlo el próximo mes.',
     );
     return '$_temp0';
   }
 
   @override
   String errorQuotaSignInForMore(String message) {
-    return '$message Inicie sesión con Google para obtener más.';
+    return '$message Inicia sesión con Google para obtener más.';
   }
 
   @override
@@ -728,11 +728,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorReportLimit =>
-      'Ha enviado varios informes recientemente. Vuelva a intentarlo más tarde.';
+      'Has enviado varios informes recientemente. Vuelve a intentarlo más tarde.';
 
   @override
   String get errorReportUnavailable =>
-      'No se pueden enviar informes en este momento. Vuelva a intentarlo más tarde.';
+      'No se pueden enviar informes en este momento. Vuelve a intentarlo más tarde.';
 
   @override
   String get reportFeedbackTitle => 'Comentarios y errores';
@@ -770,7 +770,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsDeleteAccountMessage =>
-      'Esto elimina para siempre su cuenta y todo su contenido en todos sus dispositivos: palabras, fotos, colecciones y progreso. No se puede deshacer.';
+      'Esto elimina para siempre tu cuenta y todo su contenido en todos tus dispositivos: palabras, fotos, colecciones y progreso. No se puede deshacer.';
 
   @override
   String get settingsDeleteDataTitle => '¿Eliminar todos los datos?';
@@ -784,7 +784,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String settingsDeleteConfirmHint(String word) {
-    return 'Escriba $word para confirmar';
+    return 'Escribe $word para confirmar';
   }
 
   @override
@@ -792,7 +792,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsDeleteAccountOfflineMessage =>
-      'Para eliminar su cuenta necesita conexión a internet.';
+      'Para eliminar tu cuenta necesitas conexión a internet.';
 
   @override
   String streakTitle(int count) {

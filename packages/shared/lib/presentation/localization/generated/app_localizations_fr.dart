@@ -536,8 +536,8 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Tu as déjà ajouté $count mots en $language, génial !',
-      one: 'Tu as déjà ajouté $count mot en $language, génial !',
+      other: 'Vous avez déjà ajouté $count mots en $language, génial !',
+      one: 'Vous avez déjà ajouté $count mot en $language, génial !',
     );
     return '$_temp0';
   }
@@ -547,8 +547,8 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Tu as $count mots en $language.',
-      one: 'Tu as $count mot en $language.',
+      other: 'Vous avez $count mots en $language.',
+      one: 'Vous avez $count mot en $language.',
     );
     return '$_temp0';
   }
@@ -932,7 +932,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get languagesLearnTitle => 'J\'apprends';
 
   @override
-  String get languagesLearnHint => 'Choisis-en une ou plusieurs';
+  String get languagesLearnHint => 'Choisissez-en une ou plusieurs';
 
   @override
   String get languagesContinueButton => 'Continuer';
@@ -1025,8 +1025,10 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Tu as $count mots en $source. Importe ceux que tu veux aussi apprendre en $language.',
-      one: 'Tu as 1 mot en $source. Importe-le si tu veux aussi l\'apprendre en $language.',
+      other:
+          'Vous avez $count mots en $source. Importez ceux que vous voulez aussi apprendre en $language.',
+      one:
+          'Vous avez 1 mot en $source. Importez-le si vous voulez aussi l\'apprendre en $language.',
     );
     return '$_temp0';
   }
@@ -1146,10 +1148,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get languageOnboardingSpeakTitle => 'Quelle langue parles-tu ?';
+  String get languageOnboardingSpeakTitle => 'Quelle langue parlez-vous ?';
 
   @override
-  String get languageOnboardingLearnTitle => 'Que veux-tu apprendre ?';
+  String get languageOnboardingLearnTitle => 'Que voulez-vous apprendre ?';
 
   @override
   String languageOnboardingContinueWithButton(int count) {
@@ -1210,15 +1212,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String languageDeleteKeptProgressMessage(String language) {
-    return 'Ta progression en $language';
+    return 'Votre progression en $language';
   }
 
   @override
-  String get mainLanguageClashEmphasis => 'apprends';
+  String get mainLanguageClashEmphasis => 'apprenez';
 
   @override
   String mainLanguageClashTitle(String emphasis, String language) {
-    return 'Tu $emphasis $language';
+    return 'Vous $emphasis $language';
   }
 
   @override
@@ -1227,9 +1229,9 @@ class AppLocalizationsFr extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          'Pour parler $language, $language est mis en pause comme langue apprise. Tes $count mots et leur progression sont conservés.',
+          'Pour parler $language, $language est mis en pause comme langue apprise. Vos $count mots et leur progression sont conservés.',
       one:
-          'Pour parler $language, $language est mis en pause comme langue apprise. Ton mot et sa progression sont conservés.',
+          'Pour parler $language, $language est mis en pause comme langue apprise. Votre mot et sa progression sont conservés.',
     );
     return '$_temp0';
   }
@@ -1246,7 +1248,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String learnedLanguageAskMeInFromRole(String level) {
-    return 'Demande-moi en, dès $level';
+    return 'Me demander en, dès $level';
   }
 
   @override
@@ -1259,7 +1261,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String learnedLanguageAskMeInIntroMessage(String main, String learned) {
-    return 'Les cartes peuvent demander dans une autre langue au lieu de $main. Tu peux toujours afficher le mot en $main. Une autre langue reste ainsi active pendant que tu apprends $learned.';
+    return 'Les cartes peuvent demander dans une autre langue au lieu de $main. Vous pouvez toujours afficher le mot en $main. Une autre langue reste ainsi active pendant que vous apprenez $learned.';
   }
 
   @override
@@ -1288,7 +1290,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String learnedLanguageTotalWordsHint(int count) {
-    return 'Tu en as $count au total';
+    return 'Vous en avez $count au total';
   }
 
   @override
@@ -1308,11 +1310,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String languageWordsImportTitle(String language) {
-    return 'Quels mots veux-tu importer en $language ?';
+    return 'Quels mots voulez-vous importer en $language ?';
   }
 
   @override
-  String get languageWordsImportHint => 'Tu pourras le modifier plus tard.';
+  String get languageWordsImportHint => 'Vous pourrez le modifier plus tard.';
 
   @override
   String get languageWordsSomeCollectionsOption => 'Certaines collections';
@@ -1348,12 +1350,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String homeEmptyLanguageTitle(String language) {
-    return 'Aucun de tes mots n\'est encore en $language';
+    return 'Aucun de vos mots n\'est encore en $language';
   }
 
   @override
   String homeEmptyLanguageNoSourceMessage(String language) {
-    return 'Importe les mots que tu veux apprendre en $language.';
+    return 'Importez les mots que vous voulez apprendre en $language.';
   }
 
   @override
@@ -1361,7 +1363,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String homeEmptyLanguageFeedHint(String language) {
-    return 'Les mots que tu ajoutes quand $language est sélectionné apparaissent ici.';
+    return 'Les mots que vous ajoutez quand $language est sélectionné apparaissent ici.';
   }
 
   @override

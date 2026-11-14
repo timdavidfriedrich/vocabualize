@@ -533,8 +533,8 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Έχεις ήδη προσθέσει $count λέξεις στα $language, τέλεια!',
-      one: 'Έχεις ήδη προσθέσει $count λέξη στα $language, τέλεια!',
+      other: 'Έχετε ήδη προσθέσει $count λέξεις στα $language, τέλεια!',
+      one: 'Έχετε ήδη προσθέσει $count λέξη στα $language, τέλεια!',
     );
     return '$_temp0';
   }
@@ -544,8 +544,8 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Έχεις $count λέξεις στα $language.',
-      one: 'Έχεις $count λέξη στα $language.',
+      other: 'Έχετε $count λέξεις στα $language.',
+      one: 'Έχετε $count λέξη στα $language.',
     );
     return '$_temp0';
   }
@@ -926,7 +926,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get languagesLearnTitle => 'Μαθαίνω';
 
   @override
-  String get languagesLearnHint => 'Διάλεξε μία ή περισσότερες';
+  String get languagesLearnHint => 'Διαλέξτε μία ή περισσότερες';
 
   @override
   String get languagesContinueButton => 'Συνέχεια';
@@ -1018,8 +1018,8 @@ class AppLocalizationsEl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Έχεις $count λέξεις στα $source. Εισήγαγε όσες θέλεις να μάθεις και στα $language.',
-      one: 'Έχεις 1 λέξη στα $source. Εισήγαγέ την αν θέλεις να τη μάθεις και στα $language.',
+      other: 'Έχετε $count λέξεις στα $source. Εισαγάγετε όσες θέλετε να μάθετε και στα $language.',
+      one: 'Έχετε 1 λέξη στα $source. Εισαγάγετέ την αν θέλετε να τη μάθετε και στα $language.',
     );
     return '$_temp0';
   }
@@ -1140,10 +1140,10 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get languageOnboardingSpeakTitle => 'Ποια γλώσσα μιλάς;';
+  String get languageOnboardingSpeakTitle => 'Ποια γλώσσα μιλάτε;';
 
   @override
-  String get languageOnboardingLearnTitle => 'Τι θέλεις να μάθεις;';
+  String get languageOnboardingLearnTitle => 'Τι θέλετε να μάθετε;';
 
   @override
   String languageOnboardingContinueWithButton(int count) {
@@ -1204,11 +1204,11 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String languageDeleteKeptProgressMessage(String language) {
-    return 'Η πρόοδός σου στα $language';
+    return 'Η πρόοδός σας στα $language';
   }
 
   @override
-  String get mainLanguageClashEmphasis => 'μαθαίνεις';
+  String get mainLanguageClashEmphasis => 'μαθαίνετε';
 
   @override
   String mainLanguageClashTitle(String emphasis, String language) {
@@ -1221,9 +1221,9 @@ class AppLocalizationsEl extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          'Για να γίνουν τα $language η γλώσσα σου, τα $language μπαίνουν σε παύση ως γλώσσα εκμάθησης. Οι $count λέξεις σου και η πρόοδός τους διατηρούνται.',
+          'Για να γίνουν τα $language η γλώσσα σας, τα $language μπαίνουν σε παύση ως γλώσσα εκμάθησης. Οι $count λέξεις σας και η πρόοδός τους διατηρούνται.',
       one:
-          'Για να γίνουν τα $language η γλώσσα σου, τα $language μπαίνουν σε παύση ως γλώσσα εκμάθησης. Η λέξη σου και η πρόοδός της διατηρούνται.',
+          'Για να γίνουν τα $language η γλώσσα σας, τα $language μπαίνουν σε παύση ως γλώσσα εκμάθησης. Η λέξη σας και η πρόοδός της διατηρούνται.',
     );
     return '$_temp0';
   }
@@ -1235,12 +1235,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mainLanguageClashKeepButton(String language) {
-    return 'Κράτα τα $language';
+    return 'Κρατήστε τα $language';
   }
 
   @override
   String learnedLanguageAskMeInFromRole(String level) {
-    return 'Ρώτα με στα, από $level';
+    return 'Ρωτήστε με στα, από $level';
   }
 
   @override
@@ -1253,7 +1253,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String learnedLanguageAskMeInIntroMessage(String main, String learned) {
-    return 'Οι κάρτες μπορούν να ρωτούν σε άλλη γλώσσα αντί για $main. Μπορείς πάντα να δεις τη λέξη στα $main. Έτσι μια ακόμη γλώσσα μένει ενεργή όσο μαθαίνεις $learned.';
+    return 'Οι κάρτες μπορούν να ρωτούν σε άλλη γλώσσα αντί για $main. Μπορείτε πάντα να δείτε τη λέξη στα $main. Έτσι μια ακόμη γλώσσα μένει ενεργή όσο μαθαίνετε $learned.';
   }
 
   @override
@@ -1282,7 +1282,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String learnedLanguageTotalWordsHint(int count) {
-    return 'Έχεις $count συνολικά';
+    return 'Έχετε $count συνολικά';
   }
 
   @override
@@ -1302,17 +1302,17 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String languageWordsImportTitle(String language) {
-    return 'Ποιες λέξεις θέλεις να εισαγάγεις στα $language;';
+    return 'Ποιες λέξεις θέλετε να εισαγάγετε στα $language;';
   }
 
   @override
-  String get languageWordsImportHint => 'Μπορείς να το αλλάξεις αργότερα.';
+  String get languageWordsImportHint => 'Μπορείτε να το αλλάξετε αργότερα.';
 
   @override
   String get languageWordsSomeCollectionsOption => 'Μερικές συλλογές';
 
   @override
-  String get languageWordsNoneHint => 'Ξεκίνα με άδεια λίστα';
+  String get languageWordsNoneHint => 'Ξεκινήστε με άδεια λίστα';
 
   @override
   String languageWordsAddedLabel(String count) {
@@ -1342,12 +1342,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String homeEmptyLanguageTitle(String language) {
-    return 'Καμία λέξη σου δεν είναι ακόμη στα $language';
+    return 'Καμία λέξη σας δεν είναι ακόμη στα $language';
   }
 
   @override
   String homeEmptyLanguageNoSourceMessage(String language) {
-    return 'Εισήγαγε τις λέξεις που θέλεις να μάθεις στα $language.';
+    return 'Εισαγάγετε τις λέξεις που θέλετε να μάθετε στα $language.';
   }
 
   @override
@@ -1355,7 +1355,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String homeEmptyLanguageFeedHint(String language) {
-    return 'Οι λέξεις που προσθέτεις όσο είναι επιλεγμένα τα $language εμφανίζονται εδώ.';
+    return 'Οι λέξεις που προσθέτετε όσο είναι επιλεγμένα τα $language εμφανίζονται εδώ.';
   }
 
   @override

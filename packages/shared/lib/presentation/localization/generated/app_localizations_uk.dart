@@ -542,10 +542,10 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Ти вже додав $count слова мовою $language, чудово!',
-      many: 'Ти вже додав $count слів мовою $language, чудово!',
-      few: 'Ти вже додав $count слова мовою $language, чудово!',
-      one: 'Ти вже додав $count слово мовою $language, чудово!',
+      other: 'Ви вже додали $count слова мовою $language, чудово!',
+      many: 'Ви вже додали $count слів мовою $language, чудово!',
+      few: 'Ви вже додали $count слова мовою $language, чудово!',
+      one: 'Ви вже додали $count слово мовою $language, чудово!',
     );
     return '$_temp0';
   }
@@ -555,10 +555,10 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'У тебе $count слова мовою $language.',
-      many: 'У тебе $count слів мовою $language.',
-      few: 'У тебе $count слова мовою $language.',
-      one: 'У тебе $count слово мовою $language.',
+      other: 'У вас $count слова мовою $language.',
+      many: 'У вас $count слів мовою $language.',
+      few: 'У вас $count слова мовою $language.',
+      one: 'У вас $count слово мовою $language.',
     );
     return '$_temp0';
   }
@@ -962,7 +962,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get languagesLearnTitle => 'Я вивчаю';
 
   @override
-  String get languagesLearnHint => 'Обери одну або кілька';
+  String get languagesLearnHint => 'Оберіть одну або кілька';
 
   @override
   String get languagesContinueButton => 'Продовжити';
@@ -1057,13 +1057,13 @@ class AppLocalizationsUk extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          'У тебе $count слова мовою $source. Імпортуй ті, які хочеш вивчати ще й мовою $language.',
+          'У вас $count слова мовою $source. Імпортуйте ті, які хочете вивчати ще й мовою $language.',
       many:
-          'У тебе $count слів мовою $source. Імпортуй ті, які хочеш вивчати ще й мовою $language.',
+          'У вас $count слів мовою $source. Імпортуйте ті, які хочете вивчати ще й мовою $language.',
       few:
-          'У тебе $count слова мовою $source. Імпортуй ті, які хочеш вивчати ще й мовою $language.',
+          'У вас $count слова мовою $source. Імпортуйте ті, які хочете вивчати ще й мовою $language.',
       one:
-          'У тебе $count слово мовою $source. Імпортуй ті, які хочеш вивчати ще й мовою $language.',
+          'У вас $count слово мовою $source. Імпортуйте ті, які хочете вивчати ще й мовою $language.',
     );
     return '$_temp0';
   }
@@ -1185,10 +1185,10 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get languageOnboardingSpeakTitle => 'Якою мовою ти розмовляєш?';
+  String get languageOnboardingSpeakTitle => 'Якою мовою ви розмовляєте?';
 
   @override
-  String get languageOnboardingLearnTitle => 'Що ти хочеш вивчати?';
+  String get languageOnboardingLearnTitle => 'Що ви хочете вивчати?';
 
   @override
   String languageOnboardingContinueWithButton(int count) {
@@ -1253,15 +1253,15 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String languageDeleteKeptProgressMessage(String language) {
-    return 'Твій прогрес мовою $language';
+    return 'Ваш прогрес мовою $language';
   }
 
   @override
-  String get mainLanguageClashEmphasis => 'вивчаєш';
+  String get mainLanguageClashEmphasis => 'вивчаєте';
 
   @override
   String mainLanguageClashTitle(String emphasis, String language) {
-    return 'Ти $emphasis $language';
+    return 'Ви $emphasis $language';
   }
 
   @override
@@ -1270,13 +1270,13 @@ class AppLocalizationsUk extends AppLocalizations {
       count,
       locale: localeName,
       other:
-          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Твої $count слова і їхній прогрес збережено.',
+          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Ваші $count слова і їхній прогрес збережено.',
       many:
-          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Твої $count слів і їхній прогрес збережено.',
+          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Ваші $count слів і їхній прогрес збережено.',
       few:
-          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Твої $count слова і їхній прогрес збережено.',
+          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Ваші $count слова і їхній прогрес збережено.',
       one:
-          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Твоє $count слово і його прогрес збережено.',
+          'Щоб розмовляти мовою $language, $language ставиться на паузу як мова вивчення. Ваше $count слово і його прогрес збережено.',
     );
     return '$_temp0';
   }
@@ -1293,7 +1293,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String learnedLanguageAskMeInFromRole(String level) {
-    return 'Питай мовою, від рівня $level';
+    return 'Питати мене мовою, від рівня $level';
   }
 
   @override
@@ -1306,7 +1306,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String learnedLanguageAskMeInIntroMessage(String main, String learned) {
-    return 'Картки можуть питати іншою мовою замість $main. Слово мовою $main завжди можна показати. Так ще одна мова залишається активною, поки ти вивчаєш $learned.';
+    return 'Картки можуть питати іншою мовою замість $main. Слово мовою $main завжди можна показати. Так ще одна мова залишається активною, поки ви вивчаєте $learned.';
   }
 
   @override
@@ -1335,7 +1335,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String learnedLanguageTotalWordsHint(int count) {
-    return 'Усього в тебе $count';
+    return 'Усього у вас $count';
   }
 
   @override
@@ -1357,7 +1357,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String languageWordsImportTitle(String language) {
-    return 'Які слова ти хочеш імпортувати до мови $language?';
+    return 'Які слова ви хочете імпортувати до мови $language?';
   }
 
   @override
@@ -1399,12 +1399,12 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String homeEmptyLanguageTitle(String language) {
-    return 'Жодного твого слова ще немає мовою $language';
+    return 'Жодного вашого слова ще немає мовою $language';
   }
 
   @override
   String homeEmptyLanguageNoSourceMessage(String language) {
-    return 'Імпортуй слова, які хочеш вивчати мовою $language.';
+    return 'Імпортуйте слова, які хочете вивчати мовою $language.';
   }
 
   @override
@@ -1412,7 +1412,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String homeEmptyLanguageFeedHint(String language) {
-    return 'Слова, які ти додаєш, поки вибрано $language, з\'являться тут.';
+    return 'Слова, які ви додаєте, поки вибрано $language, з\'являться тут.';
   }
 
   @override
