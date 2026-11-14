@@ -8,6 +8,7 @@ import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/widgets/collection_chip.dart';
 import 'package:shared/presentation/widgets/collection_dialog.dart';
+import 'package:shared/presentation/widgets/collection_edit.dart';
 
 typedef _TagChoice = ({List<Tag> tags, Set<String> selected});
 

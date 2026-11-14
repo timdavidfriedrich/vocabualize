@@ -13,6 +13,7 @@ import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/extensions/tag_extensions.dart';
 import 'package:shared/presentation/navigation/navigation_extensions.dart';
 import 'package:shared/presentation/widgets/collection_dialog.dart';
+import 'package:shared/presentation/widgets/collection_edit.dart';
 import 'package:shared/presentation/widgets/practice_button.dart';
 import 'package:shared/presentation/widgets/tonal_button.dart';
 

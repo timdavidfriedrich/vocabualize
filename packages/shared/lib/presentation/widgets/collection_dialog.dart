@@ -4,19 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/widgets/app_dropdown.dart';
+import 'package:shared/presentation/widgets/collection_edit.dart';
 import 'package:shared/presentation/widgets/emoji_picker.dart';
 import 'package:shared/presentation/widgets/send_text_field.dart';
-
-sealed class CollectionEdit {
-  const CollectionEdit();
-}
-
-class const CollectionSaved({
-  required final String name,
-  required final String? emoji,
-}) extends CollectionEdit;
-
-class const CollectionDeleteChosen() extends CollectionEdit;
 
 Future<CollectionSaved?> requestsNewCollection(
   BuildContext context, {
