@@ -116,7 +116,7 @@ class const SettingsScreen({
                       ListTile(
                         title: Text(context.s.reportFeedbackTitle),
                         trailing: const Icon(Icons.chevron_right_rounded),
-                        onTap: context.pushFeedback,
+                        onTap: context.pushReport,
                       ),
                       ListTile(
                         title: Text(context.s.settingsPrivacyPolicyButton),

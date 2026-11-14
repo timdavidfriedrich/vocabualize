@@ -1,8 +1,8 @@
 import 'package:core/theme/opacities.dart';
 import 'package:core/theme/spacing.dart';
-import 'package:feature_welcome/presentation/welcome/welcome_bloc.dart';
-import 'package:feature_welcome/presentation/welcome/welcome_event.dart';
-import 'package:feature_welcome/presentation/welcome/welcome_state.dart';
+import 'package:feature_welcome/presentation/welcome_bloc.dart';
+import 'package:feature_welcome/presentation/welcome_event.dart';
+import 'package:feature_welcome/presentation/welcome_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

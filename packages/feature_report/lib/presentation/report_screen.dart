@@ -1,7 +1,7 @@
 import 'package:core/error/app_error.dart';
-import 'package:feature_report/presentation/feedback_bloc.dart';
-import 'package:feature_report/presentation/feedback_event.dart';
-import 'package:feature_report/presentation/feedback_state.dart';
+import 'package:feature_report/presentation/report_bloc.dart';
+import 'package:feature_report/presentation/report_event.dart';
+import 'package:feature_report/presentation/report_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -12,7 +12,7 @@ import 'package:shared/presentation/widgets/report_form.dart';
 
 const _minMessageLines = 6;
 
-class const FeedbackScreen({
+class const ReportScreen({
   super.key,
 }) extends HookWidget {
   @override
@@ -21,26 +21,26 @@ class const FeedbackScreen({
     final message = useValueListenable(controller).text.trim();
     return MultiBlocListener(
       listeners: [
-        BlocListener<FeedbackBloc, FeedbackState>(
-          listenWhen: (previous, current) => current is FeedbackSent,
+        BlocListener<ReportBloc, ReportState>(
+          listenWhen: (previous, current) => current is ReportSent,
           listener: (context, state) {
             context.showToast(context.s.reportFeedbackSentMessage);
             context.closeScreen();
           },
         ),
-        BlocListener<FeedbackBloc, FeedbackState>(
+        BlocListener<ReportBloc, ReportState>(
           listenWhen: (previous, current) => switch (current) {
-            FeedbackEditing(error: AppError()) => true,
+            ReportEditing(error: AppError()) => true,
             _ => false,
           },
           listener: (context, state) {
-            if (state case FeedbackEditing(error: final error?)) {
+            if (state case ReportEditing(error: final error?)) {
               context.showToast(error.toMessage(context));
             }
           },
         ),
       ],
-      child: BlocBuilder<FeedbackBloc, FeedbackState>(
+      child: BlocBuilder<ReportBloc, ReportState>(
         builder: (context, state) => ReportForm(
           title: context.s.reportFeedbackTitle,
           header: Text(context.s.reportFeedbackMessage, style: context.t.bodyLarge),
@@ -49,11 +49,11 @@ class const FeedbackScreen({
           minLines: _minMessageLines,
           canSend: message.isNotEmpty,
           isSending: switch (state) {
-            FeedbackEditing(:final isSending) => isSending,
-            FeedbackSent() => true,
+            ReportEditing(:final isSending) => isSending,
+            ReportSent() => true,
           },
           onSend: () =>
-              context.read<FeedbackBloc>().add(FeedbackSendRequested(message: controller.text)),
+              context.read<ReportBloc>().add(ReportSendRequested(message: controller.text)),
         ),
       ),
     );

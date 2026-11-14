@@ -6,7 +6,7 @@
 
 import 'dart:async' as _i687;
 
-import 'package:feature_report/presentation/feedback_bloc.dart' as _i12;
+import 'package:feature_report/presentation/report_bloc.dart' as _i995;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared/domain/repositories/report_repository.dart' as _i522;
 
@@ -14,7 +14,7 @@ class FeatureReportPackageModule extends _i526.MicroPackageModule {
 // initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
-    gh.factory<_i12.FeedbackBloc>(
-        () => _i12.FeedbackBloc(gh<_i522.ReportRepository>()));
+    gh.factory<_i995.ReportBloc>(
+        () => _i995.ReportBloc(gh<_i522.ReportRepository>()));
   }
 }

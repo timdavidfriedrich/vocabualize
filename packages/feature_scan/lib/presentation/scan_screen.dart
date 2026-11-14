@@ -146,7 +146,7 @@ class const _ReviewView({
                 ),
               TextButton.icon(
                 style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                onPressed: context.pushFeedback,
+                onPressed: context.pushReport,
                 icon: const Icon(Icons.flag_rounded),
                 label: Text(context.s.scanReportSuggestionButton),
               ),

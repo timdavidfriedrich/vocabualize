@@ -31,16 +31,16 @@ import 'package:feature_practice/presentation/custom_practice/custom_practice_sc
 import 'package:feature_practice/presentation/practice/practice_bloc.dart';
 import 'package:feature_practice/presentation/practice/practice_event.dart';
 import 'package:feature_practice/presentation/practice/practice_screen.dart';
-import 'package:feature_report/presentation/feedback_bloc.dart';
-import 'package:feature_report/presentation/feedback_screen.dart';
+import 'package:feature_report/presentation/report_bloc.dart';
+import 'package:feature_report/presentation/report_screen.dart';
 import 'package:feature_scan/presentation/scan_bloc.dart';
 import 'package:feature_scan/presentation/scan_event.dart';
 import 'package:feature_scan/presentation/scan_screen.dart';
 import 'package:feature_settings/presentation/settings_bloc.dart';
 import 'package:feature_settings/presentation/settings_event.dart';
 import 'package:feature_settings/presentation/settings_screen.dart';
-import 'package:feature_welcome/presentation/welcome/welcome_bloc.dart';
-import 'package:feature_welcome/presentation/welcome/welcome_screen.dart';
+import 'package:feature_welcome/presentation/welcome_bloc.dart';
+import 'package:feature_welcome/presentation/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -112,16 +112,16 @@ class NavigationRouter(
       CustomPractice() ||
       Collection() ||
       Settings() ||
-      FeedbackForm() => false,
+      Report() => false,
     };
     final target = switch (state) {
       (Success(data: AuthUnknown()), _, _) => null,
       (Success(data: AuthUnauthenticated()) || Failure(), _, _) => const Welcome(),
       (Success(data: AuthAuthenticated()), Success(data: DataDownloading()), _) => const Loading(),
       (Success(data: AuthAuthenticated()), Success(data: DataUnavailable(:final reason)), _) =>
-        _waitForData(reason),
-      (Success(data: AuthAuthenticated()), Failure(), _) => _waitForData(
-        DataUnavailableReason.offline,
+        WaitForData(reason: reason),
+      (Success(data: AuthAuthenticated()), Failure(), _) => const WaitForData(
+        reason: DataUnavailableReason.offline,
       ),
       (Success(data: AuthAuthenticated()), Success(data: DataReady()), Success(data: _?))
           when isOnEntryRoute =>
@@ -133,22 +133,6 @@ class NavigationRouter(
     };
     if (target != null && target != current) unawaited(router.set([target]));
   }
-
-  WaitForData _waitForData(DataUnavailableReason reason) => switch (reason) {
-    DataUnavailableReason.offline => const WaitForData(reason: DataUnavailableReason.offline),
-    DataUnavailableReason.serverUnreachable => const WaitForData(
-      reason: DataUnavailableReason.serverUnreachable,
-    ),
-    DataUnavailableReason.signInRequired => const WaitForData(
-      reason: DataUnavailableReason.signInRequired,
-    ),
-    DataUnavailableReason.updateRequired => const WaitForData(
-      reason: DataUnavailableReason.updateRequired,
-    ),
-    DataUnavailableReason.syncFailed => const WaitForData(
-      reason: DataUnavailableReason.syncFailed,
-    ),
-  };
 }
 
 class const _AppPage({
@@ -226,9 +210,9 @@ class const _AppPage({
       create: (_) => sl<CollectionBloc>()..add(CollectionStarted(tagId: tagId)),
       child: const CollectionScreen(),
     ),
-    FeedbackForm() => BlocProvider(
-      create: (_) => sl<FeedbackBloc>(),
-      child: const FeedbackScreen(),
+    Report() => BlocProvider(
+      create: (_) => sl<ReportBloc>(),
+      child: const ReportScreen(),
     ),
     Settings() => BlocProvider(
       create: (_) => sl<SettingsBloc>()..add(const SettingsStarted()),
