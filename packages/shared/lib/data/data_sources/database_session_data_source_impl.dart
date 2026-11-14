@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:core/config/build_config.dart';
 import 'package:injectable/injectable.dart';
 import 'package:serverpod_offline_sync_client/serverpod_offline_sync_client.dart';
 import 'package:shared/data/data_sources/clock_data_source.dart';
@@ -49,7 +49,7 @@ class DatabaseSessionDataSourceImpl(
     await _storage.createSpace(space);
     final session = await _client.createSyncSession(
       await _storage.databasePath(space),
-      isDebugMode: kDebugMode,
+      isDebugMode: isInDebugMode,
       persistentUserId: await _ownerId(space),
     );
     _session = session;
@@ -87,7 +87,7 @@ class DatabaseSessionDataSourceImpl(
     if (ownerId == null) return null;
     final session = await _client.createSyncSession(
       await _storage.databasePath(space),
-      isDebugMode: kDebugMode,
+      isDebugMode: isInDebugMode,
       persistentUserId: ownerId,
     );
     try {
