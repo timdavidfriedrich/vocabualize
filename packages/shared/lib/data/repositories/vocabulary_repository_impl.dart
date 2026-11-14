@@ -19,6 +19,7 @@ import 'package:shared/domain/entities/practice_item.dart';
 import 'package:shared/domain/entities/practice_session.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/progress.dart';
+import 'package:shared/domain/entities/progress_extensions.dart';
 import 'package:shared/domain/entities/translation.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';

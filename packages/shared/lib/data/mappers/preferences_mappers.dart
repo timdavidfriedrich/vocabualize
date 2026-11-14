@@ -5,6 +5,7 @@ import 'package:shared/data/models/local_preference_key.dart';
 import 'package:shared/domain/entities/appearance_mode.dart';
 import 'package:shared/domain/entities/default_gather_option.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/preferences_extensions.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 
 const _trueValue = "true";

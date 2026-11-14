@@ -14,14 +14,3 @@ class const Streak({
   required final Set<DateTime> activeDays,
   required final Set<DateTime> frozenDays,
 }) with StreakMappable;
-
-extension StreakExtensions on Streak {
-  List<DateTime> get daysAtRisk {
-    if (current == 0) return const [];
-    final firstDay = isTodayActive ? 1 : 0;
-    return [
-      for (var offset = firstDay; offset <= firstDay + freezes; offset++)
-        DateTime(today.year, today.month, today.day + offset),
-    ];
-  }
-}

@@ -12,6 +12,7 @@ import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_coverage.dart';
 import 'package:shared/domain/entities/language_words_change.dart';
 import 'package:shared/domain/entities/progress.dart';
+import 'package:shared/domain/entities/progress_extensions.dart';
 import 'package:shared/domain/repositories/language_words_repository.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 

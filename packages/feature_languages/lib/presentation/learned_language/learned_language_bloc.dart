@@ -6,6 +6,7 @@ import 'package:feature_languages/presentation/learned_language/learned_language
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/language_setup.dart';
+import 'package:shared/domain/entities/language_setup_extensions.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/language_words_repository.dart';
 

@@ -53,20 +53,3 @@ class const HomeLoaded({
 class const HomeFailure({
   required final AppError error,
 }) extends HomeState with HomeFailureMappable;
-
-extension HomeLoadedExtensions on HomeLoaded {
-  bool get isLanguageEmpty => overview.totalCount == 0 && vocabularies.isEmpty && allWordsCount > 0;
-
-  Language? get importSource {
-    final candidates = [
-      for (final learned in setup.active)
-        if (learned.language != setup.selected &&
-            (overviews[learned.language]?.totalCount ?? 0) > 0)
-          learned.language,
-    ];
-    candidates.sort(
-      (first, second) => overviews[second]!.totalCount.compareTo(overviews[first]!.totalCount),
-    );
-    return candidates.firstOrNull;
-  }
-}

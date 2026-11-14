@@ -1,5 +1,6 @@
 import 'package:core/error/app_error.dart';
 import 'package:core/theme/spacing.dart';
+import 'package:feature_home/presentation/extensions/home_loaded_extensions.dart';
 import 'package:feature_home/presentation/home_bloc.dart';
 import 'package:feature_home/presentation/home_event.dart';
 import 'package:feature_home/presentation/home_state.dart';
@@ -18,6 +19,7 @@ import 'package:shared/domain/entities/account.dart';
 import 'package:shared/domain/entities/collection_preview.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_setup.dart';
+import 'package:shared/domain/entities/language_setup_extensions.dart';
 import 'package:shared/domain/entities/streak.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_filter.dart';

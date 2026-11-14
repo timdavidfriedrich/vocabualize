@@ -1,6 +1,6 @@
 import 'package:feature_details/presentation/details_state.dart';
 import 'package:shared/domain/entities/language.dart';
-import 'package:shared/domain/entities/language_setup.dart';
+import 'package:shared/domain/entities/language_setup_extensions.dart';
 
 extension DetailsEditingExtensions on DetailsEditing {
   String textOf(Language language) => texts[language]?.text ?? "";

@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/auth_status.dart';
 import 'package:shared/domain/entities/backup_import_status.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/preferences_extensions.dart';
 import 'package:shared/domain/entities/reminder_kind.dart';
 import 'package:shared/domain/entities/sign_in_result.dart';
 import 'package:shared/domain/repositories/account_repository.dart';

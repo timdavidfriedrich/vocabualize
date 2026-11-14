@@ -4,6 +4,7 @@ import 'package:feature_languages/presentation/onboarding/language_onboarding_st
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/language.dart';
+import 'package:shared/domain/entities/language_extensions.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
 
 @injectable

@@ -45,7 +45,3 @@ class const PracticeDone() extends PracticeState with PracticeDoneMappable;
 class const PracticeFailure({
   required final AppError error,
 }) extends PracticeState with PracticeFailureMappable;
-
-extension PracticeActiveExtensions on PracticeActive {
-  PracticeCard get current => queue.first;
-}

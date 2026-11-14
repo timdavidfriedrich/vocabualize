@@ -1,9 +1,11 @@
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared/domain/entities/language_setup.dart';
+import 'package:shared/domain/entities/language_setup_extensions.dart';
 import 'package:shared/domain/entities/preferences.dart';
+import 'package:shared/domain/entities/preferences_extensions.dart';
 import 'package:shared/domain/entities/reminder_plan.dart';
 import 'package:shared/domain/entities/streak.dart';
+import 'package:shared/domain/entities/streak_extensions.dart';
 import 'package:shared/domain/entities/vocabulary_overview.dart';
 import 'package:shared/domain/extensions/language_setup_stream_extensions.dart';
 import 'package:shared/domain/extensions/stream_extensions.dart';

@@ -1,4 +1,5 @@
 import 'package:core/theme/spacing.dart';
+import 'package:feature_practice/presentation/extensions/practice_active_extensions.dart';
 import 'package:feature_practice/presentation/extensions/practice_answer_extensions.dart';
 import 'package:feature_practice/presentation/practice/practice_bloc.dart';
 import 'package:feature_practice/presentation/practice/practice_event.dart';
@@ -15,7 +16,7 @@ import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
 import 'package:shared/domain/entities/practice_card.dart';
 import 'package:shared/domain/entities/preferences.dart';
-import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';

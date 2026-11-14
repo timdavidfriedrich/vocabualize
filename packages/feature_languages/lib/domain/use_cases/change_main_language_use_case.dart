@@ -1,7 +1,9 @@
 import 'package:core/error/app_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/language.dart';
+import 'package:shared/domain/entities/language_extensions.dart';
 import 'package:shared/domain/entities/language_setup.dart';
+import 'package:shared/domain/entities/language_setup_extensions.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
 
 @injectable

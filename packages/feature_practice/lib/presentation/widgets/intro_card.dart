@@ -5,7 +5,7 @@ import 'package:feature_practice/presentation/widgets/shrinkable_box.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/practice_card.dart';
-import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/language_extensions.dart';
 import 'package:shared/presentation/widgets/vocabulary_image_view.dart';

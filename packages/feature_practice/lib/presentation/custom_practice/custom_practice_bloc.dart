@@ -6,9 +6,11 @@ import 'package:feature_practice/domain/use_cases/count_custom_practice_use_case
 import 'package:feature_practice/domain/use_cases/preview_custom_practice_use_case.dart';
 import 'package:feature_practice/presentation/custom_practice/custom_practice_event.dart';
 import 'package:feature_practice/presentation/custom_practice/custom_practice_state.dart';
+import 'package:feature_practice/presentation/extensions/custom_practice_editing_extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/practice_session.dart';
+import 'package:shared/domain/entities/practice_session_extensions.dart';
 import 'package:shared/domain/repositories/custom_practice_repository.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
 import 'package:shared/domain/repositories/language_words_repository.dart';

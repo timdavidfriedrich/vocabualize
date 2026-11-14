@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/practice_answer.dart';
 import 'package:shared/domain/entities/practice_item.dart';
 import 'package:shared/domain/entities/progress.dart';
+import 'package:shared/domain/entities/progress_extensions.dart';
 import 'package:shared/domain/repositories/vocabulary_repository.dart';
 
 const _noviceStepMinutes = 5;

@@ -1,8 +1,4 @@
-import 'dart:math';
-
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:shared/domain/entities/language_setup.dart';
-import 'package:shared/domain/entities/vocabulary_level.dart';
 
 part 'vocabulary_overview.mapper.dart';
 
@@ -18,19 +14,3 @@ class const VocabularyOverview({
   required final int advancedCount,
   required final int expertCount,
 }) with VocabularyOverviewMappable;
-
-extension VocabularyOverviewExtensions on VocabularyOverview {
-  int practiceCountWith(NewWordLimit? limit) =>
-      dueCount +
-      switch (limit) {
-        NewWordsUpTo(:final count) => min(waitingCount, count),
-        AllNewWords() || null => waitingCount,
-      };
-
-  int countOf(VocabularyLevel level) => switch (level) {
-    VocabularyLevel.novice => noviceCount,
-    VocabularyLevel.beginner => beginnerCount,
-    VocabularyLevel.advanced => advancedCount,
-    VocabularyLevel.expert => expertCount,
-  };
-}

@@ -3,6 +3,7 @@ import 'package:core/theme/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/widgets/tonal_button.dart';

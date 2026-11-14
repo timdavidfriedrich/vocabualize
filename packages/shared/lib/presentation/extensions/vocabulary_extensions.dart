@@ -1,7 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_extensions.dart';
 import 'package:shared/domain/entities/vocabulary_level.dart';
+import 'package:shared/domain/entities/vocabulary_level_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 
 extension VocabularyLabelExtensions on Vocabulary {

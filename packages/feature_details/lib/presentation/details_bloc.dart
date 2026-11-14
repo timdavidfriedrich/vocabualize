@@ -7,13 +7,16 @@ import 'package:feature_details/presentation/extensions/details_editing_extensio
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared/domain/entities/language.dart';
+import 'package:shared/domain/entities/language_extensions.dart';
 import 'package:shared/domain/entities/language_pair.dart';
 import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/processed_image.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:shared/domain/entities/translation.dart';
+import 'package:shared/domain/entities/translation_extensions.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_extensions.dart';
 import 'package:shared/domain/entities/vocabulary_image.dart';
 import 'package:shared/domain/entities/vocabulary_image_change.dart';
 import 'package:shared/domain/repositories/connectivity_repository.dart';

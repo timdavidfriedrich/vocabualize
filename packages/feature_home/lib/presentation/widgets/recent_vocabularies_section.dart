@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/preferences.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
+import 'package:shared/domain/entities/vocabulary_extensions.dart';
 import 'package:shared/presentation/extensions/context_extensions.dart';
 import 'package:shared/presentation/extensions/vocabulary_extensions.dart';
 import 'package:shared/presentation/preferences/preferences_cubit.dart';

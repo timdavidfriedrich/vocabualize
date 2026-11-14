@@ -9,6 +9,7 @@ import 'package:shared/data/mappers/language_setup_mappers.dart';
 import 'package:shared/data/models/local_learned_language_setting.dart';
 import 'package:shared/domain/entities/language.dart';
 import 'package:shared/domain/entities/language_setup.dart';
+import 'package:shared/domain/entities/language_setup_extensions.dart';
 import 'package:shared/domain/repositories/language_repository.dart';
 
 @Injectable(as: LanguageRepository)
