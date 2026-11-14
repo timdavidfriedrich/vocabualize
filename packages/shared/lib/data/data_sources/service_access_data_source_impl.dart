@@ -61,7 +61,10 @@ class ServiceAccessDataSourceImpl(
     final stored = await _secureStorage.read(key: _installKeyStorageKey);
     if (stored == null) return null;
     try {
-      return RemoteInstallKey.fromJson(jsonDecode(stored) as Map<String, dynamic>);
+      return switch (jsonDecode(stored)) {
+        final Map<String, dynamic> json => RemoteInstallKey.fromJson(json),
+        _ => null,
+      };
     } on Object catch (error) {
       Klog.warning("Stored install key unreadable: ${error.runtimeType}");
       return null;

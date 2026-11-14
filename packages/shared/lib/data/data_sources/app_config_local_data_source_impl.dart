@@ -30,11 +30,12 @@ class AppConfigLocalDataSourceImpl() implements AppConfigLocalDataSource {
     final file = File(await _cachePath());
     if (!await file.exists()) return null;
     try {
-      return RemoteAppConfig.fromJson(
-        jsonDecode(await file.readAsString()) as Map<String, dynamic>,
-      );
-    } on FormatException catch (error) {
-      Klog.warning("Config cache unreadable: ${error.message}");
+      return switch (jsonDecode(await file.readAsString())) {
+        final Map<String, dynamic> json => RemoteAppConfig.fromJson(json),
+        _ => null,
+      };
+    } on Object catch (error) {
+      Klog.warning("Config cache unreadable: ${error.runtimeType}");
       return null;
     }
   }
