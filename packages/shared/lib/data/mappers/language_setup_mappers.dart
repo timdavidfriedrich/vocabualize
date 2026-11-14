@@ -83,7 +83,7 @@ extension LearnedLanguageValueMappers on String {
     _levelNovice => VocabularyLevel.novice,
     _levelBeginner => VocabularyLevel.beginner,
     _levelExpert => VocabularyLevel.expert,
-    _ => VocabularyLevel.advanced,
+    _ => defaultAskMeInFromLevel,
   };
 
   NewWordLimit toNewWordLimit() => switch (this) {

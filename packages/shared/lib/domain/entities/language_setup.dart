@@ -9,6 +9,7 @@ const _defaultNewWordCount = 10;
 const _manyNewWords = 20;
 
 const defaultNewWordLimit = NewWordsUpTo(count: _defaultNewWordCount);
+const defaultAskMeInFromLevel = VocabularyLevel.advanced;
 
 const newWordLimits = [
   NewWordsUpTo(count: _fewNewWords),

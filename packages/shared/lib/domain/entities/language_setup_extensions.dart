@@ -3,7 +3,6 @@ import 'package:shared/domain/entities/language_extensions.dart';
 import 'package:shared/domain/entities/language_setup.dart';
 import 'package:shared/domain/entities/vocabulary.dart';
 import 'package:shared/domain/entities/vocabulary_extensions.dart';
-import 'package:shared/domain/entities/vocabulary_level.dart';
 
 extension LanguageSetupExtensions on LanguageSetup {
   List<LearnedLanguage> get active => [
@@ -52,7 +51,7 @@ extension LearnedLanguageDefaultExtensions on Language {
     return LearnedLanguage(
       language: this,
       askMeIn: null,
-      askMeInFromLevel: VocabularyLevel.advanced,
+      askMeInFromLevel: defaultAskMeInFromLevel,
       newWords: defaultNewWordLimit,
       isPaused: false,
     );

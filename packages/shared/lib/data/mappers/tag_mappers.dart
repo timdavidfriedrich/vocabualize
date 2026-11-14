@@ -3,24 +3,25 @@ import 'package:shared/data/models/local_tag_extras.dart';
 import 'package:shared/domain/entities/tag.dart';
 import 'package:vocabualize_client/vocabualize_client.dart';
 
+const _noExtras = LocalTagExtras(emoji: null);
+
 extension LocalTagMappers on LocalTag {
   Tag toTag() => Tag(id: id.toString(), name: name, emoji: emoji, createdAt: createdAt.toUtc());
 
-  String? get emoji => _extras?.emoji;
+  String? get emoji => _extras.emoji;
 
-  String? extrasWithEmoji(String? emoji) =>
-      (_extras ?? const LocalTagExtras(emoji: null)).copyWith(emoji: emoji).toJson();
+  String extrasWithEmoji(String? emoji) => _extras.copyWith(emoji: emoji).toJson();
 
-  LocalTagExtras? get _extras {
+  LocalTagExtras get _extras {
     if (extras case final json?) {
       try {
         return LocalTagExtrasMapper.fromJson(json);
       } on Object catch (error) {
         Klog.warning("Tag extras unreadable: ${error.runtimeType}");
-        return null;
+        return _noExtras;
       }
     }
-    return null;
+    return _noExtras;
   }
 }
 

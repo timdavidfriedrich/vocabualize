@@ -26,12 +26,12 @@ extension LocalPreferencesMappers on Map<LocalPreferenceKey, String> {
       appearanceMode: switch (this[LocalPreferenceKey.appearanceMode]) {
         _appearanceLight => AppearanceMode.light,
         _appearanceDark => AppearanceMode.dark,
-        _ => AppearanceMode.system,
+        _ => defaultPreferences.appearanceMode,
       },
       defaultGatherOption: switch (this[LocalPreferenceKey.defaultGatherOption]) {
         _gatherScan => DefaultGatherOption.scan,
         _gatherWrite => DefaultGatherOption.write,
-        _ => DefaultGatherOption.none,
+        _ => defaultPreferences.defaultGatherOption,
       },
       practiceReminder: _reminderOf(ReminderKind.practice),
       streakReminder: _reminderOf(ReminderKind.streak),
