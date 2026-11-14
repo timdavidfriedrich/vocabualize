@@ -366,7 +366,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsImportBackupConfirmButton => 'Імпортувати';
 
   @override
-  String settingsImportBackupDone(int count) {
+  String settingsImportBackupDoneMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -746,7 +746,8 @@ class AppLocalizationsUk extends AppLocalizations {
   String get reminderPracticeTitle => 'Час практикуватися';
 
   @override
-  String get reminderPracticeBody => 'Ваші слова чекають. Кілька хвилин допоможуть їх не забути.';
+  String get reminderPracticeMessage =>
+      'Ваші слова чекають. Кілька хвилин допоможуть їх не забути.';
 
   @override
   String get reminderPracticeChannel => 'Нагадування про практику';
@@ -857,7 +858,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String streakFreezeExplanation(int days, int max) {
+  String streakFreezeMessage(int days, int max) {
     return 'Кожні $days активних днів поспіль ви отримуєте заморозку серії, до $max. Вона зберігає серію в день, який ви пропустили.';
   }
 
@@ -886,7 +887,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get reminderStreakKeepTitle => 'Збережіть свою серію';
 
   @override
-  String reminderStreakKeepBody(int count) {
+  String reminderStreakKeepMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -902,14 +903,14 @@ class AppLocalizationsUk extends AppLocalizations {
   String get reminderStreakLookAroundTitle => 'Роззирніться';
 
   @override
-  String get reminderStreakLookAroundBody =>
+  String get reminderStreakLookAroundMessage =>
       'Бачите щось, чого ще не вмієте назвати? Додайте це як нове слово.';
 
   @override
   String get reminderStreakQuickRoundTitle => 'Швидкий раунд?';
 
   @override
-  String reminderStreakQuickRoundBody(int count) {
+  String reminderStreakQuickRoundMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -925,7 +926,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get reminderStreakNearbyTitle => 'Нове слово поруч?';
 
   @override
-  String get reminderStreakNearbyBody =>
+  String get reminderStreakNearbyMessage =>
       'Виберіть щось навколо себе і дізнайтеся, як воно називається.';
 
   @override
@@ -942,7 +943,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get reminderStreakInARowBody =>
+  String get reminderStreakInARowMessage =>
       'Не зупиняйтеся зараз. Попрактикуйтеся або додайте слово сьогодні.';
 
   @override
@@ -1084,7 +1085,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get detailsLastLanguageHint => 'Потрібно вивчати це слово принаймні однією мовою.';
 
   @override
-  String detailsAskMeInNote(String learned, String askMeIn, String main) {
+  String detailsAskMeInMessage(String learned, String askMeIn, String main) {
     return 'Картки для $learned питають мовою $askMeIn замість $main.';
   }
 
@@ -1102,7 +1103,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get practiceCustomTooltip => 'Власне тренування';
+  String get customPracticeTooltip => 'Власне тренування';
 
   @override
   String get customPracticeTitle => 'Власне тренування';
@@ -1195,7 +1196,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get languagesPauseAction => 'Пауза';
+  String get languagesPauseButton => 'Пауза';
 
   @override
   String languagesAsksInLabel(String flag) {
@@ -1232,7 +1233,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get languageDeleteDeletedLabel => 'Видаляється';
 
   @override
-  String languageDeleteProgressLine(String language, int count) {
+  String languageDeleteProgressMessage(String language, int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -1248,10 +1249,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get languageDeleteKeptLabel => 'Залишається';
 
   @override
-  String get languageDeleteWordsLine => 'Усі слова, фото та колекції';
+  String get languageDeleteWordsMessage => 'Усі слова, фото та колекції';
 
   @override
-  String languageDeleteKeptProgressLine(String language) {
+  String languageDeleteKeptProgressMessage(String language) {
     return 'Твій прогрес мовою $language';
   }
 
@@ -1384,7 +1385,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String languageWordsRemovedWarning(int count, String language) {
+  String languageWordsRemovedMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,

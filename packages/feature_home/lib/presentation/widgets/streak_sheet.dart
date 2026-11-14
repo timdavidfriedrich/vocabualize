@@ -85,7 +85,7 @@ class const _StreakList({
               context.s.streakFreezesValue(_streak.freezes, _streak.maxFreezes),
               style: context.t.bodyLarge,
             ),
-            details: context.s.streakFreezeExplanation(
+            details: context.s.streakFreezeMessage(
               _streak.activeDaysPerFreeze,
               _streak.maxFreezes,
             ),

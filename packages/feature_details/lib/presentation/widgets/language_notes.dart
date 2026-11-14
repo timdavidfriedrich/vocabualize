@@ -39,7 +39,7 @@ class const LanguageNotes({
           ],
           if (_askedFor.isNotEmpty)
             Text(
-              context.s.detailsAskMeInNote(
+              context.s.detailsAskMeInMessage(
                 [for (final learned in _askedFor) learned.toShortLabel(context)].join(", "),
                 _language.toShortLabel(context),
                 _main.toShortLabel(context),

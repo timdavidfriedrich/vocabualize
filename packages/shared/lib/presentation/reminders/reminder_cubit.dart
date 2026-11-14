@@ -44,7 +44,7 @@ class ReminderCubit extends Cubit<bool> {
           ReminderNotification(
             at: at,
             title: strings.reminderPracticeTitle,
-            body: strings.reminderPracticeBody,
+            body: strings.reminderPracticeMessage,
             channelName: strings.reminderPracticeChannel,
           ),
       ]);
@@ -69,14 +69,14 @@ class ReminderCubit extends Cubit<bool> {
     required int count,
   }) {
     final variants = [
-      (title: strings.reminderStreakKeepTitle, body: strings.reminderStreakKeepBody(count)),
-      (title: strings.reminderStreakLookAroundTitle, body: strings.reminderStreakLookAroundBody),
+      (title: strings.reminderStreakKeepTitle, body: strings.reminderStreakKeepMessage(count)),
+      (title: strings.reminderStreakLookAroundTitle, body: strings.reminderStreakLookAroundMessage),
       (
         title: strings.reminderStreakQuickRoundTitle,
-        body: strings.reminderStreakQuickRoundBody(count),
+        body: strings.reminderStreakQuickRoundMessage(count),
       ),
-      (title: strings.reminderStreakNearbyTitle, body: strings.reminderStreakNearbyBody),
-      (title: strings.reminderStreakInARowTitle(count), body: strings.reminderStreakInARowBody),
+      (title: strings.reminderStreakNearbyTitle, body: strings.reminderStreakNearbyMessage),
+      (title: strings.reminderStreakInARowTitle(count), body: strings.reminderStreakInARowMessage),
     ];
     final variant = variants[_dayNumber(at) % variants.length];
     return ReminderNotification(

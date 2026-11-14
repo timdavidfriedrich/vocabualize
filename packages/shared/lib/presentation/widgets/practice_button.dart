@@ -48,7 +48,7 @@ class const PracticeButton({
           const SizedBox(width: Spacing.s),
           IconActionButton(
             icon: const Icon(Icons.playlist_play_rounded, size: Spacing.iconM),
-            tooltip: context.s.practiceCustomTooltip,
+            tooltip: context.s.customPracticeTooltip,
             onPressed: () => context.pushCustomPractice(tagId: _tagId),
           ),
         ],

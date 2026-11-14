@@ -37,7 +37,7 @@ class const LearnedLanguageRow({
         if (canLeave) ...[
           SwipeAction(
             icon: Icons.pause_rounded,
-            label: context.s.languagesPauseAction,
+            label: context.s.languagesPauseButton,
             color: context.status.warning.withValues(alpha: _pausedActionAlpha),
             textColor: context.status.warning,
             onPressed: () => bloc.add(LanguagesPauseRequested(language: language)),

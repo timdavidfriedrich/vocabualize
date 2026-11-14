@@ -361,7 +361,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsImportBackupConfirmButton => 'Εισαγωγή';
 
   @override
-  String settingsImportBackupDone(int count) {
+  String settingsImportBackupDoneMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -721,7 +721,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get reminderPracticeTitle => 'Ώρα για εξάσκηση';
 
   @override
-  String get reminderPracticeBody =>
+  String get reminderPracticeMessage =>
       'Οι λέξεις σας σας περιμένουν. Λίγα λεπτά αρκούν για να μείνουν φρέσκες.';
 
   @override
@@ -829,7 +829,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String streakFreezeExplanation(int days, int max) {
+  String streakFreezeMessage(int days, int max) {
     return 'Κάθε $days συνεχόμενες ενεργές ημέρες κερδίζετε μια προστασία σερί, έως $max. Μια προστασία σώζει το σερί σας μια μέρα που το χάνετε.';
   }
 
@@ -858,7 +858,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get reminderStreakKeepTitle => 'Κρατήστε το σερί σας';
 
   @override
-  String reminderStreakKeepBody(int count) {
+  String reminderStreakKeepMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -872,14 +872,14 @@ class AppLocalizationsEl extends AppLocalizations {
   String get reminderStreakLookAroundTitle => 'Κοιτάξτε γύρω σας';
 
   @override
-  String get reminderStreakLookAroundBody =>
+  String get reminderStreakLookAroundMessage =>
       'Βλέπετε κάτι που δεν ξέρετε ακόμη πώς λέγεται; Προσθέστε το ως νέα λέξη.';
 
   @override
   String get reminderStreakQuickRoundTitle => 'Ένας γρήγορος γύρος;';
 
   @override
-  String reminderStreakQuickRoundBody(int count) {
+  String reminderStreakQuickRoundMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -893,7 +893,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get reminderStreakNearbyTitle => 'Μια νέα λέξη κοντά σας;';
 
   @override
-  String get reminderStreakNearbyBody => 'Διαλέξτε κάτι γύρω σας και μάθετε πώς λέγεται.';
+  String get reminderStreakNearbyMessage => 'Διαλέξτε κάτι γύρω σας και μάθετε πώς λέγεται.';
 
   @override
   String reminderStreakInARowTitle(int count) {
@@ -907,7 +907,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get reminderStreakInARowBody =>
+  String get reminderStreakInARowMessage =>
       'Μη σταματάτε τώρα. Κάντε εξάσκηση ή προσθέστε μια λέξη σήμερα.';
 
   @override
@@ -1042,7 +1042,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Πρέπει να μαθαίνετε αυτή τη λέξη σε τουλάχιστον μία γλώσσα.';
 
   @override
-  String detailsAskMeInNote(String learned, String askMeIn, String main) {
+  String detailsAskMeInMessage(String learned, String askMeIn, String main) {
     return 'Οι κάρτες για τα $learned ρωτούν στα $askMeIn αντί για τα $main.';
   }
 
@@ -1060,7 +1060,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get practiceCustomTooltip => 'Προσαρμοσμένη εξάσκηση';
+  String get customPracticeTooltip => 'Προσαρμοσμένη εξάσκηση';
 
   @override
   String get customPracticeTitle => 'Προσαρμοσμένη εξάσκηση';
@@ -1151,7 +1151,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get languagesPauseAction => 'Παύση';
+  String get languagesPauseButton => 'Παύση';
 
   @override
   String languagesAsksInLabel(String flag) {
@@ -1186,7 +1186,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get languageDeleteDeletedLabel => 'Διαγράφεται';
 
   @override
-  String languageDeleteProgressLine(String language, int count) {
+  String languageDeleteProgressMessage(String language, int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -1200,10 +1200,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get languageDeleteKeptLabel => 'Διατηρείται';
 
   @override
-  String get languageDeleteWordsLine => 'Όλες οι λέξεις, οι φωτογραφίες και οι συλλογές';
+  String get languageDeleteWordsMessage => 'Όλες οι λέξεις, οι φωτογραφίες και οι συλλογές';
 
   @override
-  String languageDeleteKeptProgressLine(String language) {
+  String languageDeleteKeptProgressMessage(String language) {
     return 'Η πρόοδός σου στα $language';
   }
 
@@ -1330,7 +1330,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String languageWordsRemovedWarning(int count, String language) {
+  String languageWordsRemovedMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,

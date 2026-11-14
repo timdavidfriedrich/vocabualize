@@ -59,7 +59,7 @@ class const LanguageWordsCollections({
     required bool isRemoving,
     required String label,
   }) {
-    if (!_state.isAdding && isRemoving) return context.s.languageWordsRemovedWarning(count, label);
+    if (!_state.isAdding && isRemoving) return context.s.languageWordsRemovedMessage(count, label);
     return context.s.languagesWordCount(count);
   }
 }

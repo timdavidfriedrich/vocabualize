@@ -152,9 +152,9 @@
   "settingsImportBackupConfirmTitle": "Import backup?",
   "settingsImportBackupConfirmMessage": "All words, collections and images from the backup are added to your collection. Your current words stay as they are.",
   "settingsImportBackupConfirmButton": "Import",
-  "settingsImportBackupDone": "{count, plural, one{Imported {count} word.} other{Imported {count} words.}}",
+  "settingsImportBackupDoneMessage": "{count, plural, one{Imported {count} word.} other{Imported {count} words.}}",
   "errorInvalidBackup": "This file isn't a Vocabualize backup.",
-  "@settingsImportBackupDone": {
+  "@settingsImportBackupDoneMessage": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -367,7 +367,7 @@
   "settingsNotificationsBlockedMessage": "Notifications are turned off for Vocabualize.",
   "settingsOpenNotificationSettingsButton": "Open settings",
   "reminderPracticeTitle": "Time to practice",
-  "reminderPracticeBody": "Your words are ready. A few minutes keep them fresh.",
+  "reminderPracticeMessage": "Your words are ready. A few minutes keep them fresh.",
   "reminderPracticeChannel": "Practice reminders",
   "errorReportLimit": "You've sent several reports recently. Please try again later.",
   "errorReportUnavailable": "Reports can't be sent right now. Please try again later.",
@@ -425,8 +425,8 @@
       }
     }
   },
-  "streakFreezeExplanation": "Every {days} active days in a row earn you a streak freeze, up to {max}. A freeze saves your streak on a day you miss.",
-  "@streakFreezeExplanation": {
+  "streakFreezeMessage": "Every {days} active days in a row earn you a streak freeze, up to {max}. A freeze saves your streak on a day you miss.",
+  "@streakFreezeMessage": {
     "placeholders": {
       "days": {
         "type": "int"
@@ -444,8 +444,8 @@
   "settingsStreakReminderHint": "Only on days your streak is at risk",
   "reminderStreakChannel": "Streak reminders",
   "reminderStreakKeepTitle": "Keep your streak",
-  "reminderStreakKeepBody": "{count, plural, one{Practice a few words today to keep your {count}-day streak.} other{Practice a few words today to keep your {count}-day streak.}}",
-  "@reminderStreakKeepBody": {
+  "reminderStreakKeepMessage": "{count, plural, one{Practice a few words today to keep your {count}-day streak.} other{Practice a few words today to keep your {count}-day streak.}}",
+  "@reminderStreakKeepMessage": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -453,10 +453,10 @@
     }
   },
   "reminderStreakLookAroundTitle": "Look around",
-  "reminderStreakLookAroundBody": "See something you can't name yet? Add it as a new word.",
+  "reminderStreakLookAroundMessage": "See something you can't name yet? Add it as a new word.",
   "reminderStreakQuickRoundTitle": "Quick round?",
-  "reminderStreakQuickRoundBody": "{count, plural, one{One short practice round keeps your streak going.} other{One short practice round keeps your {count} days going.}}",
-  "@reminderStreakQuickRoundBody": {
+  "reminderStreakQuickRoundMessage": "{count, plural, one{One short practice round keeps your streak going.} other{One short practice round keeps your {count} days going.}}",
+  "@reminderStreakQuickRoundMessage": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -464,7 +464,7 @@
     }
   },
   "reminderStreakNearbyTitle": "A new word nearby?",
-  "reminderStreakNearbyBody": "Pick one thing around you and learn what it's called.",
+  "reminderStreakNearbyMessage": "Pick one thing around you and learn what it's called.",
   "reminderStreakInARowTitle": "{count, plural, one{{count} day in a row} other{{count} days in a row}}",
   "@reminderStreakInARowTitle": {
     "placeholders": {
@@ -473,7 +473,7 @@
       }
     }
   },
-  "reminderStreakInARowBody": "Don't stop now. Add or practice a word today.",
+  "reminderStreakInARowMessage": "Don't stop now. Add or practice a word today.",
   "settingsPrivacyPolicyButton": "Privacy policy",
   "scanReportSuggestionButton": "Report a suggestion",
   "languagesTitle": "Your languages",
@@ -568,8 +568,8 @@
     }
   },
   "detailsLastLanguageHint": "You need to learn this word in at least one language.",
-  "detailsAskMeInNote": "Cards for {learned} ask in {askMeIn} instead of {main}.",
-  "@detailsAskMeInNote": {
+  "detailsAskMeInMessage": "Cards for {learned} ask in {askMeIn} instead of {main}.",
+  "@detailsAskMeInMessage": {
     "placeholders": {
       "learned": {
         "type": "String"
@@ -608,7 +608,7 @@
       }
     }
   },
-  "practiceCustomTooltip": "Custom practice",
+  "customPracticeTooltip": "Custom practice",
   "customPracticeTitle": "Custom practice",
   "customPracticeAllOption": "All",
   "customPracticeCollectionsTitle": "Collections",
@@ -683,7 +683,7 @@
       }
     }
   },
-  "languagesPauseAction": "Pause",
+  "languagesPauseButton": "Pause",
   "languagesAsksInLabel": "Asks in {flag}",
   "@languagesAsksInLabel": {
     "placeholders": {
@@ -718,8 +718,8 @@
     }
   },
   "languageDeleteDeletedLabel": "Deleted",
-  "languageDeleteProgressLine": "{count, plural, =1{{language} progress for 1 word} other{{language} progress for {count} words}}",
-  "@languageDeleteProgressLine": {
+  "languageDeleteProgressMessage": "{count, plural, =1{{language} progress for 1 word} other{{language} progress for {count} words}}",
+  "@languageDeleteProgressMessage": {
     "placeholders": {
       "language": {
         "type": "String"
@@ -730,9 +730,9 @@
     }
   },
   "languageDeleteKeptLabel": "Kept",
-  "languageDeleteWordsLine": "All words, photos and collections",
-  "languageDeleteKeptProgressLine": "Your progress in {language}",
-  "@languageDeleteKeptProgressLine": {
+  "languageDeleteWordsMessage": "All words, photos and collections",
+  "languageDeleteKeptProgressMessage": "Your progress in {language}",
+  "@languageDeleteKeptProgressMessage": {
     "placeholders": {
       "language": {
         "type": "String"
@@ -896,8 +896,8 @@
       }
     }
   },
-  "languageWordsRemovedWarning": "{count, plural, =1{1 word, {language} progress is deleted} other{{count} words, {language} progress is deleted}}",
-  "@languageWordsRemovedWarning": {
+  "languageWordsRemovedMessage": "{count, plural, =1{1 word, {language} progress is deleted} other{{count} words, {language} progress is deleted}}",
+  "@languageWordsRemovedMessage": {
     "placeholders": {
       "count": {
         "type": "int"

@@ -67,7 +67,7 @@ class const SettingsScreen({
           },
           listener: (context, state) {
             if (state case SettingsLoaded(importedCount: final count?)) {
-              context.showToast(context.s.settingsImportBackupDone(count));
+              context.showToast(context.s.settingsImportBackupDoneMessage(count));
             }
           },
         ),

@@ -726,11 +726,11 @@ abstract class AppLocalizations {
   /// **'Import'**
   String get settingsImportBackupConfirmButton;
 
-  /// No description provided for @settingsImportBackupDone.
+  /// No description provided for @settingsImportBackupDoneMessage.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, one{Imported {count} word.} other{Imported {count} words.}}'**
-  String settingsImportBackupDone(int count);
+  String settingsImportBackupDoneMessage(int count);
 
   /// No description provided for @errorInvalidBackup.
   ///
@@ -1236,11 +1236,11 @@ abstract class AppLocalizations {
   /// **'Time to practice'**
   String get reminderPracticeTitle;
 
-  /// No description provided for @reminderPracticeBody.
+  /// No description provided for @reminderPracticeMessage.
   ///
   /// In en, this message translates to:
   /// **'Your words are ready. A few minutes keep them fresh.'**
-  String get reminderPracticeBody;
+  String get reminderPracticeMessage;
 
   /// No description provided for @reminderPracticeChannel.
   ///
@@ -1398,11 +1398,11 @@ abstract class AppLocalizations {
   /// **'{count} of {max}'**
   String streakFreezesValue(int count, int max);
 
-  /// No description provided for @streakFreezeExplanation.
+  /// No description provided for @streakFreezeMessage.
   ///
   /// In en, this message translates to:
   /// **'Every {days} active days in a row earn you a streak freeze, up to {max}. A freeze saves your streak on a day you miss.'**
-  String streakFreezeExplanation(int days, int max);
+  String streakFreezeMessage(int days, int max);
 
   /// No description provided for @streakDayActive.
   ///
@@ -1452,11 +1452,11 @@ abstract class AppLocalizations {
   /// **'Keep your streak'**
   String get reminderStreakKeepTitle;
 
-  /// No description provided for @reminderStreakKeepBody.
+  /// No description provided for @reminderStreakKeepMessage.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, one{Practice a few words today to keep your {count}-day streak.} other{Practice a few words today to keep your {count}-day streak.}}'**
-  String reminderStreakKeepBody(int count);
+  String reminderStreakKeepMessage(int count);
 
   /// No description provided for @reminderStreakLookAroundTitle.
   ///
@@ -1464,11 +1464,11 @@ abstract class AppLocalizations {
   /// **'Look around'**
   String get reminderStreakLookAroundTitle;
 
-  /// No description provided for @reminderStreakLookAroundBody.
+  /// No description provided for @reminderStreakLookAroundMessage.
   ///
   /// In en, this message translates to:
   /// **'See something you can\'t name yet? Add it as a new word.'**
-  String get reminderStreakLookAroundBody;
+  String get reminderStreakLookAroundMessage;
 
   /// No description provided for @reminderStreakQuickRoundTitle.
   ///
@@ -1476,11 +1476,11 @@ abstract class AppLocalizations {
   /// **'Quick round?'**
   String get reminderStreakQuickRoundTitle;
 
-  /// No description provided for @reminderStreakQuickRoundBody.
+  /// No description provided for @reminderStreakQuickRoundMessage.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, one{One short practice round keeps your streak going.} other{One short practice round keeps your {count} days going.}}'**
-  String reminderStreakQuickRoundBody(int count);
+  String reminderStreakQuickRoundMessage(int count);
 
   /// No description provided for @reminderStreakNearbyTitle.
   ///
@@ -1488,11 +1488,11 @@ abstract class AppLocalizations {
   /// **'A new word nearby?'**
   String get reminderStreakNearbyTitle;
 
-  /// No description provided for @reminderStreakNearbyBody.
+  /// No description provided for @reminderStreakNearbyMessage.
   ///
   /// In en, this message translates to:
   /// **'Pick one thing around you and learn what it\'s called.'**
-  String get reminderStreakNearbyBody;
+  String get reminderStreakNearbyMessage;
 
   /// No description provided for @reminderStreakInARowTitle.
   ///
@@ -1500,11 +1500,11 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{{count} day in a row} other{{count} days in a row}}'**
   String reminderStreakInARowTitle(int count);
 
-  /// No description provided for @reminderStreakInARowBody.
+  /// No description provided for @reminderStreakInARowMessage.
   ///
   /// In en, this message translates to:
   /// **'Don\'t stop now. Add or practice a word today.'**
-  String get reminderStreakInARowBody;
+  String get reminderStreakInARowMessage;
 
   /// No description provided for @settingsPrivacyPolicyButton.
   ///
@@ -1710,11 +1710,11 @@ abstract class AppLocalizations {
   /// **'You need to learn this word in at least one language.'**
   String get detailsLastLanguageHint;
 
-  /// No description provided for @detailsAskMeInNote.
+  /// No description provided for @detailsAskMeInMessage.
   ///
   /// In en, this message translates to:
   /// **'Cards for {learned} ask in {askMeIn} instead of {main}.'**
-  String detailsAskMeInNote(String learned, String askMeIn, String main);
+  String detailsAskMeInMessage(String learned, String askMeIn, String main);
 
   /// No description provided for @detailsExistingTitle.
   ///
@@ -1734,11 +1734,11 @@ abstract class AppLocalizations {
   /// **'Add to {language}'**
   String detailsExistingAddButton(String language);
 
-  /// No description provided for @practiceCustomTooltip.
+  /// No description provided for @customPracticeTooltip.
   ///
   /// In en, this message translates to:
   /// **'Custom practice'**
-  String get practiceCustomTooltip;
+  String get customPracticeTooltip;
 
   /// No description provided for @customPracticeTitle.
   ///
@@ -1872,11 +1872,11 @@ abstract class AppLocalizations {
   /// **'Continue with {count}'**
   String languageOnboardingContinueWithButton(int count);
 
-  /// No description provided for @languagesPauseAction.
+  /// No description provided for @languagesPauseButton.
   ///
   /// In en, this message translates to:
   /// **'Pause'**
-  String get languagesPauseAction;
+  String get languagesPauseButton;
 
   /// No description provided for @languagesAsksInLabel.
   ///
@@ -1914,11 +1914,11 @@ abstract class AppLocalizations {
   /// **'Deleted'**
   String get languageDeleteDeletedLabel;
 
-  /// No description provided for @languageDeleteProgressLine.
+  /// No description provided for @languageDeleteProgressMessage.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =1{{language} progress for 1 word} other{{language} progress for {count} words}}'**
-  String languageDeleteProgressLine(String language, int count);
+  String languageDeleteProgressMessage(String language, int count);
 
   /// No description provided for @languageDeleteKeptLabel.
   ///
@@ -1926,17 +1926,17 @@ abstract class AppLocalizations {
   /// **'Kept'**
   String get languageDeleteKeptLabel;
 
-  /// No description provided for @languageDeleteWordsLine.
+  /// No description provided for @languageDeleteWordsMessage.
   ///
   /// In en, this message translates to:
   /// **'All words, photos and collections'**
-  String get languageDeleteWordsLine;
+  String get languageDeleteWordsMessage;
 
-  /// No description provided for @languageDeleteKeptProgressLine.
+  /// No description provided for @languageDeleteKeptProgressMessage.
   ///
   /// In en, this message translates to:
   /// **'Your progress in {language}'**
-  String languageDeleteKeptProgressLine(String language);
+  String languageDeleteKeptProgressMessage(String language);
 
   /// No description provided for @mainLanguageClashEmphasis.
   ///
@@ -2076,11 +2076,11 @@ abstract class AppLocalizations {
   /// **'{count} of {total} words imported'**
   String languageWordsImportedCount(int count, int total);
 
-  /// No description provided for @languageWordsRemovedWarning.
+  /// No description provided for @languageWordsRemovedMessage.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 word, {language} progress is deleted} other{{count} words, {language} progress is deleted}}'**
-  String languageWordsRemovedWarning(int count, String language);
+  String languageWordsRemovedMessage(int count, String language);
 
   /// No description provided for @homeEmptyLanguageTitle.
   ///

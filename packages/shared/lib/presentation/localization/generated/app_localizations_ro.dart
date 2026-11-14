@@ -363,7 +363,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsImportBackupConfirmButton => 'Importați';
 
   @override
-  String settingsImportBackupDone(int count) {
+  String settingsImportBackupDoneMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -732,7 +732,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get reminderPracticeTitle => 'E timpul să exersați';
 
   @override
-  String get reminderPracticeBody => 'Cuvintele vă așteaptă. Câteva minute le păstrează proaspete.';
+  String get reminderPracticeMessage =>
+      'Cuvintele vă așteaptă. Câteva minute le păstrează proaspete.';
 
   @override
   String get reminderPracticeChannel => 'Mementouri pentru exersare';
@@ -842,7 +843,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String streakFreezeExplanation(int days, int max) {
+  String streakFreezeMessage(int days, int max) {
     return 'La fiecare $days zile active la rând primiți o protecție de serie, până la $max. O protecție vă salvează seria într-o zi ratată.';
   }
 
@@ -871,7 +872,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get reminderStreakKeepTitle => 'Păstrați-vă seria';
 
   @override
-  String reminderStreakKeepBody(int count) {
+  String reminderStreakKeepMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -886,14 +887,14 @@ class AppLocalizationsRo extends AppLocalizations {
   String get reminderStreakLookAroundTitle => 'Priviți în jur';
 
   @override
-  String get reminderStreakLookAroundBody =>
+  String get reminderStreakLookAroundMessage =>
       'Vedeți ceva ce nu știți încă să numiți? Adăugați-l ca un cuvânt nou.';
 
   @override
   String get reminderStreakQuickRoundTitle => 'O rundă rapidă?';
 
   @override
-  String reminderStreakQuickRoundBody(int count) {
+  String reminderStreakQuickRoundMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -908,7 +909,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get reminderStreakNearbyTitle => 'Un cuvânt nou prin apropiere?';
 
   @override
-  String get reminderStreakNearbyBody =>
+  String get reminderStreakNearbyMessage =>
       'Alegeți un lucru din jurul dvs. și aflați cum se numește.';
 
   @override
@@ -924,7 +925,8 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get reminderStreakInARowBody => 'Nu vă opriți acum. Exersați sau adăugați un cuvânt azi.';
+  String get reminderStreakInARowMessage =>
+      'Nu vă opriți acum. Exersați sau adăugați un cuvânt azi.';
 
   @override
   String get settingsPrivacyPolicyButton => 'Politica de confidențialitate';
@@ -1061,7 +1063,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get detailsLastLanguageHint => 'Trebuie să învățați acest cuvânt în cel puțin o limbă.';
 
   @override
-  String detailsAskMeInNote(String learned, String askMeIn, String main) {
+  String detailsAskMeInMessage(String learned, String askMeIn, String main) {
     return 'Cartonașele pentru $learned întreabă în $askMeIn în loc de $main.';
   }
 
@@ -1079,7 +1081,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get practiceCustomTooltip => 'Exercițiu personalizat';
+  String get customPracticeTooltip => 'Exercițiu personalizat';
 
   @override
   String get customPracticeTitle => 'Exercițiu personalizat';
@@ -1171,7 +1173,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get languagesPauseAction => 'Pauză';
+  String get languagesPauseButton => 'Pauză';
 
   @override
   String languagesAsksInLabel(String flag) {
@@ -1207,7 +1209,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get languageDeleteDeletedLabel => 'Se șterge';
 
   @override
-  String languageDeleteProgressLine(String language, int count) {
+  String languageDeleteProgressMessage(String language, int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -1222,10 +1224,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get languageDeleteKeptLabel => 'Se păstrează';
 
   @override
-  String get languageDeleteWordsLine => 'Toate cuvintele, fotografiile și colecțiile';
+  String get languageDeleteWordsMessage => 'Toate cuvintele, fotografiile și colecțiile';
 
   @override
-  String languageDeleteKeptProgressLine(String language) {
+  String languageDeleteKeptProgressMessage(String language) {
     return 'Progresul tău în $language';
   }
 
@@ -1357,7 +1359,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String languageWordsRemovedWarning(int count, String language) {
+  String languageWordsRemovedMessage(int count, String language) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,

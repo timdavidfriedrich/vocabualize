@@ -26,12 +26,12 @@ Future<bool> confirmsLanguageDelete(
             Text(context.s.languageDeleteTitle(label), style: context.t.headlineSmall),
             const SizedBox(height: Spacing.l),
             _Heading(text: context.s.languageDeleteDeletedLabel, color: context.c.error),
-            _Line(text: context.s.languageDeleteProgressLine(label, wordCount ?? 0)),
+            _Line(text: context.s.languageDeleteProgressMessage(label, wordCount ?? 0)),
             const SizedBox(height: Spacing.s),
             _Heading(text: context.s.languageDeleteKeptLabel, color: context.c.primary),
-            _Line(text: context.s.languageDeleteWordsLine),
+            _Line(text: context.s.languageDeleteWordsMessage),
             for (final kept in keptLanguages)
-              _Line(text: context.s.languageDeleteKeptProgressLine(kept.toShortLabel(context))),
+              _Line(text: context.s.languageDeleteKeptProgressMessage(kept.toShortLabel(context))),
             const SizedBox(height: Spacing.xl),
             TonalButton(
               isDestructive: true,
